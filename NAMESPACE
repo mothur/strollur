@@ -1,0 +1,28 @@
+
+# exports
+export(Dataset)
+export(sequence_data)
+
+useDynLib(rdataset, .registration=TRUE)
+exportPattern("^[[:alpha:]]+")
+
+# general
+import(cli)
+
+# c++ code
+import(RcppThread)
+importFrom(Rcpp, evalCpp)
+importFrom(Rcpp, loadModule)
+
+# R6 classes
+importFrom(R6, R6Class)
+importFrom(methods, new)
+import(data.table)
+
+# read fastq files
+importFrom(microseq, readFastq)
+
+# read FASTA files
+importFrom(microseq, readFasta)
+
+
