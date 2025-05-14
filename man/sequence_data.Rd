@@ -13,7 +13,16 @@
 ## Method `sequence_data$new`
 ## ------------------------------------------------
 
-  dataset <- sequence_data$new("soil")
+
+# to create an empty dataset, run the following:
+
+dataset <- sequence_data$new("soil")
+
+# to create a dataset containing sequences from your fasta file,
+  run the following:
+
+dataset <- sequence_data$new(name = "soil",
+                             fasta = rdataset_example("test.fasta"))
 
 
 ## ------------------------------------------------
@@ -77,6 +86,7 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \item \href{#method-sequence_data-add_seqs}{\code{sequence_data$add_seqs()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
+\item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
 \item \href{#method-sequence_data-get_groups}{\code{sequence_data$get_groups()}}
 \item \href{#method-sequence_data-get_group_totals}{\code{sequence_data$get_group_totals()}}
 \item \href{#method-sequence_data-get_names}{\code{sequence_data$get_names()}}
@@ -100,7 +110,7 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \subsection{Method \code{new()}}{
 Create a new FASTA sequence dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$new(name)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$new(name, fasta = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -115,7 +125,16 @@ A new `sequence_data` object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{  dataset <- sequence_data$new("soil")
+\preformatted{
+# to create an empty dataset, run the following:
+
+dataset <- sequence_data$new("soil")
+
+# to create a dataset containing sequences from your fasta file,
+  run the following:
+
+dataset <- sequence_data$new(name = "soil",
+                             fasta = rdataset_example("test.fasta"))
 
 }
 \if{html}{\out{</div>}}
@@ -187,6 +206,19 @@ Get List containing dataset
 
 \subsection{Returns}{
 List
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_dataset_name"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_dataset_name}{}}}
+\subsection{Method \code{get_dataset_name()}}{
+Get dataset name
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_dataset_name()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+String
 }
 }
 \if{html}{\out{<hr>}}

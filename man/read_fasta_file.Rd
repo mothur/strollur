@@ -4,14 +4,28 @@
 \alias{read_fasta_file}
 \title{read_fasta_file}
 \usage{
-read_fasta_file(filename)
+read_fasta_file(fasta)
 }
 \arguments{
-\item{filename}{FASTA file name (required)}
+\item{fasta}{FASTA file name (required)}
 }
 \value{
 A list containing the FASTA sequence data
 }
 \description{
 Read a FASTA formatted sequence file
+}
+\examples{
+
+fasta_data <- read_fasta_file(rdataset_example("test.fasta"))
+
+# fasta_data is a named list.
+# To access the names of the sequences in the file, run the following:
+
+fasta_data$names
+
+# To access the sequences in the file, run the following:
+
+fasta_data$sequences
+
 }

@@ -7,7 +7,7 @@
 rdataset_example(file = NULL)
 }
 \arguments{
-\item{file}{Name of file. If `NULL`, the example files will be listed.}
+\item{file}{Name of file.}
 }
 \description{
 rdataset comes bundled with some example files in its `inst/extdata`

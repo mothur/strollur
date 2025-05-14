@@ -2,9 +2,17 @@
 #' @description
 #' Report name missing and abort
 #' @param name String, containing name of missing sequence
-abort_name_missing = function(name) {
-    cli::cli_abort("[ERROR]: {.var {name}} is not in your dataset,
+abort_name_missing <- function(name) {
+  cli::cli_abort("[ERROR]: {.var {name}} is not in your dataset,
                             object mismatch.")
+}
+
+#' @title abort_nonexistant_file
+#' @description
+#' Report file does not exist
+#' @param filename String, containing name of the missing file
+abort_nonexistant_file <- function(filename) {
+  cli::cli_abort("[ERROR]: {.var {filename}} does not exist.")
 }
 
 #' @title abort_length_mismatch
@@ -14,8 +22,8 @@ abort_name_missing = function(name) {
 #' @param name2 String, containing name of second variable
 #' @param length1 Numeric, containing length of first variable
 #' @param length2 Numeric, containing length of second variable
-abort_length_mismatch = function(name1, name2, length1, length2) {
-    cli::cli_abort("[ERROR]: The length of {.var {name1}}
+abort_length_mismatch <- function(name1, name2, length1, length2) {
+  cli::cli_abort("[ERROR]: The length of {.var {name1}}
           must equal the length of {.var {name2}}. {.var {name1}} has length
           {.var {length1}} but {.var {name2}} has length {.var {length2}}")
 }
@@ -25,8 +33,8 @@ abort_length_mismatch = function(name1, name2, length1, length2) {
 #' Report missing name
 #' @param name String, containing name of missing sequence
 #' @param return_value String, containing return_value
-alert_missing_name = function(name, return_value) {
-    cli::cli_alert("{.var {name}} is not in your dataset,
+alert_missing_name <- function(name, return_value) {
+  cli::cli_alert("{.var {name}} is not in your dataset,
                        returning {.var {return_value}}.")
 }
 
@@ -35,7 +43,7 @@ alert_missing_name = function(name, return_value) {
 #' Report eliminated name
 #' @param name String, containing name of eliminated sequence
 #' @param return_value String, containing return_value
-alert_eliminated_name = function(name, return_value) {
-    cli::cli_alert("{.var {name}} has been eliminated from your
+alert_eliminated_name <- function(name, return_value) {
+  cli::cli_alert("{.var {name}} has been eliminated from your
           dataset, returning {.var {return_value}}.")
 }

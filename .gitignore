@@ -4,3 +4,18 @@
 .httr-oauth
 .DS_Store
 .quarto
+
+# c++ build files
+src/*.o
+src/*.so
+src/*.dll
+
+# Output files from R CMD build
+/*.tar.gz
+
+# Output files from R CMD check
+/*.Rcheck/
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf

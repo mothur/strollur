@@ -3,9 +3,9 @@
 #' @description Remove file, if it exists
 #' @param filename, String containing name of file to remove
 remove_file <- function(filename) {
-    if (file.exists(filename)) {
-        file.remove(filename)
-    }
+  if (file.exists(filename)) {
+    file.remove(filename)
+  }
 }
 # =========================================================================== #
 #' @title split_white_space
@@ -17,9 +17,8 @@ remove_file <- function(filename) {
 #'
 #' @returns A vector of Strings
 split_white_space <- function(line) {
-    words <- strsplit(line, "\\s")[[1]]
-    words <- words[nzchar(x = words)]
-    return(words)
+  words <- strsplit(line, "\\s")[[1]]
+  words <- words[nzchar(x = words)]
 }
 # =========================================================================== #
 #' @title split_at_char
@@ -32,7 +31,7 @@ split_white_space <- function(line) {
 #' @returns A vector of Strings
 # split at character
 split_at_char <- function(line, delim) {
-    words <- strsplit(line, delim)
-    return(unlist(words))
+  words <- strsplit(line, delim)
+  unlist(words)
 }
 # =========================================================================== #

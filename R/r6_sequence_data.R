@@ -19,11 +19,25 @@ sequence_data <- R6Class("sequence_data",
     #' Create a new FASTA sequence dataset
     #' @param name Name of dataset
     #' @examples
-    #'   dataset <- sequence_data$new("soil")
+    #'
+    #' # to create an empty dataset, run the following:
+    #'
+    #' dataset <- sequence_data$new("soil")
+    #'
+    #' # to create a dataset containing sequences from your fasta file,
+    #'   run the following:
+    #'
+    #' dataset <- sequence_data$new(name = "soil",
+    #'                              fasta = rdataset_example("test.fasta"))
     #'
     #' @return A new `sequence_data` object.
-    initialize = function(name) {
+    initialize = function(name, fasta = NULL) {
       self$dataset <- new(Dataset, name)
+
+      if (!is.null(fasta)) {
+        fasta_data <- read_fasta_file(fasta)
+        self$add_seqs(fasta_data$names, fasta_data$sequences)
+      }
       invisible(self)
     },
 
@@ -45,10 +59,10 @@ sequence_data <- R6Class("sequence_data",
     #'   dataset$add_seqs(fasta_data$names, fasta_data$sequences)
     #'
     add_seqs = function(names, sequences, comments = NULL) {
-        if (is.null(comments)) {
-            comments <- rep("", length(names))
-        }
-        self$dataset$add_seqs(names, sequences, comments)
+      if (is.null(comments)) {
+        comments <- rep("", length(names))
+      }
+      self$dataset$add_seqs(names, sequences, comments)
 
       invisible(self)
     },
@@ -64,18 +78,26 @@ sequence_data <- R6Class("sequence_data",
     #' Get List containing dataset
     #' @return List
     export = function() {
-      return(self$dataset$export())
+      self$dataset$export()
     },
+
+    #' @description
+    #' Get dataset name
+    #' @return String
+    get_dataset_name = function() {
+      self$dataset$dataset_name
+    },
+
 
     #' @description
     #' Get names of groups in the dataset
     #' @param name The name of the sequence you want groups for, optional
     #' @return A character vector
     get_groups = function(name = NULL) {
-        if (is.null(name)) {
-            name = ""
-        }
-      return(self$dataset$get_groups(name))
+      if (is.null(name)) {
+        name <- ""
+      }
+      self$dataset$get_groups(name)
     },
 
     #' @description
@@ -84,9 +106,9 @@ sequence_data <- R6Class("sequence_data",
     #' @return A vector of integers
     get_group_totals = function(group = NULL) {
       if (is.null(group)) {
-        group = ""
+        group <- ""
       }
-      return(self$dataset$get_group_totals(group))
+      self$dataset$get_group_totals(group)
     },
 
     #' @description
@@ -94,16 +116,16 @@ sequence_data <- R6Class("sequence_data",
     #' @param group String, name of sample
     get_names = function(group = NULL) {
       if (is.null(group)) {
-        group = ""
+        group <- ""
       }
-      return(self$dataset$get_names(group))
+      self$dataset$get_names(group)
     },
 
     #' @description
     #' Get number of groups in the dataset
     #' @return An integer
     get_num_groups = function() {
-      return(self$dataset$num_groups)
+      self$dataset$num_groups
     },
 
     #' @description
@@ -113,16 +135,16 @@ sequence_data <- R6Class("sequence_data",
     #' @return An integer
     get_num_seqs = function(group = NULL) {
       if (is.null(group)) {
-        group = ""
+        group <- ""
       }
-      return(self$dataset$get_total(group))
+      self$dataset$get_total(group)
     },
 
     #' @description
     #' Get number of unique sequences in dataset
     #' @return An integer
     get_num_unique = function() {
-      return(self$dataset$num_unique)
+      self$dataset$num_unique
     },
 
     #' @description
@@ -130,7 +152,7 @@ sequence_data <- R6Class("sequence_data",
     #' group (optional) and abundance.
     #' @return data.table
     get_sample_table = function() {
-      return(self$dataset$get_sequence_abundance_table())
+      self$dataset$get_sequence_abundance_table()
     },
 
 
@@ -139,10 +161,10 @@ sequence_data <- R6Class("sequence_data",
     #' @param group String, name of sample
     get_seqs = function(group = NULL) {
       if (is.null(group)) {
-        group = ""
+        group <- ""
       }
 
-      return(self$dataset$get_seqs(group))
+      self$dataset$get_seqs(group)
     },
 
     #' @description
@@ -150,14 +172,14 @@ sequence_data <- R6Class("sequence_data",
     #' @param group String, Name of sample
     #' @return Boolean
     has_group = function(group) {
-      return(self$dataset$has_group(group))
+      self$dataset$has_group(group)
     },
 
     #' @description
     #' Determine if the dataset is aligned and its alignment length
     #' @return bool
     is_aligned = function() {
-       return (self$dataset$is_aligned)
+      self$dataset$is_aligned
     },
 
     #' @description
@@ -222,7 +244,7 @@ sequence_data <- R6Class("sequence_data",
     #' dataset$assign_sample_abundance(names, groups, abundances)
     #'
     assign_sample_abundance = function(names = NULL, groups = NULL,
-                                     abundances = NULL) {
+                                       abundances = NULL) {
       if (!is.null(names) && !is.null(groups)) {
         self$dataset$assign_sample_abundance(names, groups, abundances)
       }
@@ -236,15 +258,14 @@ sequence_data <- R6Class("sequence_data",
     #' @param sequences a vector of sequence data
     #' @param comments a vector of sequence comments, (optional)
     set_seqs = function(names, sequences, comments = NULL) {
-        if (is.null(comments)) {
-            comments <- rep("", length(names))
-        }
-        self$dataset$set_seqs(names, sequences, comments)
+      if (is.null(comments)) {
+        comments <- rep("", length(names))
+      }
+      self$dataset$set_seqs(names, sequences, comments)
 
-        invisible(self)
+      invisible(self)
     }
   ),
-
   private = list(
     # Clear sequences from dataset
     finalize = function() {
