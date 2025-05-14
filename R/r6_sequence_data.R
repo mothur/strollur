@@ -6,6 +6,7 @@
 #'
 #' @importFrom R6 R6Class
 #' @importFrom methods new
+#' @importFrom parallelly, availableCores
 #' @import cli
 #' @import data.table
 #' @export
@@ -18,6 +19,9 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Create a new FASTA sequence dataset
     #' @param name Name of dataset
+    #' @param fasta, String name of FASTA file
+    #' @param processors Integer, number of cores to use.
+    #'  Default = all available
     #' @examples
     #'
     #' # to create an empty dataset, run the following:
@@ -25,14 +29,15 @@ sequence_data <- R6Class("sequence_data",
     #' dataset <- sequence_data$new("soil")
     #'
     #' # to create a dataset containing sequences from your fasta file,
-    #'   run the following:
+    #' #  run the following:
     #'
     #' dataset <- sequence_data$new(name = "soil",
     #'                              fasta = rdataset_example("test.fasta"))
     #'
     #' @return A new `sequence_data` object.
-    initialize = function(name, fasta = NULL) {
-      self$dataset <- new(Dataset, name)
+    initialize = function(name, fasta = NULL,
+                          processors = parallelly::availableCores()) {
+      self$dataset <- new(Dataset, name, processors)
 
       if (!is.null(fasta)) {
         fasta_data <- read_fasta_file(fasta)

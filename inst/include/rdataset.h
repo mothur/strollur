@@ -25,21 +25,149 @@ const vector<double> nullDoubleVector;  // used to pass blank double
 const map<int, int> nullIntMap;
 const pair<string, string> nullStringPair("", "");
 
-//// [[Rcpp::plugins(cpp11)]]
 /******************************************************************************/
+/*
+ * The 'seqCount' struct will store abundance data for sequences in sparse form.
+ *
+ * sampleIndex contains the group indexes
+ * abunds contains the abundances
+ *
+ * Let's assume 5 samples in the dataset, and the following are abundances by
+ *  sample for a seq1
+ *
+ *  seq1 <- c(20, 0, 35, 0, 5) meaning seq1 has abundance of 20 in sample1
+ *                                     seq1 has abundance of 0 in sample2
+ *                                     seq1 has abundance of 35 in sample3
+ *                                     seq1 has abundance of 0 in sample4
+ *                                     seq1 has abundance of 5 in sample5
+ *
+ * would be stored in a sparse format
+ *
+ * sampleIndex <- c(0,2,4) - zero indexing of c++
+ * abunds <- c(20, 35, 5)
+ *
+ */
+struct seqCount {
+    vector<int> sampleIndex;
+    vector<int> abunds;
+
+    seqCount() {}
+    ~seqCount() {}
+
+    // sparse format constructor
+    seqCount(vector<int> i, vector<int> a) : sampleIndex(i), abunds(a) {}
+
+    // full format constructor
+    seqCount(vector<int> fullAbunds) {
+        for (int i = 0; i < fullAbunds.size(); i++){
+            if (fullAbunds[i] != 0) {
+                sampleIndex.push_back(i);
+                abunds.push_back(fullAbunds[i]);
+            }
+        }
+    }
+};
+
+/******************************************************************************/
+/*
+ * The 'SeqAbundTable' class will store abundance data for sequences.
+ *
+ * The "names" of the sequence are stored as indexes to save space.
+ */
+
+class SeqAbundTable {
+
+public:
+
+    SeqAbundTable();
+    ~SeqAbundTable();
+
+    void clear();
+    string print();
+    // 2 or 3 columns: id, abundance, group (optional -
+    //                                   added when table includes group data)
+    // used to export SeqAbundTable
+    Rcpp::DataFrame getSequenceAbundanceTable(vector<string> outputNames,
+                                              vector<int> names = nullIntVector);
+
+    // names, abundances, groups (optional)
+    // if no abunds, sets abundance to 1
+    void addSeqs(vector<int>& names, vector<int> abunds = nullIntVector,
+                 vector<string> groups = nullVector);
+
+    // names, abundances, groups (optional)
+    void assignSampleAbundance(vector<int> names,
+                               vector<int> abunds,
+                               vector<string> groups = nullVector);
+
+    // set abundance parsed by sample - for datasets WITH samples
+    void setAbundance(int name, vector<int> abunds);
+    // set abundance - for datasets WITHOUT samples
+    void setAbundance(int name, int abund);
+
+    // removes sequence from total and group totals
+    void removeSeq(int name);
+    // adds sequence count back into total and group totals
+    void reinstateSeq(int name);
+    // adds sequences counts of seqsToMerge[1-n] into seqsToMerge[0], optional
+    // group will only merge counts for that sample
+    void mergeSeqs(vector<int> seqsToMerge, string group = "");
+
+    // vector containing total abundance for each sequence
+    vector<int> getSeqsAbunds();
+    // total abundance for sequence, if group provided then abundance for that
+    // sequence in that sample
+    int getAbund(int name, string group = "");
+    // abundances by sample, in the same order as the groups
+    vector<int> getAbunds(int name);
+    // total number of sequences
+    int getTotal();
+
+    int getNumGroups();
+    // vector containing total abundance for each sample
+    vector<int> getGroupTotals();
+    // vector containing names of samples
+    // if name is provided then the names of samples where the seq is present
+    vector<string> getGroups(string name = "");
+    // does the table contain a group
+    bool hasGroup(string group);
+    // does the table have group information
+    bool hasGroups();
+
+private:
+
+    vector<seqCount> counts;
+    int total;
+
+    // sample name to index.
+    map<string, int> groupIndex;
+    // total abundance for each sample
+    vector<int> groupTotals;
+    // are samples "present" in table
+    vector<bool> tableGroups;
+
+    bool hasGroupData;
+
+};
+
+/******************************************************************************/
+/*
+ * The 'Dataset' class will store data for DNA analysis.
+ */
 
 class Dataset {
 
 public:
 
-    Dataset(string n);
-    ~Dataset() = default;
+    Dataset(string n, int proc);
+    ~Dataset();
 
     // public fields exposed through RCPP_MODULE
     string datasetName;
     bool isAligned;
     int numGroups;
     long long numUnique;
+    int processors;
 
     // ********** public functions exposed through RCPP_MODULE ********** //
 
@@ -124,20 +252,24 @@ private:
     // sequence taxonomy assignments
     vector<string> taxonomies;
 
-    // maps sequence name to index in vectors
+    // maps sequence name to index in summary vectors
     map<string, int> seqIndex;
 
     // map reason for deletion to vector containing unique and total counts
     // example: "pre_cluster" ->  c(10,  230) means precluster removed 10 unique
     // sequences that represented 230 total sequences.
     map<string, vector<int> > bad_accnos;
-    long long total_bad, unique_bad, total;
+    int totalBad, uniqueBad;
+    int alignmentLength;
 
     // count table data
-    // SeqAbundTable* count;
+    SeqAbundTable* count;
 
     // otu table, asv / list / shared / constaxonomy
     // OTUTable* otuTable;
+
+    // if unaligned, returns -1
+    int getAlignedLength(vector<string>);
 
 };
 

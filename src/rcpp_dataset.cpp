@@ -6,7 +6,7 @@ RCPP_EXPOSED_AS(Dataset);
 /******************************************************************************/
 RCPP_MODULE(Dataset) {
     Rcpp::class_< Dataset >("Dataset")
-    .constructor<string>("Create new dataset")
+    .constructor<string, int>("Create new dataset")
 
     // ******* properties ******* //
     .field("dataset_name", &Dataset::datasetName, "Get dataset name")

@@ -15,6 +15,7 @@ Imports: Rcpp (>= 1.0.14),
     RcppThread,
     cli,
     methods,
+    parallelly,
     microseq,
     R6,
     data.table

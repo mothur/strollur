@@ -19,7 +19,7 @@
 dataset <- sequence_data$new("soil")
 
 # to create a dataset containing sequences from your fasta file,
-  run the following:
+#  run the following:
 
 dataset <- sequence_data$new(name = "soil",
                              fasta = rdataset_example("test.fasta"))
@@ -110,13 +110,22 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \subsection{Method \code{new()}}{
 Create a new FASTA sequence dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$new(name, fasta = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$new(
+  name,
+  fasta = NULL,
+  processors = parallelly::availableCores()
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{Name of dataset}
+
+\item{\code{fasta, }}{String name of FASTA file}
+
+\item{\code{processors}}{Integer, number of cores to use.
+Default = all available}
 }
 \if{html}{\out{</div>}}
 }
@@ -131,7 +140,7 @@ A new `sequence_data` object.
 dataset <- sequence_data$new("soil")
 
 # to create a dataset containing sequences from your fasta file,
-  run the following:
+#  run the following:
 
 dataset <- sequence_data$new(name = "soil",
                              fasta = rdataset_example("test.fasta"))

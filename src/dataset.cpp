@@ -2,10 +2,19 @@
 #include "../inst/include/rdataset.h"
 
 /******************************************************************************/
-Dataset::Dataset(string n) : datasetName(n) {
+Dataset::Dataset(string n, int proc) : datasetName(n) {
     isAligned = false;
     numGroups = 0;
     numUnique = 0;
+    totalBad = 0;
+    uniqueBad = 0;
+    alignmentLength = 0;
+    processors = proc;
+    count = new SeqAbundTable();
+}
+/******************************************************************************/
+Dataset::~Dataset() {
+    delete count;
 }
 /******************************************************************************/
 SEXP Dataset::getPointer() {
@@ -15,7 +24,49 @@ SEXP Dataset::getPointer() {
 
 /******************************************************************************/
 void Dataset::clear() {
-    // TODO
+    isAligned = false;
+    numGroups = 0;
+    numUnique = 0;
+    totalBad = 0;
+    uniqueBad = 0;
+
+    // fasta data
+    names.clear();
+    seqs.clear();
+    comments.clear();
+    trashCodes.clear();
+
+    // contigs report
+    olengths.clear();
+    ostarts.clear();
+    oends.clear();
+    mismatches.clear();
+    ee.clear();
+
+    // fasta summary data
+    starts.clear();
+    ends.clear();
+    lengths.clear();
+    ambigs.clear();
+    polymers.clear();
+    numns.clear();
+
+    // alignment report
+    search_score.clear();
+    sim_score.clear();
+    longest_insert.clear();
+
+    // sequence taxonomy assignments
+    taxonomies.clear();
+
+    // maps sequence name to index in vectors
+    seqIndex.clear();
+
+    bad_accnos.clear();
+
+    count->clear();
+
+    // if you have an otuTable then otuTable.clear();
 }
 /******************************************************************************/
 Rcpp::List Dataset::exportDataset(){
@@ -31,12 +82,45 @@ string Dataset::print(){
 }
 /******************************************************************************/
 void Dataset::addSeqs(vector<string> n, vector<string> s, vector<string> c) {
-    names = n;
-    seqs = s;
+
+    // must provide the same number of names and seqs
+    if (n.size() != s.size()) { return; }
+
+    // add to seqIndex
+    int numSeqs = names.size();
+    vector<int> countNames;
+    for (int i = 0; i < n.size(); i++) {
+        countNames.push_back(numSeqs);
+        seqIndex[n[i]] = numSeqs;
+        numSeqs++;
+    }
+
+    // add to count
+    count->addSeqs(countNames);
+    countNames.clear();
+
+    // add to names
+    names.insert(names.end(), n.begin(), n.end());
+    // add to seqs
+    seqs.insert(seqs.end(), s.begin(), s.end());
+
     if (c.size() == 0) {
         c.resize(names.size(), "");
     }
-    comments = c;
+    // add to comments
+    comments.insert(comments.end(), c.begin(), c.end());
+
+    // blank trash code because we assume seqs are "good"
+    vector<string> t(names.size(), "");
+    trashCodes.insert(trashCodes.end(), t.begin(), t.end());
+
+    // add to "good" sequence count
+    numUnique += names.size();
+
+   // TODO add calcs for starts, ends, lengths, ambigs, polymers, numns
+
+
+
 }
 /******************************************************************************/
 // align_seqs will create searchScores, simScores and longestInserts
@@ -194,3 +278,12 @@ void Dataset::setAbundances(vector<string> names, vector<int> abunds,
     // TODO
 }
 /******************************************************************************/
+int Dataset::getAlignedLength(vector<string> seqs) {
+    int length = -1;
+
+
+    return length;
+}
+/******************************************************************************/
+
+

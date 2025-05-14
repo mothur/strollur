@@ -25,4 +25,7 @@ importFrom(microseq, readFastq)
 # read FASTA files
 importFrom(microseq, readFasta)
 
+# paralellized code
+importFrom(parallelly, availableCores)
+
 
