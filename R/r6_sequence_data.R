@@ -13,8 +13,8 @@
 sequence_data <- R6Class("sequence_data",
   public = list(
 
-    #' @field dataset pointer to C++ class
-    dataset = NULL,
+    #' @field data pointer to C++ class
+    data = NULL,
 
     #' @description
     #' Create a new FASTA sequence dataset
@@ -37,7 +37,7 @@ sequence_data <- R6Class("sequence_data",
     #' @return A new `sequence_data` object.
     initialize = function(name, fasta = NULL,
                           processors = parallelly::availableCores()) {
-      self$dataset <- new(Dataset, name, processors)
+      self$data <- new(Dataset, name, processors)
 
       if (!is.null(fasta)) {
         fasta_data <- read_fasta_file(fasta)
@@ -49,7 +49,7 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get summary of sequences data
     print = function() {
-      message(self$dataset$print())
+      message(self$data$print())
     },
 
     #' @description
@@ -67,150 +67,8 @@ sequence_data <- R6Class("sequence_data",
       if (is.null(comments)) {
         comments <- rep("", length(names))
       }
-      self$dataset$add_seqs(names, sequences, comments)
+      self$data$add_seqs(names, sequences, comments)
 
-      invisible(self)
-    },
-
-    #' @description
-    #' Remove all sequences from dataset
-    clear = function() {
-      self$dataset$clear()
-      invisible(self)
-    },
-
-    #' @description
-    #' Get List containing dataset
-    #' @return List
-    export = function() {
-      self$dataset$export()
-    },
-
-    #' @description
-    #' Get dataset name
-    #' @return String
-    get_dataset_name = function() {
-      self$dataset$dataset_name
-    },
-
-
-    #' @description
-    #' Get names of groups in the dataset
-    #' @param name The name of the sequence you want groups for, optional
-    #' @return A character vector
-    get_groups = function(name = NULL) {
-      if (is.null(name)) {
-        name <- ""
-      }
-      self$dataset$get_groups(name)
-    },
-
-    #' @description
-    #' Get the number of sequences represented in samples
-    #' @param group String, name of sample
-    #' @return A vector of integers
-    get_group_totals = function(group = NULL) {
-      if (is.null(group)) {
-        group <- ""
-      }
-      self$dataset$get_group_totals(group)
-    },
-
-    #' @description
-    #' Get names of sequences in the dataset
-    #' @param group String, name of sample
-    get_names = function(group = NULL) {
-      if (is.null(group)) {
-        group <- ""
-      }
-      self$dataset$get_names(group)
-    },
-
-    #' @description
-    #' Get number of groups in the dataset
-    #' @return An integer
-    get_num_groups = function() {
-      self$dataset$num_groups
-    },
-
-    #' @description
-    #' Get the number of sequences in the dataset
-    #' @param group The name of the group you want number of sequences for,
-    #'  optional
-    #' @return An integer
-    get_num_seqs = function(group = NULL) {
-      if (is.null(group)) {
-        group <- ""
-      }
-      self$dataset$get_total(group)
-    },
-
-    #' @description
-    #' Get number of unique sequences in dataset
-    #' @return An integer
-    get_num_unique = function() {
-      self$dataset$num_unique
-    },
-
-    #' @description
-    #' Get sample table returns data.table containing the 3 columns: name,
-    #' group (optional) and abundance.
-    #' @return data.table
-    get_sample_table = function() {
-      self$dataset$get_sequence_abundance_table()
-    },
-
-
-    #' @description
-    #' Get vector containing FASTA nucleotide strings
-    #' @param group String, name of sample
-    get_seqs = function(group = NULL) {
-      if (is.null(group)) {
-        group <- ""
-      }
-
-      self$dataset$get_seqs(group)
-    },
-
-    #' @description
-    #' Determine if a group is present in the dataset
-    #' @param group String, Name of sample
-    #' @return Boolean
-    has_group = function(group) {
-      self$dataset$has_group(group)
-    },
-
-    #' @description
-    #' Determine if the dataset is aligned and its alignment length
-    #' @return bool
-    is_aligned = function() {
-      self$dataset$is_aligned
-    },
-
-    #' @description
-    #' Reinstates sequences removed for the reasons in trash_codes
-    #' @param trash_codes vector containing reasons for sequences removal
-    reinstate_seqs = function(trash_codes) {
-      if (length(trash_codes) != 0) {
-        self$dataset$reinstate_seqs(trash_codes)
-      }
-
-      invisible(self)
-    },
-
-    #' @description
-    #' Remove sequences from dataset for cause
-    #' @param names vector containing names of sequences to remove
-    #' @param trash_codes vector containing reasons for sequences removal
-    remove_seqs = function(names, trash_codes) {
-      if (length(names) != length(trash_codes)) {
-        super$abort_length_mismatch(
-          "names", "trash_codes", length(names),
-          length(trash_codes)
-        )
-      } else {
-        self$dataset$remove_seqs(names, trash_codes)
-      }
       invisible(self)
     },
 
@@ -250,26 +108,218 @@ sequence_data <- R6Class("sequence_data",
     #'
     assign_sample_abundance = function(names = NULL, groups = NULL,
                                        abundances = NULL) {
-      if (!is.null(names) && !is.null(groups)) {
-        self$dataset$assign_sample_abundance(names, groups, abundances)
-      }
+        if (!is.null(names) && !is.null(groups)) {
+            self$data$assign_sample_abundance(names, groups, abundances)
+        }
 
+        invisible(self)
+    },
+
+    #' @description
+    #' Remove all sequences from dataset
+    clear = function() {
+      self$data$clear()
       invisible(self)
     },
 
     #' @description
-    #' Set sequence data
-    #' @param names a vector of sequence names
-    #' @param sequences a vector of sequence data
-    #' @param comments a vector of sequence comments, (optional)
-    set_seqs = function(names, sequences, comments = NULL) {
-      if (is.null(comments)) {
-        comments <- rep("", length(names))
-      }
-      self$dataset$set_seqs(names, sequences, comments)
+    #' Get List containing dataset
+    #' @return List
+    export = function() {
+      self$data$export()
+    },
 
-      invisible(self)
+    #' @description
+    #' Get report containing eliminated sequence names and trash_codes
+    #' @return data.table
+    get_accnos_report = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get summary of eliminated sequences
+    #' @return data.table
+    get_accnos_summary = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get report containing align report table -
+    #' search_scores, sim_scores, longest_insert
+    #' @return data.table
+    get_align_report = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get summary of the align report
+    #' @return data.table
+    get_align_summary = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get report containing contigs report table -
+    #' ostarts, oends, olengths, mismatches, ee
+    #' @return data.table
+    get_contigs_report = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get summary of the contigs report
+    #' @return data.table
+    get_contigs_summary = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get count table returns data.table containing:
+    #' ids, abundances, group(optional), treatment(optional)
+    #' This table represents mothur's count and design files.
+    #' @return data.table
+    get_count_table = function() {
+        self$data$get_sequence_abundance_table()
+    },
+
+    #' @description
+    #' Get dataset name
+    #' @return String
+    get_dataset_name = function() {
+        self$data$dataset_name
+    },
+
+    #' @description
+    #' Get sparse column formatted distance table
+    #' @return data.table
+    get_dist = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get report containing the fasta report table -
+    #' starts, ends, lengths, ambigs, homopolymers, numns
+    #' @return data.table
+    get_fasta_report = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get summary of the fasta report
+    #' @return data.table
+    get_fasta_summary = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get names of groups in the dataset
+    #' @param name The name of the sequence you want groups for, optional
+    #' @return A character vector
+    get_groups = function(name = NULL) {
+      if (is.null(name)) {
+        name <- ""
+      }
+      self$data$get_groups(name)
+    },
+
+    #' @description
+    #' Get summary of count table. group, group_totals
+    #' @return data.table
+    get_group_summary = function() {
+      if (is.null(group)) {
+        group <- ""
+      }
+      self$data$get_group_totals(group)
+    },
+
+    #' @description
+    #' Get names of sequences in the dataset
+    #' @param group String, name of sample
+    get_ids = function(group = NULL) {
+      if (is.null(group)) {
+        group <- ""
+      }
+      self$data$get_names(group)
+    },
+
+    #' @description
+    #' Get number of groups in the dataset
+    #' @return An integer
+    get_num_groups = function() {
+      self$data$num_groups
+    },
+
+    #' @description
+    #' Get the number of sequences in the dataset
+    #' @param group The name of the group you want number of sequences for,
+    #'  optional
+    #' @return An integer
+    get_num_seqs = function(group = NULL) {
+      if (is.null(group)) {
+        group <- ""
+      }
+      self$data$get_total(group)
+    },
+
+    #' @description
+    #' Get number of unique sequences in dataset
+    #' @return An integer
+    get_num_unique = function() {
+      self$data$num_unique
+    },
+
+    #' @description
+    #' Get data.table containing the oligo data
+    #' tag, oligo, diffs, oligo(optional), diffs(optional), group(optional)
+    #' @return data.table
+    get_oligos = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get data.tables representing your OTU / ASV clusters.
+    #' id, abundance, group(optional)
+    #' These tables represent mothur's list, rabund, shared, relabund files
+    #' @return List of data.tables
+    get_otu_tables = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Get vector containing FASTA nucleotide strings
+    #' @param group String, name of sample
+    get_seqs = function(group = NULL) {
+      if (is.null(group)) {
+        group <- ""
+      }
+
+      self$data$get_seqs(group)
+    },
+
+    #' @description
+    #' Get data.tables containing classifications for sequences and OTUs.
+    #' id, taxonomy, abundance(optional)
+    #' These tables represent mothur's taxonomy and cons.taxonomy files
+    #' @return List of data.tables
+    get_taxonomy_tables = function() {
+        #TODO
+    },
+
+    #' @description
+    #' Determine if a group is present in the dataset
+    #' @param group String, Name of sample
+    #' @return Boolean
+    has_group = function(group) {
+      self$data$has_group(group)
+    },
+
+    #' @description
+    #' Determine if the dataset is aligned
+    #' @return bool
+    is_aligned = function() {
+      self$data$is_aligned
     }
+
   ),
   private = list(
     # Clear sequences from dataset

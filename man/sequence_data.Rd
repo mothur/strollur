@@ -84,6 +84,7 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
 \item \href{#method-sequence_data-add_seqs}{\code{sequence_data$add_seqs()}}
+\item \href{#method-sequence_data-assign_sample_abundance}{\code{sequence_data$assign_sample_abundance()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
 \item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
@@ -97,10 +98,6 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \item \href{#method-sequence_data-get_seqs}{\code{sequence_data$get_seqs()}}
 \item \href{#method-sequence_data-has_group}{\code{sequence_data$has_group()}}
 \item \href{#method-sequence_data-is_aligned}{\code{sequence_data$is_aligned()}}
-\item \href{#method-sequence_data-reinstate_seqs}{\code{sequence_data$reinstate_seqs()}}
-\item \href{#method-sequence_data-remove_seqs}{\code{sequence_data$remove_seqs()}}
-\item \href{#method-sequence_data-assign_sample_abundance}{\code{sequence_data$assign_sample_abundance()}}
-\item \href{#method-sequence_data-set_seqs}{\code{sequence_data$set_seqs()}}
 \item \href{#method-sequence_data-clone}{\code{sequence_data$clone()}}
 }
 }
@@ -187,6 +184,66 @@ Add new sequence data
   dataset <- sequence_data$new("my_dataset")
   fasta_data <- read_fasta_file(rdataset_example("test.fasta"))
   dataset$add_seqs(fasta_data$names, fasta_data$sequences)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-assign_sample_abundance"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_sample_abundance}{}}}
+\subsection{Method \code{assign_sample_abundance()}}{
+Add group assignment data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sample_abundance(
+  names = NULL,
+  groups = NULL,
+  abundances = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{names}}{a vector of sequence names}
+
+\item{\code{groups}}{a vector of group assignments}
+
+\item{\code{abundances}}{a vector of sample abundances}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+ # mothur count file
+ # Representative_Sequence     total   sample2	sample3	sample4
+ # seq1	1150	250	400	500
+ # seq2	115	25	40	50
+ # seq3	50	25	25	0
+ # seq4	4	0	0	4
+
+# inputted as a sample table
+names <- c("seq1", "seq1", "seq1",
+          "seq2", "seq2", "seq2",
+          "seq3", "seq3",
+          "seq4")
+groups <- c("sample2", "sample3", "sample4",
+           "sample2", "sample3", "sample4",
+           "sample2", "sample3",
+           "sample4")
+abundances <- c(250, 400, 500,
+               25, 40, 50,
+               25, 25,
+               4)
+
+dataset <- sequence_data$new("mydata")
+unique_names <- unique(names)
+sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
+dataset$add_seqs(unique_names, sequences)
+dataset$assign_sample_abundance(names, groups, abundances)
 
 }
 \if{html}{\out{</div>}}
@@ -396,123 +453,6 @@ Determine if the dataset is aligned and its alignment length
 
 \subsection{Returns}{
 bool
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-reinstate_seqs"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-reinstate_seqs}{}}}
-\subsection{Method \code{reinstate_seqs()}}{
-Reinstates sequences removed for the reasons in trash_codes
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$reinstate_seqs(trash_codes)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{trash_codes}}{vector containing reasons for sequences removal}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-remove_seqs"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-remove_seqs}{}}}
-\subsection{Method \code{remove_seqs()}}{
-Remove sequences from dataset for cause
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$remove_seqs(names, trash_codes)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{names}}{vector containing names of sequences to remove}
-
-\item{\code{trash_codes}}{vector containing reasons for sequences removal}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-assign_sample_abundance"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-assign_sample_abundance}{}}}
-\subsection{Method \code{assign_sample_abundance()}}{
-Add group assignment data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sample_abundance(
-  names = NULL,
-  groups = NULL,
-  abundances = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{names}}{a vector of sequence names}
-
-\item{\code{groups}}{a vector of group assignments}
-
-\item{\code{abundances}}{a vector of sample abundances}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
- # mothur count file
- # Representative_Sequence     total   sample2	sample3	sample4
- # seq1	1150	250	400	500
- # seq2	115	25	40	50
- # seq3	50	25	25	0
- # seq4	4	0	0	4
-
-# inputted as a sample table
-names <- c("seq1", "seq1", "seq1",
-          "seq2", "seq2", "seq2",
-          "seq3", "seq3",
-          "seq4")
-groups <- c("sample2", "sample3", "sample4",
-           "sample2", "sample3", "sample4",
-           "sample2", "sample3",
-           "sample4")
-abundances <- c(250, 400, 500,
-               25, 40, 50,
-               25, 25,
-               4)
-
-dataset <- sequence_data$new("mydata")
-unique_names <- unique(names)
-sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
-dataset$add_seqs(unique_names, sequences)
-dataset$assign_sample_abundance(names, groups, abundances)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-set_seqs"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-set_seqs}{}}}
-\subsection{Method \code{set_seqs()}}{
-Set sequence data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$set_seqs(names, sequences, comments = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{names}}{a vector of sequence names}
-
-\item{\code{sequences}}{a vector of sequence data}
-
-\item{\code{comments}}{a vector of sequence comments, (optional)}
-}
-\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
