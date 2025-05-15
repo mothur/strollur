@@ -74,7 +74,7 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{dataset}}{pointer to C++ class}
+\item{\code{data}}{pointer to C++ class}
 }
 \if{html}{\out{</div>}}
 }
@@ -87,15 +87,27 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \item \href{#method-sequence_data-assign_sample_abundance}{\code{sequence_data$assign_sample_abundance()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
+\item \href{#method-sequence_data-get_accnos_report}{\code{sequence_data$get_accnos_report()}}
+\item \href{#method-sequence_data-get_accnos_summary}{\code{sequence_data$get_accnos_summary()}}
+\item \href{#method-sequence_data-get_align_report}{\code{sequence_data$get_align_report()}}
+\item \href{#method-sequence_data-get_align_summary}{\code{sequence_data$get_align_summary()}}
+\item \href{#method-sequence_data-get_contigs_report}{\code{sequence_data$get_contigs_report()}}
+\item \href{#method-sequence_data-get_contigs_summary}{\code{sequence_data$get_contigs_summary()}}
+\item \href{#method-sequence_data-get_count_table}{\code{sequence_data$get_count_table()}}
 \item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
+\item \href{#method-sequence_data-get_dist}{\code{sequence_data$get_dist()}}
+\item \href{#method-sequence_data-get_fasta_report}{\code{sequence_data$get_fasta_report()}}
+\item \href{#method-sequence_data-get_fasta_summary}{\code{sequence_data$get_fasta_summary()}}
 \item \href{#method-sequence_data-get_groups}{\code{sequence_data$get_groups()}}
-\item \href{#method-sequence_data-get_group_totals}{\code{sequence_data$get_group_totals()}}
-\item \href{#method-sequence_data-get_names}{\code{sequence_data$get_names()}}
+\item \href{#method-sequence_data-get_group_summary}{\code{sequence_data$get_group_summary()}}
+\item \href{#method-sequence_data-get_ids}{\code{sequence_data$get_ids()}}
 \item \href{#method-sequence_data-get_num_groups}{\code{sequence_data$get_num_groups()}}
 \item \href{#method-sequence_data-get_num_seqs}{\code{sequence_data$get_num_seqs()}}
 \item \href{#method-sequence_data-get_num_unique}{\code{sequence_data$get_num_unique()}}
-\item \href{#method-sequence_data-get_sample_table}{\code{sequence_data$get_sample_table()}}
+\item \href{#method-sequence_data-get_oligos}{\code{sequence_data$get_oligos()}}
+\item \href{#method-sequence_data-get_otu_tables}{\code{sequence_data$get_otu_tables()}}
 \item \href{#method-sequence_data-get_seqs}{\code{sequence_data$get_seqs()}}
+\item \href{#method-sequence_data-get_taxonomy_tables}{\code{sequence_data$get_taxonomy_tables()}}
 \item \href{#method-sequence_data-has_group}{\code{sequence_data$has_group()}}
 \item \href{#method-sequence_data-is_aligned}{\code{sequence_data$is_aligned()}}
 \item \href{#method-sequence_data-clone}{\code{sequence_data$clone()}}
@@ -275,6 +287,101 @@ List
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_accnos_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_accnos_report}{}}}
+\subsection{Method \code{get_accnos_report()}}{
+Get report containing eliminated sequence names and trash_codes
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_accnos_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_accnos_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_accnos_summary}{}}}
+\subsection{Method \code{get_accnos_summary()}}{
+Get summary of eliminated sequences
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_accnos_summary()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_align_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_align_report}{}}}
+\subsection{Method \code{get_align_report()}}{
+Get report containing align report table -
+search_scores, sim_scores, longest_insert
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_align_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_align_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_align_summary}{}}}
+\subsection{Method \code{get_align_summary()}}{
+Get summary of the align report
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_align_summary()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_contigs_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_contigs_report}{}}}
+\subsection{Method \code{get_contigs_report()}}{
+Get report containing contigs report table -
+ostarts, oends, olengths, mismatches, ee
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_contigs_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_contigs_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_contigs_summary}{}}}
+\subsection{Method \code{get_contigs_summary()}}{
+Get summary of the contigs report
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_contigs_summary()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_count_table"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_count_table}{}}}
+\subsection{Method \code{get_count_table()}}{
+Get count table returns data.table containing:
+ids, abundances, group(optional), treatment(optional)
+This table represents mothur's count and design files.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_count_table()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_dataset_name"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_dataset_name}{}}}
 \subsection{Method \code{get_dataset_name()}}{
@@ -285,6 +392,46 @@ Get dataset name
 
 \subsection{Returns}{
 String
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_dist"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_dist}{}}}
+\subsection{Method \code{get_dist()}}{
+Get sparse column formatted distance table
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_dist()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_fasta_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_fasta_report}{}}}
+\subsection{Method \code{get_fasta_report()}}{
+Get report containing the fasta report table -
+starts, ends, lengths, ambigs, homopolymers, numns
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_fasta_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_fasta_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_fasta_summary}{}}}
+\subsection{Method \code{get_fasta_summary()}}{
+Get summary of the fasta report
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_fasta_summary()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
 }
 }
 \if{html}{\out{<hr>}}
@@ -308,32 +455,25 @@ A character vector
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_group_totals"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_group_totals}{}}}
-\subsection{Method \code{get_group_totals()}}{
-Get the number of sequences represented in samples
+\if{html}{\out{<a id="method-sequence_data-get_group_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_group_summary}{}}}
+\subsection{Method \code{get_group_summary()}}{
+Get summary of count table. group, group_totals
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_group_totals(group = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_group_summary()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{group}}{String, name of sample}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
-A vector of integers
+data.table
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_names"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_names}{}}}
-\subsection{Method \code{get_names()}}{
+\if{html}{\out{<a id="method-sequence_data-get_ids"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_ids}{}}}
+\subsection{Method \code{get_ids()}}{
 Get names of sequences in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_names(group = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_ids(group = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -392,17 +532,32 @@ An integer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_sample_table"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_sample_table}{}}}
-\subsection{Method \code{get_sample_table()}}{
-Get sample table returns data.table containing the 3 columns: name,
-group (optional) and abundance.
+\if{html}{\out{<a id="method-sequence_data-get_oligos"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_oligos}{}}}
+\subsection{Method \code{get_oligos()}}{
+Get data.table containing the oligo data
+tag, oligo, diffs, oligo(optional), diffs(optional), group(optional)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sample_table()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_oligos()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
 data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_otu_tables"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_otu_tables}{}}}
+\subsection{Method \code{get_otu_tables()}}{
+Get data.tables representing your OTU / ASV clusters.
+id, abundance, group(optional)
+These tables represent mothur's list, rabund, shared, relabund files
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_otu_tables()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+List of data.tables
 }
 }
 \if{html}{\out{<hr>}}
@@ -420,6 +575,21 @@ Get vector containing FASTA nucleotide strings
 \item{\code{group}}{String, name of sample}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_taxonomy_tables"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_taxonomy_tables}{}}}
+\subsection{Method \code{get_taxonomy_tables()}}{
+Get data.tables containing classifications for sequences and OTUs.
+id, taxonomy, abundance(optional)
+These tables represent mothur's taxonomy and cons.taxonomy files
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_taxonomy_tables()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+List of data.tables
 }
 }
 \if{html}{\out{<hr>}}
@@ -446,7 +616,7 @@ Boolean
 \if{html}{\out{<a id="method-sequence_data-is_aligned"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-is_aligned}{}}}
 \subsection{Method \code{is_aligned()}}{
-Determine if the dataset is aligned and its alignment length
+Determine if the dataset is aligned
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$is_aligned()}\if{html}{\out{</div>}}
 }

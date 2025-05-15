@@ -108,11 +108,11 @@ sequence_data <- R6Class("sequence_data",
     #'
     assign_sample_abundance = function(names = NULL, groups = NULL,
                                        abundances = NULL) {
-        if (!is.null(names) && !is.null(groups)) {
-            self$data$assign_sample_abundance(names, groups, abundances)
-        }
+      if (!is.null(names) && !is.null(groups)) {
+        self$data$assign_sample_abundance(names, groups, abundances)
+      }
 
-        invisible(self)
+      invisible(self)
     },
 
     #' @description
@@ -133,14 +133,14 @@ sequence_data <- R6Class("sequence_data",
     #' Get report containing eliminated sequence names and trash_codes
     #' @return data.table
     get_accnos_report = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
     #' Get summary of eliminated sequences
     #' @return data.table
     get_accnos_summary = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
@@ -148,14 +148,14 @@ sequence_data <- R6Class("sequence_data",
     #' search_scores, sim_scores, longest_insert
     #' @return data.table
     get_align_report = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
     #' Get summary of the align report
     #' @return data.table
     get_align_summary = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
@@ -163,14 +163,14 @@ sequence_data <- R6Class("sequence_data",
     #' ostarts, oends, olengths, mismatches, ee
     #' @return data.table
     get_contigs_report = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
     #' Get summary of the contigs report
     #' @return data.table
     get_contigs_summary = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
@@ -179,21 +179,21 @@ sequence_data <- R6Class("sequence_data",
     #' This table represents mothur's count and design files.
     #' @return data.table
     get_count_table = function() {
-        self$data$get_sequence_abundance_table()
+      self$data$get_sequence_abundance_table()
     },
 
     #' @description
     #' Get dataset name
     #' @return String
     get_dataset_name = function() {
-        self$data$dataset_name
+      self$data$dataset_name
     },
 
     #' @description
     #' Get sparse column formatted distance table
     #' @return data.table
     get_dist = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
@@ -201,14 +201,14 @@ sequence_data <- R6Class("sequence_data",
     #' starts, ends, lengths, ambigs, homopolymers, numns
     #' @return data.table
     get_fasta_report = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
     #' Get summary of the fasta report
     #' @return data.table
     get_fasta_summary = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
@@ -273,7 +273,7 @@ sequence_data <- R6Class("sequence_data",
     #' tag, oligo, diffs, oligo(optional), diffs(optional), group(optional)
     #' @return data.table
     get_oligos = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
@@ -282,7 +282,7 @@ sequence_data <- R6Class("sequence_data",
     #' These tables represent mothur's list, rabund, shared, relabund files
     #' @return List of data.tables
     get_otu_tables = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
@@ -302,7 +302,7 @@ sequence_data <- R6Class("sequence_data",
     #' These tables represent mothur's taxonomy and cons.taxonomy files
     #' @return List of data.tables
     get_taxonomy_tables = function() {
-        #TODO
+      # TODO
     },
 
     #' @description
@@ -319,7 +319,6 @@ sequence_data <- R6Class("sequence_data",
     is_aligned = function() {
       self$data$is_aligned
     }
-
   ),
   private = list(
     # Clear sequences from dataset

@@ -19,7 +19,7 @@
 #' @export
 read_fasta_file <- function(fasta) {
   if (!file.exists(fasta)) {
-      abort_nonexistant_file(fasta)
+    abort_nonexistant_file(fasta)
   }
 
   # use microseq to read fasta file
