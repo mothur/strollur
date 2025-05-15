@@ -1,5 +1,6 @@
 
 #include "../inst/include/rdataset.h"
+#include "seqreport.h"
 
 /******************************************************************************/
 Dataset::Dataset(string n, int proc) : datasetName(n) {
@@ -117,10 +118,9 @@ void Dataset::addSeqs(vector<string> n, vector<string> s, vector<string> c) {
     // add to "good" sequence count
     numUnique += names.size();
 
-   // TODO add calcs for starts, ends, lengths, ambigs, polymers, numns
-
-
-
+   // add calcs for starts, ends, lengths, ambigs, polymers, numns
+    SeqReport report;
+    report.addReports(s, starts, ends, lengths, ambigs, polymers, numns);
 }
 /******************************************************************************/
 // align_seqs will create searchScores, simScores and longestInserts

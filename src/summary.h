@@ -11,6 +11,7 @@
 #define summary_hpp
 
 #include "dataset.h"
+#include "../inst/include/rdataset.h"
 
 class Summary {
 

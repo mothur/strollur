@@ -24,103 +24,23 @@ public:
     SeqReport() { runDegap = true; }
     ~SeqReport() = default;
 
-    // start, end, numbases, ambigs, polymers, numns
-    vector<int> getReport(string seq) {
-        vector<int> results;
+    // start, end, numbase, ambig, polymer, numn
+    vector<int> getReport(string seq);
 
-        results.push_back(getStart(seq));
-        results.push_back(getEnd(seq));
+    // results[0] - starts, results[1] - ends, results[2] - numbases,
+    // results[3] - ambigs, results[4] - polymers, results[5] - numns
+    vector<vector<int>> getReport(vector<string>& seq);
 
-        seq = degapSeq(seq);
-        runDegap = false;
+    void addReports(vector<string>& seqs, vector<int>& starts, vector<int>& ends,
+                   vector<int>& numbases, vector<int>& ambigs,
+                   vector<int>& polymers, vector<int>& numns);
 
-        results.push_back(seq.length());
-        results.push_back(getNumAmbigs(seq));
-        results.push_back(getLongestHomopolymer(seq));
-        results.push_back(getNumns(seq));
-
-        runDegap = true;
-
-        return results;
-    }
-
-    int getStart(string seq) {
-        int startPos = 1;
-        for(int i = 0; i < seq.length(); i++) {
-            if((seq[i] != '.') && (seq[i] != '-')){
-                startPos = i + 1;
-                break;
-            }
-        }
-        return startPos;
-    }
-
-    int getEnd(string seq) {
-        int endPos = 1;
-        for(int i = seq.length()-1; i >= 0; i--){
-            if((seq[i] != '.') && (seq[i] != '-')){
-                endPos = i + 1;
-                break;
-            }
-        }
-        return endPos;
-    }
-
-    int getNumAmbigs(string seq) {
-        int ambigBases = 0;
-        for(int i = 0; i < seq.length(); i++) {
-            if(!isgap(seq[i]) && !isacgt(seq[i])){
-                ambigBases++;
-            }
-        }
-        return ambigBases;
-    }
-
-    int getLongestHomopolymer(string seq) {
-        int longHomoPolymer = 1;
-        int homoPolymer = 1;
-
-        string unaligned = seq;
-
-        if (runDegap) {
-            unaligned = degapSeq(seq);
-        }
-
-        for(int j = 1; j < unaligned.length(); j++){
-            if(unaligned[j] == unaligned[j-1]){
-                homoPolymer++;
-            }else{
-                if(homoPolymer > longHomoPolymer){
-                    longHomoPolymer = homoPolymer;
-                }
-                homoPolymer = 1;
-            }
-        }
-
-        if(homoPolymer > longHomoPolymer){
-            longHomoPolymer = homoPolymer;
-        }
-
-        return longHomoPolymer;
-    }
-
-    int getNumbases(string seq) {
-        int numBases = 0;
-        for(int i = 0; i < seq.length(); i++) {
-            if(!isgap(seq[i])){
-                numBases++;
-            }
-        }
-        return numBases;
-    }
-
-    int getNumns(string seq) {
-        int numNs = 0;
-        for (int i = 0; i < seq.length(); i++) {
-            if(seq[i] == 'N') { numNs++; }
-        }
-        return numNs;
-    }
+    int getStart(string seq);
+    int getEnd(string seq);
+    int getNumAmbigs(string seq);
+    int getLongestHomopolymer(string seq);
+    int getNumbases(string seq);
+    int getNumns(string seq);
 
 private:
 

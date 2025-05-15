@@ -17,8 +17,6 @@
 
 using namespace std;
 
-const vector<int> nullIntVector;
-
 /**********************************************************************/
 static inline bool isacgt(char c) {
     return c == 'A' || c == 'C' || c == 'G' || c == 'T';

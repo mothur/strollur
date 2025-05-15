@@ -18,8 +18,7 @@ void SeqAbundTable::clear() {
     tableGroups.clear();
 }
 /******************************************************************************/
-void SeqAbundTable::addSeqs(vector<int>& names, vector<int> abunds,
-                            vector<string> groups) {
+void SeqAbundTable::addSeqs(vector<int>& names) {
 
     if (hasGroupData) {
 

@@ -8,7 +8,6 @@
 // containers
 #include <vector>
 #include <map>
-//#include <set>
 #include <string>
 
 // Rcpp
@@ -20,10 +19,7 @@ const vector<string> nullVector;  // used to pass blank vector
 const vector< vector<string> > null2DVector;  // used to pass blank vector
 const vector<int> nullIntVector;  // used to pass blank ints
 const vector<bool> nullBoolVector;  // used to pass blank ints
-const vector<char> nullCharVector;  // used to pass blank char
 const vector<double> nullDoubleVector;  // used to pass blank double
-const map<int, int> nullIntMap;
-const pair<string, string> nullStringPair("", "");
 
 /******************************************************************************/
 /*
@@ -90,10 +86,8 @@ public:
     Rcpp::DataFrame getSequenceAbundanceTable(vector<string> outputNames,
                                               vector<int> names = nullIntVector);
 
-    // names, abundances, groups (optional)
-    // if no abunds, sets abundance to 1
-    void addSeqs(vector<int>& names, vector<int> abunds = nullIntVector,
-                 vector<string> groups = nullVector);
+    // names, sets abundance to 1
+    void addSeqs(vector<int>& names);
 
     // names, abundances, groups (optional)
     void assignSampleAbundance(vector<int> names,
