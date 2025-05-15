@@ -1,6 +1,7 @@
 //
-//  summary.hpp
-//  Mothur
+//  summary.h
+//
+//  rdataset pacakge
 //
 //  Modified by Sarah Westcott on 5/14/25.
 //  Copyright © 2025 Schloss Lab. All rights reserved.
@@ -9,7 +10,7 @@
 #ifndef summary_hpp
 #define summary_hpp
 
-#include "utils.h"
+#include "dataset.h"
 
 class Summary {
 

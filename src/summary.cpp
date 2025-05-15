@@ -7,6 +7,7 @@
 //
 
 #include "summary.h"
+#include "utils.h"
 
 //**************************************************************************
 Summary::Summary(int p) {
@@ -361,7 +362,8 @@ void driverSummarize(seqSumData* params) {
 void Summary::createThreadsFasta(vector<vector<int>>& summary,
                                  vector<int>& counts) {
          //divide reads between processors
-        vector<pieceOfWork> startEndIndexes = divideWork(counts.size(),
+         Utils util;
+        vector<pieceOfWork> startEndIndexes = util.divideWork(counts.size(),
                                                               processors);
 
         vector<RcppThread::Thread*> workerThreads;
@@ -560,7 +562,8 @@ void driverContigs(seqSumData* params) {
 void Summary::createThreadsContigs(vector<vector<int>>& contigs,
                                    vector<int>& counts) {
          //divide reads between processors
-        vector<pieceOfWork> startEndIndexes = divideWork(counts.size(),
+         Utils util;
+        vector<pieceOfWork> startEndIndexes = util.divideWork(counts.size(),
                                                               processors);
 
         vector<RcppThread::Thread*> workerThreads;
@@ -714,7 +717,8 @@ void Summary::createThreadsAlign(vector<vector<float>>& align,
                                    vector<int>& counts) {
 
         //divide reads between processors
-        vector<pieceOfWork> startEndIndexes = divideWork(counts.size(),
+        Utils util;
+        vector<pieceOfWork> startEndIndexes = util.divideWork(counts.size(),
                                                               processors);
 
         vector<RcppThread::Thread*> workerThreads;

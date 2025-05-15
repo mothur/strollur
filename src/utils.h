@@ -1,146 +1,51 @@
-#ifndef SRC_UTILS_H_
-#define SRC_UTILS_H_
+#ifndef utils_h
+#define utils_h
 
-// containers
-#include <vector>
-#include <map>
-#include <string>
-#include <string.h>
+#include "dataset.h"
 
-// Rcpp
-#include <Rcpp.h>
-#include <RcppThread.h>
-#include <cli/progress.h>
+class Utils {
 
-// [[Rcpp::plugins(cpp11)]]
-// [[Rcpp::depends(RcppThread)]]
+public:
 
-using namespace std;
+    Utils() = default;
+    ~Utils() = default;
 
-const vector<int> nullIntVector;
+    vector<pieceOfWork> divideWork(double numItems, int& numProcessors) {
+        // divide work between processors
+        vector<pieceOfWork> work;
 
-/**********************************************************************/
-struct pieceOfWork {
-    double start;
-    double end;
-    pieceOfWork(double i, double j) : start(i), end(j) {}
-    pieceOfWork() { start = 0; end = 0; }
-    ~pieceOfWork() {}
-};
-/**********************************************************************/
-vector<pieceOfWork> divideWork(double numItems, int& numProcessors) {
-    // divide work between processors
-    vector<pieceOfWork> work;
+        if (numItems < numProcessors) { numProcessors = numItems; }
+        size_t startIndex = 0;
 
-    if (numItems < numProcessors) { numProcessors = numItems; }
-    size_t startIndex = 0;
+        for (size_t remainingProcessors = numProcessors; remainingProcessors > 0;
+        remainingProcessors--) {
 
-    for (size_t remainingProcessors = numProcessors; remainingProcessors > 0;
-    remainingProcessors--) {
-
-        //case for last processor
-        size_t numToProcess = numItems;
-        if (remainingProcessors != 1) {
-            numToProcess = ceil(numItems / remainingProcessors);
+            //case for last processor
+            size_t numToProcess = numItems;
+            if (remainingProcessors != 1) {
+                numToProcess = ceil(numItems / remainingProcessors);
+            }
+            work.push_back(pieceOfWork(startIndex, (startIndex+numToProcess)));
+            startIndex += numToProcess;
+            numItems -= numToProcess;
         }
-        work.push_back(pieceOfWork(startIndex, (startIndex+numToProcess)));
-        startIndex += numToProcess;
-        numItems -= numToProcess;
-    }
-    return work;
-}
-/**********************************************************************/
-template<typename T>
-set<T> toSet(const vector<T>& x) {
-    set<T> results;
-
-    if (x.size() == 0) { return results; }
-
-    for (int i = 0; i < x.size(); i++ ) {
-        results.insert(x[i]);
+        return work;
     }
 
-    return results;
-}
-/**********************************************************************/
-template<typename T>
-vector<T> toVector(const set<T>& x) {
-    vector<T> results;
-
-    if (x.size() == 0) { return results; }
-
-    for (auto it = x.begin(); it != x.end(); it++) {
-        results.push_back(*it);
+    float round2Places(float var) {
+        // 37.66666 * 100 =3766.66
+        // 3766.66 + .5 =3767.16    for rounding off value
+        // then type cast to int so value is 3767
+        // then divided by 100 so the value converted into 37.67
+        float value = (int)(var * 100 + .5);
+        return (float)value / 100;
     }
 
-    return results;
-}
-/**********************************************************************/
-inline string toString(const set<string>& x, char delim) {
-    string result = "";
 
-    if (x.size() == 0) { return result; }
+private:
 
-    for (auto it = x.begin(); it != x.end(); it++) {
-        result += delim + *it;
-    }
-    result = result.substr(1);
 
-    return result;
-}
-/**********************************************************************/
-inline string toString(const bool& x) {
-    if (x) {
-        return "TRUE";
-    }else{
-        return "FALSE";
-    }
-}
-/**********************************************************************/
-inline string toString(const set<string>& x, string delim) {
-    string result = "";
+};
 
-    if (x.size() == 0) { return result; }
+#endif /* utils_h */
 
-    for (auto it = x.begin(); it != x.end(); it++) {
-        result += delim + *it;
-    }
-    result = result.substr(delim.length());
-
-    return result;
-}
-/**********************************************************************/
-template<typename T>
-string toString(const T&x) {
-    stringstream output;
-    output << x;
-    return output.str();
-}
-/**********************************************************************/
-template<typename T>
-string toString(const T&x, int i) {
-    stringstream output;
-
-    output.precision(i);
-    output << std::fixed << x;
-
-    return output.str();
-}
-/**********************************************************************/
-template<typename T>
-string toString(const vector<T>& x, char delim) {
-    string result = "";
-
-    if (x.size() == 0) { return result; }
-
-    result = toString(x[0]);
-
-    for (int i = 1; i < x.size(); i++) {
-        result += delim + toString(x[i]);
-    }
-
-    return result;
-}
-/**********************************************************************/
-
-#endif

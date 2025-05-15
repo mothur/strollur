@@ -23,7 +23,7 @@ test_that("test R6 sequence_data - intialize", {
     "M00967_43_000000000-A3JHG_1_1112_12027_22976"
   )
 
-  expect_equal(first_ten, dataset$get_names()[1:10])
+  expect_equal(first_ten, dataset$get_ids()[1:10])
 
   seq1 <- paste("TACGTAGGTGGCAAGCGTTATCCGGAATTATTGGGCGTAAAGAGCGCGCAGGTGGTTAATT",
     "AAGTCTGATGTGAAAGCCCACGGCTTAACCGTGGAGGGTCATTGGAAACTGGTTGACTTGA",
