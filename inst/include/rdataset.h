@@ -12,6 +12,11 @@
 
 // Rcpp
 #include <Rcpp.h>
+#include <RcppThread.h>
+#include <cli/progress.h>
+
+// [[Rcpp::plugins(cpp11)]]
+// [[Rcpp::depends(RcppThread)]]
 
 using namespace std;
 
@@ -49,6 +54,12 @@ struct seqCount {
 
     seqCount() {}
     ~seqCount() {}
+
+    // no groups constructor
+    seqCount(int i, int a) {
+        sampleIndex.push_back(i);
+        abunds.push_back(a);
+    }
 
     // sparse format constructor
     seqCount(vector<int> i, vector<int> a) : sampleIndex(i), abunds(a) {}
@@ -108,14 +119,14 @@ public:
     void mergeSeqs(vector<int> seqsToMerge, string group = "");
 
     // vector containing total abundance for each sequence
-    vector<int> getSeqsAbunds();
+    vector<int> getSeqsAbunds(vector<int> names);
     // total abundance for sequence, if group provided then abundance for that
     // sequence in that sample
     int getAbund(int name, string group = "");
     // abundances by sample, in the same order as the groups
     vector<int> getAbunds(int name);
     // total number of sequences
-    int getTotal();
+    int getTotal(string group = "");
 
     int getNumGroups();
     // vector containing total abundance for each sample
@@ -131,7 +142,9 @@ public:
 private:
 
     vector<seqCount> counts;
-    int total;
+    // numGroups is 1 for datasets without groups
+    // numGroups equals the number of "good" groups in dataset
+    int total, numGroups;
 
     // sample name to index.
     map<string, int> groupIndex;
@@ -141,6 +154,8 @@ private:
     vector<bool> tableGroups;
 
     bool hasGroupData;
+
+    int getSparseIndex(int, int);
 
 };
 
@@ -172,7 +187,7 @@ public:
 
     // add seqs
     void addSeqs(vector<string> n, vector<string> s,
-                 vector<string> c = nullVector);
+                 vector<string> c);
 
     // align_seqs will create searchScores, simScores and longestInserts
     void addAlignReport(vector<string> n, vector<double> ss,
@@ -190,6 +205,8 @@ public:
     // **** functions for summarizing dataset **** //
     // fasta summary data: starts, ends, lengths, ambigs, polymers, numns
     vector<vector<int>> getFastaReport();
+    // contigs sumary data: olengths, ostarts, oends, mismatches, ee
+    Rcpp::DataFrame getFastaSummary();
     // contigs sumary data: olengths, ostarts, oends, mismatches, ee
     vector<vector<double>> getContigsReport();
     // align summary data: search_score, sim_score, longest_insert
@@ -224,7 +241,7 @@ public:
 
     // set sequence string and optionally comments
     void setSeqs(vector<string> names, vector<string> sequences,
-                 vector<string> comments = nullVector);
+                 vector<string> comments);
 
     // set abundances
     void setAbundances(vector<string> names, vector<int> abunds,
@@ -248,6 +265,7 @@ private:
 
     // maps sequence name to index in summary vectors
     map<string, int> seqIndex;
+    vector<bool> tableSeqs;
 
     // map reason for deletion to vector containing unique and total counts
     // example: "pre_cluster" ->  c(10,  230) means precluster removed 10 unique
@@ -264,6 +282,7 @@ private:
 
     // if unaligned, returns -1
     int getAlignedLength(vector<string>);
+    vector<int> getIncludedNames();
 
 };
 
