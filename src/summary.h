@@ -20,20 +20,20 @@ public:
     Summary(int p);
     ~Summary() = default;
 
-    // report[0] = lengths, report[1] = starts, report[2] = ends,
+    // report[0] = starts, report[1] = ends, report[2] = lengths,
     // report[3] = ambigs, report[4] = homopolymers, report[5] = num_ns
-    Rcpp::DataFrame summarizeFasta(vector<vector<int>>& report,
-                                   vector<int> counts = nullIntVector);
+    Rcpp::DataFrame summarizeFasta(vector<vector<int>> report,
+                                   vector<int> counts);
 
     // report[0] = length, report[1] = overlap_length, report[2] = overlap_start,
     // report[3] = overlap_end, report[4] = mismatches, report[5] = num_ns
-    Rcpp::DataFrame summarizeContigs(vector<vector<int>>& report,
-                                     vector<int> counts = nullIntVector);
+    Rcpp::DataFrame summarizeContigs(vector<vector<int>> report,
+                                     vector<int> counts);
 
     // align[0] = search_scores, align[1] = sim_scores, longest_inserts, abunds
-    Rcpp::DataFrame summarizeAlign(vector<vector<float>>& align,
-                                   vector<int>& inserts,
-                                   vector<int> counts = nullIntVector);
+    Rcpp::DataFrame summarizeAlign(vector<vector<float>> align,
+                                   vector<int> inserts,
+                                   vector<int> counts);
 
     // fasta - returns value at criteria level
     long long getStart(int value) {

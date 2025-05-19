@@ -242,7 +242,7 @@ struct seqSumData {
     }
 };
 //**************************************************************************
-Rcpp::DataFrame Summary::summarizeFasta(vector<vector<int>>& report,
+Rcpp::DataFrame Summary::summarizeFasta(vector<vector<int>> report,
                                   vector<int> counts) {
         numUniques = counts.size();
         total = numUniques;
@@ -273,14 +273,14 @@ Rcpp::DataFrame Summary::summarizeFasta(vector<vector<int>>& report,
         return (df);
 }
 //**************************************************************************
-
+// fasta summary data: starts, ends, lengths, ambigs, polymers, numns
 void driverSummarize(seqSumData* params) {
     // calc lengths
     for (int i = params->start; i < params->end; i++) {
 
         int num = params->counts[i];
 
-        int thisSeqLength = params->summary[0][i];
+        int thisSeqLength = params->summary[2][i];
         auto it = params->seqLength.find(thisSeqLength);
         if (it == params->seqLength.end()) {
             params->seqLength[thisSeqLength] = num; }
@@ -294,7 +294,7 @@ void driverSummarize(seqSumData* params) {
 
         int num = params->counts[i];
 
-        int thisStartPosition = params->summary[1][i];
+        int thisStartPosition = params->summary[0][i];
         auto it = params->startPosition.find(thisStartPosition);
         if (it == params->startPosition.end()) {
             params->startPosition[thisStartPosition] = num; }
@@ -308,7 +308,7 @@ void driverSummarize(seqSumData* params) {
 
         int num = params->counts[i];
 
-        int thisEndPosition = params->summary[2][i];
+        int thisEndPosition = params->summary[1][i];
         auto it = params->endPosition.find(thisEndPosition);
         if (it == params->endPosition.end()) {
             params->endPosition[thisEndPosition] = num; }
@@ -446,7 +446,7 @@ void Summary::createThreadsFasta(vector<vector<int>>& summary,
         }
 }
 //**************************************************************************
-Rcpp::DataFrame Summary::summarizeContigs(vector<vector<int>>& report,
+Rcpp::DataFrame Summary::summarizeContigs(vector<vector<int>> report,
                                     vector<int> counts) {
 
         numUniques = counts.size();
@@ -645,8 +645,8 @@ void Summary::createThreadsContigs(vector<vector<int>>& contigs,
         }
 }
 //**************************************************************************
-Rcpp::DataFrame Summary::summarizeAlign(vector<vector<float>>& align,
-                                  vector<int>& inserts,
+Rcpp::DataFrame Summary::summarizeAlign(vector<vector<float>> align,
+                                  vector<int> inserts,
                                   vector<int> counts) {
         numUniques = counts.size();
         int initial_sum = 0;

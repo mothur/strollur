@@ -16,9 +16,9 @@ context("Summary class C++ unit tests") {
         vector<int> dnumns = {0, 0, 1, 0, 0, 2};
 
         vector<vector<int>> report;
-        report.push_back(dlengths);
         report.push_back(dstarts);
         report.push_back(dends);
+        report.push_back(dlengths);
         report.push_back(dambigs);
         report.push_back(dpolymers);
         report.push_back(dnumns);
