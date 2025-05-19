@@ -133,9 +133,10 @@ public:
     vector<int> getGroupTotals();
     // vector containing names of samples
     // if name is provided then the names of samples where the seq is present
-    vector<string> getGroups(string name = "");
+    vector<string> getGroups(int name = -1);
     // does the table contain a group
-    bool hasGroup(string group);
+    // if name provided, does the sequence have this group
+    bool hasGroup(string group, int name = -1);
     // does the table have group information
     bool hasGroups();
 
@@ -156,6 +157,7 @@ private:
     bool hasGroupData;
 
     int getSparseIndex(int, int);
+    void addGroups(vector<string> groups);
 
 };
 
@@ -199,8 +201,10 @@ public:
                           vector<int> os, vector<int> oe,
                           vector<int> m, vector<double> e);
 
-    // names, groups, abundances
-    void assignSampleAbundance(vector<string>, vector<string>, vector<int>);
+    // names, abundances, groups(optional)
+    void assignSampleAbundance(vector<string> names,
+                               vector<int> abunds,
+                               vector<string> groups);
 
     // **** functions for summarizing dataset **** //
     // fasta summary data: starts, ends, lengths, ambigs, polymers, numns
@@ -282,7 +286,8 @@ private:
 
     // if unaligned, returns -1
     int getAlignedLength(vector<string>);
-    vector<int> getIncludedNames();
+    vector<int> getIncludedNamesIndexes();
+    vector<int> getIndexes(vector<string>&);
 
 };
 

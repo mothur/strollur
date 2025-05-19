@@ -63,6 +63,24 @@ vector<T> select(const vector<T>& x, const vector<bool>& filter) {
 }
 /**********************************************************************/
 template<typename T>
+vector<T> unique(const vector<T>& x) {
+
+    vector<T> uniqueX;
+
+    if (x.size() == 0) { return uniqueX; }
+
+    set<T> s;
+    unsigned size = x.size();
+    for( unsigned i = 0; i < size; ++i ) {
+        s.insert( x[i] );
+    }
+
+    uniqueX.assign( s.begin(), s.end() );
+
+    return uniqueX;
+}
+/**********************************************************************/
+template<typename T>
 vector<T> toVector(const set<T>& x) {
     vector<T> results;
 

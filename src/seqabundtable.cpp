@@ -25,8 +25,9 @@ void SeqAbundTable::clear() {
 void SeqAbundTable::addSeqs(vector<int>& names) {
 
     if (hasGroupData) {
-        RcppThread::Rcout << endl <<
-            "[ERROR]: The dataset contains group information, you must provide by sample data.\n\n";
+        string message = "[ERROR]: The dataset contains group information, ";
+        message += "you must provide by sample data.\n\n";
+        RcppThread::Rcout << endl << message;
     }else{
 
         counts.resize(counts.size()+names.size());
@@ -43,7 +44,77 @@ void SeqAbundTable::addSeqs(vector<int>& names) {
 
         total += names.size();
     }
+}
+/******************************************************************************/
+// private function
+void SeqAbundTable::addGroups(vector<string> groups) {
+    // store groups alphabetically
+    sort(groups.begin(), groups.end());
 
+    // all groups start off as "good"
+    tableGroups.resize(groups.size(), true);
+    groupTotals.resize(groups.size(), 0);
+
+    for (int i = 0; i < groups.size(); i++) {
+        groupIndex[groups[i]] = i;
+    }
+
+    hasGroupData = true;
+}
+/******************************************************************************/
+// names, abundances, groups (optional)
+void SeqAbundTable::assignSampleAbundance(vector<int> names,
+                           vector<int> abunds,
+                           vector<string> groups) {
+
+    clear();
+
+    if (groups.size() == 0) {
+        hasGroupData = false;
+        tableGroups.push_back(true);
+        numGroups = 1; // placeholder for sparse abundances
+    }else{
+        vector<string> uniqueGroups = unique(groups);
+
+        if (uniqueGroups.size() > 1) {
+            addGroups(uniqueGroups);
+            numGroups = uniqueGroups.size();
+        }else if ((uniqueGroups.size() == 1) && (uniqueGroups[0] != "")) {
+            addGroups(uniqueGroups);
+            numGroups = 1;
+        }else{
+            // empty strings passed in for groups, ignore
+            hasGroupData = false;
+            tableGroups.push_back(true);
+            numGroups = 1; // placeholder for sparse abundances
+        }
+    }
+
+
+    // update counts, groupTotals and total
+    if (hasGroupData) {
+        vector<int> uniqueNames = unique(names);
+
+        // fill in long format
+        counts.resize(uniqueNames.size());
+        for (int i = 0; i < groups.size(); i++) {
+            int index = groupIndex[groups[i]];
+            counts[names[i]].sampleIndex.push_back(index);
+            counts[names[i]].abunds.push_back(abunds[i]);
+            groupTotals[index] += abunds[i];
+        }
+
+        // convert to sparse
+        total = accumulate(groupTotals.begin(), groupTotals.end(), 0);
+    }else{
+
+        counts.resize(names.size());
+        for (int i = 0; i < names.size(); i++) {
+            seqCount thisSeq(0, abunds[i]);
+            counts[names[i]] = thisSeq;
+        }
+        total = accumulate(abunds.begin(), abunds.end(), 0);
+    }
 }
 /******************************************************************************/
 // vector containing total abundance for each sequence
@@ -119,16 +190,75 @@ vector<int> SeqAbundTable::getAbunds(int name) {
     return abunds;
 }
 /******************************************************************************/
-bool SeqAbundTable::hasGroup(string group) {
+bool SeqAbundTable::hasGroup(string group, int name) {
     auto it = groupIndex.find(group);
 
     // is this a group in the table
     if (it != groupIndex.end()) {
-        // is it "good"
-        return tableGroups[it->second];
+
+        // no name provided
+        if (name == -1) {
+            // is it "good"
+            return tableGroups[it->second];
+        }else{
+            // if the sequence does not have this group, -1 returned
+            int thisGroupsIndex = getSparseIndex(name, it->second);
+
+            if (thisGroupsIndex != -1) {
+                return true;
+            }
+        }
     }
 
     return false;
+}
+/******************************************************************************/
+vector<int> SeqAbundTable::getGroupTotals() {
+    vector<int> totals;
+    if (hasGroupData) {
+        totals = select(groupTotals, tableGroups);
+    }
+    return totals;
+}
+/******************************************************************************/
+int SeqAbundTable::getNumGroups() {
+    if (hasGroupData) {
+        return numGroups;
+    }
+    return 0;
+}
+/******************************************************************************/
+vector<string> SeqAbundTable::getGroups(int name) {
+    vector<string> groups;
+
+    if (hasGroupData) {
+        // want all "good" groups
+        if (name == -1) {
+            for (auto it = groupIndex.begin(); it != groupIndex.end(); it++) {
+                if (tableGroups[it->second]) {
+                    groups.push_back(it->first);
+                }
+            }
+        }else{
+            // want all "good" groups for sequence
+            vector<int> thisSeqsGroupIndexes = counts[name].sampleIndex;
+
+            for (auto it = groupIndex.begin(); it != groupIndex.end(); it++) {
+                // if "good" group
+                if (tableGroups[it->second]) {
+
+                    auto itFind = find(thisSeqsGroupIndexes.begin(),
+                                       thisSeqsGroupIndexes.end(), it->second);
+                    if (itFind != thisSeqsGroupIndexes.end()) {
+                        groups.push_back(it->first);
+                    }
+                }
+            }
+
+        }
+    }
+
+    return groups;
 }
 /******************************************************************************/
 int SeqAbundTable::getTotal(string group) {

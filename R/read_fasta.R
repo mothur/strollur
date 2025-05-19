@@ -1,10 +1,10 @@
-#' @title read_fasta_file
+#' @title read_fasta
 #' @description
 #' Read a FASTA formatted sequence file
 #' @param fasta FASTA file name (required)
 #' @examples
 #'
-#' fasta_data <- read_fasta_file(rdataset_example("test.fasta"))
+#' fasta_data <- read_fasta(rdataset_example("test.fasta"))
 #'
 #' # fasta_data is a named list.
 #' # To access the names of the sequences in the file, run the following:
@@ -17,7 +17,7 @@
 #'
 #' @return A list containing the FASTA sequence data
 #' @export
-read_fasta_file <- function(fasta) {
+read_fasta <- function(fasta) {
   if (!file.exists(fasta)) {
     abort_nonexistant_file(fasta)
   }

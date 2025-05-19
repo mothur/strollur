@@ -1,12 +1,12 @@
-# test read_fasta_file
+# test read_fasta
 
-test_that("test read_fasta_file - errors", {
-  expect_error(read_fasta_file("non_existant_filename"))
+test_that("test read_fasta - errors", {
+  expect_error(read_fasta("non_existant_filename"))
 })
 
-test_that("test read_fasta_file - names, sequences", {
+test_that("test read_fasta - names, sequences", {
   # read fasta file with no comments
-  results <- read_fasta_file(rdataset_example("test.fasta"))
+  results <- read_fasta(rdataset_example("test.fasta"))
 
   expect_equal(c("names", "sequences"), names(results))
 
@@ -104,7 +104,7 @@ test_that("test read_fasta_file - names, sequences", {
   expect_equal(first_ten_seqs, results$sequences[1:10])
 })
 
-test_that("test read_fasta_file - comments", {
+test_that("test read_fasta - comments", {
   name1 <- ">seq1 my very cool comment"
   seq1 <- paste("TACGTAGGTGGCAAGCGTTATCCGGAATTATTGGGCGTAAAGAGCGCGCAGGTGGTTAATT",
     "AAGTCTGATGTGAAAGCCCACGGCTTAACCGTGGAGGGTCATTGGAAACTGGTTGACTTGA",
@@ -136,7 +136,7 @@ test_that("test read_fasta_file - comments", {
   )
 
   # read fasta file with comments
-  results <- read_fasta_file("file_with_comments.fasta")
+  results <- read_fasta("file_with_comments.fasta")
 
   remove_file("file_with_comments.fasta")
 

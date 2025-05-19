@@ -31,7 +31,7 @@ dataset <- sequence_data$new(name = "soil",
 
 
   dataset <- sequence_data$new("my_dataset")
-  fasta_data <- read_fasta_file(rdataset_example("test.fasta"))
+  fasta_data <- read_fasta(rdataset_example("test.fasta"))
   dataset$add_seqs(fasta_data$names, fasta_data$sequences)
 
 
@@ -65,7 +65,7 @@ dataset <- sequence_data$new("mydata")
 unique_names <- unique(names)
 sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
 dataset$add_seqs(unique_names, sequences)
-dataset$assign_sample_abundance(names, groups, abundances)
+dataset$assign_sample_abundance(names, abundances, groups)
 
 }
 \author{
@@ -194,7 +194,7 @@ Add new sequence data
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
   dataset <- sequence_data$new("my_dataset")
-  fasta_data <- read_fasta_file(rdataset_example("test.fasta"))
+  fasta_data <- read_fasta(rdataset_example("test.fasta"))
   dataset$add_seqs(fasta_data$names, fasta_data$sequences)
 
 }
@@ -209,11 +209,7 @@ Add new sequence data
 \subsection{Method \code{assign_sample_abundance()}}{
 Add group assignment data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sample_abundance(
-  names = NULL,
-  groups = NULL,
-  abundances = NULL
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sample_abundance(names, abundances, groups = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -221,9 +217,9 @@ Add group assignment data
 \describe{
 \item{\code{names}}{a vector of sequence names}
 
-\item{\code{groups}}{a vector of group assignments}
-
 \item{\code{abundances}}{a vector of sample abundances}
+
+\item{\code{groups}}{a vector of group assignments}
 }
 \if{html}{\out{</div>}}
 }
@@ -255,7 +251,7 @@ dataset <- sequence_data$new("mydata")
 unique_names <- unique(names)
 sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
 dataset$add_seqs(unique_names, sequences)
-dataset$assign_sample_abundance(names, groups, abundances)
+dataset$assign_sample_abundance(names, abundances, groups)
 
 }
 \if{html}{\out{</div>}}
@@ -427,9 +423,16 @@ data.table
 \subsection{Method \code{get_fasta_summary()}}{
 Get summary of the fasta report
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_fasta_summary()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_fasta_summary(silent = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{silent}}{Default = FALSE, meaning print fasta summary}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 data.table
 }
@@ -460,9 +463,16 @@ A character vector
 \subsection{Method \code{get_group_summary()}}{
 Get summary of count table. group, group_totals
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_group_summary()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_group_summary(silent = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{silent}}{Default = FALSE, meaning print group summary}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 data.table
 }

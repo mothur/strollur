@@ -40,7 +40,7 @@ sequence_data <- R6Class("sequence_data",
       self$data <- new(Dataset, name, processors)
 
       if (!is.null(fasta)) {
-        fasta_data <- read_fasta_file(fasta)
+        fasta_data <- read_fasta(fasta)
         self$add_seqs(fasta_data$names, fasta_data$sequences)
       }
       invisible(self)
@@ -60,7 +60,7 @@ sequence_data <- R6Class("sequence_data",
     #' @examples
     #'
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   fasta_data <- read_fasta_file(rdataset_example("test.fasta"))
+    #'   fasta_data <- read_fasta(rdataset_example("test.fasta"))
     #'   dataset$add_seqs(fasta_data$names, fasta_data$sequences)
     #'
     add_seqs = function(names, sequences, comments = NULL) {
@@ -104,14 +104,31 @@ sequence_data <- R6Class("sequence_data",
     #' unique_names <- unique(names)
     #' sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
     #' dataset$add_seqs(unique_names, sequences)
-    #' dataset$assign_sample_abundance(names, groups, abundances)
+    #' dataset$assign_sample_abundance(names, abundances, groups)
     #'
-    assign_sample_abundance = function(names = NULL, groups = NULL,
-                                       abundances = NULL) {
-      if (!is.null(names) && !is.null(groups)) {
-        self$data$assign_sample_abundance(names, groups, abundances)
+    assign_sample_abundance = function(names, abundances, groups = NULL) {
+
+      if (length(names) != length(abundances)) {
+          cli::cli_abort("[ERROR]: The names and abundances must be the same
+                         length.")
       }
 
+      # sanity check, make sure names are present in dataset
+      unique_names <- sort(unique(names))
+      dataset_names <- sort(self$get_ids())
+
+      if (!identical(unique_names, dataset_names)) {
+           cli::cli_abort( "[ERROR]: You must provide assignments for all
+                          sequences in your dataset.")
+      }
+      unique_names <- c()
+      dataset_names <- c()
+
+      if (is.null(groups)) {
+        groups <- rep("", length(names))
+      }
+
+      self$data$assign_sample_abundance(names, abundances, groups)
       invisible(self)
     },
 
@@ -324,12 +341,28 @@ sequence_data <- R6Class("sequence_data",
 
     #' @description
     #' Get summary of count table. group, group_totals
+    #' @param silent Default = FALSE, meaning print group summary
     #' @return data.table
-    get_group_summary = function() {
-      if (is.null(group)) {
-        group <- ""
+    get_group_summary = function(silent = FALSE) {
+
+      if (self$data$num_groups != 0) {
+          group_totals <- self$data$get_group_totals("")
+          group_names <- self$get_groups()
+
+          if (!silent) {
+              cat("Group   Total:\n")
+              for (i in seq_along(group_names)) {
+                  cat(paste(group_names[i], group_totals[i], sep = "\t"), "\n")
+              }
+              cat(paste("\nNumber of unique seqs:", self$get_num_unique()), "\n")
+              cat(paste("Total number of seqs:", self$get_num_seqs(), "\n"), "\n")
+          }
+
+          return(data.table(group = group_names, total = group_totals))
+      }else {
+          cli::cli_alert("Your dataset does not include group data, ignoring.")
       }
-      self$data$get_group_totals(group)
+      data.table()
     },
 
     #' @description

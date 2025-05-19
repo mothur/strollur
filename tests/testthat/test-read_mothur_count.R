@@ -1,8 +1,8 @@
-# test read_mothur_count_file
+# test read_mothur_count
 
-test_that("test read_mothur_count_file compressed with groups", {
+test_that("test read_mothur_count compressed with groups", {
   # read compressed count file with groups
-  results <- read_mothur_count_file(rdataset_example("test.count_table"))
+  results <- read_mothur_count(rdataset_example("test.count_table"))
 
   expect_equal(c("id", "group", "abundance"), colnames(results))
 
@@ -33,9 +33,9 @@ test_that("test read_mothur_count_file compressed with groups", {
   expect_equal(first_ten_groups, results$group[1:10])
 })
 
-test_that("test read_mothur_count_file uncompressed with groups", {
+test_that("test read_mothur_count uncompressed with groups", {
   # read uncompressed count file with groups
-  results <- read_mothur_count_file(rdataset_example("test.full.count_table"))
+  results <- read_mothur_count(rdataset_example("test.full.count_table"))
 
   expect_equal(c("id", "group", "abundance"), colnames(results))
 
@@ -66,9 +66,9 @@ test_that("test read_mothur_count_file uncompressed with groups", {
   expect_equal(first_ten_groups, results$group[1:10])
 })
 
-test_that("test read_mothur_count_file uncompressed NO groups", {
+test_that("test read_mothur_count uncompressed NO groups", {
   # read uncompressed count file without groups
-  results <- read_mothur_count_file(
+  results <- read_mothur_count(
     rdataset_example("test_nogroups.count_table")
   )
 

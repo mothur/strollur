@@ -1,4 +1,4 @@
-#' @title read_mothur_count_file
+#' @title read_mothur_count
 #' @description
 #' Read a mothur formatted count file
 #' @param filename count file name (required)
@@ -25,11 +25,11 @@
 #' #  9:   seq4 sample4         4
 #'
 #' # read a count file with groups
-#' sample_table <- read_mothur_count_file(rdataset_example("test.count_table"))
+#' sample_table <- read_mothur_count(rdataset_example("test.count_table"))
 #'
 #' @return data.table
 #' @export
-read_mothur_count_file <- function(filename) {
+read_mothur_count <- function(filename) {
   directory <- dirname(filename)
   filename <- basename(filename)
 
