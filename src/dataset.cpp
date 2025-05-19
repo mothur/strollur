@@ -1,6 +1,7 @@
 
 #include "../inst/include/rdataset.h"
 #include "seqreport.h"
+#include "summary.h"
 
 /******************************************************************************/
 Dataset::Dataset(string n, int proc) : datasetName(n) {
@@ -105,6 +106,10 @@ void Dataset::addSeqs(vector<string> n, vector<string> s, vector<string> c) {
     // add to seqs
     seqs.insert(seqs.end(), s.begin(), s.end());
 
+    // innocent
+    vector<bool> ts(n.size(), true);
+    tableSeqs.insert(tableSeqs.end(), ts.begin(), ts.end());
+
     if (c.size() == 0) {
         c.resize(names.size(), "");
     }
@@ -157,9 +162,7 @@ vector<int> Dataset::getGroupTotals(string name){
 }
 /******************************************************************************/
 long long Dataset::getTotal(string group){
-    long long result = 0;
-    // TODO
-    return result;
+    return count->getTotal(group);
 }
 /******************************************************************************/
 bool Dataset::hasGroup(string group){
@@ -202,10 +205,30 @@ void Dataset::removeSeqs(vector<string> names, vector<string> trashTags){
     // TODO
 }
 /******************************************************************************/
+// fasta summary data: starts, ends, lengths, ambigs, polymers, numns
 vector<vector<int>> Dataset::getFastaReport(){
-    vector<vector<int> > result;
-    // TODO
-    return result;
+    vector<vector<int> > results;
+
+    results.push_back(select(starts, tableSeqs));
+    results.push_back(select(ends, tableSeqs));
+    results.push_back(select(lengths, tableSeqs));
+    results.push_back(select(ambigs, tableSeqs));
+    results.push_back(select(polymers, tableSeqs));
+    results.push_back(select(numns, tableSeqs));
+
+    return results;
+}
+/******************************************************************************/
+Rcpp::DataFrame Dataset::getFastaSummary() {
+    // create Summary object
+    Summary* summary = new Summary(processors);
+
+    Rcpp::DataFrame results = summary->summarizeFasta(
+        getFastaReport(), count->getSeqsAbunds(getIncludedNames()));
+
+    delete summary;
+
+    return results;
 }
 /******************************************************************************/
 vector<vector<double>> Dataset::getContigsReport(){
@@ -232,23 +255,37 @@ void Dataset::assignSampleAbundance(vector<string>,
 }
 /******************************************************************************/
 int Dataset::getAbund(string name, string group){
-    int result = 0;
-    // TODO
-    return result;
+    int abund = 0;
+    auto it = seqIndex.find(name);
+    if (it != seqIndex.end()) {
+        abund = count->getAbund(it->second, group);
+    }
+    return abund;
 }
 /******************************************************************************/
-// abundances for seq broken down by sample
 vector<int> Dataset::getAbunds(string name){
-    vector<int>  result;
-    // TODO
-    return result;
+    vector<int> abunds;
+    auto it = seqIndex.find(name);
+    if (it != seqIndex.end()) {
+       abunds = count->getAbunds(it->second);
+    }
+    return abunds;
+}
+/******************************************************************************/
+// returns indexes of "good" seqs in table
+vector<int> Dataset::getIncludedNames() {
+    vector<int> included;
+    for (int i = 0; i < tableSeqs.size(); i++) {
+        if (tableSeqs[i]) {
+            included.push_back(i);
+        }
+    }
+    return included;
 }
 /******************************************************************************/
 // total abundance for each sequence
 vector<int> Dataset::getSeqsAbunds(){
-    vector<int>  result;
-    // TODO
-    return result;
+    return count->getSeqsAbunds(getIncludedNames());
 }
 /******************************************************************************/
 vector<vector<int>> Dataset::getSeqsAbundsBySample(){
@@ -256,12 +293,7 @@ vector<vector<int>> Dataset::getSeqsAbundsBySample(){
     // TODO
     return result;
 }
-
 /******************************************************************************/
-//vector<double> searchScores,
-//vector<double> simScores,
-//vector<double> longestInserts
-// align_seqs will set searchScores, simScores and longestInserts
 void Dataset::setSeqs(vector<string> n, vector<string> s,
              vector<string> c){
     names = n;

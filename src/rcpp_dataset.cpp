@@ -50,11 +50,14 @@ RCPP_MODULE(Dataset) {
     "Determine if dataset contains sample")
 
     .method("get_fasta_report", &Dataset::getFastaReport,
-    "Get fasta summary data: starts, ends, lengths, ambigs, homopolymers, numns")
+    "Get fasta report data: starts, ends, lengths, ambigs, homopolymers, numns")
+    .method("get_fasta_summary", &Dataset::getFastaSummary,
+    "Get fasta summary report")
     .method("get_align_report", &Dataset::getAlignReport,
-    "Get align summary data: search_score, sim_score, longest_insert")
+    "Get align report data: search_score, sim_score, longest_insert")
     .method("get_contigs_report", &Dataset::getContigsReport,
-    "Get contigs sumary data: olengths, ostarts, oends, mismatches, ee")
+    "Get contigs report data: olengths, ostarts, oends, mismatches, ee")
+
     // 3 column table: id, group, abundance
     .method("get_sequence_abundance_table", &Dataset::getSequenceAbundanceTable,
     "Get sequence abundance table")

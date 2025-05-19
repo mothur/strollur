@@ -48,6 +48,21 @@ set<T> toSet(const vector<T>& x) {
 }
 /**********************************************************************/
 template<typename T>
+vector<T> select(const vector<T>& x, const vector<bool>& filter) {
+    vector<T> results;
+
+    if (x.size() == 0) { return results; }
+
+    for (int i = 0; i < x.size(); i++ ) {
+        if (filter[i]) {
+            results.push_back(x[i]);
+        }
+    }
+
+    return results;
+}
+/**********************************************************************/
+template<typename T>
 vector<T> toVector(const set<T>& x) {
     vector<T> results;
 

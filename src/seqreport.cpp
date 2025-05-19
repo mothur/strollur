@@ -69,7 +69,7 @@ void SeqReport::addReports(vector<string>& seqs, vector<int>& starts,
 int SeqReport::getStart(string seq) {
     int startPos = 1;
     for(int i = 0; i < seq.length(); i++) {
-        if((seq[i] != '.') && (seq[i] != '-')){
+        if(!isgap(seq[i])){
             startPos = i + 1;
             break;
         }
@@ -80,7 +80,7 @@ int SeqReport::getStart(string seq) {
 int SeqReport::getEnd(string seq) {
     int endPos = 1;
     for(int i = seq.length()-1; i >= 0; i--){
-        if((seq[i] != '.') && (seq[i] != '-')){
+        if(!isgap(seq[i])){
             endPos = i + 1;
             break;
         }

@@ -201,14 +201,114 @@ sequence_data <- R6Class("sequence_data",
     #' starts, ends, lengths, ambigs, homopolymers, numns
     #' @return data.table
     get_fasta_report = function() {
-      # TODO
+        fasta_report <- self$data$get_fasta_report()
+        data.table(starts = fasta_report[[1]],
+                   ends = fasta_report[[2]],
+                   lengths = fasta_report[[3]],
+                   ambigs = fasta_report[[4]],
+                   homopolymers = fasta_report[[5]],
+                   numns = fasta_report[[6]])
     },
 
     #' @description
     #' Get summary of the fasta report
+    #' @param silent Default = FALSE, meaning print fasta summary
     #' @return data.table
-    get_fasta_summary = function() {
-      # TODO
+    get_fasta_summary = function(silent = FALSE) {
+        fasta_results <- self$data$get_fasta_summary()
+
+        results_row_names <- c(
+            "Minimum:", "2.5%-tile:", "25%-tile:",
+            "Median:   ", "75%-tile:", "97.5%-tile:",
+            "Maximum:", "Mean:      "
+        )
+
+        rownames(fasta_results) <- results_row_names
+
+        # if you have summary results to print
+        if ((length(fasta_results$starts) == 8) && (!silent)) {
+
+            cat("\t\tstart\tend\tlength\tambigs\tpolymer\tnum_ns\tnumseqs\n")
+            cat(
+                paste(results_row_names[1], fasta_results$starts[1],
+                      fasta_results$ends[1],
+                      fasta_results$nbases[1], fasta_results$ambigs[1],
+                      fasta_results$polymers[1], fasta_results$numns[1],
+                      fasta_results$numseqs[1],
+                      sep = "\t"
+                ),
+                "\n"
+            )
+            cat(
+                paste(results_row_names[2], fasta_results$starts[2],
+                      fasta_results$ends[2],
+                      fasta_results$nbases[2], fasta_results$ambigs[2],
+                      fasta_results$polymers[2], fasta_results$numns[2],
+                      fasta_results$numseqs[2],
+                      sep = "\t"
+                ),
+                "\n"
+            )
+            cat(
+                paste(results_row_names[3], fasta_results$starts[3],
+                      fasta_results$ends[3],
+                      fasta_results$nbases[3], fasta_results$ambigs[3],
+                      fasta_results$polymers[3], fasta_results$numns[3],
+                      fasta_results$numseqs[3],
+                      sep = "\t"
+                ),
+                "\n"
+            )
+            cat(
+                paste(results_row_names[4], fasta_results$starts[4],
+                      fasta_results$ends[4],
+                      fasta_results$nbases[4], fasta_results$ambigs[4],
+                      fasta_results$polymers[4], fasta_results$numns[4],
+                      fasta_results$numseqs[4],
+                      sep = "\t"
+                ),
+                "\n"
+            )
+            cat(
+                paste(results_row_names[5], fasta_results$starts[5],
+                      fasta_results$ends[5],
+                      fasta_results$nbases[5], fasta_results$ambigs[5],
+                      fasta_results$polymers[5], fasta_results$numns[5],
+                      fasta_results$numseqs[5],
+                      sep = "\t"
+                ),
+                "\n"
+            )
+            cat(
+                paste(results_row_names[6], fasta_results$starts[6],
+                      fasta_results$ends[6],
+                      fasta_results$nbases[6], fasta_results$ambigs[6],
+                      fasta_results$polymers[6], fasta_results$numns[6],
+                      fasta_results$numseqs[6],
+                      sep = "\t"
+                ),
+                "\n"
+            )
+            cat(
+                paste(results_row_names[7], fasta_results$starts[7],
+                      fasta_results$ends[7],
+                      fasta_results$nbases[7], fasta_results$ambigs[7],
+                      fasta_results$polymers[7], fasta_results$numns[7],
+                      fasta_results$numseqs[7],
+                      sep = "\t"
+                ),
+                "\n"
+            )
+            cat(paste(
+                results_row_names[8], fasta_results$starts[8], fasta_results$ends[8],
+                fasta_results$nbases[8], fasta_results$ambigs[8],
+                fasta_results$polymers[8], fasta_results$numns[8],
+                sep = "\t"
+            ), "\n")
+            cat("Unique seqs:\t", self$get_num_unique(), "\n")
+            cat("Total seqs:\t", self$get_num_seqs(), "\n")
+        }
+        return (fasta_results)
     },
 
     #' @description

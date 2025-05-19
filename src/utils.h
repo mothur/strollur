@@ -41,7 +41,6 @@ public:
         return (float)value / 100;
     }
 
-
 private:
 
 
