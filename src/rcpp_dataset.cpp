@@ -13,9 +13,10 @@ RCPP_MODULE(Dataset) {
     .field("is_aligned", &Dataset::isAligned, "Get dataset alignment status")
     .field("num_groups", &Dataset::numGroups, "Get number of groups in dataset")
     .field("num_unique", &Dataset::numUnique, "Get number of unique sequences")
+    .field("has_contigs_data", &Dataset::hasContigsData, "Get contigs data status")
+    .field("has_align_data", &Dataset::hasAlignData, "Get align data status")
 
     // ******* data transfer ******* //
-    .method("print", &Dataset::print, "Summary of dataset")
     .method("export", &Dataset::exportDataset, "Export list containing dataset")
     .method("get_pointer", &Dataset::getPointer, "get pointer to self")
 
@@ -31,7 +32,6 @@ RCPP_MODULE(Dataset) {
     .method("clear", &Dataset::clear, "Clear dataset")
     .method("merge_seqs", &Dataset::mergeSeqs,
     "Merge sequences")
-    .method("reinstate_seqs", &Dataset::reinstateSeqs, "Reinstate sequences")
     .method("remove_seqs", &Dataset::removeSeqs, "Remove sequences")
     .method("set_seqs", &Dataset::setSeqs, "Set sequence strings")
     .method("set_abunds", &Dataset::setAbundances, "Set sequence abundances")
@@ -55,8 +55,12 @@ RCPP_MODULE(Dataset) {
     "Get fasta summary report")
     .method("get_align_report", &Dataset::getAlignReport,
     "Get align report data: search_score, sim_score, longest_insert")
+    .method("get_align_summary", &Dataset::getAlignSummary,
+    "Get align summary report")
     .method("get_contigs_report", &Dataset::getContigsReport,
     "Get contigs report data: olengths, ostarts, oends, mismatches, ee")
+    .method("get_contigs_summary", &Dataset::getContigsSummary,
+    "Get contigs summary report")
 
     // 3 column table: id, group, abundance
     .method("get_sequence_abundance_table", &Dataset::getSequenceAbundanceTable,

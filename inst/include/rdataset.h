@@ -90,7 +90,7 @@ public:
     ~SeqAbundTable();
 
     void clear();
-    string print();
+
     // 2 or 3 columns: id, abundance, group (optional -
     //                                   added when table includes group data)
     // used to export SeqAbundTable
@@ -175,7 +175,10 @@ public:
 
     // public fields exposed through RCPP_MODULE
     string datasetName;
+
     bool isAligned;
+    bool hasContigsData, hasAlignData;
+
     int numGroups;
     long long numUnique;
     int processors;
@@ -192,14 +195,14 @@ public:
                  vector<string> c);
 
     // align_seqs will create searchScores, simScores and longestInserts
-    void addAlignReport(vector<string> n, vector<double> ss,
-                          vector<double> sims, vector<double> li);
+    void addAlignReport(vector<string>& n, vector<double>& ss,
+                          vector<double>& sims, vector<int>& li);
 
     // make_contigs will create overlapLengths, overlapStarts, overlapEnds,
     // mismatches, and expectedErrors
-    void addContigsReport(vector<string> n, vector<int> ol,
-                          vector<int> os, vector<int> oe,
-                          vector<int> m, vector<double> e);
+    void addContigsReport(vector<string>& n, vector<int>& ol,
+                          vector<int>& os, vector<int>& oe,
+                          vector<int>& m, vector<double>& e);
 
     // names, abundances, groups(optional)
     void assignSampleAbundance(vector<string> names,
@@ -208,13 +211,15 @@ public:
 
     // **** functions for summarizing dataset **** //
     // fasta summary data: starts, ends, lengths, ambigs, polymers, numns
-    vector<vector<int>> getFastaReport();
-    // contigs sumary data: olengths, ostarts, oends, mismatches, ee
+    Rcpp::DataFrame getFastaReport();
     Rcpp::DataFrame getFastaSummary();
-    // contigs sumary data: olengths, ostarts, oends, mismatches, ee
-    vector<vector<double>> getContigsReport();
+    // contigs report data: lengths, olengths, ostarts, oends, mismatches,
+    //                      numns, ee
+    Rcpp::DataFrame getContigsReport();
+    Rcpp::DataFrame getContigsSummary();
     // align summary data: search_score, sim_score, longest_insert
-    vector<vector<double>> getAlignReport();
+    Rcpp::DataFrame getAlignReport();
+    Rcpp::DataFrame getAlignSummary();
     // 3 columns: id, group, abundance
     Rcpp::DataFrame getSequenceAbundanceTable();
 
@@ -239,7 +244,6 @@ public:
     vector<vector<string> > getSeqsBySample(vector<string> group);
 
     // modifiers
-    void reinstateSeqs(vector<string> trashTags);
     void removeSeqs(vector<string> names, vector<string> trashTags);
     void mergeSeqs(vector<string>, string reason = "merged", string group = "");
 
@@ -256,13 +260,15 @@ private:
     vector<string> names, seqs, comments, trashCodes;
 
     // contigs report
-    vector<double> olengths, ostarts, oends, mismatches, ee;
+    vector<int> olengths, ostarts, oends, mismatches;
+    vector<double> ee;
 
     // fasta summary data
     vector<int> starts, ends, lengths, ambigs, polymers, numns;
 
     // alignment report
-    vector<double> search_score, sim_score, longest_insert;
+    vector<int> longestInsert;
+    vector<float> searchScore, simScore;
 
     // sequence taxonomy assignments
     vector<string> taxonomies;

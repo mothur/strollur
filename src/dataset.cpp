@@ -6,6 +6,8 @@
 /******************************************************************************/
 Dataset::Dataset(string n, int proc) : datasetName(n) {
     isAligned = false;
+    hasContigsData = false;
+    hasAlignData = false;
     numGroups = 0;
     numUnique = 0;
     totalBad = 0;
@@ -27,6 +29,8 @@ SEXP Dataset::getPointer() {
 /******************************************************************************/
 void Dataset::clear() {
     isAligned = false;
+    hasContigsData = false;
+    hasAlignData = false;
     numGroups = 0;
     numUnique = 0;
     totalBad = 0;
@@ -54,9 +58,9 @@ void Dataset::clear() {
     numns.clear();
 
     // alignment report
-    search_score.clear();
-    sim_score.clear();
-    longest_insert.clear();
+    searchScore.clear();
+    simScore.clear();
+    longestInsert.clear();
 
     // sequence taxonomy assignments
     taxonomies.clear();
@@ -73,12 +77,6 @@ void Dataset::clear() {
 /******************************************************************************/
 Rcpp::List Dataset::exportDataset(){
     Rcpp::List result;
-    // TODO
-    return result;
-}
-/******************************************************************************/
-string Dataset::print(){
-    string result = "";
     // TODO
     return result;
 }
@@ -172,17 +170,97 @@ vector<int> Dataset::getIndexes(vector<string>& ids) {
 }
 /******************************************************************************/
 // align_seqs will create searchScores, simScores and longestInserts
-void Dataset::addAlignReport(vector<string> n, vector<double> ss,
-                    vector<double> sims,
-                    vector<double> li) {}
+void Dataset::addAlignReport(vector<string>& n, vector<double>& ss,
+                    vector<double>& sims,
+                    vector<int>& li) {
+
+    set<int> sizes;
+    sizes.insert(n.size());
+    sizes.insert(ss.size());
+    sizes.insert(sims.size());
+    sizes.insert(li.size());
+    sizes.insert(numUnique);
+
+    if (sizes.size() > 1) {
+        string message = "[WARNING]: You must provide align report info for ";
+        message += "each sequence in the dataset, ignoring align report data.";
+        RcppThread::Rcout << endl << message << endl;
+    }else {
+        // create space
+        searchScore.resize(names.size(), 0);
+        simScore.resize(names.size(), 0);
+        longestInsert.resize(names.size(), 0);
+        hasAlignData = true;
+
+        for (int i = 0; i < n.size(); i++) {
+
+            auto it = seqIndex.find(n[i]);
+            if (it != seqIndex.end()) {
+                int index = it->second;
+                searchScore[index] = ss[index];
+                simScore[index] = sims[index];
+                longestInsert[index] = li[index];
+            }else{
+                string message = "[ERROR]: The dataset does not contain a ";
+                message += "sequence named " + n[i] + ", quitting.\n";
+                RcppThread::Rcout << endl << message;
+                return;
+            }
+        }
+    }
+
+}
 /******************************************************************************/
 // make_contigs will create overlapLengths, overlapStarts, overlapEnds,
 // mismatches, and expectedErrors
-void Dataset::addContigsReport(vector<string> n, vector<int> ol,
-                      vector<int> os,
-                      vector<int> oe,
-                      vector<int> m,
-                      vector<double> e) {}
+void Dataset::addContigsReport(vector<string>& n, vector<int>& ol,
+                      vector<int>& os,
+                      vector<int>& oe,
+                      vector<int>& m,
+                      vector<double>& e) {
+
+    set<int> sizes;
+    sizes.insert(n.size());
+    sizes.insert(ol.size());
+    sizes.insert(os.size());
+    sizes.insert(oe.size());
+    sizes.insert(m.size());
+    sizes.insert(e.size());
+    sizes.insert(numUnique);
+
+    if (sizes.size() > 1) {
+        string message = "[WARNING]: You must provide contigs report info for ";
+        message += "each sequence in the dataset, ignoring contigs report ";
+        message += "data.";
+        RcppThread::Rcout << endl << message << endl;
+    }else {
+        hasContigsData = true;
+        // create space
+        olengths.resize(names.size(), 0);
+        ostarts.resize(names.size(), 0);
+        oends.resize(names.size(), 0);
+        mismatches.resize(names.size(), 0);
+        ee.resize(names.size(), 0);
+
+        for (int i = 0; i < n.size(); i++) {
+
+            auto it = seqIndex.find(n[i]);
+            if (it != seqIndex.end()) {
+                int index = it->second;
+                olengths[index] = ol[index];
+                ostarts[index] = os[index];
+                oends[index] = oe[index];
+                mismatches[index] = m[index];
+                ee[index] = e[index];
+            }else{
+                string message = "[ERROR]: The dataset does not contain a ";
+                message += "sequence named " + n[i] + ", quitting.\n";
+                RcppThread::Rcout << endl << message;
+                return;
+            }
+        }
+    }
+}
 /******************************************************************************/
 // abundance functions
 Rcpp::DataFrame Dataset::getSequenceAbundanceTable() {
@@ -278,50 +356,128 @@ vector<vector<string> > Dataset::getSeqsBySample(vector<string> group){
     return result;
 }
 /******************************************************************************/
-void Dataset::reinstateSeqs(vector<string> trashTags){
-    // TODO
-}
-/******************************************************************************/
 void Dataset::removeSeqs(vector<string> names, vector<string> trashTags){
     // TODO
 }
 /******************************************************************************/
 // fasta summary data: starts, ends, lengths, ambigs, polymers, numns
-vector<vector<int>> Dataset::getFastaReport(){
-    vector<vector<int> > results;
+Rcpp::DataFrame Dataset::getFastaReport(){
 
-    results.push_back(select(starts, tableSeqs));
-    results.push_back(select(ends, tableSeqs));
-    results.push_back(select(lengths, tableSeqs));
-    results.push_back(select(ambigs, tableSeqs));
-    results.push_back(select(polymers, tableSeqs));
-    results.push_back(select(numns, tableSeqs));
+    Rcpp::DataFrame df = Rcpp::DataFrame::create(
+        Rcpp::Named("id") = select(names, tableSeqs),
+        Rcpp::_["start"] = select(starts, tableSeqs),
+        Rcpp::_["end"] = select(ends, tableSeqs),
+        Rcpp::_["length"] = select(lengths, tableSeqs),
+        Rcpp::_["ambig"] = select(ambigs, tableSeqs),
+        Rcpp::_["longest_homopolymer"] = select(polymers, tableSeqs),
+        Rcpp::_["num_n"] = select(numns, tableSeqs));
 
-    return results;
+    return df;
 }
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getFastaSummary() {
-    // create Summary object
+
     Summary* summary = new Summary(processors);
 
+    vector<vector<int> > report;
+
+    report.push_back(select(starts, tableSeqs));
+    report.push_back(select(ends, tableSeqs));
+    report.push_back(select(lengths, tableSeqs));
+    report.push_back(select(ambigs, tableSeqs));
+    report.push_back(select(polymers, tableSeqs));
+    report.push_back(select(numns, tableSeqs));
+
     Rcpp::DataFrame results = summary->summarizeFasta(
-        getFastaReport(), count->getSeqsAbunds(getIncludedNamesIndexes()));
+        report, count->getSeqsAbunds(getIncludedNamesIndexes()));
 
     delete summary;
 
     return results;
 }
 /******************************************************************************/
-vector<vector<double>> Dataset::getContigsReport(){
-    vector<vector<double> > result;
-    // TODO
-    return result;
+// contigs sumary data: olengths, ostarts, oends, mismatches, ee
+// report[0] = length, report[1] = overlap_length, report[2] = overlap_start,
+// report[3] = overlap_end, report[4] = mismatches, report[5] = num_ns,
+// report[6] = ee
+Rcpp::DataFrame Dataset::getContigsReport(){
+
+    if (hasContigsData){
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("id") = select(names, tableSeqs),
+            Rcpp::_["length"] = select(lengths, tableSeqs),
+            Rcpp::_["overlap_length"] = select(olengths, tableSeqs),
+            Rcpp::_["overlap_start"] = select(ostarts, tableSeqs),
+            Rcpp::_["overlap_end"] = select(oends, tableSeqs),
+            Rcpp::_["mismatches"] = select(mismatches, tableSeqs),
+            Rcpp::_["num_ns"] = select(numns, tableSeqs),
+            Rcpp::_["ee"] = select(ee, tableSeqs));
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
-vector<vector<double>> Dataset::getAlignReport(){
-    vector<vector<double> > result;
-    // TODO
-    return result;
+Rcpp::DataFrame Dataset::getContigsSummary() {
+
+    if (hasContigsData) {
+        Summary* summary = new Summary(processors);
+
+        vector<vector<int> > report;
+        report.push_back(select(lengths, tableSeqs));
+        report.push_back(select(olengths, tableSeqs));
+        report.push_back(select(ostarts, tableSeqs));
+        report.push_back(select(oends, tableSeqs));
+        report.push_back(select(mismatches, tableSeqs));
+        report.push_back(select(numns, tableSeqs));
+
+        Rcpp::DataFrame results = summary->summarizeContigs(
+            report, count->getSeqsAbunds(getIncludedNamesIndexes()));
+
+        delete summary;
+
+        return results;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
+// search_score, sim_score, longest_insert
+Rcpp::DataFrame Dataset::getAlignReport(){
+
+    if (hasAlignData) {
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("id") = select(names, tableSeqs),
+            Rcpp::_["search_score"] = select(searchScore, tableSeqs),
+            Rcpp::_["sim_score"] = select(simScore, tableSeqs),
+            Rcpp::_["longest_insert"] = select(longestInsert, tableSeqs));
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
+Rcpp::DataFrame Dataset::getAlignSummary() {
+
+    if (hasAlignData) {
+        Summary* summary = new Summary(processors);
+
+        vector<vector<float> > report;
+        report.push_back(select(searchScore, tableSeqs));
+        report.push_back(select(simScore, tableSeqs));
+
+        Rcpp::DataFrame results = summary->summarizeAlign(
+            report, select(longestInsert, tableSeqs),
+            count->getSeqsAbunds(getIncludedNamesIndexes()));
+
+        delete summary;
+
+        return results;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 void Dataset::mergeSeqs(vector<string> names, string reason, string group){
