@@ -130,7 +130,8 @@ void Dataset::addSeqs(vector<string> n, vector<string> s, vector<string> c) {
 // assumes same size, R side will check user inputs for us
 void Dataset::assignSampleAbundance(vector<string> ids,
                            vector<int> abunds,
-                           vector<string> samples) {
+                           vector<string> samples,
+                           vector<string> treatments) {
 
     vector<string> uniqueNames = unique(ids);
 
@@ -146,7 +147,7 @@ void Dataset::assignSampleAbundance(vector<string> ids,
 
     vector<int> idIndexes = getIndexes(ids);
 
-    count->assignSampleAbundance(idIndexes, abunds, samples);
+    count->assignSampleAbundance(idIndexes, abunds, samples, treatments);
 
     numGroups = count->getNumGroups();
 }
@@ -262,7 +263,8 @@ void Dataset::addContigsReport(vector<string>& n, vector<int>& ol,
     }
 }
 /******************************************************************************/
-// abundance functions
+// ids, abundances, group(optional), treatment(optional)
+// This table represents mothur's count and design files.
 Rcpp::DataFrame Dataset::getSequenceAbundanceTable() {
     Rcpp::DataFrame results;
     // TODO
@@ -278,8 +280,16 @@ vector<string> Dataset::getGroups(string name){
     return count->getGroups(index);
 }
 /******************************************************************************/
-vector<int> Dataset::getGroupTotals(string name){
+vector<string> Dataset::getTreatments(){
+    return count->getTreatments();
+}
+/******************************************************************************/
+vector<int> Dataset::getGroupTotals(){
     return count->getGroupTotals();
+}
+/******************************************************************************/
+vector<int> Dataset::getTreatmentTotals(){
+    return count->getTreatmentTotals();
 }
 /******************************************************************************/
 long long Dataset::getTotal(string group){

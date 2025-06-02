@@ -103,7 +103,8 @@ public:
     // names, abundances, groups (optional)
     void assignSampleAbundance(vector<int> names,
                                vector<int> abunds,
-                               vector<string> groups = nullVector);
+                               vector<string> groups = nullVector,
+                               vector<string> treatments = nullVector);
 
     // set abundance parsed by sample - for datasets WITH samples
     void setAbundance(int name, vector<int> abunds);
@@ -112,8 +113,6 @@ public:
 
     // removes sequence from total and group totals
     void removeSeq(int name);
-    // adds sequence count back into total and group totals
-    void reinstateSeq(int name);
     // adds sequences counts of seqsToMerge[1-n] into seqsToMerge[0], optional
     // group will only merge counts for that sample
     void mergeSeqs(vector<int> seqsToMerge, string group = "");
@@ -129,11 +128,15 @@ public:
     int getTotal(string group = "");
 
     int getNumGroups();
+    int getNumTreatments();
     // vector containing total abundance for each sample
     vector<int> getGroupTotals();
+    // vector containing total abundance for each treatment
+    vector<int> getTreatmentTotals();
     // vector containing names of samples
     // if name is provided then the names of samples where the seq is present
     vector<string> getGroups(int name = -1);
+    vector<string> getTreatments();
     // does the table contain a group
     // if name provided, does the sequence have this group
     bool hasGroup(string group, int name = -1);
@@ -145,7 +148,7 @@ private:
     vector<seqCount> counts;
     // numGroups is 1 for datasets without groups
     // numGroups equals the number of "good" groups in dataset
-    int total, numGroups;
+    int total, numGroups, numTreatments;
 
     // sample name to index.
     map<string, int> groupIndex;
@@ -154,10 +157,20 @@ private:
     // are samples "present" in table
     vector<bool> tableGroups;
 
-    bool hasGroupData;
+    // sample name to index.
+    map<string, int> treatmentIndex;
+    // total abundance for each sample
+    vector<int> treatmentTotals;
+    // are samples "present" in table
+    vector<bool> tableTreatments;
+    // sample name to treatment
+    map<string, string> groupTreatment;
+
+    bool hasGroupData, hasTreatments;
 
     int getSparseIndex(int, int);
     void addGroups(vector<string> groups);
+    void addTreatments(vector<string> treatments);
 
 };
 
@@ -207,7 +220,8 @@ public:
     // names, abundances, groups(optional)
     void assignSampleAbundance(vector<string> names,
                                vector<int> abunds,
-                               vector<string> groups);
+                               vector<string> groups = nullVector,
+                               vector<string> treatments = nullVector);
 
     // **** functions for summarizing dataset **** //
     // fasta summary data: starts, ends, lengths, ambigs, polymers, numns
@@ -233,7 +247,9 @@ public:
 
     // group functions
     vector<string> getGroups(string name = "");
-    vector<int> getGroupTotals(string name = "");
+    vector<string> getTreatments();
+    vector<int> getGroupTotals();
+    vector<int> getTreatmentTotals();
     long long getTotal(string group = "");
     bool hasGroup(string group);
 

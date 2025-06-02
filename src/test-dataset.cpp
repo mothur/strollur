@@ -313,7 +313,7 @@ context("Dataset class C++ unit tests") {
         // TODO - add tests for getNames and getSeqs with group
     }
 
-    test_that("Tests addSeqs, assignSampleAbundance, getGroupTotals") {
+    test_that("Tests addSeqs, assignSampleAbundance, getGroupTotals, getTreatments, getTreatmentTotals") {
 
         Dataset data("mydata", 1);
 
@@ -386,6 +386,40 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getGroupTotals() == groupTotals);
         expect_true(data.getTotal() == 1320);
+
+        // add with treatment assignments
+        vector<string> treatments(10, "");
+        treatments[0] = "early";
+        treatments[1] = "early";
+        treatments[2] = "late";
+        treatments[3] = "early";
+        treatments[4] = "early";
+        treatments[5] = "late";
+        treatments[6] = "early";
+        treatments[7] = "early";
+        treatments[8] = "early";
+        treatments[9] = "late";
+
+        data.assignSampleAbundance(ids, abunds, groups, treatments);
+
+        groupTotals[0] = 301;
+        groupTotals[1] = 465;
+        groupTotals[2] = 554;
+
+        expect_true(data.getGroupTotals() == groupTotals);
+        expect_true(data.getTotal() == 1320);
+
+        vector<int> treatmentTotals(2, 0);
+        treatmentTotals[0] = 766;
+        treatmentTotals[1] = 554;
+
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+
+        vector<string> uniqueTreatments(2, "");
+        uniqueTreatments[0] = "early";
+        uniqueTreatments[1] = "late";
+
+        expect_true(data.getTreatments() == uniqueTreatments);
 
     }
 

@@ -4,21 +4,30 @@
 /******************************************************************************/
 SeqAbundTable::SeqAbundTable() {
     hasGroupData = false;
+    hasTreatments = false;
     total = 0;
     numGroups = 0;
+    numTreatments = 0;
 }
 /******************************************************************************/
 SeqAbundTable::~SeqAbundTable() {}
 /******************************************************************************/
 void SeqAbundTable::clear() {
     hasGroupData = false;
+    hasTreatments = false;
     total = 0;
     numGroups = 0;
+    numTreatments = 0;
 
     counts.clear();
     groupIndex.clear();
     groupTotals.clear();
     tableGroups.clear();
+
+    treatmentIndex.clear();
+    treatmentTotals.clear();
+    tableTreatments.clear();
+    groupTreatment.clear();
 }
 /******************************************************************************/
 // the names are the indexes in dataset
@@ -42,6 +51,10 @@ void SeqAbundTable::addSeqs(vector<int>& names) {
         tableGroups.push_back(true);
         numGroups = 1;
 
+        tableTreatments.clear();
+        tableTreatments.push_back(true);
+        numTreatments = 1;
+
         total += names.size();
     }
 }
@@ -62,31 +75,67 @@ void SeqAbundTable::addGroups(vector<string> groups) {
     hasGroupData = true;
 }
 /******************************************************************************/
-// names, abundances, groups (optional)
+// private function
+void SeqAbundTable::addTreatments(vector<string> treatments) {
+    // store groups alphabetically
+    sort(treatments.begin(), treatments.end());
+
+    // all groups start off as "good"
+    tableTreatments.resize(treatments.size(), true);
+    treatmentTotals.resize(treatments.size(), 0);
+
+    for (int i = 0; i < treatments.size(); i++) {
+        treatmentIndex[treatments[i]] = i;
+    }
+
+    hasTreatments = true;
+}
+/******************************************************************************/
+// names, abundances, groups (optional), treatment (optional)
 void SeqAbundTable::assignSampleAbundance(vector<int> names,
                            vector<int> abunds,
-                           vector<string> groups) {
+                           vector<string> groups,
+                           vector<string> treatments) {
 
     clear();
 
-    if (groups.size() == 0) {
+    if ((groups.size() == 0) && (treatments.size() == 0)) {
         hasGroupData = false;
         tableGroups.push_back(true);
+        tableTreatments.push_back(true);
         numGroups = 1; // placeholder for sparse abundances
+        numTreatments = 1;
     }else{
         vector<string> uniqueGroups = unique(groups);
+        vector<string> uniqueTreatments = unique(treatments);
 
         if (uniqueGroups.size() > 1) {
             addGroups(uniqueGroups);
             numGroups = uniqueGroups.size();
+
+            if (uniqueTreatments.size() > 1) {
+                addTreatments(uniqueTreatments);
+                numTreatments = uniqueTreatments.size();
+            }else if ((uniqueTreatments.size() == 1) &&
+                (uniqueTreatments[0] != "")) {
+                addTreatments(uniqueTreatments);
+                numTreatments = 1;
+            }else {
+                tableTreatments.push_back(true);
+                numTreatments = 1;
+            }
         }else if ((uniqueGroups.size() == 1) && (uniqueGroups[0] != "")) {
             addGroups(uniqueGroups);
             numGroups = 1;
+            numTreatments = 1;
         }else{
             // empty strings passed in for groups, ignore
             hasGroupData = false;
+            hasTreatments = false;
             tableGroups.push_back(true);
+            tableTreatments.push_back(true);
             numGroups = 1; // placeholder for sparse abundances
+            numTreatments = 1;
         }
     }
 
@@ -114,6 +163,21 @@ void SeqAbundTable::assignSampleAbundance(vector<int> names,
             counts[names[i]] = thisSeq;
         }
         total = accumulate(abunds.begin(), abunds.end(), 0);
+    }
+
+    if (hasTreatments) {
+        // create group to treatment map
+        for (int i = 0; i < groups.size(); i++) {
+            groupTreatment[groups[i]] = treatments[i];
+        }
+
+        // fill treatment totals
+        for (auto it = groupIndex.begin(); it != groupIndex.end(); it++) {
+            string treatment = groupTreatment[it->first];
+            int tindex = treatmentIndex[treatment];
+
+            treatmentTotals[tindex] += groupTotals[it->second];
+        }
     }
 }
 /******************************************************************************/
@@ -221,11 +285,33 @@ vector<int> SeqAbundTable::getGroupTotals() {
     return totals;
 }
 /******************************************************************************/
+vector<int> SeqAbundTable::getTreatmentTotals() {
+    vector<int> totals;
+    if (hasTreatments) {
+        totals = select(treatmentTotals, tableTreatments);
+    }
+    return totals;
+}
+/******************************************************************************/
 int SeqAbundTable::getNumGroups() {
     if (hasGroupData) {
         return numGroups;
     }
     return 0;
+}
+/******************************************************************************/
+vector<string> SeqAbundTable::getTreatments() {
+    vector<string> treatments;
+
+    if (hasTreatments) {
+        for (auto it = treatmentIndex.begin(); it != treatmentIndex.end(); it++) {
+            if (tableTreatments[it->second]) {
+                treatments.push_back(it->first);
+            }
+        }
+    }
+
+    return treatments;
 }
 /******************************************************************************/
 vector<string> SeqAbundTable::getGroups(int name) {

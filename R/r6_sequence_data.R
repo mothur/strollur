@@ -554,6 +554,13 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Get the number of treatments in the dataset
+    #' @return An integer
+    get_num_treatments = function() {
+        self$data$get_num_treatments()
+    },
+
+    #' @description
     #' Get number of unique sequences in dataset
     #' @return An integer
     get_num_unique = function() {
@@ -595,6 +602,13 @@ sequence_data <- R6Class("sequence_data",
     #' @return List of data.tables
     get_taxonomy_tables = function() {
       # TODO
+    },
+
+    #' @description
+    #' Get names of treatments in the dataset
+    #' @return A character vector
+    get_treatments = function() {
+        self$data$get_treatments()
     },
 
     #' @description

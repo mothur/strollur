@@ -48,6 +48,9 @@ RCPP_MODULE(Dataset) {
     "Get group totals")
     .method("has_group", &Dataset::hasGroup,
     "Determine if dataset contains sample")
+    .method("get_treatments", &Dataset::getTreatments, "Get treatments in dataset")
+    .method("get_treatment_totals", &Dataset::getTreatmentTotals,
+    "Get treatment totals")
 
     .method("get_fasta_report", &Dataset::getFastaReport,
     "Get fasta report data: starts, ends, lengths, ambigs, homopolymers, numns")
