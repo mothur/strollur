@@ -228,6 +228,9 @@ public:
     Rcpp::DataFrame getSequenceReport();
     // sequence summary summarizes sequence, contigs and align reports
     Rcpp::List getSequenceSummary();
+    // trashCode, uniqueCount, totalCount
+    Rcpp::DataFrame getScrapSummary();
+    Rcpp::DataFrame getScrapReport();
     // contigs report data: lengths, olengths, ostarts, oends, mismatches,
     //                      numns, ee
     Rcpp::DataFrame getContigsReport();

@@ -159,48 +159,47 @@ test_that("test R6 sequence_data - addSeqs, assign samples", {
   expect_equal(data$get_num_sequences(), 1320)
   # unique
   expect_equal(data$get_num_sequences(TRUE), 4)
-  # unique + sample
+  # unique and sample
   expect_equal(data$get_num_sequences(TRUE, "sample2"), 4)
   expect_equal(data$get_num_sequences(TRUE, "sample3"), 3)
-  # total + sample
+  # total and sample
   expect_equal(data$get_num_sequences(sample = "sample2"), 301)
 })
 
 test_that("test R6 sequence_data - print", {
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
 
-    names <- c("seq1", "seq2", "seq3", "seq4")
-    seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+  ids <- c(
+    "seq1", "seq1", "seq1",
+    "seq2", "seq2", "seq2",
+    "seq3", "seq3",
+    "seq4", "seq4"
+  )
+  samples <- c(
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3",
+    "sample2", "sample4"
+  )
+  abundances <- c(
+    250, 400, 500,
+    25, 40, 50,
+    25, 25,
+    1, 4
+  )
+  treatments <- c(
+    "early", "early", "late",
+    "early", "early", "late",
+    "early", "early",
+    "early", "late"
+  )
 
-    ids <- c(
-        "seq1", "seq1", "seq1",
-        "seq2", "seq2", "seq2",
-        "seq3", "seq3",
-        "seq4", "seq4"
-    )
-    samples <- c(
-        "sample2", "sample3", "sample4",
-        "sample2", "sample3", "sample4",
-        "sample2", "sample3",
-        "sample2", "sample4"
-    )
-    abundances <- c(
-        250, 400, 500,
-        25, 40, 50,
-        25, 25,
-        1, 4
-    )
-    treatments <- c(
-        "early", "early", "late",
-        "early", "early", "late",
-        "early", "early",
-        "early", "late"
-    )
+  data <- sequence_data$new("mydata")
+  data$add_seqs(names, seqs)
+  data$assign_sequence_abundance(ids, abundances, samples, treatments)
 
-    data <- sequence_data$new("mydata")
-    data$add_seqs(names, seqs)
-    data$assign_sequence_abundance(ids, abundances, samples, treatments)
-
-    expect_snapshot(
-        waldo::compare(data$print(), data$print())
-    )
+  expect_snapshot(
+    waldo::compare(data$print(), data$print())
+  )
 })

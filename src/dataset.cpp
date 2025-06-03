@@ -157,24 +157,6 @@ void Dataset::assignSequenceAbundance(vector<string> ids,
     numTreatments = count->getNumTreatments();
 }
 /******************************************************************************/
-vector<int> Dataset::getIndexes(vector<string>& ids) {
-    vector<int> indexes(ids.size(), -1);
-    map<string, int>::iterator it;
-
-    for (int i = 0; i < ids.size(); i++) {
-
-        it = seqIndex.find(ids[i]);
-        if (it != seqIndex.end()) {
-            indexes[i] = it->second;
-        }else{
-            string message = "[ERROR]: The dataset does not contain a ";
-            message += "sequence named " + ids[i] + ".\n";
-            RcppThread::Rcout << endl << message;
-        }
-    }
-    return indexes;
-}
-/******************************************************************************/
 // align_seqs will create searchScores, simScores and longestInserts
 void Dataset::addAlignReport(vector<string>& n, vector<double>& ss,
                     vector<double>& sims,
@@ -268,43 +250,97 @@ void Dataset::addContigsReport(vector<string>& n, vector<int>& ol,
     }
 }
 /******************************************************************************/
-// ids, abundances, sample(optional), treatment(optional)
-// This table represents mothur's count and design files.
-Rcpp::DataFrame Dataset::getSequenceAbundanceTable() {
-    return count->getSequenceAbundanceTable(select(names, tableSeqs),
-                                            getIncludedNamesIndexes());
-}
-/******************************************************************************/
-// sample functions
-vector<string> Dataset::getSamples(){
-    return count->getSamples();
-}
-/******************************************************************************/
-vector<string> Dataset::getTreatments(){
-    return count->getTreatments();
-}
-/******************************************************************************/
-vector<int> Dataset::getSampleTotals(){
-    return count->getSampleTotals();
-}
-/******************************************************************************/
-vector<int> Dataset::getTreatmentTotals(){
-    return count->getTreatmentTotals();
-}
-/******************************************************************************/
-long long Dataset::getTotal(string sample){
-    return count->getTotal(sample);
-}
-/******************************************************************************/
-long long Dataset::getUniqueTotal(string sample){
-    if (sample == "") {
-        return numUnique;
+int Dataset::getAbund(string name, string sample){
+    int abund = 0;
+    auto it = seqIndex.find(name);
+    if (it != seqIndex.end()) {
+        abund = count->getAbund(it->second, sample);
     }
-    return getNames(sample).size();
+    return abund;
 }
 /******************************************************************************/
-bool Dataset::hasSample(string sample){
-    return count->hasSample(sample);
+vector<int> Dataset::getAbunds(string name){
+    vector<int> abunds;
+    auto it = seqIndex.find(name);
+    if (it != seqIndex.end()) {
+        abunds = count->getAbunds(it->second);
+    }
+    return abunds;
+}
+/******************************************************************************/
+int Dataset::getAlignedLength(vector<string> seqs) {
+    int length = -1;
+
+
+    return length;
+}
+/******************************************************************************/
+// search_score, sim_score, longest_insert
+Rcpp::DataFrame Dataset::getAlignReport(){
+
+    if (hasAlignData) {
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("id") = select(names, tableSeqs),
+            Rcpp::_["search_score"] = select(searchScore, tableSeqs),
+            Rcpp::_["sim_score"] = select(simScore, tableSeqs),
+            Rcpp::_["longest_insert"] = select(longestInsert, tableSeqs));
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
+// contigs sumary data: olengths, ostarts, oends, mismatches, ee
+// report[0] = length, report[1] = overlap_length, report[2] = overlap_start,
+// report[3] = overlap_end, report[4] = mismatches, report[5] = num_ns,
+// report[6] = ee
+Rcpp::DataFrame Dataset::getContigsReport(){
+
+    if (hasContigsData){
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("id") = select(names, tableSeqs),
+            Rcpp::_["length"] = select(lengths, tableSeqs),
+            Rcpp::_["overlap_length"] = select(olengths, tableSeqs),
+            Rcpp::_["overlap_start"] = select(ostarts, tableSeqs),
+            Rcpp::_["overlap_end"] = select(oends, tableSeqs),
+            Rcpp::_["mismatches"] = select(mismatches, tableSeqs),
+            Rcpp::_["num_ns"] = select(numns, tableSeqs),
+            Rcpp::_["ee"] = select(ee, tableSeqs));
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
+// returns indexes of "good" seqs in table
+vector<int> Dataset::getIncludedNamesIndexes() {
+    vector<int> included;
+    for (int i = 0; i < tableSeqs.size(); i++) {
+        if (tableSeqs[i]) {
+            included.push_back(i);
+        }
+    }
+    return included;
+}
+/******************************************************************************/
+vector<int> Dataset::getIndexes(vector<string>& ids) {
+    vector<int> indexes(ids.size(), -1);
+    map<string, int>::iterator it;
+
+    for (int i = 0; i < ids.size(); i++) {
+
+        it = seqIndex.find(ids[i]);
+        if (it != seqIndex.end()) {
+            indexes[i] = it->second;
+        }else{
+            string message = "[ERROR]: The dataset does not contain a ";
+            message += "sequence named " + ids[i] + ".\n";
+            RcppThread::Rcout << endl << message;
+        }
+    }
+    return indexes;
 }
 /******************************************************************************/
 vector<string> Dataset::getNames(string sample){
@@ -340,6 +376,85 @@ vector<vector<string> > Dataset::getNamesBySample(vector<string> samples){
     return result;
 }
 /******************************************************************************/
+// sample functions
+vector<string> Dataset::getSamples(){
+    return count->getSamples();
+}
+/******************************************************************************/
+vector<int> Dataset::getSampleTotals(){
+    return count->getSampleTotals();
+}
+/******************************************************************************/
+// id, trashCode
+Rcpp::DataFrame Dataset::getScrapReport() {
+
+    if (badAccnos.size() != 0) {
+        vector<string> badNames(uniqueBad, "");
+        vector<string> badCodes(uniqueBad, "");
+
+        int next = 0;
+        for (int i = 0; i < trashCodes.size(); i++) {
+            if (trashCodes[i] != "") {
+              badNames[next] = names[i];
+              badCodes[next] = trashCodes[i];
+              next++;
+            }
+        }
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("id") = badNames,
+            Rcpp::_["trash_code"] = badCodes);
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
+// trashCode, uniqueCount, totalCount
+Rcpp::DataFrame Dataset::getScrapSummary() {
+
+    if (badAccnos.size() != 0) {
+        vector<string> codes(badAccnos.size(), "");
+        vector<int> uniqueCounts(badAccnos.size(), 0);
+        vector<int> totalCounts(badAccnos.size(), 0);
+
+        int index = 0;
+        for (auto it = badAccnos.begin(); it != badAccnos.end(); it++) {
+            codes[index] = it->first;
+            uniqueCounts[index] = it->second[0];
+            totalCounts[index] = it->second[1];
+            index++;
+        }
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("trash_code") = codes,
+            Rcpp::_["unique_count"] = uniqueCounts,
+            Rcpp::_["total_count"] = totalCounts);
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
+// ids, abundances, sample(optional), treatment(optional)
+// This table represents mothur's count and design files.
+Rcpp::DataFrame Dataset::getSequenceAbundanceTable() {
+    return count->getSequenceAbundanceTable(select(names, tableSeqs),
+                                            getIncludedNamesIndexes());
+}
+/******************************************************************************/
+// total abundance for each sequence
+vector<int> Dataset::getSeqsAbunds(){
+    return count->getSeqsAbunds(getIncludedNamesIndexes());
+}
+/******************************************************************************/
+vector<vector<int>> Dataset::getSeqsAbundsBySample(){
+    vector<vector<int> > result;
+    // TODO
+    return result;
+}
+/******************************************************************************/
 vector<string> Dataset::getSeqs(string sample){
     vector<string> included;
 
@@ -371,10 +486,6 @@ vector<vector<string> > Dataset::getSeqsBySample(vector<string> samples){
     vector<vector<string> > result;
     // TODO
     return result;
-}
-/******************************************************************************/
-void Dataset::removeSeqs(vector<string> names, vector<string> trashTags){
-    // TODO
 }
 /******************************************************************************/
 // fasta summary data: starts, ends, lengths, ambigs, polymers, numns
@@ -446,101 +557,45 @@ Rcpp::List Dataset::getSequenceSummary() {
 
     delete summary;
 
+    Rcpp::DataFrame scrap = getScrapSummary();
+    if (scrap.size() != 0) {
+        result.push_back(scrap);
+        result_names.push_back("scrap_summary");
+    }
+
     result.attr("names") = result_names;
     return result;
 }
 /******************************************************************************/
-// contigs sumary data: olengths, ostarts, oends, mismatches, ee
-// report[0] = length, report[1] = overlap_length, report[2] = overlap_start,
-// report[3] = overlap_end, report[4] = mismatches, report[5] = num_ns,
-// report[6] = ee
-Rcpp::DataFrame Dataset::getContigsReport(){
-
-    if (hasContigsData){
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("id") = select(names, tableSeqs),
-            Rcpp::_["length"] = select(lengths, tableSeqs),
-            Rcpp::_["overlap_length"] = select(olengths, tableSeqs),
-            Rcpp::_["overlap_start"] = select(ostarts, tableSeqs),
-            Rcpp::_["overlap_end"] = select(oends, tableSeqs),
-            Rcpp::_["mismatches"] = select(mismatches, tableSeqs),
-            Rcpp::_["num_ns"] = select(numns, tableSeqs),
-            Rcpp::_["ee"] = select(ee, tableSeqs));
-
-        return df;
-    }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+vector<string> Dataset::getTreatments(){
+    return count->getTreatments();
 }
 /******************************************************************************/
-// search_score, sim_score, longest_insert
-Rcpp::DataFrame Dataset::getAlignReport(){
-
-    if (hasAlignData) {
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("id") = select(names, tableSeqs),
-            Rcpp::_["search_score"] = select(searchScore, tableSeqs),
-            Rcpp::_["sim_score"] = select(simScore, tableSeqs),
-            Rcpp::_["longest_insert"] = select(longestInsert, tableSeqs));
-
-        return df;
+vector<int> Dataset::getTreatmentTotals(){
+    return count->getTreatmentTotals();
+}
+/******************************************************************************/
+long long Dataset::getTotal(string sample){
+    return count->getTotal(sample);
+}
+/******************************************************************************/
+long long Dataset::getUniqueTotal(string sample){
+    if (sample == "") {
+        return numUnique;
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return getNames(sample).size();
+}
+/******************************************************************************/
+bool Dataset::hasSample(string sample){
+    return count->hasSample(sample);
 }
 /******************************************************************************/
 void Dataset::mergeSeqs(vector<string> names, string reason, string sample){
     // TODO
 }
 /******************************************************************************/
-int Dataset::getAbund(string name, string sample){
-    int abund = 0;
-    auto it = seqIndex.find(name);
-    if (it != seqIndex.end()) {
-        abund = count->getAbund(it->second, sample);
-    }
-    return abund;
-}
-/******************************************************************************/
-vector<int> Dataset::getAbunds(string name){
-    vector<int> abunds;
-    auto it = seqIndex.find(name);
-    if (it != seqIndex.end()) {
-       abunds = count->getAbunds(it->second);
-    }
-    return abunds;
-}
-/******************************************************************************/
-// returns indexes of "good" seqs in table
-vector<int> Dataset::getIncludedNamesIndexes() {
-    vector<int> included;
-    for (int i = 0; i < tableSeqs.size(); i++) {
-        if (tableSeqs[i]) {
-            included.push_back(i);
-        }
-    }
-    return included;
-}
-/******************************************************************************/
-// total abundance for each sequence
-vector<int> Dataset::getSeqsAbunds(){
-    return count->getSeqsAbunds(getIncludedNamesIndexes());
-}
-/******************************************************************************/
-vector<vector<int>> Dataset::getSeqsAbundsBySample(){
-    vector<vector<int> > result;
+void Dataset::removeSeqs(vector<string> names, vector<string> trashTags){
     // TODO
-    return result;
-}
-/******************************************************************************/
-void Dataset::setSeqs(vector<string> n, vector<string> s,
-             vector<string> c){
-    names = n;
-    seqs = s;
-    if (c.size() == 0) {
-        c.resize(names.size(), "");
-    }
-    comments = c;
 }
 /******************************************************************************/
 
@@ -549,11 +604,14 @@ void Dataset::setAbundances(vector<string> names, vector<int> abunds,
     // TODO
 }
 /******************************************************************************/
-int Dataset::getAlignedLength(vector<string> seqs) {
-    int length = -1;
-
-
-    return length;
+void Dataset::setSeqs(vector<string> n, vector<string> s,
+                      vector<string> c){
+    names = n;
+    seqs = s;
+    if (c.size() == 0) {
+        c.resize(names.size(), "");
+    }
+    comments = c;
 }
 /******************************************************************************/
 

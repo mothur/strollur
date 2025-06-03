@@ -88,11 +88,11 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
 \item \href{#method-sequence_data-get_accnos_report}{\code{sequence_data$get_accnos_report()}}
-\item \href{#method-sequence_data-get_accnos_summary}{\code{sequence_data$get_accnos_summary()}}
 \item \href{#method-sequence_data-get_align_report}{\code{sequence_data$get_align_report()}}
 \item \href{#method-sequence_data-get_contigs_report}{\code{sequence_data$get_contigs_report()}}
 \item \href{#method-sequence_data-get_count_table}{\code{sequence_data$get_count_table()}}
 \item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
+\item \href{#method-sequence_data-get_scrap_report}{\code{sequence_data$get_scrap_report()}}
 \item \href{#method-sequence_data-get_sequence_report}{\code{sequence_data$get_sequence_report()}}
 \item \href{#method-sequence_data-get_sequence_summary}{\code{sequence_data$get_sequence_summary()}}
 \item \href{#method-sequence_data-get_samples}{\code{sequence_data$get_samples()}}
@@ -301,26 +301,6 @@ data.table
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_accnos_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_accnos_summary}{}}}
-\subsection{Method \code{get_accnos_summary()}}{
-Get summary of eliminated sequences
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_accnos_summary(silent = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{silent}}{Default = FALSE, meaning print accnos summary}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.table
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_align_report"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_align_report}{}}}
 \subsection{Method \code{get_align_report()}}{
@@ -374,6 +354,20 @@ Get dataset name
 
 \subsection{Returns}{
 String
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_scrap_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_scrap_report}{}}}
+\subsection{Method \code{get_scrap_report()}}{
+Get report containing the scrapped sequences -
+ids, trash_codes
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_scrap_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
 }
 }
 \if{html}{\out{<hr>}}

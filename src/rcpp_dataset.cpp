@@ -61,6 +61,8 @@ RCPP_MODULE(Dataset) {
     "Get align report data: search_score, sim_score, longest_insert")
     .method("get_contigs_report", &Dataset::getContigsReport,
     "Get contigs report data: olengths, ostarts, oends, mismatches, ee")
+    .method("get_scrap_report", &Dataset::getScrapReport,
+    "Get scrap report data: id, trash_code")
 
     // 3 column table: id, sample, abundance
     .method("get_sequence_abundance_table", &Dataset::getSequenceAbundanceTable,

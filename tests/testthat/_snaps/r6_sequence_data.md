@@ -3,8 +3,6 @@
     Code
       waldo::compare(data$print(), data$print())
     Output
-      
-      
       		start	end	length	ambigs	polymer	num_ns	numseqs
       Minimum:	1	5	5	0	2	0	1 
       2.5%-tile:	1	5	5	0	2	0	34 
@@ -31,8 +29,6 @@
       Number of unique seqs: 4 
       Total number of seqs: 1320 
        
-      
-      
       		start	end	length	ambigs	polymer	num_ns	numseqs
       Minimum:	1	5	5	0	2	0	1 
       2.5%-tile:	1	5	5	0	2	0	34 

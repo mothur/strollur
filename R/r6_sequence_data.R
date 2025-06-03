@@ -50,8 +50,6 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get summary of sequence data
     print = function() {
-      self$get_accnos_summary()
-      cat("\n\n")
       self$get_sequence_summary()
       cat("\n\n")
       self$get_sample_summary()
@@ -86,7 +84,7 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Add sequence abundance data with optional sample and treatment assignments
+    #' Add sequence abundance data with optional sample / treatment assignments
     #' @param names a vector of sequence names
     #' @param abundances a vector of sequence abundances
     #' @param samples a vector of sample assignments (optional)
@@ -175,14 +173,6 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get summary of eliminated sequences
-    #' @param silent Default = FALSE, meaning print accnos summary
-    #' @return data.table
-    get_accnos_summary = function(silent = FALSE) {
-      # TODO
-    },
-
-    #' @description
     #' Get report containing align report table -
     #' ids, search_scores, sim_scores, longest_insert
     #' @return data.table
@@ -221,6 +211,14 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Get report containing the scrapped sequences -
+    #' ids, trash_codes
+    #' @return data.table
+    get_scrap_report = function() {
+      scrap_report <- self$data$get_scrap_report()
+    },
+
+    #' @description
     #' Get report containing the sequence report table -
     #' ids, starts, ends, lengths, ambigs, homopolymers, numns
     #' @return data.table
@@ -244,153 +242,153 @@ sequence_data <- R6Class("sequence_data",
       rownames(results[[1]]) <- results_row_names
 
       if (self$data$has_contigs_data) {
-          rownames(results$contigs_summary) <- results_row_names
+        rownames(results$contigs_summary) <- results_row_names
 
-          # if you have summary results to print
-          if ((length(results$contigs_summary$ostarts) == 8) && (!silent)) {
-              cat("\t\toverlap_start\toverlap_end\tlength\toverlap_length\t")
-              cat("mismatches\tnum_ns\tnumseqs\n")
-              cat(paste(
-                  results_row_names[1], results$contigs_summary$ostarts[1],
-                  results$contigs_summary$oends[1],
-                  results$contigs_summary$lengths[1],
-                  results$contigs_summary$olengths[1],
-                  results$contigs_summary$mismatches[1],
-                  results$contigs_summary$numns[1],
-                  results$contigs_summary$numseqs[1],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[2], results$contigs_summary$ostarts[2],
-                  results$contigs_summary$oends[2],
-                  results$contigs_summary$lengths[2],
-                  results$contigs_summary$olengths[2],
-                  results$contigs_summary$mismatches[2],
-                  results$contigs_summary$numns[2],
-                  results$contigs_summary$numseqs[2],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[3], results$contigs_summary$ostarts[3],
-                  results$contigs_summary$oends[3],
-                  results$contigs_summary$lengths[3],
-                  results$contigs_summary$olengths[3],
-                  results$contigs_summary$mismatches[3],
-                  results$contigs_summary$numns[3],
-                  results$contigs_summary$numseqs[3],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[4], results$contigs_summary$ostarts[4],
-                  results$contigs_summary$oends[4],
-                  results$contigs_summary$lengths[4],
-                  results$contigs_summary$olengths[4],
-                  results$contigs_summary$mismatches[4],
-                  results$contigs_summary$numns[4],
-                  results$contigs_summary$numseqs[4],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[5], results$contigs_summary$ostarts[5],
-                  results$contigs_summary$oends[5],
-                  results$contigs_summary$lengths[5],
-                  results$contigs_summary$olengths[5],
-                  results$contigs_summary$mismatches[5],
-                  results$contigs_summary$numns[5],
-                  results$contigs_summary$numseqs[5],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[6], results$contigs_summary$ostarts[6],
-                  results$contigs_summary$oends[6],
-                  results$contigs_summary$lengths[6],
-                  results$contigs_summary$olengths[6],
-                  results$contigs_summary$mismatches[6],
-                  results$contigs_summary$numns[6],
-                  results$contigs_summary$numseqs[6],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[7], results$contigs_summary$ostarts[7],
-                  results$contigs_summary$oends[7],
-                  results$contigs_summary$lengths[7],
-                  results$contigs_summary$olengths[7],
-                  results$contigs_summary$mismatches[7],
-                  results$contigs_summary$numns[7],
-                  results$contigs_summary$numseqs[7],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[8], results$contigs_summary$ostarts[8],
-                  results$contigs_summary$oends[8],
-                  results$contigs_summary$lengths[8],
-                  results$contigs_summary$olengths[8],
-                  results$contigs_summary$mismatches[8],
-                  results$contigs_summary$numns[8],
-                  sep = "\t"
-              ), "\n")
-              cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
-              cat("Total seqs:\t", self$get_num_sequences(), "\n")
-          }
+        # if you have summary results to print
+        if ((length(results$contigs_summary$ostarts) == 8) && (!silent)) {
+          cat("\t\toverlap_start\toverlap_end\tlength\toverlap_length\t")
+          cat("mismatches\tnum_ns\tnumseqs\n")
+          cat(paste(
+            results_row_names[1], results$contigs_summary$ostarts[1],
+            results$contigs_summary$oends[1],
+            results$contigs_summary$lengths[1],
+            results$contigs_summary$olengths[1],
+            results$contigs_summary$mismatches[1],
+            results$contigs_summary$numns[1],
+            results$contigs_summary$numseqs[1],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[2], results$contigs_summary$ostarts[2],
+            results$contigs_summary$oends[2],
+            results$contigs_summary$lengths[2],
+            results$contigs_summary$olengths[2],
+            results$contigs_summary$mismatches[2],
+            results$contigs_summary$numns[2],
+            results$contigs_summary$numseqs[2],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[3], results$contigs_summary$ostarts[3],
+            results$contigs_summary$oends[3],
+            results$contigs_summary$lengths[3],
+            results$contigs_summary$olengths[3],
+            results$contigs_summary$mismatches[3],
+            results$contigs_summary$numns[3],
+            results$contigs_summary$numseqs[3],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[4], results$contigs_summary$ostarts[4],
+            results$contigs_summary$oends[4],
+            results$contigs_summary$lengths[4],
+            results$contigs_summary$olengths[4],
+            results$contigs_summary$mismatches[4],
+            results$contigs_summary$numns[4],
+            results$contigs_summary$numseqs[4],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[5], results$contigs_summary$ostarts[5],
+            results$contigs_summary$oends[5],
+            results$contigs_summary$lengths[5],
+            results$contigs_summary$olengths[5],
+            results$contigs_summary$mismatches[5],
+            results$contigs_summary$numns[5],
+            results$contigs_summary$numseqs[5],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[6], results$contigs_summary$ostarts[6],
+            results$contigs_summary$oends[6],
+            results$contigs_summary$lengths[6],
+            results$contigs_summary$olengths[6],
+            results$contigs_summary$mismatches[6],
+            results$contigs_summary$numns[6],
+            results$contigs_summary$numseqs[6],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[7], results$contigs_summary$ostarts[7],
+            results$contigs_summary$oends[7],
+            results$contigs_summary$lengths[7],
+            results$contigs_summary$olengths[7],
+            results$contigs_summary$mismatches[7],
+            results$contigs_summary$numns[7],
+            results$contigs_summary$numseqs[7],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[8], results$contigs_summary$ostarts[8],
+            results$contigs_summary$oends[8],
+            results$contigs_summary$lengths[8],
+            results$contigs_summary$olengths[8],
+            results$contigs_summary$mismatches[8],
+            results$contigs_summary$numns[8],
+            sep = "\t"
+          ), "\n")
+          cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
+          cat("Total seqs:\t", self$get_num_sequences(), "\n")
+        }
       }
 
       # if you have alignment data, then print
       if (self$data$has_align_data) {
-          rownames(results$align_summary) <- results_row_names
+        rownames(results$align_summary) <- results_row_names
 
-          if ((length(results$align_summary$search_scores) == 8) && (!silent)) {
-              cat("\t\tsearch_scores\tsim_scores\tlongest_inserts\n")
-              cat(paste(
-                  results_row_names[1], results$align_summary$search_scores[1],
-                  results$align_summary$sim_scores[1],
-                  results$align_summary$longest_inserts[1],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[2], results$align_summary$search_scores[2],
-                  results$align_summary$sim_scores[2],
-                  results$align_summary$longest_inserts[2],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[3], results$align_summary$search_scores[3],
-                  results$align_summary$sim_scores[3],
-                  results$align_summary$longest_inserts[3],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[4], results$align_summary$search_scores[4],
-                  results$align_summary$sim_scores[4],
-                  results$align_summary$longest_inserts[4],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[5], results$align_summary$search_scores[5],
-                  results$align_summary$sim_scores[5],
-                  results$align_summary$longest_inserts[5],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[6], results$align_summary$search_scores[6],
-                  results$align_summary$sim_scores[6],
-                  results$align_summary$longest_inserts[6],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[7], results$align_summary$search_scores[7],
-                  results$align_summary$sim_scores[7],
-                  results$align_summary$longest_inserts[7],
-                  sep = "\t"
-              ), "\n")
-              cat(paste(
-                  results_row_names[8], results$align_summary$search_scores[8],
-                  results$align_summary$sim_scores[8],
-                  results$align_summary$longest_inserts[8],
-                  sep = "\t"
-              ), "\n")
-              cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
-              cat("Total seqs:\t", self$get_num_sequences(), "\n")
-          }
+        if ((length(results$align_summary$search_scores) == 8) && (!silent)) {
+          cat("\t\tsearch_scores\tsim_scores\tlongest_inserts\n")
+          cat(paste(
+            results_row_names[1], results$align_summary$search_scores[1],
+            results$align_summary$sim_scores[1],
+            results$align_summary$longest_inserts[1],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[2], results$align_summary$search_scores[2],
+            results$align_summary$sim_scores[2],
+            results$align_summary$longest_inserts[2],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[3], results$align_summary$search_scores[3],
+            results$align_summary$sim_scores[3],
+            results$align_summary$longest_inserts[3],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[4], results$align_summary$search_scores[4],
+            results$align_summary$sim_scores[4],
+            results$align_summary$longest_inserts[4],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[5], results$align_summary$search_scores[5],
+            results$align_summary$sim_scores[5],
+            results$align_summary$longest_inserts[5],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[6], results$align_summary$search_scores[6],
+            results$align_summary$sim_scores[6],
+            results$align_summary$longest_inserts[6],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[7], results$align_summary$search_scores[7],
+            results$align_summary$sim_scores[7],
+            results$align_summary$longest_inserts[7],
+            sep = "\t"
+          ), "\n")
+          cat(paste(
+            results_row_names[8], results$align_summary$search_scores[8],
+            results$align_summary$sim_scores[8],
+            results$align_summary$longest_inserts[8],
+            sep = "\t"
+          ), "\n")
+          cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
+          cat("Total seqs:\t", self$get_num_sequences(), "\n")
+        }
       }
 
       # if you have summary results to print
@@ -476,6 +474,20 @@ sequence_data <- R6Class("sequence_data",
         cat("Total seqs:\t", self$get_num_sequences(), "\n")
       }
 
+      if ("scrap_summary" %in% names(results)) {
+        if (!silent) {
+          cat("\nTrash_code   Unique_count    Total_count:\n")
+          for (i in seq_along(results$scrap_summary$trash_codes)) {
+            cat(paste(
+              results$scrap_summary$trash_codes[i],
+              results$scrap_summary$unique_count[i],
+              results$scrap_summary$total_count[i],
+              sep = "\t"
+            ), "\n")
+          }
+        }
+      }
+
       return(results)
     },
 
@@ -507,7 +519,10 @@ sequence_data <- R6Class("sequence_data",
             cat("\n\n")
             cat("Treatment   Total:\n")
             for (i in seq_along(treatment_names)) {
-              cat(paste(treatment_names[i], treatment_totals[i], sep = "\t"), "\n")
+              cat(
+                paste(treatment_names[i], treatment_totals[i], sep = "\t"),
+                "\n"
+              )
             }
           }
         }
