@@ -7,6 +7,7 @@
 #' @importFrom R6 R6Class
 #' @importFrom methods new
 #' @importFrom parallelly, availableCores
+#' @importFrom waldo compare
 #' @import cli
 #' @import data.table
 #' @export
@@ -49,7 +50,19 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get summary of sequence data
     print = function() {
-
+      self$get_accnos_summary()
+      cat("\n\n")
+      self$get_sequence_summary()
+      cat("\n\n")
+      self$get_sample_summary()
+      cat(
+        paste("\nNumber of unique seqs:", self$get_num_sequences(TRUE)),
+        "\n"
+      )
+      cat(
+        paste("Total number of seqs:", self$get_num_sequences(), "\n"),
+        "\n"
+      )
     },
 
     #' @description
@@ -60,8 +73,8 @@ sequence_data <- R6Class("sequence_data",
     #' @examples
     #'
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   fasta_data <- read_fasta(rdataset_example("test.fasta"))
-    #'   dataset$add_seqs(fasta_data$names, fasta_data$sequences)
+    #'   sequence_data <- read_fasta(rdataset_example("test.fasta"))
+    #'   dataset$add_seqs(sequence_data$names, sequence_data$sequences)
     #'
     add_seqs = function(names, sequences, comments = NULL) {
       if (is.null(comments)) {
@@ -73,10 +86,11 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Add group assignment data
+    #' Add sequence abundance data with optional sample and treatment assignments
     #' @param names a vector of sequence names
-    #' @param groups a vector of group assignments
-    #' @param abundances a vector of sample abundances
+    #' @param abundances a vector of sequence abundances
+    #' @param samples a vector of sample assignments (optional)
+    #' @param treatments a vector of treatment assignments (optional)
     #' @examples
     #'
     #'  # mothur count file
@@ -91,7 +105,7 @@ sequence_data <- R6Class("sequence_data",
     #'           "seq2", "seq2", "seq2",
     #'           "seq3", "seq3",
     #'           "seq4")
-    #' groups <- c("sample2", "sample3", "sample4",
+    #' samples <- c("sample2", "sample3", "sample4",
     #'            "sample2", "sample3", "sample4",
     #'            "sample2", "sample3",
     #'            "sample4")
@@ -104,9 +118,10 @@ sequence_data <- R6Class("sequence_data",
     #' unique_names <- unique(names)
     #' sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
     #' dataset$add_seqs(unique_names, sequences)
-    #' dataset$assign_sample_abundance(names, abundances, groups)
+    #' dataset$assign_sequence_abundance(names, abundances, samples)
     #'
-    assign_sample_abundance = function(names, abundances, groups = NULL) {
+    assign_sequence_abundance = function(names, abundances, samples = NULL,
+                                         treatments = NULL) {
       if (length(names) != length(abundances)) {
         cli::cli_abort("[ERROR]: The names and abundances must be the same
                          length.")
@@ -123,11 +138,18 @@ sequence_data <- R6Class("sequence_data",
       unique_names <- c()
       dataset_names <- c()
 
-      if (is.null(groups)) {
-        groups <- rep("", length(names))
+      if (is.null(samples)) {
+        samples <- rep("", length(names))
       }
 
-      self$data$assign_sample_abundance(names, abundances, groups)
+      if (is.null(treatments)) {
+        treatments <- rep("", length(names))
+      }
+
+      self$data$assign_sequence_abundance(
+        names, abundances,
+        samples, treatments
+      )
       invisible(self)
     },
 
@@ -154,8 +176,9 @@ sequence_data <- R6Class("sequence_data",
 
     #' @description
     #' Get summary of eliminated sequences
+    #' @param silent Default = FALSE, meaning print accnos summary
     #' @return data.table
-    get_accnos_summary = function() {
+    get_accnos_summary = function(silent = FALSE) {
       # TODO
     },
 
@@ -166,78 +189,6 @@ sequence_data <- R6Class("sequence_data",
     get_align_report = function() {
       if (self$data$has_align_data) {
         return(self$data$get_align_report())
-      }
-      data.table()
-    },
-
-    #' @description
-    #' Get summary of the align report
-    #' @param silent Default = FALSE, meaning print fasta summary
-    #' @return data.table
-    get_align_summary = function(silent = FALSE) {
-      if (self$data$has_align_data) {
-        align_summary <- self$data$get_align_summary()
-
-        results_row_names <- c(
-          "Minimum:", "2.5%-tile:", "25%-tile:",
-          "Median:   ", "75%-tile:", "97.5%-tile:",
-          "Maximum:", "Mean:      "
-        )
-
-        rownames(align_summary) <- results_row_names
-
-        if ((length(align_summary$search_scores) == 8) && (!silent)) {
-          cat("\t\tsearch_scores\tsim_scores\tlongest_inserts\n")
-          cat(paste(
-            results_row_names[1], align_summary$search_scores[1],
-            align_summary$sim_scores[1],
-            align_summary$longest_inserts[1],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[2], align_summary$search_scores[2],
-            align_summary$sim_scores[2],
-            align_summary$longest_inserts[2],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[3], align_summary$search_scores[3],
-            align_summary$sim_scores[3],
-            align_summary$longest_inserts[3],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[4], align_summary$search_scores[4],
-            align_summary$sim_scores[4],
-            align_summary$longest_inserts[4],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[5], align_summary$search_scores[5],
-            align_summary$sim_scores[5],
-            align_summary$longest_inserts[5],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[6], align_summary$search_scores[6],
-            align_summary$sim_scores[6],
-            align_summary$longest_inserts[6],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[7], align_summary$search_scores[7],
-            align_summary$sim_scores[7],
-            align_summary$longest_inserts[7],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[8], align_summary$search_scores[8],
-            align_summary$sim_scores[8],
-            align_summary$longest_inserts[8],
-            sep = "\t"
-          ), "\n")
-        }
-        return(align_summary)
       }
       data.table()
     },
@@ -254,112 +205,8 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get summary of the contigs report
-    #' @param silent Default = FALSE, meaning print fasta summary
-    #' @return data.table
-    get_contigs_summary = function(silent = FALSE) {
-      if (self$data$has_contigs_data) {
-        contigs_results <- self$data$get_contigs_summary()
-
-        results_row_names <- c(
-          "Minimum:", "2.5%-tile:", "25%-tile:",
-          "Median:   ", "75%-tile:", "97.5%-tile:",
-          "Maximum:", "Mean:      "
-        )
-
-        rownames(contigs_results) <- results_row_names
-
-        # if you have summary results to print
-        if ((length(contigs_results$ostarts) == 8) && (!silent)) {
-          cat("\t\toverlap_start\toverlap_end\tlength\toverlap_length\t")
-          cat("mismatches\tnum_ns\tnumseqs\n")
-          cat(paste(
-            results_row_names[1], contigs_results$ostarts[1],
-            contigs_results$oends[1],
-            contigs_results$lengths[1],
-            contigs_results$olengths[1],
-            contigs_results$mismatches[1],
-            contigs_results$numns[1],
-            contigs_results$numseqs[1],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[2], contigs_results$ostarts[2],
-            contigs_results$oends[2],
-            contigs_results$lengths[2],
-            contigs_results$olengths[2],
-            contigs_results$mismatches[2],
-            contigs_results$numns[2],
-            contigs_results$numseqs[2],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[3], contigs_results$ostarts[3],
-            contigs_results$oends[3],
-            contigs_results$lengths[3],
-            contigs_results$olengths[3],
-            contigs_results$mismatches[3],
-            contigs_results$numns[3],
-            contigs_results$numseqs[3],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[4], contigs_results$ostarts[4],
-            contigs_results$oends[4],
-            contigs_results$lengths[4],
-            contigs_results$olengths[4],
-            contigs_results$mismatches[4],
-            contigs_results$numns[4],
-            contigs_results$numseqs[4],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[5], contigs_results$ostarts[5],
-            contigs_results$oends[5],
-            contigs_results$lengths[5],
-            contigs_results$olengths[5],
-            contigs_results$mismatches[5],
-            contigs_results$numns[5],
-            contigs_results$numseqs[5],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[6], contigs_results$ostarts[6],
-            contigs_results$oends[6],
-            contigs_results$lengths[6],
-            contigs_results$olengths[6],
-            contigs_results$mismatches[6],
-            contigs_results$numns[6],
-            contigs_results$numseqs[6],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[7], contigs_results$ostarts[7],
-            contigs_results$oends[7],
-            contigs_results$lengths[7],
-            contigs_results$olengths[7],
-            contigs_results$mismatches[7],
-            contigs_results$numns[7],
-            contigs_results$numseqs[7],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[8], contigs_results$ostarts[8],
-            contigs_results$oends[8],
-            contigs_results$lengths[8],
-            contigs_results$olengths[8],
-            contigs_results$mismatches[8],
-            contigs_results$numns[8],
-            sep = "\t"
-          ), "\n")
-        }
-      }
-      data.table()
-    },
-
-    #' @description
     #' Get count table returns data.table containing:
-    #' ids, abundances, group(optional), treatment(optional)
+    #' ids, abundances, sample(optional), treatment(optional)
     #' This table represents mothur's count and design files.
     #' @return data.table
     get_count_table = function() {
@@ -374,26 +221,19 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get sparse column formatted distance table
-    #' @return data.table
-    get_dist = function() {
-      # TODO
-    },
-
-    #' @description
-    #' Get report containing the fasta report table -
+    #' Get report containing the sequence report table -
     #' ids, starts, ends, lengths, ambigs, homopolymers, numns
     #' @return data.table
-    get_fasta_report = function() {
-      fasta_report <- self$data$get_fasta_report()
+    get_sequence_report = function() {
+      sequence_report <- self$data$get_sequence_report()
     },
 
     #' @description
-    #' Get summary of the fasta report
-    #' @param silent Default = FALSE, meaning print fasta summary
-    #' @return data.table
-    get_fasta_summary = function(silent = FALSE) {
-      fasta_results <- self$data$get_fasta_summary()
+    #' Get summary of the sequence reports
+    #' @param silent Default = FALSE, meaning print summaries
+    #' @return list of data.tables
+    get_sequence_summary = function(silent = FALSE) {
+      results <- self$data$get_sequence_summary()
 
       results_row_names <- c(
         "Minimum:", "2.5%-tile:", "25%-tile:",
@@ -401,175 +241,338 @@ sequence_data <- R6Class("sequence_data",
         "Maximum:", "Mean:      "
       )
 
-      rownames(fasta_results) <- results_row_names
+      rownames(results[[1]]) <- results_row_names
+
+      if (self$data$has_contigs_data) {
+          rownames(results$contigs_summary) <- results_row_names
+
+          # if you have summary results to print
+          if ((length(results$contigs_summary$ostarts) == 8) && (!silent)) {
+              cat("\t\toverlap_start\toverlap_end\tlength\toverlap_length\t")
+              cat("mismatches\tnum_ns\tnumseqs\n")
+              cat(paste(
+                  results_row_names[1], results$contigs_summary$ostarts[1],
+                  results$contigs_summary$oends[1],
+                  results$contigs_summary$lengths[1],
+                  results$contigs_summary$olengths[1],
+                  results$contigs_summary$mismatches[1],
+                  results$contigs_summary$numns[1],
+                  results$contigs_summary$numseqs[1],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[2], results$contigs_summary$ostarts[2],
+                  results$contigs_summary$oends[2],
+                  results$contigs_summary$lengths[2],
+                  results$contigs_summary$olengths[2],
+                  results$contigs_summary$mismatches[2],
+                  results$contigs_summary$numns[2],
+                  results$contigs_summary$numseqs[2],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[3], results$contigs_summary$ostarts[3],
+                  results$contigs_summary$oends[3],
+                  results$contigs_summary$lengths[3],
+                  results$contigs_summary$olengths[3],
+                  results$contigs_summary$mismatches[3],
+                  results$contigs_summary$numns[3],
+                  results$contigs_summary$numseqs[3],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[4], results$contigs_summary$ostarts[4],
+                  results$contigs_summary$oends[4],
+                  results$contigs_summary$lengths[4],
+                  results$contigs_summary$olengths[4],
+                  results$contigs_summary$mismatches[4],
+                  results$contigs_summary$numns[4],
+                  results$contigs_summary$numseqs[4],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[5], results$contigs_summary$ostarts[5],
+                  results$contigs_summary$oends[5],
+                  results$contigs_summary$lengths[5],
+                  results$contigs_summary$olengths[5],
+                  results$contigs_summary$mismatches[5],
+                  results$contigs_summary$numns[5],
+                  results$contigs_summary$numseqs[5],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[6], results$contigs_summary$ostarts[6],
+                  results$contigs_summary$oends[6],
+                  results$contigs_summary$lengths[6],
+                  results$contigs_summary$olengths[6],
+                  results$contigs_summary$mismatches[6],
+                  results$contigs_summary$numns[6],
+                  results$contigs_summary$numseqs[6],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[7], results$contigs_summary$ostarts[7],
+                  results$contigs_summary$oends[7],
+                  results$contigs_summary$lengths[7],
+                  results$contigs_summary$olengths[7],
+                  results$contigs_summary$mismatches[7],
+                  results$contigs_summary$numns[7],
+                  results$contigs_summary$numseqs[7],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[8], results$contigs_summary$ostarts[8],
+                  results$contigs_summary$oends[8],
+                  results$contigs_summary$lengths[8],
+                  results$contigs_summary$olengths[8],
+                  results$contigs_summary$mismatches[8],
+                  results$contigs_summary$numns[8],
+                  sep = "\t"
+              ), "\n")
+              cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
+              cat("Total seqs:\t", self$get_num_sequences(), "\n")
+          }
+      }
+
+      # if you have alignment data, then print
+      if (self$data$has_align_data) {
+          rownames(results$align_summary) <- results_row_names
+
+          if ((length(results$align_summary$search_scores) == 8) && (!silent)) {
+              cat("\t\tsearch_scores\tsim_scores\tlongest_inserts\n")
+              cat(paste(
+                  results_row_names[1], results$align_summary$search_scores[1],
+                  results$align_summary$sim_scores[1],
+                  results$align_summary$longest_inserts[1],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[2], results$align_summary$search_scores[2],
+                  results$align_summary$sim_scores[2],
+                  results$align_summary$longest_inserts[2],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[3], results$align_summary$search_scores[3],
+                  results$align_summary$sim_scores[3],
+                  results$align_summary$longest_inserts[3],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[4], results$align_summary$search_scores[4],
+                  results$align_summary$sim_scores[4],
+                  results$align_summary$longest_inserts[4],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[5], results$align_summary$search_scores[5],
+                  results$align_summary$sim_scores[5],
+                  results$align_summary$longest_inserts[5],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[6], results$align_summary$search_scores[6],
+                  results$align_summary$sim_scores[6],
+                  results$align_summary$longest_inserts[6],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[7], results$align_summary$search_scores[7],
+                  results$align_summary$sim_scores[7],
+                  results$align_summary$longest_inserts[7],
+                  sep = "\t"
+              ), "\n")
+              cat(paste(
+                  results_row_names[8], results$align_summary$search_scores[8],
+                  results$align_summary$sim_scores[8],
+                  results$align_summary$longest_inserts[8],
+                  sep = "\t"
+              ), "\n")
+              cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
+              cat("Total seqs:\t", self$get_num_sequences(), "\n")
+          }
+      }
 
       # if you have summary results to print
-      if ((length(fasta_results$starts) == 8) && (!silent)) {
+      if ((length(results[[1]]$starts) == 8) && (!silent)) {
         cat("\t\tstart\tend\tlength\tambigs\tpolymer\tnum_ns\tnumseqs\n")
         cat(
-          paste(results_row_names[1], fasta_results$starts[1],
-            fasta_results$ends[1],
-            fasta_results$nbases[1], fasta_results$ambigs[1],
-            fasta_results$polymers[1], fasta_results$numns[1],
-            fasta_results$numseqs[1],
+          paste(results_row_names[1], results[[1]]$starts[1],
+            results[[1]]$ends[1],
+            results[[1]]$nbases[1], results[[1]]$ambigs[1],
+            results[[1]]$polymers[1], results[[1]]$numns[1],
+            results[[1]]$numseqs[1],
             sep = "\t"
           ),
           "\n"
         )
         cat(
-          paste(results_row_names[2], fasta_results$starts[2],
-            fasta_results$ends[2],
-            fasta_results$nbases[2], fasta_results$ambigs[2],
-            fasta_results$polymers[2], fasta_results$numns[2],
-            fasta_results$numseqs[2],
+          paste(results_row_names[2], results[[1]]$starts[2],
+            results[[1]]$ends[2],
+            results[[1]]$nbases[2], results[[1]]$ambigs[2],
+            results[[1]]$polymers[2], results[[1]]$numns[2],
+            results[[1]]$numseqs[2],
             sep = "\t"
           ),
           "\n"
         )
         cat(
-          paste(results_row_names[3], fasta_results$starts[3],
-            fasta_results$ends[3],
-            fasta_results$nbases[3], fasta_results$ambigs[3],
-            fasta_results$polymers[3], fasta_results$numns[3],
-            fasta_results$numseqs[3],
+          paste(results_row_names[3], results[[1]]$starts[3],
+            results[[1]]$ends[3],
+            results[[1]]$nbases[3], results[[1]]$ambigs[3],
+            results[[1]]$polymers[3], results[[1]]$numns[3],
+            results[[1]]$numseqs[3],
             sep = "\t"
           ),
           "\n"
         )
         cat(
-          paste(results_row_names[4], fasta_results$starts[4],
-            fasta_results$ends[4],
-            fasta_results$nbases[4], fasta_results$ambigs[4],
-            fasta_results$polymers[4], fasta_results$numns[4],
-            fasta_results$numseqs[4],
+          paste(results_row_names[4], results[[1]]$starts[4],
+            results[[1]]$ends[4],
+            results[[1]]$nbases[4], results[[1]]$ambigs[4],
+            results[[1]]$polymers[4], results[[1]]$numns[4],
+            results[[1]]$numseqs[4],
             sep = "\t"
           ),
           "\n"
         )
         cat(
-          paste(results_row_names[5], fasta_results$starts[5],
-            fasta_results$ends[5],
-            fasta_results$nbases[5], fasta_results$ambigs[5],
-            fasta_results$polymers[5], fasta_results$numns[5],
-            fasta_results$numseqs[5],
+          paste(results_row_names[5], results[[1]]$starts[5],
+            results[[1]]$ends[5],
+            results[[1]]$nbases[5], results[[1]]$ambigs[5],
+            results[[1]]$polymers[5], results[[1]]$numns[5],
+            results[[1]]$numseqs[5],
             sep = "\t"
           ),
           "\n"
         )
         cat(
-          paste(results_row_names[6], fasta_results$starts[6],
-            fasta_results$ends[6],
-            fasta_results$nbases[6], fasta_results$ambigs[6],
-            fasta_results$polymers[6], fasta_results$numns[6],
-            fasta_results$numseqs[6],
+          paste(results_row_names[6], results[[1]]$starts[6],
+            results[[1]]$ends[6],
+            results[[1]]$nbases[6], results[[1]]$ambigs[6],
+            results[[1]]$polymers[6], results[[1]]$numns[6],
+            results[[1]]$numseqs[6],
             sep = "\t"
           ),
           "\n"
         )
         cat(
-          paste(results_row_names[7], fasta_results$starts[7],
-            fasta_results$ends[7],
-            fasta_results$nbases[7], fasta_results$ambigs[7],
-            fasta_results$polymers[7], fasta_results$numns[7],
-            fasta_results$numseqs[7],
+          paste(results_row_names[7], results[[1]]$starts[7],
+            results[[1]]$ends[7],
+            results[[1]]$nbases[7], results[[1]]$ambigs[7],
+            results[[1]]$polymers[7], results[[1]]$numns[7],
+            results[[1]]$numseqs[7],
             sep = "\t"
           ),
           "\n"
         )
         cat(paste(
-          results_row_names[8], fasta_results$starts[8], fasta_results$ends[8],
-          fasta_results$nbases[8], fasta_results$ambigs[8],
-          fasta_results$polymers[8], fasta_results$numns[8],
+          results_row_names[8], results[[1]]$starts[8], results[[1]]$ends[8],
+          results[[1]]$nbases[8], results[[1]]$ambigs[8],
+          results[[1]]$polymers[8], results[[1]]$numns[8],
           sep = "\t"
         ), "\n")
-        cat("Unique seqs:\t", self$get_num_unique(), "\n")
-        cat("Total seqs:\t", self$get_num_seqs(), "\n")
+        cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
+        cat("Total seqs:\t", self$get_num_sequences(), "\n")
       }
-      return(fasta_results)
+
+      return(results)
     },
 
     #' @description
-    #' Get names of groups in the dataset
-    #' @param name The name of the sequence you want groups for, optional
+    #' Get names of samples in the dataset
     #' @return A character vector
-    get_groups = function(name = NULL) {
-      if (is.null(name)) {
-        name <- ""
-      }
-      self$data$get_groups(name)
+    get_samples = function() {
+      self$data$get_samples()
     },
 
     #' @description
-    #' Get summary of count table. group, group_totals
-    #' @param silent Default = FALSE, meaning print group summary
-    #' @return data.table
-    get_group_summary = function(silent = FALSE) {
-      if (self$data$num_groups != 0) {
-        group_totals <- self$data$get_group_totals("")
-        group_names <- self$get_groups()
+    #' Get summary of count table. sample, sample_totals
+    #' @param silent Default = FALSE, meaning print sample summary
+    #' @return list
+    get_sample_summary = function(silent = FALSE) {
+      if (self$data$num_samples != 0) {
+        sample_totals <- self$data$get_sample_totals()
+        sample_names <- self$get_samples()
 
         if (!silent) {
-          cat("Group   Total:\n")
-          for (i in seq_along(group_names)) {
-            cat(paste(group_names[i], group_totals[i], sep = "\t"), "\n")
+          cat("Sample   Total:\n")
+          for (i in seq_along(sample_names)) {
+            cat(paste(sample_names[i], sample_totals[i], sep = "\t"), "\n")
           }
-          cat(paste("\nNumber of unique seqs:", self$get_num_unique()), "\n")
-          cat(paste("Total number of seqs:", self$get_num_seqs(), "\n"), "\n")
+
+          if (self$get_num_treatments() != 0) {
+            treatment_names <- self$get_treatments()
+            treatment_totals <- self$data$get_treatment_totals()
+            cat("\n\n")
+            cat("Treatment   Total:\n")
+            for (i in seq_along(treatment_names)) {
+              cat(paste(treatment_names[i], treatment_totals[i], sep = "\t"), "\n")
+            }
+          }
         }
 
-        return(data.table(group = group_names, total = group_totals))
+        if (self$get_num_treatments() != 0) {
+          treatment_names <- self$get_treatments()
+          treatment_totals <- self$data$get_treatment_totals()
+          return(list(
+            data.table(sample = sample_names, total = sample_totals),
+            data.table(treatment = treatment_names, total = treatment_totals)
+          ))
+        } else {
+          return(list(data.table(sample = sample_names, total = sample_totals)))
+        }
       } else {
-        cli::cli_alert("Your dataset does not include group data, ignoring.")
+        cli::cli_alert("Your dataset does not include sample data, ignoring.")
       }
-      data.table()
+      list()
     },
 
     #' @description
     #' Get names of sequences in the dataset
-    #' @param group String, name of sample
-    get_ids = function(group = NULL) {
-      if (is.null(group)) {
-        group <- ""
+    #' @param sample String, name of sample
+    get_ids = function(sample = NULL) {
+      if (is.null(sample)) {
+        sample <- ""
       }
-      self$data$get_names(group)
+      self$data$get_names(sample)
     },
 
     #' @description
-    #' Get number of groups in the dataset
+    #' Get number of samples in the dataset
     #' @return An integer
-    get_num_groups = function() {
-      self$data$num_groups
+    get_num_samples = function() {
+      self$data$num_samples
     },
 
     #' @description
     #' Get the number of sequences in the dataset
-    #' @param group The name of the group you want number of sequences for,
+    #' @param distinct Boolean. When distinct is TRUE the number of unique
+    #' sequence is returned.
+    #' @param sample The name of the sample you want number of sequences for,
     #'  optional
     #' @return An integer
-    get_num_seqs = function(group = NULL) {
-      if (is.null(group)) {
-        group <- ""
+    get_num_sequences = function(distinct = FALSE, sample = NULL) {
+      if (is.null(sample)) {
+        sample <- ""
       }
-      self$data$get_total(group)
+      if (distinct) {
+        self$data$get_unique_total(sample)
+      } else {
+        self$data$get_total(sample)
+      }
     },
 
     #' @description
     #' Get the number of treatments in the dataset
     #' @return An integer
     get_num_treatments = function() {
-        self$data$get_num_treatments()
-    },
-
-    #' @description
-    #' Get number of unique sequences in dataset
-    #' @return An integer
-    get_num_unique = function() {
-      self$data$num_unique
+      self$data$num_treatments
     },
 
     #' @description
     #' Get data.table containing the oligo data
-    #' tag, oligo, diffs, oligo(optional), diffs(optional), group(optional)
+    #' tag, oligo, diffs, oligo(optional), diffs(optional), sample(optional)
     #' @return data.table
     get_oligos = function() {
       # TODO
@@ -577,7 +580,7 @@ sequence_data <- R6Class("sequence_data",
 
     #' @description
     #' Get data.tables representing your OTU / ASV clusters.
-    #' id, abundance, group(optional)
+    #' id, abundance, sample(optional)
     #' These tables represent mothur's list, rabund, shared, relabund files
     #' @return List of data.tables
     get_otu_tables = function() {
@@ -586,13 +589,13 @@ sequence_data <- R6Class("sequence_data",
 
     #' @description
     #' Get vector containing FASTA nucleotide strings
-    #' @param group String, name of sample
-    get_seqs = function(group = NULL) {
-      if (is.null(group)) {
-        group <- ""
+    #' @param sample String, name of sample
+    get_seqs = function(sample = NULL) {
+      if (is.null(sample)) {
+        sample <- ""
       }
 
-      self$data$get_seqs(group)
+      self$data$get_seqs(sample)
     },
 
     #' @description
@@ -608,15 +611,15 @@ sequence_data <- R6Class("sequence_data",
     #' Get names of treatments in the dataset
     #' @return A character vector
     get_treatments = function() {
-        self$data$get_treatments()
+      self$data$get_treatments()
     },
 
     #' @description
-    #' Determine if a group is present in the dataset
-    #' @param group String, Name of sample
+    #' Determine if a sample is present in the dataset
+    #' @param sample String, Name of sample
     #' @return Boolean
-    has_group = function(group) {
-      self$data$has_group(group)
+    has_sample = function(sample) {
+      self$data$has_sample(sample)
     },
 
     #' @description

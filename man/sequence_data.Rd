@@ -31,12 +31,12 @@ dataset <- sequence_data$new(name = "soil",
 
 
   dataset <- sequence_data$new("my_dataset")
-  fasta_data <- read_fasta(rdataset_example("test.fasta"))
-  dataset$add_seqs(fasta_data$names, fasta_data$sequences)
+  sequence_data <- read_fasta(rdataset_example("test.fasta"))
+  dataset$add_seqs(sequence_data$names, sequence_data$sequences)
 
 
 ## ------------------------------------------------
-## Method `sequence_data$assign_sample_abundance`
+## Method `sequence_data$assign_sequence_abundance`
 ## ------------------------------------------------
 
 
@@ -52,7 +52,7 @@ names <- c("seq1", "seq1", "seq1",
           "seq2", "seq2", "seq2",
           "seq3", "seq3",
           "seq4")
-groups <- c("sample2", "sample3", "sample4",
+samples <- c("sample2", "sample3", "sample4",
            "sample2", "sample3", "sample4",
            "sample2", "sample3",
            "sample4")
@@ -65,7 +65,7 @@ dataset <- sequence_data$new("mydata")
 unique_names <- unique(names)
 sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
 dataset$add_seqs(unique_names, sequences)
-dataset$assign_sample_abundance(names, abundances, groups)
+dataset$assign_sequence_abundance(names, abundances, samples)
 
 }
 \author{
@@ -84,31 +84,29 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
 \item \href{#method-sequence_data-add_seqs}{\code{sequence_data$add_seqs()}}
-\item \href{#method-sequence_data-assign_sample_abundance}{\code{sequence_data$assign_sample_abundance()}}
+\item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
 \item \href{#method-sequence_data-get_accnos_report}{\code{sequence_data$get_accnos_report()}}
 \item \href{#method-sequence_data-get_accnos_summary}{\code{sequence_data$get_accnos_summary()}}
 \item \href{#method-sequence_data-get_align_report}{\code{sequence_data$get_align_report()}}
-\item \href{#method-sequence_data-get_align_summary}{\code{sequence_data$get_align_summary()}}
 \item \href{#method-sequence_data-get_contigs_report}{\code{sequence_data$get_contigs_report()}}
-\item \href{#method-sequence_data-get_contigs_summary}{\code{sequence_data$get_contigs_summary()}}
 \item \href{#method-sequence_data-get_count_table}{\code{sequence_data$get_count_table()}}
 \item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
-\item \href{#method-sequence_data-get_dist}{\code{sequence_data$get_dist()}}
-\item \href{#method-sequence_data-get_fasta_report}{\code{sequence_data$get_fasta_report()}}
-\item \href{#method-sequence_data-get_fasta_summary}{\code{sequence_data$get_fasta_summary()}}
-\item \href{#method-sequence_data-get_groups}{\code{sequence_data$get_groups()}}
-\item \href{#method-sequence_data-get_group_summary}{\code{sequence_data$get_group_summary()}}
+\item \href{#method-sequence_data-get_sequence_report}{\code{sequence_data$get_sequence_report()}}
+\item \href{#method-sequence_data-get_sequence_summary}{\code{sequence_data$get_sequence_summary()}}
+\item \href{#method-sequence_data-get_samples}{\code{sequence_data$get_samples()}}
+\item \href{#method-sequence_data-get_sample_summary}{\code{sequence_data$get_sample_summary()}}
 \item \href{#method-sequence_data-get_ids}{\code{sequence_data$get_ids()}}
-\item \href{#method-sequence_data-get_num_groups}{\code{sequence_data$get_num_groups()}}
-\item \href{#method-sequence_data-get_num_seqs}{\code{sequence_data$get_num_seqs()}}
-\item \href{#method-sequence_data-get_num_unique}{\code{sequence_data$get_num_unique()}}
+\item \href{#method-sequence_data-get_num_samples}{\code{sequence_data$get_num_samples()}}
+\item \href{#method-sequence_data-get_num_sequences}{\code{sequence_data$get_num_sequences()}}
+\item \href{#method-sequence_data-get_num_treatments}{\code{sequence_data$get_num_treatments()}}
 \item \href{#method-sequence_data-get_oligos}{\code{sequence_data$get_oligos()}}
 \item \href{#method-sequence_data-get_otu_tables}{\code{sequence_data$get_otu_tables()}}
 \item \href{#method-sequence_data-get_seqs}{\code{sequence_data$get_seqs()}}
 \item \href{#method-sequence_data-get_taxonomy_tables}{\code{sequence_data$get_taxonomy_tables()}}
-\item \href{#method-sequence_data-has_group}{\code{sequence_data$has_group()}}
+\item \href{#method-sequence_data-get_treatments}{\code{sequence_data$get_treatments()}}
+\item \href{#method-sequence_data-has_sample}{\code{sequence_data$has_sample()}}
 \item \href{#method-sequence_data-is_aligned}{\code{sequence_data$is_aligned()}}
 \item \href{#method-sequence_data-clone}{\code{sequence_data$clone()}}
 }
@@ -164,7 +162,7 @@ dataset <- sequence_data$new(name = "soil",
 \if{html}{\out{<a id="method-sequence_data-print"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-print}{}}}
 \subsection{Method \code{print()}}{
-Get summary of sequences data
+Get summary of sequence data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$print()}\if{html}{\out{</div>}}
 }
@@ -194,8 +192,8 @@ Add new sequence data
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
   dataset <- sequence_data$new("my_dataset")
-  fasta_data <- read_fasta(rdataset_example("test.fasta"))
-  dataset$add_seqs(fasta_data$names, fasta_data$sequences)
+  sequence_data <- read_fasta(rdataset_example("test.fasta"))
+  dataset$add_seqs(sequence_data$names, sequence_data$sequences)
 
 }
 \if{html}{\out{</div>}}
@@ -204,12 +202,17 @@ Add new sequence data
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-assign_sample_abundance"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-assign_sample_abundance}{}}}
-\subsection{Method \code{assign_sample_abundance()}}{
-Add group assignment data
+\if{html}{\out{<a id="method-sequence_data-assign_sequence_abundance"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_sequence_abundance}{}}}
+\subsection{Method \code{assign_sequence_abundance()}}{
+Add sequence abundance data with optional sample and treatment assignments
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sample_abundance(names, abundances, groups = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sequence_abundance(
+  names,
+  abundances,
+  samples = NULL,
+  treatments = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -217,9 +220,11 @@ Add group assignment data
 \describe{
 \item{\code{names}}{a vector of sequence names}
 
-\item{\code{abundances}}{a vector of sample abundances}
+\item{\code{abundances}}{a vector of sequence abundances}
 
-\item{\code{groups}}{a vector of group assignments}
+\item{\code{samples}}{a vector of sample assignments (optional)}
+
+\item{\code{treatments}}{a vector of treatment assignments (optional)}
 }
 \if{html}{\out{</div>}}
 }
@@ -238,7 +243,7 @@ names <- c("seq1", "seq1", "seq1",
           "seq2", "seq2", "seq2",
           "seq3", "seq3",
           "seq4")
-groups <- c("sample2", "sample3", "sample4",
+samples <- c("sample2", "sample3", "sample4",
            "sample2", "sample3", "sample4",
            "sample2", "sample3",
            "sample4")
@@ -251,7 +256,7 @@ dataset <- sequence_data$new("mydata")
 unique_names <- unique(names)
 sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
 dataset$add_seqs(unique_names, sequences)
-dataset$assign_sample_abundance(names, abundances, groups)
+dataset$assign_sequence_abundance(names, abundances, samples)
 
 }
 \if{html}{\out{</div>}}
@@ -301,9 +306,16 @@ data.table
 \subsection{Method \code{get_accnos_summary()}}{
 Get summary of eliminated sequences
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_accnos_summary()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_accnos_summary(silent = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{silent}}{Default = FALSE, meaning print accnos summary}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 data.table
 }
@@ -313,22 +325,9 @@ data.table
 \if{latex}{\out{\hypertarget{method-sequence_data-get_align_report}{}}}
 \subsection{Method \code{get_align_report()}}{
 Get report containing align report table -
-search_scores, sim_scores, longest_insert
+ids, search_scores, sim_scores, longest_insert
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_align_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.table
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_align_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_align_summary}{}}}
-\subsection{Method \code{get_align_summary()}}{
-Get summary of the align report
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_align_summary()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -340,22 +339,9 @@ data.table
 \if{latex}{\out{\hypertarget{method-sequence_data-get_contigs_report}{}}}
 \subsection{Method \code{get_contigs_report()}}{
 Get report containing contigs report table -
-ostarts, oends, olengths, mismatches, ee
+ids, lengths, ostarts, oends, olengths, mismatches, numns, ee
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_contigs_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.table
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_contigs_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_contigs_summary}{}}}
-\subsection{Method \code{get_contigs_summary()}}{
-Get summary of the contigs report
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_contigs_summary()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -367,7 +353,7 @@ data.table
 \if{latex}{\out{\hypertarget{method-sequence_data-get_count_table}{}}}
 \subsection{Method \code{get_count_table()}}{
 Get count table returns data.table containing:
-ids, abundances, group(optional), treatment(optional)
+ids, abundances, sample(optional), treatment(optional)
 This table represents mothur's count and design files.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_count_table()}\if{html}{\out{</div>}}
@@ -391,12 +377,13 @@ String
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_dist"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_dist}{}}}
-\subsection{Method \code{get_dist()}}{
-Get sparse column formatted distance table
+\if{html}{\out{<a id="method-sequence_data-get_sequence_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_report}{}}}
+\subsection{Method \code{get_sequence_report()}}{
+Get report containing the sequence report table -
+ids, starts, ends, lengths, ambigs, homopolymers, numns
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_dist()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_report()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -404,77 +391,56 @@ data.table
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_fasta_report"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_fasta_report}{}}}
-\subsection{Method \code{get_fasta_report()}}{
-Get report containing the fasta report table -
-starts, ends, lengths, ambigs, homopolymers, numns
+\if{html}{\out{<a id="method-sequence_data-get_sequence_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_summary}{}}}
+\subsection{Method \code{get_sequence_summary()}}{
+Get summary of the sequence reports
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_fasta_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.table
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_fasta_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_fasta_summary}{}}}
-\subsection{Method \code{get_fasta_summary()}}{
-Get summary of the fasta report
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_fasta_summary(silent = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_summary(silent = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{silent}}{Default = FALSE, meaning print fasta summary}
+\item{\code{silent}}{Default = FALSE, meaning print summaries}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-data.table
+list of data.tables
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_groups"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_groups}{}}}
-\subsection{Method \code{get_groups()}}{
-Get names of groups in the dataset
+\if{html}{\out{<a id="method-sequence_data-get_samples"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_samples}{}}}
+\subsection{Method \code{get_samples()}}{
+Get names of samples in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_groups(name = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_samples()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{name}}{The name of the sequence you want groups for, optional}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
 A character vector
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_group_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_group_summary}{}}}
-\subsection{Method \code{get_group_summary()}}{
-Get summary of count table. group, group_totals
+\if{html}{\out{<a id="method-sequence_data-get_sample_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sample_summary}{}}}
+\subsection{Method \code{get_sample_summary()}}{
+Get summary of count table. sample, sample_totals
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_group_summary(silent = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sample_summary(silent = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{silent}}{Default = FALSE, meaning print group summary}
+\item{\code{silent}}{Default = FALSE, meaning print sample summary}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-data.table
+list
 }
 }
 \if{html}{\out{<hr>}}
@@ -483,24 +449,24 @@ data.table
 \subsection{Method \code{get_ids()}}{
 Get names of sequences in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_ids(group = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_ids(sample = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{group}}{String, name of sample}
+\item{\code{sample}}{String, name of sample}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_num_groups"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_num_groups}{}}}
-\subsection{Method \code{get_num_groups()}}{
-Get number of groups in the dataset
+\if{html}{\out{<a id="method-sequence_data-get_num_samples"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_num_samples}{}}}
+\subsection{Method \code{get_num_samples()}}{
+Get number of samples in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_num_groups()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_num_samples()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -508,18 +474,21 @@ An integer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_num_seqs"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_num_seqs}{}}}
-\subsection{Method \code{get_num_seqs()}}{
+\if{html}{\out{<a id="method-sequence_data-get_num_sequences"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_num_sequences}{}}}
+\subsection{Method \code{get_num_sequences()}}{
 Get the number of sequences in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_num_seqs(group = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_num_sequences(distinct = FALSE, sample = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{group}}{The name of the group you want number of sequences for,
+\item{\code{distinct}}{Boolean. When distinct is TRUE the number of unique
+sequence is returned.}
+
+\item{\code{sample}}{The name of the sample you want number of sequences for,
 optional}
 }
 \if{html}{\out{</div>}}
@@ -529,12 +498,12 @@ An integer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_num_unique"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_num_unique}{}}}
-\subsection{Method \code{get_num_unique()}}{
-Get number of unique sequences in dataset
+\if{html}{\out{<a id="method-sequence_data-get_num_treatments"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_num_treatments}{}}}
+\subsection{Method \code{get_num_treatments()}}{
+Get the number of treatments in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_num_unique()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_num_treatments()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -546,7 +515,7 @@ An integer
 \if{latex}{\out{\hypertarget{method-sequence_data-get_oligos}{}}}
 \subsection{Method \code{get_oligos()}}{
 Get data.table containing the oligo data
-tag, oligo, diffs, oligo(optional), diffs(optional), group(optional)
+tag, oligo, diffs, oligo(optional), diffs(optional), sample(optional)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_oligos()}\if{html}{\out{</div>}}
 }
@@ -560,7 +529,7 @@ data.table
 \if{latex}{\out{\hypertarget{method-sequence_data-get_otu_tables}{}}}
 \subsection{Method \code{get_otu_tables()}}{
 Get data.tables representing your OTU / ASV clusters.
-id, abundance, group(optional)
+id, abundance, sample(optional)
 These tables represent mothur's list, rabund, shared, relabund files
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_otu_tables()}\if{html}{\out{</div>}}
@@ -576,13 +545,13 @@ List of data.tables
 \subsection{Method \code{get_seqs()}}{
 Get vector containing FASTA nucleotide strings
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_seqs(group = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_seqs(sample = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{group}}{String, name of sample}
+\item{\code{sample}}{String, name of sample}
 }
 \if{html}{\out{</div>}}
 }
@@ -603,18 +572,31 @@ List of data.tables
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-has_group"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-has_group}{}}}
-\subsection{Method \code{has_group()}}{
-Determine if a group is present in the dataset
+\if{html}{\out{<a id="method-sequence_data-get_treatments"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_treatments}{}}}
+\subsection{Method \code{get_treatments()}}{
+Get names of treatments in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$has_group(group)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_treatments()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A character vector
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-has_sample"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-has_sample}{}}}
+\subsection{Method \code{has_sample()}}{
+Determine if a sample is present in the dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$has_sample(sample)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{group}}{String, Name of sample}
+\item{\code{sample}}{String, Name of sample}
 }
 \if{html}{\out{</div>}}
 }

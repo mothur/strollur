@@ -30,7 +30,7 @@ const vector<double> nullDoubleVector;  // used to pass blank double
 /*
  * The 'seqCount' struct will store abundance data for sequences in sparse form.
  *
- * sampleIndex contains the group indexes
+ * sampleIndex contains the sample indexes
  * abunds contains the abundances
  *
  * Let's assume 5 samples in the dataset, and the following are abundances by
@@ -55,7 +55,7 @@ struct seqCount {
     seqCount() {}
     ~seqCount() {}
 
-    // no groups constructor
+    // no samples constructor
     seqCount(int i, int a) {
         sampleIndex.push_back(i);
         abunds.push_back(a);
@@ -91,19 +91,19 @@ public:
 
     void clear();
 
-    // 2 or 3 columns: id, abundance, group (optional -
-    //                                   added when table includes group data)
+    // 2 or 3 columns: id, abundance, sample (optional -
+    //                                   added when table includes sample data)
     // used to export SeqAbundTable
     Rcpp::DataFrame getSequenceAbundanceTable(vector<string> outputNames,
-                                              vector<int> names = nullIntVector);
+                                              vector<int> names);
 
     // names, sets abundance to 1
     void addSeqs(vector<int>& names);
 
-    // names, abundances, groups (optional)
-    void assignSampleAbundance(vector<int> names,
+    // names, abundances, samples (optional), treatments (optional)
+    void assignSequenceAbundance(vector<int> names,
                                vector<int> abunds,
-                               vector<string> groups = nullVector,
+                               vector<string> samples = nullVector,
                                vector<string> treatments = nullVector);
 
     // set abundance parsed by sample - for datasets WITH samples
@@ -111,51 +111,51 @@ public:
     // set abundance - for datasets WITHOUT samples
     void setAbundance(int name, int abund);
 
-    // removes sequence from total and group totals
+    // removes sequence from total and sample / treatment totals
     void removeSeq(int name);
     // adds sequences counts of seqsToMerge[1-n] into seqsToMerge[0], optional
-    // group will only merge counts for that sample
-    void mergeSeqs(vector<int> seqsToMerge, string group = "");
+    // sample will only merge counts for that sample
+    void mergeSeqs(vector<int> seqsToMerge, string sample = "");
 
     // vector containing total abundance for each sequence
     vector<int> getSeqsAbunds(vector<int> names);
-    // total abundance for sequence, if group provided then abundance for that
-    // sequence in that sample
-    int getAbund(int name, string group = "");
-    // abundances by sample, in the same order as the groups
+    // total abundance for sequence, if sample is provided then abundance for
+    // that sequence in that sample
+    int getAbund(int name, string sample = "");
+    // abundances by sample, in the same order as the samples
     vector<int> getAbunds(int name);
     // total number of sequences
-    int getTotal(string group = "");
+    int getTotal(string sample = "");
 
-    int getNumGroups();
+    int getNumSamples();
     int getNumTreatments();
     // vector containing total abundance for each sample
-    vector<int> getGroupTotals();
+    vector<int> getSampleTotals();
     // vector containing total abundance for each treatment
     vector<int> getTreatmentTotals();
     // vector containing names of samples
-    // if name is provided then the names of samples where the seq is present
-    vector<string> getGroups(int name = -1);
+    vector<string> getSamples();
     vector<string> getTreatments();
-    // does the table contain a group
-    // if name provided, does the sequence have this group
-    bool hasGroup(string group, int name = -1);
-    // does the table have group information
-    bool hasGroups();
+    // does the table contain a sample
+    // if name provided, does the sequence have this sample
+    bool hasSample(string sample, int name = -1);
+    // does the table have sample information
+    bool hasSamples();
 
 private:
 
     vector<seqCount> counts;
-    // numGroups is 1 for datasets without groups
-    // numGroups equals the number of "good" groups in dataset
-    int total, numGroups, numTreatments;
+    // numSamples is 1 for datasets without samples
+    // numSamples equals the number of "good" samples in dataset
+    int total, numSamples, numTreatments;
 
     // sample name to index.
-    map<string, int> groupIndex;
+    map<string, int> sampleIndex;
+    vector<string> sampleNames;
     // total abundance for each sample
-    vector<int> groupTotals;
+    vector<int> sampleTotals;
     // are samples "present" in table
-    vector<bool> tableGroups;
+    vector<bool> tableSamples;
 
     // sample name to index.
     map<string, int> treatmentIndex;
@@ -163,13 +163,13 @@ private:
     vector<int> treatmentTotals;
     // are samples "present" in table
     vector<bool> tableTreatments;
-    // sample name to treatment
-    map<string, string> groupTreatment;
+    // sample index to treatment
+    map<int, string> sampleTreatment;
 
-    bool hasGroupData, hasTreatments;
+    bool hasSampleData, hasTreatments;
 
     int getSparseIndex(int, int);
-    void addGroups(vector<string> groups);
+    void addSamples(vector<string> samples);
     void addTreatments(vector<string> treatments);
 
 };
@@ -192,7 +192,7 @@ public:
     bool isAligned;
     bool hasContigsData, hasAlignData;
 
-    int numGroups;
+    int numSamples, numTreatments;
     long long numUnique;
     int processors;
 
@@ -217,27 +217,26 @@ public:
                           vector<int>& os, vector<int>& oe,
                           vector<int>& m, vector<double>& e);
 
-    // names, abundances, groups(optional)
-    void assignSampleAbundance(vector<string> names,
+    // names, abundances, samples(optional), treatments(optional)
+    void assignSequenceAbundance(vector<string> names,
                                vector<int> abunds,
-                               vector<string> groups = nullVector,
+                               vector<string> samples = nullVector,
                                vector<string> treatments = nullVector);
 
     // **** functions for summarizing dataset **** //
-    // fasta summary data: starts, ends, lengths, ambigs, polymers, numns
-    Rcpp::DataFrame getFastaReport();
-    Rcpp::DataFrame getFastaSummary();
+    // sequence report: starts, ends, lengths, ambigs, polymers, numns
+    Rcpp::DataFrame getSequenceReport();
+    // sequence summary summarizes sequence, contigs and align reports
+    Rcpp::List getSequenceSummary();
     // contigs report data: lengths, olengths, ostarts, oends, mismatches,
     //                      numns, ee
     Rcpp::DataFrame getContigsReport();
-    Rcpp::DataFrame getContigsSummary();
     // align summary data: search_score, sim_score, longest_insert
     Rcpp::DataFrame getAlignReport();
-    Rcpp::DataFrame getAlignSummary();
-    // 3 columns: id, group, abundance
+    // 3 columns: id, sample, abundance
     Rcpp::DataFrame getSequenceAbundanceTable();
 
-    int getAbund(string name, string group = "");
+    int getAbund(string name, string sample = "");
     // abundances for seq broken down by sample
     vector<int> getAbunds(string name);
     // total abundance for each sequence
@@ -245,23 +244,25 @@ public:
     // vector[5][1] contains the abundance of seq5 in sample1
     vector<vector<int>> getSeqsAbundsBySample();
 
-    // group functions
-    vector<string> getGroups(string name = "");
+    // sample functions
+    vector<string> getSamples();
     vector<string> getTreatments();
-    vector<int> getGroupTotals();
+    vector<int> getSampleTotals();
     vector<int> getTreatmentTotals();
-    long long getTotal(string group = "");
-    bool hasGroup(string group);
+    long long getTotal(string sample = "");
+    long long getUniqueTotal(string sample = "");
+    bool hasSample(string sample);
 
     // fasta sequence data
-    vector<string> getNames(string group = "");
-    vector<vector<string> > getNamesBySample(vector<string> group);
-    vector<string> getSeqs(string group = "");
-    vector<vector<string> > getSeqsBySample(vector<string> group);
+    vector<string> getNames(string sample = "");
+    vector<vector<string> > getNamesBySample(vector<string> samples);
+    vector<string> getSeqs(string sample = "");
+    vector<vector<string> > getSeqsBySample(vector<string> samples);
 
     // modifiers
     void removeSeqs(vector<string> names, vector<string> trashTags);
-    void mergeSeqs(vector<string>, string reason = "merged", string group = "");
+    void mergeSeqs(vector<string>, string reason = "merged",
+                   string sample = "");
 
     // set sequence string and optionally comments
     void setSeqs(vector<string> names, vector<string> sequences,
@@ -296,7 +297,7 @@ private:
     // map reason for deletion to vector containing unique and total counts
     // example: "pre_cluster" ->  c(10,  230) means precluster removed 10 unique
     // sequences that represented 230 total sequences.
-    map<string, vector<int> > bad_accnos;
+    map<string, vector<int> > badAccnos;
     int totalBad, uniqueBad;
     int alignmentLength;
 

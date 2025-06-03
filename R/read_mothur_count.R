@@ -12,7 +12,7 @@
 #' # seq4	4	0	0	4
 #'
 #' # returns
-#' # id   group abundance
+#' # id   sample abundance
 #' # <char>  <char>     <int>
 #' #  1:   seq1 sample2       250
 #' #  2:   seq1 sample3       400
@@ -24,7 +24,7 @@
 #' #  8:   seq3 sample3        25
 #' #  9:   seq4 sample4         4
 #'
-#' # read a count file with groups
+#' # read a count file with samples
 #' sample_table <- read_mothur_count(rdataset_example("test.count_table"))
 #'
 #' @return data.table
@@ -40,16 +40,16 @@ read_mothur_count <- function(filename) {
   close(file_conn)
 
   table_names <- c()
-  table_groups <- c()
+  table_samples <- c()
   table_abunds <- c()
 
-  # check for group info in header
+  # check for sample info in header
   if (num_lines > 1) {
     comment <- regexpr("#", file_data[2])
 
     # compressed
     if (comment[1] != -1) {
-      # extract group names
+      # extract sample names
       # line 2 looks like: "#2,sample2	3,sample3	1,sample4"
       # remove first '#'
       pieces <- strsplit(file_data[2], "#")[[1]]
@@ -57,13 +57,13 @@ read_mothur_count <- function(filename) {
       words <- split_white_space(file_data[2])
       num_seqs <- length(file_data) - 3
 
-      groups <- c()
+      samples <- c()
       for (i in seq_along(words)) {
-        # parse group name
+        # parse sample name
         file_index <- split_at_char(words[i], ",")
 
-        # save group names
-        groups <- c(groups, file_index[2])
+        # save sample names
+        samples <- c(samples, file_index[2])
       }
 
       # read compressed data lines
@@ -77,11 +77,11 @@ read_mothur_count <- function(filename) {
         ))
         # skip name and total
         for (j in 3:length(seq_line)) {
-          # looks like 2,3 -> meaning group 2 has abundance 3
+          # looks like 2,3 -> meaning sample 2 has abundance 3
           data <- split_at_char(seq_line[j], ",")
 
-          # add sample name to table_groups
-          table_groups <- c(table_groups, groups[as.integer(data[1])])
+          # add sample name to table_samples
+          table_samples <- c(table_samples, samples[as.integer(data[1])])
           # add sample abundance to table_abunds
           table_abunds <- c(table_abunds, as.integer(data[2]))
         }
@@ -92,17 +92,17 @@ read_mothur_count <- function(filename) {
       words <- split_white_space(file_data[1])
 
       num_seqs <- length(file_data) - 1
-      has_group_data <- TRUE
-      groups <- c()
+      has_sample_data <- TRUE
+      samples <- c()
 
-      # no group data in file
+      # no sample data in file
       if (length(words) == 2) {
-        has_group_data <- FALSE
+        has_sample_data <- FALSE
         table_names <- rep("", num_seqs)
         table_abunds <- rep(0, num_seqs)
       } else {
         for (i in 3:length(words)) {
-          groups <- c(groups, words[i])
+          samples <- c(samples, words[i])
         }
       }
 
@@ -113,12 +113,12 @@ read_mothur_count <- function(filename) {
         if (length(seq_line) >= 2) {
           name <- seq_line[1]
 
-          if (has_group_data) {
+          if (has_sample_data) {
             for (j in 3:length(seq_line)) {
               abund <- as.integer(seq_line[j])
               if (abund != 0) {
                 table_names <- c(table_names, name)
-                table_groups <- c(table_groups, groups[j - 2])
+                table_samples <- c(table_samples, samples[j - 2])
                 table_abunds <- c(table_abunds, abund)
               }
             }
@@ -129,7 +129,7 @@ read_mothur_count <- function(filename) {
         }
       }
 
-      if (!has_group_data) {
+      if (!has_sample_data) {
         return(data.table(
           id = table_names,
           abundance = table_abunds
@@ -140,7 +140,7 @@ read_mothur_count <- function(filename) {
 
   data.table(
     id = table_names,
-    group = table_groups,
+    sample = table_samples,
     abundance = table_abunds
   )
 }

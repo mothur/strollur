@@ -18,6 +18,7 @@ Imports: Rcpp (>= 1.0.14),
     parallelly,
     microseq,
     R6,
+    waldo,
     data.table
 LinkingTo: Rcpp, RcppThread, cli, testthat
 Suggests: 

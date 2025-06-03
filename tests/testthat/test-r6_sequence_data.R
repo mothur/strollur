@@ -103,3 +103,104 @@ test_that("test R6 sequence_data - intialize", {
 
   expect_equal(first_ten_seqs, dataset$get_seqs()[1:10])
 })
+
+test_that("test R6 sequence_data - addSeqs, assign samples", {
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+
+  ids <- c(
+    "seq1", "seq1", "seq1",
+    "seq2", "seq2", "seq2",
+    "seq3", "seq3",
+    "seq4", "seq4"
+  )
+  samples <- c(
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3",
+    "sample2", "sample4"
+  )
+  abundances <- c(
+    250, 400, 500,
+    25, 40, 50,
+    25, 25,
+    1, 4
+  )
+  treatments <- c(
+    "early", "early", "late",
+    "early", "early", "late",
+    "early", "early",
+    "early", "late"
+  )
+
+  data <- sequence_data$new("mydata")
+  data$add_seqs(names, seqs)
+  data$assign_sequence_abundance(ids, abundances, samples, treatments)
+
+  expect_equal(data$get_ids(), names)
+  expect_equal(data$get_seqs(), seqs)
+  expect_equal(data$get_ids("sample2"), names)
+  expect_equal(data$get_ids("sample3"), c("seq1", "seq2", "seq3"))
+  expect_equal(data$get_ids("sample4"), c("seq1", "seq2", "seq4"))
+  expect_equal(data$get_seqs("sample2"), seqs)
+  expect_equal(data$get_seqs("sample3"), c("ATTGC", "ATTGC", "ATTGC"))
+  expect_equal(data$get_seqs("sample4"), c("ATTGC", "ATTGC", "ATTGC"))
+
+  expect_equal(data$get_num_samples(), 3)
+  expect_equal(data$get_num_treatments(), 2)
+  expect_equal(data$get_treatments(), c("early", "late"))
+  expect_equal(data$get_samples(), c("sample2", "sample3", "sample4"))
+
+  sample_summary <- data$get_sample_summary(TRUE)
+  expect_equal(sample_summary[[2]]$total, c(766, 554))
+  expect_equal(sample_summary[[1]]$total, c(301, 465, 554))
+
+  # total
+  expect_equal(data$get_num_sequences(), 1320)
+  # unique
+  expect_equal(data$get_num_sequences(TRUE), 4)
+  # unique + sample
+  expect_equal(data$get_num_sequences(TRUE, "sample2"), 4)
+  expect_equal(data$get_num_sequences(TRUE, "sample3"), 3)
+  # total + sample
+  expect_equal(data$get_num_sequences(sample = "sample2"), 301)
+})
+
+test_that("test R6 sequence_data - print", {
+
+    names <- c("seq1", "seq2", "seq3", "seq4")
+    seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+
+    ids <- c(
+        "seq1", "seq1", "seq1",
+        "seq2", "seq2", "seq2",
+        "seq3", "seq3",
+        "seq4", "seq4"
+    )
+    samples <- c(
+        "sample2", "sample3", "sample4",
+        "sample2", "sample3", "sample4",
+        "sample2", "sample3",
+        "sample2", "sample4"
+    )
+    abundances <- c(
+        250, 400, 500,
+        25, 40, 50,
+        25, 25,
+        1, 4
+    )
+    treatments <- c(
+        "early", "early", "late",
+        "early", "early", "late",
+        "early", "early",
+        "early", "late"
+    )
+
+    data <- sequence_data$new("mydata")
+    data$add_seqs(names, seqs)
+    data$assign_sequence_abundance(ids, abundances, samples, treatments)
+
+    expect_snapshot(
+        waldo::compare(data$print(), data$print())
+    )
+})

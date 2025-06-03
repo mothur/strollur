@@ -25,7 +25,7 @@ Read a mothur formatted count file
 # seq4	4	0	0	4
 
 # returns
-# id   group abundance
+# id   sample abundance
 # <char>  <char>     <int>
 #  1:   seq1 sample2       250
 #  2:   seq1 sample3       400
@@ -37,7 +37,7 @@ Read a mothur formatted count file
 #  8:   seq3 sample3        25
 #  9:   seq4 sample4         4
 
-# read a count file with groups
+# read a count file with samples
 sample_table <- read_mothur_count(rdataset_example("test.count_table"))
 
 }

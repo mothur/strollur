@@ -17,6 +17,7 @@ importFrom(Rcpp, loadModule)
 # R6 classes
 importFrom(R6, R6Class)
 importFrom(methods, new)
+importFrom(waldo, compare)
 import(data.table)
 
 # read fastq files

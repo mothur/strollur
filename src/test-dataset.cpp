@@ -8,11 +8,11 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.datasetName == "mydata");
         expect_false(data.isAligned);
-        expect_true(data.numGroups == 0);
+        expect_true(data.numSamples == 0);
         expect_true(data.numUnique == 0);
     }
 
-    test_that("Tests addSeqs, getFastaReport, getFastaSummary, clear") {
+    test_that("Tests addSeqs, getSequenceReport, getSequenceSummary, clear") {
         Dataset data("mydata", 4);
 
         vector<string> names(3, "");
@@ -31,7 +31,7 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.numUnique == 3);
 
-        Rcpp::DataFrame fastaReport = data.getFastaReport();
+        Rcpp::DataFrame seqReport = data.getSequenceReport();
 
         // starts
         vector<int> expected(3, 0);
@@ -39,76 +39,110 @@ context("Dataset class C++ unit tests") {
         expected[1] = 1;
         expected[2] = 2;
 
-        expect_true(names == Rcpp::as<vector<string>>(fastaReport[0]));
+        expect_true(names == Rcpp::as<vector<string>>(seqReport[0]));
 
-        expect_true(expected == Rcpp::as<vector<int>>(fastaReport[1]));
+        expect_true(expected == Rcpp::as<vector<int>>(seqReport[1]));
 
         // ends
         expected[0] = 23;
         expected[1] = 15;
         expected[2] = 19;
 
-        expect_true(expected == Rcpp::as<vector<int>>(fastaReport[2]));
+        expect_true(expected == Rcpp::as<vector<int>>(seqReport[2]));
 
         // lengths
         expected[0] = 17;
         expected[1] = 15;
         expected[2] = 18;
 
-        expect_true(expected == Rcpp::as<vector<int>>(fastaReport[3]));
+        expect_true(expected == Rcpp::as<vector<int>>(seqReport[3]));
 
         // ambigs
         expected[0] = 2;
         expected[1] = 0;
         expected[2] = 0;
 
-        expect_true(expected == Rcpp::as<vector<int>>(fastaReport[4]));
+        expect_true(expected == Rcpp::as<vector<int>>(seqReport[4]));
 
         // homopolymers
         expected[0] = 3;
         expected[1] = 3;
         expected[2] = 5;
 
-        expect_true(expected == Rcpp::as<vector<int>>(fastaReport[5]));
+        expect_true(expected == Rcpp::as<vector<int>>(seqReport[5]));
 
         // numNs
         expected[0] = 1;
         expected[1] = 0;
         expected[2] = 0;
 
-        expect_true(expected == Rcpp::as<vector<int>>(fastaReport[6]));
+        expect_true(expected == Rcpp::as<vector<int>>(seqReport[6]));
 
         // report[0] = starts, report[1] = ends, report[2] = lengths,
         // report[3] = ambigs, report[4] = homopolymers, report[5] = num_ns
-        Rcpp::DataFrame fastaSummary = data.getFastaSummary();
+        Rcpp::List summary = data.getSequenceSummary();
+        Rcpp::DataFrame df(summary["sequence_summary"]);
 
         // minimum / maximum start
-        expect_true(1 == Rcpp::as<vector<int>>(fastaSummary[0])[0]);
-        expect_true(3 == Rcpp::as<vector<int>>(fastaSummary[0])[6]);
+        expect_true(1 == Rcpp::as<vector<int>>(df[0])[0]);
+        expect_true(3 == Rcpp::as<vector<int>>(df[0])[6]);
 
         // minimum / maximum end
-        expect_true(15 == Rcpp::as<vector<int>>(fastaSummary[1])[0]);
-        expect_true(23 == Rcpp::as<vector<int>>(fastaSummary[1])[6]);
+        expect_true(15 == Rcpp::as<vector<int>>(df[1])[0]);
+        expect_true(23 == Rcpp::as<vector<int>>(df[1])[6]);
 
         // minimum / maximum lengths
-        expect_true(15 == Rcpp::as<vector<int>>(fastaSummary[2])[0]);
-        expect_true(18 == Rcpp::as<vector<int>>(fastaSummary[2])[6]);
+        expect_true(15 == Rcpp::as<vector<int>>(df[2])[0]);
+        expect_true(18 == Rcpp::as<vector<int>>(df[2])[6]);
 
         // minimum / maximum ambigs
-        expect_true(0 == Rcpp::as<vector<int>>(fastaSummary[3])[0]);
-        expect_true(2 == Rcpp::as<vector<int>>(fastaSummary[3])[6]);
+        expect_true(0 == Rcpp::as<vector<int>>(df[3])[0]);
+        expect_true(2 == Rcpp::as<vector<int>>(df[3])[6]);
 
         // minimum / maximum homopolymers
-        expect_true(3 == Rcpp::as<vector<int>>(fastaSummary[4])[0]);
-        expect_true(5 == Rcpp::as<vector<int>>(fastaSummary[4])[6]);
+        expect_true(3 == Rcpp::as<vector<int>>(df[4])[0]);
+        expect_true(5 == Rcpp::as<vector<int>>(df[4])[6]);
 
         // minimum / maximum numns
-        expect_true(0 == Rcpp::as<vector<int>>(fastaSummary[5])[0]);
-        expect_true(1 == Rcpp::as<vector<int>>(fastaSummary[5])[6]);
+        expect_true(0 == Rcpp::as<vector<int>>(df[5])[0]);
+        expect_true(1 == Rcpp::as<vector<int>>(df[5])[6]);
+
+        // no treatment data
+        Rcpp::DataFrame countTable = data.getSequenceAbundanceTable();
+
+        expect_true(countTable.size() == 2);
+
+        expect_true(names == Rcpp::as<vector<string>>(countTable[0]));
+        vector<int> abunds(3, 1);
+        expect_true(abunds == Rcpp::as<vector<int>>(countTable[1]));
 
         data.clear();
 
         expect_true(data.numUnique == 0);
+
+        data.addSeqs(names, seqs, comments);
+
+        expect_true(data.numUnique == 3);
+
+        // as a sample table
+        vector<string> ids(3, "");
+        ids[0] = "seq1";
+        ids[1] = "seq2";
+        ids[2] = "seq3";
+
+        abunds[0] = 250;
+        abunds[1] = 400;
+        abunds[2] = 500;
+
+        data.assignSequenceAbundance(ids, abunds);
+        expect_true(data.getTotal() == 1150);
+
+        countTable = data.getSequenceAbundanceTable();
+
+        expect_true(countTable.size() == 2);
+
+        expect_true(ids == Rcpp::as<vector<string>>(countTable[0]));
+        expect_true(abunds == Rcpp::as<vector<int>>(countTable[1]));
     }
 
     test_that("Tests addContigsReport, getContigsReport, getContigsSummary") {
@@ -193,31 +227,32 @@ context("Dataset class C++ unit tests") {
 
         expect_true(ee == Rcpp::as<vector<double>>(contigsReport[7]));
 
-        Rcpp::DataFrame contigsSummary = data.getContigsSummary();
+        Rcpp::List summary = data.getSequenceSummary();
+        Rcpp::DataFrame df(summary["contigs_summary"]);
 
         // minimum / maximum ostart
-        expect_true(2 == Rcpp::as<vector<int>>(contigsSummary[0])[0]);
-        expect_true(5 == Rcpp::as<vector<int>>(contigsSummary[0])[6]);
+        expect_true(2 == Rcpp::as<vector<int>>(df[0])[0]);
+        expect_true(5 == Rcpp::as<vector<int>>(df[0])[6]);
 
         // minimum / maximum oend
-        expect_true(10 == Rcpp::as<vector<int>>(contigsSummary[1])[0]);
-        expect_true(18 == Rcpp::as<vector<int>>(contigsSummary[1])[6]);
+        expect_true(10 == Rcpp::as<vector<int>>(df[1])[0]);
+        expect_true(18 == Rcpp::as<vector<int>>(df[1])[6]);
 
         // minimum / maximum lengths
-        expect_true(15 == Rcpp::as<vector<int>>(contigsSummary[2])[0]);
-        expect_true(18 == Rcpp::as<vector<int>>(contigsSummary[2])[6]);
+        expect_true(15 == Rcpp::as<vector<int>>(df[2])[0]);
+        expect_true(18 == Rcpp::as<vector<int>>(df[2])[6]);
 
         // minimum / maximum olengths
-        expect_true(5 == Rcpp::as<vector<int>>(contigsSummary[3])[0]);
-        expect_true(15 == Rcpp::as<vector<int>>(contigsSummary[3])[6]);
+        expect_true(5 == Rcpp::as<vector<int>>(df[3])[0]);
+        expect_true(15 == Rcpp::as<vector<int>>(df[3])[6]);
 
         // minimum / maximum mismatches
-        expect_true(0 == Rcpp::as<vector<int>>(contigsSummary[5])[0]);
-        expect_true(2 == Rcpp::as<vector<int>>(contigsSummary[5])[6]);
+        expect_true(0 == Rcpp::as<vector<int>>(df[5])[0]);
+        expect_true(2 == Rcpp::as<vector<int>>(df[5])[6]);
 
         // minimum / maximum numns
-        expect_true(0 == Rcpp::as<vector<int>>(contigsSummary[4])[0]);
-        expect_true(1 == Rcpp::as<vector<int>>(contigsSummary[4])[6]);
+        expect_true(0 == Rcpp::as<vector<int>>(df[4])[0]);
+        expect_true(1 == Rcpp::as<vector<int>>(df[4])[6]);
     }
 
     test_that("Tests addAlignReport, getAlignReport, getAlignSummary") {
@@ -275,19 +310,20 @@ context("Dataset class C++ unit tests") {
 
         expect_true(longestInserts == Rcpp::as<vector<int>>(alignReport[3]));
 
-        Rcpp::DataFrame alignSummary = data.getAlignSummary();
+        Rcpp::List summary = data.getSequenceSummary();
+        Rcpp::DataFrame df(summary["align_summary"]);
 
         // minimum / maximum searchScores
-        expect_true(75.0 == Rcpp::as<vector<double>>(alignSummary[0])[0]);
-        expect_true(95.0 == Rcpp::as<vector<double>>(alignSummary[0])[6]);
+        expect_true(75.0 == Rcpp::as<vector<double>>(df[0])[0]);
+        expect_true(95.0 == Rcpp::as<vector<double>>(df[0])[6]);
 
         // minimum / maximum simScores
-        expect_true(75.0 == Rcpp::as<vector<double>>(alignSummary[1])[0]);
-        expect_true(98.0 == Rcpp::as<vector<double>>(alignSummary[1])[6]);
+        expect_true(75.0 == Rcpp::as<vector<double>>(df[1])[0]);
+        expect_true(98.0 == Rcpp::as<vector<double>>(df[1])[6]);
 
         // minimum / maximum longestInserts
-        expect_true(1 == Rcpp::as<vector<int>>(alignSummary[2])[0]);
-        expect_true(2 == Rcpp::as<vector<int>>(alignSummary[2])[6]);
+        expect_true(1 == Rcpp::as<vector<int>>(df[2])[0]);
+        expect_true(2 == Rcpp::as<vector<int>>(df[2])[6]);
     }
 
     test_that("Tests getNames and getSeqs") {
@@ -310,10 +346,10 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getNames() == names);
         expect_true(data.getSeqs() == seqs);
 
-        // TODO - add tests for getNames and getSeqs with group
+        // TODO - add tests for getNames and getSeqs with samples
     }
 
-    test_that("Tests addSeqs, assignSampleAbundance, getGroupTotals, getTreatments, getTreatmentTotals") {
+    test_that("Tests addSeqs, assignSequenceAbundance, getSampleTotals, getTreatments, getTreatmentTotals, getSequenceAbundanceTable") {
 
         Dataset data("mydata", 1);
 
@@ -353,17 +389,17 @@ context("Dataset class C++ unit tests") {
         ids[8] = "seq4";
         ids[9] = "seq4";
 
-        vector<string> groups(10, "");
-        groups[0] = "sample2";
-        groups[1] = "sample3";
-        groups[2] = "sample4";
-        groups[3] = "sample2";
-        groups[4] = "sample3";
-        groups[5] = "sample4";
-        groups[6] = "sample2";
-        groups[7] = "sample3";
-        groups[8] = "sample2";
-        groups[9] = "sample4";
+        vector<string> samples(10, "");
+        samples[0] = "sample2";
+        samples[1] = "sample3";
+        samples[2] = "sample4";
+        samples[3] = "sample2";
+        samples[4] = "sample3";
+        samples[5] = "sample4";
+        samples[6] = "sample2";
+        samples[7] = "sample3";
+        samples[8] = "sample2";
+        samples[9] = "sample4";
 
         vector<int> abunds(10, 0);
         abunds[0] = 250;
@@ -377,15 +413,24 @@ context("Dataset class C++ unit tests") {
         abunds[8] = 1;
         abunds[9] = 4;
 
-        data.assignSampleAbundance(ids, abunds, groups);
+        data.assignSequenceAbundance(ids, abunds, samples);
 
-        vector<int> groupTotals(3, 0);
-        groupTotals[0] = 301;
-        groupTotals[1] = 465;
-        groupTotals[2] = 554;
+        vector<int> sampleTotals(3, 0);
+        sampleTotals[0] = 301;
+        sampleTotals[1] = 465;
+        sampleTotals[2] = 554;
 
-        expect_true(data.getGroupTotals() == groupTotals);
+        expect_true(data.getSampleTotals() == sampleTotals);
         expect_true(data.getTotal() == 1320);
+
+        // no treatment data
+        Rcpp::DataFrame countTable = data.getSequenceAbundanceTable();
+
+        expect_true(ids == Rcpp::as<vector<string>>(countTable[0]));
+        expect_true(abunds == Rcpp::as<vector<int>>(countTable[1]));
+        expect_true(samples == Rcpp::as<vector<string>>(countTable[2]));
+
+        expect_true(countTable.size() == 3);
 
         // add with treatment assignments
         vector<string> treatments(10, "");
@@ -400,13 +445,13 @@ context("Dataset class C++ unit tests") {
         treatments[8] = "early";
         treatments[9] = "late";
 
-        data.assignSampleAbundance(ids, abunds, groups, treatments);
+        data.assignSequenceAbundance(ids, abunds, samples, treatments);
 
-        groupTotals[0] = 301;
-        groupTotals[1] = 465;
-        groupTotals[2] = 554;
+        sampleTotals[0] = 301;
+        sampleTotals[1] = 465;
+        sampleTotals[2] = 554;
 
-        expect_true(data.getGroupTotals() == groupTotals);
+        expect_true(data.getSampleTotals() == sampleTotals);
         expect_true(data.getTotal() == 1320);
 
         vector<int> treatmentTotals(2, 0);
@@ -421,6 +466,14 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTreatments() == uniqueTreatments);
 
+        countTable = data.getSequenceAbundanceTable();
+
+        expect_true(countTable.size() == 4);
+
+        expect_true(ids == Rcpp::as<vector<string>>(countTable[0]));
+        expect_true(abunds == Rcpp::as<vector<int>>(countTable[1]));
+        expect_true(samples == Rcpp::as<vector<string>>(countTable[2]));
+        expect_true(treatments == Rcpp::as<vector<string>>(countTable[3]));
     }
 
 }

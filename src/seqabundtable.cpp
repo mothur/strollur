@@ -3,38 +3,39 @@
 
 /******************************************************************************/
 SeqAbundTable::SeqAbundTable() {
-    hasGroupData = false;
+    hasSampleData = false;
     hasTreatments = false;
     total = 0;
-    numGroups = 0;
+    numSamples = 0;
     numTreatments = 0;
 }
 /******************************************************************************/
 SeqAbundTable::~SeqAbundTable() {}
 /******************************************************************************/
 void SeqAbundTable::clear() {
-    hasGroupData = false;
+    hasSampleData = false;
     hasTreatments = false;
     total = 0;
-    numGroups = 0;
+    numSamples = 0;
     numTreatments = 0;
 
     counts.clear();
-    groupIndex.clear();
-    groupTotals.clear();
-    tableGroups.clear();
+    sampleIndex.clear();
+    sampleNames.clear();
+    sampleTotals.clear();
+    tableSamples.clear();
 
     treatmentIndex.clear();
     treatmentTotals.clear();
     tableTreatments.clear();
-    groupTreatment.clear();
+    sampleTreatment.clear();
 }
 /******************************************************************************/
 // the names are the indexes in dataset
 void SeqAbundTable::addSeqs(vector<int>& names) {
 
-    if (hasGroupData) {
-        string message = "[ERROR]: The dataset contains group information, ";
+    if (hasSampleData) {
+        string message = "[ERROR]: The dataset contains sample information, ";
         message += "you must provide by sample data.\n\n";
         RcppThread::Rcout << endl << message;
     }else{
@@ -47,9 +48,9 @@ void SeqAbundTable::addSeqs(vector<int>& names) {
         }
 
         // make space for total abundance
-        tableGroups.clear();
-        tableGroups.push_back(true);
-        numGroups = 1;
+        tableSamples.clear();
+        tableSamples.push_back(true);
+        numSamples = 1;
 
         tableTreatments.clear();
         tableTreatments.push_back(true);
@@ -60,27 +61,28 @@ void SeqAbundTable::addSeqs(vector<int>& names) {
 }
 /******************************************************************************/
 // private function
-void SeqAbundTable::addGroups(vector<string> groups) {
-    // store groups alphabetically
-    sort(groups.begin(), groups.end());
+void SeqAbundTable::addSamples(vector<string> samples) {
+    // store samples alphabetically
+    sort(samples.begin(), samples.end());
+    sampleNames = samples;
 
-    // all groups start off as "good"
-    tableGroups.resize(groups.size(), true);
-    groupTotals.resize(groups.size(), 0);
+    // all samples start off as "good"
+    tableSamples.resize(samples.size(), true);
+    sampleTotals.resize(samples.size(), 0);
 
-    for (int i = 0; i < groups.size(); i++) {
-        groupIndex[groups[i]] = i;
+    for (int i = 0; i < samples.size(); i++) {
+        sampleIndex[samples[i]] = i;
     }
 
-    hasGroupData = true;
+    hasSampleData = true;
 }
 /******************************************************************************/
 // private function
 void SeqAbundTable::addTreatments(vector<string> treatments) {
-    // store groups alphabetically
+    // store samples alphabetically
     sort(treatments.begin(), treatments.end());
 
-    // all groups start off as "good"
+    // all samples start off as "good"
     tableTreatments.resize(treatments.size(), true);
     treatmentTotals.resize(treatments.size(), 0);
 
@@ -91,27 +93,27 @@ void SeqAbundTable::addTreatments(vector<string> treatments) {
     hasTreatments = true;
 }
 /******************************************************************************/
-// names, abundances, groups (optional), treatment (optional)
-void SeqAbundTable::assignSampleAbundance(vector<int> names,
+// names, abundances, samples (optional), treatment (optional)
+void SeqAbundTable::assignSequenceAbundance(vector<int> names,
                            vector<int> abunds,
-                           vector<string> groups,
+                           vector<string> samples,
                            vector<string> treatments) {
 
     clear();
 
-    if ((groups.size() == 0) && (treatments.size() == 0)) {
-        hasGroupData = false;
-        tableGroups.push_back(true);
+    if ((samples.size() == 0) && (treatments.size() == 0)) {
+        hasSampleData = false;
+        tableSamples.push_back(true);
         tableTreatments.push_back(true);
-        numGroups = 1; // placeholder for sparse abundances
+        numSamples = 1; // placeholder for sparse abundances
         numTreatments = 1;
     }else{
-        vector<string> uniqueGroups = unique(groups);
+        vector<string> uniqueSamples = unique(samples);
         vector<string> uniqueTreatments = unique(treatments);
 
-        if (uniqueGroups.size() > 1) {
-            addGroups(uniqueGroups);
-            numGroups = uniqueGroups.size();
+        if (uniqueSamples.size() > 1) {
+            addSamples(uniqueSamples);
+            numSamples = uniqueSamples.size();
 
             if (uniqueTreatments.size() > 1) {
                 addTreatments(uniqueTreatments);
@@ -124,37 +126,37 @@ void SeqAbundTable::assignSampleAbundance(vector<int> names,
                 tableTreatments.push_back(true);
                 numTreatments = 1;
             }
-        }else if ((uniqueGroups.size() == 1) && (uniqueGroups[0] != "")) {
-            addGroups(uniqueGroups);
-            numGroups = 1;
+        }else if ((uniqueSamples.size() == 1) && (uniqueSamples[0] != "")) {
+            addSamples(uniqueSamples);
+            numSamples = 1;
             numTreatments = 1;
         }else{
-            // empty strings passed in for groups, ignore
-            hasGroupData = false;
+            // empty strings passed in for samples, ignore
+            hasSampleData = false;
             hasTreatments = false;
-            tableGroups.push_back(true);
+            tableSamples.push_back(true);
             tableTreatments.push_back(true);
-            numGroups = 1; // placeholder for sparse abundances
+            numSamples = 1; // placeholder for sparse abundances
             numTreatments = 1;
         }
     }
 
 
-    // update counts, groupTotals and total
-    if (hasGroupData) {
+    // update counts, sampleTotals and total
+    if (hasSampleData) {
         vector<int> uniqueNames = unique(names);
 
         // fill in long format
         counts.resize(uniqueNames.size());
-        for (int i = 0; i < groups.size(); i++) {
-            int index = groupIndex[groups[i]];
+        for (int i = 0; i < samples.size(); i++) {
+            int index = sampleIndex[samples[i]];
             counts[names[i]].sampleIndex.push_back(index);
             counts[names[i]].abunds.push_back(abunds[i]);
-            groupTotals[index] += abunds[i];
+            sampleTotals[index] += abunds[i];
         }
 
         // convert to sparse
-        total = accumulate(groupTotals.begin(), groupTotals.end(), 0);
+        total = accumulate(sampleTotals.begin(), sampleTotals.end(), 0);
     }else{
 
         counts.resize(names.size());
@@ -166,19 +168,104 @@ void SeqAbundTable::assignSampleAbundance(vector<int> names,
     }
 
     if (hasTreatments) {
-        // create group to treatment map
-        for (int i = 0; i < groups.size(); i++) {
-            groupTreatment[groups[i]] = treatments[i];
+        // create sample to treatment map
+        for (int i = 0; i < samples.size(); i++) {
+            sampleTreatment[sampleIndex[samples[i]]] = treatments[i];
         }
 
         // fill treatment totals
-        for (auto it = groupIndex.begin(); it != groupIndex.end(); it++) {
-            string treatment = groupTreatment[it->first];
+        for (auto it = sampleIndex.begin(); it != sampleIndex.end(); it++) {
+            string treatment = sampleTreatment[it->second];
             int tindex = treatmentIndex[treatment];
 
-            treatmentTotals[tindex] += groupTotals[it->second];
+            treatmentTotals[tindex] += sampleTotals[it->second];
         }
     }
+}
+/******************************************************************************/
+// total abundance for sequence.
+// If sample provided, then abundance for sequence in sample
+int SeqAbundTable::getAbund(int name, string sample) {
+
+    int abund = 0;
+
+    if (sample == "") {
+        if (hasSampleData) {
+            vector<int> abunds = getAbunds(name);
+            abund = accumulate(abunds.begin(), abunds.end(), 0);
+        }else{
+            abund = counts[name].abunds[0];
+        }
+    }else if (hasSample(sample)) {
+        int gIndex = sampleIndex[sample];
+
+        // if the sequence does not have this sample, -1 returned
+        int thisSamplesIndex = getSparseIndex(name, gIndex);
+
+        if (thisSamplesIndex != -1) {
+            abund = counts[name].abunds[thisSamplesIndex];
+        }
+    }
+
+    return abund;
+}
+/******************************************************************************/
+// abundances by sample, in the same order as the samples
+vector<int> SeqAbundTable::getAbunds(int name) {
+    vector<int> abunds;
+
+    if (hasSampleData) {
+        // all samples not just "good" ones
+        vector<int> allAbunds(tableSamples.size(), 0);
+
+        seqCount data = counts[name];
+
+        // data -> sampleIndex(2,5), abunds(100, 50)
+        // becomes abunds(0,0,100,0,0,50)
+        for (int i = 0; i < data.sampleIndex.size(); i++) {
+            allAbunds[data.sampleIndex[i]] = data.abunds[i];
+        }
+
+        // only include "good" samples
+        abunds = select(allAbunds, tableSamples);
+    }else{
+        abunds.push_back(counts[name].abunds[0]);
+    }
+
+    return abunds;
+}
+/******************************************************************************/
+vector<string> SeqAbundTable::getSamples() {
+    vector<string> samples;
+
+    if (hasSampleData) {
+        // want all "good" samples
+        return select(sampleNames, tableSamples);
+    }
+
+    return samples;
+}
+/******************************************************************************/
+vector<int> SeqAbundTable::getSampleTotals() {
+    vector<int> totals;
+    if (hasSampleData) {
+        totals = select(sampleTotals, tableSamples);
+    }
+    return totals;
+}
+/******************************************************************************/
+int SeqAbundTable::getNumSamples() {
+    if (hasSampleData) {
+        return numSamples;
+    }
+    return 0;
+}
+/******************************************************************************/
+int SeqAbundTable::getNumTreatments() {
+    if (hasTreatments) {
+        return numTreatments;
+    }
+    return 0;
 }
 /******************************************************************************/
 // vector containing total abundance for each sequence
@@ -192,112 +279,91 @@ vector<int> SeqAbundTable::getSeqsAbunds(vector<int> names) {
     return abunds;
 }
 /******************************************************************************/
-// total abundance for sequence.
-// If group provided, then abundance for sequence in sample
-int SeqAbundTable::getAbund(int name, string group) {
+Rcpp::DataFrame SeqAbundTable::getSequenceAbundanceTable(vector<string> outputNames,
+                                          vector<int> names) {
 
-    int abund = 0;
 
-    if (group == "") {
-        if (hasGroupData) {
-            vector<int> abunds = getAbunds(name);
-            abund = accumulate(abunds.begin(), abunds.end(), 0);
+    if (hasSampleData) {
+        vector<string> ids;
+        vector<int> abunds;
+        vector<string> samples;
+        vector<string> treaments;
+
+        for (int i = 0; i < names.size(); i++) {
+            string name = outputNames[i];
+
+            seqCount data = counts[names[i]];
+
+            // data -> sampleIndex(2,5), abunds(100, 50)
+            // becomes abunds(0,0,100,0,0,50)
+            for (int j = 0; j < data.sampleIndex.size(); j++) {
+                //allAbunds[data.sampleIndex[i]] = data.abunds[i];
+                // if this sample "good"
+                if (tableSamples[data.sampleIndex[j]]) {
+                    ids.push_back(name);
+                    abunds.push_back(data.abunds[j]);
+                    samples.push_back(sampleNames[data.sampleIndex[j]]);
+
+                    if (hasTreatments) {
+                        treaments.push_back(sampleTreatment[data.sampleIndex[j]]);
+                    }
+                }
+            }
+        }
+
+        if (hasTreatments) {
+            Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                Rcpp::Named("id") = ids,
+                Rcpp::_["abundance"] = abunds,
+                Rcpp::_["sample"] = samples,
+                Rcpp::_["treatment"] = treaments);
+            return df;
         }else{
-            abund = counts[name].abunds[0];
+            Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                Rcpp::Named("id") = ids,
+                Rcpp::_["abundance"] = abunds,
+                Rcpp::_["sample"] = samples);
+            return df;
         }
-    }else if (hasGroup(group)) {
-        int gIndex = groupIndex[group];
-
-        // if the sequence does not have this group, -1 returned
-        int thisGroupsIndex = getSparseIndex(name, gIndex);
-
-        if (thisGroupsIndex != -1) {
-            abund = counts[name].abunds[thisGroupsIndex];
-        }
+    }else{
+        // no sample information
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("id") = outputNames,
+            Rcpp::_["abundance"] = getSeqsAbunds(names));
+        return df;
     }
 
-    return abund;
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
-int SeqAbundTable::getSparseIndex(int name, int group) {
+int SeqAbundTable::getSparseIndex(int name, int sample) {
     int index = -1;
 
     for (int i = 0; i < counts[name].sampleIndex.size(); i++) {
-        if (counts[name].sampleIndex[i] == group) { return i; }
+        if (counts[name].sampleIndex[i] == sample) { return i; }
     }
 
     return index;
 }
 /******************************************************************************/
-// abundances by sample, in the same order as the groups
-vector<int> SeqAbundTable::getAbunds(int name) {
-    vector<int> abunds;
+int SeqAbundTable::getTotal(string sample) {
+    if (sample != "") {
+        auto it = sampleIndex.find(sample);
 
-    if (hasGroupData) {
-        // all groups not just "good" ones
-        vector<int> allAbunds(tableGroups.size(), 0);
-
-        seqCount data = counts[name];
-
-        // data -> sampleIndex(2,5), abunds(100, 50)
-        // becomes abunds(0,0,100,0,0,50)
-        for (int i = 0; i < data.sampleIndex.size(); i++) {
-            allAbunds[data.sampleIndex[i]] = data.abunds[i];
-        }
-
-        // only include "good" groups
-        abunds = select(allAbunds, tableGroups);
-    }else{
-        abunds.push_back(counts[name].abunds[0]);
-    }
-
-    return abunds;
-}
-/******************************************************************************/
-bool SeqAbundTable::hasGroup(string group, int name) {
-    auto it = groupIndex.find(group);
-
-    // is this a group in the table
-    if (it != groupIndex.end()) {
-
-        // no name provided
-        if (name == -1) {
+        // is this a sample in the table
+        if (it != sampleIndex.end()) {
             // is it "good"
-            return tableGroups[it->second];
-        }else{
-            // if the sequence does not have this group, -1 returned
-            int thisGroupsIndex = getSparseIndex(name, it->second);
-
-            if (thisGroupsIndex != -1) {
-                return true;
+            if (tableSamples[it->second]) {
+                return sampleTotals[it->second];
             }
         }
+        RcppThread::Rcout << endl <<
+            "[ERROR]: The dataset does not include sample: " +
+            sample + ".\n\n";
+        return 0;
     }
-
-    return false;
-}
-/******************************************************************************/
-vector<int> SeqAbundTable::getGroupTotals() {
-    vector<int> totals;
-    if (hasGroupData) {
-        totals = select(groupTotals, tableGroups);
-    }
-    return totals;
-}
-/******************************************************************************/
-vector<int> SeqAbundTable::getTreatmentTotals() {
-    vector<int> totals;
-    if (hasTreatments) {
-        totals = select(treatmentTotals, tableTreatments);
-    }
-    return totals;
-}
-/******************************************************************************/
-int SeqAbundTable::getNumGroups() {
-    if (hasGroupData) {
-        return numGroups;
-    }
-    return 0;
+    return total;
 }
 /******************************************************************************/
 vector<string> SeqAbundTable::getTreatments() {
@@ -314,55 +380,34 @@ vector<string> SeqAbundTable::getTreatments() {
     return treatments;
 }
 /******************************************************************************/
-vector<string> SeqAbundTable::getGroups(int name) {
-    vector<string> groups;
-
-    if (hasGroupData) {
-        // want all "good" groups
-        if (name == -1) {
-            for (auto it = groupIndex.begin(); it != groupIndex.end(); it++) {
-                if (tableGroups[it->second]) {
-                    groups.push_back(it->first);
-                }
-            }
-        }else{
-            // want all "good" groups for sequence
-            vector<int> thisSeqsGroupIndexes = counts[name].sampleIndex;
-
-            for (auto it = groupIndex.begin(); it != groupIndex.end(); it++) {
-                // if "good" group
-                if (tableGroups[it->second]) {
-
-                    auto itFind = find(thisSeqsGroupIndexes.begin(),
-                                       thisSeqsGroupIndexes.end(), it->second);
-                    if (itFind != thisSeqsGroupIndexes.end()) {
-                        groups.push_back(it->first);
-                    }
-                }
-            }
-
-        }
+vector<int> SeqAbundTable::getTreatmentTotals() {
+    vector<int> totals;
+    if (hasTreatments) {
+        totals = select(treatmentTotals, tableTreatments);
     }
-
-    return groups;
+    return totals;
 }
 /******************************************************************************/
-int SeqAbundTable::getTotal(string group) {
-    if (group != "") {
-        auto it = groupIndex.find(group);
+bool SeqAbundTable::hasSample(string sample, int name) {
+    auto it = sampleIndex.find(sample);
 
-        // is this a group in the table
-        if (it != groupIndex.end()) {
+    // is this a sample in the table
+    if (it != sampleIndex.end()) {
+
+        // no name provided
+        if (name == -1) {
             // is it "good"
-            if (tableGroups[it->second]) {
-                return groupTotals[it->second];
+            return tableSamples[it->second];
+        }else{
+            // if the sequence does not have this sample, -1 returned
+            int thisSamplesIndex = getSparseIndex(name, it->second);
+
+            if (thisSamplesIndex != -1) {
+                return true;
             }
         }
-        RcppThread::Rcout << endl <<
-            "[ERROR]: The dataset does not include group: " +
-             group + ".\n\n";
-        return 0;
     }
-    return total;
+
+    return false;
 }
 /******************************************************************************/

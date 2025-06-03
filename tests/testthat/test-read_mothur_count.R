@@ -1,10 +1,10 @@
 # test read_mothur_count
 
-test_that("test read_mothur_count compressed with groups", {
-  # read compressed count file with groups
+test_that("test read_mothur_count compressed with samples", {
+  # read compressed count file with samples
   results <- read_mothur_count(rdataset_example("test.count_table"))
 
-  expect_equal(c("id", "group", "abundance"), colnames(results))
+  expect_equal(c("id", "sample", "abundance"), colnames(results))
 
   abunds <- rep(1, 1000)
   expect_equal(abunds, results$abundance)
@@ -24,20 +24,20 @@ test_that("test read_mothur_count compressed with groups", {
 
   expect_equal(first_ten, results$id[1:10])
 
-  first_ten_groups <- c(
+  first_ten_samples <- c(
     "F3D2", "F3D146", "F3D150", "F3D145",
     "F3D147", "F3D8", "F3D147", "F3D150",
     "F3D150", "F3D148"
   )
 
-  expect_equal(first_ten_groups, results$group[1:10])
+  expect_equal(first_ten_samples, results$sample[1:10])
 })
 
-test_that("test read_mothur_count uncompressed with groups", {
-  # read uncompressed count file with groups
+test_that("test read_mothur_count uncompressed with samples", {
+  # read uncompressed count file with samples
   results <- read_mothur_count(rdataset_example("test.full.count_table"))
 
-  expect_equal(c("id", "group", "abundance"), colnames(results))
+  expect_equal(c("id", "sample", "abundance"), colnames(results))
 
   abunds <- rep(1, 1000)
   expect_equal(abunds, results$abundance)
@@ -57,17 +57,17 @@ test_that("test read_mothur_count uncompressed with groups", {
 
   expect_equal(first_ten, results$id[1:10])
 
-  first_ten_groups <- c(
+  first_ten_samples <- c(
     "F3D2", "F3D146", "F3D150", "F3D145",
     "F3D147", "F3D8", "F3D147", "F3D150",
     "F3D150", "F3D148"
   )
 
-  expect_equal(first_ten_groups, results$group[1:10])
+  expect_equal(first_ten_samples, results$sample[1:10])
 })
 
-test_that("test read_mothur_count uncompressed NO groups", {
-  # read uncompressed count file without groups
+test_that("test read_mothur_count uncompressed NO samples", {
+  # read uncompressed count file without samples
   results <- read_mothur_count(
     rdataset_example("test_nogroups.count_table")
   )
