@@ -11,7 +11,6 @@ Dataset::Dataset(string n, int proc) : datasetName(n) {
     numSamples = 0;
     numTreatments = 0;
     numUnique = 0;
-    totalBad = 0;
     uniqueBad = 0;
     alignmentLength = 0;
     processors = proc;
@@ -35,7 +34,6 @@ void Dataset::clear() {
     numSamples = 0;
     numTreatments = 0;
     numUnique = 0;
-    totalBad = 0;
     uniqueBad = 0;
     alignmentLength = 0;
 
@@ -254,7 +252,9 @@ int Dataset::getAbund(string name, string sample){
     int abund = 0;
     auto it = seqIndex.find(name);
     if (it != seqIndex.end()) {
-        abund = count->getAbund(it->second, sample);
+        if (tableSeqs[it->second]) {
+            abund = count->getAbund(it->second, sample);
+        }
     }
     return abund;
 }
@@ -263,7 +263,9 @@ vector<int> Dataset::getAbunds(string name){
     vector<int> abunds;
     auto it = seqIndex.find(name);
     if (it != seqIndex.end()) {
-        abunds = count->getAbunds(it->second);
+        if (tableSeqs[it->second]) {
+            abunds = count->getAbunds(it->second);
+        }
     }
     return abunds;
 }
@@ -271,7 +273,7 @@ vector<int> Dataset::getAbunds(string name){
 int Dataset::getAlignedLength(vector<string> seqs) {
     int length = -1;
 
-
+// TODO
     return length;
 }
 /******************************************************************************/
@@ -594,8 +596,62 @@ void Dataset::mergeSeqs(vector<string> names, string reason, string sample){
     // TODO
 }
 /******************************************************************************/
-void Dataset::removeSeqs(vector<string> names, vector<string> trashTags){
-    // TODO
+void Dataset::removeSeqs(vector<string> namesToRemove,
+                         vector<string> trashTags){
+
+    if (namesToRemove.size() != trashTags.size()) {
+        string message = "[ERROR]: Size mismatch. You must provide a trash";
+        message += " code for each sequence.";
+        RcppThread::Rcout << endl << message << endl;
+        return;
+    }
+
+    for (int i = 0; i < namesToRemove.size(); i++) {
+        auto it = seqIndex.find(namesToRemove[i]);
+
+        if (it != seqIndex.end()) {
+            int index = it->second;
+
+            // remove from tableSeqs and add trashCode
+            tableSeqs[index] = false;
+            trashCodes[index] = trashTags[i];
+            numUnique--;
+
+            // remove from counts
+            int abund = count->removeSeq(index);
+
+            // add to badAccnos
+            vector<string> theseReasons;
+            split(trashTags[i], ',', back_inserter(theseReasons));
+
+            for (int j = 0; j < theseReasons.size(); j++) {
+                auto itBad = badAccnos.find(theseReasons[j]);
+
+                if (itBad != badAccnos.end()) {
+                    // update counts of trashCode
+                    itBad->second[0]++;
+                    itBad->second[1] += abund;
+                }else{
+                    // add new trashCode
+                    vector<int> badAbunds(2, 1);
+                    badAbunds[1] = abund;
+                    badAccnos[theseReasons[j]] = badAbunds;
+                }
+            }
+
+            // update uniqueBad
+            uniqueBad++;
+        }else{
+            string message = "[WARNING]: " + namesToRemove[i] + " is not in ";
+            message += "your dataset, ignoring.";
+            RcppThread::Rcout << endl << message << endl;
+        }
+    }
+
+    count->updateTotals();
+    numSamples = count->getNumSamples();
+    numTreatments = count->getNumTreatments();
+
 }
 /******************************************************************************/
 
@@ -606,12 +662,8 @@ void Dataset::setAbundances(vector<string> names, vector<int> abunds,
 /******************************************************************************/
 void Dataset::setSeqs(vector<string> n, vector<string> s,
                       vector<string> c){
-    names = n;
-    seqs = s;
-    if (c.size() == 0) {
-        c.resize(names.size(), "");
-    }
-    comments = c;
+
+    // TODO
 }
 /******************************************************************************/
 

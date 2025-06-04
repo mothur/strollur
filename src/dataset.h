@@ -34,6 +34,17 @@ struct pieceOfWork {
     ~pieceOfWork() {}
 };
 /**********************************************************************/
+template <typename Out>
+void split(const string &s, char delim, Out result) {
+    istringstream iss(s);
+    string item;
+    while (getline(iss, item, delim)) {
+        if (!item.empty()) { //ignore white space
+            *result++ = item;
+        }
+    }
+}
+/**********************************************************************/
 template<typename T>
 set<T> toSet(const vector<T>& x) {
     set<T> results;

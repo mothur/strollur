@@ -411,3 +411,75 @@ bool SeqAbundTable::hasSample(string sample, int name) {
     return false;
 }
 /******************************************************************************/
+int SeqAbundTable::removeSeq(int name) {
+
+    int abund = 0;
+
+    if (hasSampleData) {
+        vector<int> abunds = getAbunds(name);
+        abund = accumulate(abunds.begin(), abunds.end(), 0);
+
+        // remove seq from sample / treatment totals
+        if (abund != 0) {
+            int index = 0;
+            // sampleTotals may be larger than diffAbunds
+            // if samples have been removed
+            for (int i = 0; i < sampleTotals.size(); i++) {
+                if (tableSamples[i]) {
+                    sampleTotals[i] -= abunds[index];
+                    index++;
+                }
+            }
+        }
+
+        // remove seq from total
+        total -= abund;
+    }else{
+        // remove seq from total
+        abund = getAbund(name);
+        total -= abund;
+    }
+
+    return abund;
+}
+/******************************************************************************/
+void SeqAbundTable::updateTotals() {
+
+    if (hasSampleData) {
+
+    // does removing this sequence remove a sample
+    for (int i = 0; i < sampleTotals.size(); i++) {
+        if (sampleTotals[i] == 0) {
+           tableSamples[i] = false;
+            numSamples--;
+        }
+    }
+
+    if (hasTreatments) {
+
+        // reset to 0
+        fill(treatmentTotals.begin(), treatmentTotals.end(), 0);
+
+        // fill treatment totals
+        for (auto it = sampleIndex.begin(); it != sampleIndex.end(); it++) {
+
+            // if this sample is "good", add to treatment totals
+            if (tableSamples[it->second]) {
+                string treatment = sampleTreatment[it->second];
+                int tindex = treatmentIndex[treatment];
+
+                treatmentTotals[tindex] += sampleTotals[it->second];
+            }
+        }
+
+        // does removing this sequence remove a treatment
+        for (int i = 0; i < treatmentTotals.size(); i++) {
+            if (treatmentTotals[i] == 0) {
+                tableTreatments[i] = false;
+                numTreatments--;
+            }
+        }
+    }
+    }
+}
+/******************************************************************************/

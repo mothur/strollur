@@ -172,6 +172,54 @@ test_that("test R6 sequence_data - print", {
 
   ids <- c(
     "seq1", "seq1", "seq1",
+    "seq2", "seq2",
+    "seq3",
+    "seq4"
+  )
+  groups <- c(
+    "sample2", "sample3", "sample4",
+    "sample3", "sample4",
+    "sample3",
+    "sample4"
+  )
+  abundances <- c(
+    250, 400, 500,
+    40, 50,
+    25,
+    4
+  )
+  treatments <- c(
+    "early", "early", "late",
+    "late", "late", "late",
+    "late"
+  )
+
+  seqs_to_remove <- c("seq1", "seq2")
+  trash_codes <- c("trashTest", "trashTest2")
+
+  data <- sequence_data$new("mydata")
+  data$add_seqs(names, seqs)
+  data$assign_sequence_abundance(ids, abundances, groups, treatments)
+
+  expect_equal(data$get_num_sequences(), 1269)
+  expect_equal(data$get_num_sequences(TRUE), 4)
+  expect_equal(data$get_num_samples(), 3)
+  expect_equal(data$get_num_treatments(), 2)
+
+  data$data$remove_seqs(seqs_to_remove, trash_codes)
+
+  expect_equal(data$get_num_sequences(), 29)
+  expect_equal(data$get_num_sequences(TRUE), 2)
+  expect_equal(data$get_num_samples(), 2)
+  expect_equal(data$get_num_treatments(), 1)
+})
+
+test_that("test R6 sequence_data - print", {
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+
+  ids <- c(
+    "seq1", "seq1", "seq1",
     "seq2", "seq2", "seq2",
     "seq3", "seq3",
     "seq4", "seq4"

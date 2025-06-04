@@ -111,8 +111,11 @@ public:
     // set abundance - for datasets WITHOUT samples
     void setAbundance(int name, int abund);
 
-    // removes sequence from total and sample / treatment totals
-    void removeSeq(int name);
+    // removes sequence, returns abund. Be sure to run updateTotals after.
+    // totals are not updated in function for time savings when removing multiple
+    // sequences. Only calc totals once rather than after each removal.
+    int removeSeq(int name);
+    void updateTotals();
     // adds sequences counts of seqsToMerge[1-n] into seqsToMerge[0], optional
     // sample will only merge counts for that sample
     void mergeSeqs(vector<int> seqsToMerge, string sample = "");
@@ -171,6 +174,7 @@ private:
     int getSparseIndex(int, int);
     void addSamples(vector<string> samples);
     void addTreatments(vector<string> treatments);
+    void updateSampleTotals(vector<int> diffAbunds);
 
 };
 
@@ -301,7 +305,7 @@ private:
     // example: "pre_cluster" ->  c(10,  230) means precluster removed 10 unique
     // sequences that represented 230 total sequences.
     map<string, vector<int> > badAccnos;
-    int totalBad, uniqueBad;
+    int uniqueBad;
     int alignmentLength;
 
     // count table data
