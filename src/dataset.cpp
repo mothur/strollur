@@ -83,7 +83,7 @@ Rcpp::List Dataset::exportDataset(){
     return result;
 }
 /******************************************************************************/
-void Dataset::addSeqs(vector<string> n, vector<string> s, vector<string> c) {
+void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c) {
 
     // must provide the same number of names and seqs
     if (n.size() != s.size()) { return; }
@@ -98,7 +98,7 @@ void Dataset::addSeqs(vector<string> n, vector<string> s, vector<string> c) {
     }
 
     // add to count
-    count->addSeqs(countNames);
+    count->addSequences(countNames);
     countNames.clear();
 
     // add to names
@@ -126,6 +126,9 @@ void Dataset::addSeqs(vector<string> n, vector<string> s, vector<string> c) {
    // add calcs for starts, ends, lengths, ambigs, polymers, numns
     SeqReport report;
     report.addReports(s, starts, ends, lengths, ambigs, polymers, numns);
+
+    // set isAligned and aligned length
+    getAlignedLength();
 }
 /******************************************************************************/
 // names, abundances, samples(optional), treatments(optional)
@@ -248,33 +251,45 @@ void Dataset::addContigsReport(vector<string>& n, vector<int>& ol,
     }
 }
 /******************************************************************************/
-int Dataset::getAbund(string name, string sample){
+int Dataset::getAbundance(string name, string sample){
     int abund = 0;
     auto it = seqIndex.find(name);
     if (it != seqIndex.end()) {
         if (tableSeqs[it->second]) {
-            abund = count->getAbund(it->second, sample);
+            abund = count->getAbundance(it->second, sample);
         }
     }
     return abund;
 }
 /******************************************************************************/
-vector<int> Dataset::getAbunds(string name){
+vector<int> Dataset::getAbundances(string name){
     vector<int> abunds;
     auto it = seqIndex.find(name);
     if (it != seqIndex.end()) {
         if (tableSeqs[it->second]) {
-            abunds = count->getAbunds(it->second);
+            abunds = count->getAbundances(it->second);
         }
     }
     return abunds;
 }
 /******************************************************************************/
-int Dataset::getAlignedLength(vector<string> seqs) {
-    int length = -1;
+int Dataset::getAlignedLength() {
+    set<int> seqLengths;
+    for (int i = 0; i < seqs.size(); i++) {
+        // is this a "good" seq
+        if (tableSeqs[i]) {
+            seqLengths.insert(seqs[i].length());
+        }
+    }
 
-// TODO
-    return length;
+    if (seqLengths.size() == 1) {
+        isAligned = true;
+        alignmentLength = *(seqLengths.begin());
+    }else{
+        isAligned = false;
+        alignmentLength = -1;
+    }
+    return alignmentLength;
 }
 /******************************************************************************/
 // search_score, sim_score, longest_insert
@@ -447,8 +462,8 @@ Rcpp::DataFrame Dataset::getSequenceAbundanceTable() {
 }
 /******************************************************************************/
 // total abundance for each sequence
-vector<int> Dataset::getSeqsAbunds(){
-    return count->getSeqsAbunds(getIncludedNamesIndexes());
+vector<int> Dataset::getSequenceAbunds(){
+    return count->getSequenceAbunds(getIncludedNamesIndexes());
 }
 /******************************************************************************/
 vector<vector<int>> Dataset::getSeqsAbundsBySample(){
@@ -457,7 +472,7 @@ vector<vector<int>> Dataset::getSeqsAbundsBySample(){
     return result;
 }
 /******************************************************************************/
-vector<string> Dataset::getSeqs(string sample){
+vector<string> Dataset::getSequences(string sample){
     vector<string> included;
 
     if (sample == "") {
@@ -484,7 +499,7 @@ vector<string> Dataset::getSeqs(string sample){
     return included;
 }
 /******************************************************************************/
-vector<vector<string> > Dataset::getSeqsBySample(vector<string> samples){
+vector<vector<string> > Dataset::getSequencesBySample(vector<string> samples){
     vector<vector<string> > result;
     // TODO
     return result;
@@ -522,7 +537,7 @@ Rcpp::List Dataset::getSequenceSummary() {
     report.push_back(select(numns, tableSeqs));
 
     Rcpp::DataFrame seqResults = summary->summarizeFasta(
-        report, count->getSeqsAbunds(getIncludedNamesIndexes()));
+        report, count->getSequenceAbunds(getIncludedNamesIndexes()));
 
     result.push_back(seqResults);
     result_names.push_back("sequence_summary");
@@ -538,7 +553,7 @@ Rcpp::List Dataset::getSequenceSummary() {
         report.push_back(select(numns, tableSeqs));
 
         Rcpp::DataFrame contigsResults = summary->summarizeContigs(
-            report, count->getSeqsAbunds(getIncludedNamesIndexes()));
+            report, count->getSequenceAbunds(getIncludedNamesIndexes()));
 
         result.push_back(contigsResults);
         result_names.push_back("contigs_summary");
@@ -551,7 +566,7 @@ Rcpp::List Dataset::getSequenceSummary() {
 
         Rcpp::DataFrame alignResults = summary->summarizeAlign(
             report, select(longestInsert, tableSeqs),
-            count->getSeqsAbunds(getIncludedNamesIndexes()));
+            count->getSequenceAbunds(getIncludedNamesIndexes()));
 
         result.push_back(alignResults);
         result_names.push_back("align_summary");
@@ -592,11 +607,11 @@ bool Dataset::hasSample(string sample){
     return count->hasSample(sample);
 }
 /******************************************************************************/
-void Dataset::mergeSeqs(vector<string> names, string reason, string sample){
+void Dataset::mergeSequences(vector<string> names, string reason, string sample){
     // TODO
 }
 /******************************************************************************/
-void Dataset::removeSeq(int index, string reasons, bool update) {
+void Dataset::removeSequence(int index, string reasons, bool update) {
     // remove from tableSeqs and add trashCode
     tableSeqs[index] = false;
     trashCodes[index] = reasons;
@@ -605,9 +620,9 @@ void Dataset::removeSeq(int index, string reasons, bool update) {
     // remove from counts
     int abund = 1;
     if (update) {
-        abund = count->removeSeq(index);
+        abund = count->removeSequence(index);
     }else{
-        abund = count->getAbund(index);
+        abund = count->getAbundance(index);
     }
 
     // add to badAccnos
@@ -633,7 +648,7 @@ void Dataset::removeSeq(int index, string reasons, bool update) {
     uniqueBad++;
 }
 /******************************************************************************/
-void Dataset::removeSeqs(vector<string> namesToRemove,
+void Dataset::removeSequences(vector<string> namesToRemove,
                          vector<string> trashTags){
 
     if (namesToRemove.size() != trashTags.size()) {
@@ -649,7 +664,7 @@ void Dataset::removeSeqs(vector<string> namesToRemove,
         if (it != seqIndex.end()) {
             int index = it->second;
 
-            removeSeq(index, trashTags[i]);
+            removeSequence(index, trashTags[i]);
         }else{
             string message = "[WARNING]: " + namesToRemove[i] + " is not in ";
             message += "your dataset, ignoring.";
@@ -683,7 +698,7 @@ void Dataset::setAbundance(vector<string> n, vector<int> abunds,
             int index = it->second;
 
             if (abunds[i] == 0) {
-                removeSeq(index, reason);
+                removeSequence(index, reason);
             }else{
                 count->setAbundance(index, abunds[i]);
             }
@@ -716,7 +731,7 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
             int index = it->second;
 
             if (sum(abunds[i]) == 0) {
-                removeSeq(index, reason);
+                removeSequence(index, reason);
             }else{
                 count->setAbundance(index, abunds[i]);
             }
@@ -733,7 +748,7 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
     numTreatments = count->getNumTreatments();
 }
 /******************************************************************************/
-void Dataset::setSeqs(vector<string> n, vector<string> s,
+void Dataset::setSequences(vector<string> n, vector<string> s,
                       vector<string> c){
     if (n.size() != s.size()) {
         string message = "[ERROR]: Size mismatch. ids and sequences must be";
@@ -741,7 +756,55 @@ void Dataset::setSeqs(vector<string> n, vector<string> s,
         RcppThread::Rcout << endl << message << endl;
         return;
     }
-    // TODO
+
+    bool hasComments = false;
+    if (c.size() != 0) {
+        if (c.size() != n.size()) {
+            string message = "[ERROR]: Size mismatch. When providing comments,";
+            message += " ids and comments must be the same size.";
+            RcppThread::Rcout << endl << message << endl;
+            return;
+        }
+        hasComments = true;
+    }
+
+    SeqReport report;
+
+    for (int i = 0; i < n.size(); i++) {
+
+        auto it = seqIndex.find(n[i]);
+
+        if (it != seqIndex.end()) {
+
+            int index = it->second;
+
+            // update sequence
+            seqs[index] = s[i];
+
+            // update start, end, numbase, ambig, polymer, numn
+            vector<int> reportResults = report.getReport(s[i]);
+
+            starts[index] = reportResults[0];
+            ends[index] = reportResults[1];
+            lengths[index] = reportResults[2];
+            ambigs[index] = reportResults[3];
+            polymers[index] = reportResults[4];
+            numns[index] = reportResults[5];
+
+            // update comment
+            if (hasComments) {
+                comments[index] += " " + c[i];
+            }
+
+        }else{
+            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            message += " ignoring.";
+            RcppThread::Rcout << endl << message << endl;
+        }
+    }
+
+    // set isAligned and aligned length
+    getAlignedLength();
 }
 /******************************************************************************/
 

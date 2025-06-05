@@ -27,9 +27,10 @@ context("Dataset class C++ unit tests") {
         vector<string> comments(3, "");
         comments[2] = "my very cool comment";
 
-        data.addSeqs(names, seqs, comments);
+        data.addSequences(names, seqs, comments);
 
         expect_true(data.numUnique == 3);
+        expect_false(data.isAligned);
 
         Rcpp::DataFrame seqReport = data.getSequenceReport();
 
@@ -120,7 +121,7 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.numUnique == 0);
 
-        data.addSeqs(names, seqs, comments);
+        data.addSequences(names, seqs, comments);
 
         expect_true(data.numUnique == 3);
 
@@ -160,7 +161,7 @@ context("Dataset class C++ unit tests") {
         vector<string> comments(3, "");
         comments[2] = "my very cool comment";
 
-        data.addSeqs(names, seqs, comments);
+        data.addSequences(names, seqs, comments);
 
         expect_true(data.numUnique == 3);
 
@@ -270,7 +271,7 @@ context("Dataset class C++ unit tests") {
         vector<string> comments(3, "");
         comments[2] = "my very cool comment";
 
-        data.addSeqs(names, seqs, comments);
+        data.addSequences(names, seqs, comments);
 
         expect_true(data.numUnique == 3);
 
@@ -341,10 +342,10 @@ context("Dataset class C++ unit tests") {
         vector<string> comments(3, "");
         comments[2] = "my very cool comment";
 
-        data.addSeqs(names, seqs, comments);
+        data.addSequences(names, seqs, comments);
 
         expect_true(data.getNames() == names);
-        expect_true(data.getSeqs() == seqs);
+        expect_true(data.getSequences() == seqs);
 
         // TODO - add tests for getNames and getSeqs with samples
     }
@@ -367,7 +368,7 @@ context("Dataset class C++ unit tests") {
         vector<string> comments(4, "");
         comments[2] = "my very cool comment";
 
-        data.addSeqs(names, seqs, comments);
+        data.addSequences(names, seqs, comments);
 
         // mothur count file
         // Representative_Sequence     total   sample2	sample3	sample4
@@ -494,7 +495,7 @@ context("Dataset class C++ unit tests") {
         vector<string> comments(4, "");
         comments[2] = "my very cool comment";
 
-        data.addSeqs(names, seqs, comments);
+        data.addSequences(names, seqs, comments);
 
         // mothur count file
         // Representative_Sequence     total   sample2	sample3	sample4
@@ -553,6 +554,10 @@ context("Dataset class C++ unit tests") {
         expect_true(data.numUnique == 4);
         expect_true(data.numSamples == 3);
         expect_true(data.numTreatments == 2);
+        expect_true(data.hasSample("sample2"));
+        expect_true(data.hasSample("sample3"));
+        expect_true(data.hasSample("sample4"));
+        expect_false(data.hasSample("badSample"));
 
         vector<int> treatmentTotals(2, 0);
         treatmentTotals[0] = 250;
@@ -572,7 +577,7 @@ context("Dataset class C++ unit tests") {
         trashCodes[0] = "testRemoveSampleTreatment";
 
         // removes 2 seqs, 1 sample and 1 treatment
-        data.removeSeqs(seqsToRemove, trashCodes);
+        data.removeSequences(seqsToRemove, trashCodes);
 
         sampleTotals.resize(2, 0);
         sampleTotals[0] = 25;
@@ -593,19 +598,19 @@ context("Dataset class C++ unit tests") {
         uniqueTreatments[0] = "late";
 
         expect_true(data.getTreatments() == uniqueTreatments);
-        expect_true(data.getAbund("seq1") == 0);
-        expect_true(data.getAbund("seq2") == 0);
-        expect_true(data.getAbund("seq3") == 25);
-        expect_true(data.getAbund("seq4") == 4);
+        expect_true(data.getAbundance("seq1") == 0);
+        expect_true(data.getAbundance("seq2") == 0);
+        expect_true(data.getAbundance("seq3") == 25);
+        expect_true(data.getAbundance("seq4") == 4);
 
         abunds.resize(2, 0);
         abunds[0] = 25;
         abunds[1] = 0;
-        expect_true(data.getAbunds("seq3") == abunds);
+        expect_true(data.getAbundances("seq3") == abunds);
 
         abunds[0] = 0;
         abunds[1] = 4;
-        expect_true(data.getAbunds("seq4") == abunds);
+        expect_true(data.getAbundances("seq4") == abunds);
 
         Rcpp::DataFrame scrapReport = data.getScrapReport();
         expect_true(scrapReport.size() == 2);
@@ -622,11 +627,17 @@ context("Dataset class C++ unit tests") {
         totalCounts[0] = 90;
         totalCounts[1] = 1150;
 
-        vector<int> temp = Rcpp::as<vector<int>>(scrapSummary[2]);
-
         expect_true(trashCodes == Rcpp::as<vector<string>>(scrapSummary[0]));
         expect_true(uniqueCounts == Rcpp::as<vector<int>>(scrapSummary[1]));
         expect_true(totalCounts == Rcpp::as<vector<int>>(scrapSummary[2]));
+
+        Rcpp::List summary = data.getSequenceSummary();
+        Rcpp::DataFrame df(summary["scrap_summary"]);
+
+        expect_true(trashCodes == Rcpp::as<vector<string>>(df[0]));
+        expect_true(uniqueCounts == Rcpp::as<vector<int>>(df[1]));
+        expect_true(totalCounts == Rcpp::as<vector<int>>(df[2]));
+
     }
 
     test_that("Tests setAbundances") {
@@ -647,7 +658,7 @@ context("Dataset class C++ unit tests") {
         vector<string> comments(4, "");
         comments[2] = "my very cool comment";
 
-        data.addSeqs(names, seqs, comments);
+        data.addSequences(names, seqs, comments);
 
         expect_true(data.getTotal() == 4);
         expect_true(data.numUnique == 4);
@@ -720,7 +731,7 @@ context("Dataset class C++ unit tests") {
 
         data.clear();
 
-        data.addSeqs(names, seqs, comments);
+        data.addSequences(names, seqs, comments);
 
         expect_true(data.getTotal() == 4);
         expect_true(data.numUnique == 4);
@@ -762,6 +773,56 @@ context("Dataset class C++ unit tests") {
         vector<string> uniqueTreatments(1, "late");
 
         expect_true(data.getTreatments() == uniqueTreatments);
+    }
+
+    test_that("Tests setSequences") {
+
+        Dataset data("mydata", 1);
+
+        vector<string> names(4, "");
+        names[0] = "seq1";
+        names[1] = "seq2";
+        names[2] = "seq3";
+        names[3] = "seq4";
+        vector<string> seqs(4, "");
+        seqs[0] = "..ATGC-MGGT-AAA-TGC-NCT.";
+        seqs[1] = "ATGCGGTAAATGCCT";
+        seqs[2] = ".ATGCGGGGGTAAATGCCT.";
+        seqs[3] = ".ATGCGAMMTAAATGCCT.";
+
+        vector<string> comments(4, "");
+        comments[2] = "my very cool comment";
+
+        data.addSequences(names, seqs, comments);
+
+        expect_true(data.getSequences() == seqs);
+        expect_false(data.isAligned);
+
+        seqs.clear();
+        seqs.resize(4, ".AAATTT-CC-G.");
+        comments[2] = "my_additional_comment";
+        comments[3] = "newComment";
+
+        // test with all seqs
+        data.setSequences(names, seqs, comments);
+
+        expect_true(data.getSequences() == seqs);
+        expect_true(data.isAligned);
+        expect_true(data.getTotal() == 4);
+
+        seqs.pop_back(); names.pop_back();
+        seqs.pop_back(); names.pop_back();
+        seqs[0] = "AATT";
+
+        // test with 2 seqs, no comments
+        data.setSequences(names, seqs);
+
+        seqs.push_back(".AAATTT-CC-G.");
+        seqs.push_back(".AAATTT-CC-G.");
+
+        expect_true(data.getSequences() == seqs);
+        expect_false(data.isAligned);
+        expect_true(data.getTotal() == 4);
     }
 
 

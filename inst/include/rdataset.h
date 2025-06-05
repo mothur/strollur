@@ -98,7 +98,7 @@ public:
                                               vector<int> names);
 
     // names, sets abundance to 1
-    void addSeqs(vector<int>& names);
+    void addSequences(vector<int>& names);
 
     // names, abundances, samples (optional), treatments (optional)
     void assignSequenceAbundance(vector<int> names,
@@ -114,19 +114,19 @@ public:
     // removes sequence, returns abund. Be sure to run updateTotals after.
     // totals are not updated in function for time savings when removing multiple
     // sequences. Only calc totals once rather than after each removal.
-    int removeSeq(int name);
+    int removeSequence(int name);
     void updateTotals();
     // adds sequences counts of seqsToMerge[1-n] into seqsToMerge[0], optional
     // sample will only merge counts for that sample
-    void mergeSeqs(vector<int> seqsToMerge, string sample = "");
+    void mergeSequences(vector<int> seqsToMerge, string sample = "");
 
     // vector containing total abundance for each sequence
-    vector<int> getSeqsAbunds(vector<int> names);
+    vector<int> getSequenceAbunds(vector<int> names);
     // total abundance for sequence, if sample is provided then abundance for
     // that sequence in that sample
-    int getAbund(int name, string sample = "");
+    int getAbundance(int name, string sample = "");
     // abundances by sample, in the same order as the samples
-    vector<int> getAbunds(int name);
+    vector<int> getAbundances(int name);
     // total number of sequences
     int getTotal(string sample = "");
 
@@ -194,6 +194,8 @@ public:
     string datasetName;
 
     bool isAligned;
+    // -1 if unaligned
+    int alignmentLength;
     bool hasContigsData, hasAlignData;
 
     int numSamples, numTreatments;
@@ -208,7 +210,7 @@ public:
     string print();
 
     // add seqs
-    void addSeqs(vector<string> n, vector<string> s,
+    void addSequences(vector<string> n, vector<string> s,
                  vector<string> c);
 
     // align_seqs will create searchScores, simScores and longestInserts
@@ -243,11 +245,11 @@ public:
     // 3 columns: id, sample, abundance
     Rcpp::DataFrame getSequenceAbundanceTable();
 
-    int getAbund(string name, string sample = "");
+    int getAbundance(string name, string sample = "");
     // abundances for seq broken down by sample
-    vector<int> getAbunds(string name);
+    vector<int> getAbundances(string name);
     // total abundance for each sequence
-    vector<int> getSeqsAbunds();
+    vector<int> getSequenceAbunds();
     // vector[5][1] contains the abundance of seq5 in sample1
     vector<vector<int>> getSeqsAbundsBySample();
 
@@ -263,17 +265,17 @@ public:
     // fasta sequence data
     vector<string> getNames(string sample = "");
     vector<vector<string> > getNamesBySample(vector<string> samples);
-    vector<string> getSeqs(string sample = "");
-    vector<vector<string> > getSeqsBySample(vector<string> samples);
+    vector<string> getSequences(string sample = "");
+    vector<vector<string> > getSequencesBySample(vector<string> samples);
 
     // modifiers
-    void removeSeqs(vector<string> names, vector<string> trashTags);
-    void mergeSeqs(vector<string>, string reason = "merged",
+    void removeSequences(vector<string> names, vector<string> trashTags);
+    void mergeSequences(vector<string>, string reason = "merged",
                    string sample = "");
 
     // set sequence string and optionally comments
-    void setSeqs(vector<string> names, vector<string> sequences,
-                 vector<string> comments);
+    void setSequences(vector<string> names, vector<string> sequences,
+                 vector<string> comments = nullVector);
 
     // set abundances
     // for datasets with samples
@@ -310,7 +312,6 @@ private:
     // sequences that represented 230 total sequences.
     map<string, vector<int> > badAccnos;
     int uniqueBad;
-    int alignmentLength;
 
     // count table data
     SeqAbundTable* count;
@@ -319,11 +320,11 @@ private:
     // OTUTable* otuTable;
 
     // if unaligned, returns -1
-    int getAlignedLength(vector<string>);
+    int getAlignedLength();
     vector<int> getIncludedNamesIndexes();
     vector<int> getIndexes(vector<string>&);
     // don't update totals when merging
-    void removeSeq(int index, string reasons, bool update = true);
+    void removeSequence(int index, string reasons, bool update = true);
 };
 
 /******************************************************************************/

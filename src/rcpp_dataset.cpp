@@ -22,7 +22,7 @@ RCPP_MODULE(Dataset) {
     .method("get_pointer", &Dataset::getPointer, "get pointer to self")
 
     // ******* modifiers ******* //
-    .method("add_seqs", &Dataset::addSeqs, "Add sequences to dataset")
+    .method("add_sequences", &Dataset::addSequences, "Add sequences to dataset")
     .method("add_align_report", &Dataset::addAlignReport,
     "Add alignment report to dataset")
     .method("add_contigs_report", &Dataset::addContigsReport,
@@ -31,16 +31,16 @@ RCPP_MODULE(Dataset) {
     .method("assign_sequence_abundance", &Dataset::assignSequenceAbundance,
     "Set sequence abundance and optionally assign sample and treatment data")
     .method("clear", &Dataset::clear, "Clear dataset")
-    .method("merge_seqs", &Dataset::mergeSeqs,
+    .method("merge_sequences", &Dataset::mergeSequences,
     "Merge sequences")
-    .method("remove_seqs", &Dataset::removeSeqs, "Remove sequences")
-    .method("set_seqs", &Dataset::setSeqs, "Set sequence strings")
+    .method("remove_sequences", &Dataset::removeSequences, "Remove sequences")
+    .method("set_sequences", &Dataset::setSequences, "Set sequence strings")
     .method("set_abundances", &Dataset::setAbundances, "Set sequence abundances")
 
     // ******* getters ******* //
     // abundances for seq broken down by sample
-    .method("get_abunds", &Dataset::getAbunds, "Get abundances for sequence")
-    .method("get_seqs_abunds", &Dataset::getSeqsAbunds,
+    .method("get_abundances", &Dataset::getAbundances, "Get abundances for sequence")
+    .method("get_sequence_abunds", &Dataset::getSequenceAbunds,
     "Get total abundance for each sequence")
     .method("get_count_matrix", &Dataset::getSeqsAbundsBySample,
     "Get dataset's sequence's abundances by sample")
@@ -69,10 +69,10 @@ RCPP_MODULE(Dataset) {
     "Get sequence abundance table")
 
     // can pass optional sample name
-    .method("get_abund", &Dataset::getAbund, "Get abundance of sequence")
+    .method("get_abundance", &Dataset::getAbundance, "Get abundance of sequence")
     .method("get_names", &Dataset::getNames,
     "Get names of sequences in dataset")
-    .method("get_seqs", &Dataset::getSeqs, "Get sequences in dataset")
+    .method("get_sequences", &Dataset::getSequences, "Get sequences in dataset")
     .method("get_total", &Dataset::getTotal,
     "Get total number of sequences")
     .method("get_unique_total", &Dataset::getUniqueTotal,
@@ -81,7 +81,7 @@ RCPP_MODULE(Dataset) {
     // parse by sample options
     .method("get_names_by_sample", &Dataset::getNamesBySample,
     "Get names of sequences parsed by sample")
-    .method("get_seqs_by_sample", &Dataset::getSeqsBySample,
+    .method("get_sequences_by_sample", &Dataset::getSequencesBySample,
     "Get sequences parsed by sample")
     ;
 }

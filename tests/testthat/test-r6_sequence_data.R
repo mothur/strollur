@@ -101,7 +101,7 @@ test_that("test R6 sequence_data - intialize", {
     seq6, seq7, seq8, seq9, seq10
   )
 
-  expect_equal(first_ten_seqs, dataset$get_seqs()[1:10])
+  expect_equal(first_ten_seqs, dataset$get_sequences()[1:10])
 })
 
 test_that("test R6 sequence_data - addSeqs, assign samples", {
@@ -134,17 +134,18 @@ test_that("test R6 sequence_data - addSeqs, assign samples", {
   )
 
   data <- sequence_data$new("mydata")
-  data$add_seqs(names, seqs)
+  data$add_sequences(names, seqs)
   data$assign_sequence_abundance(ids, abundances, samples, treatments)
 
+  expect_true(data$is_aligned())
   expect_equal(data$get_ids(), names)
-  expect_equal(data$get_seqs(), seqs)
+  expect_equal(data$get_sequences(), seqs)
   expect_equal(data$get_ids("sample2"), names)
   expect_equal(data$get_ids("sample3"), c("seq1", "seq2", "seq3"))
   expect_equal(data$get_ids("sample4"), c("seq1", "seq2", "seq4"))
-  expect_equal(data$get_seqs("sample2"), seqs)
-  expect_equal(data$get_seqs("sample3"), c("ATTGC", "ATTGC", "ATTGC"))
-  expect_equal(data$get_seqs("sample4"), c("ATTGC", "ATTGC", "ATTGC"))
+  expect_equal(data$get_sequences("sample2"), seqs)
+  expect_equal(data$get_sequences("sample3"), c("ATTGC", "ATTGC", "ATTGC"))
+  expect_equal(data$get_sequences("sample4"), c("ATTGC", "ATTGC", "ATTGC"))
 
   expect_equal(data$get_num_samples(), 3)
   expect_equal(data$get_num_treatments(), 2)
@@ -164,6 +165,8 @@ test_that("test R6 sequence_data - addSeqs, assign samples", {
   expect_equal(data$get_num_sequences(TRUE, "sample3"), 3)
   # total and sample
   expect_equal(data$get_num_sequences(sample = "sample2"), 301)
+
+  expect_equal(data.frame(), data$get_scrap_report())
 })
 
 test_that("test R6 sequence_data - print", {
@@ -198,7 +201,7 @@ test_that("test R6 sequence_data - print", {
   trash_codes <- c("trashTest", "trashTest2")
 
   data <- sequence_data$new("mydata")
-  data$add_seqs(names, seqs)
+  data$add_sequences(names, seqs)
   data$assign_sequence_abundance(ids, abundances, groups, treatments)
 
   expect_equal(data$get_num_sequences(), 1269)
@@ -206,7 +209,7 @@ test_that("test R6 sequence_data - print", {
   expect_equal(data$get_num_samples(), 3)
   expect_equal(data$get_num_treatments(), 2)
 
-  data$data$remove_seqs(seqs_to_remove, trash_codes)
+  data$data$remove_sequences(seqs_to_remove, trash_codes)
 
   expect_equal(data$get_num_sequences(), 29)
   expect_equal(data$get_num_sequences(TRUE), 2)
@@ -244,7 +247,7 @@ test_that("test R6 sequence_data - print", {
   )
 
   data <- sequence_data$new("mydata")
-  data$add_seqs(names, seqs)
+  data$add_sequences(names, seqs)
   data$assign_sequence_abundance(ids, abundances, samples, treatments)
 
   expect_snapshot(

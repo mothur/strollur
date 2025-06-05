@@ -42,7 +42,7 @@ sequence_data <- R6Class("sequence_data",
 
       if (!is.null(fasta)) {
         fasta_data <- read_fasta(fasta)
-        self$add_seqs(fasta_data$names, fasta_data$sequences)
+        self$add_sequences(fasta_data$names, fasta_data$sequences)
       }
       invisible(self)
     },
@@ -72,13 +72,13 @@ sequence_data <- R6Class("sequence_data",
     #'
     #'   dataset <- sequence_data$new("my_dataset")
     #'   sequence_data <- read_fasta(rdataset_example("test.fasta"))
-    #'   dataset$add_seqs(sequence_data$names, sequence_data$sequences)
+    #'   dataset$add_sequences(sequence_data$names, sequence_data$sequences)
     #'
-    add_seqs = function(names, sequences, comments = NULL) {
+    add_sequences = function(names, sequences, comments = NULL) {
       if (is.null(comments)) {
         comments <- rep("", length(names))
       }
-      self$data$add_seqs(names, sequences, comments)
+      self$data$add_sequences(names, sequences, comments)
 
       invisible(self)
     },
@@ -163,13 +163,6 @@ sequence_data <- R6Class("sequence_data",
     #' @return List
     export = function() {
       self$data$export()
-    },
-
-    #' @description
-    #' Get report containing eliminated sequence names and trash_codes
-    #' @return data.table
-    get_accnos_report = function() {
-      # TODO
     },
 
     #' @description
@@ -603,14 +596,14 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get vector containing FASTA nucleotide strings
+    #' Get vector containing sequence nucleotide strings
     #' @param sample String, name of sample
-    get_seqs = function(sample = NULL) {
+    get_sequences = function(sample = NULL) {
       if (is.null(sample)) {
         sample <- ""
       }
 
-      self$data$get_seqs(sample)
+      self$data$get_sequences(sample)
     },
 
     #' @description
