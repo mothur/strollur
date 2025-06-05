@@ -79,6 +79,12 @@ T sum(const vector<T>& x) {
 }
 /**********************************************************************/
 template<typename T>
+void sum(vector<T>& x, vector<T>& y) {
+    transform (x.begin(), x.end(),
+               y.begin(), x.begin(), std::plus<T>());
+}
+/**********************************************************************/
+template<typename T>
 vector<T> unique(const vector<T>& x) {
 
     vector<T> uniqueX;

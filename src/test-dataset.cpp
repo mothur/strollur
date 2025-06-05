@@ -477,6 +477,100 @@ context("Dataset class C++ unit tests") {
         expect_true(treatments == Rcpp::as<vector<string>>(countTable[3]));
     }
 
+    test_that("Tests mergeSeqs, getScrapReport, getScrapSummary") {
+
+        Dataset data("mydata", 1);
+
+        vector<string> names(4, "");
+        names[0] = "seq1";
+        names[1] = "seq2";
+        names[2] = "seq3";
+        names[3] = "seq4";
+        vector<string> seqs(4, "");
+        seqs[0] = "..ATGC-MGGT-AAA-TGC-NCT.";
+        seqs[1] = "ATGCGGTAAATGCCT";
+        seqs[2] = ".ATGCGGGGGTAAATGCCT.";
+        seqs[3] = ".ATGCGAMMTAAATGCCT.";
+
+        vector<string> comments(4, "");
+        comments[2] = "my very cool comment";
+
+        data.addSequences(names, seqs, comments);
+
+        // mothur count file
+        // Representative_Sequence     total   sample2	sample3	sample4
+        // seq1	1150	250	400	500
+        // seq2	90	0	40	50
+        // seq3	25	0	25	0
+        // seq4	4	0	0	4
+
+        // as a sample table
+        vector<string> ids(7, "");
+        ids[0] = "seq1";
+        ids[1] = "seq1";
+        ids[2] = "seq1";
+        ids[3] = "seq2";
+        ids[4] = "seq2";
+        ids[5] = "seq3";
+        ids[6] = "seq4";
+
+        vector<string> samples(7, "");
+        samples[0] = "sample2";
+        samples[1] = "sample3";
+        samples[2] = "sample4";
+        samples[3] = "sample3";
+        samples[4] = "sample4";
+        samples[5] = "sample3";
+        samples[6] = "sample4";
+
+        vector<int> abunds(7, 0);
+        abunds[0] = 250;
+        abunds[1] = 400;
+        abunds[2] = 500;
+        abunds[3] = 40;
+        abunds[4] = 50;
+        abunds[5] = 25;
+        abunds[6] = 4;
+
+        // add with treatment assignments
+        vector<string> treatments(7, "");
+        treatments[0] = "early";
+        treatments[1] = "late";
+        treatments[2] = "late";
+        treatments[3] = "late";
+        treatments[4] = "late";
+        treatments[5] = "late";
+        treatments[6] = "late";
+
+        data.assignSequenceAbundance(ids, abunds, samples, treatments);
+
+        expect_true(data.numUnique == 4);
+        expect_true(data.getTotal() == 1269);
+
+        vector<int> seqTotals(4, 0);
+        seqTotals[0] = 1150;
+        seqTotals[1] = 90;
+        seqTotals[2] = 25;
+        seqTotals[3] = 4;
+
+        expect_true(data.getSequenceAbunds() == seqTotals);
+
+        vector<string> seqsToMerge(2, "seq2");
+        seqsToMerge[0] = "seq1";
+
+        // merges seq1 and seq2
+        data.mergeSequences(seqsToMerge, "testMerge");
+
+        seqTotals.resize(3);
+        seqTotals[0] = 1240;
+        seqTotals[1] = 25;
+        seqTotals[2] = 4;
+
+        expect_true(data.getSequenceAbunds() == seqTotals);
+        expect_true(data.numUnique == 3);
+        expect_true(data.getTotal() == 1269);
+    }
+
     test_that("Tests removeSeqs, getScrapReport, getScrapSummary") {
 
         Dataset data("mydata", 1);
@@ -535,8 +629,8 @@ context("Dataset class C++ unit tests") {
         // add with treatment assignments
         vector<string> treatments(7, "");
         treatments[0] = "early";
-        treatments[1] = "early";
-        treatments[2] = "early";
+        treatments[1] = "late";
+        treatments[2] = "late";
         treatments[3] = "late";
         treatments[4] = "late";
         treatments[5] = "late";

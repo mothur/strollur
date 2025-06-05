@@ -363,13 +363,15 @@ vector<int> Dataset::getIndexes(vector<string>& ids) {
 vector<string> Dataset::getNames(string sample){
     vector<string> included;
 
-    if (sample == "") {
+    // get all "good" names in dataset
+    if (sample == "")  {
         for (int i = 0; i < tableSeqs.size(); i++) {
             if (tableSeqs[i]) {
                 included.push_back(names[i]);
             }
         }
-    }else{
+    // get all "good" names in specific sample
+    }else {
         if (count->hasSample(sample)) {
             // all seqs
             for (int i = 0; i < tableSeqs.size(); i++) {
@@ -413,6 +415,7 @@ Rcpp::DataFrame Dataset::getScrapReport() {
         for (int i = 0; i < trashCodes.size(); i++) {
             if (trashCodes[i] != "") {
               badNames[next] = names[i];
+              trashCodes[i].pop_back();
               badCodes[next] = trashCodes[i];
               next++;
             }
@@ -607,14 +610,33 @@ bool Dataset::hasSample(string sample){
     return count->hasSample(sample);
 }
 /******************************************************************************/
-void Dataset::mergeSequences(vector<string> names, string reason, string sample){
-    // TODO
+void Dataset::mergeSequences(vector<string> ids, string reason, string sample){
+    if (names.size() != 1) {
+
+        vector<int> indexes = getIndexes(ids);
+        count->mergeSequences(indexes, sample);
+
+        if (sample == "") {
+            for (int i = 1; i < indexes.size(); i++) {
+                // no need to update the sample and treatment counts
+                removeSequence(indexes[i], reason, false);
+            }
+        }else{
+            for (int i = 1; i < indexes.size(); i++) {
+                // if merging the sample caused this sequence to be removed
+                if (count->getAbundance(indexes[i]) == 0) {
+                    // no need to update the sample and treatment counts
+                    removeSequence(indexes[i], reason, false);
+                }
+            }
+        }
+    }
 }
 /******************************************************************************/
 void Dataset::removeSequence(int index, string reasons, bool update) {
     // remove from tableSeqs and add trashCode
     tableSeqs[index] = false;
-    trashCodes[index] = reasons;
+    trashCodes[index] += reasons + ",";
     numUnique--;
 
     // remove from counts

@@ -539,10 +539,12 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get names of sequences in the dataset
     #' @param sample String, name of sample
+    #' @return vector of ids
     get_ids = function(sample = NULL) {
       if (is.null(sample)) {
         sample <- ""
       }
+
       self$data$get_names(sample)
     },
 

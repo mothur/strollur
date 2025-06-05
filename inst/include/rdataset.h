@@ -270,6 +270,7 @@ public:
 
     // modifiers
     void removeSequences(vector<string> names, vector<string> trashTags);
+    //
     void mergeSequences(vector<string>, string reason = "merged",
                    string sample = "");
 

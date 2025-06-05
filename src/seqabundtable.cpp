@@ -411,6 +411,38 @@ bool SeqAbundTable::hasSample(string sample, int name) {
     return false;
 }
 /******************************************************************************/
+// adds sequences counts of seqsToMerge[1-n] into seqsToMerge[0], optional
+// sample will only merge counts for that sample
+void SeqAbundTable::mergeSequences(vector<int> seqsToMerge, string sample) {
+    if (seqsToMerge.size() > 1) {
+
+        int keeperSeq = seqsToMerge[0];
+        vector<int> kAbunds = getAbundances(keeperSeq);
+
+        for (int i = 1; i < seqsToMerge.size(); i++) {
+            int dupSeq = seqsToMerge[i];
+            vector<int> dupAbunds = getAbundances(dupSeq);
+
+            // merge all samples
+            if (sample == "") {
+                sum(kAbunds, dupAbunds);
+            }else{
+               auto it = sampleIndex.find(sample);
+               if (it != sampleIndex.end()) {
+                   // merge specific sample
+                   kAbunds[it->second] += dupAbunds[it->second];
+                   dupAbunds[it->second] = 0;
+                   seqCount newDup(dupAbunds);
+                   counts[dupSeq] = newDup;
+               }
+
+            }
+        }
+        seqCount newKeeper(kAbunds);
+        counts[keeperSeq] = newKeeper;
+    }
+}
+/******************************************************************************/
 int SeqAbundTable::removeSequence(int name) {
 
     int abund = 0;
