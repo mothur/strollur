@@ -596,6 +596,43 @@ void Dataset::mergeSeqs(vector<string> names, string reason, string sample){
     // TODO
 }
 /******************************************************************************/
+void Dataset::removeSeq(int index, string reasons, bool update) {
+    // remove from tableSeqs and add trashCode
+    tableSeqs[index] = false;
+    trashCodes[index] = reasons;
+    numUnique--;
+
+    // remove from counts
+    int abund = 1;
+    if (update) {
+        abund = count->removeSeq(index);
+    }else{
+        abund = count->getAbund(index);
+    }
+
+    // add to badAccnos
+    vector<string> theseReasons;
+    split(reasons, ',', back_inserter(theseReasons));
+
+    for (int j = 0; j < theseReasons.size(); j++) {
+        auto itBad = badAccnos.find(theseReasons[j]);
+
+        if (itBad != badAccnos.end()) {
+            // update counts of trashCode
+            itBad->second[0]++;
+            itBad->second[1] += abund;
+        }else{
+            // add new trashCode
+            vector<int> badAbunds(2, 1);
+            badAbunds[1] = abund;
+            badAccnos[theseReasons[j]] = badAbunds;
+        }
+    }
+
+    // update uniqueBad
+    uniqueBad++;
+}
+/******************************************************************************/
 void Dataset::removeSeqs(vector<string> namesToRemove,
                          vector<string> trashTags){
 
@@ -612,35 +649,7 @@ void Dataset::removeSeqs(vector<string> namesToRemove,
         if (it != seqIndex.end()) {
             int index = it->second;
 
-            // remove from tableSeqs and add trashCode
-            tableSeqs[index] = false;
-            trashCodes[index] = trashTags[i];
-            numUnique--;
-
-            // remove from counts
-            int abund = count->removeSeq(index);
-
-            // add to badAccnos
-            vector<string> theseReasons;
-            split(trashTags[i], ',', back_inserter(theseReasons));
-
-            for (int j = 0; j < theseReasons.size(); j++) {
-                auto itBad = badAccnos.find(theseReasons[j]);
-
-                if (itBad != badAccnos.end()) {
-                    // update counts of trashCode
-                    itBad->second[0]++;
-                    itBad->second[1] += abund;
-                }else{
-                    // add new trashCode
-                    vector<int> badAbunds(2, 1);
-                    badAbunds[1] = abund;
-                    badAccnos[theseReasons[j]] = badAbunds;
-                }
-            }
-
-            // update uniqueBad
-            uniqueBad++;
+            removeSeq(index, trashTags[i]);
         }else{
             string message = "[WARNING]: " + namesToRemove[i] + " is not in ";
             message += "your dataset, ignoring.";
@@ -654,15 +663,84 @@ void Dataset::removeSeqs(vector<string> namesToRemove,
 
 }
 /******************************************************************************/
+// for datasets without samples
+void Dataset::setAbundance(vector<string> n, vector<int> abunds,
+                            string reason){
 
-void Dataset::setAbundances(vector<string> names, vector<int> abunds,
+    if (n.size() != abunds.size()) {
+        string message = "[ERROR]: Size mismatch. ids and sequences must be";
+        message += " the same size.";
+        RcppThread::Rcout << endl << message << endl;
+        return;
+    }
+
+    reason += ",";
+
+    for (int i = 0; i < n.size(); i++) {
+        auto it = seqIndex.find(n[i]);
+
+        if (it != seqIndex.end()) {
+            int index = it->second;
+
+            if (abunds[i] == 0) {
+                removeSeq(index, reason);
+            }else{
+                count->setAbundance(index, abunds[i]);
+            }
+
+        }else{
+            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            message += " ignoring.";
+            RcppThread::Rcout << endl << message << endl;
+        }
+    }
+}
+/******************************************************************************/
+// for datasets with samples
+void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
                        string reason){
-    // TODO
+
+    if (n.size() != abunds.size()) {
+        string message = "[ERROR]: Size mismatch. ids and sequences must be";
+        message += " the same size.";
+        RcppThread::Rcout << endl << message << endl;
+        return;
+    }
+
+    reason += ",";
+
+    for (int i = 0; i < n.size(); i++) {
+        auto it = seqIndex.find(n[i]);
+
+        if (it != seqIndex.end()) {
+            int index = it->second;
+
+            if (sum(abunds[i]) == 0) {
+                removeSeq(index, reason);
+            }else{
+                count->setAbundance(index, abunds[i]);
+            }
+
+        }else{
+            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            message += " ignoring.";
+            RcppThread::Rcout << endl << message << endl;
+        }
+    }
+
+    count->updateTotals();
+    numSamples = count->getNumSamples();
+    numTreatments = count->getNumTreatments();
 }
 /******************************************************************************/
 void Dataset::setSeqs(vector<string> n, vector<string> s,
                       vector<string> c){
-
+    if (n.size() != s.size()) {
+        string message = "[ERROR]: Size mismatch. ids and sequences must be";
+        message += " the same size.";
+        RcppThread::Rcout << endl << message << endl;
+        return;
+    }
     // TODO
 }
 /******************************************************************************/

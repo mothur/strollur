@@ -156,7 +156,7 @@ void SeqAbundTable::assignSequenceAbundance(vector<int> names,
         }
 
         // convert to sparse
-        total = accumulate(sampleTotals.begin(), sampleTotals.end(), 0);
+        total = sum(sampleTotals);
     }else{
 
         counts.resize(names.size());
@@ -164,7 +164,7 @@ void SeqAbundTable::assignSequenceAbundance(vector<int> names,
             seqCount thisSeq(0, abunds[i]);
             counts[names[i]] = thisSeq;
         }
-        total = accumulate(abunds.begin(), abunds.end(), 0);
+        total = sum(abunds);
     }
 
     if (hasTreatments) {
@@ -192,7 +192,7 @@ int SeqAbundTable::getAbund(int name, string sample) {
     if (sample == "") {
         if (hasSampleData) {
             vector<int> abunds = getAbunds(name);
-            abund = accumulate(abunds.begin(), abunds.end(), 0);
+            abund = sum(abunds);
         }else{
             abund = counts[name].abunds[0];
         }
@@ -417,7 +417,7 @@ int SeqAbundTable::removeSeq(int name) {
 
     if (hasSampleData) {
         vector<int> abunds = getAbunds(name);
-        abund = accumulate(abunds.begin(), abunds.end(), 0);
+        abund = sum(abunds);
 
         // remove seq from sample / treatment totals
         if (abund != 0) {
@@ -441,6 +441,46 @@ int SeqAbundTable::removeSeq(int name) {
     }
 
     return abund;
+}
+/******************************************************************************/
+// set abundance parsed by sample - for datasets with samples
+void SeqAbundTable::setAbundance(int name, vector<int> abunds) {
+
+    vector<int> origAbunds = getAbunds(name);
+
+    seqCount newAbunds(abunds);
+    counts[name] = newAbunds;
+
+    if (hasSampleData) {
+        int index = 0;
+        // sampleTotals may be larger than abunds
+        // if samples have been removed
+        int diffAbund = 0;
+        for (int i = 0; i < sampleTotals.size(); i++) {
+            if (tableSamples[i]) {
+                int diff = origAbunds[index] - abunds[index];
+                sampleTotals[i] -= diff;
+                diffAbund += diff;
+                index++;
+            }
+        }
+        total -= diffAbund;
+    }else{
+        total -= (origAbunds[0] - abunds[0]);
+    }
+}
+/******************************************************************************/
+// set abundance - for datasets without samples
+void SeqAbundTable::setAbundance(int name, int abund) {
+
+    if (hasSampleData) {
+        int origAbund = getAbund(name);
+
+        seqCount thisCount(0, abund);
+        counts[name] = thisCount;
+
+        total -= (origAbund - abund);
+    }
 }
 /******************************************************************************/
 void SeqAbundTable::updateTotals() {

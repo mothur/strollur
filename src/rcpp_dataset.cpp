@@ -35,7 +35,7 @@ RCPP_MODULE(Dataset) {
     "Merge sequences")
     .method("remove_seqs", &Dataset::removeSeqs, "Remove sequences")
     .method("set_seqs", &Dataset::setSeqs, "Set sequence strings")
-    .method("set_abunds", &Dataset::setAbundances, "Set sequence abundances")
+    .method("set_abundances", &Dataset::setAbundances, "Set sequence abundances")
 
     // ******* getters ******* //
     // abundances for seq broken down by sample

@@ -629,4 +629,140 @@ context("Dataset class C++ unit tests") {
         expect_true(totalCounts == Rcpp::as<vector<int>>(scrapSummary[2]));
     }
 
+    test_that("Tests setAbundances") {
+
+        Dataset data("mydata", 1);
+
+        vector<string> names(4, "");
+        names[0] = "seq1";
+        names[1] = "seq2";
+        names[2] = "seq3";
+        names[3] = "seq4";
+        vector<string> seqs(4, "");
+        seqs[0] = "..ATGC-MGGT-AAA-TGC-NCT.";
+        seqs[1] = "ATGCGGTAAATGCCT";
+        seqs[2] = ".ATGCGGGGGTAAATGCCT.";
+        seqs[3] = ".ATGCGAMMTAAATGCCT.";
+
+        vector<string> comments(4, "");
+        comments[2] = "my very cool comment";
+
+        data.addSeqs(names, seqs, comments);
+
+        expect_true(data.getTotal() == 4);
+        expect_true(data.numUnique == 4);
+
+        // add abundances with no samples
+        vector<int> abunds(4, 0);
+        abunds[0] = 250;
+        abunds[1] = 400;
+        abunds[2] = 500;
+        abunds[3] = 10;
+
+        data.assignSequenceAbundance(names, abunds);
+
+        expect_true(data.getTotal() == 1160);
+        expect_true(data.numUnique == 4);
+
+        abunds[1] = 0;
+        abunds[3] = 0;
+
+        // set abundances in dataset with no samples or treatments
+        data.setAbundance(names, abunds);
+
+        expect_true(data.getTotal() == 750);
+        expect_true(data.numUnique == 2);
+
+        // mothur count file
+        // Representative_Sequence     total   sample2	sample3	sample4
+        // seq1	1150	250	400	500
+        // seq2	90	0	40	50
+        // seq3	25	0	25	0
+        // seq4	4	0	0	4
+
+        // as a sample table
+        vector<string> ids(7, "");
+        ids[0] = "seq1";
+        ids[1] = "seq1";
+        ids[2] = "seq1";
+        ids[3] = "seq2";
+        ids[4] = "seq2";
+        ids[5] = "seq3";
+        ids[6] = "seq4";
+
+        vector<string> samples(7, "");
+        samples[0] = "sample2";
+        samples[1] = "sample3";
+        samples[2] = "sample4";
+        samples[3] = "sample3";
+        samples[4] = "sample4";
+        samples[5] = "sample3";
+        samples[6] = "sample4";
+
+        abunds.resize(7, 0);
+        abunds[0] = 250;
+        abunds[1] = 400;
+        abunds[2] = 500;
+        abunds[3] = 40;
+        abunds[4] = 50;
+        abunds[5] = 25;
+        abunds[6] = 4;
+
+        // add with treatment assignments
+        vector<string> treatments(7, "");
+        treatments[0] = "early";
+        treatments[1] = "late";
+        treatments[2] = "late";
+        treatments[3] = "late";
+        treatments[4] = "late";
+        treatments[5] = "late";
+        treatments[6] = "late";
+
+        data.clear();
+
+        data.addSeqs(names, seqs, comments);
+
+        expect_true(data.getTotal() == 4);
+        expect_true(data.numUnique == 4);
+
+        data.assignSequenceAbundance(ids, abunds, samples, treatments);
+
+        expect_true(data.getTotal() == 1269);
+        expect_true(data.numUnique == 4);
+
+        vector<vector<int>> parsedAbunds(4, vector<int>(3, 0));
+        // removes sample2
+        parsedAbunds[0][1] = 40; // sample3, late
+        parsedAbunds[0][2] = 400; // sample4, late
+        parsedAbunds[1][2] = 35; // sample4, late
+        parsedAbunds[2][1] = 100; // sample3, late
+        parsedAbunds[2][2] = 1; // sample4, late
+        parsedAbunds[3][1] = 20; // sample3, late
+        parsedAbunds[3][2] = 500; // sample4, late
+
+        // set abundances in dataset with samples and treatments
+        data.setAbundances(names, parsedAbunds);
+
+        expect_true(data.getTotal() == 1096);
+        expect_true(data.numUnique == 4);
+
+        vector<int> sampleTotals(2, 0);
+        sampleTotals[0] = 160;
+        sampleTotals[1] = 936;
+
+        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(data.numSamples == 2);
+        expect_true(data.numTreatments == 1);
+
+        vector<int> treatmentTotals(1, 0);
+        treatmentTotals[0] = 1096;
+
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+
+        vector<string> uniqueTreatments(1, "late");
+
+        expect_true(data.getTreatments() == uniqueTreatments);
+    }
+
+
 }

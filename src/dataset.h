@@ -74,6 +74,11 @@ vector<T> select(const vector<T>& x, const vector<bool>& filter) {
 }
 /**********************************************************************/
 template<typename T>
+T sum(const vector<T>& x) {
+    return accumulate(x.begin(), x.end(), 0);
+}
+/**********************************************************************/
+template<typename T>
 vector<T> unique(const vector<T>& x) {
 
     vector<T> uniqueX;

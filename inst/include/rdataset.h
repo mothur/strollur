@@ -276,7 +276,11 @@ public:
                  vector<string> comments);
 
     // set abundances
-    void setAbundances(vector<string> names, vector<int> abunds,
+    // for datasets with samples
+    void setAbundances(vector<string> names, vector<vector<int>> abunds,
+                       string reason = "merged");
+    // for datasets without samples
+    void setAbundance(vector<string> names, vector<int> abunds,
                        string reason = "merged");
 
 private:
@@ -318,7 +322,8 @@ private:
     int getAlignedLength(vector<string>);
     vector<int> getIncludedNamesIndexes();
     vector<int> getIndexes(vector<string>&);
-
+    // don't update totals when merging
+    void removeSeq(int index, string reasons, bool update = true);
 };
 
 /******************************************************************************/
