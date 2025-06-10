@@ -28,7 +28,8 @@ const vector<double> nullDoubleVector;  // used to pass blank double
 
 /******************************************************************************/
 /*
- * The 'seqCount' struct will store abundance data for sequences in sparse form.
+ * The 'sampleAbunds' struct will store abundance data for samples
+ *    in sparse form.
  *
  * sampleIndex contains the sample indexes
  * abunds contains the abundances
@@ -47,25 +48,33 @@ const vector<double> nullDoubleVector;  // used to pass blank double
  * sampleIndex <- c(0,2,4) - zero indexing of c++
  * abunds <- c(20, 35, 5)
  *
+ * This structure is also used to store OTU abundance data for samples
+ *
+ * otu1 <- c(10, 0, 0, 250, 1) meaning otu1 has abundance of 10 in sample1
+ *                                     otu1 has abundance of 0 in sample2
+ *                                     otu1 has abundance of 0 in sample3
+ *                                     otu1 has abundance of 250 in sample4
+ *                                     otu1 has abundance of 1 in sample5
+ *
  */
-struct seqCount {
+struct sampleAbunds {
     vector<int> sampleIndex;
     vector<int> abunds;
 
-    seqCount() {}
-    ~seqCount() {}
+    sampleAbunds() {}
+    ~sampleAbunds() {}
 
     // no samples constructor
-    seqCount(int i, int a) {
+    sampleAbunds(int i, int a) {
         sampleIndex.push_back(i);
         abunds.push_back(a);
     }
 
     // sparse format constructor
-    seqCount(vector<int> i, vector<int> a) : sampleIndex(i), abunds(a) {}
+    sampleAbunds(vector<int> i, vector<int> a) : sampleIndex(i), abunds(a) {}
 
     // full format constructor
-    seqCount(vector<int> fullAbunds) {
+    sampleAbunds(vector<int> fullAbunds) {
         for (int i = 0; i < fullAbunds.size(); i++){
             if (fullAbunds[i] != 0) {
                 sampleIndex.push_back(i);
@@ -77,51 +86,54 @@ struct seqCount {
 
 /******************************************************************************/
 /*
- * The 'SeqAbundTable' class will store abundance data for sequences.
+ * The 'AbundTable' class will store abundance data for samples.
  *
- * The "names" of the sequence are stored as indexes to save space.
+ * It is used by 'Dataset' to store sequence abundances by sample / treatment.
+ * It is used by 'OTUTable' to store OTU abundances by sample.
+ *
+ * The "names" of the sequences or OTUs are stored as indexes to save space.
  */
 
-class SeqAbundTable {
+class AbundTable {
 
 public:
 
-    SeqAbundTable();
-    ~SeqAbundTable();
+    AbundTable();
+    ~AbundTable();
 
     void clear();
 
     // 2 or 3 columns: id, abundance, sample (optional -
     //                                   added when table includes sample data)
-    // used to export SeqAbundTable
-    Rcpp::DataFrame getSequenceAbundanceTable(vector<string> outputNames,
+    // used to export AbundTable
+    Rcpp::DataFrame getAbundanceTable(vector<string> outputNames,
                                               vector<int> names);
 
     // names, sets abundance to 1
-    void addSequences(vector<int>& names);
+    void add(vector<int>& names);
 
     // names, abundances, samples (optional), treatments (optional)
-    void assignSequenceAbundance(vector<int> names,
-                               vector<int> abunds,
-                               vector<string> samples = nullVector,
-                               vector<string> treatments = nullVector);
+    void assignAbundance(vector<int> names,
+                         vector<int> abunds,
+                         vector<string> samples = nullVector,
+                         vector<string> treatments = nullVector);
 
     // set abundance parsed by sample - for datasets WITH samples
     void setAbundance(int name, vector<int> abunds);
     // set abundance - for datasets WITHOUT samples
     void setAbundance(int name, int abund);
 
-    // removes sequence, returns abund. Be sure to run updateTotals after.
+    // removes id, returns abund. Be sure to run updateTotals after.
     // totals are not updated in function for time savings when removing multiple
-    // sequences. Only calc totals once rather than after each removal.
-    int removeSequence(int name);
+    // ids. Only calc totals once rather than after each removal.
+    int remove(int name);
     void updateTotals();
-    // adds sequences counts of seqsToMerge[1-n] into seqsToMerge[0], optional
+    // adds counts of idsToMerge[1-n] into idsToMerge[0], optional
     // sample will only merge counts for that sample
-    void mergeSequences(vector<int> seqsToMerge, string sample = "");
+    void merge(vector<int> idsToMerge, string sample = "");
 
-    // vector containing total abundance for each sequence
-    vector<int> getSequenceAbunds(vector<int> names);
+    // vector containing total abundance for each id
+    vector<int> getTotalAbundances(vector<int> names);
     // total abundance for sequence, if sample is provided then abundance for
     // that sequence in that sample
     int getAbundance(int name, string sample = "");
@@ -147,7 +159,7 @@ public:
 
 private:
 
-    vector<seqCount> counts;
+    vector<sampleAbunds> counts;
     // numSamples is 1 for datasets without samples
     // numSamples equals the number of "good" samples in dataset
     int total, numSamples, numTreatments;
@@ -249,7 +261,7 @@ public:
     // abundances for seq broken down by sample
     vector<int> getAbundances(string name);
     // total abundance for each sequence
-    vector<int> getSequenceAbunds();
+    vector<int> getSequenceAbundances();
     // vector[5][1] contains the abundance of seq5 in sample1
     vector<vector<int>> getSeqsAbundsBySample();
 
@@ -315,7 +327,7 @@ private:
     int uniqueBad;
 
     // count table data
-    SeqAbundTable* count;
+    AbundTable* count;
 
     // otu table, asv / list / shared / constaxonomy
     // OTUTable* otuTable;

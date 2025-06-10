@@ -115,7 +115,7 @@ sequence_data <- R6Class("sequence_data",
     #' dataset <- sequence_data$new("mydata")
     #' unique_names <- unique(names)
     #' sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
-    #' dataset$add_seqs(unique_names, sequences)
+    #' dataset$add_sequences(unique_names, sequences)
     #' dataset$assign_sequence_abundance(names, abundances, samples)
     #'
     assign_sequence_abundance = function(names, abundances, samples = NULL,

@@ -26,13 +26,13 @@ dataset <- sequence_data$new(name = "soil",
 
 
 ## ------------------------------------------------
-## Method `sequence_data$add_seqs`
+## Method `sequence_data$add_sequences`
 ## ------------------------------------------------
 
 
   dataset <- sequence_data$new("my_dataset")
   sequence_data <- read_fasta(rdataset_example("test.fasta"))
-  dataset$add_seqs(sequence_data$names, sequence_data$sequences)
+  dataset$add_sequences(sequence_data$names, sequence_data$sequences)
 
 
 ## ------------------------------------------------
@@ -64,7 +64,7 @@ abundances <- c(250, 400, 500,
 dataset <- sequence_data$new("mydata")
 unique_names <- unique(names)
 sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
-dataset$add_seqs(unique_names, sequences)
+dataset$add_sequences(unique_names, sequences)
 dataset$assign_sequence_abundance(names, abundances, samples)
 
 }
@@ -83,11 +83,10 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \itemize{
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
-\item \href{#method-sequence_data-add_seqs}{\code{sequence_data$add_seqs()}}
+\item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
 \item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
-\item \href{#method-sequence_data-get_accnos_report}{\code{sequence_data$get_accnos_report()}}
 \item \href{#method-sequence_data-get_align_report}{\code{sequence_data$get_align_report()}}
 \item \href{#method-sequence_data-get_contigs_report}{\code{sequence_data$get_contigs_report()}}
 \item \href{#method-sequence_data-get_count_table}{\code{sequence_data$get_count_table()}}
@@ -103,7 +102,7 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \item \href{#method-sequence_data-get_num_treatments}{\code{sequence_data$get_num_treatments()}}
 \item \href{#method-sequence_data-get_oligos}{\code{sequence_data$get_oligos()}}
 \item \href{#method-sequence_data-get_otu_tables}{\code{sequence_data$get_otu_tables()}}
-\item \href{#method-sequence_data-get_seqs}{\code{sequence_data$get_seqs()}}
+\item \href{#method-sequence_data-get_sequences}{\code{sequence_data$get_sequences()}}
 \item \href{#method-sequence_data-get_taxonomy_tables}{\code{sequence_data$get_taxonomy_tables()}}
 \item \href{#method-sequence_data-get_treatments}{\code{sequence_data$get_treatments()}}
 \item \href{#method-sequence_data-has_sample}{\code{sequence_data$has_sample()}}
@@ -169,12 +168,12 @@ Get summary of sequence data
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-add_seqs"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-add_seqs}{}}}
-\subsection{Method \code{add_seqs()}}{
+\if{html}{\out{<a id="method-sequence_data-add_sequences"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-add_sequences}{}}}
+\subsection{Method \code{add_sequences()}}{
 Add new sequence data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_seqs(names, sequences, comments = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_sequences(names, sequences, comments = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -193,7 +192,7 @@ Add new sequence data
 \preformatted{
   dataset <- sequence_data$new("my_dataset")
   sequence_data <- read_fasta(rdataset_example("test.fasta"))
-  dataset$add_seqs(sequence_data$names, sequence_data$sequences)
+  dataset$add_sequences(sequence_data$names, sequence_data$sequences)
 
 }
 \if{html}{\out{</div>}}
@@ -205,7 +204,7 @@ Add new sequence data
 \if{html}{\out{<a id="method-sequence_data-assign_sequence_abundance"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-assign_sequence_abundance}{}}}
 \subsection{Method \code{assign_sequence_abundance()}}{
-Add sequence abundance data with optional sample and treatment assignments
+Add sequence abundance data with optional sample / treatment assignments
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sequence_abundance(
   names,
@@ -255,7 +254,7 @@ abundances <- c(250, 400, 500,
 dataset <- sequence_data$new("mydata")
 unique_names <- unique(names)
 sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
-dataset$add_seqs(unique_names, sequences)
+dataset$add_sequences(unique_names, sequences)
 dataset$assign_sequence_abundance(names, abundances, samples)
 
 }
@@ -285,19 +284,6 @@ Get List containing dataset
 
 \subsection{Returns}{
 List
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_accnos_report"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_accnos_report}{}}}
-\subsection{Method \code{get_accnos_report()}}{
-Get report containing eliminated sequence names and trash_codes
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_accnos_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.table
 }
 }
 \if{html}{\out{<hr>}}
@@ -453,6 +439,9 @@ Get names of sequences in the dataset
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+vector of ids
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_num_samples"></a>}}
@@ -534,12 +523,12 @@ List of data.tables
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_seqs"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_seqs}{}}}
-\subsection{Method \code{get_seqs()}}{
-Get vector containing FASTA nucleotide strings
+\if{html}{\out{<a id="method-sequence_data-get_sequences"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sequences}{}}}
+\subsection{Method \code{get_sequences()}}{
+Get vector containing sequence nucleotide strings
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_seqs(sample = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequences(sample = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

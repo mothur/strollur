@@ -553,7 +553,7 @@ context("Dataset class C++ unit tests") {
         seqTotals[2] = 25;
         seqTotals[3] = 4;
 
-        expect_true(data.getSequenceAbunds() == seqTotals);
+        expect_true(data.getSequenceAbundances() == seqTotals);
 
         vector<string> seqsToMerge(2, "seq2");
         seqsToMerge[0] = "seq1";
@@ -566,7 +566,7 @@ context("Dataset class C++ unit tests") {
         seqTotals[1] = 25;
         seqTotals[2] = 4;
 
-        expect_true(data.getSequenceAbunds() == seqTotals);
+        expect_true(data.getSequenceAbundances() == seqTotals);
         expect_true(data.numUnique == 3);
         expect_true(data.getTotal() == 1269);
     }

@@ -2,7 +2,7 @@
 #include "dataset.h"
 
 /******************************************************************************/
-SeqAbundTable::SeqAbundTable() {
+AbundTable::AbundTable() {
     hasSampleData = false;
     hasTreatments = false;
     total = 0;
@@ -10,9 +10,9 @@ SeqAbundTable::SeqAbundTable() {
     numTreatments = 0;
 }
 /******************************************************************************/
-SeqAbundTable::~SeqAbundTable() {}
+AbundTable::~AbundTable() {}
 /******************************************************************************/
-void SeqAbundTable::clear() {
+void AbundTable::clear() {
     hasSampleData = false;
     hasTreatments = false;
     total = 0;
@@ -32,7 +32,7 @@ void SeqAbundTable::clear() {
 }
 /******************************************************************************/
 // the names are the indexes in dataset
-void SeqAbundTable::addSequences(vector<int>& names) {
+void AbundTable::add(vector<int>& names) {
 
     if (hasSampleData) {
         string message = "[ERROR]: The dataset contains sample information, ";
@@ -43,7 +43,7 @@ void SeqAbundTable::addSequences(vector<int>& names) {
         counts.resize(counts.size()+names.size());
 
         for (int i = 0; i < names.size(); i++) {
-            seqCount thisSeq(0, 1);
+            sampleAbunds thisSeq(0, 1);
             counts[names[i]] = thisSeq;
         }
 
@@ -61,7 +61,7 @@ void SeqAbundTable::addSequences(vector<int>& names) {
 }
 /******************************************************************************/
 // private function
-void SeqAbundTable::addSamples(vector<string> samples) {
+void AbundTable::addSamples(vector<string> samples) {
     // store samples alphabetically
     sort(samples.begin(), samples.end());
     sampleNames = samples;
@@ -78,7 +78,7 @@ void SeqAbundTable::addSamples(vector<string> samples) {
 }
 /******************************************************************************/
 // private function
-void SeqAbundTable::addTreatments(vector<string> treatments) {
+void AbundTable::addTreatments(vector<string> treatments) {
     // store samples alphabetically
     sort(treatments.begin(), treatments.end());
 
@@ -94,7 +94,7 @@ void SeqAbundTable::addTreatments(vector<string> treatments) {
 }
 /******************************************************************************/
 // names, abundances, samples (optional), treatment (optional)
-void SeqAbundTable::assignSequenceAbundance(vector<int> names,
+void AbundTable::assignAbundance(vector<int> names,
                            vector<int> abunds,
                            vector<string> samples,
                            vector<string> treatments) {
@@ -161,7 +161,7 @@ void SeqAbundTable::assignSequenceAbundance(vector<int> names,
 
         counts.resize(names.size());
         for (int i = 0; i < names.size(); i++) {
-            seqCount thisSeq(0, abunds[i]);
+            sampleAbunds thisSeq(0, abunds[i]);
             counts[names[i]] = thisSeq;
         }
         total = sum(abunds);
@@ -185,7 +185,7 @@ void SeqAbundTable::assignSequenceAbundance(vector<int> names,
 /******************************************************************************/
 // total abundance for sequence.
 // If sample provided, then abundance for sequence in sample
-int SeqAbundTable::getAbundance(int name, string sample) {
+int AbundTable::getAbundance(int name, string sample) {
 
     int abund = 0;
 
@@ -211,14 +211,14 @@ int SeqAbundTable::getAbundance(int name, string sample) {
 }
 /******************************************************************************/
 // abundances by sample, in the same order as the samples
-vector<int> SeqAbundTable::getAbundances(int name) {
+vector<int> AbundTable::getAbundances(int name) {
     vector<int> abunds;
 
     if (hasSampleData) {
         // all samples not just "good" ones
         vector<int> allAbunds(tableSamples.size(), 0);
 
-        seqCount data = counts[name];
+        sampleAbunds data = counts[name];
 
         // data -> sampleIndex(2,5), abunds(100, 50)
         // becomes abunds(0,0,100,0,0,50)
@@ -235,7 +235,7 @@ vector<int> SeqAbundTable::getAbundances(int name) {
     return abunds;
 }
 /******************************************************************************/
-vector<string> SeqAbundTable::getSamples() {
+vector<string> AbundTable::getSamples() {
     vector<string> samples;
 
     if (hasSampleData) {
@@ -246,7 +246,7 @@ vector<string> SeqAbundTable::getSamples() {
     return samples;
 }
 /******************************************************************************/
-vector<int> SeqAbundTable::getSampleTotals() {
+vector<int> AbundTable::getSampleTotals() {
     vector<int> totals;
     if (hasSampleData) {
         totals = select(sampleTotals, tableSamples);
@@ -254,14 +254,14 @@ vector<int> SeqAbundTable::getSampleTotals() {
     return totals;
 }
 /******************************************************************************/
-int SeqAbundTable::getNumSamples() {
+int AbundTable::getNumSamples() {
     if (hasSampleData) {
         return numSamples;
     }
     return 0;
 }
 /******************************************************************************/
-int SeqAbundTable::getNumTreatments() {
+int AbundTable::getNumTreatments() {
     if (hasTreatments) {
         return numTreatments;
     }
@@ -269,7 +269,7 @@ int SeqAbundTable::getNumTreatments() {
 }
 /******************************************************************************/
 // vector containing total abundance for each sequence
-vector<int> SeqAbundTable::getSequenceAbunds(vector<int> names) {
+vector<int> AbundTable::getTotalAbundances(vector<int> names) {
 
     vector<int> abunds(names.size(), 0);
 
@@ -279,7 +279,7 @@ vector<int> SeqAbundTable::getSequenceAbunds(vector<int> names) {
     return abunds;
 }
 /******************************************************************************/
-Rcpp::DataFrame SeqAbundTable::getSequenceAbundanceTable(vector<string> outputNames,
+Rcpp::DataFrame AbundTable::getAbundanceTable(vector<string> outputNames,
                                           vector<int> names) {
 
 
@@ -292,7 +292,7 @@ Rcpp::DataFrame SeqAbundTable::getSequenceAbundanceTable(vector<string> outputNa
         for (int i = 0; i < names.size(); i++) {
             string name = outputNames[i];
 
-            seqCount data = counts[names[i]];
+            sampleAbunds data = counts[names[i]];
 
             // data -> sampleIndex(2,5), abunds(100, 50)
             // becomes abunds(0,0,100,0,0,50)
@@ -329,7 +329,7 @@ Rcpp::DataFrame SeqAbundTable::getSequenceAbundanceTable(vector<string> outputNa
         // no sample information
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named("id") = outputNames,
-            Rcpp::_["abundance"] = getSequenceAbunds(names));
+            Rcpp::_["abundance"] = getTotalAbundances(names));
         return df;
     }
 
@@ -337,7 +337,7 @@ Rcpp::DataFrame SeqAbundTable::getSequenceAbundanceTable(vector<string> outputNa
     return empty;
 }
 /******************************************************************************/
-int SeqAbundTable::getSparseIndex(int name, int sample) {
+int AbundTable::getSparseIndex(int name, int sample) {
     int index = -1;
 
     for (int i = 0; i < counts[name].sampleIndex.size(); i++) {
@@ -347,7 +347,7 @@ int SeqAbundTable::getSparseIndex(int name, int sample) {
     return index;
 }
 /******************************************************************************/
-int SeqAbundTable::getTotal(string sample) {
+int AbundTable::getTotal(string sample) {
     if (sample != "") {
         auto it = sampleIndex.find(sample);
 
@@ -366,7 +366,7 @@ int SeqAbundTable::getTotal(string sample) {
     return total;
 }
 /******************************************************************************/
-vector<string> SeqAbundTable::getTreatments() {
+vector<string> AbundTable::getTreatments() {
     vector<string> treatments;
 
     if (hasTreatments) {
@@ -380,7 +380,7 @@ vector<string> SeqAbundTable::getTreatments() {
     return treatments;
 }
 /******************************************************************************/
-vector<int> SeqAbundTable::getTreatmentTotals() {
+vector<int> AbundTable::getTreatmentTotals() {
     vector<int> totals;
     if (hasTreatments) {
         totals = select(treatmentTotals, tableTreatments);
@@ -388,7 +388,7 @@ vector<int> SeqAbundTable::getTreatmentTotals() {
     return totals;
 }
 /******************************************************************************/
-bool SeqAbundTable::hasSample(string sample, int name) {
+bool AbundTable::hasSample(string sample, int name) {
     auto it = sampleIndex.find(sample);
 
     // is this a sample in the table
@@ -411,16 +411,16 @@ bool SeqAbundTable::hasSample(string sample, int name) {
     return false;
 }
 /******************************************************************************/
-// adds sequences counts of seqsToMerge[1-n] into seqsToMerge[0], optional
+// adds sequences counts of idsToMerge[1-n] into idsToMerge[0], optional
 // sample will only merge counts for that sample
-void SeqAbundTable::mergeSequences(vector<int> seqsToMerge, string sample) {
-    if (seqsToMerge.size() > 1) {
+void AbundTable::merge(vector<int> idsToMerge, string sample) {
+    if (idsToMerge.size() > 1) {
 
-        int keeperSeq = seqsToMerge[0];
+        int keeperSeq = idsToMerge[0];
         vector<int> kAbunds = getAbundances(keeperSeq);
 
-        for (int i = 1; i < seqsToMerge.size(); i++) {
-            int dupSeq = seqsToMerge[i];
+        for (int i = 1; i < idsToMerge.size(); i++) {
+            int dupSeq = idsToMerge[i];
             vector<int> dupAbunds = getAbundances(dupSeq);
 
             // merge all samples
@@ -432,18 +432,18 @@ void SeqAbundTable::mergeSequences(vector<int> seqsToMerge, string sample) {
                    // merge specific sample
                    kAbunds[it->second] += dupAbunds[it->second];
                    dupAbunds[it->second] = 0;
-                   seqCount newDup(dupAbunds);
+                   sampleAbunds newDup(dupAbunds);
                    counts[dupSeq] = newDup;
                }
 
             }
         }
-        seqCount newKeeper(kAbunds);
+        sampleAbunds newKeeper(kAbunds);
         counts[keeperSeq] = newKeeper;
     }
 }
 /******************************************************************************/
-int SeqAbundTable::removeSequence(int name) {
+int AbundTable::remove(int name) {
 
     int abund = 0;
 
@@ -476,11 +476,11 @@ int SeqAbundTable::removeSequence(int name) {
 }
 /******************************************************************************/
 // set abundance parsed by sample - for datasets with samples
-void SeqAbundTable::setAbundance(int name, vector<int> abunds) {
+void AbundTable::setAbundance(int name, vector<int> abunds) {
 
     vector<int> origAbunds = getAbundances(name);
 
-    seqCount newAbunds(abunds);
+    sampleAbunds newAbunds(abunds);
     counts[name] = newAbunds;
 
     if (hasSampleData) {
@@ -503,19 +503,19 @@ void SeqAbundTable::setAbundance(int name, vector<int> abunds) {
 }
 /******************************************************************************/
 // set abundance - for datasets without samples
-void SeqAbundTable::setAbundance(int name, int abund) {
+void AbundTable::setAbundance(int name, int abund) {
 
     if (hasSampleData) {
         int origAbund = getAbundance(name);
 
-        seqCount thisCount(0, abund);
+        sampleAbunds thisCount(0, abund);
         counts[name] = thisCount;
 
         total -= (origAbund - abund);
     }
 }
 /******************************************************************************/
-void SeqAbundTable::updateTotals() {
+void AbundTable::updateTotals() {
 
     if (hasSampleData) {
 

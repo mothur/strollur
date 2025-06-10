@@ -40,7 +40,7 @@ RCPP_MODULE(Dataset) {
     // ******* getters ******* //
     // abundances for seq broken down by sample
     .method("get_abundances", &Dataset::getAbundances, "Get abundances for sequence")
-    .method("get_sequence_abunds", &Dataset::getSequenceAbunds,
+    .method("get_sequence_abundances", &Dataset::getSequenceAbundances,
     "Get total abundance for each sequence")
     .method("get_count_matrix", &Dataset::getSeqsAbundsBySample,
     "Get dataset's sequence's abundances by sample")

@@ -14,7 +14,7 @@ Dataset::Dataset(string n, int proc) : datasetName(n) {
     uniqueBad = 0;
     alignmentLength = 0;
     processors = proc;
-    count = new SeqAbundTable();
+    count = new AbundTable();
 }
 /******************************************************************************/
 Dataset::~Dataset() {
@@ -98,7 +98,7 @@ void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c)
     }
 
     // add to count
-    count->addSequences(countNames);
+    count->add(countNames);
     countNames.clear();
 
     // add to names
@@ -152,7 +152,7 @@ void Dataset::assignSequenceAbundance(vector<string> ids,
 
     vector<int> idIndexes = getIndexes(ids);
 
-    count->assignSequenceAbundance(idIndexes, abunds, samples, treatments);
+    count->assignAbundance(idIndexes, abunds, samples, treatments);
 
     numSamples = count->getNumSamples();
     numTreatments = count->getNumTreatments();
@@ -460,13 +460,13 @@ Rcpp::DataFrame Dataset::getScrapSummary() {
 // ids, abundances, sample(optional), treatment(optional)
 // This table represents mothur's count and design files.
 Rcpp::DataFrame Dataset::getSequenceAbundanceTable() {
-    return count->getSequenceAbundanceTable(select(names, tableSeqs),
+    return count->getAbundanceTable(select(names, tableSeqs),
                                             getIncludedNamesIndexes());
 }
 /******************************************************************************/
 // total abundance for each sequence
-vector<int> Dataset::getSequenceAbunds(){
-    return count->getSequenceAbunds(getIncludedNamesIndexes());
+vector<int> Dataset::getSequenceAbundances(){
+    return count->getTotalAbundances(getIncludedNamesIndexes());
 }
 /******************************************************************************/
 vector<vector<int>> Dataset::getSeqsAbundsBySample(){
@@ -540,7 +540,7 @@ Rcpp::List Dataset::getSequenceSummary() {
     report.push_back(select(numns, tableSeqs));
 
     Rcpp::DataFrame seqResults = summary->summarizeFasta(
-        report, count->getSequenceAbunds(getIncludedNamesIndexes()));
+        report, count->getTotalAbundances(getIncludedNamesIndexes()));
 
     result.push_back(seqResults);
     result_names.push_back("sequence_summary");
@@ -556,7 +556,7 @@ Rcpp::List Dataset::getSequenceSummary() {
         report.push_back(select(numns, tableSeqs));
 
         Rcpp::DataFrame contigsResults = summary->summarizeContigs(
-            report, count->getSequenceAbunds(getIncludedNamesIndexes()));
+            report, count->getTotalAbundances(getIncludedNamesIndexes()));
 
         result.push_back(contigsResults);
         result_names.push_back("contigs_summary");
@@ -569,7 +569,7 @@ Rcpp::List Dataset::getSequenceSummary() {
 
         Rcpp::DataFrame alignResults = summary->summarizeAlign(
             report, select(longestInsert, tableSeqs),
-            count->getSequenceAbunds(getIncludedNamesIndexes()));
+            count->getTotalAbundances(getIncludedNamesIndexes()));
 
         result.push_back(alignResults);
         result_names.push_back("align_summary");
@@ -614,7 +614,7 @@ void Dataset::mergeSequences(vector<string> ids, string reason, string sample){
     if (names.size() != 1) {
 
         vector<int> indexes = getIndexes(ids);
-        count->mergeSequences(indexes, sample);
+        count->merge(indexes, sample);
 
         if (sample == "") {
             for (int i = 1; i < indexes.size(); i++) {
@@ -642,7 +642,7 @@ void Dataset::removeSequence(int index, string reasons, bool update) {
     // remove from counts
     int abund = 1;
     if (update) {
-        abund = count->removeSequence(index);
+        abund = count->remove(index);
     }else{
         abund = count->getAbundance(index);
     }
