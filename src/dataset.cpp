@@ -466,6 +466,30 @@ vector<vector<string> > Dataset::getNamesBySample(vector<string> samples){
     return result;
 }
 /******************************************************************************/
+// total abundance for a given outID, optional sample
+int Dataset::getOtuAbundance(string otuId, string sample) {
+    if (hasOtuData) {
+        return otuTable->getAbundance(otuId, sample);
+    }
+    return 0;
+}
+/******************************************************************************/
+// abundances for given otuID broken down by sample
+vector<int> Dataset::getOtuAbundances(string otuId) {
+    if (hasOtuData) {
+        return otuTable->getAbundances(otuId);
+    }
+    return nullIntVector;
+}
+/******************************************************************************/
+// string containing sequence names for given otuID
+string Dataset::getOtu(string otuId) {
+    if (hasOtuData) {
+        return otuTable->get(otuId);
+    }
+    return "";
+}
+/******************************************************************************/
 vector<string> Dataset::getOtuIds() {
     if (hasOtuData) {
         return otuTable->getOtuIds();

@@ -42,7 +42,7 @@ RCPP_MODULE(Dataset) {
 
     // ******* getters ******* //
     // abundances for seq broken down by sample
-    .method("get_abundances", &Dataset::getAbundances, "Get abundances for sequence")
+    .method("get_abundances", &Dataset::getAbundances, "Get abundances for sequence by sample")
     .method("get_sequence_abundances", &Dataset::getSequenceAbundances,
     "Get total abundance for each sequence")
     .method("get_count_matrix", &Dataset::getSeqsAbundsBySample,
@@ -86,6 +86,12 @@ RCPP_MODULE(Dataset) {
     "Get names of sequences parsed by sample")
     .method("get_sequences_by_sample", &Dataset::getSequencesBySample,
     "Get sequences parsed by sample")
+
+    // otu functions
+    .method("get_otu_abundance", &Dataset::getOtuAbundance, "Get abundance of otu")
+    .method("get_otu_abundance", &Dataset::getOtuAbundance, "Get abundance of otu")
+    .method("get_otu", &Dataset::getOtu, "Get otu containing sequence names")
+
     ;
 }
 /******************************************************************************/

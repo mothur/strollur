@@ -11,7 +11,7 @@ context("OtuTable class C++ unit tests") {
         expect_true(otuTable.numUnique == -1);
     }
 
-    test_that("Tests add") {
+    test_that("Tests add, get, getAbundance, getAbundances") {
         OtuTable otuTable("0.03");
 
         vector<string> otuNames(10, "otu1");
@@ -32,6 +32,11 @@ context("OtuTable class C++ unit tests") {
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numOtus == 10);
         expect_true(otuTable.numUnique == -1);
+        // no sequence data was given
+        expect_true(otuTable.get("otu1") == "");
+        expect_true(otuTable.getAbundance("otu1") == 10);
+        vector<int> temp(1, 10);
+        expect_true(otuTable.getAbundances("otu1") == temp);
 
         otuTable.clear();
 
@@ -54,6 +59,17 @@ context("OtuTable class C++ unit tests") {
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numOtus == 4);
         expect_true(otuTable.numUnique == 10);
+
+        expect_true(otuTable.get("otu1") == "seq1,seq2,seq3");
+        expect_true(otuTable.get("otu2") == "seq4,seq5");
+        expect_true(otuTable.get("otu3") == "seq6");
+        expect_true(otuTable.get("otu4") == "seq7,seq8,seq9,seq10");
+        expect_true(otuTable.getAbundance("otu1") == 30);
+        expect_true(otuTable.getAbundance("otu2") == 20);
+        expect_true(otuTable.getAbundance("otu3") == 10);
+        expect_true(otuTable.getAbundance("otu4") == 40);
+        temp[0] = 20;
+        expect_true(otuTable.getAbundances("otu2") == temp);
 
         // test adding otuNames abundances, samples (shared)
         otuNames.resize(15, "otu1");
@@ -82,6 +98,17 @@ context("OtuTable class C++ unit tests") {
         expect_true(otuTable.numOtus == 4);
         expect_true(otuTable.numUnique == 10);
         expect_true(otuTable.getNumSamples() == 6);
+
+        expect_true(otuTable.get("otu4") == "seq7,seq8,seq9,seq10");
+        expect_true(otuTable.getAbundance("otu1") == 30);
+        expect_true(otuTable.getAbundance("otu2") == 20);
+        expect_true(otuTable.getAbundance("otu3") == 10);
+        expect_true(otuTable.getAbundance("otu4") == 40);
+        temp.resize(6, 0);
+        temp[0] = 5;
+        temp[1] = 5;
+        temp[3] = 10;
+        expect_true(otuTable.getAbundances("otu2") == temp);
 
         vector<int> sampleTotals(6, 0);
         sampleTotals[0] = 36;

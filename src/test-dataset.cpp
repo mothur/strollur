@@ -518,6 +518,10 @@ context("Dataset class C++ unit tests") {
         expect_true(samples == Rcpp::as<vector<string>>(countTable[2]));
         expect_true(treatments == Rcpp::as<vector<string>>(countTable[3]));
         expect_true(data.getOtuIds() == nullVector);
+        expect_true(data.getOtuAbundances("otu1") == nullIntVector);
+        expect_true(data.getOtuAbundance("otu1") == 0);
+        expect_true(data.getOtu("otu1") == "");
+
     }
 
     test_that("Tests mergeSeqs, getScrapReport, getScrapSummary") {
@@ -1003,6 +1007,12 @@ context("Dataset class C++ unit tests") {
         expect_true(data.numUnique == -1);
         expect_true(data.getOtuIds() == otuNames);
 
+        // no sequence data was given
+        expect_true(data.getOtu("otu1") == "");
+        expect_true(data.getOtuAbundance("otu1") == 10);
+        vector<int> temp(1, 10);
+        expect_true(data.getOtuAbundances("otu1") == temp);
+
         data.clear();
 
         // test adding otuNames, seqNames, abundances (list)
@@ -1023,6 +1033,17 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 4);
         expect_true(data.numUnique == 10);
+
+        expect_true(data.getOtu("otu1") == "seq1,seq2,seq3");
+        expect_true(data.getOtu("otu2") == "seq4,seq5");
+        expect_true(data.getOtu("otu3") == "seq6");
+        expect_true(data.getOtu("otu4") == "seq7,seq8,seq9,seq10");
+        expect_true(data.getOtuAbundance("otu1") == 30);
+        expect_true(data.getOtuAbundance("otu2") == 20);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 40);
+        temp[0] = 20;
+        expect_true(data.getOtuAbundances("otu2") == temp);
 
         vector<string> otuIds(4, "otu1");
         otuIds[1] = "otu2";
@@ -1070,6 +1091,18 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getSampleTotals() == sampleTotals);
         expect_true(data.getOtuIds() == otuIds);
         expect_true(data.getSamples() == unique(samples));
+
+        expect_true(data.getOtu("otu4") == "seq7,seq8,seq9,seq10");
+        expect_true(data.getOtuAbundance("otu1") == 30);
+        expect_true(data.getOtuAbundance("otu2") == 20);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 40);
+        temp.resize(6, 0);
+        temp[0] = 5;
+        temp[1] = 5;
+        temp[3] = 10;
+        expect_true(data.getOtuAbundances("otu2") == temp);
+        expect_error(data.getOtuAbundances("badotu"));
 
         otuNames.clear();
         expect_error(data.assignOtuAbundance("0.03", otuNames, abundances));

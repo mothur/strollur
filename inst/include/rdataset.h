@@ -231,7 +231,7 @@ public:
     vector<vector<int> > getShared();
 
     // string containing sequence names for given otuID
-    string get(string otuID, string sample = "");
+    string get(string otuID);
     // total abundance for a given outID, optional sample
     int getAbundance(string otuID, string sample = "");
     // abundances for given otuID broken down by sample
@@ -266,12 +266,12 @@ private:
 
     // maps otu name to index
     map<string, int> otuIndex;
-    // maps seqName to otu index
-    map<string, int> seqOtuIndex;
     // filter for "good" otus
     vector<bool> tableOtus;
     vector<string> otuNames;
     vector<string> sequenceOtus;
+
+    bool hasSeqIds;
 
     // map reason for deletion to vector containing unique and total counts
     // example: "cons_taxonomy" ->  c(10,  230) means cons_taxonomy combined
@@ -283,6 +283,7 @@ private:
     AbundTable* count;
 
     vector<int> getIndexes(vector<string>& ids);
+    int getIndex(string&);
 
 };
 /******************************************************************************/
@@ -365,7 +366,7 @@ public:
     // abundances for given otuID broken down by sample
     vector<int> getOtuAbundances(string otuID);
     // string containing sequence names for given otuID
-    string getOtu(string otuID, string sample = "");
+    string getOtu(string otuID);
     // total abundance for each sequence
     vector<int> getSequenceAbundances();
     // vector[5][1] contains the abundance of seq5 in sample1

@@ -26,7 +26,7 @@ dataset <- sequence_data$new(name = "soil",
 
 
 ## ------------------------------------------------
-## Method `sequence_data$assign_otus`
+## Method `sequence_data$assign_otu_abundance`
 ## ------------------------------------------------
 
   # To assign sequences to otus:
@@ -44,7 +44,7 @@ dataset <- sequence_data$new(name = "soil",
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus("0.03", otu_ids,
+  dataset$assign_otu_abundance("0.03", otu_ids,
               sequence_abundances, seq_ids = seq_ids)
 
   # otus would look like:
@@ -68,7 +68,8 @@ dataset <- sequence_data$new(name = "soil",
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus("0.03", otu_ids, sequence_abundances, samples)
+  dataset$assign_otu_abundance("0.03", otu_ids,
+                                     sequence_abundances, samples)
 
   # otus would look like:
   # label  sample   otu1   otu2   otu3 ...
@@ -114,7 +115,7 @@ abundances <- c(250, 400, 500,
                25, 25,
                4)
 
-dataset <- sequence_data$new("mydata")
+dataset <- sequence_data$new("my_dataset")
 unique_names <- unique(names)
 sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
 dataset$add_sequences(unique_names, sequences)
@@ -136,7 +137,7 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \itemize{
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
-\item \href{#method-sequence_data-assign_otus}{\code{sequence_data$assign_otus()}}
+\item \href{#method-sequence_data-assign_otu_abundance}{\code{sequence_data$assign_otu_abundance()}}
 \item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
 \item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
@@ -145,17 +146,18 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \item \href{#method-sequence_data-get_contigs_report}{\code{sequence_data$get_contigs_report()}}
 \item \href{#method-sequence_data-get_count_table}{\code{sequence_data$get_count_table()}}
 \item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
-\item \href{#method-sequence_data-get_scrap_report}{\code{sequence_data$get_scrap_report()}}
-\item \href{#method-sequence_data-get_sequence_report}{\code{sequence_data$get_sequence_report()}}
-\item \href{#method-sequence_data-get_sequence_summary}{\code{sequence_data$get_sequence_summary()}}
-\item \href{#method-sequence_data-get_samples}{\code{sequence_data$get_samples()}}
-\item \href{#method-sequence_data-get_sample_summary}{\code{sequence_data$get_sample_summary()}}
 \item \href{#method-sequence_data-get_ids}{\code{sequence_data$get_ids()}}
+\item \href{#method-sequence_data-get_num_otus}{\code{sequence_data$get_num_otus()}}
 \item \href{#method-sequence_data-get_num_samples}{\code{sequence_data$get_num_samples()}}
 \item \href{#method-sequence_data-get_num_sequences}{\code{sequence_data$get_num_sequences()}}
 \item \href{#method-sequence_data-get_num_treatments}{\code{sequence_data$get_num_treatments()}}
 \item \href{#method-sequence_data-get_oligos}{\code{sequence_data$get_oligos()}}
 \item \href{#method-sequence_data-get_otu_tables}{\code{sequence_data$get_otu_tables()}}
+\item \href{#method-sequence_data-get_samples}{\code{sequence_data$get_samples()}}
+\item \href{#method-sequence_data-get_sample_summary}{\code{sequence_data$get_sample_summary()}}
+\item \href{#method-sequence_data-get_scrap_report}{\code{sequence_data$get_scrap_report()}}
+\item \href{#method-sequence_data-get_sequence_report}{\code{sequence_data$get_sequence_report()}}
+\item \href{#method-sequence_data-get_sequence_summary}{\code{sequence_data$get_sequence_summary()}}
 \item \href{#method-sequence_data-get_sequences}{\code{sequence_data$get_sequences()}}
 \item \href{#method-sequence_data-get_taxonomy_tables}{\code{sequence_data$get_taxonomy_tables()}}
 \item \href{#method-sequence_data-get_treatments}{\code{sequence_data$get_treatments()}}
@@ -222,12 +224,12 @@ Get summary of sequence data
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-assign_otus"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-assign_otus}{}}}
-\subsection{Method \code{assign_otus()}}{
+\if{html}{\out{<a id="method-sequence_data-assign_otu_abundance"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_otu_abundance}{}}}
+\subsection{Method \code{assign_otu_abundance()}}{
 Add otu data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_otus(
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_otu_abundance(
   label,
   otu_ids,
   abundances,
@@ -268,7 +270,7 @@ Add otu data
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus("0.03", otu_ids,
+  dataset$assign_otu_abundance("0.03", otu_ids,
               sequence_abundances, seq_ids = seq_ids)
 
   # otus would look like:
@@ -292,7 +294,8 @@ Add otu data
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus("0.03", otu_ids, sequence_abundances, samples)
+  dataset$assign_otu_abundance("0.03", otu_ids,
+                                     sequence_abundances, samples)
 
   # otus would look like:
   # label  sample   otu1   otu2   otu3 ...
@@ -391,7 +394,7 @@ abundances <- c(250, 400, 500,
                25, 25,
                4)
 
-dataset <- sequence_data$new("mydata")
+dataset <- sequence_data$new("my_dataset")
 unique_names <- unique(names)
 sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
 dataset$add_sequences(unique_names, sequences)
@@ -483,87 +486,6 @@ String
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_scrap_report"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_scrap_report}{}}}
-\subsection{Method \code{get_scrap_report()}}{
-Get report containing the scrapped sequences -
-ids, trash_codes
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_scrap_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.table
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_sequence_report"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_report}{}}}
-\subsection{Method \code{get_sequence_report()}}{
-Get report containing the sequence report table -
-ids, starts, ends, lengths, ambigs, homopolymers, numns
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.table
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_sequence_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_summary}{}}}
-\subsection{Method \code{get_sequence_summary()}}{
-Get summary of the sequence reports
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_summary(silent = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{silent}}{Default = FALSE, meaning print summaries}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-list of data.tables
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_samples"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_samples}{}}}
-\subsection{Method \code{get_samples()}}{
-Get names of samples in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_samples()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-A character vector
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_sample_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_sample_summary}{}}}
-\subsection{Method \code{get_sample_summary()}}{
-Get summary of count table. sample, sample_totals
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sample_summary(silent = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{silent}}{Default = FALSE, meaning print sample summary}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-list
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_ids"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_ids}{}}}
 \subsection{Method \code{get_ids()}}{
@@ -581,6 +503,19 @@ Get names of sequences in the dataset
 }
 \subsection{Returns}{
 vector of ids
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_num_otus"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_num_otus}{}}}
+\subsection{Method \code{get_num_otus()}}{
+Get the number of otus in the dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_num_otus()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+An integer
 }
 }
 \if{html}{\out{<hr>}}
@@ -660,6 +595,87 @@ These tables represent mothur's list, rabund, shared, relabund files
 
 \subsection{Returns}{
 List of data.tables
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_samples"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_samples}{}}}
+\subsection{Method \code{get_samples()}}{
+Get names of samples in the dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_samples()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A character vector
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_sample_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sample_summary}{}}}
+\subsection{Method \code{get_sample_summary()}}{
+Get summary of count table. sample, sample_totals
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sample_summary(silent = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{silent}}{Default = FALSE, meaning print sample summary}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+list
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_scrap_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_scrap_report}{}}}
+\subsection{Method \code{get_scrap_report()}}{
+Get report containing the scrapped sequences -
+ids, trash_codes
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_scrap_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_sequence_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_report}{}}}
+\subsection{Method \code{get_sequence_report()}}{
+Get report containing the sequence report table -
+ids, starts, ends, lengths, ambigs, homopolymers, numns
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_sequence_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_summary}{}}}
+\subsection{Method \code{get_sequence_summary()}}{
+Get summary of the sequence reports
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_summary(silent = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{silent}}{Default = FALSE, meaning print summaries}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+list of data.tables
 }
 }
 \if{html}{\out{<hr>}}
