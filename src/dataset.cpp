@@ -36,7 +36,6 @@ void Dataset::clear() {
     isAligned = false;
     hasContigsData = false;
     hasAlignData = false;
-    hasOtuData = false;
     hasSequenceData = false;
     numSamples = 0;
     numTreatments = 0;
@@ -84,7 +83,7 @@ void Dataset::clear() {
     count->clear();
 
     // if you have an otuTable then otuTable.clear();
-    if (hasOtuData) { otuTable->clear(); }
+    if (hasOtuData) { otuTable->clear(); hasOtuData = false; }
 }
 /******************************************************************************/
 Rcpp::List Dataset::exportDataset(){
@@ -145,7 +144,7 @@ void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c)
     hasSequenceData = true;
 }
 /******************************************************************************/
-void Dataset::assignOTUAbundance(string label, vector<string> otuIds,
+void Dataset::assignOtuAbundance(string label, vector<string> otuIds,
                         vector<int> abunds, vector<string> samples,
                         vector<string> seqIds) {
 
@@ -465,6 +464,13 @@ vector<vector<string> > Dataset::getNamesBySample(vector<string> samples){
     vector<vector<string> > result;
     // TODO
     return result;
+}
+/******************************************************************************/
+vector<string> Dataset::getOtuIds() {
+    if (hasOtuData) {
+        return otuTable->getOtuIds();
+    }
+    return nullVector;
 }
 /******************************************************************************/
 // sample functions

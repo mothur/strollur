@@ -1,5 +1,6 @@
 #include <testthat.h>
 #include "../inst/include/rdataset.h"
+#include "dataset.h"
 
 context("Dataset class C++ unit tests") {
 
@@ -261,6 +262,19 @@ context("Dataset class C++ unit tests") {
         // minimum / maximum numns
         expect_true(0 == Rcpp::as<vector<int>>(df[4])[0]);
         expect_true(1 == Rcpp::as<vector<int>>(df[4])[6]);
+
+        data.clear();
+        data.addSequences(names, seqs, comments);
+        ee.pop_back();
+        // warning given for size mismatches and no data added
+        data.addContigsReport(names, oLengths, oStarts,
+                              oEnds, mismatches, ee);
+
+        // no contigs data because of size mismatch
+        contigsReport = data.getContigsReport();
+
+        expect_true(contigsReport.size() == 0);
+
     }
 
     test_that("Tests addAlignReport, getAlignReport, getAlignSummary") {
@@ -339,6 +353,17 @@ context("Dataset class C++ unit tests") {
         // minimum / maximum longestInserts
         expect_true(1 == Rcpp::as<vector<int>>(df[2])[0]);
         expect_true(2 == Rcpp::as<vector<int>>(df[2])[6]);
+
+        data.clear();
+        data.addSequences(names, seqs, comments);
+        searchScores.pop_back();
+        // warning given for size mismatches and no data added
+        data.addAlignReport(names, searchScores, simScores, longestInserts);
+
+        // no contigs data because of size mismatch
+        alignReport = data.getAlignReport();
+
+        expect_true(alignReport.size() == 0);
     }
 
     test_that("Tests getNames and getSeqs") {
@@ -492,6 +517,7 @@ context("Dataset class C++ unit tests") {
         expect_true(abunds == Rcpp::as<vector<int>>(countTable[1]));
         expect_true(samples == Rcpp::as<vector<string>>(countTable[2]));
         expect_true(treatments == Rcpp::as<vector<string>>(countTable[3]));
+        expect_true(data.getOtuIds() == nullVector);
     }
 
     test_that("Tests mergeSeqs, getScrapReport, getScrapSummary") {
@@ -947,5 +973,105 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 4);
     }
 
+    // Otu tests
+    test_that("Tests assignOtuAbundance, getOtuIds") {
 
+        Dataset data("mydata", 1);
+
+        expect_true(data.datasetName == "mydata");
+        expect_false(data.isAligned);
+        expect_true(data.numSamples == 0);
+        expect_true(data.numUnique == 0);
+
+        vector<string> otuNames(10, "otu1");
+        otuNames[1] = "otu2";
+        otuNames[2] = "otu3";
+        otuNames[3] = "otu4";
+        otuNames[4] = "otu5";
+        otuNames[5] = "otu6";
+        otuNames[6] = "otu7";
+        otuNames[7] = "otu8";
+        otuNames[8] = "otu9";
+        otuNames[9] = "otu10";
+        vector<int> abundances(10, 10);
+
+        // test adding otuNames and abundances (rabund)
+        data.assignOtuAbundance("0.03", otuNames, abundances);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 10);
+        expect_true(data.numUnique == -1);
+        expect_true(data.getOtuIds() == otuNames);
+
+        data.clear();
+
+        // test adding otuNames, seqNames, abundances (list)
+        vector<string> seqNames(10, "");
+        otuNames[0] = "otu1";   seqNames[0] = "seq1";
+        otuNames[1] = "otu1";   seqNames[1] = "seq2";
+        otuNames[2] = "otu1";   seqNames[2] = "seq3";
+        otuNames[3] = "otu2";   seqNames[3] = "seq4";
+        otuNames[4] = "otu2";   seqNames[4] = "seq5";
+        otuNames[5] = "otu3";   seqNames[5] = "seq6";
+        otuNames[6] = "otu4";   seqNames[6] = "seq7";
+        otuNames[7] = "otu4";   seqNames[7] = "seq8";
+        otuNames[8] = "otu4";   seqNames[8] = "seq9";
+        otuNames[9] = "otu4";   seqNames[9] = "seq10";
+
+        data.assignOtuAbundance("0.03", otuNames, abundances, nullVector, seqNames);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 4);
+        expect_true(data.numUnique == 10);
+
+        vector<string> otuIds(4, "otu1");
+        otuIds[1] = "otu2";
+        otuIds[2] = "otu3";
+        otuIds[3] = "otu4";
+
+        expect_true(data.getOtuIds() == otuIds);
+
+        // test adding otuNames abundances, samples (shared)
+        otuNames.resize(15, "otu1");
+        abundances.resize(15, 10);
+        vector<string> samples(15, "sample1");
+        otuNames[0] = "otu1";   samples[0] = "sample1";  abundances[0] = 10;
+        otuNames[1] = "otu1";   samples[1] = "sample2";  abundances[1] = 10;
+        otuNames[2] = "otu1";   samples[2] = "sample4";  abundances[2] = 5;
+        otuNames[3] = "otu1";   samples[3] = "sample5";  abundances[3] = 5;
+        otuNames[4] = "otu2";   samples[4] = "sample1";  abundances[4] = 5;
+        otuNames[5] = "otu2";   samples[5] = "sample2";  abundances[5] = 5;
+        otuNames[6] = "otu2";   samples[6] = "sample4";  abundances[6] = 10;
+        otuNames[7] = "otu3";   samples[7] = "sample1";  abundances[7] = 1;
+        otuNames[8] = "otu3";   samples[8] = "sample3";  abundances[8] = 2;
+        otuNames[9] = "otu3";   samples[9] = "sample5";  abundances[9] = 3;
+        otuNames[10] = "otu3";   samples[10] = "sample6";  abundances[10] = 4;
+        otuNames[11] = "otu4";   samples[11] = "sample1";  abundances[11] = 20;
+        otuNames[12] = "otu4";   samples[12] = "sample2";  abundances[12] = 10;
+        otuNames[13] = "otu4";   samples[13] = "sample4";  abundances[13] = 5;
+        otuNames[14] = "otu4";   samples[14] = "sample5";  abundances[14] = 5;
+
+        // add shared data
+        data.assignOtuAbundance("0.03", otuNames, abundances, samples);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 4);
+        expect_true(data.numUnique == 10);
+        expect_true(data.numSamples == 6);
+
+        vector<int> sampleTotals(6, 0);
+        sampleTotals[0] = 36;
+        sampleTotals[1] = 25;
+        sampleTotals[2] = 2;
+        sampleTotals[3] = 20;
+        sampleTotals[4] = 13;
+        sampleTotals[5] = 4;
+
+        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(data.getOtuIds() == otuIds);
+        expect_true(data.getSamples() == unique(samples));
+
+        otuNames.clear();
+        expect_error(data.assignOtuAbundance("0.03", otuNames, abundances));
+    }
 }

@@ -86,7 +86,7 @@ sequence_data <- R6Class("sequence_data",
     #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
     #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
     #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_otus("0.03", otu_ids,
+    #'   dataset$assign_otu_abundance("0.03", otu_ids,
     #'               sequence_abundances, seq_ids = seq_ids)
     #'
     #'   # otus would look like:
@@ -110,7 +110,7 @@ sequence_data <- R6Class("sequence_data",
     #'   samples <- c("sample1", "sample2", "sample5",
     #'    "sample1", "sample3", "sample1")
     #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_otus("0.03", otu_ids, sequence_abundances, samples)
+    #'   dataset$assign_otu_abundance("0.03", otu_ids, sequence_abundances, samples)
     #'
     #'   # otus would look like:
     #'   # label  sample   otu1   otu2   otu3 ...
@@ -119,7 +119,7 @@ sequence_data <- R6Class("sequence_data",
     #'   # 0.03   sample3  0      25     0 ...
     #'   # 0.03   sample4  0      0      0 ...
     #'   # 0.03   sample5  1      0      0 ...
-    assign_otus = function(label, otu_ids, abundances,
+    assign_otu_abundance = function(label, otu_ids, abundances,
                            samples = NULL, seq_ids = NULL) {
         if (is.null(samples)) {
             samples <- rep("", length(otu_ids))
@@ -127,7 +127,8 @@ sequence_data <- R6Class("sequence_data",
         if (is.null(seq_ids)) {
             seq_ids <- rep("", length(otu_ids))
         }
-        self$data$assign_otus(label, otu_ids, abundances, samples, seq_ids)
+        self$data$assign_otu_abundance(label, otu_ids, abundances,
+                                       samples, seq_ids)
 
         invisible(self)
     },
@@ -270,6 +271,126 @@ sequence_data <- R6Class("sequence_data",
     #' @return String
     get_dataset_name = function() {
       self$data$dataset_name
+    },
+
+    #' @description
+    #' Get names of sequences in the dataset
+    #' @param sample String, name of sample
+    #' @return vector of ids
+    get_ids = function(sample = NULL) {
+        if (is.null(sample)) {
+            sample <- ""
+        }
+
+        self$data$get_names(sample)
+    },
+
+    #' @description
+    #' Get the number of otus in the dataset
+    #' @return An integer
+    get_num_otus = function() {
+        self$data$num_otus
+    },
+
+    #' @description
+    #' Get number of samples in the dataset
+    #' @return An integer
+    get_num_samples = function() {
+        self$data$num_samples
+    },
+
+    #' @description
+    #' Get the number of sequences in the dataset
+    #' @param distinct Boolean. When distinct is TRUE the number of unique
+    #' sequence is returned.
+    #' @param sample The name of the sample you want number of sequences for,
+    #'  optional
+    #' @return An integer
+    get_num_sequences = function(distinct = FALSE, sample = NULL) {
+        if (is.null(sample)) {
+            sample <- ""
+        }
+        if (distinct) {
+            self$data$get_unique_total(sample)
+        } else {
+            self$data$get_total(sample)
+        }
+    },
+
+    #' @description
+    #' Get the number of treatments in the dataset
+    #' @return An integer
+    get_num_treatments = function() {
+        self$data$num_treatments
+    },
+
+    #' @description
+    #' Get data.table containing the oligo data
+    #' tag, oligo, diffs, oligo(optional), diffs(optional), sample(optional)
+    #' @return data.table
+    get_oligos = function() {
+        # TODO
+    },
+
+    #' @description
+    #' Get data.tables representing your OTU / ASV clusters.
+    #' id, abundance, sample(optional)
+    #' These tables represent mothur's list, rabund, shared, relabund files
+    #' @return List of data.tables
+    get_otu_tables = function() {
+        # TODO
+    },
+
+    #' @description
+    #' Get names of samples in the dataset
+    #' @return A character vector
+    get_samples = function() {
+        self$data$get_samples()
+    },
+
+    #' @description
+    #' Get summary of count table. sample, sample_totals
+    #' @param silent Default = FALSE, meaning print sample summary
+    #' @return list
+    get_sample_summary = function(silent = FALSE) {
+        if (self$data$num_samples != 0) {
+            sample_totals <- self$data$get_sample_totals()
+            sample_names <- self$get_samples()
+
+            if (!silent) {
+                cat("Sample   Total:\n")
+                for (i in seq_along(sample_names)) {
+                    cat(paste(sample_names[i], sample_totals[i], sep = "\t"), "\n")
+                }
+
+                if (self$get_num_treatments() != 0) {
+                    treatment_names <- self$get_treatments()
+                    treatment_totals <- self$data$get_treatment_totals()
+                    cat("\n\n")
+                    cat("Treatment   Total:\n")
+                    for (i in seq_along(treatment_names)) {
+                        cat(
+                            paste(treatment_names[i], treatment_totals[i], sep = "\t"),
+                            "\n"
+                        )
+                    }
+                }
+            }
+
+            if (self$get_num_treatments() != 0) {
+                treatment_names <- self$get_treatments()
+                treatment_totals <- self$data$get_treatment_totals()
+                return(list(
+                    data.table(sample = sample_names, total = sample_totals),
+                    data.table(treatment = treatment_names, total = treatment_totals)
+                ))
+            } else {
+                return(list(data.table(sample = sample_names, total = sample_totals)))
+            }
+        } else {
+            cli::cli_alert("Your dataset does not include sample data, ignoring.")
+        }
+        list()
     },
 
     #' @description
@@ -551,119 +672,6 @@ sequence_data <- R6Class("sequence_data",
       }
 
       return(results)
-    },
-
-    #' @description
-    #' Get names of samples in the dataset
-    #' @return A character vector
-    get_samples = function() {
-      self$data$get_samples()
-    },
-
-    #' @description
-    #' Get summary of count table. sample, sample_totals
-    #' @param silent Default = FALSE, meaning print sample summary
-    #' @return list
-    get_sample_summary = function(silent = FALSE) {
-      if (self$data$num_samples != 0) {
-        sample_totals <- self$data$get_sample_totals()
-        sample_names <- self$get_samples()
-
-        if (!silent) {
-          cat("Sample   Total:\n")
-          for (i in seq_along(sample_names)) {
-            cat(paste(sample_names[i], sample_totals[i], sep = "\t"), "\n")
-          }
-
-          if (self$get_num_treatments() != 0) {
-            treatment_names <- self$get_treatments()
-            treatment_totals <- self$data$get_treatment_totals()
-            cat("\n\n")
-            cat("Treatment   Total:\n")
-            for (i in seq_along(treatment_names)) {
-              cat(
-                paste(treatment_names[i], treatment_totals[i], sep = "\t"),
-                "\n"
-              )
-            }
-          }
-        }
-
-        if (self$get_num_treatments() != 0) {
-          treatment_names <- self$get_treatments()
-          treatment_totals <- self$data$get_treatment_totals()
-          return(list(
-            data.table(sample = sample_names, total = sample_totals),
-            data.table(treatment = treatment_names, total = treatment_totals)
-          ))
-        } else {
-          return(list(data.table(sample = sample_names, total = sample_totals)))
-        }
-      } else {
-        cli::cli_alert("Your dataset does not include sample data, ignoring.")
-      }
-      list()
-    },
-
-    #' @description
-    #' Get names of sequences in the dataset
-    #' @param sample String, name of sample
-    #' @return vector of ids
-    get_ids = function(sample = NULL) {
-      if (is.null(sample)) {
-        sample <- ""
-      }
-
-      self$data$get_names(sample)
-    },
-
-    #' @description
-    #' Get number of samples in the dataset
-    #' @return An integer
-    get_num_samples = function() {
-      self$data$num_samples
-    },
-
-    #' @description
-    #' Get the number of sequences in the dataset
-    #' @param distinct Boolean. When distinct is TRUE the number of unique
-    #' sequence is returned.
-    #' @param sample The name of the sample you want number of sequences for,
-    #'  optional
-    #' @return An integer
-    get_num_sequences = function(distinct = FALSE, sample = NULL) {
-      if (is.null(sample)) {
-        sample <- ""
-      }
-      if (distinct) {
-        self$data$get_unique_total(sample)
-      } else {
-        self$data$get_total(sample)
-      }
-    },
-
-    #' @description
-    #' Get the number of treatments in the dataset
-    #' @return An integer
-    get_num_treatments = function() {
-      self$data$num_treatments
-    },
-
-    #' @description
-    #' Get data.table containing the oligo data
-    #' tag, oligo, diffs, oligo(optional), diffs(optional), sample(optional)
-    #' @return data.table
-    get_oligos = function() {
-      # TODO
-    },
-
-    #' @description
-    #' Get data.tables representing your OTU / ASV clusters.
-    #' id, abundance, sample(optional)
-    #' These tables represent mothur's list, rabund, shared, relabund files
-    #' @return List of data.tables
-    get_otu_tables = function() {
-      # TODO
     },
 
     #' @description

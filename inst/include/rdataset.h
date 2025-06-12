@@ -336,7 +336,7 @@ public:
                                vector<string> samples = nullVector,
                                vector<string> treatments = nullVector);
     // label, otuIDS, abundances, samples(optional), seqIDs(optional)
-    void assignOTUAbundance(string label, vector<string> otuIDS,
+    void assignOtuAbundance(string label, vector<string> otuIDS,
                                  vector<int> abunds,
                                  vector<string> samples = nullVector,
                                  vector<string> seqIDs = nullVector);
@@ -361,19 +361,17 @@ public:
     // abundances for seq broken down by sample
     vector<int> getAbundances(string name);
     // total abundance for a given outID, optional sample
-    int getOTUAbundance(string otuID, string sample = "");
+    int getOtuAbundance(string otuID, string sample = "");
     // abundances for given otuID broken down by sample
-    vector<int> getOTUAbundances(string otuID);
+    vector<int> getOtuAbundances(string otuID);
     // string containing sequence names for given otuID
-    string getOTU(string otuID, string sample = "");
+    string getOtu(string otuID, string sample = "");
     // total abundance for each sequence
     vector<int> getSequenceAbundances();
     // vector[5][1] contains the abundance of seq5 in sample1
     vector<vector<int>> getSeqsAbundsBySample();
 
     // sample functions
-    vector<string> getOTUSamples();
-    vector<int> getOTUSampleTotals();
     vector<string> getSamples();
     vector<string> getTreatments();
     vector<int> getSampleTotals();
@@ -389,9 +387,9 @@ public:
     vector<vector<string> > getSequencesBySample(vector<string> samples);
 
     // modifiers
-    void removeOTU(string otuID);
+    void removeOtu(string otuID);
     void removeSequences(vector<string> names, vector<string> trashTags);
-    void mergeOTUs(vector<string> otuIDS, string reason = "merged",
+    void mergeOtus(vector<string> otuIDS, string reason = "merged",
                    string sample = "");
     void mergeSequences(vector<string>, string reason = "merged");
 
@@ -408,17 +406,17 @@ public:
                        string reason = "merged");
 
     // for datasets without samples
-    void setOTUAbundance(vector<string> otuIDS, vector<int> abunds,
+    void setOtuAbundance(vector<string> otuIDS, vector<int> abunds,
                          string reason = "merged");
     // for datasets with samples
-    void setOTUAbundances(vector<string> otuIDS, vector<vector<int>> abunds,
+    void setOtuAbundances(vector<string> otuIDS, vector<vector<int>> abunds,
                           string reason = "merged");
 
     // OTU functions
     // vector string containing sequence names for each otu
     vector<string> getList();
     // names of OTUs
-    vector<string> getOTUIds();
+    vector<string> getOtuIds();
     // vector of total abundances for each OTU
     vector<int> getRAbund;
     // abundances for each OTU broken down by sample
