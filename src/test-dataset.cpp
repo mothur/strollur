@@ -195,6 +195,13 @@ context("Dataset class C++ unit tests") {
         ee[1] = 1.0;
         ee[2] = 2.0;
 
+        vector<string> badNames;
+        badNames = names;
+        badNames[0] = "badName";
+
+        expect_error(data.addContigsReport(badNames, oLengths, oStarts,
+                                           oEnds, mismatches, ee));
+
         data.addContigsReport(names, oLengths, oStarts, oEnds, mismatches, ee);
 
         contigsReport = data.getContigsReport();
@@ -296,6 +303,13 @@ context("Dataset class C++ unit tests") {
         simScores.resize(3, 75.0);
         simScores[1] = 98.0;
         simScores[2] = 97.0;
+
+        vector<string> badNames;
+        badNames = names;
+        badNames[0] = "badName";
+
+        expect_error(data.addAlignReport(badNames, searchScores,
+                                          simScores, longestInserts));
 
         data.addAlignReport(names, searchScores, simScores, longestInserts);
 
@@ -413,6 +427,9 @@ context("Dataset class C++ unit tests") {
         abunds[7] = 25;
         abunds[8] = 1;
         abunds[9] = 4;
+
+        vector<string> badNames;
+        expect_error(data.assignSequenceAbundance(badNames, abunds, samples));
 
         data.assignSequenceAbundance(ids, abunds, samples);
 
@@ -670,6 +687,9 @@ context("Dataset class C++ unit tests") {
         vector<string> trashCodes(2, "testRemoval");
         trashCodes[0] = "testRemoveSampleTreatment";
 
+        vector<string> badNames;
+        expect_error(data.removeSequences(badNames, trashCodes));
+
         // removes 2 seqs, 1 sample and 1 treatment
         data.removeSequences(seqsToRemove, trashCodes);
 
@@ -772,6 +792,9 @@ context("Dataset class C++ unit tests") {
         abunds[1] = 0;
         abunds[3] = 0;
 
+        vector<string> badNames;
+        expect_error(data.setAbundance(badNames, abunds));
+
         // set abundances in dataset with no samples or treatments
         data.setAbundance(names, abunds);
 
@@ -845,6 +868,8 @@ context("Dataset class C++ unit tests") {
         parsedAbunds[3][1] = 20; // sample3, late
         parsedAbunds[3][2] = 500; // sample4, late
 
+        expect_error(data.setAbundances(badNames, parsedAbunds));
+
         // set abundances in dataset with samples and treatments
         data.setAbundances(names, parsedAbunds);
 
@@ -896,6 +921,9 @@ context("Dataset class C++ unit tests") {
         seqs.resize(4, ".AAATTT-CC-G.");
         comments[2] = "my_additional_comment";
         comments[3] = "newComment";
+
+        vector<string> badNames;
+        expect_error(data.setSequences(badNames, seqs, comments));
 
         // test with all seqs
         data.setSequences(names, seqs, comments);

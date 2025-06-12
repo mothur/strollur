@@ -59,6 +59,19 @@ set<T> toSet(const vector<T>& x) {
 }
 /**********************************************************************/
 template<typename T>
+vector<T> getValues(const map<string, T>& x) {
+    vector<T> results;
+
+    if (x.size() == 0) { return results; }
+
+    for (auto it = x.begin(); it != x.end(); it++) {
+        results.push_back(it->second);
+    }
+
+    return results;
+}
+/**********************************************************************/
+template<typename T>
 vector<T> select(const vector<T>& x, const vector<bool>& filter) {
     vector<T> results;
 
@@ -76,6 +89,21 @@ vector<T> select(const vector<T>& x, const vector<bool>& filter) {
 template<typename T>
 T sum(const vector<T>& x) {
     return accumulate(x.begin(), x.end(), 0);
+}
+/**********************************************************************/
+template<typename T>
+bool allIdentical(const vector<T>& x, T& value) {
+
+    if (!x.empty()) {
+        value = x[0];
+        for (int i = 0; i < x.size(); i++) {
+            if (x[i] != value) {
+                return false;
+            }
+        }
+
+    }
+    return true;
 }
 /**********************************************************************/
 template<typename T>

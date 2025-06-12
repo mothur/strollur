@@ -8,31 +8,40 @@ Dataset::Dataset(string n, int proc) : datasetName(n) {
     isAligned = false;
     hasContigsData = false;
     hasAlignData = false;
+    hasOtuData = false;
+    hasSequenceData = false;
     numSamples = 0;
     numTreatments = 0;
+    numOtus = 0;
+    label = "";
     numUnique = 0;
     uniqueBad = 0;
     alignmentLength = 0;
     processors = proc;
     count = new AbundTable();
+    otuTable = nullptr;
 }
 /******************************************************************************/
 Dataset::~Dataset() {
     delete count;
+    if (otuTable != nullptr) { delete otuTable; }
 }
 /******************************************************************************/
 SEXP Dataset::getPointer() {
     Rcpp::XPtr<Dataset> ptr(this);
     return ptr;
 }
-
 /******************************************************************************/
 void Dataset::clear() {
     isAligned = false;
     hasContigsData = false;
     hasAlignData = false;
+    hasOtuData = false;
+    hasSequenceData = false;
     numSamples = 0;
     numTreatments = 0;
+    numOtus = 0;
+    label = "";
     numUnique = 0;
     uniqueBad = 0;
     alignmentLength = 0;
@@ -75,6 +84,7 @@ void Dataset::clear() {
     count->clear();
 
     // if you have an otuTable then otuTable.clear();
+    if (hasOtuData) { otuTable->clear(); }
 }
 /******************************************************************************/
 Rcpp::List Dataset::exportDataset(){
@@ -120,15 +130,80 @@ void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c)
     vector<string> t(names.size(), "");
     trashCodes.insert(trashCodes.end(), t.begin(), t.end());
 
-    // add to "good" sequence count
-    numUnique += names.size();
-
    // add calcs for starts, ends, lengths, ambigs, polymers, numns
     SeqReport report;
     report.addReports(s, starts, ends, lengths, ambigs, polymers, numns);
 
     // set isAligned and aligned length
     getAlignedLength();
+
+    // add to "good" sequence count - giving preference to otuTable
+    if (!hasOtuData) {
+        numUnique += names.size();
+    }
+
+    hasSequenceData = true;
+}
+/******************************************************************************/
+void Dataset::assignOTUAbundance(string label, vector<string> otuIds,
+                        vector<int> abunds, vector<string> samples,
+                        vector<string> seqIds) {
+
+    if (otuIds.size() != abunds.size()) {
+        string message = "[ERROR]: Size mismatch. otu_ids and abunds must be";
+        message += " the same size.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    hasOtuData = true;
+
+    // new table
+    if (otuTable == nullptr) {
+        otuTable = new OtuTable(label);
+    }else{
+        // assume they had "list" data and are adding "shared" data
+        otuTable->setLabel(label);
+    }
+
+    // sanity checks - R6 object passes blank strings if seqIds == NULL
+    if (!seqIds.empty()) {
+        string id = "";
+        if (allIdentical(seqIds, id)) {
+            if (id == "") { seqIds.clear(); }
+        }
+    }
+
+    // sanity checks - R6 object passes blank strings if samples == NULL
+    if (!samples.empty()) {
+        string id = "";
+        if (allIdentical(samples, id)) {
+            if (id == "") { samples.clear(); }
+        }
+    }
+
+    // add otus
+    otuTable->add(otuIds, abunds, samples, seqIds);
+
+    // sanity check unique totals
+    if (numUnique != 0) {
+        // numUnique == -1 in otuTable when no seqIds are given. This is because
+        // without seqIds we assume the abundances are not unique.
+        if ((otuTable->numUnique != numUnique) && (otuTable->numUnique != -1)){
+            string message = "[ERROR]: The number of sequences in your dataset";
+            message += " is " + toString(numUnique) + ", but the number of ";
+            message += " sequences in your otu table is ";
+            message += toString(otuTable->numUnique) + ". Removing otu data.";
+            RcppThread::Rcout << endl << message << endl;
+            otuTable->clear();
+        }
+    }else {
+        numUnique = otuTable->numUnique;
+    }
+
+    numOtus = otuTable->numOtus;
+    label = otuTable->label;
+    numSamples = otuTable->getNumSamples();
+    numTreatments = otuTable->getNumTreatments();
 }
 /******************************************************************************/
 // names, abundances, samples(optional), treatments(optional)
@@ -146,8 +221,7 @@ void Dataset::assignSequenceAbundance(vector<string> ids,
         message += toString(numUnique) + " sequences, but you assigned ";
         message += toString(uniqueNames.size()) + " sequences. All sequences ";
         message += "in the dataset must be assigned abundances.\n\n";
-        RcppThread::Rcout << endl << message;
-        return;
+        throw Rcpp::exception(message.c_str());
     }
 
     vector<int> idIndexes = getIndexes(ids);
@@ -192,8 +266,7 @@ void Dataset::addAlignReport(vector<string>& n, vector<double>& ss,
             }else{
                 string message = "[ERROR]: The dataset does not contain a ";
                 message += "sequence named " + n[i] + ", quitting.\n";
-                RcppThread::Rcout << endl << message;
-                return;
+                throw Rcpp::exception(message.c_str());
             }
         }
     }
@@ -244,8 +317,7 @@ void Dataset::addContigsReport(vector<string>& n, vector<int>& ol,
             }else{
                 string message = "[ERROR]: The dataset does not contain a ";
                 message += "sequence named " + n[i] + ", quitting.\n";
-                RcppThread::Rcout << endl << message;
-                return;
+                throw Rcpp::exception(message.c_str());
             }
         }
     }
@@ -354,7 +426,7 @@ vector<int> Dataset::getIndexes(vector<string>& ids) {
         }else{
             string message = "[ERROR]: The dataset does not contain a ";
             message += "sequence named " + ids[i] + ".\n";
-            RcppThread::Rcout << endl << message;
+            throw Rcpp::exception(message.c_str());
         }
     }
     return indexes;
@@ -397,10 +469,16 @@ vector<vector<string> > Dataset::getNamesBySample(vector<string> samples){
 /******************************************************************************/
 // sample functions
 vector<string> Dataset::getSamples(){
+    if (hasOtuData) {
+       return otuTable->getSamples();
+    }
     return count->getSamples();
 }
 /******************************************************************************/
 vector<int> Dataset::getSampleTotals(){
+    if (hasOtuData) {
+        return otuTable->getSampleTotals();
+    }
     return count->getSampleTotals();
 }
 /******************************************************************************/
@@ -588,14 +666,23 @@ Rcpp::List Dataset::getSequenceSummary() {
 }
 /******************************************************************************/
 vector<string> Dataset::getTreatments(){
+    if (hasOtuData) {
+        return otuTable->getTreatments();
+    }
     return count->getTreatments();
 }
 /******************************************************************************/
 vector<int> Dataset::getTreatmentTotals(){
+    if (hasOtuData) {
+        return otuTable->getTreatmentTotals();
+    }
     return count->getTreatmentTotals();
 }
 /******************************************************************************/
 long long Dataset::getTotal(string sample){
+    if (hasOtuData) {
+        return otuTable->getTotal(sample);
+    }
     return count->getTotal(sample);
 }
 /******************************************************************************/
@@ -610,25 +697,15 @@ bool Dataset::hasSample(string sample){
     return count->hasSample(sample);
 }
 /******************************************************************************/
-void Dataset::mergeSequences(vector<string> ids, string reason, string sample){
+void Dataset::mergeSequences(vector<string> ids, string reason){
     if (names.size() != 1) {
 
         vector<int> indexes = getIndexes(ids);
-        count->merge(indexes, sample);
+        count->merge(indexes);
 
-        if (sample == "") {
-            for (int i = 1; i < indexes.size(); i++) {
-                // no need to update the sample and treatment counts
-                removeSequence(indexes[i], reason, false);
-            }
-        }else{
-            for (int i = 1; i < indexes.size(); i++) {
-                // if merging the sample caused this sequence to be removed
-                if (count->getAbundance(indexes[i]) == 0) {
-                    // no need to update the sample and treatment counts
-                    removeSequence(indexes[i], reason, false);
-                }
-            }
+        for (int i = 1; i < indexes.size(); i++) {
+            // no need to update the sample and treatment counts
+            removeSequence(indexes[i], reason, false);
         }
     }
 }
@@ -676,8 +753,7 @@ void Dataset::removeSequences(vector<string> namesToRemove,
     if (namesToRemove.size() != trashTags.size()) {
         string message = "[ERROR]: Size mismatch. You must provide a trash";
         message += " code for each sequence.";
-        RcppThread::Rcout << endl << message << endl;
-        return;
+        throw Rcpp::exception(message.c_str());
     }
 
     for (int i = 0; i < namesToRemove.size(); i++) {
@@ -707,8 +783,7 @@ void Dataset::setAbundance(vector<string> n, vector<int> abunds,
     if (n.size() != abunds.size()) {
         string message = "[ERROR]: Size mismatch. ids and sequences must be";
         message += " the same size.";
-        RcppThread::Rcout << endl << message << endl;
-        return;
+        throw Rcpp::exception(message.c_str());
     }
 
     reason += ",";
@@ -740,8 +815,7 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
     if (n.size() != abunds.size()) {
         string message = "[ERROR]: Size mismatch. ids and sequences must be";
         message += " the same size.";
-        RcppThread::Rcout << endl << message << endl;
-        return;
+        throw Rcpp::exception(message.c_str());
     }
 
     reason += ",";
@@ -775,8 +849,7 @@ void Dataset::setSequences(vector<string> n, vector<string> s,
     if (n.size() != s.size()) {
         string message = "[ERROR]: Size mismatch. ids and sequences must be";
         message += " the same size.";
-        RcppThread::Rcout << endl << message << endl;
-        return;
+        throw Rcpp::exception(message.c_str());
     }
 
     bool hasComments = false;
@@ -784,8 +857,7 @@ void Dataset::setSequences(vector<string> n, vector<string> s,
         if (c.size() != n.size()) {
             string message = "[ERROR]: Size mismatch. When providing comments,";
             message += " ids and comments must be the same size.";
-            RcppThread::Rcout << endl << message << endl;
-            return;
+            throw Rcpp::exception(message.c_str());
         }
         hasComments = true;
     }

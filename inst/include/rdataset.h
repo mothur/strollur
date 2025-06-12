@@ -112,6 +112,9 @@ public:
     // names, sets abundance to 1
     void add(vector<int>& names);
 
+    void assignTreatments(vector<string> samples,
+                          vector<string> treatments);
+
     // names, abundances, samples (optional), treatments (optional)
     void assignAbundance(vector<int> names,
                          vector<int> abunds,
@@ -128,9 +131,8 @@ public:
     // ids. Only calc totals once rather than after each removal.
     int remove(int name);
     void updateTotals();
-    // adds counts of idsToMerge[1-n] into idsToMerge[0], optional
-    // sample will only merge counts for that sample
-    void merge(vector<int> idsToMerge, string sample = "");
+    // adds counts of idsToMerge[1-n] into idsToMerge[0]
+    void merge(vector<int> idsToMerge);
 
     // vector containing total abundance for each id
     vector<int> getTotalAbundances(vector<int> names);
@@ -192,7 +194,100 @@ private:
 
 /******************************************************************************/
 /*
- * The 'Dataset' class will store data for DNA analysis.
+ * The 'OtuTable' class will store OTU data.
+ */
+
+class OtuTable {
+
+public:
+
+    OtuTable(string label);
+    ~OtuTable();
+
+    int numOtus;
+    int numUnique;
+    string label;
+
+    // OTUIDs, abundances, samples(optional), seqIds(optional)
+    // List file -> OTUID, SeqID, abundance
+    // Shared -> OTUID, Abundance, sample
+    // Rabund -> OTUID, abundance
+    void add(vector<string> otuIDs, vector<int> abundance,
+             vector<string> samples = nullVector,
+             vector<string> seqIDs = nullVector);
+
+    void assignTreatments(vector<string> samples,
+                          vector<string> treatments);
+
+    void clear();
+
+    // names of OTUs
+    vector<string> getOtuIds();
+    // vector string containing sequence names for each otu
+    vector<string> getList();
+    // vector of total abundances for each outID
+    vector<int> getRAbund();
+    // abundances for each OTU broken down by sample
+    vector<vector<int> > getShared();
+
+    // string containing sequence names for given otuID
+    string get(string otuID, string sample = "");
+    // total abundance for a given outID, optional sample
+    int getAbundance(string otuID, string sample = "");
+    // abundances for given otuID broken down by sample
+    vector<int> getAbundances(string otuID);
+
+    // sample functions
+    int getNumSamples();
+    int getNumTreatments();
+    vector<string> getSamples();
+    vector<int> getSampleTotals();
+    bool hasSample(string sample);
+    vector<string> getTreatments();
+    // vector containing total abundance for each treatment
+    vector<int> getTreatmentTotals();
+    // total number of sequences
+    int getTotal(string sample = "");
+
+    void merge(vector<string> otuIDS, string reason = "merged");
+    // remove given outID
+    void remove(string otuID);
+
+    // for datasets without samples
+    void setAbundance(vector<string> otuIDS, vector<int> abunds,
+                      string reason = "merged");
+    // for datasets with samples
+    void setAbundances(vector<string> otuIDS, vector<vector<int>> abunds,
+                       string reason = "merged");
+
+    void setLabel(string label);
+
+private:
+
+    // maps otu name to index
+    map<string, int> otuIndex;
+    // maps seqName to otu index
+    map<string, int> seqOtuIndex;
+    // filter for "good" otus
+    vector<bool> tableOtus;
+    vector<string> otuNames;
+    vector<string> sequenceOtus;
+
+    // map reason for deletion to vector containing unique and total counts
+    // example: "cons_taxonomy" ->  c(10,  230) means cons_taxonomy combined
+    // 10 OTUs that represented 230 OTUs.
+    map<string, vector<int> > badAccnos;
+    int uniqueBad;
+
+    // count table data
+    AbundTable* count;
+
+    vector<int> getIndexes(vector<string>& ids);
+
+};
+/******************************************************************************/
+/*
+ * The 'Dataset' class will store sequence data for DNA analysis.
  */
 
 class Dataset {
@@ -203,14 +298,14 @@ public:
     ~Dataset();
 
     // public fields exposed through RCPP_MODULE
-    string datasetName;
+    string datasetName, label;
 
     bool isAligned;
     // -1 if unaligned
     int alignmentLength;
-    bool hasContigsData, hasAlignData;
+    bool hasContigsData, hasAlignData, hasOtuData, hasSequenceData;
 
-    int numSamples, numTreatments;
+    int numSamples, numTreatments, numOtus;
     long long numUnique;
     int processors;
 
@@ -240,6 +335,11 @@ public:
                                vector<int> abunds,
                                vector<string> samples = nullVector,
                                vector<string> treatments = nullVector);
+    // label, otuIDS, abundances, samples(optional), seqIDs(optional)
+    void assignOTUAbundance(string label, vector<string> otuIDS,
+                                 vector<int> abunds,
+                                 vector<string> samples = nullVector,
+                                 vector<string> seqIDs = nullVector);
 
     // **** functions for summarizing dataset **** //
     // sequence report: starts, ends, lengths, ambigs, polymers, numns
@@ -260,12 +360,20 @@ public:
     int getAbundance(string name, string sample = "");
     // abundances for seq broken down by sample
     vector<int> getAbundances(string name);
+    // total abundance for a given outID, optional sample
+    int getOTUAbundance(string otuID, string sample = "");
+    // abundances for given otuID broken down by sample
+    vector<int> getOTUAbundances(string otuID);
+    // string containing sequence names for given otuID
+    string getOTU(string otuID, string sample = "");
     // total abundance for each sequence
     vector<int> getSequenceAbundances();
     // vector[5][1] contains the abundance of seq5 in sample1
     vector<vector<int>> getSeqsAbundsBySample();
 
     // sample functions
+    vector<string> getOTUSamples();
+    vector<int> getOTUSampleTotals();
     vector<string> getSamples();
     vector<string> getTreatments();
     vector<int> getSampleTotals();
@@ -281,10 +389,11 @@ public:
     vector<vector<string> > getSequencesBySample(vector<string> samples);
 
     // modifiers
+    void removeOTU(string otuID);
     void removeSequences(vector<string> names, vector<string> trashTags);
-    //
-    void mergeSequences(vector<string>, string reason = "merged",
+    void mergeOTUs(vector<string> otuIDS, string reason = "merged",
                    string sample = "");
+    void mergeSequences(vector<string>, string reason = "merged");
 
     // set sequence string and optionally comments
     void setSequences(vector<string> names, vector<string> sequences,
@@ -297,6 +406,23 @@ public:
     // for datasets without samples
     void setAbundance(vector<string> names, vector<int> abunds,
                        string reason = "merged");
+
+    // for datasets without samples
+    void setOTUAbundance(vector<string> otuIDS, vector<int> abunds,
+                         string reason = "merged");
+    // for datasets with samples
+    void setOTUAbundances(vector<string> otuIDS, vector<vector<int>> abunds,
+                          string reason = "merged");
+
+    // OTU functions
+    // vector string containing sequence names for each otu
+    vector<string> getList();
+    // names of OTUs
+    vector<string> getOTUIds();
+    // vector of total abundances for each OTU
+    vector<int> getRAbund;
+    // abundances for each OTU broken down by sample
+    vector<vector<int> > getShared();
 
 private:
     // fasta data
@@ -329,8 +455,8 @@ private:
     // count table data
     AbundTable* count;
 
-    // otu table, asv / list / shared / constaxonomy
-    // OTUTable* otuTable;
+    // otu table, asv / list / shared / rabund
+    OtuTable* otuTable;
 
     // if unaligned, returns -1
     int getAlignedLength();

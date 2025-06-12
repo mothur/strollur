@@ -26,6 +26,59 @@ dataset <- sequence_data$new(name = "soil",
 
 
 ## ------------------------------------------------
+## Method `sequence_data$assign_otus`
+## ------------------------------------------------
+
+  # To assign sequences to otus:
+
+  # otu_ids  seq_ids  abundances
+  #  otu1     seq1        10
+  #  otu1     seq2        100
+  #  otu1     seq4        1
+  #  otu2     seq3        500
+  #  otu2     seq6        25
+  #  otu3     seq5        80
+  # ...
+
+  dataset <- sequence_data$new("my_dataset")
+  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+  dataset$assign_otus("0.03", otu_ids,
+              sequence_abundances, seq_ids = seq_ids)
+
+  # otus would look like:
+  # label  otu1             otu2        otu3 ...
+  # 0.03   seq1,seq2,seq4   seq3,seq6   seq5 ...
+  # 0.03   110              525         80 ...
+
+  # To add abundance only otu assignments:
+
+  # otu_ids  samples  abundances
+  #  otu1     sample1        10
+  #  otu1     sample2        100
+  #  otu1     sample5        1
+  #  otu2     sample1        500
+  #  otu2     sample3        25
+  #  otu3     sample1        80
+  # ...
+
+  dataset <- sequence_data$new("my_dataset")
+  otu_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+  samples <- c("sample1", "sample2", "sample5",
+   "sample1", "sample3", "sample1")
+  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+  dataset$assign_otus("0.03", otu_ids, sequence_abundances, samples)
+
+  # otus would look like:
+  # label  sample   otu1   otu2   otu3 ...
+  # 0.03   sample1  10     500    80 ...
+  # 0.03   sample2  100    0      0 ...
+  # 0.03   sample3  0      25     0 ...
+  # 0.03   sample4  0      0      0 ...
+  # 0.03   sample5  1      0      0 ...
+
+## ------------------------------------------------
 ## Method `sequence_data$add_sequences`
 ## ------------------------------------------------
 
@@ -83,6 +136,7 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \itemize{
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
+\item \href{#method-sequence_data-assign_otus}{\code{sequence_data$assign_otus()}}
 \item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
 \item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
@@ -164,6 +218,92 @@ dataset <- sequence_data$new(name = "soil",
 Get summary of sequence data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-assign_otus"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_otus}{}}}
+\subsection{Method \code{assign_otus()}}{
+Add otu data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_otus(
+  label,
+  otu_ids,
+  abundances,
+  samples = NULL,
+  seq_ids = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{label}}{a String containing otu label}
+
+\item{\code{otu_ids}}{a vector of otu labels}
+
+\item{\code{abundances}}{a vector of abundances}
+
+\item{\code{samples}}{a vector of sample assignments (optional)}
+
+\item{\code{seq_ids}}{a vector of sequence names (optional)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{  # To assign sequences to otus:
+
+  # otu_ids  seq_ids  abundances
+  #  otu1     seq1        10
+  #  otu1     seq2        100
+  #  otu1     seq4        1
+  #  otu2     seq3        500
+  #  otu2     seq6        25
+  #  otu3     seq5        80
+  # ...
+
+  dataset <- sequence_data$new("my_dataset")
+  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+  dataset$assign_otus("0.03", otu_ids,
+              sequence_abundances, seq_ids = seq_ids)
+
+  # otus would look like:
+  # label  otu1             otu2        otu3 ...
+  # 0.03   seq1,seq2,seq4   seq3,seq6   seq5 ...
+  # 0.03   110              525         80 ...
+
+  # To add abundance only otu assignments:
+
+  # otu_ids  samples  abundances
+  #  otu1     sample1        10
+  #  otu1     sample2        100
+  #  otu1     sample5        1
+  #  otu2     sample1        500
+  #  otu2     sample3        25
+  #  otu3     sample1        80
+  # ...
+
+  dataset <- sequence_data$new("my_dataset")
+  otu_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+  samples <- c("sample1", "sample2", "sample5",
+   "sample1", "sample3", "sample1")
+  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+  dataset$assign_otus("0.03", otu_ids, sequence_abundances, samples)
+
+  # otus would look like:
+  # label  sample   otu1   otu2   otu3 ...
+  # 0.03   sample1  10     500    80 ...
+  # 0.03   sample2  100    0      0 ...
+  # 0.03   sample3  0      25     0 ...
+  # 0.03   sample4  0      0      0 ...
+  # 0.03   sample5  1      0      0 ...
+}
+\if{html}{\out{</div>}}
+
 }
 
 }

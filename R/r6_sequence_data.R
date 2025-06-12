@@ -64,6 +64,75 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Add otu data
+    #' @param label a String containing otu label
+    #' @param otu_ids a vector of otu labels
+    #' @param abundances a vector of abundances
+    #' @param samples a vector of sample assignments (optional)
+    #' @param seq_ids a vector of sequence names (optional)
+    #' @examples
+    #'   # To assign sequences to otus:
+    #'
+    #'   # otu_ids  seq_ids  abundances
+    #'   #  otu1     seq1        10
+    #'   #  otu1     seq2        100
+    #'   #  otu1     seq4        1
+    #'   #  otu2     seq3        500
+    #'   #  otu2     seq6        25
+    #'   #  otu3     seq5        80
+    #'   # ...
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+    #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+    #'   dataset$assign_otus("0.03", otu_ids,
+    #'               sequence_abundances, seq_ids = seq_ids)
+    #'
+    #'   # otus would look like:
+    #'   # label  otu1             otu2        otu3 ...
+    #'   # 0.03   seq1,seq2,seq4   seq3,seq6   seq5 ...
+    #'   # 0.03   110              525         80 ...
+    #'
+    #'   # To add abundance only otu assignments:
+    #'
+    #'   # otu_ids  samples  abundances
+    #'   #  otu1     sample1        10
+    #'   #  otu1     sample2        100
+    #'   #  otu1     sample5        1
+    #'   #  otu2     sample1        500
+    #'   #  otu2     sample3        25
+    #'   #  otu3     sample1        80
+    #'   # ...
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   otu_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+    #'   samples <- c("sample1", "sample2", "sample5",
+    #'    "sample1", "sample3", "sample1")
+    #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+    #'   dataset$assign_otus("0.03", otu_ids, sequence_abundances, samples)
+    #'
+    #'   # otus would look like:
+    #'   # label  sample   otu1   otu2   otu3 ...
+    #'   # 0.03   sample1  10     500    80 ...
+    #'   # 0.03   sample2  100    0      0 ...
+    #'   # 0.03   sample3  0      25     0 ...
+    #'   # 0.03   sample4  0      0      0 ...
+    #'   # 0.03   sample5  1      0      0 ...
+    assign_otus = function(label, otu_ids, abundances,
+                           samples = NULL, seq_ids = NULL) {
+        if (is.null(samples)) {
+            samples <- rep("", length(otu_ids))
+        }
+        if (is.null(seq_ids)) {
+            seq_ids <- rep("", length(otu_ids))
+        }
+        self$data$assign_otus(label, otu_ids, abundances, samples, seq_ids)
+
+        invisible(self)
+    },
+
+    #' @description
     #' Add new sequence data
     #' @param names a vector of sequence names
     #' @param sequences a vector of sequence data

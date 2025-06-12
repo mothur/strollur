@@ -10,9 +10,11 @@ RCPP_MODULE(Dataset) {
 
     // ******* properties ******* //
     .field("dataset_name", &Dataset::datasetName, "Get dataset name")
+    .field("label", &Dataset::label, "Get otu label")
     .field("is_aligned", &Dataset::isAligned, "Get dataset alignment status")
     .field("num_samples", &Dataset::numSamples, "Get number of samples in dataset")
     .field("num_treatments", &Dataset::numTreatments, "Get number of treatments in dataset")
+    .field("num_otus", &Dataset::numOtus, "Get number of otus in dataset")
     .field("num_unique", &Dataset::numUnique, "Get number of unique sequences")
     .field("has_contigs_data", &Dataset::hasContigsData, "Get contigs data status")
     .field("has_align_data", &Dataset::hasAlignData, "Get align data status")
@@ -28,6 +30,7 @@ RCPP_MODULE(Dataset) {
     .method("add_contigs_report", &Dataset::addContigsReport,
     "Add contigs report to dataset")
 
+    .method("assign_otus", &Dataset::assignOTUAbundance, "Add otu assignments to dataset")
     .method("assign_sequence_abundance", &Dataset::assignSequenceAbundance,
     "Set sequence abundance and optionally assign sample and treatment data")
     .method("clear", &Dataset::clear, "Clear dataset")

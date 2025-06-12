@@ -411,9 +411,8 @@ bool AbundTable::hasSample(string sample, int name) {
     return false;
 }
 /******************************************************************************/
-// adds sequences counts of idsToMerge[1-n] into idsToMerge[0], optional
-// sample will only merge counts for that sample
-void AbundTable::merge(vector<int> idsToMerge, string sample) {
+// adds sequences counts of idsToMerge[1-n] into idsToMerge[0]
+void AbundTable::merge(vector<int> idsToMerge) {
     if (idsToMerge.size() > 1) {
 
         int keeperSeq = idsToMerge[0];
@@ -423,20 +422,7 @@ void AbundTable::merge(vector<int> idsToMerge, string sample) {
             int dupSeq = idsToMerge[i];
             vector<int> dupAbunds = getAbundances(dupSeq);
 
-            // merge all samples
-            if (sample == "") {
-                sum(kAbunds, dupAbunds);
-            }else{
-               auto it = sampleIndex.find(sample);
-               if (it != sampleIndex.end()) {
-                   // merge specific sample
-                   kAbunds[it->second] += dupAbunds[it->second];
-                   dupAbunds[it->second] = 0;
-                   sampleAbunds newDup(dupAbunds);
-                   counts[dupSeq] = newDup;
-               }
-
-            }
+            sum(kAbunds, dupAbunds);
         }
         sampleAbunds newKeeper(kAbunds);
         counts[keeperSeq] = newKeeper;
