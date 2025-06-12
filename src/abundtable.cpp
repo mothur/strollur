@@ -183,6 +183,77 @@ void AbundTable::assignAbundance(vector<int> names,
     }
 }
 /******************************************************************************/
+void AbundTable::assignTreatments(vector<string> s,
+                                  vector<string> t) {
+
+   if (s.size() != t.size()) {
+       string message = "[ERROR]: Size mismatch. You must provide a treatment";
+       message += " for each sample.";
+       throw Rcpp::exception(message.c_str());
+   }
+
+   if (hasSampleData) {
+       if (hasTreatments) {
+           treatmentIndex.clear();
+           treatmentTotals.clear();
+           tableTreatments.clear();
+           sampleTreatment.clear();
+       }
+
+       vector<string> uniqueTreatments = unique(t);
+
+       if (uniqueTreatments.size() > 1) {
+           addTreatments(uniqueTreatments);
+           numTreatments = uniqueTreatments.size();
+       }else if ((uniqueTreatments.size() == 1) &&
+           (uniqueTreatments[0] != "")) {
+           addTreatments(uniqueTreatments);
+           numTreatments = 1;
+       }else {
+           tableTreatments.push_back(true);
+           numTreatments = 1;
+           return;
+       }
+
+        // create sample to treatment map
+       for (int i = 0; i < s.size(); i++) {
+           auto itSample = sampleIndex.find(s[i]);
+
+
+           // valid sample
+           if (itSample != sampleIndex.end()) {
+               sampleTreatment[itSample->second] = t[i];
+           }else {
+               string message = "[WARNING]: The dataset does not sample ,";
+               message += s[i] + "'. Ignoring '" + s[i] + "'.";
+               RcppThread::Rcout << endl << message << endl;
+           }
+       }
+
+       // fill treatment totals
+       for (auto it = sampleIndex.begin(); it != sampleIndex.end(); it++) {
+           string treatment = sampleTreatment[it->second];
+           int tindex = treatmentIndex[treatment];
+
+           treatmentTotals[tindex] += sampleTotals[it->second];
+       }
+
+       // check for treatments with 0 abundance, this can happen if
+       // you assign and sample not in dataset to a treatment
+       for (int i = 0; i < treatmentTotals.size(); i++) {
+           if (treatmentTotals[i] == 0) {
+               tableTreatments[i] = false;
+               numTreatments--;
+           }
+       }
+
+   }else{
+       string message = "[ERROR]: The dataset does not include sample data. ";
+       message += "Unable to assign treatments.";
+       throw Rcpp::exception(message.c_str());
+   }
+}
+/******************************************************************************/
 // total abundance for sequence.
 // If sample provided, then abundance for sequence in sample
 int AbundTable::getAbundance(int name, string sample) {

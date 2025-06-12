@@ -112,7 +112,7 @@ void OtuTable::add(vector<string> otuIds, vector<int> abundance,
 /******************************************************************************/
 void OtuTable::assignTreatments(vector<string> samples,
                       vector<string> treatments) {
-    //TODO
+    count->assignTreatments(samples, treatments);
 }
 /******************************************************************************/
 int OtuTable::getIndex(string& id) {

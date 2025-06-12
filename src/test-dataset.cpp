@@ -509,6 +509,22 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTreatments() == uniqueTreatments);
 
+        // assign treatments differently
+        vector<string> newTreatments(3, "early");
+        newTreatments[2] = "late";
+
+        vector<string> newSamples(3, "");
+        newSamples[0] = "sample2";
+        newSamples[1] = "sample3";
+        newSamples[2] = "sample4";
+
+        data.assignTreatments(newSamples, newTreatments);
+
+        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(data.getTotal() == 1320);
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(data.getTreatments() == uniqueTreatments);
+
         countTable = data.getSequenceAbundanceTable();
 
         expect_true(countTable.size() == 4);
@@ -1052,6 +1068,8 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getOtuIds() == otuIds);
 
+        expect_error(data.assignTreatments(nullVector, nullVector));
+
         // test adding otuNames abundances, samples (shared)
         otuNames.resize(15, "otu1");
         abundances.resize(15, 10);
@@ -1074,6 +1092,49 @@ context("Dataset class C++ unit tests") {
 
         // add shared data
         data.assignOtuAbundance("0.03", otuNames, abundances, samples);
+
+        vector<string> uniqueSamples(6, "");
+        uniqueSamples[0] = "sample1";
+        uniqueSamples[1] = "sample2";
+        uniqueSamples[2] = "sample3";
+        uniqueSamples[3] = "sample4";
+        uniqueSamples[4] = "sample5";
+        uniqueSamples[5] = "sample6";
+
+        // assign treatments differently
+        vector<string> treatments(6, "early");
+
+        expect_error(data.assignTreatments(uniqueSamples, unique(treatments)));
+
+        data.assignTreatments(uniqueSamples, treatments);
+
+        vector<int> treatmentTotals(1, 0);
+        treatmentTotals[0] = 100;
+
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(data.getTreatments() == unique(treatments));
+
+        treatments[3] = "late";
+        treatments[4] = "late";
+        treatments[5] = "late";
+
+        data.assignTreatments(uniqueSamples, treatments);
+
+        treatmentTotals.resize(2, 0);
+        treatmentTotals[0] = 63;
+        treatmentTotals[1] = 37;
+
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(data.getTreatments() == unique(treatments));
+
+        uniqueSamples.push_back("SampleNotInDataset");
+        treatments.push_back("badEntry");
+
+        data.assignTreatments(uniqueSamples, treatments);
+
+        // ignored bad entry
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(data.numTreatments == 2);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 4);

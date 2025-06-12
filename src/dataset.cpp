@@ -205,6 +205,18 @@ void Dataset::assignOtuAbundance(string label, vector<string> otuIds,
     numTreatments = otuTable->getNumTreatments();
 }
 /******************************************************************************/
+void Dataset::assignTreatments(vector<string> samples, vector<string> treatments) {
+    if (hasOtuData) {
+        otuTable->assignTreatments(samples, treatments);
+        numSamples = otuTable->getNumSamples();
+        numTreatments = otuTable->getNumTreatments();
+        return;
+    }
+    count->assignTreatments(samples, treatments);
+    numSamples = count->getNumSamples();
+    numTreatments = count->getNumTreatments();
+}
+/******************************************************************************/
 // names, abundances, samples(optional), treatments(optional)
 // assumes same size
 void Dataset::assignSequenceAbundance(vector<string> ids,

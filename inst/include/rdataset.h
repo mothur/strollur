@@ -342,6 +342,9 @@ public:
                                  vector<string> samples = nullVector,
                                  vector<string> seqIDs = nullVector);
 
+    void assignTreatments(vector<string> samples,
+                          vector<string> treatments);
+
     // **** functions for summarizing dataset **** //
     // sequence report: starts, ends, lengths, ambigs, polymers, numns
     Rcpp::DataFrame getSequenceReport();
