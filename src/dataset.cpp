@@ -525,33 +525,40 @@ vector<int> Dataset::getSampleTotals(){
 }
 /******************************************************************************/
 // id, trashCode
-Rcpp::DataFrame Dataset::getScrapReport() {
+Rcpp::DataFrame Dataset::getScrapReport(string mode) {
 
-    if (badAccnos.size() != 0) {
-        vector<string> badNames(uniqueBad, "");
-        vector<string> badCodes(uniqueBad, "");
+    if (mode == "sequence") {
+        if (badAccnos.size() != 0) {
+            vector<string> badNames(uniqueBad, "");
+            vector<string> badCodes(uniqueBad, "");
 
-        int next = 0;
-        for (int i = 0; i < trashCodes.size(); i++) {
-            if (trashCodes[i] != "") {
-              badNames[next] = names[i];
-              trashCodes[i].pop_back();
-              badCodes[next] = trashCodes[i];
-              next++;
+            int next = 0;
+            for (int i = 0; i < trashCodes.size(); i++) {
+                if (trashCodes[i] != "") {
+                    badNames[next] = names[i];
+                    // remove last comma
+                    trashCodes[i].pop_back();
+                    badCodes[next] = trashCodes[i];
+                    next++;
+                }
             }
-        }
 
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("id") = badNames,
-            Rcpp::_["trash_code"] = badCodes);
-        return df;
+            Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                Rcpp::Named("id") = badNames,
+                Rcpp::_["trash_code"] = badCodes);
+            return df;
+        }
+    }else if (mode == "otu") {
+        if (hasOtuData) {
+            return otuTable->getScrapReport();
+        }
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
 }
 /******************************************************************************/
 // trashCode, uniqueCount, totalCount
-Rcpp::DataFrame Dataset::getScrapSummary() {
+Rcpp::List Dataset::getScrapSummary() {
 
     if (badAccnos.size() != 0) {
         vector<string> codes(badAccnos.size(), "");
@@ -571,9 +578,21 @@ Rcpp::DataFrame Dataset::getScrapSummary() {
             Rcpp::_["unique_count"] = uniqueCounts,
             Rcpp::_["total_count"] = totalCounts);
 
-        return df;
+
+        Rcpp::List list = Rcpp::List::create();
+        list.push_back(df);
+        vector<string> listNames;
+        listNames.push_back("sequence_scrap_summary");
+
+        if (hasOtuData) {
+            list.push_back(otuTable->getScrapSummary());
+            listNames.push_back("otu_scrap_summary");
+        }
+        list.attr("names") = listNames;
+
+        return list;
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    Rcpp::List empty = Rcpp::List::create();
     return empty;
 }
 /******************************************************************************/
@@ -740,7 +759,7 @@ bool Dataset::hasSample(string sample){
 }
 /******************************************************************************/
 void Dataset::mergeSequences(vector<string> ids, string reason){
-    if (names.size() != 1) {
+    if (ids.size() != 1) {
 
         vector<int> indexes = getIndexes(ids);
         count->merge(indexes);
@@ -751,6 +770,35 @@ void Dataset::mergeSequences(vector<string> ids, string reason){
         }
     }
 }
+/******************************************************************************/
+void Dataset::mergeOtus(vector<string> ids, string reason){
+    if (ids.size() != 1) {
+        if (hasOtuData) {
+            otuTable->merge(ids);
+        }
+    }
+}
+/******************************************************************************/
+void Dataset::removeOtus(vector<string> namesToRemove,
+                              vector<string> trashTags){
+
+    if (!hasOtuData) { return; }
+
+    if (namesToRemove.size() != trashTags.size()) {
+        string message = "[ERROR]: Size mismatch. You must provide a trash";
+        message += " code for each otu.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    for (int i = 0; i < namesToRemove.size(); i++) {
+        otuTable->remove(namesToRemove[i], trashTags[i]);
+    }
+
+    otuTable->updateTotals();
+    numSamples = otuTable->getNumSamples();
+    numTreatments = otuTable->getNumTreatments();
+}
+
 /******************************************************************************/
 void Dataset::removeSequence(int index, string reasons, bool update) {
     // remove from tableSeqs and add trashCode
@@ -884,6 +932,23 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
     count->updateTotals();
     numSamples = count->getNumSamples();
     numTreatments = count->getNumTreatments();
+}
+/******************************************************************************/
+// for datasets without samples
+void Dataset::setOtuAbundance(vector<string> otuIDS, vector<int> abunds,
+                     string reason) {
+    if (hasOtuData) {
+        otuTable->setAbundance(otuIDS, abunds, reason);
+    }
+}
+/******************************************************************************/
+// for datasets with samples
+void Dataset::setOtuAbundances(vector<string> otuIDS,
+                               vector<vector<int> > abunds,
+                               string reason) {
+    if (hasOtuData) {
+        otuTable->setAbundances(otuIDS, abunds, reason);
+    }
 }
 /******************************************************************************/
 void Dataset::setSequences(vector<string> n, vector<string> s,

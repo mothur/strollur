@@ -120,4 +120,6 @@ context("OtuTable class C++ unit tests") {
 
         expect_true(otuTable.getSampleTotals() == sampleTotals);
     }
+
+
 }

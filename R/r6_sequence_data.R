@@ -397,11 +397,20 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get report containing the scrapped sequences -
+    #' Get report containing the scrapped sequences / otus -
     #' ids, trash_codes
-    #' @return data.table
+    #' @return list of data.tables
     get_scrap_report = function() {
-      scrap_report <- self$data$get_scrap_report()
+      results <- list()
+      list_names <- c("sequence_scrap_report")
+      scrap_sequence_report <- self$data$get_scrap_report("sequence")
+      results[[1]] <- scrap_sequence_report
+      if (self$data$num_otus != 0) {
+          results[[2]] <- self$data$get_scrap_report("otu")
+          list_names <- c(list_names, "otu_scrap_report")
+      }
+      names(results) <- list_names
+      return(results)
     },
 
     #' @description

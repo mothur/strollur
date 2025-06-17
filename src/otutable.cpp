@@ -25,6 +25,7 @@ void OtuTable::clear() {
     sequenceOtus.clear();
     otuNames.clear();
     badAccnos.clear();
+    trashCodes.clear();
 
     count->clear();
 }
@@ -55,6 +56,7 @@ void OtuTable::add(vector<string> otuIds, vector<int> abundance,
             // all otus are initially assumed "good"
             tableOtus.push_back(true);
             otuNames.push_back(otuName);
+            trashCodes.push_back("");
 
             if (useSeqIds) {
                 uniqueOtuIds.push_back(otuName);
@@ -126,7 +128,11 @@ int OtuTable::getIndex(string& id) {
     }
 }
 /******************************************************************************/
-vector<int> OtuTable::getIndexes(vector<string>& ids) {
+vector<int> OtuTable::getIndexes(vector<string> ids) {
+
+    if (ids.empty()) {
+        ids = getOtuIds();
+    }
     vector<int> indexes(ids.size(), -1);
 
     for (int i = 0; i < ids.size(); i++) {
@@ -147,15 +153,20 @@ vector<string> OtuTable::getList(){
 /******************************************************************************/
 // vector of total abundances for each outID
 vector<int> OtuTable::getRAbund(){
-    vector<int> otus;
-    //TODO
-    return otus;
+    return count->getTotalAbundances(getIndexes());
 }
 /******************************************************************************/
 // abundances for each OTU broken down by sample
 vector<vector<int> > OtuTable::getShared(){
-    vector<vector<int> > otus;
-    //TODO
+
+    vector<int> goodOtus = getIndexes();
+
+    vector<vector<int> > otus(goodOtus.size());
+
+    for (int i = 0; i < goodOtus.size(); i++) {
+        otus[i] = count->getAbundances(goodOtus[i]);
+    }
+
     return otus;
 }
 /******************************************************************************/
@@ -195,6 +206,17 @@ vector<int> OtuTable::getAbundances(string otuId){
     return nullIntVector;
 }
 /******************************************************************************/
+int OtuTable::getNumNames(string& names){
+    if(names == ""){ return 0; }
+
+    int count = 1;
+    for_each(names.begin(), names.end(),[&count](char n){
+        if(n == ','){ count++; }
+    });
+
+    return count;
+}
+/******************************************************************************/
 // sample functions
 int OtuTable::getNumSamples(){
     return count->getNumSamples();
@@ -210,6 +232,61 @@ vector<string> OtuTable::getSamples(){
 /******************************************************************************/
 vector<int> OtuTable::getSampleTotals(){
     return count->getSampleTotals();
+}
+/******************************************************************************/
+// id, trashCode
+Rcpp::DataFrame OtuTable::getScrapReport() {
+
+    if (badAccnos.size() != 0) {
+        vector<string> badNames(uniqueBad, "");
+        vector<string> badCodes(uniqueBad, "");
+
+        int next = 0;
+        for (int i = 0; i < trashCodes.size(); i++) {
+            if (trashCodes[i] != "") {
+                badNames[next] = otuNames[i];
+                // remove last comma
+                trashCodes[i].pop_back();
+                badCodes[next] = trashCodes[i];
+                next++;
+            }
+        }
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("otu_id") = badNames,
+            Rcpp::_["trash_code"] = badCodes);
+        return df;
+    }
+
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
+// trashCode, otuCount, abundanceCount
+Rcpp::DataFrame OtuTable::getScrapSummary() {
+
+    if (badAccnos.size() != 0) {
+        vector<string> codes(badAccnos.size(), "");
+        vector<int> uniqueCounts(badAccnos.size(), 0);
+        vector<int> totalCounts(badAccnos.size(), 0);
+
+        int index = 0;
+        for (auto it = badAccnos.begin(); it != badAccnos.end(); it++) {
+            codes[index] = it->first;
+            uniqueCounts[index] = it->second[0];
+            totalCounts[index] = it->second[1];
+            index++;
+        }
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("trash_code") = codes,
+            Rcpp::_["otu_count"] = uniqueCounts,
+            Rcpp::_["total_abundance"] = totalCounts);
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 bool OtuTable::hasSample(string sample){
@@ -231,28 +308,139 @@ int OtuTable::getTotal(string sample){
 }
 /******************************************************************************/
 void OtuTable::merge(vector<string> otuIDS, string reason){
-    //TODO
+    if (otuIDS.size() != 1) {
+
+        vector<int> indexes = getIndexes(otuIDS);
+        count->merge(indexes);
+
+        for (int i = 1; i < otuIDS.size(); i++) {
+            // no need to update the sample and treatment counts
+            remove(otuIDS[i], reason, false);
+        }
+    }
 }
 /******************************************************************************/
 // remove given outID
-void OtuTable::remove(string otuID){
-    //TODO
+void OtuTable::remove(string otuID, string reason, bool update){
+
+    auto it = otuIndex.find(otuID);
+
+    // otu is not in dataset
+    if (it == otuIndex.end()) {
+        string message = "[WARNING]: " + otuID + " is not in ";
+        message += "your dataset, ignoring.";
+        RcppThread::Rcout << endl << message << endl;
+    }else{
+
+        int index = it->second;
+
+        // remove from tableOtus and add trashCode
+        tableOtus[index] = false;
+        trashCodes[index] += reason;
+
+        numOtus--;
+        if (hasSeqIds) {
+            string seqsInOtu = sequenceOtus[index];
+            numUnique -= getNumNames(seqsInOtu);
+        }
+
+        // remove from counts
+        int abund = 1;
+        if (update) {
+            abund = count->remove(index);
+        }else{
+            abund = count->getAbundance(index);
+        }
+
+        auto itBad = badAccnos.find(reason);
+
+        if (itBad != badAccnos.end()) {
+            // update counts of trashCode
+            itBad->second[0]++;
+        }else{
+            // add new trashCode
+            vector<int> badAbunds(2, 1);
+            badAbunds[1] = abund;
+            badAccnos[reason] = badAbunds;
+        }
+
+        // update uniqueBad
+        uniqueBad++;
+    }
 }
 /******************************************************************************/
 // for datasets without samples
-void OtuTable::setAbundance(vector<string> otuIDS, vector<int> abunds,
-                  string reason){
-    //TODO
+void OtuTable::setAbundance(vector<string> n,
+                            vector<int> abunds, string reason){
+
+    if (n.size() != abunds.size()) {
+        string message = "[ERROR]: Size mismatch. When setting an otu ";
+        message += "abundance, you must provide an abundance for each otu name.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    reason += ",";
+
+    for (int i = 0; i < n.size(); i++) {
+        auto it = otuIndex.find(n[i]);
+
+        if (it != otuIndex.end()) {
+            int index = it->second;
+
+            if (abunds[i] == 0) {
+                remove(n[i], reason);
+            }else{
+                count->setAbundance(index, abunds[i]);
+            }
+
+        }else{
+            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            message += " ignoring.";
+            RcppThread::Rcout << endl << message << endl;
+        }
+    }
 }
 /******************************************************************************/
 // for datasets with samples
-void OtuTable::setAbundances(vector<string> otuIDS, vector<vector<int>> abunds,
+void OtuTable::setAbundances(vector<string> n, vector<vector<int>> abunds,
                    string reason){
-    //TODO
+    if (n.size() != abunds.size()) {
+        string message = "[ERROR]: Size mismatch.  When setting an otu ";
+        message += "abundances, you must provide an abundance vector ";
+        message += "for each otu name.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    reason += ",";
+
+    for (int i = 0; i < n.size(); i++) {
+        auto it = otuIndex.find(n[i]);
+
+        if (it != otuIndex.end()) {
+            int index = it->second;
+
+            if (sum(abunds[i]) == 0) {
+                remove(n[i], reason);
+            }else{
+                count->setAbundance(index, abunds[i]);
+            }
+
+        }else{
+            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            message += " ignoring.";
+            RcppThread::Rcout << endl << message << endl;
+        }
+    }
+
+    count->updateTotals();
 }
 /******************************************************************************/
 void OtuTable::setLabel(string l){
     label = l;
+}
+/******************************************************************************/
+void OtuTable::updateTotals() {
+    count->updateTotals();
 }
 /******************************************************************************/
 

@@ -778,7 +778,8 @@ context("Dataset class C++ unit tests") {
         expect_true(seqsToRemove == Rcpp::as<vector<string>>(scrapReport[0]));
         expect_true(trashCodes == Rcpp::as<vector<string>>(scrapReport[1]));
 
-        Rcpp::DataFrame scrapSummary = data.getScrapSummary();
+        Rcpp::List list = data.getScrapSummary();
+        Rcpp::DataFrame scrapSummary(list["sequence_scrap_summary"]);
         expect_true(scrapSummary.size() == 3);
 
         sort(trashCodes.begin(), trashCodes.end());

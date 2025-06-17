@@ -166,7 +166,8 @@ test_that("test R6 sequence_data - addSeqs, assign samples", {
   # total and sample
   expect_equal(data$get_num_sequences(sample = "sample2"), 301)
 
-  expect_equal(data.frame(), data$get_scrap_report())
+  results <- list(sequence_scrap_report = data.frame())
+  expect_equal(results, data$get_scrap_report())
 })
 
 test_that("test R6 sequence_data - print", {

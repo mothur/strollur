@@ -242,16 +242,19 @@ public:
     int getNumTreatments();
     vector<string> getSamples();
     vector<int> getSampleTotals();
-    bool hasSample(string sample);
+    Rcpp::DataFrame getScrapReport();
+    // trashCode, otuCount, abundanceCount
+    Rcpp::DataFrame getScrapSummary();
     vector<string> getTreatments();
     // vector containing total abundance for each treatment
     vector<int> getTreatmentTotals();
     // total number of sequences
     int getTotal(string sample = "");
+    bool hasSample(string sample);
 
     void merge(vector<string> otuIDS, string reason = "merged");
     // remove given outID
-    void remove(string otuID);
+    void remove(string otuID, string reason, bool update = true);
 
     // for datasets without samples
     void setAbundance(vector<string> otuIDS, vector<int> abunds,
@@ -262,28 +265,32 @@ public:
 
     void setLabel(string label);
 
+    void updateTotals();
+
 private:
 
     // maps otu name to index
     map<string, int> otuIndex;
     // filter for "good" otus
     vector<bool> tableOtus;
-    vector<string> otuNames;
+    vector<string> otuNames, trashCodes;
     vector<string> sequenceOtus;
 
     bool hasSeqIds;
 
-    // map reason for deletion to vector containing unique and total counts
-    // example: "cons_taxonomy" ->  c(10,  230) means cons_taxonomy combined
-    // 10 OTUs that represented 230 OTUs.
+    // map reason for deletion to vector containing the number of otus removed
+    // for that reason, and the total number of sequences removed by those otus
+    // example: "cons_taxonomy" ->  c(10,  230) means cons_taxonomy merged
+    // 10 OTUs that represented 230 sequences.
     map<string, vector<int> > badAccnos;
     int uniqueBad;
 
     // count table data
     AbundTable* count;
 
-    vector<int> getIndexes(vector<string>& ids);
+    vector<int> getIndexes(vector<string> ids = nullVector);
     int getIndex(string&);
+    int getNumNames(string&);
 
 };
 /******************************************************************************/
@@ -351,8 +358,8 @@ public:
     // sequence summary summarizes sequence, contigs and align reports
     Rcpp::List getSequenceSummary();
     // trashCode, uniqueCount, totalCount
-    Rcpp::DataFrame getScrapSummary();
-    Rcpp::DataFrame getScrapReport();
+    Rcpp::List getScrapSummary();
+    Rcpp::DataFrame getScrapReport(string mode = "sequence");
     // contigs report data: lengths, olengths, ostarts, oends, mismatches,
     //                      numns, ee
     Rcpp::DataFrame getContigsReport();
@@ -391,10 +398,9 @@ public:
     vector<vector<string> > getSequencesBySample(vector<string> samples);
 
     // modifiers
-    void removeOtu(string otuID);
+    void removeOtus(vector<string> otuIDs, vector<string> trashTags);
     void removeSequences(vector<string> names, vector<string> trashTags);
-    void mergeOtus(vector<string> otuIDS, string reason = "merged",
-                   string sample = "");
+    void mergeOtus(vector<string> otuIDS, string reason = "merged");
     void mergeSequences(vector<string>, string reason = "merged");
 
     // set sequence string and optionally comments
@@ -418,13 +424,16 @@ public:
 
     // OTU functions
     // vector string containing sequence names for each otu
-    vector<string> getList();
+    vector<string> getListVector();
+    Rcpp::DataFrame getList();
     // names of OTUs
     vector<string> getOtuIds();
     // vector of total abundances for each OTU
-    vector<int> getRAbund;
+    Rcpp::DataFrame getRAbund();
+    vector<int> getRAbundVector();
     // abundances for each OTU broken down by sample
-    vector<vector<int> > getShared();
+    vector<vector<int> > getSharedVector();
+    Rcpp::DataFrame getShared();
 
 private:
     // fasta data
