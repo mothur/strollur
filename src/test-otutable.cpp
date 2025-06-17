@@ -170,14 +170,28 @@ context("OtuTable class C++ unit tests") {
         expect_true(otuTable.numOtus == 4);
         expect_true(otuTable.numUnique == 10);
 
-        expect_true(otuTable.get("otu1") == "seq1,seq2,seq3");
-        expect_true(otuTable.get("otu2") == "seq4,seq5");
-        expect_true(otuTable.get("otu3") == "seq6");
-        expect_true(otuTable.get("otu4") == "seq7,seq8,seq9,seq10");
-        expect_true(otuTable.getAbundance("otu1") == 30);
-        expect_true(otuTable.getAbundance("otu2") == 20);
-        expect_true(otuTable.getAbundance("otu3") == 10);
-        expect_true(otuTable.getAbundance("otu4") == 40);
+        vector<string> otuListVector(4, "");
+        otuListVector[0] = "seq1,seq2,seq3";
+        otuListVector[1] = "seq4,seq5";
+        otuListVector[2] = "seq6";
+        otuListVector[3] = "seq7,seq8,seq9,seq10";
+
+        vector<int> otuRabundVector(4, 0);
+        otuRabundVector[0] = 30;
+        otuRabundVector[1] = 20;
+        otuRabundVector[2] = 10;
+        otuRabundVector[3] = 40;
+
+        expect_true(otuTable.get("otu1") == otuListVector[0]);
+        expect_true(otuTable.get("otu2") == otuListVector[1]);
+        expect_true(otuTable.get("otu3") == otuListVector[2]);
+        expect_true(otuTable.get("otu4") == otuListVector[3]);
+        expect_true(otuTable.getList() == otuListVector);
+        expect_true(otuTable.getAbundance("otu1") == otuRabundVector[0]);
+        expect_true(otuTable.getAbundance("otu2") == otuRabundVector[1]);
+        expect_true(otuTable.getAbundance("otu3") == otuRabundVector[2]);
+        expect_true(otuTable.getAbundance("otu4") == otuRabundVector[3]);
+        expect_true(otuTable.getRAbund() == otuRabundVector);
         temp[0] = 20;
         expect_true(otuTable.getAbundances("otu2") == temp);
 
@@ -201,6 +215,27 @@ context("OtuTable class C++ unit tests") {
         otuNames[13] = "otu4";   samples[13] = "sample4";  abundances[13] = 5;
         otuNames[14] = "otu4";   samples[14] = "sample5";  abundances[14] = 5;
 
+        vector<vector<int> > sharedVector(4, vector<int>(6, 0));
+        // otu1
+        sharedVector[0][0] = 10;
+        sharedVector[0][1] = 10;
+        sharedVector[0][3] = 5;
+        sharedVector[0][4] = 5;
+        // otu2
+        sharedVector[1][0] = 5;
+        sharedVector[1][1] = 5;
+        sharedVector[1][3] = 10;
+        // otu3
+        sharedVector[2][0] = 1;
+        sharedVector[2][2] = 2;
+        sharedVector[2][4] = 3;
+        sharedVector[2][5] = 4;
+        // otu4
+        sharedVector[3][0] = 20;
+        sharedVector[3][1] = 10;
+        sharedVector[3][3] = 5;
+        sharedVector[3][4] = 5;
+
         // add shared data
         otuTable.add(otuNames, abundances, samples);
 
@@ -209,11 +244,12 @@ context("OtuTable class C++ unit tests") {
         expect_true(otuTable.numUnique == 10);
         expect_true(otuTable.getNumSamples() == 6);
 
-        expect_true(otuTable.get("otu4") == "seq7,seq8,seq9,seq10");
-        expect_true(otuTable.getAbundance("otu1") == 30);
-        expect_true(otuTable.getAbundance("otu2") == 20);
-        expect_true(otuTable.getAbundance("otu3") == 10);
-        expect_true(otuTable.getAbundance("otu4") == 40);
+        expect_true(otuTable.get("otu4") == otuListVector[3]);
+        expect_true(otuTable.getAbundance("otu1") == otuRabundVector[0]);
+        expect_true(otuTable.getAbundance("otu2") == otuRabundVector[1]);
+        expect_true(otuTable.getAbundance("otu3") == otuRabundVector[2]);
+        expect_true(otuTable.getAbundance("otu4") == otuRabundVector[3]);
+        expect_true(otuTable.getShared() == sharedVector);
         expect_true(otuTable.hasSample("sample4"));
         expect_false(otuTable.hasSample("badSample"));
         temp.resize(6, 0);
@@ -234,6 +270,9 @@ context("OtuTable class C++ unit tests") {
 
         expect_true(otuTable.getScrapReport().size() == 0);
         expect_true(otuTable.getScrapSummary().size() == 0);
+
+        expect_error(otuTable.setAbundance(nullVector, sampleTotals));
+        expect_error(otuTable.setAbundances(nullVector, sharedVector));
     }
 
 
