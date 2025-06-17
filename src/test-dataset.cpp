@@ -1159,14 +1159,451 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getOtuAbundance("otu2") == 20);
         expect_true(data.getOtuAbundance("otu3") == 10);
         expect_true(data.getOtuAbundance("otu4") == 40);
+        expect_true(data.getOtuAbundances("badotu") == nullIntVector);
         temp.resize(6, 0);
         temp[0] = 5;
         temp[1] = 5;
         temp[3] = 10;
         expect_true(data.getOtuAbundances("otu2") == temp);
-        expect_error(data.getOtuAbundances("badotu"));
 
         otuNames.clear();
         expect_error(data.assignOtuAbundance("0.03", otuNames, abundances));
+    }
+
+    test_that("Tests mergeOtus, removeOtus, getScrapReport, getScrapSummary") {
+
+        Dataset data("mydata", 1);
+
+        expect_true(data.datasetName == "mydata");
+        expect_false(data.isAligned);
+        expect_true(data.numSamples == 0);
+        expect_true(data.numUnique == 0);
+
+        vector<string> otuNames(10, "otu1");
+        otuNames[1] = "otu2";
+        otuNames[2] = "otu3";
+        otuNames[3] = "otu4";
+        otuNames[4] = "otu5";
+        otuNames[5] = "otu6";
+        otuNames[6] = "otu7";
+        otuNames[7] = "otu8";
+        otuNames[8] = "otu9";
+        otuNames[9] = "otu10";
+        vector<int> abundances(10, 10);
+
+        // test adding otuNames and abundances (rabund)
+        data.assignOtuAbundance("0.03", otuNames, abundances);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 10);
+        expect_true(data.numUnique == -1);
+        expect_true(data.getOtuIds() == otuNames);
+
+        // no sequence data was given
+        expect_true(data.getOtu("otu1") == "");
+        expect_true(data.getOtuAbundance("otu1") == 10);
+        vector<int> temp(1, 10);
+        expect_true(data.getOtuAbundances("otu1") == temp);
+
+        // merge otus without seqs or samples
+        vector<string> otusToMerge(4, "otu1");
+        otusToMerge[1] = "otu2";
+        otusToMerge[2] = "otu4";
+        otusToMerge[3] = "otu6";
+        data.mergeOtus(otusToMerge);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 7);
+        expect_true(data.numUnique == -1);
+        expect_true(data.getOtuAbundance("otu1") == 40);
+        expect_true(data.getOtuAbundance("otu2") == 0);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 0);
+        expect_true(data.getOtuAbundance("otu6") == 0);
+        data.clear();
+
+        // test adding otuNames, seqNames, abundances (list)
+        vector<string> seqNames(10, "");
+        otuNames[0] = "otu1";   seqNames[0] = "seq1";
+        otuNames[1] = "otu1";   seqNames[1] = "seq2";
+        otuNames[2] = "otu1";   seqNames[2] = "seq3";
+        otuNames[3] = "otu2";   seqNames[3] = "seq4";
+        otuNames[4] = "otu2";   seqNames[4] = "seq5";
+        otuNames[5] = "otu3";   seqNames[5] = "seq6";
+        otuNames[6] = "otu4";   seqNames[6] = "seq7";
+        otuNames[7] = "otu4";   seqNames[7] = "seq8";
+        otuNames[8] = "otu4";   seqNames[8] = "seq9";
+        otuNames[9] = "otu4";   seqNames[9] = "seq10";
+
+        data.assignOtuAbundance("0.03", otuNames, abundances, nullVector, seqNames);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 4);
+        expect_true(data.numUnique == 10);
+
+        expect_true(data.getOtu("otu1") == "seq1,seq2,seq3");
+        expect_true(data.getOtu("otu2") == "seq4,seq5");
+        expect_true(data.getOtu("otu3") == "seq6");
+        expect_true(data.getOtu("otu4") == "seq7,seq8,seq9,seq10");
+        expect_true(data.getOtuAbundance("otu1") == 30);
+        expect_true(data.getOtuAbundance("otu2") == 20);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 40);
+        temp[0] = 20;
+        expect_true(data.getOtuAbundances("otu2") == temp);
+
+        vector<string> otuIds(4, "otu1");
+        otuIds[1] = "otu2";
+        otuIds[2] = "otu3";
+        otuIds[3] = "otu4";
+
+        expect_true(data.getOtuIds() == otuIds);
+
+        expect_error(data.assignTreatments(nullVector, nullVector));
+
+        // test merge with seqids
+        otusToMerge.resize(2);
+        otusToMerge[0] = "otu2";
+        otusToMerge[1] = "otu4";
+
+        data.mergeOtus(otusToMerge);
+        otuIds.pop_back();
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 3);
+        expect_true(data.numUnique == 10);
+
+        expect_true(data.getOtu("otu1") == "seq1,seq2,seq3");
+        expect_true(data.getOtu("otu2") == "seq4,seq5,seq7,seq8,seq9,seq10");
+        expect_true(data.getOtu("otu3") == "seq6");
+        expect_true(data.getOtu("otu4") == "");
+        expect_true(data.getOtuAbundance("otu1") == 30);
+        expect_true(data.getOtuAbundance("otu2") == 60);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 0);
+        temp[0] = 60;
+        expect_true(data.getOtuAbundances("otu2") == temp);
+
+        // test adding otuNames abundances, samples (shared)
+        otuNames.resize(12, "otu1");
+        abundances.resize(12, 10);
+        vector<string> samples(12, "sample1");
+        otuNames[0] = "otu1";   samples[0] = "sample1";  abundances[0] = 10;
+        otuNames[1] = "otu1";   samples[1] = "sample2";  abundances[1] = 10;
+        otuNames[2] = "otu1";   samples[2] = "sample4";  abundances[2] = 5;
+        otuNames[3] = "otu1";   samples[3] = "sample5";  abundances[3] = 5;
+        otuNames[4] = "otu2";   samples[4] = "sample1";  abundances[4] = 25;
+        otuNames[5] = "otu2";   samples[5] = "sample2";  abundances[5] = 15;
+        otuNames[6] = "otu2";   samples[6] = "sample4";  abundances[6] = 15;
+        otuNames[7] = "otu2";  samples[7] = "sample5";  abundances[7] = 5;
+        otuNames[8] = "otu3";   samples[8] = "sample1";  abundances[8] = 1;
+        otuNames[9] = "otu3";   samples[9] = "sample3";  abundances[9] = 2;
+        otuNames[10] = "otu3";   samples[10] = "sample5";  abundances[10] = 3;
+        otuNames[11] = "otu3";   samples[11] = "sample6";  abundances[11] = 4;
+
+        // add shared data
+        data.assignOtuAbundance("0.03", otuNames, abundances, samples);
+
+        vector<string> uniqueSamples(6, "");
+        uniqueSamples[0] = "sample1";
+        uniqueSamples[1] = "sample2";
+        uniqueSamples[2] = "sample3";
+        uniqueSamples[3] = "sample4";
+        uniqueSamples[4] = "sample5";
+        uniqueSamples[5] = "sample6";
+
+        // assign treatments differently
+        vector<string> treatments(6, "early");
+
+        expect_error(data.assignTreatments(uniqueSamples, unique(treatments)));
+
+        data.assignTreatments(uniqueSamples, treatments);
+
+        expect_true(data.getOtuAbundance("otu1") == 30);
+        expect_true(data.getOtuAbundance("otu2") == 60);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 0);
+
+        vector<int> treatmentTotals(1, 0);
+        treatmentTotals[0] = 100;
+
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(data.getTreatments() == unique(treatments));
+
+        vector<int> sampleTotals(6, 0);
+        sampleTotals[0] = 36;
+        sampleTotals[1] = 25;
+        sampleTotals[2] = 2;
+        sampleTotals[3] = 20;
+        sampleTotals[4] = 13;
+        sampleTotals[5] = 4;
+
+        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(data.getSamples() == uniqueSamples);
+
+        treatments[3] = "late";
+        treatments[4] = "late";
+        treatments[5] = "late";
+
+        data.assignTreatments(uniqueSamples, treatments);
+
+        treatmentTotals.resize(2, 0);
+        treatmentTotals[0] = 63;
+        treatmentTotals[1] = 37;
+
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(data.getTreatments() == unique(treatments));
+
+        uniqueSamples.push_back("SampleNotInDataset");
+        treatments.push_back("badEntry");
+
+        data.assignTreatments(uniqueSamples, treatments);
+
+        // ignored bad entry
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(data.numTreatments == 2);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 3);
+        expect_true(data.numUnique == 10);
+        expect_true(data.numSamples == 6);
+
+        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(data.getOtuIds() == otuIds);
+        expect_true(data.getSamples() == unique(samples));
+
+        expect_true(data.getOtu("otu4") == "");
+        expect_true(data.getOtu("otu2") == "seq4,seq5,seq7,seq8,seq9,seq10");
+        expect_true(data.getOtuAbundance("otu1") == 30);
+        expect_true(data.getOtuAbundance("otu2") == 60);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 0);
+        temp.resize(6, 0);
+        temp[0] = 25;
+        temp[1] = 15;
+        temp[3] = 15;
+        temp[4] = 5;
+        expect_true(data.getOtuAbundances("otu2") == temp);
+        expect_true(data.getOtuAbundances("badotu") == nullIntVector);
+
+        // remove otu
+        vector<string> otusToRemove(1, "otu1");
+        vector<string> reasonsToRemove(1, "badOtu");
+        data.removeOtus(otusToRemove, reasonsToRemove);
+
+        expect_true(data.getOtu("otu1") == "");
+        expect_true(data.getOtuAbundance("otu1") == 0);
+        expect_true(data.getOtuAbundance("otu2") == 60);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 0);
+
+        expect_true(data.getTotal() == 70);
+        expect_true(data.numOtus == 2);
+        expect_true(data.numUnique == 7);
+        expect_true(data.numSamples == 6);
+
+        // getScrapReport
+        Rcpp::DataFrame scrapReport = data.getScrapReport("otu");
+        expect_true(scrapReport.size() == 2);
+
+        otusToRemove.resize(2);
+        otusToRemove[0] = "otu1";
+        otusToRemove[1] = "otu4";
+        reasonsToRemove.resize(2);
+        reasonsToRemove[0] = "badOtu";
+        reasonsToRemove[1] = "merged";
+
+        expect_true(otusToRemove == Rcpp::as<vector<string>>(scrapReport[0]));
+        expect_true(reasonsToRemove == Rcpp::as<vector<string>>(scrapReport[1]));
+
+        Rcpp::List list = data.getScrapSummary();
+        Rcpp::DataFrame scrapSummary(list["otu_scrap_summary"]);
+        expect_true(scrapSummary.size() == 3);
+
+        vector<int> uniqueCounts(2, 1);
+        vector<int> totalCounts(2, 1);
+        totalCounts[0] = 30;
+        totalCounts[1] = 40;
+
+        expect_true(reasonsToRemove == Rcpp::as<vector<string>>(scrapSummary[0]));
+        expect_true(uniqueCounts == Rcpp::as<vector<int>>(scrapSummary[1]));
+        expect_true(totalCounts == Rcpp::as<vector<int>>(scrapSummary[2]));
+
+
+        otuNames.clear();
+        expect_error(data.assignOtuAbundance("0.03", otuNames, abundances));
+    }
+
+    test_that("Tests setOtuAbundance, setOtuAbundances") {
+
+        Dataset data("mydata", 1);
+
+        expect_true(data.datasetName == "mydata");
+        expect_false(data.isAligned);
+        expect_true(data.numSamples == 0);
+        expect_true(data.numUnique == 0);
+
+        vector<string> otuNames(10, "otu1");
+        otuNames[1] = "otu2";
+        otuNames[2] = "otu3";
+        otuNames[3] = "otu4";
+        otuNames[4] = "otu5";
+        otuNames[5] = "otu6";
+        otuNames[6] = "otu7";
+        otuNames[7] = "otu8";
+        otuNames[8] = "otu9";
+        otuNames[9] = "otu10";
+        vector<int> abundances(10, 10);
+
+        // test adding otuNames and abundances (rabund)
+        data.assignOtuAbundance("0.03", otuNames, abundances);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 10);
+        expect_true(data.numUnique == -1);
+        expect_true(data.getOtuIds() == otuNames);
+
+        // no sequence data was given
+        expect_true(data.getOtu("otu1") == "");
+        expect_true(data.getOtuAbundance("otu1") == 10);
+        vector<int> temp(1, 10);
+        expect_true(data.getOtuAbundances("otu1") == temp);
+
+        // set abundance of otus
+        vector<string> otusToChange(4, "otu1");
+        otusToChange[1] = "otu2";
+        otusToChange[2] = "otu4";
+        otusToChange[3] = "otu6";
+        vector<int> abundsToChange(4, 0);
+        abundsToChange[1] = 20;
+        abundsToChange[2] = 30;
+
+        data.setOtuAbundance(otusToChange, abundsToChange, "zeroAbundance");
+
+        expect_true(data.getTotal() == 110);
+        expect_true(data.numOtus == 8);
+        expect_true(data.numUnique == -1);
+        expect_true(data.getOtuAbundance("otu1") == 0);
+        expect_true(data.getOtuAbundance("otu2") == 20);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 30);
+        expect_true(data.getOtuAbundance("otu6") == 0);
+        data.clear();
+
+        // test adding otuNames, seqNames, abundances (list)
+        vector<string> seqNames(10, "");
+        otuNames[0] = "otu1";   seqNames[0] = "seq1";
+        otuNames[1] = "otu1";   seqNames[1] = "seq2";
+        otuNames[2] = "otu1";   seqNames[2] = "seq3";
+        otuNames[3] = "otu2";   seqNames[3] = "seq4";
+        otuNames[4] = "otu2";   seqNames[4] = "seq5";
+        otuNames[5] = "otu3";   seqNames[5] = "seq6";
+        otuNames[6] = "otu4";   seqNames[6] = "seq7";
+        otuNames[7] = "otu4";   seqNames[7] = "seq8";
+        otuNames[8] = "otu4";   seqNames[8] = "seq9";
+        otuNames[9] = "otu4";   seqNames[9] = "seq10";
+
+        data.assignOtuAbundance("0.03", otuNames, abundances, nullVector, seqNames);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 4);
+        expect_true(data.numUnique == 10);
+
+        expect_true(data.getOtu("otu1") == "seq1,seq2,seq3");
+        expect_true(data.getOtu("otu2") == "seq4,seq5");
+        expect_true(data.getOtu("otu3") == "seq6");
+        expect_true(data.getOtu("otu4") == "seq7,seq8,seq9,seq10");
+        expect_true(data.getOtuAbundance("otu1") == 30);
+        expect_true(data.getOtuAbundance("otu2") == 20);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 40);
+        temp[0] = 20;
+        expect_true(data.getOtuAbundances("otu2") == temp);
+
+        otusToChange.resize(2);
+        otusToChange[0] = "otu1";
+        otusToChange[1] = "otu4";
+        abundsToChange.resize(2);
+        abundsToChange[0] = 70;
+        abundsToChange[1] = 0;
+
+        data.setOtuAbundance(otusToChange, abundsToChange, "zeroAbundance");
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.numOtus == 3);
+        expect_true(data.numUnique == 6);
+        expect_true(data.getOtuAbundance("otu1") == 70);
+        expect_true(data.getOtuAbundance("otu2") == 20);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 0);
+
+        data.clear();
+
+        // test adding otuNames abundances, samples (shared)
+        otuNames.resize(12, "otu1");
+        abundances.resize(12, 10);
+        vector<string> samples(12, "sample1");
+        otuNames[0] = "otu1";   samples[0] = "sample1";  abundances[0] = 10;
+        otuNames[1] = "otu1";   samples[1] = "sample2";  abundances[1] = 10;
+        otuNames[2] = "otu1";   samples[2] = "sample4";  abundances[2] = 5;
+        otuNames[3] = "otu1";   samples[3] = "sample5";  abundances[3] = 5;
+        otuNames[4] = "otu2";   samples[4] = "sample1";  abundances[4] = 25;
+        otuNames[5] = "otu2";   samples[5] = "sample2";  abundances[5] = 15;
+        otuNames[6] = "otu2";   samples[6] = "sample4";  abundances[6] = 15;
+        otuNames[7] = "otu2";  samples[7] = "sample5";  abundances[7] = 5;
+        otuNames[8] = "otu3";   samples[8] = "sample1";  abundances[8] = 1;
+        otuNames[9] = "otu3";   samples[9] = "sample3";  abundances[9] = 2;
+        otuNames[10] = "otu3";   samples[10] = "sample5";  abundances[10] = 3;
+        otuNames[11] = "otu3";   samples[11] = "sample6";  abundances[11] = 4;
+
+        // add shared data
+        data.assignOtuAbundance("0.03", otuNames, abundances, samples);
+
+        vector<string> uniqueSamples(6, "");
+        uniqueSamples[0] = "sample1";
+        uniqueSamples[1] = "sample2";
+        uniqueSamples[2] = "sample3";
+        uniqueSamples[3] = "sample4";
+        uniqueSamples[4] = "sample5";
+        uniqueSamples[5] = "sample6";
+
+        // assign treatments differently
+        vector<string> treatments(6, "early");
+        treatments[3] = "late";
+        treatments[4] = "late";
+        treatments[5] = "late";
+
+        data.assignTreatments(uniqueSamples, treatments);
+
+        expect_true(data.getOtuAbundance("otu1") == 30);
+        expect_true(data.getOtuAbundance("otu2") == 60);
+        expect_true(data.getOtuAbundance("otu3") == 10);
+        expect_true(data.getOtuAbundance("otu4") == 0);
+
+        vector<int> treatmentTotals(2, 0);
+        treatmentTotals[0] = 63;
+        treatmentTotals[1] = 37;
+
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(data.getTreatments() == unique(treatments));
+
+        otusToChange.resize(2);
+        otusToChange[0] = "otu1";
+        otusToChange[1] = "otu3";
+        // remove otu1, modify otu3 (removing sample 6)
+        vector<vector<int>> abunds(2, vector<int>(6,0));
+        abunds[1][0] = 1;
+        abunds[1][2] = 2;
+        abunds[1][4] = 3;
+
+        data.setOtuAbundances(otusToChange, abunds);
+
+        expect_true(data.getOtuAbundance("otu1") == 0);
+        expect_true(data.getOtuAbundance("otu2") == 60);
+        expect_true(data.getOtuAbundance("otu3") == 6);
+        expect_true(data.getOtuAbundance("otu4") == 0);
+        expect_true(data.getTotal() == 66);
+        expect_true(data.numOtus == 2);
+        expect_true(data.numSamples == 5);
     }
 }

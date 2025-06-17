@@ -67,7 +67,7 @@ RCPP_MODULE(Dataset) {
     .method("get_scrap_report", &Dataset::getScrapReport,
     "Get scrap report data: id, trash_code")
 
-    // 3 column table: id, sample, abundance
+    // 4 column table: id, abundance, sample(optional), treatment(optional)
     .method("get_sequence_abundance_table", &Dataset::getSequenceAbundanceTable,
     "Get sequence abundance table")
 
@@ -89,8 +89,12 @@ RCPP_MODULE(Dataset) {
 
     // otu functions
     .method("get_otu_abundance", &Dataset::getOtuAbundance, "Get abundance of otu")
-    .method("get_otu_abundance", &Dataset::getOtuAbundance, "Get abundance of otu")
+    .method("get_otu_abundances", &Dataset::getOtuAbundances, "Get abundance of otu parsed by sample")
+    .method("set_otu_abundance", &Dataset::getOtuAbundance, "Set abundance of otus without samples")
+    .method("set_otu_abundances", &Dataset::getOtuAbundances, "Set abundance of otus without samples")
     .method("get_otu", &Dataset::getOtu, "Get otu containing sequence names")
+    .method("merge_otus", &Dataset::mergeOtus, "Merge otus")
+    .method("remove_otus", &Dataset::removeOtus, "Remove otus")
 
     ;
 }

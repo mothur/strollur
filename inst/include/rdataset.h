@@ -288,9 +288,9 @@ private:
     // count table data
     AbundTable* count;
 
-    vector<int> getIndexes(vector<string> ids = nullVector);
-    int getIndex(string&);
     int getNumNames(string&);
+    vector<int> getGoodIndexes();
+    vector<int> getIndexes(vector<string>&);
 
 };
 /******************************************************************************/

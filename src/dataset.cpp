@@ -560,6 +560,9 @@ Rcpp::DataFrame Dataset::getScrapReport(string mode) {
 // trashCode, uniqueCount, totalCount
 Rcpp::List Dataset::getScrapSummary() {
 
+    Rcpp::List list = Rcpp::List::create();
+    vector<string> listNames;
+
     if (badAccnos.size() != 0) {
         vector<string> codes(badAccnos.size(), "");
         vector<int> uniqueCounts(badAccnos.size(), 0);
@@ -578,22 +581,18 @@ Rcpp::List Dataset::getScrapSummary() {
             Rcpp::_["unique_count"] = uniqueCounts,
             Rcpp::_["total_count"] = totalCounts);
 
-
-        Rcpp::List list = Rcpp::List::create();
         list.push_back(df);
-        vector<string> listNames;
         listNames.push_back("sequence_scrap_summary");
-
-        if (hasOtuData) {
-            list.push_back(otuTable->getScrapSummary());
-            listNames.push_back("otu_scrap_summary");
-        }
-        list.attr("names") = listNames;
-
-        return list;
     }
-    Rcpp::List empty = Rcpp::List::create();
-    return empty;
+
+    if (hasOtuData) {
+        list.push_back(otuTable->getScrapSummary());
+        listNames.push_back("otu_scrap_summary");
+    }
+
+    list.attr("names") = listNames;
+
+    return list;
 }
 /******************************************************************************/
 // ids, abundances, sample(optional), treatment(optional)
@@ -775,6 +774,7 @@ void Dataset::mergeOtus(vector<string> ids, string reason){
     if (ids.size() != 1) {
         if (hasOtuData) {
             otuTable->merge(ids);
+            numOtus = otuTable->numOtus;
         }
     }
 }
@@ -797,6 +797,11 @@ void Dataset::removeOtus(vector<string> namesToRemove,
     otuTable->updateTotals();
     numSamples = otuTable->getNumSamples();
     numTreatments = otuTable->getNumTreatments();
+    numOtus = otuTable->numOtus;
+
+    if (otuTable->numUnique != -1) {
+        numUnique = otuTable->numUnique;
+    }
 }
 
 /******************************************************************************/
@@ -896,6 +901,10 @@ void Dataset::setAbundance(vector<string> n, vector<int> abunds,
             RcppThread::Rcout << endl << message << endl;
         }
     }
+
+    count->updateTotals();
+    numSamples = count->getNumSamples();
+    numTreatments = count->getNumTreatments();
 }
 /******************************************************************************/
 // for datasets with samples
@@ -939,6 +948,15 @@ void Dataset::setOtuAbundance(vector<string> otuIDS, vector<int> abunds,
                      string reason) {
     if (hasOtuData) {
         otuTable->setAbundance(otuIDS, abunds, reason);
+
+        otuTable->updateTotals();
+        numSamples = otuTable->getNumSamples();
+        numTreatments = otuTable->getNumTreatments();
+        numOtus = otuTable->numOtus;
+
+        if (otuTable->numUnique != -1) {
+            numUnique = otuTable->numUnique;
+        }
     }
 }
 /******************************************************************************/
@@ -948,6 +966,15 @@ void Dataset::setOtuAbundances(vector<string> otuIDS,
                                string reason) {
     if (hasOtuData) {
         otuTable->setAbundances(otuIDS, abunds, reason);
+
+        otuTable->updateTotals();
+        numSamples = otuTable->getNumSamples();
+        numTreatments = otuTable->getNumTreatments();
+        numOtus = otuTable->numOtus;
+
+        if (otuTable->numUnique != -1) {
+            numUnique = otuTable->numUnique;
+        }
     }
 }
 /******************************************************************************/

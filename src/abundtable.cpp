@@ -550,6 +550,7 @@ void AbundTable::setAbundance(int name, vector<int> abunds) {
                 int diff = origAbunds[index] - abunds[index];
                 sampleTotals[i] -= diff;
                 diffAbund += diff;
+
                 index++;
             }
         }
@@ -562,7 +563,7 @@ void AbundTable::setAbundance(int name, vector<int> abunds) {
 // set abundance - for datasets without samples
 void AbundTable::setAbundance(int name, int abund) {
 
-    if (hasSampleData) {
+    if (!hasSampleData) {
         int origAbund = getAbundance(name);
 
         sampleAbunds thisCount(0, abund);
@@ -578,8 +579,9 @@ void AbundTable::updateTotals() {
 
     // does removing this sequence remove a sample
     for (int i = 0; i < sampleTotals.size(); i++) {
-        if (sampleTotals[i] == 0) {
-           tableSamples[i] = false;
+
+        if (tableSamples[i] && (sampleTotals[i] == 0)) {
+            tableSamples[i] = false;
             numSamples--;
         }
     }
@@ -603,7 +605,7 @@ void AbundTable::updateTotals() {
 
         // does removing this sequence remove a treatment
         for (int i = 0; i < treatmentTotals.size(); i++) {
-            if (treatmentTotals[i] == 0) {
+            if (tableTreatments[i] && (treatmentTotals[i] == 0)) {
                 tableTreatments[i] = false;
                 numTreatments--;
             }

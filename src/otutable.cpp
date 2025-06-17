@@ -116,27 +116,16 @@ void OtuTable::assignTreatments(vector<string> samples,
                       vector<string> treatments) {
     count->assignTreatments(samples, treatments);
 }
-/******************************************************************************/
-int OtuTable::getIndex(string& id) {
-    auto it = otuIndex.find(id);
-    if (it != otuIndex.end()) {
-        return it->second;
-    }else{
-        string message = "[ERROR]: The dataset does not contain an ";
-        message += "otu named " + id + ".\n";
-        throw Rcpp::exception(message.c_str());
-    }
-}
-/******************************************************************************/
-vector<int> OtuTable::getIndexes(vector<string> ids) {
 
-    if (ids.empty()) {
-        ids = getOtuIds();
-    }
+/******************************************************************************/
+vector<int> OtuTable::getGoodIndexes() {
+
+    vector<string> ids = getOtuIds();
+
     vector<int> indexes(ids.size(), -1);
 
     for (int i = 0; i < ids.size(); i++) {
-        indexes[i] = getIndex(ids[i]);
+        indexes[i] = otuIndex[ids[i]];
     }
     return indexes;
 }
@@ -153,13 +142,13 @@ vector<string> OtuTable::getList(){
 /******************************************************************************/
 // vector of total abundances for each outID
 vector<int> OtuTable::getRAbund(){
-    return count->getTotalAbundances(getIndexes());
+    return count->getTotalAbundances(getGoodIndexes());
 }
 /******************************************************************************/
 // abundances for each OTU broken down by sample
 vector<vector<int> > OtuTable::getShared(){
 
-    vector<int> goodOtus = getIndexes();
+    vector<int> goodOtus = getGoodIndexes();
 
     vector<vector<int> > otus(goodOtus.size());
 
@@ -174,11 +163,11 @@ vector<vector<int> > OtuTable::getShared(){
 string OtuTable::get(string otuId){
 
     if (hasSeqIds) {
-        int otuIndex = getIndex(otuId);
-
-        // if this is a "good" otu
-        if (tableOtus[otuIndex]) {
-            return sequenceOtus[otuIndex];
+        auto it = otuIndex.find(otuId);
+        if (it != otuIndex.end()) {
+            if (tableOtus[it->second]) {
+                return sequenceOtus[it->second];
+            }
         }
     }
     return "";
@@ -186,24 +175,73 @@ string OtuTable::get(string otuId){
 /******************************************************************************/
 // total abundance for a given outID, optional sample
 int OtuTable::getAbundance(string otuId, string sample){
-    int otuIndex = getIndex(otuId);
 
-    // if this is a "good" otu
-    if (tableOtus[otuIndex]) {
-        return count->getAbundance(otuIndex, sample);
+    auto it = otuIndex.find(otuId);
+    if (it != otuIndex.end()) {
+        // if this is a "good" otu
+        if (tableOtus[it->second]) {
+            return count->getAbundance(it->second, sample);
+        }
     }
+
     return 0;
 }
 /******************************************************************************/
 // abundances for given otuID broken down by sample
 vector<int> OtuTable::getAbundances(string otuId){
-    int otuIndex = getIndex(otuId);
 
-    // if this is a "good" otu
-    if (tableOtus[otuIndex]) {
-        return count->getAbundances(otuIndex);
+    auto it = otuIndex.find(otuId);
+    if (it != otuIndex.end()) {
+        // if this is a "good" otu
+        if (tableOtus[it->second]) {
+            return count->getAbundances(it->second);
+        }
     }
+
     return nullIntVector;
+}
+/******************************************************************************/
+vector<int> OtuTable::getIndexes(vector<string>& otuIDS) {
+
+    bool done = false;
+    int firstGoodIndex = 0;
+    map<string, int>::iterator it;
+    vector<string> validOtuIds;
+
+    while (!done) {
+        it = otuIndex.find(otuIDS[firstGoodIndex]);
+        firstGoodIndex++;
+
+        // done if we find otu
+        if (it != otuIndex.end()) {
+            done = true;
+        }else if (firstGoodIndex >= otuIDS.size()){
+            // done if out of otus to check
+            done = true;
+        }
+    }
+
+    vector<int> indexes;
+
+    // you have a valid otuId
+    if (it != otuIndex.end()) {
+        indexes.push_back(it->second);
+        validOtuIds.push_back(otuIDS[firstGoodIndex]);
+
+        for (int i = firstGoodIndex; i < otuIDS.size(); i++) {
+            it = otuIndex.find(otuIDS[i]);
+
+            if (it != otuIndex.end()) {
+                indexes.push_back(it->second);
+                validOtuIds.push_back(otuIDS[i]);
+            }
+        }
+
+
+    }
+
+    otuIDS = validOtuIds;
+    return indexes;
 }
 /******************************************************************************/
 int OtuTable::getNumNames(string& names){
@@ -245,8 +283,10 @@ Rcpp::DataFrame OtuTable::getScrapReport() {
         for (int i = 0; i < trashCodes.size(); i++) {
             if (trashCodes[i] != "") {
                 badNames[next] = otuNames[i];
-                // remove last comma
-                trashCodes[i].pop_back();
+                if (trashCodes[i][trashCodes[i].length()-1] == ',') {
+                    // remove last comma
+                    trashCodes[i].pop_back();
+                }
                 badCodes[next] = trashCodes[i];
                 next++;
             }
@@ -311,11 +351,18 @@ void OtuTable::merge(vector<string> otuIDS, string reason){
     if (otuIDS.size() != 1) {
 
         vector<int> indexes = getIndexes(otuIDS);
+
         count->merge(indexes);
 
-        for (int i = 1; i < otuIDS.size(); i++) {
+        for (int i = 1; i < indexes.size(); i++) {
+            if (hasSeqIds) {
+                sequenceOtus[indexes[0]] += "," + sequenceOtus[indexes[i]];
+                sequenceOtus[indexes[i]] = "";
+            }
+
             // no need to update the sample and treatment counts
             remove(otuIDS[i], reason, false);
+
         }
     }
 }
