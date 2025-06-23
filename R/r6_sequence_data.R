@@ -50,6 +50,8 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get summary of sequence data
     print = function() {
+      cat(self$get_dataset_name())
+      cat(":\n\n")
       self$get_sequence_summary()
       cat("\n\n")
       self$get_sample_summary()
@@ -61,6 +63,26 @@ sequence_data <- R6Class("sequence_data",
         paste("Total number of seqs:", self$get_num_sequences(), "\n"),
         "\n"
       )
+    },
+
+    #' @description
+    #' Add new sequence data
+    #' @param names a vector of sequence names
+    #' @param sequences a vector of sequence data
+    #' @param comments a vector of sequence comments, (optional)
+    #' @examples
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   sequence_data <- read_fasta(rdataset_example("test.fasta"))
+    #'   dataset$add_sequences(sequence_data$names, sequence_data$sequences)
+    #'
+    add_sequences = function(names, sequences, comments = NULL) {
+      if (is.null(comments)) {
+        comments <- rep("", length(names))
+      }
+      self$data$add_sequences(names, sequences, comments)
+
+      invisible(self)
     },
 
     #' @description
@@ -122,38 +144,18 @@ sequence_data <- R6Class("sequence_data",
     #'   # 0.03   sample5  1      0      0 ...
     assign_otu_abundance = function(label, otu_ids, abundances,
                                     samples = NULL, seq_ids = NULL) {
-      if (is.null(samples)) {
-        samples <- rep("", length(otu_ids))
-      }
-      if (is.null(seq_ids)) {
-        seq_ids <- rep("", length(otu_ids))
-      }
-      self$data$assign_otu_abundance(
-        label, otu_ids, abundances,
-        samples, seq_ids
-      )
+        if (is.null(samples)) {
+            samples <- rep("", length(otu_ids))
+        }
+        if (is.null(seq_ids)) {
+            seq_ids <- rep("", length(otu_ids))
+        }
+        self$data$assign_otu_abundance(
+            label, otu_ids, abundances,
+            samples, seq_ids
+        )
 
-      invisible(self)
-    },
-
-    #' @description
-    #' Add new sequence data
-    #' @param names a vector of sequence names
-    #' @param sequences a vector of sequence data
-    #' @param comments a vector of sequence comments, (optional)
-    #' @examples
-    #'
-    #'   dataset <- sequence_data$new("my_dataset")
-    #'   sequence_data <- read_fasta(rdataset_example("test.fasta"))
-    #'   dataset$add_sequences(sequence_data$names, sequence_data$sequences)
-    #'
-    add_sequences = function(names, sequences, comments = NULL) {
-      if (is.null(comments)) {
-        comments <- rep("", length(names))
-      }
-      self$data$add_sequences(names, sequences, comments)
-
-      invisible(self)
+        invisible(self)
     },
 
     #' @description
@@ -172,12 +174,10 @@ sequence_data <- R6Class("sequence_data",
     #'  # seq4	4	0	0	4
     #'
     #' # inputted as a sample table
-    #' names <- c("seq1", "seq1", "seq1",
-    #'           "seq2", "seq2", "seq2",
-    #'           "seq3", "seq3",
-    #'           "seq4")
+    #' names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
+    #'              "seq2", "seq3", "seq3", "seq4")
     #' samples <- c("sample2", "sample3", "sample4",
-    #'            "sample2", "sample3", "sample4",
+    #'             "sample2", "sample3", "sample4",
     #'            "sample2", "sample3",
     #'            "sample4")
     #' abundances <- c(250, 400, 500,
@@ -289,6 +289,29 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Get data frame containing sequence otu assignments
+    #' @examples
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+    #'   dataset$assign_otu_abundance("0.03", otu_ids, seq_ids = seq_ids)
+    #'
+    #'   list <- dataset$get_list()
+    #'
+    #'   #  list$otu_ids  list$seq_ids
+    #'   #  otu1          seq1
+    #'   #  otu1          seq2
+    #'   #  otu1          seq4
+    #'   #  otu2          seq3
+    #'   #  otu2          seq6
+    #'   #  otu3          seq5
+    #'
+    #' @return data.frame
+    get_list = function() {
+        self$data$get_list()
+    },
+
+    #' @description
     #' Get the number of otus in the dataset
     #' @return An integer
     get_num_otus = function() {
@@ -342,6 +365,28 @@ sequence_data <- R6Class("sequence_data",
     #' @return List of data.tables
     get_otu_tables = function() {
       # TODO
+    },
+
+    #' @description
+    #' Get data frame containing sequence otu assignments
+    #' @examples
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+    #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+    #'   dataset$assign_otu_abundance("0.03", otu_ids,
+    #'               sequence_abundances, seq_ids = seq_ids)
+    #'
+    #'   list <- dataset$get_rabund()
+    #'
+    #'   #  list$otu_ids  list$abundances
+    #'   #  otu1          111
+    #'   #  otu2          525
+    #'   #  otu3          80
+    #'
+    #' @return data.frame
+    get_rabund = function() {
+        self$data$get_rabund()
     },
 
     #' @description
@@ -427,6 +472,11 @@ sequence_data <- R6Class("sequence_data",
     #' @return list of data.tables
     get_sequence_summary = function(silent = FALSE) {
       results <- self$data$get_sequence_summary()
+
+      if (length(results) == 0) {
+          cli::cli_alert("Your dataset does not include sequence data, ignoring.")
+          return();
+      }
 
       results_row_names <- c(
         "Minimum:", "2.5%-tile:", "25%-tile:",

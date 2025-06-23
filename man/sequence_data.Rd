@@ -26,6 +26,16 @@ dataset <- sequence_data$new(name = "soil",
 
 
 ## ------------------------------------------------
+## Method `sequence_data$add_sequences`
+## ------------------------------------------------
+
+
+  dataset <- sequence_data$new("my_dataset")
+  sequence_data <- read_fasta(rdataset_example("test.fasta"))
+  dataset$add_sequences(sequence_data$names, sequence_data$sequences)
+
+
+## ------------------------------------------------
 ## Method `sequence_data$assign_otu_abundance`
 ## ------------------------------------------------
 
@@ -80,16 +90,6 @@ dataset <- sequence_data$new(name = "soil",
   # 0.03   sample5  1      0      0 ...
 
 ## ------------------------------------------------
-## Method `sequence_data$add_sequences`
-## ------------------------------------------------
-
-
-  dataset <- sequence_data$new("my_dataset")
-  sequence_data <- read_fasta(rdataset_example("test.fasta"))
-  dataset$add_sequences(sequence_data$names, sequence_data$sequences)
-
-
-## ------------------------------------------------
 ## Method `sequence_data$assign_sequence_abundance`
 ## ------------------------------------------------
 
@@ -102,12 +102,10 @@ dataset <- sequence_data$new(name = "soil",
  # seq4	4	0	0	4
 
 # inputted as a sample table
-names <- c("seq1", "seq1", "seq1",
-          "seq2", "seq2", "seq2",
-          "seq3", "seq3",
-          "seq4")
+names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
+             "seq2", "seq3", "seq3", "seq4")
 samples <- c("sample2", "sample3", "sample4",
-           "sample2", "sample3", "sample4",
+            "sample2", "sample3", "sample4",
            "sample2", "sample3",
            "sample4")
 abundances <- c(250, 400, 500,
@@ -120,6 +118,45 @@ unique_names <- unique(names)
 sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
 dataset$add_sequences(unique_names, sequences)
 dataset$assign_sequence_abundance(names, abundances, samples)
+
+
+## ------------------------------------------------
+## Method `sequence_data$get_list`
+## ------------------------------------------------
+
+  dataset <- sequence_data$new("my_dataset")
+  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  dataset$assign_otu_abundance("0.03", otu_ids, seq_ids = seq_ids)
+
+  list <- dataset$get_list()
+
+  #  list$otu_ids  list$seq_ids
+  #  otu1          seq1
+  #  otu1          seq2
+  #  otu1          seq4
+  #  otu2          seq3
+  #  otu2          seq6
+  #  otu3          seq5
+
+
+## ------------------------------------------------
+## Method `sequence_data$get_rabund`
+## ------------------------------------------------
+
+  dataset <- sequence_data$new("my_dataset")
+  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+  dataset$assign_otu_abundance("0.03", otu_ids,
+              sequence_abundances, seq_ids = seq_ids)
+
+  list <- dataset$get_rabund()
+
+  #  list$otu_ids  list$abundances
+  #  otu1          111
+  #  otu2          525
+  #  otu3          80
 
 }
 \author{
@@ -137,8 +174,8 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \itemize{
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
-\item \href{#method-sequence_data-assign_otu_abundance}{\code{sequence_data$assign_otu_abundance()}}
 \item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
+\item \href{#method-sequence_data-assign_otu_abundance}{\code{sequence_data$assign_otu_abundance()}}
 \item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
@@ -147,12 +184,14 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \item \href{#method-sequence_data-get_count_table}{\code{sequence_data$get_count_table()}}
 \item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
 \item \href{#method-sequence_data-get_ids}{\code{sequence_data$get_ids()}}
+\item \href{#method-sequence_data-get_list}{\code{sequence_data$get_list()}}
 \item \href{#method-sequence_data-get_num_otus}{\code{sequence_data$get_num_otus()}}
 \item \href{#method-sequence_data-get_num_samples}{\code{sequence_data$get_num_samples()}}
 \item \href{#method-sequence_data-get_num_sequences}{\code{sequence_data$get_num_sequences()}}
 \item \href{#method-sequence_data-get_num_treatments}{\code{sequence_data$get_num_treatments()}}
 \item \href{#method-sequence_data-get_oligos}{\code{sequence_data$get_oligos()}}
 \item \href{#method-sequence_data-get_otu_tables}{\code{sequence_data$get_otu_tables()}}
+\item \href{#method-sequence_data-get_rabund}{\code{sequence_data$get_rabund()}}
 \item \href{#method-sequence_data-get_samples}{\code{sequence_data$get_samples()}}
 \item \href{#method-sequence_data-get_sample_summary}{\code{sequence_data$get_sample_summary()}}
 \item \href{#method-sequence_data-get_scrap_report}{\code{sequence_data$get_scrap_report()}}
@@ -220,6 +259,39 @@ dataset <- sequence_data$new(name = "soil",
 Get summary of sequence data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-add_sequences"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-add_sequences}{}}}
+\subsection{Method \code{add_sequences()}}{
+Add new sequence data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_sequences(names, sequences, comments = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{names}}{a vector of sequence names}
+
+\item{\code{sequences}}{a vector of sequence data}
+
+\item{\code{comments}}{a vector of sequence comments, (optional)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+  dataset <- sequence_data$new("my_dataset")
+  sequence_data <- read_fasta(rdataset_example("test.fasta"))
+  dataset$add_sequences(sequence_data$names, sequence_data$sequences)
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -311,39 +383,6 @@ Add otu data
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-add_sequences"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-add_sequences}{}}}
-\subsection{Method \code{add_sequences()}}{
-Add new sequence data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_sequences(names, sequences, comments = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{names}}{a vector of sequence names}
-
-\item{\code{sequences}}{a vector of sequence data}
-
-\item{\code{comments}}{a vector of sequence comments, (optional)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  dataset <- sequence_data$new("my_dataset")
-  sequence_data <- read_fasta(rdataset_example("test.fasta"))
-  dataset$add_sequences(sequence_data$names, sequence_data$sequences)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-assign_sequence_abundance"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-assign_sequence_abundance}{}}}
 \subsection{Method \code{assign_sequence_abundance()}}{
@@ -381,12 +420,10 @@ Add sequence abundance data with optional sample / treatment assignments
  # seq4	4	0	0	4
 
 # inputted as a sample table
-names <- c("seq1", "seq1", "seq1",
-          "seq2", "seq2", "seq2",
-          "seq3", "seq3",
-          "seq4")
+names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
+             "seq2", "seq3", "seq3", "seq4")
 samples <- c("sample2", "sample3", "sample4",
-           "sample2", "sample3", "sample4",
+            "sample2", "sample3", "sample4",
            "sample2", "sample3",
            "sample4")
 abundances <- c(250, 400, 500,
@@ -506,6 +543,41 @@ vector of ids
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_list"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_list}{}}}
+\subsection{Method \code{get_list()}}{
+Get data frame containing sequence otu assignments
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_list()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{  dataset <- sequence_data$new("my_dataset")
+  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  dataset$assign_otu_abundance("0.03", otu_ids, seq_ids = seq_ids)
+
+  list <- dataset$get_list()
+
+  #  list$otu_ids  list$seq_ids
+  #  otu1          seq1
+  #  otu1          seq2
+  #  otu1          seq4
+  #  otu2          seq3
+  #  otu2          seq6
+  #  otu3          seq5
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_num_otus"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_num_otus}{}}}
 \subsection{Method \code{get_num_otus()}}{
@@ -598,6 +670,40 @@ List of data.tables
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_rabund"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_rabund}{}}}
+\subsection{Method \code{get_rabund()}}{
+Get data frame containing sequence otu assignments
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_rabund()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{  dataset <- sequence_data$new("my_dataset")
+  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+  dataset$assign_otu_abundance("0.03", otu_ids,
+              sequence_abundances, seq_ids = seq_ids)
+
+  list <- dataset$get_rabund()
+
+  #  list$otu_ids  list$abundances
+  #  otu1          111
+  #  otu2          525
+  #  otu3          80
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_samples"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_samples}{}}}
 \subsection{Method \code{get_samples()}}{
@@ -634,14 +740,14 @@ list
 \if{html}{\out{<a id="method-sequence_data-get_scrap_report"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_scrap_report}{}}}
 \subsection{Method \code{get_scrap_report()}}{
-Get report containing the scrapped sequences -
+Get report containing the scrapped sequences / otus -
 ids, trash_codes
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_scrap_report()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-data.table
+list of data.tables
 }
 }
 \if{html}{\out{<hr>}}

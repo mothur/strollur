@@ -95,6 +95,8 @@ RCPP_MODULE(Dataset) {
     .method("get_otu", &Dataset::getOtu, "Get otu containing sequence names")
     .method("merge_otus", &Dataset::mergeOtus, "Merge otus")
     .method("remove_otus", &Dataset::removeOtus, "Remove otus")
+    .method("get_list", &Dataset::getList, "Get data frame containing sequence otu assignments")
+    .method("get_rabund", &Dataset::getRAbund, "Get data frame containing otu abundance data")
 
     ;
 }

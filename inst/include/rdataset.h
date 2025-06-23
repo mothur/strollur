@@ -223,12 +223,18 @@ public:
 
     // names of OTUs
     vector<string> getOtuIds();
+    // 2 column dataframe - otu_id, seq_id
+    Rcpp::DataFrame getList();
     // vector string containing sequence names for each otu
-    vector<string> getList();
+    vector<string> getListVector();
+    // 2 column dataframe - otu_id, abundance
+    Rcpp::DataFrame getRAbund();
     // vector of total abundances for each outID
-    vector<int> getRAbund();
+    vector<int> getRAbundVector();
+    // 3 column dataframe - otu_id, abundance, sample
+    Rcpp::DataFrame getShared();
     // abundances for each OTU broken down by sample
-    vector<vector<int> > getShared();
+    vector<vector<int> > getSharedVector();
 
     // string containing sequence names for given otuID
     string get(string otuID);
@@ -425,14 +431,17 @@ public:
     // OTU functions
     // vector string containing sequence names for each otu
     vector<string> getListVector();
+    // 2 column dataframe - otu_id, seq_id
     Rcpp::DataFrame getList();
     // names of OTUs
     vector<string> getOtuIds();
-    // vector of total abundances for each OTU
+    // 2 column dataframe - otu_id, abundance
     Rcpp::DataFrame getRAbund();
+    // vector of total abundances for each OTU
     vector<int> getRAbundVector();
     // abundances for each OTU broken down by sample
     vector<vector<int> > getSharedVector();
+    // 3 column dataframe - otu_id, abundance, sample
     Rcpp::DataFrame getShared();
 
 private:

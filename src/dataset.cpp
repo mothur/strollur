@@ -443,6 +443,14 @@ vector<int> Dataset::getIndexes(vector<string>& ids) {
     return indexes;
 }
 /******************************************************************************/
+Rcpp::DataFrame Dataset::getList() {
+    if (hasOtuData) {
+        return otuTable->getList();
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
 vector<string> Dataset::getNames(string sample){
     vector<string> included;
 
@@ -507,6 +515,14 @@ vector<string> Dataset::getOtuIds() {
         return otuTable->getOtuIds();
     }
     return nullVector;
+}
+/******************************************************************************/
+Rcpp::DataFrame Dataset::getRAbund() {
+    if (hasOtuData) {
+        return otuTable->getRAbund();
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 // sample functions
@@ -664,6 +680,11 @@ Rcpp::DataFrame Dataset::getSequenceReport(){
 Rcpp::List Dataset::getSequenceSummary() {
 
     Rcpp::List result = Rcpp::List::create();
+
+    if (!hasSequenceData) {
+        return result;
+    }
+
     vector<string> result_names;
 
     Summary* summary = new Summary(processors);

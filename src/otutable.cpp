@@ -135,18 +135,56 @@ vector<string> OtuTable::getOtuIds(){
     return select(otuNames, tableOtus);
 }
 /******************************************************************************/
+Rcpp::DataFrame OtuTable::getList() {
+    if (hasSeqIds) {
+        vector<string> ids, seqids;
+        int total = 0;
+
+        for (int i = 0; i < tableOtus.size(); i++) {
+            if (tableOtus[i]) {
+                //parse string by delim and store in vector
+                total += split(sequenceOtus[i], ',',
+                                    back_inserter(seqids));
+                ids.resize(total, otuNames[i]);
+            }
+        }
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("otu_ids") = ids,
+            Rcpp::_["seq_ids"] = seqids);
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
 // vector string containing sequence names for each otu
-vector<string> OtuTable::getList(){
+vector<string> OtuTable::getListVector(){
     return select(sequenceOtus, tableOtus);
 }
 /******************************************************************************/
+Rcpp::DataFrame OtuTable::getRAbund() {
+    if (numOtus != 0) {
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("otu_ids") = select(otuNames, tableOtus),
+            Rcpp::_["abundances"] = count->getTotalAbundances(getGoodIndexes())
+        );
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
 // vector of total abundances for each outID
-vector<int> OtuTable::getRAbund(){
+vector<int> OtuTable::getRAbundVector(){
     return count->getTotalAbundances(getGoodIndexes());
 }
 /******************************************************************************/
 // abundances for each OTU broken down by sample
-vector<vector<int> > OtuTable::getShared(){
+vector<vector<int> > OtuTable::getSharedVector(){
 
     vector<int> goodOtus = getGoodIndexes();
 
@@ -344,7 +382,7 @@ vector<int> OtuTable::getTreatmentTotals(){
 /******************************************************************************/
 // total number of sequences
 int OtuTable::getTotal(string sample){
-    return count->getTotal();
+    return count->getTotal(sample);
 }
 /******************************************************************************/
 void OtuTable::merge(vector<string> otuIDS, string reason){

@@ -34,15 +34,19 @@ struct pieceOfWork {
     ~pieceOfWork() {}
 };
 /**********************************************************************/
+// parse s by delim store in result. return numItems
 template <typename Out>
-void split(const string &s, char delim, Out result) {
+int split(const string &s, char delim, Out result) {
     istringstream iss(s);
     string item;
+    int numItems = 0;
     while (getline(iss, item, delim)) {
         if (!item.empty()) { //ignore white space
             *result++ = item;
+            numItems++;
         }
     }
+    return numItems;
 }
 /**********************************************************************/
 template<typename T>

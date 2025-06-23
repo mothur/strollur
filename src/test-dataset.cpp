@@ -995,7 +995,7 @@ context("Dataset class C++ unit tests") {
     }
 
     // Otu tests
-    test_that("Tests assignOtuAbundance, getOtuIds") {
+    test_that("Tests assignOtuAbundance, getOtuIds, getList, getRabund") {
 
         Dataset data("mydata", 1);
 
@@ -1003,6 +1003,8 @@ context("Dataset class C++ unit tests") {
         expect_false(data.isAligned);
         expect_true(data.numSamples == 0);
         expect_true(data.numUnique == 0);
+
+        expect_true(data.getRAbund().size() == 0);
 
         vector<string> otuNames(10, "otu1");
         otuNames[1] = "otu2";
@@ -1023,6 +1025,11 @@ context("Dataset class C++ unit tests") {
         expect_true(data.numOtus == 10);
         expect_true(data.numUnique == -1);
         expect_true(data.getOtuIds() == otuNames);
+
+        expect_true(data.getList().size() == 0);
+        Rcpp::DataFrame rabund = data.getRAbund();
+        expect_true(otuNames == Rcpp::as<vector<string>>(rabund[0]));
+        expect_true(abundances == Rcpp::as<vector<int>>(rabund[1]));
 
         // no sequence data was given
         expect_true(data.getOtu("otu1") == "");
@@ -1068,6 +1075,10 @@ context("Dataset class C++ unit tests") {
         otuIds[3] = "otu4";
 
         expect_true(data.getOtuIds() == otuIds);
+
+        Rcpp::DataFrame list = data.getList();
+        expect_true(otuNames == Rcpp::as<vector<string>>(list[0]));
+        expect_true(seqNames == Rcpp::as<vector<string>>(list[1]));
 
         expect_error(data.assignTreatments(nullVector, nullVector));
 
@@ -1387,8 +1398,9 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getOtuAbundances("badotu") == nullIntVector);
 
         // remove otu
-        vector<string> otusToRemove(1, "otu1");
-        vector<string> reasonsToRemove(1, "badOtu");
+        vector<string> otusToRemove(2, "otu1");
+        otusToRemove[1] = "non_existant_otu";
+        vector<string> reasonsToRemove(2, "badOtu");
         data.removeOtus(otusToRemove, reasonsToRemove);
 
         expect_true(data.getOtu("otu1") == "");
@@ -1605,5 +1617,6 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 66);
         expect_true(data.numOtus == 2);
         expect_true(data.numSamples == 5);
+        expect_true(data.getTotal("sample6") == 0);
     }
 }

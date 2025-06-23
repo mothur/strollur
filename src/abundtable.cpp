@@ -429,9 +429,7 @@ int AbundTable::getTotal(string sample) {
                 return sampleTotals[it->second];
             }
         }
-        RcppThread::Rcout << endl <<
-            "[ERROR]: The dataset does not include sample: " +
-            sample + ".\n\n";
+        // dataset does not include the sample
         return 0;
     }
     return total;
