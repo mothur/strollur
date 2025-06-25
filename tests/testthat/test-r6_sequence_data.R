@@ -192,10 +192,11 @@ test_that("test R6 sequence_data - assign_sequence_abundance, remove_sequences",
     25,
     4
   )
+  rabunds <- c(1150, 90, 25, 4)
   treatments <- c(
-    "early", "early", "late",
-    "late", "late", "late",
-    "late"
+      "early", "early", "late",
+      "late", "late", "late",
+      "late"
   )
 
   seqs_to_remove <- c("seq1", "seq2")
@@ -203,11 +204,31 @@ test_that("test R6 sequence_data - assign_sequence_abundance, remove_sequences",
 
   data <- sequence_data$new("mydata")
   data$add_sequences(names, seqs)
-  data$assign_sequence_abundance(ids, abundances, groups, treatments)
+
+  data$assign_sequence_abundance(names, rabunds)
+
+  expect_equal(data$get_num_sequences(), 1269)
+  expect_equal(data$get_num_sequences(TRUE), 4)
+  expect_equal(data$get_num_samples(), 0)
+  expect_equal(data$get_num_treatments(), 0)
+
+  expect_error(data$assign_sequence_abundance(ids, c()))
+  missing_ids <- c(
+      "seq1", "seq1", "seq1",
+      "seq2", "seq2",
+      "seq3",
+      "seq3"
+  )
+  expect_error(data$assign_sequence_abundance(missing_ids, abundances))
+
+  data$assign_sequence_abundance(ids, abundances, groups)
 
   expect_equal(data$get_num_sequences(), 1269)
   expect_equal(data$get_num_sequences(TRUE), 4)
   expect_equal(data$get_num_samples(), 3)
+  expect_equal(data$get_num_treatments(), 0)
+
+  data$assign_sequence_abundance(ids, abundances, groups, treatments)
   expect_equal(data$get_num_treatments(), 2)
 
   data$data$remove_sequences(seqs_to_remove, trash_codes)
@@ -218,13 +239,14 @@ test_that("test R6 sequence_data - assign_sequence_abundance, remove_sequences",
   expect_equal(data$get_num_treatments(), 1)
 })
 
-test_that("test R6 sequence_data - get_list, get_rabund", {
+test_that("test R6 sequence_data - get_list, get_rabund, get_shared", {
     dataset <- sequence_data$new("my_dataset")
     seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
     otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
     sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    dataset$assign_otu_abundance("0.03", otu_ids,
-                   sequence_abundances, seq_ids = seq_ids)
+    dataset$assign_otu_abundance(otu_ids = otu_ids,
+                                 abundances = sequence_abundances,
+                                 seq_ids = seq_ids)
     # otus would look like:
     # label  otu1             otu2        otu3 ...
     # 0.03   seq1,seq2,seq4   seq3,seq6   seq5 ...
@@ -232,16 +254,29 @@ test_that("test R6 sequence_data - get_list, get_rabund", {
 
     list <- dataset$get_list()
 
-    expect_equal(list$otu_ids, otu_ids)
-    expect_equal(list$seq_ids, seq_ids)
+    expect_equal(list$otu_id, otu_ids)
+    expect_equal(list$seq_id, seq_ids)
 
     rabund <- dataset$get_rabund()
 
     abunds <- c(111, 525, 80)
-    expect_equal(rabund$otu_ids, unique(otu_ids))
-    expect_equal(rabund$abundances, abunds)
-})
+    expect_equal(rabund$otu_id, unique(otu_ids))
+    expect_equal(rabund$abundance, abunds)
 
+    dataset <- sequence_data$new("my_dataset")
+    otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+    samples <- c("sample1", "sample2", "sample5",
+                 "sample1", "sample3", "sample1")
+    sample_abundances <- c(10, 100, 1, 500, 25, 80)
+    dataset$assign_otu_abundance(otu_ids, sample_abundances, samples)
+
+    shared <- dataset$get_shared()
+    expect_equal(shared$otu_id, otu_ids)
+    expect_equal(shared$abundance, sample_abundances)
+    expect_equal(shared$sample, samples)
+    expect_equal(dataset$get_num_otus(), 3)
+
+})
 
 test_that("test R6 sequence_data - print", {
   names <- c("seq1", "seq2", "seq3", "seq4")

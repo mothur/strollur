@@ -5,8 +5,6 @@
     Output
       mydata:
       
-      [1] "Minimum:"    "2.5%-tile:"  "25%-tile:"   "Median:   "  "75%-tile:"  
-      [6] "97.5%-tile:" "Maximum:"    "Mean:      "
       		start	end	length	ambigs	polymer	num_ns	numseqs
       Minimum:	1	5	5	0	2	0	1 
       2.5%-tile:	1	5	5	0	2	0	34 
@@ -35,8 +33,6 @@
        
       mydata:
       
-      [1] "Minimum:"    "2.5%-tile:"  "25%-tile:"   "Median:   "  "75%-tile:"  
-      [6] "97.5%-tile:" "Maximum:"    "Mean:      "
       		start	end	length	ambigs	polymer	num_ns	numseqs
       Minimum:	1	5	5	0	2	0	1 
       2.5%-tile:	1	5	5	0	2	0	34 

@@ -103,11 +103,14 @@ public:
 
     void clear();
 
-    // 2 or 3 columns: id, abundance, sample (optional -
-    //                                   added when table includes sample data)
+    // 2, 3 or 4 columns: id, abundance, sample (optional -
+    //                                   added when table includes sample data),
+    //                                   treatment (optional -
+    //                                   added when table includes treatment data),
     // used to export AbundTable
     Rcpp::DataFrame getAbundanceTable(vector<string> outputNames,
-                                              vector<int> names);
+                                              vector<int> names,
+                                              bool includeTreatments = true);
 
     // names, sets abundance to 1
     void add(vector<int>& names);
@@ -349,8 +352,8 @@ public:
                                vector<int> abunds,
                                vector<string> samples = nullVector,
                                vector<string> treatments = nullVector);
-    // label, otuIDS, abundances, samples(optional), seqIDs(optional)
-    void assignOtuAbundance(string label, vector<string> otuIDS,
+    // otuIDS, abundances, samples(optional), seqIDs(optional), label (optional)
+    void assignOtuAbundance(vector<string> otuIDS,
                                  vector<int> abunds,
                                  vector<string> samples = nullVector,
                                  vector<string> seqIDs = nullVector);

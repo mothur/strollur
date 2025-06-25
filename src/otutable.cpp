@@ -149,9 +149,10 @@ Rcpp::DataFrame OtuTable::getList() {
             }
         }
 
+        string tag = label + "_id";
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("otu_ids") = ids,
-            Rcpp::_["seq_ids"] = seqids);
+            Rcpp::Named(tag) = ids,
+            Rcpp::_["seq_id"] = seqids);
 
         return df;
     }
@@ -166,10 +167,10 @@ vector<string> OtuTable::getListVector(){
 /******************************************************************************/
 Rcpp::DataFrame OtuTable::getRAbund() {
     if (numOtus != 0) {
-
+        string tag = label + "_id";
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("otu_ids") = select(otuNames, tableOtus),
-            Rcpp::_["abundances"] = count->getTotalAbundances(getGoodIndexes())
+            Rcpp::Named(tag) = select(otuNames, tableOtus),
+            Rcpp::_["abundance"] = count->getTotalAbundances(getGoodIndexes())
         );
 
         return df;
@@ -181,6 +182,28 @@ Rcpp::DataFrame OtuTable::getRAbund() {
 // vector of total abundances for each outID
 vector<int> OtuTable::getRAbundVector(){
     return count->getTotalAbundances(getGoodIndexes());
+}
+/******************************************************************************/
+Rcpp::DataFrame OtuTable::getShared() {
+    if ((numOtus != 0) && (getNumSamples() != 0)) {
+
+        vector<string> ids = getOtuIds();
+        vector<int> indexes(ids.size(), -1);
+
+        for (int i = 0; i < ids.size(); i++) {
+            indexes[i] = otuIndex[ids[i]];
+        }
+        Rcpp::DataFrame df = count->getAbundanceTable(ids, indexes, false);
+        vector<string> names(3);
+        names[0] = label + "_id";
+        names[1] = "abundance";
+        names[2] = "sample";
+        df.attr("names") = names;
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 // abundances for each OTU broken down by sample
@@ -329,9 +352,9 @@ Rcpp::DataFrame OtuTable::getScrapReport() {
                 next++;
             }
         }
-
+        string tag = label + "_id";
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("otu_id") = badNames,
+            Rcpp::Named(tag) = badNames,
             Rcpp::_["trash_code"] = badCodes);
         return df;
     }
@@ -355,10 +378,10 @@ Rcpp::DataFrame OtuTable::getScrapSummary() {
             totalCounts[index] = it->second[1];
             index++;
         }
-
+        string tag = label + "_count";
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named("trash_code") = codes,
-            Rcpp::_["otu_count"] = uniqueCounts,
+            Rcpp::_[tag] = uniqueCounts,
             Rcpp::_["total_abundance"] = totalCounts);
 
         return df;

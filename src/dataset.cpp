@@ -144,8 +144,9 @@ void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c)
     hasSequenceData = true;
 }
 /******************************************************************************/
-void Dataset::assignOtuAbundance(string label, vector<string> otuIds,
-                        vector<int> abunds, vector<string> samples,
+void Dataset::assignOtuAbundance(vector<string> otuIds,
+                        vector<int> abunds,
+                        vector<string> samples,
                         vector<string> seqIds) {
 
     if (otuIds.size() != abunds.size()) {
@@ -158,10 +159,10 @@ void Dataset::assignOtuAbundance(string label, vector<string> otuIds,
 
     // new table
     if (otuTable == nullptr) {
-        otuTable = new OtuTable(label);
+        otuTable = new OtuTable("otu");
     }else{
         // assume they had "list" data and are adding "shared" data
-        otuTable->setLabel(label);
+        otuTable->setLabel("otu");
     }
 
     // sanity checks - R6 object passes blank strings if seqIds == NULL
@@ -206,15 +207,14 @@ void Dataset::assignOtuAbundance(string label, vector<string> otuIds,
 }
 /******************************************************************************/
 void Dataset::assignTreatments(vector<string> samples, vector<string> treatments) {
+    count->assignTreatments(samples, treatments);
+    numSamples = count->getNumSamples();
+    numTreatments = count->getNumTreatments();
     if (hasOtuData) {
         otuTable->assignTreatments(samples, treatments);
         numSamples = otuTable->getNumSamples();
         numTreatments = otuTable->getNumTreatments();
-        return;
     }
-    count->assignTreatments(samples, treatments);
-    numSamples = count->getNumSamples();
-    numTreatments = count->getNumTreatments();
 }
 /******************************************************************************/
 // names, abundances, samples(optional), treatments(optional)
@@ -744,6 +744,14 @@ Rcpp::List Dataset::getSequenceSummary() {
 
     result.attr("names") = result_names;
     return result;
+}
+/******************************************************************************/
+Rcpp::DataFrame Dataset::getShared() {
+    if (hasOtuData) {
+        return otuTable->getShared();
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 vector<string> Dataset::getTreatments(){

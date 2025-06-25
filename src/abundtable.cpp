@@ -247,10 +247,6 @@ void AbundTable::assignTreatments(vector<string> s,
            }
        }
 
-   }else{
-       string message = "[ERROR]: The dataset does not include sample data. ";
-       message += "Unable to assign treatments.";
-       throw Rcpp::exception(message.c_str());
    }
 }
 /******************************************************************************/
@@ -351,7 +347,8 @@ vector<int> AbundTable::getTotalAbundances(vector<int> names) {
 }
 /******************************************************************************/
 Rcpp::DataFrame AbundTable::getAbundanceTable(vector<string> outputNames,
-                                          vector<int> names) {
+                                          vector<int> names,
+                                          bool includeTreatments) {
 
 
     if (hasSampleData) {
@@ -375,14 +372,14 @@ Rcpp::DataFrame AbundTable::getAbundanceTable(vector<string> outputNames,
                     abunds.push_back(data.abunds[j]);
                     samples.push_back(sampleNames[data.sampleIndex[j]]);
 
-                    if (hasTreatments) {
+                    if (hasTreatments && includeTreatments) {
                         treaments.push_back(sampleTreatment[data.sampleIndex[j]]);
                     }
                 }
             }
         }
 
-        if (hasTreatments) {
+        if (hasTreatments && includeTreatments) {
             Rcpp::DataFrame df = Rcpp::DataFrame::create(
                 Rcpp::Named("id") = ids,
                 Rcpp::_["abundance"] = abunds,

@@ -995,7 +995,7 @@ context("Dataset class C++ unit tests") {
     }
 
     // Otu tests
-    test_that("Tests assignOtuAbundance, getOtuIds, getList, getRabund") {
+    test_that("Tests assignOtuAbundance, getOtuIds, getList, getRabund, getShared") {
 
         Dataset data("mydata", 1);
 
@@ -1019,7 +1019,7 @@ context("Dataset class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        data.assignOtuAbundance("0.03", otuNames, abundances);
+        data.assignOtuAbundance(otuNames, abundances);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 10);
@@ -1052,7 +1052,7 @@ context("Dataset class C++ unit tests") {
         otuNames[8] = "otu4";   seqNames[8] = "seq9";
         otuNames[9] = "otu4";   seqNames[9] = "seq10";
 
-        data.assignOtuAbundance("0.03", otuNames, abundances, nullVector, seqNames);
+        data.assignOtuAbundance(otuNames, abundances, nullVector, seqNames);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 4);
@@ -1068,6 +1068,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getOtuAbundance("otu4") == 40);
         temp[0] = 20;
         expect_true(data.getOtuAbundances("otu2") == temp);
+        expect_true(data.getShared().size() == 0);
 
         vector<string> otuIds(4, "otu1");
         otuIds[1] = "otu2";
@@ -1079,8 +1080,6 @@ context("Dataset class C++ unit tests") {
         Rcpp::DataFrame list = data.getList();
         expect_true(otuNames == Rcpp::as<vector<string>>(list[0]));
         expect_true(seqNames == Rcpp::as<vector<string>>(list[1]));
-
-        expect_error(data.assignTreatments(nullVector, nullVector));
 
         // test adding otuNames abundances, samples (shared)
         otuNames.resize(15, "otu1");
@@ -1103,7 +1102,7 @@ context("Dataset class C++ unit tests") {
         otuNames[14] = "otu4";   samples[14] = "sample5";  abundances[14] = 5;
 
         // add shared data
-        data.assignOtuAbundance("0.03", otuNames, abundances, samples);
+        data.assignOtuAbundance(otuNames, abundances, samples);
 
         vector<string> uniqueSamples(6, "");
         uniqueSamples[0] = "sample1";
@@ -1138,6 +1137,11 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTreatmentTotals() == treatmentTotals);
         expect_true(data.getTreatments() == unique(treatments));
+
+        Rcpp::DataFrame shared = data.getShared();
+        expect_true(otuNames == Rcpp::as<vector<string>>(shared[0]));
+        expect_true(abundances == Rcpp::as<vector<int>>(shared[1]));
+        expect_true(samples == Rcpp::as<vector<string>>(shared[2]));
 
         uniqueSamples.push_back("SampleNotInDataset");
         treatments.push_back("badEntry");
@@ -1178,7 +1182,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getOtuAbundances("otu2") == temp);
 
         otuNames.clear();
-        expect_error(data.assignOtuAbundance("0.03", otuNames, abundances));
+        expect_error(data.assignOtuAbundance(otuNames, abundances));
     }
 
     test_that("Tests mergeOtus, removeOtus, getScrapReport, getScrapSummary") {
@@ -1203,7 +1207,7 @@ context("Dataset class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        data.assignOtuAbundance("0.03", otuNames, abundances);
+        data.assignOtuAbundance(otuNames, abundances);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 10);
@@ -1246,7 +1250,7 @@ context("Dataset class C++ unit tests") {
         otuNames[8] = "otu4";   seqNames[8] = "seq9";
         otuNames[9] = "otu4";   seqNames[9] = "seq10";
 
-        data.assignOtuAbundance("0.03", otuNames, abundances, nullVector, seqNames);
+        data.assignOtuAbundance(otuNames, abundances, nullVector, seqNames);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 4);
@@ -1269,8 +1273,6 @@ context("Dataset class C++ unit tests") {
         otuIds[3] = "otu4";
 
         expect_true(data.getOtuIds() == otuIds);
-
-        expect_error(data.assignTreatments(nullVector, nullVector));
 
         // test merge with seqids
         otusToMerge.resize(2);
@@ -1313,7 +1315,7 @@ context("Dataset class C++ unit tests") {
         otuNames[11] = "otu3";   samples[11] = "sample6";  abundances[11] = 4;
 
         // add shared data
-        data.assignOtuAbundance("0.03", otuNames, abundances, samples);
+        data.assignOtuAbundance(otuNames, abundances, samples);
 
         vector<string> uniqueSamples(6, "");
         uniqueSamples[0] = "sample1";
@@ -1441,9 +1443,8 @@ context("Dataset class C++ unit tests") {
         expect_true(uniqueCounts == Rcpp::as<vector<int>>(scrapSummary[1]));
         expect_true(totalCounts == Rcpp::as<vector<int>>(scrapSummary[2]));
 
-
         otuNames.clear();
-        expect_error(data.assignOtuAbundance("0.03", otuNames, abundances));
+        expect_error(data.assignOtuAbundance(otuNames, abundances));
     }
 
     test_that("Tests setOtuAbundance, setOtuAbundances") {
@@ -1468,7 +1469,7 @@ context("Dataset class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        data.assignOtuAbundance("0.03", otuNames, abundances);
+        data.assignOtuAbundance(otuNames, abundances);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 10);
@@ -1515,7 +1516,7 @@ context("Dataset class C++ unit tests") {
         otuNames[8] = "otu4";   seqNames[8] = "seq9";
         otuNames[9] = "otu4";   seqNames[9] = "seq10";
 
-        data.assignOtuAbundance("0.03", otuNames, abundances, nullVector, seqNames);
+        data.assignOtuAbundance(otuNames, abundances, nullVector, seqNames);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 4);
@@ -1569,7 +1570,7 @@ context("Dataset class C++ unit tests") {
         otuNames[11] = "otu3";   samples[11] = "sample6";  abundances[11] = 4;
 
         // add shared data
-        data.assignOtuAbundance("0.03", otuNames, abundances, samples);
+        data.assignOtuAbundance(otuNames, abundances, samples);
 
         vector<string> uniqueSamples(6, "");
         uniqueSamples[0] = "sample1";

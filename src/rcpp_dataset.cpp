@@ -10,7 +10,7 @@ RCPP_MODULE(Dataset) {
 
     // ******* properties ******* //
     .field("dataset_name", &Dataset::datasetName, "Get dataset name")
-    .field("label", &Dataset::label, "Get otu label")
+    .field("label", &Dataset::label, "Cluster tag: 'otu', 'asv', tag of your choice")
     .field("is_aligned", &Dataset::isAligned, "Get dataset alignment status")
     .field("num_samples", &Dataset::numSamples, "Get number of samples in dataset")
     .field("num_treatments", &Dataset::numTreatments, "Get number of treatments in dataset")
@@ -33,6 +33,7 @@ RCPP_MODULE(Dataset) {
     .method("assign_otu_abundance", &Dataset::assignOtuAbundance, "Add otu assignments to dataset")
     .method("assign_sequence_abundance", &Dataset::assignSequenceAbundance,
     "Set sequence abundance and optionally assign sample and treatment data")
+    .method("assign_treatments", &Dataset::assignTreatments, "Assign samples to treatments")
     .method("clear", &Dataset::clear, "Clear dataset")
     .method("merge_sequences", &Dataset::mergeSequences,
     "Merge sequences")
@@ -97,6 +98,7 @@ RCPP_MODULE(Dataset) {
     .method("remove_otus", &Dataset::removeOtus, "Remove otus")
     .method("get_list", &Dataset::getList, "Get data frame containing sequence otu assignments")
     .method("get_rabund", &Dataset::getRAbund, "Get data frame containing otu abundance data")
+    .method("get_shared", &Dataset::getShared, "Get data frame containing otu abundance data by sample")
 
     ;
 }

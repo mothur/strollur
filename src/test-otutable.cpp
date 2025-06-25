@@ -207,6 +207,9 @@ context("OtuTable class C++ unit tests") {
         expect_true(otuNames == Rcpp::as<vector<string>>(list[0]));
         expect_true(seqNames == Rcpp::as<vector<string>>(list[1]));
 
+        Rcpp::DataFrame shared = otuTable.getShared();
+        expect_true(shared.size() == 0);
+
         rabund = otuTable.getRAbund();
         expect_true(uniqueOtuNames == Rcpp::as<vector<string>>(rabund[0]));
         expect_true(otuRabundVector == Rcpp::as<vector<int>>(rabund[1]));
@@ -277,6 +280,11 @@ context("OtuTable class C++ unit tests") {
         rabund = otuTable.getRAbund();
         expect_true(uniqueOtuNames == Rcpp::as<vector<string>>(rabund[0]));
         expect_true(otuRabundVector == Rcpp::as<vector<int>>(rabund[1]));
+
+        shared = otuTable.getShared();
+        expect_true(otuNames == Rcpp::as<vector<string>>(shared[0]));
+        expect_true(abundances == Rcpp::as<vector<int>>(shared[1]));
+        expect_true(samples == Rcpp::as<vector<string>>(shared[2]));
 
         vector<int> sampleTotals(6, 0);
         sampleTotals[0] = 36;

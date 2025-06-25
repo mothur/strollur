@@ -1,6 +1,9 @@
-#' @title sequence_dataset
-#' @description 'sequence_data' is an R6 class that represents sequence
-#'  FASTA and abundance data.
+#' @title sequence_data
+#' @description 'sequence_data' is an R6 class that stores nucleotide sequences,
+#' abundance, sample and treatment assignments, taxonomic classifications,
+#' asv / otu clusters and various reports. It is designed to facilitate data
+#' analysis across multiple R packages.
+#'
 #'
 #' @author Sarah Westcott, \email{swestcot@@umich.edu}
 #'
@@ -14,13 +17,15 @@
 sequence_data <- R6Class("sequence_data",
   public = list(
 
-    #' @field data pointer to C++ class
+    #' @field data pointer to 'Dataset' (Rcpp Module). This allows package
+    #' developers an easy access point to the underlying C++ code with
+    #' additional functionality.
     data = NULL,
 
     #' @description
-    #' Create a new FASTA sequence dataset
-    #' @param name Name of dataset
-    #' @param fasta, String name of FASTA file
+    #' Create a new sequence dataset
+    #' @param name String, name of dataset
+    #' @param fasta String name of FASTA file
     #' @param processors Integer, number of cores to use.
     #'  Default = all available
     #' @examples
@@ -55,10 +60,14 @@ sequence_data <- R6Class("sequence_data",
       self$get_sequence_summary()
       cat("\n\n")
       self$get_sample_summary()
-      cat(
-        paste("\nNumber of unique seqs:", self$get_num_sequences(TRUE)),
-        "\n"
-      )
+      if (self$get_num_sequences(TRUE) != -1) {
+          cat(
+              paste("\nNumber of unique seqs:", self$get_num_sequences(TRUE)),
+              "\n"
+          )
+      }else {
+          cat("\n")
+      }
       cat(
         paste("Total number of seqs:", self$get_num_sequences(), "\n"),
         "\n"
@@ -87,7 +96,6 @@ sequence_data <- R6Class("sequence_data",
 
     #' @description
     #' Add otu data
-    #' @param label a String containing otu label
     #' @param otu_ids a vector of otu labels
     #' @param abundances a vector of abundances
     #' @param samples a vector of sample assignments (optional)
@@ -102,19 +110,18 @@ sequence_data <- R6Class("sequence_data",
     #'   #  otu2     seq3        500
     #'   #  otu2     seq6        25
     #'   #  otu3     seq5        80
-    #'   # ...
     #'
     #'   dataset <- sequence_data$new("my_dataset")
     #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
     #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
     #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_otu_abundance("0.03", otu_ids,
+    #'   dataset$assign_otu_abundance(otu_ids,
     #'               sequence_abundances, seq_ids = seq_ids)
     #'
     #'   # otus would look like:
-    #'   # label  otu1             otu2        otu3 ...
-    #'   # 0.03   seq1,seq2,seq4   seq3,seq6   seq5 ...
-    #'   # 0.03   110              525         80 ...
+    #'   #            otu1             otu2        otu3
+    #'   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
+    #'   # (rabund)   110              525         80
     #'
     #'   # To add abundance only otu assignments:
     #'
@@ -125,24 +132,21 @@ sequence_data <- R6Class("sequence_data",
     #'   #  otu2     sample1        500
     #'   #  otu2     sample3        25
     #'   #  otu3     sample1        80
-    #'   # ...
     #'
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   otu_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
     #'   samples <- c("sample1", "sample2", "sample5",
     #'    "sample1", "sample3", "sample1")
-    #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_otu_abundance("0.03", otu_ids,
-    #'                                      sequence_abundances, samples)
+    #'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
+    #'   dataset$assign_otu_abundance(otu_ids, sample_abundances, samples)
     #'
-    #'   # otus would look like:
-    #'   # label  sample   otu1   otu2   otu3 ...
-    #'   # 0.03   sample1  10     500    80 ...
-    #'   # 0.03   sample2  100    0      0 ...
-    #'   # 0.03   sample3  0      25     0 ...
-    #'   # 0.03   sample4  0      0      0 ...
-    #'   # 0.03   sample5  1      0      0 ...
-    assign_otu_abundance = function(label, otu_ids, abundances,
+    #'   # (shared) otus would look like:
+    #'   # label  sample   otu1   otu2   otu3
+    #'   # 0.03   sample1  10     500    80
+    #'   # 0.03   sample2  100    0      0
+    #'   # 0.03   sample3  0      25     0
+    #'   # 0.03   sample5  1      0      0
+    assign_otu_abundance = function(otu_ids, abundances,
                                     samples = NULL, seq_ids = NULL) {
         if (is.null(samples)) {
             samples <- rep("", length(otu_ids))
@@ -150,8 +154,9 @@ sequence_data <- R6Class("sequence_data",
         if (is.null(seq_ids)) {
             seq_ids <- rep("", length(otu_ids))
         }
+
         self$data$assign_otu_abundance(
-            label, otu_ids, abundances,
+            otu_ids, abundances,
             samples, seq_ids
         )
 
@@ -225,6 +230,37 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Assign samples to treatments
+    #' @param samples a vector of sample names
+    #' @param treatments a vector of treatment names
+    #' @examples
+    #'
+    #' names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
+    #'              "seq2", "seq3", "seq3", "seq4")
+    #' samples <- c("sample2", "sample3", "sample4",
+    #'             "sample2", "sample3", "sample4",
+    #'            "sample2", "sample3",
+    #'            "sample4")
+    #' abundances <- c(250, 400, 500,
+    #'                25, 40, 50,
+    #'                25, 25,
+    #'                4)
+    #'
+    #' dataset <- sequence_data$new("my_dataset")
+    #' unique_names <- unique(names)
+    #' sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
+    #' dataset$add_sequences(unique_names, sequences)
+    #' dataset$assign_sequence_abundance(names, abundances, samples)
+    #'
+    #' treatments <- c("early", "early", "late")
+    #' dataset$assign_treatments(unique(samples), treatments)
+    #'
+    assign_treatments = function(samples, treatments) {
+        self$data$assign_treatments(samples, treatments)
+        invisible(self)
+    },
+
+    #' @description
     #' Remove all sequences from dataset
     clear = function() {
       self$data$clear()
@@ -293,12 +329,18 @@ sequence_data <- R6Class("sequence_data",
     #' @examples
     #'   dataset <- sequence_data$new("my_dataset")
     #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+    #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
     #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-    #'   dataset$assign_otu_abundance("0.03", otu_ids, seq_ids = seq_ids)
+    #'   dataset$assign_otu_abundance(otu_ids,
+    #'                              sequence_abundances, seq_ids = seq_ids)
+    #'
+    #'   # (list) otus would look like:
+    #'   # otu1             otu2        otu3
+    #'   # seq1,seq2,seq4   seq3,seq6   seq5
     #'
     #'   list <- dataset$get_list()
     #'
-    #'   #  list$otu_ids  list$seq_ids
+    #'   #  list$otu_id  list$seq_id
     #'   #  otu1          seq1
     #'   #  otu1          seq2
     #'   #  otu1          seq4
@@ -359,30 +401,23 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get data.tables representing your OTU / ASV clusters.
-    #' id, abundance, sample(optional)
-    #' These tables represent mothur's list, rabund, shared, relabund files
-    #' @return List of data.tables
-    get_otu_tables = function() {
-      # TODO
-    },
-
-    #' @description
     #' Get data frame containing sequence otu assignments
     #' @examples
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-    #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_otu_abundance("0.03", otu_ids,
-    #'               sequence_abundances, seq_ids = seq_ids)
+    #'   otu_ids <- c("otu1", "otu2", "otu3")
+    #'   otu_abundances <- c(111, 525, 80)
+    #'   dataset$assign_otu_abundance(otu_ids, otu_abundances)
     #'
-    #'   list <- dataset$get_rabund()
+    #'   # (rabund) otus would look like:
+    #'   # otu1  otu2  otu3
+    #'   # 110   525   80
     #'
-    #'   #  list$otu_ids  list$abundances
-    #'   #  otu1          111
-    #'   #  otu2          525
-    #'   #  otu3          80
+    #'   rabund <- dataset$get_rabund()
+    #'
+    #'   #  rabund$otu_id  rabund$abundance
+    #'   #  otu1           111
+    #'   #  otu2           525
+    #'   #  otu3           80
     #'
     #' @return data.frame
     get_rabund = function() {
@@ -745,6 +780,38 @@ sequence_data <- R6Class("sequence_data",
       }
 
       self$data$get_sequences(sample)
+    },
+
+    #' @description
+    #' Get data frame containing sequence otu assignments by sample
+    #' @examples
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+    #'   samples <- c("sample1", "sample2", "sample5",
+    #'    "sample1", "sample3", "sample1")
+    #'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
+    #'   dataset$assign_otu_abundance(otu_ids, sample_abundances, samples)
+    #'
+    #'   # (shared) otus would look like:
+    #'   # label  sample   otu1   otu2   otu3
+    #'   # 0.03   sample1  10     500    80
+    #'   # 0.03   sample2  100    0      0
+    #'   # 0.03   sample3  0      25     0
+    #'   # 0.03   sample5  1      0      0
+    #'
+    #'   shared <- dataset$get_shared()
+    #'
+    #'   # shared$otu_id  shared$sample  shared$abundance
+    #'   # otu1           sample1        10
+    #'   # otu1           sample2        100
+    #'   # otu1           sample5        1
+    #'   # otu2           sample1        500
+    #'   # otu2           sample3        25
+    #'   # otu3           sample1        80
+    #'
+    #' @return data.frame
+    get_shared = function() {
+        self$data$get_shared()
     },
 
     #' @description
