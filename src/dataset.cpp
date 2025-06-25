@@ -405,7 +405,7 @@ Rcpp::DataFrame Dataset::getContigsReport(){
             Rcpp::_["overlap_start"] = select(ostarts, tableSeqs),
             Rcpp::_["overlap_end"] = select(oends, tableSeqs),
             Rcpp::_["mismatches"] = select(mismatches, tableSeqs),
-            Rcpp::_["num_ns"] = select(numns, tableSeqs),
+            Rcpp::_["num_n"] = select(numns, tableSeqs),
             Rcpp::_["ee"] = select(ee, tableSeqs));
 
         return df;
@@ -482,7 +482,11 @@ vector<string> Dataset::getNames(string sample){
 /******************************************************************************/
 vector<vector<string> > Dataset::getNamesBySample(vector<string> samples){
     vector<vector<string> > result;
-    // TODO
+
+    for (int i = 0; i < samples.size(); i++) {
+        result.push_back(getNames(samples[i]));
+    }
+
     return result;
 }
 /******************************************************************************/
@@ -658,7 +662,11 @@ vector<string> Dataset::getSequences(string sample){
 /******************************************************************************/
 vector<vector<string> > Dataset::getSequencesBySample(vector<string> samples){
     vector<vector<string> > result;
-    // TODO
+
+    for (int i = 0; i < samples.size(); i++) {
+        result.push_back(getSequences(samples[i]));
+    }
+
     return result;
 }
 /******************************************************************************/

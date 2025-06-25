@@ -12,7 +12,6 @@
 #' @importFrom parallelly, availableCores
 #' @importFrom waldo compare
 #' @import cli
-#' @import data.table
 #' @export
 sequence_data <- R6Class("sequence_data",
   public = list(
@@ -277,30 +276,30 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get report containing align report table -
     #' ids, search_scores, sim_scores, longest_insert
-    #' @return data.table
+    #' @return data.frame
     get_align_report = function() {
       if (self$data$has_align_data) {
         return(self$data$get_align_report())
       }
-      data.table()
+      data.frame()
     },
 
     #' @description
     #' Get report containing contigs report table -
     #' ids, lengths, ostarts, oends, olengths, mismatches, numns, ee
-    #' @return data.table
+    #' @return data.frame
     get_contigs_report = function() {
       if (self$data$has_contigs_data) {
         return(self$data$get_contigs_report())
       }
-      data.table()
+      data.frame()
     },
 
     #' @description
-    #' Get count table returns data.table containing:
+    #' Get count table returns data.frame containing:
     #' ids, abundances, sample(optional), treatment(optional)
     #' This table represents mothur's count and design files.
-    #' @return data.table
+    #' @return data.frame
     get_count_table = function() {
       self$data$get_sequence_abundance_table()
     },
@@ -393,9 +392,9 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get data.table containing the oligo data
+    #' Get data.frame containing the oligo data
     #' tag, oligo, diffs, oligo(optional), diffs(optional), sample(optional)
-    #' @return data.table
+    #' @return data.frame
     get_oligos = function() {
       # TODO
     },
@@ -464,11 +463,11 @@ sequence_data <- R6Class("sequence_data",
           treatment_names <- self$get_treatments()
           treatment_totals <- self$data$get_treatment_totals()
           return(list(
-            data.table(sample = sample_names, total = sample_totals),
-            data.table(treatment = treatment_names, total = treatment_totals)
+            data.frame(sample = sample_names, total = sample_totals),
+            data.frame(treatment = treatment_names, total = treatment_totals)
           ))
         } else {
-          return(list(data.table(sample = sample_names, total = sample_totals)))
+          return(list(data.frame(sample = sample_names, total = sample_totals)))
         }
       } else {
         cli::cli_alert("Your dataset does not include sample data, ignoring.")
@@ -479,7 +478,7 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get report containing the scrapped sequences / otus -
     #' ids, trash_codes
-    #' @return list of data.tables
+    #' @return list of data.frames
     get_scrap_report = function() {
       results <- list()
       list_names <- c("sequence_scrap_report")
@@ -496,7 +495,7 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get report containing the sequence report table -
     #' ids, starts, ends, lengths, ambigs, homopolymers, numns
-    #' @return data.table
+    #' @return data.frame
     get_sequence_report = function() {
       sequence_report <- self$data$get_sequence_report()
     },
@@ -504,7 +503,7 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get summary of the sequence reports
     #' @param silent Default = FALSE, meaning print summaries
-    #' @return list of data.tables
+    #' @return list of data.frames
     get_sequence_summary = function(silent = FALSE) {
       results <- self$data$get_sequence_summary()
 
@@ -815,10 +814,10 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get data.tables containing classifications for sequences and OTUs.
+    #' Get data.frames containing classifications for sequences and OTUs.
     #' id, taxonomy, abundance(optional)
     #' These tables represent mothur's taxonomy and cons.taxonomy files
-    #' @return List of data.tables
+    #' @return List of data.frames
     get_taxonomy_tables = function() {
       # TODO
     },

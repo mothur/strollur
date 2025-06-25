@@ -466,6 +466,23 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getSampleTotals() == sampleTotals);
         expect_true(data.getTotal() == 1320);
 
+        vector<vector<string>> parsed = data.getNamesBySample(unique(samples));
+
+        vector<string> uniqueIds = unique(ids);
+        expect_true(parsed[0] == uniqueIds);
+        uniqueIds.pop_back();
+        expect_true(parsed[1] == uniqueIds);
+        uniqueIds[2] = "seq4";
+        expect_true(parsed[2] == uniqueIds);
+
+        parsed = data.getSequencesBySample(unique(samples));
+
+        expect_true(parsed[0] == seqs);
+        seqs.pop_back();
+        expect_true(parsed[1] == seqs);
+        seqs[2] = ".ATGCGAMMTAAATGCCT.";
+        expect_true(parsed[2] == seqs);
+
         // no treatment data
         Rcpp::DataFrame countTable = data.getSequenceAbundanceTable();
 

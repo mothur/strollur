@@ -315,3 +315,84 @@ test_that("test R6 sequence_data - print", {
     waldo::compare(data$print(), data$print())
   )
 })
+
+test_that("test R6 sequence_data - get_align_report, get_contigs_report", {
+    names <- c("seq1", "seq2", "seq3", "seq4")
+    seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+
+    ids <- c(
+        "seq1", "seq1", "seq1",
+        "seq2", "seq2", "seq2",
+        "seq3", "seq3",
+        "seq4", "seq4"
+    )
+    samples <- c(
+        "sample2", "sample3", "sample4",
+        "sample2", "sample3", "sample4",
+        "sample2", "sample3",
+        "sample2", "sample4"
+    )
+    abundances <- c(
+        250, 400, 500,
+        25, 40, 50,
+        25, 25,
+        1, 4
+    )
+
+    data <- sequence_data$new("mydata")
+    data$add_sequences(names, seqs)
+    data$assign_sequence_abundance(ids, abundances, samples)
+
+    treatments <- c("early", "early", "late")
+
+    data$assign_treatments(unique(samples), treatments)
+
+    expect_equal(data$get_align_report(), data.frame())
+
+    search_scores <- c(77.7, 87.6, 98.5, 75.6)
+    sim_scores <- c(97.7, 97.6, 98.5, 95.6)
+    longest_inserts <- c(5, 2, 8, 1)
+
+    data$data$add_align_report(unique(ids), search_scores,
+                               sim_scores, longest_inserts)
+
+
+    align_report <- data$get_align_report()
+    expect_equal(align_report$id, unique(ids))
+    expect_equal(round(align_report$search_score, digits = 2),
+                round(search_scores, digits = 2))
+    expect_equal(round(align_report$sim_score, digits = 2),
+                 round(sim_scores, digits = 2))
+    expect_equal(align_report$longest_insert, longest_inserts)
+
+    overlap_lengths <- c(3, 4, 5, 3)
+    overlap_starts <- c(2, 1, 1, 1)
+    overlap_ends <- c(5, 4, 5, 3)
+    mismatches <- c(0, 1, 0, 0)
+    expected_errors <- c(5.7, 0.6, 34.5, 3.6)
+
+    data$data$add_contigs_report(unique(ids), overlap_lengths,
+                                 overlap_starts, overlap_ends,
+                                 mismatches, expected_errors)
+
+
+    contigs_report <- data$get_contigs_report()
+    expect_equal(contigs_report$id, unique(ids))
+    expect_equal(contigs_report$length, c(5,5,5,5))
+    expect_equal(contigs_report$num_n, c(0,0,0,0))
+    expect_equal(contigs_report$overlap_length, overlap_lengths)
+    expect_equal(contigs_report$overlap_start, overlap_starts)
+    expect_equal(contigs_report$overlap_end, overlap_ends)
+    expect_equal(contigs_report$mismatches, mismatches)
+    expect_equal(round(contigs_report$ee, digits = 2),
+                 round(expected_errors, digits = 2))
+
+    summary <- data$get_sequence_summary()
+
+    expect_equal(length(summary), 3)
+    expect_equal(summary$contigs_summary$olengths, c(3, 3, 3, 3, 3, 5, 5, 3))
+    expect_equal(summary$align_summary$longest_inserts,
+                 c(1,2,5,5,5,8,8,4))
+
+})
+
