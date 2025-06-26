@@ -321,6 +321,19 @@ vector<int> AbundTable::getSampleTotals() {
     return totals;
 }
 /******************************************************************************/
+map<string, string> AbundTable::getSampleTreatmentAssignments() {
+    map<string, string> results;
+
+    if (hasTreatments) {
+        for (int i = 0; i < sampleNames.size(); i++) {
+            string treatmentName = sampleTreatment[sampleIndex[sampleNames[i]]];
+            results[sampleNames[i]] = treatmentName;
+        }
+    }
+
+    return results;
+}
+/******************************************************************************/
 int AbundTable::getNumSamples() {
     if (hasSampleData) {
         return numSamples;

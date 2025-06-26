@@ -30,7 +30,7 @@ RCPP_MODULE(Dataset) {
     .method("add_contigs_report", &Dataset::addContigsReport,
     "Add contigs report to dataset")
 
-    .method("assign_otu_abundance", &Dataset::assignOtuAbundance, "Add otu assignments to dataset")
+    .method("assign_otus", &Dataset::assignOtus, "Add otu assignments to dataset")
     .method("assign_sequence_abundance", &Dataset::assignSequenceAbundance,
     "Set sequence abundance and optionally assign sample and treatment data")
     .method("assign_treatments", &Dataset::assignTreatments, "Assign samples to treatments")

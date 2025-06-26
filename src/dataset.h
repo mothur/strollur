@@ -76,6 +76,19 @@ vector<T> getValues(const map<string, T>& x) {
 }
 /**********************************************************************/
 template<typename T>
+vector<T> getKeys(const map<T, int>& x) {
+    vector<T> results;
+
+    if (x.size() == 0) { return results; }
+
+    for (auto it = x.begin(); it != x.end(); it++) {
+        results.push_back(it->first);
+    }
+
+    return results;
+}
+/**********************************************************************/
+template<typename T>
 vector<T> select(const vector<T>& x, const vector<bool>& filter) {
     vector<T> results;
 

@@ -156,6 +156,9 @@ public:
     // vector containing names of samples
     vector<string> getSamples();
     vector<string> getTreatments();
+    // maps sampleName to treatmentName
+    map<string, string> getSampleTreatmentAssignments();
+
     // does the table contain a sample
     // if name provided, does the sequence have this sample
     bool hasSample(string sample, int name = -1);
@@ -204,6 +207,7 @@ class OtuTable {
 
 public:
 
+    OtuTable(AbundTable*, map<string, int>*, string label);
     OtuTable(string label);
     ~OtuTable();
 
@@ -215,7 +219,7 @@ public:
     // List file -> OTUID, SeqID, abundance
     // Shared -> OTUID, Abundance, sample
     // Rabund -> OTUID, abundance
-    void add(vector<string> otuIDs, vector<int> abundance,
+    void add(vector<string> otuIDs, vector<int> abundance = nullIntVector,
              vector<string> samples = nullVector,
              vector<string> seqIDs = nullVector);
 
@@ -265,6 +269,9 @@ public:
     // remove given outID
     void remove(string otuID, string reason, bool update = true);
 
+    // if hasSeqIds, removes sequences and possibly otus
+    void removeSequences(vector<string> ids, vector<string> reasons);
+
     // for datasets without samples
     void setAbundance(vector<string> otuIDS, vector<int> abunds,
                       string reason = "merged");
@@ -295,7 +302,13 @@ private:
     int uniqueBad;
 
     // count table data
-    AbundTable* count;
+    // otu abundances, parsed by sample
+    AbundTable* otuCount;
+
+    // sequence abundances, parsed by sample.
+    // passed from dataset if seq_ids are given
+    AbundTable* seqCount;
+    map<string, int>* seqIndex;
 
     int getNumNames(string&);
     vector<int> getGoodIndexes();
@@ -335,7 +348,7 @@ public:
 
     // add seqs
     void addSequences(vector<string> n, vector<string> s,
-                 vector<string> c);
+                 vector<string> c = nullVector);
 
     // align_seqs will create searchScores, simScores and longestInserts
     void addAlignReport(vector<string>& n, vector<double>& ss,
@@ -353,8 +366,8 @@ public:
                                vector<string> samples = nullVector,
                                vector<string> treatments = nullVector);
     // otuIDS, abundances, samples(optional), seqIDs(optional), label (optional)
-    void assignOtuAbundance(vector<string> otuIDS,
-                                 vector<int> abunds,
+    void assignOtus(vector<string> otuIDS,
+                                 vector<int> abunds = nullIntVector,
                                  vector<string> samples = nullVector,
                                  vector<string> seqIDs = nullVector);
 

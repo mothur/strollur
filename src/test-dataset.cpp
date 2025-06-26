@@ -1012,7 +1012,7 @@ context("Dataset class C++ unit tests") {
     }
 
     // Otu tests
-    test_that("Tests assignOtuAbundance, getOtuIds, getList, getRabund, getShared") {
+    test_that("Tests assignOtus, getOtuIds, getList, getRabund, getShared") {
 
         Dataset data("mydata", 1);
 
@@ -1036,7 +1036,7 @@ context("Dataset class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        data.assignOtuAbundance(otuNames, abundances);
+        data.assignOtus(otuNames, abundances);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 10);
@@ -1069,7 +1069,7 @@ context("Dataset class C++ unit tests") {
         otuNames[8] = "otu4";   seqNames[8] = "seq9";
         otuNames[9] = "otu4";   seqNames[9] = "seq10";
 
-        data.assignOtuAbundance(otuNames, abundances, nullVector, seqNames);
+        data.assignOtus(otuNames, abundances, nullVector, seqNames);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 4);
@@ -1119,7 +1119,7 @@ context("Dataset class C++ unit tests") {
         otuNames[14] = "otu4";   samples[14] = "sample5";  abundances[14] = 5;
 
         // add shared data
-        data.assignOtuAbundance(otuNames, abundances, samples);
+        data.assignOtus(otuNames, abundances, samples);
 
         vector<string> uniqueSamples(6, "");
         uniqueSamples[0] = "sample1";
@@ -1199,7 +1199,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getOtuAbundances("otu2") == temp);
 
         otuNames.clear();
-        expect_error(data.assignOtuAbundance(otuNames, abundances));
+        expect_error(data.assignOtus(otuNames, abundances));
     }
 
     test_that("Tests mergeOtus, removeOtus, getScrapReport, getScrapSummary") {
@@ -1224,7 +1224,7 @@ context("Dataset class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        data.assignOtuAbundance(otuNames, abundances);
+        data.assignOtus(otuNames, abundances);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 10);
@@ -1267,7 +1267,7 @@ context("Dataset class C++ unit tests") {
         otuNames[8] = "otu4";   seqNames[8] = "seq9";
         otuNames[9] = "otu4";   seqNames[9] = "seq10";
 
-        data.assignOtuAbundance(otuNames, abundances, nullVector, seqNames);
+        data.assignOtus(otuNames, abundances, nullVector, seqNames);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 4);
@@ -1332,7 +1332,7 @@ context("Dataset class C++ unit tests") {
         otuNames[11] = "otu3";   samples[11] = "sample6";  abundances[11] = 4;
 
         // add shared data
-        data.assignOtuAbundance(otuNames, abundances, samples);
+        data.assignOtus(otuNames, abundances, samples);
 
         vector<string> uniqueSamples(6, "");
         uniqueSamples[0] = "sample1";
@@ -1461,7 +1461,7 @@ context("Dataset class C++ unit tests") {
         expect_true(totalCounts == Rcpp::as<vector<int>>(scrapSummary[2]));
 
         otuNames.clear();
-        expect_error(data.assignOtuAbundance(otuNames, abundances));
+        expect_error(data.assignOtus(otuNames, abundances));
     }
 
     test_that("Tests setOtuAbundance, setOtuAbundances") {
@@ -1486,7 +1486,7 @@ context("Dataset class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        data.assignOtuAbundance(otuNames, abundances);
+        data.assignOtus(otuNames, abundances);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 10);
@@ -1533,7 +1533,7 @@ context("Dataset class C++ unit tests") {
         otuNames[8] = "otu4";   seqNames[8] = "seq9";
         otuNames[9] = "otu4";   seqNames[9] = "seq10";
 
-        data.assignOtuAbundance(otuNames, abundances, nullVector, seqNames);
+        data.assignOtus(otuNames, abundances, nullVector, seqNames);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 4);
@@ -1587,7 +1587,7 @@ context("Dataset class C++ unit tests") {
         otuNames[11] = "otu3";   samples[11] = "sample6";  abundances[11] = 4;
 
         // add shared data
-        data.assignOtuAbundance(otuNames, abundances, samples);
+        data.assignOtus(otuNames, abundances, samples);
 
         vector<string> uniqueSamples(6, "");
         uniqueSamples[0] = "sample1";

@@ -144,26 +144,10 @@ void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c)
     hasSequenceData = true;
 }
 /******************************************************************************/
-void Dataset::assignOtuAbundance(vector<string> otuIds,
+void Dataset::assignOtus(vector<string> otuIds,
                         vector<int> abunds,
                         vector<string> samples,
                         vector<string> seqIds) {
-
-    if (otuIds.size() != abunds.size()) {
-        string message = "[ERROR]: Size mismatch. otu_ids and abunds must be";
-        message += " the same size.";
-        throw Rcpp::exception(message.c_str());
-    }
-
-    hasOtuData = true;
-
-    // new table
-    if (otuTable == nullptr) {
-        otuTable = new OtuTable("otu");
-    }else{
-        // assume they had "list" data and are adding "shared" data
-        otuTable->setLabel("otu");
-    }
 
     // sanity checks - R6 object passes blank strings if seqIds == NULL
     if (!seqIds.empty()) {
@@ -180,6 +164,49 @@ void Dataset::assignOtuAbundance(vector<string> otuIds,
             if (id == "") { samples.clear(); }
         }
     }
+
+    // sanity checks - R6 object passes all 0's if abundance == NULL
+    if (!abunds.empty()) {
+        int id = 0;
+        if (allIdentical(abunds, id)) {
+            if (id == 0) { abunds.clear(); }
+        }
+    }
+
+
+    if (seqIds.empty() && (otuIds.size() != abunds.size())) {
+        string message = "[ERROR]: Size mismatch. otu_ids and abunds must be";
+        message += " the same size.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    // if you don't have sequence data, but are adding seq_names for otus,
+    // add seqs with blank sequence strings, add abundances if provided
+    if (!seqIds.empty() && !hasSequenceData) {
+        vector<string> blankSeqs(seqIds.size(), "");
+        addSequences(seqIds, blankSeqs);
+
+        // if the abundances are provided then use them
+        if (!abunds.empty()) {
+            assignSequenceAbundance(seqIds, abunds, samples);
+        }
+    }
+
+    hasOtuData = true;
+
+    // new table
+    if (otuTable == nullptr) {
+        // if dataset includes sequence counts pass that to otuTable
+        if (hasSequenceData) {
+            otuTable = new OtuTable(count, &seqIndex, "otu");
+        }else {
+            otuTable = new OtuTable("otu");
+        }
+    }else{
+        // assume they had "list" data and are adding "shared" data
+        otuTable->setLabel("otu");
+    }
+
 
     // add otus
     otuTable->add(otuIds, abunds, samples, seqIds);
@@ -905,6 +932,10 @@ void Dataset::removeSequences(vector<string> namesToRemove,
     count->updateTotals();
     numSamples = count->getNumSamples();
     numTreatments = count->getNumTreatments();
+
+    if (hasOtuData) {
+        otuTable->removeSequences(namesToRemove, trashTags);
+    }
 
 }
 /******************************************************************************/

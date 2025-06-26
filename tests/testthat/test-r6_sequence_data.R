@@ -137,6 +137,23 @@ test_that("test R6 sequence_data - addSeqs, assign samples", {
   data$add_sequences(names, seqs)
   data$assign_sequence_abundance(ids, abundances, samples, treatments)
 
+  # assign otus
+  otus <- c("otu1", "otu2", "otu1", "otu2")
+  data$assign_otus(otus, seq_ids = names)
+  expect_equal(data$get_num_otus(), 2)
+
+  expect_equal(data$get_list()$otu_id, c("otu1", "otu1", "otu2", "otu2"))
+  expect_equal(data$get_list()$seq_id, c("seq1", "seq3", "seq2", "seq4"))
+
+  expect_equal(data$get_rabund()$otu_id, c("otu1", "otu2"))
+  expect_equal(data$get_rabund()$abundance, c(1200, 120))
+
+  expect_equal(data$get_shared()$otu_id, c("otu1", "otu1", "otu1",
+                                           "otu2", "otu2", "otu2"))
+  expect_equal(data$get_shared()$sample, c("sample2", "sample3", "sample4",
+                                           "sample2", "sample3", "sample4"))
+  expect_equal(data$get_shared()$abundance, c(275, 425, 500, 26, 40, 54))
+
   expect_true(data$is_aligned())
   expect_equal(data$get_ids(), names)
   expect_equal(data$get_sequences(), seqs)
@@ -166,7 +183,8 @@ test_that("test R6 sequence_data - addSeqs, assign samples", {
   # total and sample
   expect_equal(data$get_num_sequences(sample = "sample2"), 301)
 
-  results <- list(sequence_scrap_report = data.frame())
+  results <- list(sequence_scrap_report = data.frame(),
+                  otu_scrap_report = data.frame())
   expect_equal(results, data$get_scrap_report())
 })
 
@@ -244,7 +262,7 @@ test_that("test R6 sequence_data - get_list, get_rabund, get_shared", {
     seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
     otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
     sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    dataset$assign_otu_abundance(otu_ids = otu_ids,
+    dataset$assign_otus(otu_ids = otu_ids,
                                  abundances = sequence_abundances,
                                  seq_ids = seq_ids)
     # otus would look like:
@@ -268,7 +286,7 @@ test_that("test R6 sequence_data - get_list, get_rabund, get_shared", {
     samples <- c("sample1", "sample2", "sample5",
                  "sample1", "sample3", "sample1")
     sample_abundances <- c(10, 100, 1, 500, 25, 80)
-    dataset$assign_otu_abundance(otu_ids, sample_abundances, samples)
+    dataset$assign_otus(otu_ids, sample_abundances, samples)
 
     shared <- dataset$get_shared()
     expect_equal(shared$otu_id, otu_ids)

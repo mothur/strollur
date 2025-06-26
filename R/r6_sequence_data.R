@@ -96,11 +96,12 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Add otu data
     #' @param otu_ids a vector of otu labels
-    #' @param abundances a vector of abundances
+    #' @param abundances a vector of abundances (optional). You must provide
+    #'  either abundances or seq_ids.
     #' @param samples a vector of sample assignments (optional)
-    #' @param seq_ids a vector of sequence names (optional)
+    #' @param seq_ids a vector of sequence names (optional) You must provide
+    #'  either abundances or seq_ids.
     #' @examples
-    #'   # To assign sequences to otus:
     #'
     #'   # otu_ids  seq_ids  abundances
     #'   #  otu1     seq1        10
@@ -110,19 +111,29 @@ sequence_data <- R6Class("sequence_data",
     #'   #  otu2     seq6        25
     #'   #  otu3     seq5        80
     #'
+    #'   # To assign sequences to otus:
+    #'
     #'   dataset <- sequence_data$new("my_dataset")
     #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
     #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-    #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_otu_abundance(otu_ids,
-    #'               sequence_abundances, seq_ids = seq_ids)
+    #'   dataset$assign_otu_abundance(otu_ids, seq_ids = seq_ids)
     #'
     #'   # otus would look like:
     #'   #            otu1             otu2        otu3
     #'   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
-    #'   # (rabund)   110              525         80
     #'
     #'   # To add abundance only otu assignments:
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+    #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+    #'   dataset$assign_otu_abundance(otu_ids, sequence_abundances)
+    #'
+    #'   # otus would look like:
+    #'   #            otu1             otu2        otu3
+    #'   # (rabund)   110              525         80
+    #'
+    #'   # To add abundance only otu assignments parsed by sample:
     #'
     #'   # otu_ids  samples  abundances
     #'   #  otu1     sample1        10
@@ -145,16 +156,25 @@ sequence_data <- R6Class("sequence_data",
     #'   # 0.03   sample2  100    0      0
     #'   # 0.03   sample3  0      25     0
     #'   # 0.03   sample5  1      0      0
-    assign_otu_abundance = function(otu_ids, abundances,
+    assign_otus = function(otu_ids, abundances = NULL,
                                     samples = NULL, seq_ids = NULL) {
+
+        if (is.null(abundances) && is.null(seq_ids)) {
+            cli::cli_abort("[ERROR]: You must provide either
+                           abundances or seq_ids.")
+        }
+
         if (is.null(samples)) {
             samples <- rep("", length(otu_ids))
+        }
+        if (is.null(abundances)) {
+            abundances <- rep(0, length(otu_ids))
         }
         if (is.null(seq_ids)) {
             seq_ids <- rep("", length(otu_ids))
         }
 
-        self$data$assign_otu_abundance(
+        self$data$assign_otus(
             otu_ids, abundances,
             samples, seq_ids
         )
