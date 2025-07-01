@@ -859,9 +859,7 @@ vector<int> Dataset::getSequenceAbundances(){
 }
 /******************************************************************************/
 vector<vector<int>> Dataset::getSeqsAbundsBySample(){
-    vector<vector<int> > result;
-    // TODO
-    return result;
+    return count->getAbundances(getIncludedNamesIndexes());
 }
 /******************************************************************************/
 vector<string> Dataset::getSequences(string sample){

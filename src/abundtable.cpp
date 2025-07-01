@@ -302,6 +302,16 @@ vector<int> AbundTable::getAbundances(int name) {
     return abunds;
 }
 /******************************************************************************/
+vector<vector<int>> AbundTable::getAbundances(vector<int> ids) {
+    vector<vector<int>> results(ids.size());
+
+    for (int i = 0; i < ids.size(); i++) {
+        results[i] = getAbundances(ids[i]);
+    }
+
+    return results;
+}
+/******************************************************************************/
 vector<string> AbundTable::getSamples() {
     vector<string> samples;
 

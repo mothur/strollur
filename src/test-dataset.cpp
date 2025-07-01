@@ -1328,6 +1328,19 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getOtuAbundance("otu3") == 0);
         expect_true(data.getOtu("otu3") == "");
 
+        // remove otu by setting abundance to 0
+        vector<string> testRemove(1, "otu2");
+        vector<int> r(6, 0);
+        vector<vector<int>> abundsRemove; abundsRemove.push_back(r);
+
+        data.setOtuAbundances(testRemove, abundsRemove, "zeroedOTU");
+
+        expect_true(data.getTotal() == 30);
+        expect_true(data.numOtus == 1);
+        expect_true(data.numUnique == 3);
+        expect_true(data.getOtuAbundance("otu2") == 0);
+        expect_true(data.getOtu("otu2") == "");
+
         // test adding otuNames abundances, samples and seqids
         data.clear();
         otuNames.resize(16, "otu1");
@@ -1436,6 +1449,20 @@ context("Dataset class C++ unit tests") {
         temp[4] = 5;
         expect_true(data.getOtuAbundances("otu2") == temp);
         expect_true(data.getOtuAbundances("badotu") == nullIntVector);
+
+        auto countMatrix = data.getSeqsAbundsBySample();
+        auto goodNames = data.getNames();
+        vector<int> abunds(6, 0);
+        //seq1
+        abunds[0] = 10;
+        expect_true(countMatrix[0] == abunds);
+        // seq10
+        abunds[0] = 1; abunds[2] = 2; abunds[4] = 3; abunds[5] = 4;
+        expect_true(countMatrix[1] == abunds);
+        // seq2
+        abunds[0] = 0; abunds[1] = 10;
+        abunds[2] = 0; abunds[4] = 0; abunds[5] = 0;
+        expect_true(countMatrix[2] == abunds);
 
         // remove otu
         vector<string> otusToRemove(2, "otu1");

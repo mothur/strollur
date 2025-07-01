@@ -142,8 +142,10 @@ public:
     // total abundance for sequence, if sample is provided then abundance for
     // that sequence in that sample
     int getAbundance(int name, string sample = "");
-    // abundances by sample, in the same order as the samples
-    vector<int> getAbundances(int name);
+    // abundances by sample for id, (in the same order as the samples)
+    vector<int> getAbundances(int id);
+    // abundances by sample for ids
+    vector<vector<int>> getAbundances(vector<int> ids);
     // total number of sequences
     int getTotal(string sample = "");
 
