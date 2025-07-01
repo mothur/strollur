@@ -8,7 +8,6 @@ context("OtuTable class C++ unit tests") {
 
         expect_true(otuTable.label == "0.03");
         expect_true(otuTable.numOtus == 0);
-        expect_true(otuTable.numUnique == -1);
     }
 
     test_that("Tests add, get, getAbundance, getAbundances") {
@@ -27,49 +26,17 @@ context("OtuTable class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        otuTable.add(otuNames, abundances);
+        otuTable.assignAbundance(otuNames, abundances);
 
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numOtus == 10);
-        expect_true(otuTable.numUnique == -1);
+
         // no sequence data was given
-        expect_true(otuTable.get("otu1") == "");
         expect_true(otuTable.getAbundance("otu1") == 10);
         vector<int> temp(1, 10);
         expect_true(otuTable.getAbundances("otu1") == temp);
 
         otuTable.clear();
-
-        // test adding otuNames, seqNames, abundances (list)
-
-        vector<string> seqNames(10, "");
-        otuNames[0] = "otu1";   seqNames[0] = "seq1";
-        otuNames[1] = "otu1";   seqNames[1] = "seq2";
-        otuNames[2] = "otu1";   seqNames[2] = "seq3";
-        otuNames[3] = "otu2";   seqNames[3] = "seq4";
-        otuNames[4] = "otu2";   seqNames[4] = "seq5";
-        otuNames[5] = "otu3";   seqNames[5] = "seq6";
-        otuNames[6] = "otu4";   seqNames[6] = "seq7";
-        otuNames[7] = "otu4";   seqNames[7] = "seq8";
-        otuNames[8] = "otu4";   seqNames[8] = "seq9";
-        otuNames[9] = "otu4";   seqNames[9] = "seq10";
-
-        otuTable.add(otuNames, abundances, nullVector, seqNames);
-
-        expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numOtus == 4);
-        expect_true(otuTable.numUnique == 10);
-
-        expect_true(otuTable.get("otu1") == "seq1,seq2,seq3");
-        expect_true(otuTable.get("otu2") == "seq4,seq5");
-        expect_true(otuTable.get("otu3") == "seq6");
-        expect_true(otuTable.get("otu4") == "seq7,seq8,seq9,seq10");
-        expect_true(otuTable.getAbundance("otu1") == 30);
-        expect_true(otuTable.getAbundance("otu2") == 20);
-        expect_true(otuTable.getAbundance("otu3") == 10);
-        expect_true(otuTable.getAbundance("otu4") == 40);
-        temp[0] = 20;
-        expect_true(otuTable.getAbundances("otu2") == temp);
 
         // test adding otuNames abundances, samples (shared)
         otuNames.resize(15, "otu1");
@@ -92,14 +59,12 @@ context("OtuTable class C++ unit tests") {
         otuNames[14] = "otu4";   samples[14] = "sample5";  abundances[14] = 5;
 
         // add shared data
-        otuTable.add(otuNames, abundances, samples);
+        otuTable.assignAbundance(otuNames, abundances, samples);
 
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numOtus == 4);
-        expect_true(otuTable.numUnique == 10);
         expect_true(otuTable.getNumSamples() == 6);
 
-        expect_true(otuTable.get("otu4") == "seq7,seq8,seq9,seq10");
         expect_true(otuTable.getAbundance("otu1") == 30);
         expect_true(otuTable.getAbundance("otu2") == 20);
         expect_true(otuTable.getAbundance("otu3") == 10);
@@ -121,7 +86,7 @@ context("OtuTable class C++ unit tests") {
         expect_true(otuTable.getSampleTotals() == sampleTotals);
     }
 
-    test_that("Tests getScrapReport, getRAbundVector, getRAbund, getListVector, getList, getSharedVector, hasSample") {
+    test_that("Tests getScrapReport, getRAbundVector, getRAbund, getSharedVector, hasSample") {
         OtuTable otuTable("0.03");
 
         Rcpp::DataFrame rabund = otuTable.getRAbund();
@@ -140,79 +105,15 @@ context("OtuTable class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        otuTable.add(otuNames, abundances);
+        otuTable.assignAbundance(otuNames, abundances);
 
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numOtus == 10);
-        expect_true(otuTable.numUnique == -1);
-        // no sequence data was given
-        expect_true(otuTable.get("otu1") == "");
         expect_true(otuTable.getAbundance("otu1") == 10);
         vector<int> temp(1, 10);
         expect_true(otuTable.getAbundances("otu1") == temp);
 
         otuTable.clear();
-
-        // test adding otuNames, seqNames, abundances (list)
-        vector<string> seqNames(10, "");
-        otuNames[0] = "otu1";   seqNames[0] = "seq1";
-        otuNames[1] = "otu1";   seqNames[1] = "seq2";
-        otuNames[2] = "otu1";   seqNames[2] = "seq3";
-        otuNames[3] = "otu2";   seqNames[3] = "seq4";
-        otuNames[4] = "otu2";   seqNames[4] = "seq5";
-        otuNames[5] = "otu3";   seqNames[5] = "seq6";
-        otuNames[6] = "otu4";   seqNames[6] = "seq7";
-        otuNames[7] = "otu4";   seqNames[7] = "seq8";
-        otuNames[8] = "otu4";   seqNames[8] = "seq9";
-        otuNames[9] = "otu4";   seqNames[9] = "seq10";
-
-        vector<string> uniqueOtuNames(4);
-        uniqueOtuNames[0] = "otu1";
-        uniqueOtuNames[1] = "otu2";
-        uniqueOtuNames[2] = "otu3";
-        uniqueOtuNames[3] = "otu4";
-
-        otuTable.add(otuNames, abundances, nullVector, seqNames);
-
-        expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numOtus == 4);
-        expect_true(otuTable.numUnique == 10);
-
-        vector<string> otuListVector(4, "");
-        otuListVector[0] = "seq1,seq2,seq3";
-        otuListVector[1] = "seq4,seq5";
-        otuListVector[2] = "seq6";
-        otuListVector[3] = "seq7,seq8,seq9,seq10";
-
-        vector<int> otuRabundVector(4, 0);
-        otuRabundVector[0] = 30;
-        otuRabundVector[1] = 20;
-        otuRabundVector[2] = 10;
-        otuRabundVector[3] = 40;
-
-        expect_true(otuTable.get("otu1") == otuListVector[0]);
-        expect_true(otuTable.get("otu2") == otuListVector[1]);
-        expect_true(otuTable.get("otu3") == otuListVector[2]);
-        expect_true(otuTable.get("otu4") == otuListVector[3]);
-        expect_true(otuTable.getListVector() == otuListVector);
-        expect_true(otuTable.getAbundance("otu1") == otuRabundVector[0]);
-        expect_true(otuTable.getAbundance("otu2") == otuRabundVector[1]);
-        expect_true(otuTable.getAbundance("otu3") == otuRabundVector[2]);
-        expect_true(otuTable.getAbundance("otu4") == otuRabundVector[3]);
-        expect_true(otuTable.getRAbundVector() == otuRabundVector);
-        temp[0] = 20;
-        expect_true(otuTable.getAbundances("otu2") == temp);
-
-        Rcpp::DataFrame list = otuTable.getList();
-        expect_true(otuNames == Rcpp::as<vector<string>>(list[0]));
-        expect_true(seqNames == Rcpp::as<vector<string>>(list[1]));
-
-        Rcpp::DataFrame shared = otuTable.getShared();
-        expect_true(shared.size() == 0);
-
-        rabund = otuTable.getRAbund();
-        expect_true(uniqueOtuNames == Rcpp::as<vector<string>>(rabund[0]));
-        expect_true(otuRabundVector == Rcpp::as<vector<int>>(rabund[1]));
 
         // test adding otuNames abundances, samples (shared)
         otuNames.resize(15, "otu1");
@@ -256,14 +157,24 @@ context("OtuTable class C++ unit tests") {
         sharedVector[3][4] = 5;
 
         // add shared data
-        otuTable.add(otuNames, abundances, samples);
+        otuTable.assignAbundance(otuNames, abundances, samples);
 
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numOtus == 4);
-        expect_true(otuTable.numUnique == 10);
         expect_true(otuTable.getNumSamples() == 6);
 
-        expect_true(otuTable.get("otu4") == otuListVector[3]);
+        vector<int> otuRabundVector(4, 0);
+        otuRabundVector[0] = 30;
+        otuRabundVector[1] = 20;
+        otuRabundVector[2] = 10;
+        otuRabundVector[3] = 40;
+
+        vector<string> uniqueOtuNames(4);
+        uniqueOtuNames[0] = "otu1";
+        uniqueOtuNames[1] = "otu2";
+        uniqueOtuNames[2] = "otu3";
+        uniqueOtuNames[3] = "otu4";
+
         expect_true(otuTable.getAbundance("otu1") == otuRabundVector[0]);
         expect_true(otuTable.getAbundance("otu2") == otuRabundVector[1]);
         expect_true(otuTable.getAbundance("otu3") == otuRabundVector[2]);
@@ -281,7 +192,7 @@ context("OtuTable class C++ unit tests") {
         expect_true(uniqueOtuNames == Rcpp::as<vector<string>>(rabund[0]));
         expect_true(otuRabundVector == Rcpp::as<vector<int>>(rabund[1]));
 
-        shared = otuTable.getShared();
+        Rcpp::DataFrame shared = otuTable.getShared();
         expect_true(otuNames == Rcpp::as<vector<string>>(shared[0]));
         expect_true(abundances == Rcpp::as<vector<int>>(shared[1]));
         expect_true(samples == Rcpp::as<vector<string>>(shared[2]));
@@ -302,6 +213,4 @@ context("OtuTable class C++ unit tests") {
         expect_error(otuTable.setAbundance(nullVector, sampleTotals));
         expect_error(otuTable.setAbundances(nullVector, sharedVector));
     }
-
-
 }

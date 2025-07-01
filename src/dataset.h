@@ -130,6 +130,12 @@ void sum(vector<T>& x, vector<T>& y) {
 }
 /**********************************************************************/
 template<typename T>
+void subtract(vector<T>& x, vector<T>& y) {
+    transform (x.begin(), x.end(),
+               y.begin(), x.begin(), std::minus<T>());
+}
+/**********************************************************************/
+template<typename T>
 vector<T> unique(const vector<T>& x) {
 
     vector<T> uniqueX;

@@ -1040,7 +1040,6 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 10);
-        expect_true(data.numUnique == -1);
         expect_true(data.getOtuIds() == otuNames);
 
         expect_true(data.getList().size() == 0);
@@ -1079,6 +1078,10 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getOtu("otu2") == "seq4,seq5");
         expect_true(data.getOtu("otu3") == "seq6");
         expect_true(data.getOtu("otu4") == "seq7,seq8,seq9,seq10");
+        expect_true(data.getListVector()[0] == "seq1,seq2,seq3");
+        expect_true(data.getListVector()[1] == "seq4,seq5");
+        expect_true(data.getListVector()[2] == "seq6");
+        expect_true(data.getListVector()[3] == "seq7,seq8,seq9,seq10");
         expect_true(data.getOtuAbundance("otu1") == 30);
         expect_true(data.getOtuAbundance("otu2") == 20);
         expect_true(data.getOtuAbundance("otu3") == 10);
@@ -1202,7 +1205,7 @@ context("Dataset class C++ unit tests") {
         expect_error(data.assignOtus(otuNames, abundances));
     }
 
-    test_that("Tests mergeOtus, removeOtus, getScrapReport, getScrapSummary") {
+   test_that("Tests mergeOtus, removeOtus, getScrapReport, getScrapSummary") {
 
         Dataset data("mydata", 1);
 
@@ -1228,7 +1231,6 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 10);
-        expect_true(data.numUnique == -1);
         expect_true(data.getOtuIds() == otuNames);
 
         // no sequence data was given
@@ -1246,7 +1248,6 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 7);
-        expect_true(data.numUnique == -1);
         expect_true(data.getOtuAbundance("otu1") == 40);
         expect_true(data.getOtuAbundance("otu2") == 0);
         expect_true(data.getOtuAbundance("otu3") == 10);
@@ -1313,26 +1314,44 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getOtuAbundance("otu4") == 0);
         temp[0] = 60;
         expect_true(data.getOtuAbundances("otu2") == temp);
+        expect_true(data.getTotal() == 100);
 
-        // test adding otuNames abundances, samples (shared)
-        otuNames.resize(12, "otu1");
-        abundances.resize(12, 10);
-        vector<string> samples(12, "sample1");
-        otuNames[0] = "otu1";   samples[0] = "sample1";  abundances[0] = 10;
-        otuNames[1] = "otu1";   samples[1] = "sample2";  abundances[1] = 10;
-        otuNames[2] = "otu1";   samples[2] = "sample4";  abundances[2] = 5;
-        otuNames[3] = "otu1";   samples[3] = "sample5";  abundances[3] = 5;
-        otuNames[4] = "otu2";   samples[4] = "sample1";  abundances[4] = 25;
-        otuNames[5] = "otu2";   samples[5] = "sample2";  abundances[5] = 15;
-        otuNames[6] = "otu2";   samples[6] = "sample4";  abundances[6] = 15;
-        otuNames[7] = "otu2";  samples[7] = "sample5";  abundances[7] = 5;
-        otuNames[8] = "otu3";   samples[8] = "sample1";  abundances[8] = 1;
-        otuNames[9] = "otu3";   samples[9] = "sample3";  abundances[9] = 2;
-        otuNames[10] = "otu3";   samples[10] = "sample5";  abundances[10] = 3;
-        otuNames[11] = "otu3";   samples[11] = "sample6";  abundances[11] = 4;
+        // remove sequence that will remove otu
+        vector<string> seqToRemove(1, "seq6");
+        vector<string> seqReason(1, "removeOtu");
 
-        // add shared data
-        data.assignOtus(otuNames, abundances, samples);
+        data.removeSequences(seqToRemove, seqReason);
+
+        expect_true(data.getTotal() == 90);
+        expect_true(data.numOtus == 2);
+        expect_true(data.numUnique == 9);
+        expect_true(data.getOtuAbundance("otu3") == 0);
+        expect_true(data.getOtu("otu3") == "");
+
+        // test adding otuNames abundances, samples and seqids
+        data.clear();
+        otuNames.resize(16, "otu1");
+        abundances.resize(16, 10);
+        seqNames.resize(16, "");
+        vector<string> samples(16, "sample1");
+        otuNames[0] = "otu1"; seqNames[0] = "seq1";  samples[0] = "sample1";  abundances[0] = 10;
+        otuNames[1] = "otu1"; seqNames[1] = "seq2";  samples[1] = "sample2";  abundances[1] = 10;
+        otuNames[2] = "otu1"; seqNames[2] = "seq3";  samples[2] = "sample4";  abundances[2] = 5;
+        otuNames[3] = "otu1"; seqNames[3] = "seq3";  samples[3] = "sample5";  abundances[3] = 5;
+        otuNames[4] = "otu2"; seqNames[4] = "seq4";  samples[4] = "sample1";  abundances[4] = 5;
+        otuNames[5] = "otu2"; seqNames[5] = "seq4"; samples[5] = "sample2";  abundances[5] = 5;
+        otuNames[6] = "otu2"; seqNames[6] = "seq5";  samples[6] = "sample1";  abundances[6] = 10;
+        otuNames[7] = "otu2"; seqNames[7] = "seq6";  samples[7] = "sample1";  abundances[7] = 10;
+        otuNames[8] = "otu2"; seqNames[8] = "seq7";  samples[8] = "sample2";  abundances[8] = 10;
+        otuNames[9] = "otu2"; seqNames[9] = "seq8";  samples[9] = "sample4";  abundances[9] = 10;
+        otuNames[10] = "otu2"; seqNames[10] = "seq9";  samples[10] = "sample4";  abundances[10] = 5;
+        otuNames[11] = "otu2"; seqNames[11] = "seq9"; samples[11] = "sample5";  abundances[11] = 5;
+        otuNames[12] = "otu3"; seqNames[12] = "seq10";  samples[12] = "sample1";  abundances[12] = 1;
+        otuNames[13] = "otu3"; seqNames[13] = "seq10";  samples[13] = "sample3";  abundances[13] = 2;
+        otuNames[14] = "otu3"; seqNames[14] = "seq10";  samples[14] = "sample5";  abundances[14] = 3;
+        otuNames[15] = "otu3"; seqNames[15] = "seq10";  samples[15] = "sample6";  abundances[15] = 4;
+
+        data.assignOtus(otuNames, abundances, samples, seqNames);
 
         vector<string> uniqueSamples(6, "");
         uniqueSamples[0] = "sample1";
@@ -1403,7 +1422,9 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getSamples() == unique(samples));
 
         expect_true(data.getOtu("otu4") == "");
-        expect_true(data.getOtu("otu2") == "seq4,seq5,seq7,seq8,seq9,seq10");
+        expect_true(data.getOtu("otu2") == "seq4,seq5,seq6,seq7,seq8,seq9");
+        expect_true(data.getOtu("otu1") == "seq1,seq2,seq3");
+        expect_true(data.getOtu("otu3") == "seq10");
         expect_true(data.getOtuAbundance("otu1") == 30);
         expect_true(data.getOtuAbundance("otu2") == 60);
         expect_true(data.getOtuAbundance("otu3") == 10);
@@ -1437,12 +1458,10 @@ context("Dataset class C++ unit tests") {
         Rcpp::DataFrame scrapReport = data.getScrapReport("otu");
         expect_true(scrapReport.size() == 2);
 
-        otusToRemove.resize(2);
-        otusToRemove[0] = "otu1";
-        otusToRemove[1] = "otu4";
-        reasonsToRemove.resize(2);
-        reasonsToRemove[0] = "badOtu";
-        reasonsToRemove[1] = "merged";
+        otusToRemove.clear();
+        otusToRemove.push_back("otu1");
+        reasonsToRemove.clear();
+        reasonsToRemove.push_back("badOtu");
 
         expect_true(otusToRemove == Rcpp::as<vector<string>>(scrapReport[0]));
         expect_true(reasonsToRemove == Rcpp::as<vector<string>>(scrapReport[1]));
@@ -1451,10 +1470,8 @@ context("Dataset class C++ unit tests") {
         Rcpp::DataFrame scrapSummary(list["otu_scrap_summary"]);
         expect_true(scrapSummary.size() == 3);
 
-        vector<int> uniqueCounts(2, 1);
-        vector<int> totalCounts(2, 1);
-        totalCounts[0] = 30;
-        totalCounts[1] = 40;
+        vector<int> uniqueCounts(1, 1);
+        vector<int> totalCounts(1, 30);
 
         expect_true(reasonsToRemove == Rcpp::as<vector<string>>(scrapSummary[0]));
         expect_true(uniqueCounts == Rcpp::as<vector<int>>(scrapSummary[1]));
@@ -1490,7 +1507,7 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTotal() == 100);
         expect_true(data.numOtus == 10);
-        expect_true(data.numUnique == -1);
+        expect_true(data.numUnique == 0);
         expect_true(data.getOtuIds() == otuNames);
 
         // no sequence data was given
@@ -1512,7 +1529,7 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTotal() == 110);
         expect_true(data.numOtus == 8);
-        expect_true(data.numUnique == -1);
+        expect_true(data.numUnique == 0);
         expect_true(data.getOtuAbundance("otu1") == 0);
         expect_true(data.getOtuAbundance("otu2") == 20);
         expect_true(data.getOtuAbundance("otu3") == 10);

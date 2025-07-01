@@ -79,6 +79,9 @@ int SeqReport::getStart(string seq) {
 /******************************************************************************/
 int SeqReport::getEnd(string seq) {
     int endPos = 1;
+    
+    if (seq == "") { return endPos; }
+
     for(int i = seq.length()-1; i >= 0; i--){
         if(!isgap(seq[i])){
             endPos = i + 1;

@@ -207,21 +207,15 @@ class OtuTable {
 
 public:
 
-    OtuTable(AbundTable*, map<string, int>*, string label);
     OtuTable(string label);
     ~OtuTable();
 
     int numOtus;
-    int numUnique;
     string label;
 
-    // OTUIDs, abundances, samples(optional), seqIds(optional)
-    // List file -> OTUID, SeqID, abundance
-    // Shared -> OTUID, Abundance, sample
-    // Rabund -> OTUID, abundance
-    void add(vector<string> otuIDs, vector<int> abundance = nullIntVector,
-             vector<string> samples = nullVector,
-             vector<string> seqIDs = nullVector);
+    // OTUIDs, abundances, samples(optional)
+    void assignAbundance(vector<string> otuIDs, vector<int> abundance,
+             vector<string> samples = nullVector);
 
     void assignTreatments(vector<string> samples,
                           vector<string> treatments);
@@ -230,10 +224,6 @@ public:
 
     // names of OTUs
     vector<string> getOtuIds();
-    // 2 column dataframe - otu_id, seq_id
-    Rcpp::DataFrame getList();
-    // vector string containing sequence names for each otu
-    vector<string> getListVector();
     // 2 column dataframe - otu_id, abundance
     Rcpp::DataFrame getRAbund();
     // vector of total abundances for each outID
@@ -243,8 +233,6 @@ public:
     // abundances for each OTU broken down by sample
     vector<vector<int> > getSharedVector();
 
-    // string containing sequence names for given otuID
-    string get(string otuID);
     // total abundance for a given outID, optional sample
     int getAbundance(string otuID, string sample = "");
     // abundances for given otuID broken down by sample
@@ -264,19 +252,18 @@ public:
     // total number of sequences
     int getTotal(string sample = "");
     bool hasSample(string sample);
+    bool hasId(string otuId);
 
     void merge(vector<string> otuIDS, string reason = "merged");
     // remove given outID
     void remove(string otuID, string reason, bool update = true);
 
-    // if hasSeqIds, removes sequences and possibly otus
-    void removeSequences(vector<string> ids, vector<string> reasons);
-
     // for datasets without samples
-    void setAbundance(vector<string> otuIDS, vector<int> abunds,
+    vector<string> setAbundance(vector<string> otuIDS, vector<int> abunds,
                       string reason = "merged");
     // for datasets with samples
-    void setAbundances(vector<string> otuIDS, vector<vector<int>> abunds,
+    vector<string> setAbundances(vector<string> otuIDS,
+                                 vector<vector<int>> abunds,
                        string reason = "merged");
 
     void setLabel(string label);
@@ -290,9 +277,6 @@ private:
     // filter for "good" otus
     vector<bool> tableOtus;
     vector<string> otuNames, trashCodes;
-    vector<string> sequenceOtus;
-
-    bool hasSeqIds;
 
     // map reason for deletion to vector containing the number of otus removed
     // for that reason, and the total number of sequences removed by those otus
@@ -305,12 +289,6 @@ private:
     // otu abundances, parsed by sample
     AbundTable* otuCount;
 
-    // sequence abundances, parsed by sample.
-    // passed from dataset if seq_ids are given
-    AbundTable* seqCount;
-    map<string, int>* seqIndex;
-
-    int getNumNames(string&);
     vector<int> getGoodIndexes();
     vector<int> getIndexes(vector<string>&);
 
@@ -491,8 +469,13 @@ private:
     // count table data
     AbundTable* count;
 
-    // otu table, asv / list / shared / rabund
+    // otu table, shared / rabund
     OtuTable* otuTable;
+    // otuName -> vector of sequence indexes
+    // "otu1" -> 1,3,5
+    // "otu1" -> "seq1,seq3,seq5"
+    map<string, vector<int> > list;
+    vector<string> seqOtus;
 
     // if unaligned, returns -1
     int getAlignedLength();

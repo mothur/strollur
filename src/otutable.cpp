@@ -1,41 +1,23 @@
 #include "../inst/include/rdataset.h"
 #include "dataset.h"
 
-
-/******************************************************************************/
-OtuTable::OtuTable(AbundTable* c, map<string, int>* sI, string l) {
-    hasSeqIds = false;
-    numOtus = 0;
-    numUnique = -1;
-    uniqueBad = 0;
-    label = l;
-    otuCount = new AbundTable();
-    seqCount = c;
-    seqIndex = sI;
-}
 /******************************************************************************/
 OtuTable::OtuTable(string l) {
-    hasSeqIds = false;
     numOtus = 0;
-    numUnique = -1;
     uniqueBad = 0;
     label = l;
     otuCount = new AbundTable();
-    seqCount = nullptr;
 }
 /******************************************************************************/
 OtuTable::~OtuTable() { delete otuCount; }
 /******************************************************************************/
 void OtuTable::clear() {
     numOtus = 0;
-    numUnique = -1;
     uniqueBad = 0;
     label = "";
-    hasSeqIds = false;
 
     otuIndex.clear();
     tableOtus.clear();
-    sequenceOtus.clear();
     otuNames.clear();
     badAccnos.clear();
     trashCodes.clear();
@@ -43,21 +25,9 @@ void OtuTable::clear() {
     otuCount->clear();
 }
 /******************************************************************************/
-void OtuTable::add(vector<string> otuIds, vector<int> abundance,
-         vector<string> samples, vector<string> seqIds){
+void OtuTable::assignAbundance(vector<string> otuIds, vector<int> abundance,
+         vector<string> samples){
 
-    if (abundance.empty() && seqIds.empty()) {
-        // dataset should catch this
-        return;
-    }
-
-    bool useSeqIds = false;
-    if (seqIds.size() != 0) {
-        useSeqIds = true;
-        hasSeqIds = true;
-    }
-
-    vector<string> uniqueOtuIds;
     for (int i = 0; i < otuIds.size(); i++) {
 
         string otuName = otuIds[i];
@@ -72,188 +42,10 @@ void OtuTable::add(vector<string> otuIds, vector<int> abundance,
             tableOtus.push_back(true);
             otuNames.push_back(otuName);
             trashCodes.push_back("");
-            uniqueOtuIds.push_back(otuName);
         }
     }
 
-    // if the user provides seqIds, we need to calculate the otu abunds by sample
-    // This can be done from the abundance and sample provided as parameters
-    // or if they are not provided, abundance and sample data can be retrieved
-    // from the seqCount variable from 'dataset'.
-    if (useSeqIds) {
-
-        bool hasAbundance = false;
-        if (abundance.size() != 0) {
-            hasAbundance = true;
-        }
-
-        bool hasSamples = false;
-        if (samples.size() != 0) {
-            hasSamples = true;
-        }
-
-        // otuIndex -> (sampleName -> abundance)
-        map<int, map<string, int>> otuAbunds;
-
-        vector<string> allSamples;
-        bool seqCountSamples = false;
-        if (!hasAbundance) {
-            allSamples = seqCount->getSamples();
-            if (!allSamples.empty()) {
-                seqCountSamples = true;
-            }
-        }
-
-        // maps seqName to otu index
-        map<string, int> seqOtuIndex;
-        numUnique = 0;
-
-        sequenceOtus.resize(sequenceOtus.size()+uniqueOtuIds.size(), "");
-
-        for (int i = 0; i < seqIds.size(); i++) {
-
-            string otuName = otuIds[i];
-            int index = otuIndex[otuName];
-
-            auto itSeq = seqOtuIndex.find(seqIds[i]);
-
-            // first time we are seeing this seqName, add to otu
-            if (itSeq == seqOtuIndex.end()) {
-                seqOtuIndex[seqIds[i]] = index;
-                numUnique++;
-
-                // add to sequenceOtus - (list file)
-                if (sequenceOtus[index] != "") {
-                    sequenceOtus[index] += "," + seqIds[i];
-                }else{
-                    sequenceOtus[index] = seqIds[i];
-                }
-            }
-
-            auto it = otuAbunds.find(index);
-
-            // first time seeing this otu, initialize sample counts
-            if (it == otuAbunds.end()) {
-                map<string, int> thisSeqsSampleAbunds;
-                // inputs from parameters
-                if (hasAbundance) {
-                   if (hasSamples) {
-                       thisSeqsSampleAbunds[samples[i]] = abundance[i];
-                   }else{
-                       thisSeqsSampleAbunds["total"] = abundance[i];
-                   }
-                }else{
-                    // inputs from dataset
-                    int thisIndex = (*seqIndex)[seqIds[i]];
-                    vector<int> abunds = seqCount->getAbundances(thisIndex);
-
-                    // seqCount has samples
-                    if (seqCountSamples) {
-                        for (int j = 0; j < abunds.size(); j++) {
-                            if (abunds[j] != 0) {
-                                thisSeqsSampleAbunds[allSamples[j]] = abunds[j];
-                            }
-                        }
-                    }else{
-                        thisSeqsSampleAbunds["total"] = abunds[0];
-                    }
-                }
-                otuAbunds[index] = thisSeqsSampleAbunds;
-            }else{
-                // inputs from parameters
-                if (hasAbundance) {
-                    if (hasSamples) {
-                        // have we seen this sample before?
-                        auto itSample = it->second.find(samples[i]);
-                        if (itSample == it->second.end()) {
-                            it->second[samples[i]] = abundance[i];
-                        }else{
-                            itSample->second += abundance[i];
-                        }
-                    }else{
-                        it->second["total"] += abundance[i];
-                    }
-                }else{
-                    // inputs from dataset
-                    int thisIndex = (*seqIndex)[seqIds[i]];
-                    vector<int> abunds = seqCount->getAbundances(thisIndex);
-
-                    // seqCount has samples
-                    if (seqCountSamples) {
-                        for (int j = 0; j < abunds.size(); j++) {
-                            if (abunds[j] != 0) {
-                                // have we seen this sample before?
-                                auto itSample = it->second.find(allSamples[j]);
-                                if (itSample == it->second.end()) {
-                                    it->second[allSamples[j]] = abunds[j];
-                                }else{
-                                    itSample->second += abunds[j];
-                                }
-                            }
-                        }
-                    }else{
-                        it->second["total"] += abunds[0];
-                    }
-                }
-            }
-        }
-
-        // abundances are parsed by samples
-        if (hasSamples || seqCountSamples) {
-            vector<int> otuIndexes;
-            abundance.clear();
-            samples.clear();
-
-            for (auto it = otuAbunds.begin(); it != otuAbunds.end(); it++) {
-
-                map<string, int> abunds = it->second;
-                for (auto itSamples = abunds.begin(); itSamples != abunds.end();
-                        itSamples++) {
-                    otuIndexes.push_back(it->first);
-                    samples.push_back(itSamples->first);
-                    abundance.push_back(itSamples->second);
-                }
-            }
-
-            otuCount->assignAbundance(otuIndexes, abundance, samples);
-
-            // inputs from dataset
-            if (seqCountSamples) {
-                // if there are treatments add them to otu
-                if (seqCount->getNumTreatments() != 0) {
-                    map<string, string> sampleTreatments =
-                        seqCount->getSampleTreatmentAssignments();
-
-                    vector<string> samples(sampleTreatments.size());
-                    vector<string> treatments(sampleTreatments.size());
-
-                    int index = 0;
-                    for (auto itTreatments = sampleTreatments.begin();
-                         itTreatments != sampleTreatments.end(); itTreatments++) {
-                        samples[index] = itTreatments->first;
-                        treatments[index] = itTreatments->second;
-                        index++;
-                    }
-
-                    otuCount->assignTreatments(samples, treatments);
-                }
-            }
-
-        }else{
-            vector<int> totalAbunds(otuAbunds.size(), 0);
-            vector<int> otuIndexes(otuAbunds.size(), 0);
-
-            int index = 0;
-            for (auto it = otuAbunds.begin(); it != otuAbunds.end(); it++) {
-                otuIndexes[index] = it->first;
-                totalAbunds[index] = it->second["total"];
-                index++;
-            }
-            otuCount->assignAbundance(otuIndexes, totalAbunds);
-        }
-    }else{
-        otuCount->assignAbundance(getIndexes(otuIds), abundance, samples);
-    }
+    otuCount->assignAbundance(getIndexes(otuIds), abundance, samples);
 }
 /******************************************************************************/
 void OtuTable::assignTreatments(vector<string> samples,
@@ -277,36 +69,6 @@ vector<int> OtuTable::getGoodIndexes() {
 // names of OTUs
 vector<string> OtuTable::getOtuIds(){
     return select(otuNames, tableOtus);
-}
-/******************************************************************************/
-Rcpp::DataFrame OtuTable::getList() {
-    if (hasSeqIds) {
-        vector<string> ids, seqids;
-        int total = 0;
-
-        for (int i = 0; i < tableOtus.size(); i++) {
-            if (tableOtus[i]) {
-                //parse string by delim and store in vector
-                total += split(sequenceOtus[i], ',',
-                                    back_inserter(seqids));
-                ids.resize(total, otuNames[i]);
-            }
-        }
-
-        string tag = label + "_id";
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named(tag) = ids,
-            Rcpp::_["seq_id"] = seqids);
-
-        return df;
-    }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
-}
-/******************************************************************************/
-// vector string containing sequence names for each otu
-vector<string> OtuTable::getListVector(){
-    return select(sequenceOtus, tableOtus);
 }
 /******************************************************************************/
 Rcpp::DataFrame OtuTable::getRAbund() {
@@ -362,20 +124,6 @@ vector<vector<int> > OtuTable::getSharedVector(){
     }
 
     return otus;
-}
-/******************************************************************************/
-// string containing sequence names for given otuID
-string OtuTable::get(string otuId){
-
-    if (hasSeqIds) {
-        auto it = otuIndex.find(otuId);
-        if (it != otuIndex.end()) {
-            if (tableOtus[it->second]) {
-                return sequenceOtus[it->second];
-            }
-        }
-    }
-    return "";
 }
 /******************************************************************************/
 // total abundance for a given outID, optional sample
@@ -445,17 +193,6 @@ vector<int> OtuTable::getIndexes(vector<string>& otuIDS) {
 
     otuIDS = validOtuIds;
     return indexes;
-}
-/******************************************************************************/
-int OtuTable::getNumNames(string& names){
-    if(names == ""){ return 0; }
-
-    int count = 1;
-    for_each(names.begin(), names.end(),[&count](char n){
-        if(n == ','){ count++; }
-    });
-
-    return count;
 }
 /******************************************************************************/
 // sample functions
@@ -536,6 +273,20 @@ bool OtuTable::hasSample(string sample){
     return otuCount->hasSample(sample);
 }
 /******************************************************************************/
+bool OtuTable::hasId(string otuId) {
+
+    auto it = otuIndex.find(otuId);
+
+    // otu is in dataset
+    if (it != otuIndex.end()) {
+        // otu is "good"
+        if (tableOtus[it->second]) {
+            return true;
+        }
+    }
+    return false;
+}
+/******************************************************************************/
 vector<string> OtuTable::getTreatments(){
     return otuCount->getTreatments();
 }
@@ -558,14 +309,9 @@ void OtuTable::merge(vector<string> otuIDS, string reason){
         otuCount->merge(indexes);
 
         for (int i = 1; i < indexes.size(); i++) {
-            if (hasSeqIds) {
-                sequenceOtus[indexes[0]] += "," + sequenceOtus[indexes[i]];
-                sequenceOtus[indexes[i]] = "";
-            }
 
             // no need to update the sample and treatment counts
             remove(otuIDS[i], reason, false);
-
         }
     }
 }
@@ -589,10 +335,6 @@ void OtuTable::remove(string otuID, string reason, bool update){
         trashCodes[index] += reason;
 
         numOtus--;
-        if (hasSeqIds) {
-            string seqsInOtu = sequenceOtus[index];
-            numUnique -= getNumNames(seqsInOtu);
-        }
 
         // remove from counts
         int abund = 1;
@@ -619,16 +361,8 @@ void OtuTable::remove(string otuID, string reason, bool update){
     }
 }
 /******************************************************************************/
-// TODO - complete removeSequences function to allow for removing seqs from dataset and otutables
-
-void OtuTable::removeSequences(vector<string> ids, vector<string> reasons) {
-    if (hasSeqIds) {
-
-    }
-}
-/******************************************************************************/
 // for datasets without samples
-void OtuTable::setAbundance(vector<string> n,
+vector<string> OtuTable::setAbundance(vector<string> n,
                             vector<int> abunds, string reason){
 
     if (n.size() != abunds.size()) {
@@ -638,6 +372,7 @@ void OtuTable::setAbundance(vector<string> n,
     }
 
     reason += ",";
+    vector<string> otusRemoved;
 
     for (int i = 0; i < n.size(); i++) {
         auto it = otuIndex.find(n[i]);
@@ -647,6 +382,7 @@ void OtuTable::setAbundance(vector<string> n,
 
             if (abunds[i] == 0) {
                 remove(n[i], reason);
+                otusRemoved.push_back(n[i]);
             }else{
                 otuCount->setAbundance(index, abunds[i]);
             }
@@ -657,10 +393,11 @@ void OtuTable::setAbundance(vector<string> n,
             RcppThread::Rcout << endl << message << endl;
         }
     }
+    return otusRemoved;
 }
 /******************************************************************************/
 // for datasets with samples
-void OtuTable::setAbundances(vector<string> n, vector<vector<int>> abunds,
+vector<string> OtuTable::setAbundances(vector<string> n, vector<vector<int>> abunds,
                    string reason){
     if (n.size() != abunds.size()) {
         string message = "[ERROR]: Size mismatch.  When setting an otu ";
@@ -670,6 +407,7 @@ void OtuTable::setAbundances(vector<string> n, vector<vector<int>> abunds,
     }
 
     reason += ",";
+    vector<string> otusRemoved;
 
     for (int i = 0; i < n.size(); i++) {
         auto it = otuIndex.find(n[i]);
@@ -679,6 +417,7 @@ void OtuTable::setAbundances(vector<string> n, vector<vector<int>> abunds,
 
             if (sum(abunds[i]) == 0) {
                 remove(n[i], reason);
+                otusRemoved.push_back(n[i]);
             }else{
                 otuCount->setAbundance(index, abunds[i]);
             }
@@ -691,6 +430,8 @@ void OtuTable::setAbundances(vector<string> n, vector<vector<int>> abunds,
     }
 
     otuCount->updateTotals();
+
+    return otusRemoved;
 }
 /******************************************************************************/
 void OtuTable::setLabel(string l){
