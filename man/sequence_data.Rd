@@ -33,37 +33,46 @@ dataset <- sequence_data$new(name = "soil",
 
 
   dataset <- sequence_data$new("my_dataset")
-  sequence_data <- read_fasta(rdataset_example("test.fasta"))
-  dataset$add_sequences(sequence_data$names, sequence_data$sequences)
+  sequences <- read_fasta(rdataset_example("test.fasta"))
+  dataset$add_sequences(sequences$names, sequences$sequences)
 
 
 ## ------------------------------------------------
-## Method `sequence_data$assign_otu_abundance`
+## Method `sequence_data$assign_otus`
 ## ------------------------------------------------
+
+
+  # otu_ids  seq_ids
+  #  otu1     seq1
+  #  otu1     seq2
+  #  otu1     seq4
+  #  otu2     seq3
+  #  otu2     seq6
+  #  otu3     seq5
 
   # To assign sequences to otus:
-
-  # otu_ids  seq_ids  abundances
-  #  otu1     seq1        10
-  #  otu1     seq2        100
-  #  otu1     seq4        1
-  #  otu2     seq3        500
-  #  otu2     seq6        25
-  #  otu3     seq5        80
 
   dataset <- sequence_data$new("my_dataset")
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otu_abundance(otu_ids,
-              sequence_abundances, seq_ids = seq_ids)
+  dataset$assign_otus(otu_ids, seq_ids = seq_ids)
 
   # otus would look like:
   #            otu1             otu2        otu3
   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
-  # (rabund)   110              525         80
 
   # To add abundance only otu assignments:
+
+  dataset <- sequence_data$new("my_dataset")
+  otu_ids <- c("otu1", "otu2", "otu3")
+  abundances <- c(110, 525, 80)
+  dataset$assign_otus(otu_ids, abundances)
+
+  # otus would look like:
+  #            otu1             otu2        otu3
+  # (rabund)   110              525         80
+
+  # To add abundance otu assignments parsed by sample:
 
   # otu_ids  samples  abundances
   #  otu1     sample1        10
@@ -78,7 +87,7 @@ dataset <- sequence_data$new(name = "soil",
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otu_abundance(otu_ids, sample_abundances, samples)
+  dataset$assign_otus(otu_ids, sample_abundances, samples)
 
   # (shared) otus would look like:
   # label  sample   otu1   otu2   otu3
@@ -86,6 +95,30 @@ dataset <- sequence_data$new(name = "soil",
   # 0.03   sample2  100    0      0
   # 0.03   sample3  0      25     0
   # 0.03   sample5  1      0      0
+
+  # To assign sequences to otus with their abundances parsed by sample:
+
+  dataset <- sequence_data$new("my_dataset")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu1", "otu1", "otu1",
+               "otu2", "otu2", "otu2",
+               "otu3", "otu3")
+  seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
+               "seq3", "seq3", "seq6",
+               "seq5", "seq5")
+  samples <- c("sample1", "sample2", "sample5",
+               "sample1", "sample3", "sample4",
+               "sample2", "sample3", "sample1",
+               "sample1", "sample6")
+  abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
+  dataset$assign_otus(otu_ids, abundances, samples, seq_ids)
+
+  # otus would look like:
+  #            otu1             otu2        otu3
+  # (list)     seq1,seq2,seq4   seq3,seq6   seq5
+  # (rabund)   716              85          65
+
+  dataset$get_shared()
+
 
 ## ------------------------------------------------
 ## Method `sequence_data$assign_sequence_abundance`
@@ -113,9 +146,24 @@ abundances <- c(250, 400, 500,
 
 dataset <- sequence_data$new("my_dataset")
 unique_names <- unique(names)
-sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
-dataset$add_sequences(unique_names, sequences)
+dataset$add_sequences(unique_names)
 dataset$assign_sequence_abundance(names, abundances, samples)
+
+
+## ------------------------------------------------
+## Method `sequence_data$assign_sequence_taxonomy`
+## ------------------------------------------------
+
+
+names <- c("seq1", "seq2", "seq3", "seq4")
+taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+
+dataset <- sequence_data$new("my_dataset")
+dataset$add_sequences(names)
+dataset$assign_sequence_taxonomy(names, taxonomies)
 
 
 ## ------------------------------------------------
@@ -136,8 +184,7 @@ abundances <- c(250, 400, 500,
 
 dataset <- sequence_data$new("my_dataset")
 unique_names <- unique(names)
-sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
-dataset$add_sequences(unique_names, sequences)
+dataset$add_sequences(unique_names)
 dataset$assign_sequence_abundance(names, abundances, samples)
 
 treatments <- c("early", "early", "late")
@@ -152,8 +199,7 @@ dataset$assign_treatments(unique(samples), treatments)
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-  dataset$assign_otu_abundance(otu_ids,
-                             sequence_abundances, seq_ids = seq_ids)
+  dataset$assign_otus(otu_ids, sequence_abundances, seq_ids = seq_ids)
 
   # (list) otus would look like:
   # otu1             otu2        otu3
@@ -177,7 +223,7 @@ dataset$assign_treatments(unique(samples), treatments)
   dataset <- sequence_data$new("my_dataset")
   otu_ids <- c("otu1", "otu2", "otu3")
   otu_abundances <- c(111, 525, 80)
-  dataset$assign_otu_abundance(otu_ids, otu_abundances)
+  dataset$assign_otus(otu_ids, otu_abundances)
 
   # (rabund) otus would look like:
   # otu1  otu2  otu3
@@ -192,6 +238,23 @@ dataset$assign_treatments(unique(samples), treatments)
 
 
 ## ------------------------------------------------
+## Method `sequence_data$get_sequence_taxonomy_report`
+## ------------------------------------------------
+
+names <- c("seq1", "seq2", "seq3", "seq4")
+tax1 <- "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);"
+tax2 <- "Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);"
+tax3 <- "Bacteria(100);Firmicutes(99);Bacilli(90);"
+tax4 <- "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);"
+taxonomies <- c(tax1, tax2, tax3, tax4)
+
+dataset <- sequence_data$new("my_dataset")
+dataset$add_sequences(names)
+dataset$assign_sequence_taxonomy(names, taxonomies)
+dataset$get_sequence_taxonomy_report()
+
+
+## ------------------------------------------------
 ## Method `sequence_data$get_shared`
 ## ------------------------------------------------
 
@@ -200,7 +263,7 @@ dataset$assign_treatments(unique(samples), treatments)
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otu_abundance(otu_ids, sample_abundances, samples)
+  dataset$assign_otus(otu_ids, sample_abundances, samples)
 
   # (shared) otus would look like:
   # label  sample   otu1   otu2   otu3
@@ -238,8 +301,9 @@ additional functionality.}
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
 \item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
-\item \href{#method-sequence_data-assign_otu_abundance}{\code{sequence_data$assign_otu_abundance()}}
+\item \href{#method-sequence_data-assign_otus}{\code{sequence_data$assign_otus()}}
 \item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
+\item \href{#method-sequence_data-assign_sequence_taxonomy}{\code{sequence_data$assign_sequence_taxonomy()}}
 \item \href{#method-sequence_data-assign_treatments}{\code{sequence_data$assign_treatments()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
@@ -259,6 +323,7 @@ additional functionality.}
 \item \href{#method-sequence_data-get_sample_summary}{\code{sequence_data$get_sample_summary()}}
 \item \href{#method-sequence_data-get_scrap_report}{\code{sequence_data$get_scrap_report()}}
 \item \href{#method-sequence_data-get_sequence_report}{\code{sequence_data$get_sequence_report()}}
+\item \href{#method-sequence_data-get_sequence_taxonomy_report}{\code{sequence_data$get_sequence_taxonomy_report()}}
 \item \href{#method-sequence_data-get_sequence_summary}{\code{sequence_data$get_sequence_summary()}}
 \item \href{#method-sequence_data-get_sequences}{\code{sequence_data$get_sequences()}}
 \item \href{#method-sequence_data-get_shared}{\code{sequence_data$get_shared()}}
@@ -332,7 +397,7 @@ Get summary of sequence data
 \subsection{Method \code{add_sequences()}}{
 Add new sequence data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_sequences(names, sequences, comments = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_sequences(names, sequences = NULL, comments = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -350,8 +415,8 @@ Add new sequence data
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
   dataset <- sequence_data$new("my_dataset")
-  sequence_data <- read_fasta(rdataset_example("test.fasta"))
-  dataset$add_sequences(sequence_data$names, sequence_data$sequences)
+  sequences <- read_fasta(rdataset_example("test.fasta"))
+  dataset$add_sequences(sequences$names, sequences$sequences)
 
 }
 \if{html}{\out{</div>}}
@@ -360,14 +425,14 @@ Add new sequence data
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-assign_otu_abundance"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-assign_otu_abundance}{}}}
-\subsection{Method \code{assign_otu_abundance()}}{
+\if{html}{\out{<a id="method-sequence_data-assign_otus"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_otus}{}}}
+\subsection{Method \code{assign_otus()}}{
 Add otu data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_otu_abundance(
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_otus(
   otu_ids,
-  abundances,
+  abundances = NULL,
   samples = NULL,
   seq_ids = NULL
 )}\if{html}{\out{</div>}}
@@ -378,39 +443,50 @@ Add otu data
 \describe{
 \item{\code{otu_ids}}{a vector of otu labels}
 
-\item{\code{abundances}}{a vector of abundances}
+\item{\code{abundances}}{a vector of abundances (optional). You must provide
+either abundances or seq_ids.}
 
 \item{\code{samples}}{a vector of sample assignments (optional)}
 
-\item{\code{seq_ids}}{a vector of sequence names (optional)}
+\item{\code{seq_ids}}{a vector of sequence names (optional) You must provide
+either abundances or seq_ids.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{  # To assign sequences to otus:
+\preformatted{
+  # otu_ids  seq_ids
+  #  otu1     seq1
+  #  otu1     seq2
+  #  otu1     seq4
+  #  otu2     seq3
+  #  otu2     seq6
+  #  otu3     seq5
 
-  # otu_ids  seq_ids  abundances
-  #  otu1     seq1        10
-  #  otu1     seq2        100
-  #  otu1     seq4        1
-  #  otu2     seq3        500
-  #  otu2     seq6        25
-  #  otu3     seq5        80
+  # To assign sequences to otus:
 
   dataset <- sequence_data$new("my_dataset")
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otu_abundance(otu_ids,
-              sequence_abundances, seq_ids = seq_ids)
+  dataset$assign_otus(otu_ids, seq_ids = seq_ids)
 
   # otus would look like:
   #            otu1             otu2        otu3
   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
-  # (rabund)   110              525         80
 
   # To add abundance only otu assignments:
+
+  dataset <- sequence_data$new("my_dataset")
+  otu_ids <- c("otu1", "otu2", "otu3")
+  abundances <- c(110, 525, 80)
+  dataset$assign_otus(otu_ids, abundances)
+
+  # otus would look like:
+  #            otu1             otu2        otu3
+  # (rabund)   110              525         80
+
+  # To add abundance otu assignments parsed by sample:
 
   # otu_ids  samples  abundances
   #  otu1     sample1        10
@@ -425,7 +501,7 @@ Add otu data
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otu_abundance(otu_ids, sample_abundances, samples)
+  dataset$assign_otus(otu_ids, sample_abundances, samples)
 
   # (shared) otus would look like:
   # label  sample   otu1   otu2   otu3
@@ -433,6 +509,30 @@ Add otu data
   # 0.03   sample2  100    0      0
   # 0.03   sample3  0      25     0
   # 0.03   sample5  1      0      0
+
+  # To assign sequences to otus with their abundances parsed by sample:
+
+  dataset <- sequence_data$new("my_dataset")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu1", "otu1", "otu1",
+               "otu2", "otu2", "otu2",
+               "otu3", "otu3")
+  seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
+               "seq3", "seq3", "seq6",
+               "seq5", "seq5")
+  samples <- c("sample1", "sample2", "sample5",
+               "sample1", "sample3", "sample4",
+               "sample2", "sample3", "sample1",
+               "sample1", "sample6")
+  abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
+  dataset$assign_otus(otu_ids, abundances, samples, seq_ids)
+
+  # otus would look like:
+  #            otu1             otu2        otu3
+  # (list)     seq1,seq2,seq4   seq3,seq6   seq5
+  # (rabund)   716              85          65
+
+  dataset$get_shared()
+
 }
 \if{html}{\out{</div>}}
 
@@ -490,9 +590,45 @@ abundances <- c(250, 400, 500,
 
 dataset <- sequence_data$new("my_dataset")
 unique_names <- unique(names)
-sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
-dataset$add_sequences(unique_names, sequences)
+dataset$add_sequences(unique_names)
 dataset$assign_sequence_abundance(names, abundances, samples)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-assign_sequence_taxonomy"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_sequence_taxonomy}{}}}
+\subsection{Method \code{assign_sequence_taxonomy()}}{
+Assign sequence classification
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sequence_taxonomy(names, taxonomies)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{names}}{a vector of sequence names}
+
+\item{\code{taxonomies}}{a vector of sequence classifications}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+names <- c("seq1", "seq2", "seq3", "seq4")
+taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+
+dataset <- sequence_data$new("my_dataset")
+dataset$add_sequences(names)
+dataset$assign_sequence_taxonomy(names, taxonomies)
 
 }
 \if{html}{\out{</div>}}
@@ -534,8 +670,7 @@ abundances <- c(250, 400, 500,
 
 dataset <- sequence_data$new("my_dataset")
 unique_names <- unique(names)
-sequences <- c("ATGGGCT", "..TG--ACCGT..", "..GGuatgc..", "..GGTAC-T..")
-dataset$add_sequences(unique_names, sequences)
+dataset$add_sequences(unique_names)
 dataset$assign_sequence_abundance(names, abundances, samples)
 
 treatments <- c("early", "early", "late")
@@ -581,7 +716,7 @@ ids, search_scores, sim_scores, longest_insert
 }
 
 \subsection{Returns}{
-data.table
+data.frame
 }
 }
 \if{html}{\out{<hr>}}
@@ -595,14 +730,14 @@ ids, lengths, ostarts, oends, olengths, mismatches, numns, ee
 }
 
 \subsection{Returns}{
-data.table
+data.frame
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_count_table"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_count_table}{}}}
 \subsection{Method \code{get_count_table()}}{
-Get count table returns data.table containing:
+Get count table returns data.frame containing:
 ids, abundances, sample(optional), treatment(optional)
 This table represents mothur's count and design files.
 \subsection{Usage}{
@@ -610,7 +745,7 @@ This table represents mothur's count and design files.
 }
 
 \subsection{Returns}{
-data.table
+data.frame
 }
 }
 \if{html}{\out{<hr>}}
@@ -664,8 +799,7 @@ data.frame
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-  dataset$assign_otu_abundance(otu_ids,
-                             sequence_abundances, seq_ids = seq_ids)
+  dataset$assign_otus(otu_ids, sequence_abundances, seq_ids = seq_ids)
 
   # (list) otus would look like:
   # otu1             otu2        otu3
@@ -754,14 +888,14 @@ An integer
 \if{html}{\out{<a id="method-sequence_data-get_oligos"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_oligos}{}}}
 \subsection{Method \code{get_oligos()}}{
-Get data.table containing the oligo data
+Get data.frame containing the oligo data
 tag, oligo, diffs, oligo(optional), diffs(optional), sample(optional)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_oligos()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-data.table
+data.frame
 }
 }
 \if{html}{\out{<hr>}}
@@ -781,7 +915,7 @@ data.frame
 \preformatted{  dataset <- sequence_data$new("my_dataset")
   otu_ids <- c("otu1", "otu2", "otu3")
   otu_abundances <- c(111, 525, 80)
-  dataset$assign_otu_abundance(otu_ids, otu_abundances)
+  dataset$assign_otus(otu_ids, otu_abundances)
 
   # (rabund) otus would look like:
   # otu1  otu2  otu3
@@ -844,7 +978,7 @@ ids, trash_codes
 }
 
 \subsection{Returns}{
-list of data.tables
+list of data.frames
 }
 }
 \if{html}{\out{<hr>}}
@@ -858,8 +992,41 @@ ids, starts, ends, lengths, ambigs, homopolymers, numns
 }
 
 \subsection{Returns}{
-data.table
+data.frame
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_sequence_taxonomy_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_taxonomy_report}{}}}
+\subsection{Method \code{get_sequence_taxonomy_report()}}{
+Get report containing the sequence taxonomy table -
+ids, taxonomy by levels
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_taxonomy_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{names <- c("seq1", "seq2", "seq3", "seq4")
+tax1 <- "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);"
+tax2 <- "Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);"
+tax3 <- "Bacteria(100);Firmicutes(99);Bacilli(90);"
+tax4 <- "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);"
+taxonomies <- c(tax1, tax2, tax3, tax4)
+
+dataset <- sequence_data$new("my_dataset")
+dataset$add_sequences(names)
+dataset$assign_sequence_taxonomy(names, taxonomies)
+dataset$get_sequence_taxonomy_report()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_sequence_summary"></a>}}
@@ -878,7 +1045,7 @@ Get summary of the sequence reports
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-list of data.tables
+list of data.frames
 }
 }
 \if{html}{\out{<hr>}}
@@ -917,7 +1084,7 @@ data.frame
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otu_abundance(otu_ids, sample_abundances, samples)
+  dataset$assign_otus(otu_ids, sample_abundances, samples)
 
   # (shared) otus would look like:
   # label  sample   otu1   otu2   otu3
@@ -946,7 +1113,7 @@ data.frame
 \if{html}{\out{<a id="method-sequence_data-get_taxonomy_tables"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_taxonomy_tables}{}}}
 \subsection{Method \code{get_taxonomy_tables()}}{
-Get data.tables containing classifications for sequences and OTUs.
+Get data.frames containing classifications for sequences and OTUs.
 id, taxonomy, abundance(optional)
 These tables represent mothur's taxonomy and cons.taxonomy files
 \subsection{Usage}{
@@ -954,7 +1121,7 @@ These tables represent mothur's taxonomy and cons.taxonomy files
 }
 
 \subsection{Returns}{
-List of data.tables
+List of data.frames
 }
 }
 \if{html}{\out{<hr>}}

@@ -21,7 +21,6 @@ RCPP_MODULE(Dataset) {
 
     // ******* data transfer ******* //
     .method("export", &Dataset::exportDataset, "Export list containing dataset")
-    .method("get_pointer", &Dataset::getPointer, "get pointer to self")
 
     // ******* modifiers ******* //
     .method("add_sequences", &Dataset::addSequences, "Add sequences to dataset")
@@ -33,6 +32,8 @@ RCPP_MODULE(Dataset) {
     .method("assign_otus", &Dataset::assignOtus, "Add otu assignments to dataset")
     .method("assign_sequence_abundance", &Dataset::assignSequenceAbundance,
     "Set sequence abundance and optionally assign sample and treatment data")
+    .method("assign_sequence_taxonomy", &Dataset::assignSequenceTaxonomy,
+    "Assign sequence classification")
     .method("assign_treatments", &Dataset::assignTreatments, "Assign samples to treatments")
     .method("clear", &Dataset::clear, "Clear dataset")
     .method("merge_sequences", &Dataset::mergeSequences,
@@ -59,6 +60,9 @@ RCPP_MODULE(Dataset) {
 
     .method("get_sequence_report", &Dataset::getSequenceReport,
     "Get sequence report data: starts, ends, lengths, ambigs, homopolymers, numns")
+    .method("get_sequence_taxonomy_report", &Dataset::getSequenceTaxonomyReport,
+    "Get data.frame containing sequence taxonomy data")
+
     .method("get_sequence_summary", &Dataset::getSequenceSummary,
     "Get sequence summary report")
     .method("get_align_report", &Dataset::getAlignReport,
@@ -96,9 +100,9 @@ RCPP_MODULE(Dataset) {
     .method("get_otu", &Dataset::getOtu, "Get otu containing sequence names")
     .method("merge_otus", &Dataset::mergeOtus, "Merge otus")
     .method("remove_otus", &Dataset::removeOtus, "Remove otus")
-    .method("get_list", &Dataset::getList, "Get data frame containing sequence otu assignments")
-    .method("get_rabund", &Dataset::getRAbund, "Get data frame containing otu abundance data")
-    .method("get_shared", &Dataset::getShared, "Get data frame containing otu abundance data by sample")
+    .method("get_list", &Dataset::getList, "Get data.frame containing sequence otu assignments")
+    .method("get_rabund", &Dataset::getRAbund, "Get data.frame containing otu abundance data")
+    .method("get_shared", &Dataset::getShared, "Get data.frame containing otu abundance data by sample")
 
     ;
 }

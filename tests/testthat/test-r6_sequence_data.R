@@ -1,6 +1,6 @@
 # test "sequence_data"
 
-test_that("test R6 sequence_data - intialize", {
+test_that("sequence_data - intialize", {
   dataset <- sequence_data$new("mydata")
 
   expect_equal(dataset$get_dataset_name(), "mydata")
@@ -104,7 +104,7 @@ test_that("test R6 sequence_data - intialize", {
   expect_equal(first_ten_seqs, dataset$get_sequences()[1:10])
 })
 
-test_that("test R6 sequence_data - addSeqs, assign samples", {
+test_that("sequence_data - addSeqs, assign samples", {
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
 
@@ -148,10 +148,14 @@ test_that("test R6 sequence_data - addSeqs, assign samples", {
   expect_equal(data$get_rabund()$otu_id, c("otu1", "otu2"))
   expect_equal(data$get_rabund()$abundance, c(1200, 120))
 
-  expect_equal(data$get_shared()$otu_id, c("otu1", "otu1", "otu1",
-                                           "otu2", "otu2", "otu2"))
-  expect_equal(data$get_shared()$sample, c("sample2", "sample3", "sample4",
-                                           "sample2", "sample3", "sample4"))
+  expect_equal(data$get_shared()$otu_id, c(
+    "otu1", "otu1", "otu1",
+    "otu2", "otu2", "otu2"
+  ))
+  expect_equal(data$get_shared()$sample, c(
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3", "sample4"
+  ))
   expect_equal(data$get_shared()$abundance, c(275, 425, 500, 26, 40, 54))
 
   expect_true(data$is_aligned())
@@ -183,12 +187,15 @@ test_that("test R6 sequence_data - addSeqs, assign samples", {
   # total and sample
   expect_equal(data$get_num_sequences(sample = "sample2"), 301)
 
-  results <- list(sequence_scrap_report = data.frame(),
-                  otu_scrap_report = data.frame())
+  results <- list(
+    sequence_scrap_report = data.frame(),
+    otu_scrap_report = data.frame()
+  )
+
   expect_equal(results, data$get_scrap_report())
 })
 
-test_that("test R6 sequence_data - assign_sequence_abundance, remove_sequences", {
+test_that("sequence_data - assign_sequence_abundance, remove_sequences", {
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
 
@@ -212,9 +219,9 @@ test_that("test R6 sequence_data - assign_sequence_abundance, remove_sequences",
   )
   rabunds <- c(1150, 90, 25, 4)
   treatments <- c(
-      "early", "early", "late",
-      "late", "late", "late",
-      "late"
+    "early", "early", "late",
+    "late", "late", "late",
+    "late"
   )
 
   seqs_to_remove <- c("seq1", "seq2")
@@ -232,10 +239,10 @@ test_that("test R6 sequence_data - assign_sequence_abundance, remove_sequences",
 
   expect_error(data$assign_sequence_abundance(ids, c()))
   missing_ids <- c(
-      "seq1", "seq1", "seq1",
-      "seq2", "seq2",
-      "seq3",
-      "seq3"
+    "seq1", "seq1", "seq1",
+    "seq2", "seq2",
+    "seq3",
+    "seq3"
   )
   expect_error(data$assign_sequence_abundance(missing_ids, abundances))
 
@@ -257,68 +264,81 @@ test_that("test R6 sequence_data - assign_sequence_abundance, remove_sequences",
   expect_equal(data$get_num_treatments(), 1)
 })
 
-test_that("test R6 sequence_data - get_list get_rabund, get_shared", {
-    dataset <- sequence_data$new("my_dataset")
-    seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-    otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-    sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    dataset$assign_otus(otu_ids = otu_ids,
-                                 abundances = sequence_abundances,
-                                 seq_ids = seq_ids)
-    # otus would look like:
-    # label  otu1             otu2        otu3 ...
-    # 0.03   seq1,seq2,seq4   seq3,seq6   seq5 ...
-    # 0.03   110              525         80 ...
+test_that("sequence_data - get_list get_rabund, get_shared", {
+  dataset <- sequence_data$new("my_dataset")
+  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+  dataset$assign_otus(
+    otu_ids = otu_ids,
+    abundances = sequence_abundances,
+    seq_ids = seq_ids
+  )
+  # otus would look like:
+  # label  otu1             otu2        otu3 ...
+  # 0.03   seq1,seq2,seq4   seq3,seq6   seq5 ...
+  # 0.03   110              525         80 ...
 
-    list <- dataset$get_list()
+  list <- dataset$get_list()
 
-    expect_equal(list$otu_id, otu_ids)
-    expect_equal(list$seq_id, seq_ids)
+  expect_equal(list$otu_id, otu_ids)
+  expect_equal(list$seq_id, seq_ids)
 
-    rabund <- dataset$get_rabund()
+  rabund <- dataset$get_rabund()
 
-    abunds <- c(111, 525, 80)
-    expect_equal(rabund$otu_id, unique(otu_ids))
-    expect_equal(rabund$abundance, abunds)
+  abunds <- c(111, 525, 80)
+  expect_equal(rabund$otu_id, unique(otu_ids))
+  expect_equal(rabund$abundance, abunds)
 
-    dataset <- sequence_data$new("my_dataset")
-    otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-    samples <- c("sample1", "sample2", "sample5",
-                 "sample1", "sample3", "sample1")
-    sample_abundances <- c(10, 100, 1, 500, 25, 80)
-    dataset$assign_otus(otu_ids, sample_abundances, samples)
+  dataset <- sequence_data$new("my_dataset")
+  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  samples <- c(
+    "sample1", "sample2", "sample5",
+    "sample1", "sample3", "sample1"
+  )
+  sample_abundances <- c(10, 100, 1, 500, 25, 80)
+  dataset$assign_otus(otu_ids, sample_abundances, samples)
 
-    shared <- dataset$get_shared()
-    expect_equal(shared$otu_id, otu_ids)
-    expect_equal(shared$abundance, sample_abundances)
-    expect_equal(shared$sample, samples)
-    expect_equal(dataset$get_num_otus(), 3)
+  shared <- dataset$get_shared()
+  expect_equal(shared$otu_id, otu_ids)
+  expect_equal(shared$abundance, sample_abundances)
+  expect_equal(shared$sample, samples)
+  expect_equal(dataset$get_num_otus(), 3)
 
-    dataset <- sequence_data$new("my_dataset")
-    otu_ids <- c("otu1", "otu1", "otu1", "otu1",
-                 "otu2", "otu2", "otu2", "otu2", "otu2", "otu2", "otu2", "otu2",
-                 "otu3", "otu3", "otu3", "otu3")
-    seq_ids <- c("seq1", "seq2", "seq3", "seq3",
-                 "seq4", "seq4", "seq5", "seq6", "seq7", "seq8", "seq9", "seq9",
-                 "seq10", "seq10", "seq10", "seq10")
-    samples <- c("sample1", "sample2", "sample4", "sample5",
-                 "sample1", "sample2", "sample1", "sample1",
-                 "sample2", "sample4", "sample4", "sample5",
-                 "sample1", "sample3", "sample5", "sample6")
-    sample_abundances <- c(10, 10, 5, 5,
-                           5, 5, 10, 10, 10, 10, 5, 5,
-                           1, 2, 3, 4)
+  dataset <- sequence_data$new("my_dataset")
+  otu_ids <- c(
+    "otu1", "otu1", "otu1", "otu1",
+    "otu2", "otu2", "otu2", "otu2", "otu2", "otu2", "otu2", "otu2",
+    "otu3", "otu3", "otu3", "otu3"
+  )
+  seq_ids <- c(
+    "seq1", "seq2", "seq3", "seq3",
+    "seq4", "seq4", "seq5", "seq6", "seq7", "seq8", "seq9", "seq9",
+    "seq10", "seq10", "seq10", "seq10"
+  )
+  samples <- c(
+    "sample1", "sample2", "sample4", "sample5",
+    "sample1", "sample2", "sample1", "sample1",
+    "sample2", "sample4", "sample4", "sample5",
+    "sample1", "sample3", "sample5", "sample6"
+  )
+  sample_abundances <- c(
+    10, 10, 5, 5,
+    5, 5, 10, 10, 10, 10, 5, 5,
+    1, 2, 3, 4
+  )
 
-    dataset$assign_otus(otu_ids, sample_abundances, samples, seq_ids);
+  dataset$assign_otus(otu_ids, sample_abundances, samples, seq_ids)
 
-    expect_equal(dataset$get_num_otus(), 3)
-    expect_equal(dataset$get_num_samples(), 6)
-    expect_equal(dataset$get_sample_summary(TRUE)[[1]]$total,
-                 c(36, 25, 2, 20, 13, 4))
-
+  expect_equal(dataset$get_num_otus(), 3)
+  expect_equal(dataset$get_num_samples(), 6)
+  expect_equal(
+    dataset$get_sample_summary(TRUE)[[1]]$total,
+    c(36, 25, 2, 20, 13, 4)
+  )
 })
 
-test_that("test R6 sequence_data - print", {
+test_that("sequence_data - print", {
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
 
@@ -356,83 +376,215 @@ test_that("test R6 sequence_data - print", {
   )
 })
 
-test_that("test R6 sequence_data - get_align_report, get_contigs_report", {
-    names <- c("seq1", "seq2", "seq3", "seq4")
-    seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+test_that("sequence_data - get_align_report, get_contigs_report", {
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
 
-    ids <- c(
-        "seq1", "seq1", "seq1",
-        "seq2", "seq2", "seq2",
-        "seq3", "seq3",
-        "seq4", "seq4"
-    )
-    samples <- c(
-        "sample2", "sample3", "sample4",
-        "sample2", "sample3", "sample4",
-        "sample2", "sample3",
-        "sample2", "sample4"
-    )
-    abundances <- c(
-        250, 400, 500,
-        25, 40, 50,
-        25, 25,
-        1, 4
-    )
+  ids <- c(
+    "seq1", "seq1", "seq1",
+    "seq2", "seq2", "seq2",
+    "seq3", "seq3",
+    "seq4", "seq4"
+  )
+  samples <- c(
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3",
+    "sample2", "sample4"
+  )
+  abundances <- c(
+    250, 400, 500,
+    25, 40, 50,
+    25, 25,
+    1, 4
+  )
 
-    data <- sequence_data$new("mydata")
-    data$add_sequences(names, seqs)
-    data$assign_sequence_abundance(ids, abundances, samples)
+  data <- sequence_data$new("mydata")
+  data$add_sequences(names, seqs)
+  data$assign_sequence_abundance(ids, abundances, samples)
 
-    treatments <- c("early", "early", "late")
+  treatments <- c("early", "early", "late")
 
-    data$assign_treatments(unique(samples), treatments)
+  data$assign_treatments(unique(samples), treatments)
 
-    expect_equal(data$get_align_report(), data.frame())
+  expect_equal(data$get_align_report(), data.frame())
 
-    search_scores <- c(77.7, 87.6, 98.5, 75.6)
-    sim_scores <- c(97.7, 97.6, 98.5, 95.6)
-    longest_inserts <- c(5, 2, 8, 1)
+  search_scores <- c(77.7, 87.6, 98.5, 75.6)
+  sim_scores <- c(97.7, 97.6, 98.5, 95.6)
+  longest_inserts <- c(5, 2, 8, 1)
 
-    data$data$add_align_report(unique(ids), search_scores,
-                               sim_scores, longest_inserts)
-
-
-    align_report <- data$get_align_report()
-    expect_equal(align_report$id, unique(ids))
-    expect_equal(round(align_report$search_score, digits = 2),
-                round(search_scores, digits = 2))
-    expect_equal(round(align_report$sim_score, digits = 2),
-                 round(sim_scores, digits = 2))
-    expect_equal(align_report$longest_insert, longest_inserts)
-
-    overlap_lengths <- c(3, 4, 5, 3)
-    overlap_starts <- c(2, 1, 1, 1)
-    overlap_ends <- c(5, 4, 5, 3)
-    mismatches <- c(0, 1, 0, 0)
-    expected_errors <- c(5.7, 0.6, 34.5, 3.6)
-
-    data$data$add_contigs_report(unique(ids), overlap_lengths,
-                                 overlap_starts, overlap_ends,
-                                 mismatches, expected_errors)
+  data$data$add_align_report(
+    unique(ids), search_scores,
+    sim_scores, longest_inserts
+  )
 
 
-    contigs_report <- data$get_contigs_report()
-    expect_equal(contigs_report$id, unique(ids))
-    expect_equal(contigs_report$length, c(5,5,5,5))
-    expect_equal(contigs_report$num_n, c(0,0,0,0))
-    expect_equal(contigs_report$overlap_length, overlap_lengths)
-    expect_equal(contigs_report$overlap_start, overlap_starts)
-    expect_equal(contigs_report$overlap_end, overlap_ends)
-    expect_equal(contigs_report$mismatches, mismatches)
-    expect_equal(round(contigs_report$ee, digits = 2),
-                 round(expected_errors, digits = 2))
+  align_report <- data$get_align_report()
+  expect_equal(align_report$id, unique(ids))
+  expect_equal(
+    round(align_report$search_score, digits = 2),
+    round(search_scores, digits = 2)
+  )
+  expect_equal(
+    round(align_report$sim_score, digits = 2),
+    round(sim_scores, digits = 2)
+  )
+  expect_equal(align_report$longest_insert, longest_inserts)
 
-    summary <- data$get_sequence_summary()
+  overlap_lengths <- c(3, 4, 5, 3)
+  overlap_starts <- c(2, 1, 1, 1)
+  overlap_ends <- c(5, 4, 5, 3)
+  mismatches <- c(0, 1, 0, 0)
+  expected_errors <- c(5.7, 0.6, 34.5, 3.6)
 
-    expect_equal(length(summary), 3)
-    expect_equal(summary$contigs_summary$olengths, c(3, 3, 3, 3, 3, 5, 5, 3))
-    expect_equal(summary$align_summary$longest_inserts,
-                 c(1,2,5,5,5,8,8,4))
+  data$data$add_contigs_report(
+    unique(ids), overlap_lengths,
+    overlap_starts, overlap_ends,
+    mismatches, expected_errors
+  )
 
+
+  contigs_report <- data$get_contigs_report()
+  expect_equal(contigs_report$id, unique(ids))
+  expect_equal(contigs_report$length, c(5, 5, 5, 5))
+  expect_equal(contigs_report$num_n, c(0, 0, 0, 0))
+  expect_equal(contigs_report$overlap_length, overlap_lengths)
+  expect_equal(contigs_report$overlap_start, overlap_starts)
+  expect_equal(contigs_report$overlap_end, overlap_ends)
+  expect_equal(contigs_report$mismatches, mismatches)
+  expect_equal(
+    round(contigs_report$ee, digits = 2),
+    round(expected_errors, digits = 2)
+  )
+
+  summary <- data$get_sequence_summary()
+
+  expect_equal(length(summary), 3)
+  expect_equal(summary$contigs_summary$olengths, c(3, 3, 3, 3, 3, 5, 5, 3))
+  expect_equal(
+    summary$align_summary$longest_inserts,
+    c(1, 2, 5, 5, 5, 8, 8, 4)
+  )
 })
 
+# assign_sequence_taxonomy, get_sequence_taxonomy_report
+test_that("sequence_data - ", {
+
+  # same length with confidences
+  names <- c("seq1", "seq2", "seq3", "seq4")
+
+  tax1 <- "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);"
+  tax2 <- "Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);"
+  tax3 <- "Bacteria(100);Firmicutes(99);Bacilli(90);"
+  tax4 <- "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);"
+  taxonomies <- c(tax1, tax2, tax3, tax4)
+
+  dataset <- sequence_data$new("my_dataset")
+  dataset$add_sequences(names)
+  dataset$assign_sequence_taxonomy(names, taxonomies)
+  report <- dataset$get_sequence_taxonomy_report()
+
+  expect_equal(report$id, names)
+  expect_equal(report$"1", rep("Bacteria", 4))
+  expect_equal(report$"2", c(
+    "Bacteroidetes", "Proteobacteria",
+    "Firmicutes", "Proteobacteria"
+  ))
+  expect_equal(report$"3", c(
+    "Bacteroidia", "Betaproteobacteria",
+    "Bacilli", "Gammaproteobacteria"
+  ))
+  expect_equal(report$"1_conf", rep(100, 4))
+  expect_equal(report$"2_conf", c(95, 89, 99, 87))
+  expect_equal(report$"3_conf", c(90, 85, 90, 82))
+
+  # same length without confidences
+  tax1 <- "Bacteria;Bacteroidetes;Bacteroidia;"
+  tax2 <- "Bacteria;Proteobacteria;Betaproteobacteria;"
+  tax3 <- "Bacteria;Firmicutes;Bacilli;"
+  tax4 <- "Bacteria;Proteobacteria;Gammaproteobacteria;"
+  taxonomies <- c(tax1, tax2, tax3, tax4)
+
+  dataset <- sequence_data$new("my_dataset")
+  dataset$assign_sequence_taxonomy(names, taxonomies)
+  report <- dataset$get_sequence_taxonomy_report()
+
+  expect_equal(report$id, names)
+  expect_equal(report$"1", rep("Bacteria", 4))
+  expect_equal(report$"2", c(
+      "Bacteroidetes", "Proteobacteria",
+      "Firmicutes", "Proteobacteria"
+  ))
+  expect_equal(report$"3", c(
+      "Bacteroidia", "Betaproteobacteria",
+      "Bacilli", "Gammaproteobacteria"
+  ))
+
+  # different lengths without confidences
+  tax1 <- "Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;"
+  tax2 <- "Bacteria;Proteobacteria;Betaproteobacteria;"
+  tax3 <- "Bacteria;Firmicutes;Bacilli;Lactobacillales;Streptococcaceae;"
+  tax4 <- "Bacteria;Proteobacteria;"
+  taxonomies <- c(tax1, tax2, tax3, tax4)
+
+  dataset <- sequence_data$new("my_dataset")
+  dataset$assign_sequence_taxonomy(names, taxonomies)
+  report <- dataset$get_sequence_taxonomy_report()
+
+  expect_equal(report$id, names)
+  expect_equal(report$"1", rep("Bacteria", 4))
+  expect_equal(report$"2", c(
+      "Bacteroidetes", "Proteobacteria",
+      "Firmicutes", "Proteobacteria"
+  ))
+  expect_equal(report$"3", c(
+      "Bacteroidia", "Betaproteobacteria",
+      "Bacilli", "Proteobacteria_unclassified"
+  ))
+  expect_equal(report$"4", c(
+      "Bacteroidales", "Betaproteobacteria_unclassified",
+      "Lactobacillales", "Proteobacteria_unclassified"
+  ))
+  expect_equal(report$"5", c(
+      "Bacteroidales_unclassified", "Betaproteobacteria_unclassified",
+      "Streptococcaceae", "Proteobacteria_unclassified"
+  ))
+
+  # different lengths with confidences and extra '()'
+  tax1 <- "Bacteria(100);Bacteroidetes(95);Bacteroidia(sub_category)(87);"
+  tax1 <- paste0(tax1, "Bacteroidales(85);")
+  tax2 <- "Bacteria(100);Proteobacteria(95);Betaproteobacteria(87);"
+  tax3 <- "Bacteria(100);Firmicutes(95);Bacilli(87);Lactobacillales(87);"
+  tax3 <- paste0(tax3, "Streptococcaceae(85)")
+  tax4 <- "Bacteria(100);Proteobacteria(95);"
+  taxonomies <- c(tax1, tax2, tax3, tax4)
+
+  dataset <- sequence_data$new("my_dataset")
+  dataset$assign_sequence_taxonomy(names, taxonomies)
+  report <- dataset$get_sequence_taxonomy_report()
+
+  expect_equal(report$id, names)
+  expect_equal(report$"1", rep("Bacteria", 4))
+  expect_equal(report$"2", c(
+      "Bacteroidetes", "Proteobacteria",
+      "Firmicutes", "Proteobacteria"
+  ))
+  expect_equal(report$"3", c(
+      "Bacteroidia(sub_category)", "Betaproteobacteria",
+      "Bacilli", "Proteobacteria_unclassified"
+  ))
+  expect_equal(report$"4", c(
+      "Bacteroidales", "Betaproteobacteria_unclassified",
+      "Lactobacillales", "Proteobacteria_unclassified"
+  ))
+  expect_equal(report$"5", c(
+      "Bacteroidales_unclassified", "Betaproteobacteria_unclassified",
+      "Streptococcaceae", "Proteobacteria_unclassified"
+  ))
+
+  expect_equal(report$"1_conf", rep(100, 4))
+  expect_equal(report$"2_conf", c(95, 95, 95, 95))
+  expect_equal(report$"3_conf", c(87, 87, 87, 95))
+  expect_equal(report$"4_conf", c(85, 87, 87, 95))
+  expect_equal(report$"5_conf", c(85, 87, 85, 95))
+})

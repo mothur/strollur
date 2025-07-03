@@ -3,6 +3,7 @@
 #include "seqreport.h"
 #include "summary.h"
 #include "dataset.h"
+#include "utils.h"
 
 /******************************************************************************/
 Dataset::Dataset(string n, int proc) : datasetName(n) {
@@ -11,6 +12,7 @@ Dataset::Dataset(string n, int proc) : datasetName(n) {
     hasAlignData = false;
     hasOtuData = false;
     hasSequenceData = false;
+    hasSequenceTaxonomy = false;
     numSamples = 0;
     numTreatments = 0;
     numOtus = 0;
@@ -28,16 +30,12 @@ Dataset::~Dataset() {
     if (otuTable != nullptr) { delete otuTable; }
 }
 /******************************************************************************/
-SEXP Dataset::getPointer() {
-    Rcpp::XPtr<Dataset> ptr(this);
-    return ptr;
-}
-/******************************************************************************/
 void Dataset::clear() {
     isAligned = false;
     hasContigsData = false;
     hasAlignData = false;
     hasSequenceData = false;
+    hasSequenceTaxonomy = false;
     numSamples = 0;
     numTreatments = 0;
     numOtus = 0;
@@ -102,7 +100,9 @@ Rcpp::List Dataset::exportDataset(){
 void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c) {
 
     // must provide the same number of names and seqs
-    if (n.size() != s.size()) { return; }
+    if (s.size() == 0) {
+        s.resize(names.size(), "");
+    }
 
     // add to seqIndex
     int numSeqs = names.size();
@@ -199,13 +199,11 @@ void Dataset::assignOtus(vector<string> otuIds,
     if (useSeqIds) {
 
         // if you don't have sequence data, but are adding seq_names for otus,
-        // add seqs with blank sequence strings, add abundances if provided
+        // add seqs, add abundances if provided
         if (!hasSequenceData) {
 
             vector<string> uniqueSeqIds = unique(seqIds);
-            vector<string> blankSeqs(uniqueSeqIds.size(), "");
-
-            addSequences(uniqueSeqIds, blankSeqs);
+            addSequences(uniqueSeqIds);
 
             // if the abundances are provided then use them
             if (!abunds.empty()) {
@@ -415,6 +413,43 @@ void Dataset::assignSequenceAbundance(vector<string> ids,
 
     numSamples = count->getNumSamples();
     numTreatments = count->getNumTreatments();
+}
+/******************************************************************************/
+void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
+
+    if (!hasSequenceData) {
+        addSequences(n);
+    }
+
+    // allocate space
+    if (taxonomies.size() != names.size()) {
+        taxonomies.resize(names.size(), "");
+    }
+
+    if (n.size() != t.size()) {
+        string message = "[ERROR]: Size mismatch. ids and taxonomies must be";
+        message += " the same size.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    for (int i = 0; i < n.size(); i++) {
+
+        auto it = seqIndex.find(n[i]);
+
+        if (it != seqIndex.end()) {
+
+            int index = it->second;
+
+            // update taxonomy
+            taxonomies[index] = t[i];
+        }else{
+            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            message += " ignoring.";
+            RcppThread::Rcout << endl << message << endl;
+        }
+    }
+
+    hasSequenceTaxonomy = true;
 }
 /******************************************************************************/
 // align_seqs will create searchScores, simScores and longestInserts
@@ -981,6 +1016,78 @@ Rcpp::List Dataset::getSequenceSummary() {
 
     result.attr("names") = result_names;
     return result;
+}
+/******************************************************************************/
+Rcpp::DataFrame Dataset::getSequenceTaxonomyReport() {
+    if (hasSequenceTaxonomy){
+        Utils util;
+        int maxLevel = 1;
+
+        vector<int> goodSeqs = getIncludedNamesIndexes();
+        vector<vector<string> > taxons(goodSeqs.size());
+        vector<vector<int> > confidences(goodSeqs.size());
+        bool hasConfidences = true;
+
+        // split taxonomy and confidences by level
+        for (int i = 0; i < goodSeqs.size(); i++) {
+            int numLevels = split(taxonomies[goodSeqs[i]], ';',
+                                  back_inserter(taxons[i]));
+
+            if (numLevels > maxLevel) { maxLevel = numLevels; }
+
+            confidences[i] = util.removeConfidences(taxons[i]);
+
+            if (hasConfidences) {
+                if (sum(confidences[i]) == 0) {
+                    hasConfidences = false;
+                }
+            }
+        }
+
+        vector<vector<string> > taxonsByLevel(maxLevel,
+                                              vector<string>(goodSeqs.size()));
+        vector<vector<int> > confByLevel(maxLevel,
+                                            vector<int>(goodSeqs.size()));
+        for (int i = 0; i < taxons.size(); i++) {
+
+            // extend taxonomies to the same level by adding unclassifieds
+            util.addUnclassifieds(taxons[i], confidences[i], maxLevel);
+
+            // swap rows and columns
+            if (hasConfidences) {
+                for (int j = 0; j < maxLevel; j++) {
+                    taxonsByLevel[j][i] = taxons[i][j];
+                    confByLevel[j][i] = confidences[i][j];
+                }
+            }else {
+                for (int j = 0; j < maxLevel; j++) {
+                    taxonsByLevel[j][i] = taxons[i][j];
+                }
+            }
+            confidences[i].clear();
+            taxons[i].clear();
+        }
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create();
+        vector<string> dfNames;
+        dfNames.push_back("id");
+        df.push_back(getNames());
+        for (int j = 0; j < maxLevel; j++) {
+            string tag = toString(j+1);
+            dfNames.push_back(tag);
+            df.push_back(taxonsByLevel[j]);
+            if (hasConfidences) {
+                tag += "_conf";
+                dfNames.push_back(tag);
+                df.push_back(confByLevel[j]);
+            }
+        }
+        df.attr("names") = dfNames;
+        return df;
+    }
+
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getShared() {

@@ -232,5 +232,20 @@ string toString(const vector<T>& x, char delim) {
     return result;
 }
 /**********************************************************************/
+class BadConversion : public runtime_error {
+public:
+    BadConversion(const string& s) : runtime_error(s){ }
+};
+/**********************************************************************/
+template<typename T>
+void convert(const string& s, T& x, bool failIfLeftoverChars = true){
+
+    istringstream i(s);
+    char c;
+    if (!(i >> x) || (failIfLeftoverChars && i.get(c)))
+        throw BadConversion(s);
+
+}
+/**********************************************************************/
 
 #endif

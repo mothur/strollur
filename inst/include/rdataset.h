@@ -300,11 +300,12 @@ private:
  * The 'Dataset' class will store sequence data for DNA analysis.
  */
 
+
 class Dataset {
 
 public:
 
-    Dataset(string n, int proc);
+     Dataset(string name, int processors);
     ~Dataset();
 
     // public fields exposed through RCPP_MODULE
@@ -314,6 +315,7 @@ public:
     // -1 if unaligned
     int alignmentLength;
     bool hasContigsData, hasAlignData, hasOtuData, hasSequenceData;
+    bool hasSequenceTaxonomy;
 
     int numSamples, numTreatments, numOtus;
     long long numUnique;
@@ -321,13 +323,11 @@ public:
 
     // ********** public functions exposed through RCPP_MODULE ********** //
 
-    SEXP getPointer();
     void clear();
     Rcpp::List exportDataset();
-    string print();
 
     // add seqs
-    void addSequences(vector<string> n, vector<string> s,
+    void addSequences(vector<string> n, vector<string> s = nullVector,
                  vector<string> c = nullVector);
 
     // align_seqs will create searchScores, simScores and longestInserts
@@ -351,6 +351,8 @@ public:
                                  vector<string> samples = nullVector,
                                  vector<string> seqIDs = nullVector);
 
+    void assignSequenceTaxonomy(vector<string> names, vector<string> taxonomies);
+
     void assignTreatments(vector<string> samples,
                           vector<string> treatments);
 
@@ -369,6 +371,8 @@ public:
     Rcpp::DataFrame getAlignReport();
     // 3 columns: id, sample, abundance
     Rcpp::DataFrame getSequenceAbundanceTable();
+    // n columns: id, taxonomy split by level
+    Rcpp::DataFrame getSequenceTaxonomyReport();
 
     int getAbundance(string name, string sample = "");
     // abundances for seq broken down by sample

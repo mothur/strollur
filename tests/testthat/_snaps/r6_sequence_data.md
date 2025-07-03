@@ -1,4 +1,4 @@
-# test R6 sequence_data - print
+# sequence_data - print
 
     Code
       waldo::compare(data$print(), data$print())
