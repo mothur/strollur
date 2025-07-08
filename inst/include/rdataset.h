@@ -219,6 +219,8 @@ public:
     void assignAbundance(vector<string> otuIDs, vector<int> abundance,
              vector<string> samples = nullVector);
 
+    void assignTaxonomy(vector<string> otuIDs, vector<string> taxonomies);
+
     void assignTreatments(vector<string> samples,
                           vector<string> treatments);
 
@@ -226,6 +228,8 @@ public:
 
     // names of OTUs
     vector<string> getOtuIds();
+    // classifications of OTUs
+    vector<string> getTaxonomies();
     // 2 column dataframe - otu_id, abundance
     Rcpp::DataFrame getRAbund();
     // vector of total abundances for each outID
@@ -278,7 +282,7 @@ private:
     map<string, int> otuIndex;
     // filter for "good" otus
     vector<bool> tableOtus;
-    vector<string> otuNames, trashCodes;
+    vector<string> otuNames, trashCodes, taxonomies;
 
     // map reason for deletion to vector containing the number of otus removed
     // for that reason, and the total number of sequences removed by those otus
@@ -315,7 +319,7 @@ public:
     // -1 if unaligned
     int alignmentLength;
     bool hasContigsData, hasAlignData, hasOtuData, hasSequenceData;
-    bool hasSequenceTaxonomy;
+    bool hasSequenceTaxonomy, hasOtuTaxonomy;
 
     int numSamples, numTreatments, numOtus;
     long long numUnique;
@@ -345,13 +349,14 @@ public:
                                vector<int> abunds,
                                vector<string> samples = nullVector,
                                vector<string> treatments = nullVector);
-    // otuIDS, abundances, samples(optional), seqIDs(optional), label (optional)
-    void assignOtus(vector<string> otuIDS,
+    // otuIds, abundances, samples(optional), seqIDs(optional), label (optional)
+    void assignOtus(vector<string> otuIds,
                                  vector<int> abunds = nullIntVector,
                                  vector<string> samples = nullVector,
                                  vector<string> seqIDs = nullVector);
 
     void assignSequenceTaxonomy(vector<string> names, vector<string> taxonomies);
+    void assignOtuTaxonomy(vector<string> otuIds, vector<string> taxonomies);
 
     void assignTreatments(vector<string> samples,
                           vector<string> treatments);
@@ -373,6 +378,8 @@ public:
     Rcpp::DataFrame getSequenceAbundanceTable();
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getSequenceTaxonomyReport();
+    // n columns: id, taxonomy split by level
+    Rcpp::DataFrame getOtuTaxonomyReport();
 
     int getAbundance(string name, string sample = "");
     // abundances for seq broken down by sample
@@ -406,6 +413,8 @@ public:
     // modifiers
     void removeOtus(vector<string> otuIDs, vector<string> trashTags);
     void removeSequences(vector<string> names, vector<string> trashTags);
+    void removeLineages(vector<string> taxonomies,
+                        string trashTag = "contaminant");
     void mergeOtus(vector<string> otuIDS, string reason = "merged");
     void mergeSequences(vector<string>, string reason = "merged");
 
@@ -487,8 +496,10 @@ private:
     int getAlignedLength();
     vector<int> getIncludedNamesIndexes();
     vector<int> getIndexes(vector<string>&);
-    // don't update totals when merging
     void removeSequence(int index, string reasons, bool update = true);
+    void classifyOtus();
+    string classifyOtu(string otuName);
+    Rcpp::DataFrame fillTaxReport(string mode);
 };
 
 /******************************************************************************/

@@ -469,7 +469,6 @@ test_that("sequence_data - get_align_report, get_contigs_report", {
 
 # assign_sequence_taxonomy, get_sequence_taxonomy_report
 test_that("sequence_data - ", {
-
   # same length with confidences
   names <- c("seq1", "seq2", "seq3", "seq4")
 
@@ -484,19 +483,19 @@ test_that("sequence_data - ", {
   dataset$assign_sequence_taxonomy(names, taxonomies)
   report <- dataset$get_sequence_taxonomy_report()
 
-  expect_equal(report$id, names)
-  expect_equal(report$"1", rep("Bacteria", 4))
-  expect_equal(report$"2", c(
-    "Bacteroidetes", "Proteobacteria",
-    "Firmicutes", "Proteobacteria"
+  ids <- c(
+    "seq1", "seq1", "seq1",
+    "seq2", "seq2", "seq2",
+    "seq3", "seq3", "seq3",
+    "seq4", "seq4", "seq4"
+  )
+  expect_equal(report$id, ids)
+  expect_equal(report$taxon[1:6], c(
+    "Bacteria", "Bacteroidetes",
+    "Bacteroidia", "Bacteria",
+    "Proteobacteria", "Betaproteobacteria"
   ))
-  expect_equal(report$"3", c(
-    "Bacteroidia", "Betaproteobacteria",
-    "Bacilli", "Gammaproteobacteria"
-  ))
-  expect_equal(report$"1_conf", rep(100, 4))
-  expect_equal(report$"2_conf", c(95, 89, 99, 87))
-  expect_equal(report$"3_conf", c(90, 85, 90, 82))
+  expect_equal(report$confidence[7:12], c(100, 99, 90, 100, 87, 82))
 
   # same length without confidences
   tax1 <- "Bacteria;Bacteroidetes;Bacteroidia;"
@@ -509,15 +508,11 @@ test_that("sequence_data - ", {
   dataset$assign_sequence_taxonomy(names, taxonomies)
   report <- dataset$get_sequence_taxonomy_report()
 
-  expect_equal(report$id, names)
-  expect_equal(report$"1", rep("Bacteria", 4))
-  expect_equal(report$"2", c(
-      "Bacteroidetes", "Proteobacteria",
-      "Firmicutes", "Proteobacteria"
-  ))
-  expect_equal(report$"3", c(
-      "Bacteroidia", "Betaproteobacteria",
-      "Bacilli", "Gammaproteobacteria"
+  expect_equal(report$id, ids)
+  expect_equal(report$taxon[7:12], c(
+    "Bacteria", "Firmicutes",
+    "Bacilli", "Bacteria",
+    "Proteobacteria", "Gammaproteobacteria"
   ))
 
   # different lengths without confidences
@@ -531,23 +526,30 @@ test_that("sequence_data - ", {
   dataset$assign_sequence_taxonomy(names, taxonomies)
   report <- dataset$get_sequence_taxonomy_report()
 
-  expect_equal(report$id, names)
-  expect_equal(report$"1", rep("Bacteria", 4))
-  expect_equal(report$"2", c(
-      "Bacteroidetes", "Proteobacteria",
-      "Firmicutes", "Proteobacteria"
+  ids <- c(
+    "seq1", "seq1", "seq1", "seq1", "seq1",
+    "seq2", "seq2", "seq2", "seq2", "seq2",
+    "seq3", "seq3", "seq3", "seq3", "seq3",
+    "seq4", "seq4", "seq4", "seq4", "seq4"
+  )
+  expect_equal(report$id, ids)
+  expect_equal(report$taxon[1:10], c(
+    "Bacteria", "Bacteroidetes",
+    "Bacteroidia", "Bacteroidales",
+    "Bacteroidales_unclassified",
+    "Bacteria", "Proteobacteria",
+    "Betaproteobacteria",
+    "Betaproteobacteria_unclassified",
+    "Betaproteobacteria_unclassified"
   ))
-  expect_equal(report$"3", c(
-      "Bacteroidia", "Betaproteobacteria",
-      "Bacilli", "Proteobacteria_unclassified"
-  ))
-  expect_equal(report$"4", c(
-      "Bacteroidales", "Betaproteobacteria_unclassified",
-      "Lactobacillales", "Proteobacteria_unclassified"
-  ))
-  expect_equal(report$"5", c(
-      "Bacteroidales_unclassified", "Betaproteobacteria_unclassified",
-      "Streptococcaceae", "Proteobacteria_unclassified"
+  expect_equal(report$taxon[11:20], c(
+    "Bacteria", "Firmicutes",
+    "Bacilli", "Lactobacillales",
+    "Streptococcaceae",
+    "Bacteria", "Proteobacteria",
+    "Proteobacteria_unclassified",
+    "Proteobacteria_unclassified",
+    "Proteobacteria_unclassified"
   ))
 
   # different lengths with confidences and extra '()'
@@ -563,28 +565,132 @@ test_that("sequence_data - ", {
   dataset$assign_sequence_taxonomy(names, taxonomies)
   report <- dataset$get_sequence_taxonomy_report()
 
-  expect_equal(report$id, names)
-  expect_equal(report$"1", rep("Bacteria", 4))
-  expect_equal(report$"2", c(
-      "Bacteroidetes", "Proteobacteria",
-      "Firmicutes", "Proteobacteria"
+  ids <- c(
+    "seq1", "seq1", "seq1", "seq1", "seq1",
+    "seq2", "seq2", "seq2", "seq2", "seq2",
+    "seq3", "seq3", "seq3", "seq3", "seq3",
+    "seq4", "seq4", "seq4", "seq4", "seq4"
+  )
+  expect_equal(report$id, ids)
+  expect_equal(report$taxon[1:10], c(
+    "Bacteria", "Bacteroidetes",
+    "Bacteroidia(sub_category)",
+    "Bacteroidales",
+    "Bacteroidales_unclassified",
+    "Bacteria", "Proteobacteria",
+    "Betaproteobacteria",
+    "Betaproteobacteria_unclassified",
+    "Betaproteobacteria_unclassified"
   ))
-  expect_equal(report$"3", c(
-      "Bacteroidia(sub_category)", "Betaproteobacteria",
-      "Bacilli", "Proteobacteria_unclassified"
+  expect_equal(report$taxon[11:20], c(
+    "Bacteria", "Firmicutes",
+    "Bacilli", "Lactobacillales",
+    "Streptococcaceae",
+    "Bacteria", "Proteobacteria",
+    "Proteobacteria_unclassified",
+    "Proteobacteria_unclassified",
+    "Proteobacteria_unclassified"
   ))
-  expect_equal(report$"4", c(
-      "Bacteroidales", "Betaproteobacteria_unclassified",
-      "Lactobacillales", "Proteobacteria_unclassified"
+  expect_equal(report$confidence[1:10], c(
+    100, 95, 87, 85, 85, 100, 95, 87,
+    87, 87
   ))
-  expect_equal(report$"5", c(
-      "Bacteroidales_unclassified", "Betaproteobacteria_unclassified",
-      "Streptococcaceae", "Proteobacteria_unclassified"
+  expect_equal(report$confidence[11:20], c(
+    100, 95, 87, 87, 85, 100, 95, 95,
+    95, 95
   ))
 
-  expect_equal(report$"1_conf", rep(100, 4))
-  expect_equal(report$"2_conf", c(95, 95, 95, 95))
-  expect_equal(report$"3_conf", c(87, 87, 87, 95))
-  expect_equal(report$"4_conf", c(85, 87, 87, 95))
-  expect_equal(report$"5_conf", c(85, 87, 85, 95))
+  # add otu assignments
+  otus <- c("otu1", "otu1", "otu1", "otu2")
+  dataset$assign_otus(otus, seq_ids = names)
+
+  report <- dataset$get_otu_taxonomy_report()
+
+  ids <- c(
+    "otu1", "otu1", "otu1", "otu1",
+    "otu2", "otu2", "otu2", "otu2"
+  )
+
+  expect_equal(report$id, ids)
+  expect_equal(report$taxon, c(
+    "Bacteria", "Bacteroidetes",
+    "Bacteroidia(sub_category)",
+    "Bacteroidales",
+    "Bacteria", "Proteobacteria",
+    "Proteobacteria_unclassified",
+    "Proteobacteria_unclassified"
+  ))
+  expect_equal(report$confidence, c(100, 34, 34, 34, 100, 100, 100, 100))
+
+  dataset$clear()
+  otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+  taxonomies <- c(
+    "Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+    "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+    "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+    "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;"
+  )
+
+  expect_error(dataset$assign_otu_taxonomy(otu_ids, taxonomies))
+  expect_error(dataset$assign_otus(otu_ids))
+  expect_equal(dataset$get_contigs_report(), data.frame())
+  expect_equal(dataset$get_sample_summary(), list())
+  expect_equal(dataset$get_sequence_summary(), list())
+  expect_false(dataset$has_sample("noSample"))
+
+  abunds <- c(200, 40, 100, 5)
+  dataset$assign_otus(otu_ids, abunds)
+  dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+
+  report <- dataset$get_otu_taxonomy_report()
+
+  ids <- c(
+    "otu1", "otu1", "otu1", "otu1",
+    "otu2", "otu2", "otu2", "otu2",
+    "otu3", "otu3", "otu3", "otu3",
+    "otu4", "otu4", "otu4", "otu4"
+  )
+
+  expect_equal(report$id, ids)
+  expect_equal(report$taxon, c(
+    "Bacteria", "Bacteroidetes",
+    "Bacteroidia", "Bacteroidales",
+    "Bacteria", "Proteobacteria",
+    "Betaproteobacteria", "Neisseriales",
+    "Bacteria", "Firmicutes",
+    "Bacilli", "Lactobacillales",
+    "Bacteria", "Proteobacteria",
+    "Gammaproteobacteria", "Pasteurellales"
+  ))
+
+  # different lengths and with confidence scores
+  taxonomies <- c(
+    "Bacteria(100);Bacteroidetes(95);Bacteroidia(94);",
+    "Bacteria(100);Proteobacteria(90);Betaproteobacteria(87);Neisseriales(80);",
+    "Bacteria(100);Firmicutes(100);Bacilli(100);Lactobacillales(89);",
+    "Bacteria(100);Proteobacteria(65);Gammaproteobacteria(60);"
+  )
+
+  dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+
+  report <- dataset$get_otu_taxonomy_report()
+
+  expect_equal(report$id, ids)
+  expect_equal(report$taxon, c(
+    "Bacteria", "Bacteroidetes",
+    "Bacteroidia", "Bacteroidia_unclassified",
+    "Bacteria", "Proteobacteria",
+    "Betaproteobacteria", "Neisseriales",
+    "Bacteria", "Firmicutes",
+    "Bacilli", "Lactobacillales",
+    "Bacteria", "Proteobacteria",
+    "Gammaproteobacteria", "Gammaproteobacteria_unclassified"
+  ))
+  expect_equal(report$confidence, c(
+    100, 95, 94, 94, 100, 90, 87, 80,
+    100, 100, 100, 89, 100, 65, 60, 60
+  ))
+
+  expect_equal(dataset$get_sequence_taxonomy_report(), data.frame())
+  expect_equal(dataset$get_shared(), data.frame())
 })

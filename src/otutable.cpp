@@ -48,6 +48,24 @@ void OtuTable::assignAbundance(vector<string> otuIds, vector<int> abundance,
     otuCount->assignAbundance(getIndexes(otuIds), abundance, samples);
 }
 /******************************************************************************/
+void OtuTable::assignTaxonomy(vector<string> otuIds, vector<string> taxs){
+
+    // make space for assignments
+    taxonomies.resize(otuNames.size(), "");
+
+    for (int i = 0; i < otuIds.size(); i++) {
+
+        string otuName = otuIds[i];
+
+        auto it = otuIndex.find(otuName);
+
+        // valid otu
+        if (it != otuIndex.end()) {
+            taxonomies[it->second] = taxs[i];
+        }
+    }
+}
+/******************************************************************************/
 void OtuTable::assignTreatments(vector<string> samples,
                       vector<string> treatments) {
     otuCount->assignTreatments(samples, treatments);
@@ -69,6 +87,10 @@ vector<int> OtuTable::getGoodIndexes() {
 // names of OTUs
 vector<string> OtuTable::getOtuIds(){
     return select(otuNames, tableOtus);
+}
+/******************************************************************************/
+vector<string> OtuTable::getTaxonomies() {
+    return select(taxonomies, tableOtus);
 }
 /******************************************************************************/
 Rcpp::DataFrame OtuTable::getRAbund() {

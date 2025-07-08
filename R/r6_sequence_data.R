@@ -274,6 +274,32 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Assign otu classification
+    #' @param otu_ids a vector of otu names
+    #' @param taxonomies a vector of otu classifications
+    #' @examples
+    #'
+    #' otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+    #' abunds <- c(200, 40, 100, 5)
+    #' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+    #'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+    #'                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+    #'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+    #'
+    #' dataset <- sequence_data$new("my_dataset")
+    #' dataset$assign_otus(otu_ids, abunds)
+    #' dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+    #'
+    assign_otu_taxonomy = function(otu_ids, taxonomies) {
+      if (self$data$num_otus == 0) {
+        cli::cli_abort("[ERROR]: No otu data, please assign otus using the
+                           'assign_otus' function then try again.")
+      }
+      self$data$assign_otu_taxonomy(otu_ids, taxonomies)
+      invisible(self)
+    },
+
+    #' @description
     #' Assign sequence classification
     #' @param names a vector of sequence names
     #' @param taxonomies a vector of sequence classifications
@@ -286,7 +312,6 @@ sequence_data <- R6Class("sequence_data",
     #'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
     #'
     #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$add_sequences(names)
     #' dataset$assign_sequence_taxonomy(names, taxonomies)
     #'
     assign_sequence_taxonomy = function(names, taxonomies) {
@@ -464,6 +489,26 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Get report containing the sequence taxonomy table -
+    #' ids, taxonomy by levels
+    #' @examples
+    #'
+    #' otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+    #' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+    #'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+    #'                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+    #'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+    #'
+    #' dataset <- sequence_data$new("my_dataset")
+    #' dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+    #' dataset$get_otu_taxonomy_report()
+    #'
+    #' @return data.frame
+    get_otu_taxonomy_report = function() {
+      self$data$get_otu_taxonomy_report()
+    },
+
+    #' @description
     #' Get data frame containing sequence otu assignments
     #' @examples
     #'   dataset <- sequence_data$new("my_dataset")
@@ -594,7 +639,7 @@ sequence_data <- R6Class("sequence_data",
 
       if (length(results) == 0) {
         cli::cli_alert("Your dataset does not include sequence data, ignoring.")
-        return()
+        return(list())
       }
 
       results_row_names <- c(
@@ -896,15 +941,6 @@ sequence_data <- R6Class("sequence_data",
     #' @return data.frame
     get_shared = function() {
       self$data$get_shared()
-    },
-
-    #' @description
-    #' Get data.frames containing classifications for sequences and OTUs.
-    #' id, taxonomy, abundance(optional)
-    #' These tables represent mothur's taxonomy and cons.taxonomy files
-    #' @return List of data.frames
-    get_taxonomy_tables = function() {
-      # TODO
     },
 
     #' @description

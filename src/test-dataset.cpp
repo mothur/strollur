@@ -1205,7 +1205,7 @@ context("Dataset class C++ unit tests") {
         expect_error(data.assignOtus(otuNames, abundances));
     }
 
-   test_that("Tests mergeOtus, removeOtus, getScrapReport, getScrapSummary") {
+    test_that("Tests mergeOtus, removeOtus, getScrapReport, getScrapSummary") {
 
         Dataset data("mydata", 1);
 
@@ -1680,5 +1680,71 @@ context("Dataset class C++ unit tests") {
         expect_true(data.numOtus == 2);
         expect_true(data.numSamples == 5);
         expect_true(data.getTotal("sample6") == 0);
+    }
+
+    test_that("Tests assignSequenceTaxonomy, assignOtuTaxonomy") {
+        vector<string> names(4);
+        names[0] = "seq1";
+        names[1] = "seq2";
+        names[2] = "seq3";
+        names[3] = "seq4";
+
+        vector<string> taxonomies(4);
+        taxonomies[0] = "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);";
+        taxonomies[1] = "Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);";
+        taxonomies[2] = "Bacteria(100);Firmicutes(99);Bacilli(90);";
+        taxonomies[3] = "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);";
+
+        Dataset data("mydata", 1);
+        expect_error(data.assignSequenceTaxonomy(names, nullVector));
+        data.assignSequenceTaxonomy(names, taxonomies);
+        Rcpp::DataFrame report = data.getSequenceTaxonomyReport();
+
+        names.resize(12);
+        names[0] = "seq1";
+        names[1] = "seq1";
+        names[2] = "seq1";
+        names[3] = "seq2";
+        names[4] = "seq2";
+        names[5] = "seq2";
+        names[6] = "seq3";
+        names[7] = "seq3";
+        names[8] = "seq3";
+        names[9] = "seq4";
+        names[10] = "seq4";
+        names[11] = "seq4";
+
+        vector<string> taxons(12);
+        taxons[0] = "Bacteria";
+        taxons[1] = "Bacteroidetes";
+        taxons[2] = "Bacteroidia";
+        taxons[3] = "Bacteria";
+        taxons[4] = "Proteobacteria";
+        taxons[5] = "Betaproteobacteria";
+        taxons[6] = "Bacteria";
+        taxons[7] = "Firmicutes";
+        taxons[8] = "Bacilli";
+        taxons[9] = "Bacteria";
+        taxons[10] = "Proteobacteria";
+        taxons[11] = "Gammaproteobacteria";
+
+        vector<int> conf(12);
+        conf[0] = 100;
+        conf[1] = 95;
+        conf[2] = 90;
+        conf[3] = 100;
+        conf[4] = 89;
+        conf[5] = 85;
+        conf[6] = 100;
+        conf[7] = 99;
+        conf[8] = 90;
+        conf[9] = 100;
+        conf[10] = 87;
+        conf[11] = 82;
+
+        expect_true(names == Rcpp::as<vector<string>>(report[0]));
+        expect_true(taxons == Rcpp::as<vector<string>>(report[2]));
+        expect_true(conf == Rcpp::as<vector<int>>(report[3]));
+
     }
 }

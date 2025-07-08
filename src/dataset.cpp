@@ -4,6 +4,7 @@
 #include "summary.h"
 #include "dataset.h"
 #include "utils.h"
+#include "phylotree.h"
 
 /******************************************************************************/
 Dataset::Dataset(string n, int proc) : datasetName(n) {
@@ -13,6 +14,7 @@ Dataset::Dataset(string n, int proc) : datasetName(n) {
     hasOtuData = false;
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
+    hasOtuTaxonomy = false;
     numSamples = 0;
     numTreatments = 0;
     numOtus = 0;
@@ -36,6 +38,7 @@ void Dataset::clear() {
     hasAlignData = false;
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
+    hasOtuTaxonomy = false;
     numSamples = 0;
     numTreatments = 0;
     numOtus = 0;
@@ -185,6 +188,7 @@ void Dataset::assignOtus(vector<string> otuIds,
     if (!useSeqIds && (otuIds.size() != abunds.size())) {
         string message = "[ERROR]: Size mismatch. otu_ids and abunds must be";
         message += " the same size.";
+
         throw Rcpp::exception(message.c_str());
     }
 
@@ -366,6 +370,12 @@ void Dataset::assignOtus(vector<string> otuIds,
 
             otuTable->assignAbundance(otuIds, abunds);
         }
+
+        hasOtuData = true;
+
+        // if the sequences have been assigned taxonomy,
+        // assign the otu taxonomy
+        if (hasSequenceTaxonomy) { classifyOtus(); }
     }else{
         // add otus - shared
         otuTable->assignAbundance(otuIds, abunds, samples);
@@ -376,6 +386,20 @@ void Dataset::assignOtus(vector<string> otuIds,
     label = otuTable->label;
     numSamples = otuTable->getNumSamples();
     numTreatments = otuTable->getNumTreatments();
+}
+/******************************************************************************/
+void Dataset::assignOtuTaxonomy(vector<string> otuIds, vector<string> taxs) {
+
+    if (hasOtuData) {
+        if (otuIds.size() != taxs.size()) {
+            string message = "[ERROR]: Size mismatch. otu_ids and taxonomies ";
+            message += "must be the same size.";
+            throw Rcpp::exception(message.c_str());
+        }
+
+        otuTable->assignTaxonomy(otuIds, taxs);
+        hasOtuTaxonomy = true;
+    }
 }
 /******************************************************************************/
 void Dataset::assignTreatments(vector<string> samples, vector<string> treatments) {
@@ -429,6 +453,7 @@ void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
     if (n.size() != t.size()) {
         string message = "[ERROR]: Size mismatch. ids and taxonomies must be";
         message += " the same size.";
+        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -450,6 +475,8 @@ void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
     }
 
     hasSequenceTaxonomy = true;
+
+    if (hasOtuData) { classifyOtus(); }
 }
 /******************************************************************************/
 // align_seqs will create searchScores, simScores and longestInserts
@@ -486,6 +513,7 @@ void Dataset::addAlignReport(vector<string>& n, vector<double>& ss,
             }else{
                 string message = "[ERROR]: The dataset does not contain a ";
                 message += "sequence named " + n[i] + ", quitting.\n";
+                RcppThread::Rcerr << endl << message << endl;
                 throw Rcpp::exception(message.c_str());
             }
         }
@@ -537,10 +565,176 @@ void Dataset::addContigsReport(vector<string>& n, vector<int>& ol,
             }else{
                 string message = "[ERROR]: The dataset does not contain a ";
                 message += "sequence named " + n[i] + ", quitting.\n";
+                RcppThread::Rcerr << endl << message << endl;
                 throw Rcpp::exception(message.c_str());
             }
         }
     }
+}
+/******************************************************************************/
+string Dataset::classifyOtu(string otuName){
+    string otuTax = "";
+
+    auto it = list.find(otuName);
+
+    // valid otu
+    if (it != list.end()) {
+
+        vector<int> otuSeqs = it->second;
+
+        PhyloTree phylo;
+        int size = 0;
+
+        // add all "good" seqs in otu to phylotree
+        for (int index : otuSeqs) {
+
+            // is a "good" seq
+            if (tableSeqs[index]) {
+                int seqAbund = count->getAbundance(index);
+                size += seqAbund;
+                phylo.addSeqToTree(taxonomies[index], seqAbund);
+            }
+        }
+
+        TaxNode currentNode = phylo.getRoot();
+
+        while (currentNode.total != 0) {
+
+            TaxNode bestChild;
+            int bestChildSize = 0;
+
+            //go through children
+            for (auto itChild = currentNode.children.begin();
+                 itChild != currentNode.children.end(); itChild++) {
+
+                TaxNode temp = phylo.get(itChild->second);
+
+                // select taxonomy with most seqs assigned to it
+                if (temp.total > bestChildSize) {
+                    bestChild = phylo.get(itChild->second);
+                    bestChildSize = temp.total;
+                }
+            }
+
+            //phylotree adds an extra unknown so we want to remove that
+            if (bestChild.name == "unknown") { bestChildSize--; }
+
+            int consensusConfidence = ceil((bestChildSize /
+                                           (float) size) * 100);
+
+            if (bestChild.name != "") {
+                otuTax += bestChild.name + "(" + toString(consensusConfidence) + ");";
+            }
+            //move down a level
+            currentNode = bestChild;
+        }
+    }
+
+    if (otuTax == "") {  otuTax = "unknown;";  }
+
+    return otuTax;
+}
+/******************************************************************************/
+void Dataset::classifyOtus() {
+    if (hasOtuData) {
+        // get names of "good" otus
+        vector<string> otuNames = otuTable->getOtuIds();
+        vector<string> otuClassifications(otuNames.size(), "");
+        for (int i = 0; i < otuNames.size(); i++) {
+            otuClassifications[i] = classifyOtu(otuNames[i]);
+        }
+        otuTable->assignTaxonomy(otuNames, otuClassifications);
+
+        hasOtuTaxonomy = true;
+        numOtus = otuTable->numOtus;
+        label = otuTable->label;
+        numSamples = otuTable->getNumSamples();
+        numTreatments = otuTable->getNumTreatments();
+    }
+}
+/******************************************************************************/
+/*
+ id         level  taxon                 confidence
+ seq1     1       Bacteria             100.0
+ seq1     2      "Acidobacteria"  99.8
+ seq1     3      Holophagae        99.8
+ seq1     4      Holophagales      95.0
+ seq1     5      Holophagaceae   90.0
+ seq1     6      Holophaga           87.0
+ seq2 ...
+ */
+Rcpp::DataFrame Dataset::fillTaxReport(string mode) {
+
+    vector<string> ids, taxes;
+
+    if (mode == "otu") {
+        ids = otuTable->getOtuIds();
+        taxes = otuTable->getTaxonomies();
+    }else {
+        ids = getNames();
+        taxes = select(taxonomies, tableSeqs);
+    }
+
+    Utils util;
+    int maxLevel = 1;
+
+    vector<vector<string> > taxons(taxes.size());
+    vector<vector<int> > confidences(taxes.size());
+    bool hasConfidences = true;
+
+    // split taxonomy and confidences by level
+    for (int i = 0; i < taxes.size(); i++) {
+        int numLevels = split(taxes[i], ';',
+                              back_inserter(taxons[i]));
+
+        if (numLevels > maxLevel) { maxLevel = numLevels; }
+
+        confidences[i] = util.removeConfidences(taxons[i]);
+
+        if (hasConfidences) {
+            if (sum(confidences[i]) == 0) {
+                hasConfidences = false;
+            }
+        }
+    }
+
+    taxes.clear();
+    vector<string> dfIds(taxons.size()*maxLevel);
+    vector<string> dfTaxs(taxons.size()*maxLevel);
+    vector<int> levels(taxons.size()*maxLevel);
+    vector<int> dfConfidences(taxons.size()*maxLevel);
+
+    for (int i = 0; i < taxons.size(); i++) {
+        // extend taxonomies to the same level by adding unclassifieds
+        util.addUnclassifieds(taxons[i], confidences[i], maxLevel);
+
+        for (int j = 0; j < maxLevel; j++) {
+            dfIds[i*maxLevel+j] = ids[i];
+            dfTaxs[i*maxLevel+j] = taxons[i][j];
+            levels[i*maxLevel+j] = j+1;
+            dfConfidences[i*maxLevel+j] = confidences[i][j];
+        }
+    }
+
+    taxons.clear();
+    confidences.clear();
+
+
+    if (!hasConfidences) {
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("id") = dfIds,
+            Rcpp::_["level"] = levels,
+            Rcpp::_["taxon"] = dfTaxs);
+        return df;
+    }
+
+    Rcpp::DataFrame df = Rcpp::DataFrame::create(
+        Rcpp::Named("id") = dfIds,
+        Rcpp::_["level"] = levels,
+        Rcpp::_["taxon"] = dfTaxs,
+        Rcpp::_["confidence"] = dfConfidences);
+
+    return df;
 }
 /******************************************************************************/
 int Dataset::getAbundance(string name, string sample){
@@ -646,6 +840,7 @@ vector<int> Dataset::getIndexes(vector<string>& ids) {
         }else{
             string message = "[ERROR]: The dataset does not contain a ";
             message += "sequence named " + ids[i] + ".\n";
+            RcppThread::Rcerr << endl << message << endl;
             throw Rcpp::exception(message.c_str());
         }
     }
@@ -785,6 +980,15 @@ vector<string> Dataset::getOtuIds() {
         return otuTable->getOtuIds();
     }
     return nullVector;
+}
+/******************************************************************************/
+Rcpp::DataFrame Dataset::getOtuTaxonomyReport() {
+    if (hasOtuTaxonomy){
+        return (fillTaxReport("otu"));
+    }
+
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getRAbund() {
@@ -1020,70 +1224,7 @@ Rcpp::List Dataset::getSequenceSummary() {
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getSequenceTaxonomyReport() {
     if (hasSequenceTaxonomy){
-        Utils util;
-        int maxLevel = 1;
-
-        vector<int> goodSeqs = getIncludedNamesIndexes();
-        vector<vector<string> > taxons(goodSeqs.size());
-        vector<vector<int> > confidences(goodSeqs.size());
-        bool hasConfidences = true;
-
-        // split taxonomy and confidences by level
-        for (int i = 0; i < goodSeqs.size(); i++) {
-            int numLevels = split(taxonomies[goodSeqs[i]], ';',
-                                  back_inserter(taxons[i]));
-
-            if (numLevels > maxLevel) { maxLevel = numLevels; }
-
-            confidences[i] = util.removeConfidences(taxons[i]);
-
-            if (hasConfidences) {
-                if (sum(confidences[i]) == 0) {
-                    hasConfidences = false;
-                }
-            }
-        }
-
-        vector<vector<string> > taxonsByLevel(maxLevel,
-                                              vector<string>(goodSeqs.size()));
-        vector<vector<int> > confByLevel(maxLevel,
-                                            vector<int>(goodSeqs.size()));
-        for (int i = 0; i < taxons.size(); i++) {
-
-            // extend taxonomies to the same level by adding unclassifieds
-            util.addUnclassifieds(taxons[i], confidences[i], maxLevel);
-
-            // swap rows and columns
-            if (hasConfidences) {
-                for (int j = 0; j < maxLevel; j++) {
-                    taxonsByLevel[j][i] = taxons[i][j];
-                    confByLevel[j][i] = confidences[i][j];
-                }
-            }else {
-                for (int j = 0; j < maxLevel; j++) {
-                    taxonsByLevel[j][i] = taxons[i][j];
-                }
-            }
-            confidences[i].clear();
-            taxons[i].clear();
-        }
-
-        Rcpp::DataFrame df = Rcpp::DataFrame::create();
-        vector<string> dfNames;
-        dfNames.push_back("id");
-        df.push_back(getNames());
-        for (int j = 0; j < maxLevel; j++) {
-            string tag = toString(j+1);
-            dfNames.push_back(tag);
-            df.push_back(taxonsByLevel[j]);
-            if (hasConfidences) {
-                tag += "_conf";
-                dfNames.push_back(tag);
-                df.push_back(confByLevel[j]);
-            }
-        }
-        df.attr("names") = dfNames;
-        return df;
+        return (fillTaxReport("sequence"));
     }
 
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
@@ -1181,6 +1322,88 @@ void Dataset::mergeOtus(vector<string> ids, string reason){
     }
 }
 /******************************************************************************/
+void Dataset::removeLineages(vector<string> contaminants, string trashTag) {
+
+    if (!hasSequenceTaxonomy && !hasOtuTaxonomy ) { return; }
+
+    Utils util;
+    vector<vector<string> > conTax(contaminants.size());
+    vector<vector<int> > conConfidenceThreshold(contaminants.size());
+    vector<bool> conHasConfidences(contaminants.size(), false);
+
+    // split contaminant taxonomies and confidences by level
+    for (int i = 0; i < contaminants.size(); i++) {
+
+        split(contaminants[i], ';', back_inserter(conTax[i]));
+        conConfidenceThreshold[i] = util.removeConfidences(conTax[i]);
+
+        if (sum(conConfidenceThreshold[i]) != 0) {
+            conHasConfidences[i] = true;
+        }
+    }
+
+    bool foundContaminants = false;
+    if (hasSequenceTaxonomy) {
+        // you have sequence taxonomies, remove contaminants
+        // and reclassify otus (below)
+
+        // remove seqs assigned to this taxonomy
+        for (int i = 0; i < taxonomies.size(); i++) {
+
+            if (tableSeqs[i]) {
+                vector<string> userTax;
+                split(taxonomies[i], ';', back_inserter(userTax));
+                vector<int> userConfidences = util.removeConfidences(userTax);
+
+                // if this seq is a contaminant, remove it
+                if (util.searchTax(userTax, userConfidences,
+                                   conHasConfidences,
+                                   conTax, conConfidenceThreshold)) {
+                    removeSequence(i, trashTag);
+                    foundContaminants = true;
+                }
+            }
+        }
+    }else if (!hasSequenceTaxonomy && hasOtuTaxonomy) {
+        // if you have only have otu classifications, remove otus
+
+        vector<string> otuIds = otuTable->getOtuIds();
+        vector<string> otuTaxes = otuTable->getTaxonomies();
+
+        // remove otus assigned to this taxonomy
+        for (int i = 0; i < otuTaxes.size(); i++) {
+            vector<string> userTax;
+            split(otuTaxes[i], ';', back_inserter(userTax));
+            vector<int> userConfidences = util.removeConfidences(userTax);
+
+            // if this seq is a contaminant, remove it
+            if (util.searchTax(userTax, userConfidences,
+                               conHasConfidences,
+                               conTax, conConfidenceThreshold)) {
+                otuTable->remove(otuIds[i], trashTag);
+            }
+        }
+    }
+
+    count->updateTotals();
+    numSamples = count->getNumSamples();
+    numTreatments = count->getNumTreatments();
+
+    // if you have otu classifications and sequence classifications
+    // removing contaminant should force a reclassification of the otus
+    // using the new data
+    if (hasSequenceTaxonomy && hasOtuTaxonomy && foundContaminants) {
+        classifyOtus();
+    }
+
+    if (hasOtuTaxonomy) {
+        otuTable->updateTotals();
+        numSamples = otuTable->getNumSamples();
+        numTreatments = otuTable->getNumTreatments();
+        numOtus = otuTable->numOtus;
+    }
+}
+/******************************************************************************/
 void Dataset::removeOtus(vector<string> namesToRemove,
                               vector<string> trashTags){
 
@@ -1189,6 +1412,7 @@ void Dataset::removeOtus(vector<string> namesToRemove,
     if (namesToRemove.size() != trashTags.size()) {
         string message = "[ERROR]: Size mismatch. You must provide a trash";
         message += " code for each otu.";
+        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -1207,12 +1431,15 @@ void Dataset::removeOtus(vector<string> namesToRemove,
         }
     }
 
+    count->updateTotals();
+    numSamples = count->getNumSamples();
+    numTreatments = count->getNumTreatments();
+
     otuTable->updateTotals();
     numSamples = otuTable->getNumSamples();
     numTreatments = otuTable->getNumTreatments();
     numOtus = otuTable->numOtus;
 }
-
 /******************************************************************************/
 void Dataset::removeSequence(int index, string reasons, bool update) {
     // remove from tableSeqs and add trashCode
@@ -1279,6 +1506,7 @@ void Dataset::removeSequences(vector<string> namesToRemove,
     if (namesToRemove.size() != trashTags.size()) {
         string message = "[ERROR]: Size mismatch. You must provide a trash";
         message += " code for each sequence.";
+        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -1315,6 +1543,7 @@ void Dataset::setAbundance(vector<string> n, vector<int> abunds,
     if (n.size() != abunds.size()) {
         string message = "[ERROR]: Size mismatch. ids and sequences must be";
         message += " the same size.";
+        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -1351,6 +1580,7 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
     if (n.size() != abunds.size()) {
         string message = "[ERROR]: Size mismatch. ids and sequences must be";
         message += " the same size.";
+        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -1441,6 +1671,7 @@ void Dataset::setSequences(vector<string> n, vector<string> s,
     if (n.size() != s.size()) {
         string message = "[ERROR]: Size mismatch. ids and sequences must be";
         message += " the same size.";
+        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 

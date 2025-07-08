@@ -151,6 +151,23 @@ dataset$assign_sequence_abundance(names, abundances, samples)
 
 
 ## ------------------------------------------------
+## Method `sequence_data$assign_otu_taxonomy`
+## ------------------------------------------------
+
+
+otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+abunds <- c(200, 40, 100, 5)
+taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+
+dataset <- sequence_data$new("my_dataset")
+dataset$assign_otus(otu_ids, abunds)
+dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+
+
+## ------------------------------------------------
 ## Method `sequence_data$assign_sequence_taxonomy`
 ## ------------------------------------------------
 
@@ -162,7 +179,6 @@ taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
 
 dataset <- sequence_data$new("my_dataset")
-dataset$add_sequences(names)
 dataset$assign_sequence_taxonomy(names, taxonomies)
 
 
@@ -214,6 +230,22 @@ dataset$assign_treatments(unique(samples), treatments)
   #  otu2          seq3
   #  otu2          seq6
   #  otu3          seq5
+
+
+## ------------------------------------------------
+## Method `sequence_data$get_otu_taxonomy_report`
+## ------------------------------------------------
+
+
+otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+
+dataset <- sequence_data$new("my_dataset")
+dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+dataset$get_otu_taxonomy_report()
 
 
 ## ------------------------------------------------
@@ -303,6 +335,7 @@ additional functionality.}
 \item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
 \item \href{#method-sequence_data-assign_otus}{\code{sequence_data$assign_otus()}}
 \item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
+\item \href{#method-sequence_data-assign_otu_taxonomy}{\code{sequence_data$assign_otu_taxonomy()}}
 \item \href{#method-sequence_data-assign_sequence_taxonomy}{\code{sequence_data$assign_sequence_taxonomy()}}
 \item \href{#method-sequence_data-assign_treatments}{\code{sequence_data$assign_treatments()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
@@ -318,6 +351,7 @@ additional functionality.}
 \item \href{#method-sequence_data-get_num_sequences}{\code{sequence_data$get_num_sequences()}}
 \item \href{#method-sequence_data-get_num_treatments}{\code{sequence_data$get_num_treatments()}}
 \item \href{#method-sequence_data-get_oligos}{\code{sequence_data$get_oligos()}}
+\item \href{#method-sequence_data-get_otu_taxonomy_report}{\code{sequence_data$get_otu_taxonomy_report()}}
 \item \href{#method-sequence_data-get_rabund}{\code{sequence_data$get_rabund()}}
 \item \href{#method-sequence_data-get_samples}{\code{sequence_data$get_samples()}}
 \item \href{#method-sequence_data-get_sample_summary}{\code{sequence_data$get_sample_summary()}}
@@ -600,6 +634,44 @@ dataset$assign_sequence_abundance(names, abundances, samples)
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-assign_otu_taxonomy"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_otu_taxonomy}{}}}
+\subsection{Method \code{assign_otu_taxonomy()}}{
+Assign otu classification
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_otu_taxonomy(otu_ids, taxonomies)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{otu_ids}}{a vector of otu names}
+
+\item{\code{taxonomies}}{a vector of otu classifications}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+abunds <- c(200, 40, 100, 5)
+taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+
+dataset <- sequence_data$new("my_dataset")
+dataset$assign_otus(otu_ids, abunds)
+dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-assign_sequence_taxonomy"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-assign_sequence_taxonomy}{}}}
 \subsection{Method \code{assign_sequence_taxonomy()}}{
@@ -627,7 +699,6 @@ taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
 
 dataset <- sequence_data$new("my_dataset")
-dataset$add_sequences(names)
 dataset$assign_sequence_taxonomy(names, taxonomies)
 
 }
@@ -897,6 +968,38 @@ tag, oligo, diffs, oligo(optional), diffs(optional), sample(optional)
 \subsection{Returns}{
 data.frame
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_otu_taxonomy_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_otu_taxonomy_report}{}}}
+\subsection{Method \code{get_otu_taxonomy_report()}}{
+Get report containing the sequence taxonomy table -
+ids, taxonomy by levels
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_otu_taxonomy_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+
+dataset <- sequence_data$new("my_dataset")
+dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+dataset$get_otu_taxonomy_report()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_rabund"></a>}}

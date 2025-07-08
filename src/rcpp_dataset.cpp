@@ -34,6 +34,8 @@ RCPP_MODULE(Dataset) {
     "Set sequence abundance and optionally assign sample and treatment data")
     .method("assign_sequence_taxonomy", &Dataset::assignSequenceTaxonomy,
     "Assign sequence classification")
+    .method("assign_otu_taxonomy", &Dataset::assignOtuTaxonomy,
+    "Assign otu classification")
     .method("assign_treatments", &Dataset::assignTreatments, "Assign samples to treatments")
     .method("clear", &Dataset::clear, "Clear dataset")
     .method("merge_sequences", &Dataset::mergeSequences,
@@ -62,6 +64,8 @@ RCPP_MODULE(Dataset) {
     "Get sequence report data: starts, ends, lengths, ambigs, homopolymers, numns")
     .method("get_sequence_taxonomy_report", &Dataset::getSequenceTaxonomyReport,
     "Get data.frame containing sequence taxonomy data")
+    .method("get_otu_taxonomy_report", &Dataset::getOtuTaxonomyReport,
+    "Get data.frame containing otu taxonomy data")
 
     .method("get_sequence_summary", &Dataset::getSequenceSummary,
     "Get sequence summary report")
@@ -91,6 +95,10 @@ RCPP_MODULE(Dataset) {
     "Get names of sequences parsed by sample")
     .method("get_sequences_by_sample", &Dataset::getSequencesBySample,
     "Get sequences parsed by sample")
+
+
+    .method("remove_lineages", &Dataset::removeLineages,
+    "Get sequence contaminants")
 
     // otu functions
     .method("get_otu_abundance", &Dataset::getOtuAbundance, "Get abundance of otu")
