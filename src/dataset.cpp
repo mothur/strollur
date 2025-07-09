@@ -1275,6 +1275,21 @@ void Dataset::mergeSequences(vector<string> ids, string reason){
     if (ids.size() != 1) {
 
         vector<int> indexes = getIndexes(ids);
+
+        // sanity check: if you have assigned otus, make sure the sequences
+        // are in the same otu
+        if (hasOtuData) {
+            string otu = seqOtus[indexes[0]];
+            for (int i = 1; i < indexes.size(); i++) {
+                if (seqOtus[indexes[i]] != otu) {
+                    string message = "[ERROR]: can not merge sequences assigned";
+                    message += " to different otus.";
+                    RcppThread::Rcerr << endl << message << endl;
+                    throw Rcpp::exception(message.c_str());
+                }
+            }
+        }
+
         count->merge(indexes);
 
         for (int i = 1; i < indexes.size(); i++) {

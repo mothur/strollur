@@ -490,6 +490,7 @@ private:
     // "otu1" -> 1,3,5
     // "otu1" -> "seq1,seq3,seq5"
     map<string, vector<int> > list;
+    // vector of otuNames assigned to sequences
     vector<string> seqOtus;
 
     // if unaligned, returns -1
