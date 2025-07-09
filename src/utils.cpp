@@ -70,18 +70,18 @@ vector<int> Utils::removeConfidences(vector<string>& taxons) {
     }
     return confidences;
 }
-/******************************************************************************/
-void Utils::addUnclassifieds(string& taxon, int maxlevel) {
-    vector<string> taxons;
-    split(taxon, ';', back_inserter(taxons));
-    vector<int> confidences = removeConfidences(taxons);
-    addUnclassifieds(taxons, confidences, maxlevel);
-
-    taxon = "";
-    for (int i = 0; i < maxlevel; i++) {
-        taxon += taxons[i] + "(" + toString(confidences[i]) + ");";
-    }
-}
+// /******************************************************************************/
+// void Utils::addUnclassifieds(string& taxon, int maxlevel) {
+//     vector<string> taxons;
+//     split(taxon, ';', back_inserter(taxons));
+//     vector<int> confidences = removeConfidences(taxons);
+//     addUnclassifieds(taxons, confidences, maxlevel);
+//
+//     taxon = "";
+//     for (int i = 0; i < maxlevel; i++) {
+//         taxon += taxons[i] + "(" + toString(confidences[i]) + ");";
+//     }
+// }
 /******************************************************************************/
 void Utils::addUnclassifieds(vector<string>& taxons,
                       vector<int>& confidences, int maxlevel) {
@@ -193,7 +193,7 @@ bool Utils::searchTax(vector<string> userTaxons,
                 // are included so no need to search for other
                 return true;
             }else {
-                bool good = true;
+                bool found = false;
 
                 // the usersTaxon is most likely longer than the searchTaxons,
                 // and searchTaxon[0] may relate to userTaxon[4]
@@ -225,14 +225,14 @@ bool Utils::searchTax(vector<string> userTaxons,
                     if ((i+index) < userTaxons.size()) {
                         //is the users cutoff less than the search taxons
                         if (userConfidences[i+index] < searchConfidenceThresholds[j][i]) {
-                            good = false;
+                            found = true;
                             break;
                         }
-                    }else { good = false; break; }
+                    }else { found = true; break; }
                 }
 
                 //passed the test so add you
-                if (good) { return true; }
+                if (found) { return true; }
             }
         }
     }

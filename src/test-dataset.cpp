@@ -649,6 +649,21 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getSequenceAbundances() == seqTotals);
         expect_true(data.numUnique == 3);
         expect_true(data.getTotal() == 1269);
+
+        // assign otus and merge seqs in different otus, should error
+        vector<string> otus(3, "otu1");
+        otus[1] = "otu2";
+        otus[2] = "otu3";
+
+        names.pop_back();
+        names[0] = "seq1";
+        names[1] = "seq3";
+        names[2] = "seq4";
+
+        seqsToMerge[1] = "seq3";
+
+        data.assignOtus(otus, nullIntVector, nullVector, names);
+        expect_error(data.mergeSequences(seqsToMerge));
     }
 
     test_that("Tests removeSeqs, getScrapReport, getScrapSummary") {
@@ -1682,7 +1697,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal("sample6") == 0);
     }
 
-    test_that("Tests assignSequenceTaxonomy, assignOtuTaxonomy") {
+    test_that("Tests assignSequenceTaxonomy, assignOtuTaxonomy, removeLineages") {
         vector<string> names(4);
         names[0] = "seq1";
         names[1] = "seq2";
@@ -1693,12 +1708,29 @@ context("Dataset class C++ unit tests") {
         taxonomies[0] = "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);";
         taxonomies[1] = "Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);";
         taxonomies[2] = "Bacteria(100);Firmicutes(99);Bacilli(90);";
-        taxonomies[3] = "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);";
+        taxonomies[3] = "Bacteria(100);Firmicutes(87);Bacilli(85);";
 
         Dataset data("mydata", 1);
         expect_error(data.assignSequenceTaxonomy(names, nullVector));
         data.assignSequenceTaxonomy(names, taxonomies);
         Rcpp::DataFrame report = data.getSequenceTaxonomyReport();
+
+        // assign otus, and check otu classifications
+        vector<string> otus(4);
+        otus[0] = "otu1";
+        otus[1] = "otu1";
+        otus[2] = "otu2";
+        otus[3] = "otu2";
+
+        vector<int> abunds(4);
+        abunds[0] = 100;
+        abunds[1] = 10;
+        abunds[2] = 10;
+        abunds[3] = 5;
+
+        // assign sequence abundance
+        data.assignSequenceAbundance(names, abunds);
+        data.assignOtus(otus, nullIntVector, nullVector, names);
 
         names.resize(12);
         names[0] = "seq1";
@@ -1725,8 +1757,8 @@ context("Dataset class C++ unit tests") {
         taxons[7] = "Firmicutes";
         taxons[8] = "Bacilli";
         taxons[9] = "Bacteria";
-        taxons[10] = "Proteobacteria";
-        taxons[11] = "Gammaproteobacteria";
+        taxons[10] = "Firmicutes";
+        taxons[11] = "Bacilli";
 
         vector<int> conf(12);
         conf[0] = 100;
@@ -1740,11 +1772,102 @@ context("Dataset class C++ unit tests") {
         conf[8] = 90;
         conf[9] = 100;
         conf[10] = 87;
-        conf[11] = 82;
+        conf[11] = 85;
 
         expect_true(names == Rcpp::as<vector<string>>(report[0]));
         expect_true(taxons == Rcpp::as<vector<string>>(report[2]));
         expect_true(conf == Rcpp::as<vector<int>>(report[3]));
 
+        Rcpp::DataFrame otuReport = data.getOtuTaxonomyReport();
+
+        taxons.resize(6);
+        taxons[0] = "Bacteria";
+        taxons[1] = "Bacteroidetes";
+        taxons[2] = "Bacteroidia";
+        taxons[3] = "Bacteria";
+        taxons[4] = "Firmicutes";
+        taxons[5] = "Bacilli";
+
+        conf.resize(6);
+        conf[0] = 100;
+        conf[1] = 91;
+        conf[2] = 91;
+        conf[3] = 100;
+        conf[4] = 100;
+        conf[5] = 100;
+
+        otus.resize(6);
+        otus[0] = "otu1";
+        otus[1] = "otu1";
+        otus[2] = "otu1";
+        otus[3] = "otu2";
+        otus[4] = "otu2";
+        otus[5] = "otu2";
+
+        expect_true(otus == Rcpp::as<vector<string>>(otuReport[0]));
+        expect_true(taxons == Rcpp::as<vector<string>>(otuReport[2]));
+        expect_true(conf == Rcpp::as<vector<int>>(otuReport[3]));
+
+        // remove "Bacteria(100);Firmicutes(90);Bacilli(85);"
+        // the confidence thresholds should remove seq4 and leave seq3
+        vector<string> contaminants;
+        contaminants.push_back("Bacteria(100);Firmicutes(90);Bacilli(85);");
+
+        expect_true(data.numUnique == 4);
+        expect_true(data.getTotal() == 125);
+        expect_true(data.numOtus == 2);
+
+        data.removeLineages(contaminants);
+        expect_true(data.numUnique == 3);
+        expect_true(data.getTotal() == 120);
+        expect_true(data.numOtus == 2);
+
+        // otuReport should be the same, but report should reflect seq4 removal
+        otuReport = data.getOtuTaxonomyReport();
+        report = data.getSequenceTaxonomyReport();
+
+        expect_true(otus == Rcpp::as<vector<string>>(otuReport[0]));
+        expect_true(taxons == Rcpp::as<vector<string>>(otuReport[2]));
+        expect_true(conf == Rcpp::as<vector<int>>(otuReport[3]));
+
+        names.pop_back();
+        names.pop_back();
+        names.pop_back();
+
+        taxons.resize(9);
+        taxons[0] = "Bacteria";
+        taxons[1] = "Bacteroidetes";
+        taxons[2] = "Bacteroidia";
+        taxons[3] = "Bacteria";
+        taxons[4] = "Proteobacteria";
+        taxons[5] = "Betaproteobacteria";
+        taxons[6] = "Bacteria";
+        taxons[7] = "Firmicutes";
+        taxons[8] = "Bacilli";
+
+        conf.resize(9);
+        conf[0] = 100;
+        conf[1] = 95;
+        conf[2] = 90;
+        conf[3] = 100;
+        conf[4] = 89;
+        conf[5] = 85;
+        conf[6] = 100;
+        conf[7] = 99;
+        conf[8] = 90;
+
+        expect_true(names == Rcpp::as<vector<string>>(report[0]));
+        expect_true(taxons == Rcpp::as<vector<string>>(report[2]));
+        expect_true(conf == Rcpp::as<vector<int>>(report[3]));
+
+        // will remove seq3 and otu2
+        contaminants[0] = "Firmicutes";
+        data.removeLineages(contaminants);
+
+        expect_true(data.numUnique == 2);
+        expect_true(data.getTotal() == 110);
+        expect_true(data.numOtus == 1);
+        expect_true(data.getOtu("otu1") == "seq1,seq2");
+        expect_true(data.getOtu("otu2") == "");
     }
 }

@@ -11,7 +11,7 @@ public:
     ~Utils() = default;
 
     // taxonomy helpers
-    void addUnclassifieds(string& taxon, int maxlevel);
+    //void addUnclassifieds(string& taxon, int maxlevel);
     void addUnclassifieds(vector<string>& taxons,
                           vector<int>& confidences, int maxlevel);
     bool findTaxon(vector<string> tax, vector<string> stax);
