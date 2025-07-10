@@ -381,11 +381,11 @@ public:
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getOtuTaxonomyReport();
 
-    int getAbundance(string name, string sample = "");
+    int getAbundance(string name);
     // abundances for seq broken down by sample
     vector<int> getAbundances(string name);
     // total abundance for a given outID, optional sample
-    int getOtuAbundance(string otuID, string sample = "");
+    int getOtuAbundance(string otuID);
     // abundances for given otuID broken down by sample
     vector<int> getOtuAbundances(string otuID);
     // string containing sequence names for given otuID
@@ -480,6 +480,7 @@ private:
     // sequences that represented 230 total sequences.
     map<string, vector<int> > badAccnos;
     int uniqueBad;
+    bool runClassifyOtu;
 
     // count table data
     AbundTable* count;

@@ -238,12 +238,14 @@ dataset$assign_treatments(unique(samples), treatments)
 
 
 otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+abunds <- c(200, 40, 100, 5)
 taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
 
 dataset <- sequence_data$new("my_dataset")
+dataset$assign_otus(otu_ids, abunds)
 dataset$assign_otu_taxonomy(otu_ids, taxonomies)
 dataset$get_otu_taxonomy_report()
 
@@ -281,7 +283,6 @@ tax4 <- "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);"
 taxonomies <- c(tax1, tax2, tax3, tax4)
 
 dataset <- sequence_data$new("my_dataset")
-dataset$add_sequences(names)
 dataset$assign_sequence_taxonomy(names, taxonomies)
 dataset$get_sequence_taxonomy_report()
 
@@ -361,7 +362,6 @@ additional functionality.}
 \item \href{#method-sequence_data-get_sequence_summary}{\code{sequence_data$get_sequence_summary()}}
 \item \href{#method-sequence_data-get_sequences}{\code{sequence_data$get_sequences()}}
 \item \href{#method-sequence_data-get_shared}{\code{sequence_data$get_shared()}}
-\item \href{#method-sequence_data-get_taxonomy_tables}{\code{sequence_data$get_taxonomy_tables()}}
 \item \href{#method-sequence_data-get_treatments}{\code{sequence_data$get_treatments()}}
 \item \href{#method-sequence_data-has_sample}{\code{sequence_data$has_sample()}}
 \item \href{#method-sequence_data-is_aligned}{\code{sequence_data$is_aligned()}}
@@ -637,7 +637,10 @@ dataset$assign_sequence_abundance(names, abundances, samples)
 \if{html}{\out{<a id="method-sequence_data-assign_otu_taxonomy"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-assign_otu_taxonomy}{}}}
 \subsection{Method \code{assign_otu_taxonomy()}}{
-Assign otu classification
+Assign otu classification.
+
+Note, if you assign sequence taxonomies and assign otus, 'sequence_data'
+will find the concensus taxonomy for each otu for you.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_otu_taxonomy(otu_ids, taxonomies)}\if{html}{\out{</div>}}
 }
@@ -757,7 +760,7 @@ dataset$assign_treatments(unique(samples), treatments)
 \if{html}{\out{<a id="method-sequence_data-clear"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-clear}{}}}
 \subsection{Method \code{clear()}}{
-Remove all sequences from dataset
+Remove all data from dataset
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$clear()}\if{html}{\out{</div>}}
 }
@@ -986,12 +989,14 @@ data.frame
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
 otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+abunds <- c(200, 40, 100, 5)
 taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
 
 dataset <- sequence_data$new("my_dataset")
+dataset$assign_otus(otu_ids, abunds)
 dataset$assign_otu_taxonomy(otu_ids, taxonomies)
 dataset$get_otu_taxonomy_report()
 
@@ -1088,8 +1093,9 @@ list of data.frames
 \if{html}{\out{<a id="method-sequence_data-get_sequence_report"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_report}{}}}
 \subsection{Method \code{get_sequence_report()}}{
-Get report containing the sequence report table -
-ids, starts, ends, lengths, ambigs, homopolymers, numns
+Get data.frame sequence report data. Sequence report data includes: start
+positions, end positions, number of bases, number of ambiguous bases,
+length of longest homopolymer, and the number of N's.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_report()}\if{html}{\out{</div>}}
 }
@@ -1121,7 +1127,6 @@ tax4 <- "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);"
 taxonomies <- c(tax1, tax2, tax3, tax4)
 
 dataset <- sequence_data$new("my_dataset")
-dataset$add_sequences(names)
 dataset$assign_sequence_taxonomy(names, taxonomies)
 dataset$get_sequence_taxonomy_report()
 
@@ -1211,21 +1216,6 @@ data.frame
 
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_taxonomy_tables"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_taxonomy_tables}{}}}
-\subsection{Method \code{get_taxonomy_tables()}}{
-Get data.frames containing classifications for sequences and OTUs.
-id, taxonomy, abundance(optional)
-These tables represent mothur's taxonomy and cons.taxonomy files
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_taxonomy_tables()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-List of data.frames
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_treatments"></a>}}

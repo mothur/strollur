@@ -274,7 +274,10 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Assign otu classification
+    #' Assign otu classification.
+    #'
+    #' Note, if you assign sequence taxonomies and assign otus, 'sequence_data'
+    #' will find the concensus taxonomy for each otu for you.
     #' @param otu_ids a vector of otu names
     #' @param taxonomies a vector of otu classifications
     #' @examples
@@ -350,7 +353,7 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Remove all sequences from dataset
+    #' Remove all data from dataset
     clear = function() {
       self$data$clear()
       invisible(self)
@@ -494,12 +497,14 @@ sequence_data <- R6Class("sequence_data",
     #' @examples
     #'
     #' otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+    #' abunds <- c(200, 40, 100, 5)
     #' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
     #'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
     #'                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
     #'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
     #'
     #' dataset <- sequence_data$new("my_dataset")
+    #' dataset$assign_otus(otu_ids, abunds)
     #' dataset$assign_otu_taxonomy(otu_ids, taxonomies)
     #' dataset$get_otu_taxonomy_report()
     #'
@@ -602,8 +607,9 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get report containing the sequence report table -
-    #' ids, starts, ends, lengths, ambigs, homopolymers, numns
+    #' Get data.frame sequence report data. Sequence report data includes: start
+    #' positions, end positions, number of bases, number of ambiguous bases,
+    #' length of longest homopolymer, and the number of N's.
     #' @return data.frame
     get_sequence_report = function() {
       self$data$get_sequence_report()
@@ -621,7 +627,6 @@ sequence_data <- R6Class("sequence_data",
     #' taxonomies <- c(tax1, tax2, tax3, tax4)
     #'
     #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$add_sequences(names)
     #' dataset$assign_sequence_taxonomy(names, taxonomies)
     #' dataset$get_sequence_taxonomy_report()
     #'

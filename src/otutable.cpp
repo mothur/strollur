@@ -253,9 +253,9 @@ Rcpp::DataFrame OtuTable::getScrapReport() {
                 next++;
             }
         }
-        string tag = label + "_id";
+
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named(tag) = badNames,
+            Rcpp::Named("id") = badNames,
             Rcpp::_["trash_code"] = badCodes);
         return df;
     }

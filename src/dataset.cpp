@@ -15,6 +15,7 @@ Dataset::Dataset(string n, int proc) : datasetName(n) {
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
     hasOtuTaxonomy = false;
+    runClassifyOtu = true;
     numSamples = 0;
     numTreatments = 0;
     numOtus = 0;
@@ -39,6 +40,7 @@ void Dataset::clear() {
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
     hasOtuTaxonomy = false;
+    runClassifyOtu = true;
     numSamples = 0;
     numTreatments = 0;
     numOtus = 0;
@@ -399,6 +401,7 @@ void Dataset::assignOtuTaxonomy(vector<string> otuIds, vector<string> taxs) {
 
         otuTable->assignTaxonomy(otuIds, taxs);
         hasOtuTaxonomy = true;
+        runClassifyOtu = false;
     }
 }
 /******************************************************************************/
@@ -650,6 +653,7 @@ void Dataset::classifyOtus() {
         label = otuTable->label;
         numSamples = otuTable->getNumSamples();
         numTreatments = otuTable->getNumTreatments();
+        runClassifyOtu = false;
     }
 }
 /******************************************************************************/
@@ -737,12 +741,12 @@ Rcpp::DataFrame Dataset::fillTaxReport(string mode) {
     return df;
 }
 /******************************************************************************/
-int Dataset::getAbundance(string name, string sample){
+int Dataset::getAbundance(string name){
     int abund = 0;
     auto it = seqIndex.find(name);
     if (it != seqIndex.end()) {
         if (tableSeqs[it->second]) {
-            abund = count->getAbundance(it->second, sample);
+            abund = count->getAbundance(it->second, "");
         }
     }
     return abund;
@@ -935,10 +939,10 @@ vector<vector<string> > Dataset::getNamesBySample(vector<string> samples){
     return result;
 }
 /******************************************************************************/
-// total abundance for a given outID, optional sample
-int Dataset::getOtuAbundance(string otuId, string sample) {
+// total abundance for a given outID
+int Dataset::getOtuAbundance(string otuId) {
     if (hasOtuData) {
-        return otuTable->getAbundance(otuId, sample);
+        return otuTable->getAbundance(otuId, "");
     }
     return 0;
 }
@@ -984,6 +988,10 @@ vector<string> Dataset::getOtuIds() {
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getOtuTaxonomyReport() {
     if (hasOtuTaxonomy){
+        // this is set if you have removed sequences after classifying
+        if (runClassifyOtu) {
+            classifyOtus();
+        }
         return (fillTaxReport("otu"));
     }
 
@@ -1461,6 +1469,7 @@ void Dataset::removeSequence(int index, string reasons, bool update) {
     tableSeqs[index] = false;
     trashCodes[index] += reasons + ",";
     numUnique--;
+    runClassifyOtu = true;
 
     // remove from counts
     int abund = 1;
