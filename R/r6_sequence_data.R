@@ -23,7 +23,7 @@ sequence_data <- R6Class("sequence_data",
 
     #' @description
     #' Create a new sequence dataset
-    #' @param name String, name of dataset
+    #' @param name String, name of dataset (optional)
     #' @param fasta String name of FASTA file
     #' @param processors Integer, number of cores to use.
     #'  Default = all available
@@ -40,7 +40,7 @@ sequence_data <- R6Class("sequence_data",
     #'                              fasta = rdataset_example("test.fasta"))
     #'
     #' @return A new `sequence_data` object.
-    initialize = function(name, fasta = NULL,
+    initialize = function(name = "", fasta = NULL,
                           processors = parallelly::availableCores()) {
       self$data <- new(Dataset, name, processors)
 

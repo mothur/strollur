@@ -98,7 +98,37 @@ void Dataset::clear() {
 /******************************************************************************/
 Rcpp::List Dataset::exportDataset(){
     Rcpp::List result;
-    // TODO
+
+    // sequence data.frame
+    // name, seqs, comments
+
+    // sequence report data.frame
+    // starts, ends, lengths, ambigs, polymers, numns
+
+    // sequence trashCodes
+    // name, trashCode
+
+    // sequence abundance table
+    // id, abundance, sample, treatment
+
+    // sequence otu table
+    // id, abundance, sample, seq_id
+
+    // sequence taxonomy table
+
+    // otu taxonomy table
+
+    // otu trashCodes
+
+    // align report
+
+    // contigs report
+
+    // metadata
+
+
+
+
     return result;
 }
 /******************************************************************************/

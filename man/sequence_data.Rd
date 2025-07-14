@@ -375,7 +375,7 @@ additional functionality.}
 Create a new sequence dataset
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$new(
-  name,
+  name = "",
   fasta = NULL,
   processors = parallelly::availableCores()
 )}\if{html}{\out{</div>}}
@@ -384,7 +384,7 @@ Create a new sequence dataset
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{String, name of dataset}
+\item{\code{name}}{String, name of dataset (optional)}
 
 \item{\code{fasta}}{String name of FASTA file}
 
