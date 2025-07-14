@@ -403,6 +403,7 @@ public:
     long long getTotal(string sample = "");
     long long getUniqueTotal(string sample = "");
     bool hasSample(string sample);
+    bool hasSeqs();
 
     // fasta sequence data
     vector<string> getNames(string sample = "");

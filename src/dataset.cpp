@@ -1195,7 +1195,7 @@ Rcpp::List Dataset::getSequenceSummary() {
 
     Rcpp::List result = Rcpp::List::create();
 
-    if (!hasSequenceData) {
+    if (!hasSeqs()) {
         return result;
     }
 
@@ -1307,6 +1307,18 @@ long long Dataset::getUniqueTotal(string sample){
 /******************************************************************************/
 bool Dataset::hasSample(string sample){
     return count->hasSample(sample);
+}
+/******************************************************************************/
+bool Dataset::hasSeqs() {
+    if (seqs.size() == 0) {
+        return false;
+    }
+
+    string id;
+    if (allIdentical(seqs, id)) {
+        if (id == "") { return false; }
+    }
+    return true;
 }
 /******************************************************************************/
 void Dataset::mergeSequences(vector<string> ids, string reason){

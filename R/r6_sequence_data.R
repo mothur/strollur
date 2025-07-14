@@ -54,8 +54,10 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get summary of sequence data
     print = function() {
-      cat(self$get_dataset_name())
-      cat(":\n\n")
+      if (self$get_dataset_name() != "") {
+          cat(self$get_dataset_name())
+          cat(":\n\n")
+      }
       self$get_sequence_summary()
       cat("\n\n")
       self$get_sample_summary()
@@ -68,9 +70,18 @@ sequence_data <- R6Class("sequence_data",
         cat("\n")
       }
       cat(
-        paste("Total number of seqs:", self$get_num_sequences(), "\n"),
+        paste("Total number of seqs:", self$get_num_sequences()),
         "\n"
       )
+
+      if (self$get_num_otus() != 0) {
+          cat(
+              paste("Total number of otus:", self$get_num_otus()),
+              "\n"
+          )
+      } else {
+          cat("\n")
+      }
     },
 
     #' @description
@@ -806,7 +817,7 @@ sequence_data <- R6Class("sequence_data",
       }
 
       # if you have summary results to print
-      if ((length(results[[1]]$starts) == 8) && (!silent)) {
+      if (self$data$has_sequence_strings() && (!silent)) {
         cat("\t\tstart\tend\tlength\tambigs\tpolymer\tnum_ns\tnumseqs\n")
         cat(
           paste(results_row_names[1], results[[1]]$starts[1],

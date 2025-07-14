@@ -4,7 +4,7 @@
 \alias{split_at_char}
 \title{split_at_char}
 \usage{
-split_at_char(line, delim)
+split_at_char(line, delim = ",")
 }
 \arguments{
 \item{line, }{String containing data to split}

@@ -30,7 +30,7 @@ split_white_space <- function(line) {
 #'
 #' @returns A vector of Strings
 # split at character
-split_at_char <- function(line, delim) {
+split_at_char <- function(line, delim = ',') {
   words <- strsplit(line, delim)
   unlist(words)
 }

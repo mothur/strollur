@@ -34,6 +34,7 @@ RCPP_MODULE(Dataset) {
     .field("has_contigs_data", &Dataset::hasContigsData, "Get contigs data status")
     .field("has_align_data", &Dataset::hasAlignData, "Get align data status")
 
+
     // ******* exposed functions ******* //
     .method("add_align_report", &Dataset::addAlignReport, "Add alignment report to dataset")
     .method("add_contigs_report", &Dataset::addContigsReport, "Add contigs report to dataset")
@@ -77,6 +78,7 @@ RCPP_MODULE(Dataset) {
     .method("get_unique_total", &Dataset::getUniqueTotal, "Get total number of unique sequences")
 
     .method("has_sample", &Dataset::hasSample, "Determine if dataset contains sample")
+    .method("has_sequence_strings", &Dataset::hasSeqs, "Get sequence status")
 
     .method("merge_otus", &Dataset::mergeOtus, "Merge otus")
     .method("merge_sequences", &Dataset::mergeSequences, "Merge sequences")
