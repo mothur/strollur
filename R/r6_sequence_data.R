@@ -61,7 +61,7 @@ sequence_data <- R6Class("sequence_data",
       self$get_sequence_summary()
       cat("\n\n")
       self$get_sample_summary()
-      if (self$get_num_sequences(TRUE) != -1) {
+      if (self$get_num_sequences(TRUE) != 0) {
         cat(
           paste("\nNumber of unique seqs:", self$get_num_sequences(TRUE)),
           "\n"
@@ -115,6 +115,8 @@ sequence_data <- R6Class("sequence_data",
     #' @param samples a vector of sample assignments (optional)
     #' @param seq_ids a vector of sequence names (optional) You must provide
     #'  either abundances or seq_ids.
+    #' @param type a string indicating the type of otu assignments. Options
+    #' include: 'otu', 'asv', or 'phylotype'. Default = 'otu'.
     #' @examples
     #'
     #'   # otu_ids  seq_ids
@@ -195,7 +197,7 @@ sequence_data <- R6Class("sequence_data",
     #'   dataset$get_shared()
     #'
     assign_otus = function(otu_ids, abundances = NULL,
-                           samples = NULL, seq_ids = NULL) {
+                           samples = NULL, seq_ids = NULL, type = "otu") {
       if (is.null(abundances) && is.null(seq_ids)) {
         cli::cli_abort("[ERROR]: You must provide either
                            abundances or seq_ids.")
@@ -213,7 +215,7 @@ sequence_data <- R6Class("sequence_data",
 
       self$data$assign_otus(
         otu_ids, abundances,
-        samples, seq_ids
+        samples, seq_ids, type
       )
 
       invisible(self)

@@ -30,7 +30,7 @@
       
       Number of unique seqs: 4 
       Total number of seqs: 1320 
-       
+      
       mydata:
       
       		start	end	length	ambigs	polymer	num_ns	numseqs
@@ -58,6 +58,6 @@
       
       Number of unique seqs: 4 
       Total number of seqs: 1320 
-       
+      
       v No differences
 

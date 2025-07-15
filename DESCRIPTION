@@ -19,7 +19,8 @@ Imports: Rcpp (>= 1.0.14),
     microseq,
     R6,
     waldo,
-    data.table
+    data.table,
+    readr
 LinkingTo: Rcpp, RcppThread, cli, testthat
 Suggests: 
     testthat (>= 3.0.0), xml2

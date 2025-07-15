@@ -18,7 +18,8 @@ read_mothur_list <- function(list) {
         abort_nonexistant_file(list)
     }
 
-    df <- read.table(file=list, header=TRUE, sep = "")
+    df <- readr::read_table(file=list, col_names=TRUE,
+                            show_col_types = FALSE)
 
     # remove label and numOtus columns
     df <- df[, -c(1, 2)]

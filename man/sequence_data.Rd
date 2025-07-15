@@ -468,7 +468,8 @@ Add otu data
   otu_ids,
   abundances = NULL,
   samples = NULL,
-  seq_ids = NULL
+  seq_ids = NULL,
+  type = "otu"
 )}\if{html}{\out{</div>}}
 }
 
@@ -484,6 +485,9 @@ either abundances or seq_ids.}
 
 \item{\code{seq_ids}}{a vector of sequence names (optional) You must provide
 either abundances or seq_ids.}
+
+\item{\code{type}}{a string indicating the type of otu assignments. Options
+include: 'otu', 'asv', or 'phylotype'. Default = 'otu'.}
 }
 \if{html}{\out{</div>}}
 }

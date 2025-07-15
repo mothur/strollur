@@ -187,7 +187,7 @@ void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c)
 void Dataset::assignOtus(vector<string> otuIds,
                         vector<int> abunds,
                         vector<string> samples,
-                        vector<string> seqIds) {
+                        vector<string> seqIds, string type) {
 
 
     // sanity checks - R6 object passes blank strings if seqIds == NULL
@@ -517,6 +517,10 @@ void Dataset::addAlignReport(vector<string>& n, vector<double>& ss,
                     vector<double>& sims,
                     vector<int>& li) {
 
+    if (names.size() == 0) {
+        addSequences(n);
+    }
+
     set<int> sizes;
     sizes.insert(n.size());
     sizes.insert(ss.size());
@@ -561,6 +565,10 @@ void Dataset::addContigsReport(vector<string>& n, vector<int>& ol,
                       vector<int>& oe,
                       vector<int>& m,
                       vector<double>& e) {
+
+    if (names.size() == 0) {
+        addSequences(n);
+    }
 
     set<int> sizes;
     sizes.insert(n.size());

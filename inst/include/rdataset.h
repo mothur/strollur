@@ -353,7 +353,8 @@ public:
     void assignOtus(vector<string> otuIds,
                                  vector<int> abunds = nullIntVector,
                                  vector<string> samples = nullVector,
-                                 vector<string> seqIDs = nullVector);
+                                 vector<string> seqIDs = nullVector,
+                                 string type = "otu");
 
     void assignSequenceTaxonomy(vector<string> names, vector<string> taxonomies);
     void assignOtuTaxonomy(vector<string> otuIds, vector<string> taxonomies);

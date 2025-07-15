@@ -23,6 +23,8 @@ import(data.table)
 # read fastq files
 importFrom(microseq, readFastq)
 
+importFrom(readr, read_table)
+
 # read FASTA files
 importFrom(microseq, readFasta)
 
