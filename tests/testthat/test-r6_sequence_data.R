@@ -1,107 +1,44 @@
 # test "sequence_data"
 
-test_that("sequence_data - intialize", {
-  dataset <- sequence_data$new("mydata")
+test_that("sequence_data - intialize from read_mothur", {
 
-  expect_equal(dataset$get_dataset_name(), "mydata")
+    dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+                           count = rdataset_example("final.count_table"),
+                           taxonomy = rdataset_example("final.taxonomy"),
+                           design = rdataset_example("mouse.time.design"),
+                           list = rdataset_example("final.opti_mcc.list"),
+                           dataset_name = "miseq_sop")
 
-  dataset <- sequence_data$new(
-    name = "soil",
-    fasta = rdataset_example("test.fasta")
-  )
+    expect_equal(dataset$get_dataset_name(), "miseq_sop")
+    expect_equal(dataset$get_num_sequences(TRUE), 2425)
+    expect_equal(dataset$get_num_sequences(), 113963)
+    expect_equal(dataset$get_num_treatments(), 2)
+    expect_equal(dataset$get_num_samples(), 19)
+    expect_equal(dataset$get_num_bins("otu"), 531)
 
-  first_ten <- c(
-    "M00967_43_000000000-A3JHG_1_1111_8697_7063",
-    "M00967_43_000000000-A3JHG_1_1107_13334_19316",
-    "M00967_43_000000000-A3JHG_1_2103_15942_24856",
-    "M00967_43_000000000-A3JHG_1_2110_12430_18520",
-    "M00967_43_000000000-A3JHG_1_1107_22778_21712",
-    "M00967_43_000000000-A3JHG_1_1103_18837_8349",
-    "M00967_43_000000000-A3JHG_1_1112_11891_19615",
-    "M00967_43_000000000-A3JHG_1_1107_14687_22683",
-    "M00967_43_000000000-A3JHG_1_1111_18897_11582",
-    "M00967_43_000000000-A3JHG_1_1112_12027_22976"
-  )
+    # add phylotype list
+    phylo_list = read_mothur_list(list = rdataset_example("final.tx.list"))
+    dataset$assign_bins(phylo_list$bin_id, abundances = NULL,
+                        samples = NULL, seq_id = phylo_list$seq_id,
+                        type = "phylotype")
 
-  expect_equal(first_ten, dataset$get_ids()[1:10])
+    expect_equal(dataset$get_num_sequences(TRUE), 2425)
+    expect_equal(dataset$get_num_sequences(), 113963)
+    expect_equal(dataset$get_num_treatments(), 2)
+    expect_equal(dataset$get_num_samples(), 19)
+    expect_equal(dataset$get_num_bins("phylotype"), 63)
 
-  seq1 <- paste("TACGTAGGTGGCAAGCGTTATCCGGAATTATTGGGCGTAAAGAGCGCGCAGGTGGTTAATT",
-    "AAGTCTGATGTGAAAGCCCACGGCTTAACCGTGGAGGGTCATTGGAAACTGGTTGACTTGA",
-    "GTGCAGAAGAGGGAAGTGGAATTCCATGTGTAGCGGTGAAATGCGTAGAGATATGGAGGAA",
-    "CACCAGTGGCGAAGGCGGCTTCCTGGTCTGCAACTGACACTGAGGCGCGAAAGCGTGGGGA",
-    "GCAAACAGG",
-    sep = "", collaspe = ""
-  )
-  seq2 <- paste("TACGGAGGATGCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGTAGGCGGGATGTC",
-    "AAGTCAGCGGTAAAATTGTGGAGCTCAACTCCATCGAGCCGTTGAAACTGACGTTCTTGAG",
-    "TGGGCGAGAAGTATGCGGAATGCGTGGTGTAGCGGTGAAATGCATAGATATCACGCAGAAC",
-    "TCCGATTGCGAAGGCAGCATACCGGCGCCCTACTGACGCTGAAGCACGAAAGCGTGGGTAT",
-    "CGAACAGG",
-    sep = "", collaspe = ""
-  )
-  seq3 <- paste("TACGTAGGTGGCAAGCGTTATCCGGATTTACTGGGTGTAAAGGGCGTGTAGGCGGGGACGC",
-    "AAGTCAGATGTGAAAACCACGGGCTCAACCTGTGGCCTGCATTTGAAACTGTGTTTCTTGA",
-    "GTACTGGAGAGGCAGACGGAATTCCTAGTGTAGCGGTGAAATGCGTAGATATTAGGAGGAA",
-    "CACCAGTGGCGAAGGCGGTCTGCTGGACAGCAACTGACGCTGAGGCGCGAAAGCGTGGGGA",
-    "GCAAACAGG",
-    sep = "", collaspe = ""
-  )
-  seq4 <- paste("TACGTAGGGGGCAAGCGTTATCCGGATTTACTGGGTGTAAAGGGAGCGTAGACGGTGATGC",
-    "AAGTCTGAAGTGAAAGGCGGGGGCTCAACCCCCGGACTGCTTTGGAAACTGTATGACTGGA",
-    "GTGCAGGAGAGGTAAGTGGAATTCCTAGTGTAGCGGTGAAATGCGTAGATATTAGGAGGAA",
-    "CACCAGTGGCGAAGGCGGCTTACTGGACTGTAACTGACGTTGAGGCTCGAAAGCGTGGGGA",
-    "GCAAACAGG",
-    sep = "", collaspe = ""
-  )
-  seq5 <- paste("TACGTAGGTGGCGAGCGTTGTCCGGATTTACTGGGCGTAAAGGGAGCGTAGGCGGACTTTT",
-    "AAGTGAGATGTGAAATACTCGGGCTCAACTTGAGTGCTGCATTTCAAACTGGAAGTCTAGA",
-    "GTGCAGGAGAGGAGAATGGAATTCCTAGTGTAGCGGTGAAATGCGTAGAGATTAGGAAGAA",
-    "CACCAGTGGCGAAGGCGATTCTCTGGACTGTAACTGACGCTGAGGCTCGAAAGCGTGGGGA",
-    "GCAAACAGG",
-    sep = "", collaspe = ""
-  )
-  seq6 <- paste("TACGGAGGNTGGCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGTAGGCGGATCGG",
-    "TTAAGTCAGTGGTCAAATTGAGGGGCTCAACCCCTTCCCGCCATTGAAACTGGCGATCTTG",
-    "AGTGGAAGAGAAGTATGCGGAATGCGTGGTGTAGCGGTGAAATGCATAGATATCACGCAGA",
-    "ACCCCGATTGCGAAGGCAGCATGCCGGCTTCCTACTGACGCTGAAGCACGAAAGCGTGGGT",
-    "ATCGAACAGG",
-    sep = "", collaspe = ""
-  )
-  seq7 <- paste("TACGGAGGATGCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGCAGGCGGAAGATC",
-    "AAGTCAGCGGTAAAATTGAGAGGCTCAACCTCTTCGAGCCGTTGAAACTGGTTTTCTTGAG",
-    "TGAGCGAGAAGTATGCGGAATGCGTGGTGTAGCGGTGAAATGCATAGATATCACGCAGAAC",
-    "TCCGATTGCGAAGGCAGCATACCGGCGCTCAACTGACGCTCATGCACGAAAGTGTGGGTAT",
-    "CGAACAGG",
-    sep = "", collaspe = ""
-  )
-  seq8 <- paste("TACGGAGGATCCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGAGCGTAGGTGGATTGTT",
-    "AAGTCAGTTGTGAAAGTTTGCGGCTCAACCGTAAAATTGCAGTTGAAACTGGCAGTCTTGA",
-    "GTACAGTAGAGGTGGGCGGAATTCGTGGTGTAGCGGTGAAATGCTTAGATATCACGAAGAA",
-    "CTCCGATTGCGAAGGCAGCTCACTGGACTGCAACTGACACTGATGCTCGAAAGTGTGGGTA",
-    "TCAAACAGG",
-    sep = "", collaspe = ""
-  )
-  seq9 <- paste("TACGTAGGGGGCAAGCGTTATCCGGATTTACTGGGTGTAAAGGGAGCGTAGACGGCCAGAC",
-    "AAGTCTGAAGTGAAAATCCAGCGCTTAACGTTGGAAGTGCTTTGGAAACTGCCGGGCTAGA",
-    "GTGCAGGAGGGGCAGGCGGAATTCCTAGTGTAGCGGTGAAATGCGTAGATATTAGGAGGAA",
-    "CACCAGTGGCGAAGGCGGCCTGCTGGACTGCAACTGACGTTGAGGCTCGAAGGCGTGGGGA",
-    "GCAAACAGG",
-    sep = "", collaspe = ""
-  )
-  seq10 <- paste("TACGTAGGTGGCGAGCGTTGTCCGGATTTACTGGGCGTAAAGGGAGCGTAGGCGGACTTT",
-    "TAAGTGAGATGTGAAATACTCGGGCTCAACTTGAGTGCTGCATTTCAAACTGGAAGTCTA",
-    "GAGTGCAGGAGAGGAGAATGGAATTCCTAGTGTAGCGGTGAAATGCGTAGAGATTAGGAA",
-    "GAACACCAGTGGCGAAGGCGATTCTCTGGACTGTAACTGACGCTGAGGCTCGAAAGCGTG",
-    "GGGAGCAAACAGG",
-    sep = "", collaspe = ""
-  )
+    asv_list = read_mothur_list(list = rdataset_example("final.asv.list"))
+    dataset$assign_bins(asv_list$bin_id, abundances = NULL,
+                        samples = NULL, seq_id = asv_list$seq_id,
+                        type = "asv")
 
-  first_ten_seqs <- c(
-    seq1, seq2, seq3, seq4, seq5,
-    seq6, seq7, seq8, seq9, seq10
-  )
+    expect_equal(dataset$get_num_sequences(TRUE), 2425)
+    expect_equal(dataset$get_num_sequences(), 113963)
+    expect_equal(dataset$get_num_treatments(), 2)
+    expect_equal(dataset$get_num_samples(), 19)
+    expect_equal(dataset$get_num_bins("asv"), 2425)
 
-  expect_equal(first_ten_seqs, dataset$get_sequences()[1:10])
 })
 
 test_that("sequence_data - addSeqs, assign samples", {
@@ -137,20 +74,20 @@ test_that("sequence_data - addSeqs, assign samples", {
   data$add_sequences(names, seqs)
   data$assign_sequence_abundance(ids, abundances, samples, treatments)
 
-  # assign otus
-  otus <- c("otu1", "otu2", "otu1", "otu2")
-  data$assign_otus(otus, seq_ids = names)
-  expect_equal(data$get_num_otus(), 2)
+  # assign bins
+  bins <- c("bin1", "bin2", "bin1", "bin2")
+  data$assign_bins(bins, seq_ids = names)
+  expect_equal(data$get_num_bins(), 2)
 
-  expect_equal(data$get_list()$otu_id, c("otu1", "otu1", "otu2", "otu2"))
+  expect_equal(data$get_list()$otu_id, c("bin1", "bin1", "bin2", "bin2"))
   expect_equal(data$get_list()$seq_id, c("seq1", "seq3", "seq2", "seq4"))
 
-  expect_equal(data$get_rabund()$otu_id, c("otu1", "otu2"))
+  expect_equal(data$get_rabund()$otu_id, c("bin1", "bin2"))
   expect_equal(data$get_rabund()$abundance, c(1200, 120))
 
   expect_equal(data$get_shared()$otu_id, c(
-    "otu1", "otu1", "otu1",
-    "otu2", "otu2", "otu2"
+    "bin1", "bin1", "bin1",
+    "bin2", "bin2", "bin2"
   ))
   expect_equal(data$get_shared()$sample, c(
     "sample2", "sample3", "sample4",
@@ -267,49 +204,49 @@ test_that("sequence_data - assign_sequence_abundance, remove_sequences", {
 test_that("sequence_data - get_list get_rabund, get_shared", {
   dataset <- sequence_data$new("my_dataset")
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus(
-    otu_ids = otu_ids,
+  dataset$assign_bins(
+    bin_ids = bin_ids,
     abundances = sequence_abundances,
     seq_ids = seq_ids
   )
-  # otus would look like:
-  # label  otu1             otu2        otu3 ...
+  # bins would look like:
+  # label  bin1             bin2        bin3 ...
   # 0.03   seq1,seq2,seq4   seq3,seq6   seq5 ...
   # 0.03   110              525         80 ...
 
   list <- dataset$get_list()
 
-  expect_equal(list$otu_id, otu_ids)
+  expect_equal(list$otu_id, bin_ids)
   expect_equal(list$seq_id, seq_ids)
 
   rabund <- dataset$get_rabund()
 
   abunds <- c(111, 525, 80)
-  expect_equal(rabund$otu_id, unique(otu_ids))
+  expect_equal(rabund$otu_id, unique(bin_ids))
   expect_equal(rabund$abundance, abunds)
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   samples <- c(
     "sample1", "sample2", "sample5",
     "sample1", "sample3", "sample1"
   )
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus(otu_ids, sample_abundances, samples)
+  dataset$assign_bins(bin_ids, sample_abundances, samples)
 
   shared <- dataset$get_shared()
-  expect_equal(shared$otu_id, otu_ids)
+  expect_equal(shared$otu_id, bin_ids)
   expect_equal(shared$abundance, sample_abundances)
   expect_equal(shared$sample, samples)
-  expect_equal(dataset$get_num_otus(), 3)
+  expect_equal(dataset$get_num_bins(), 3)
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c(
-    "otu1", "otu1", "otu1", "otu1",
-    "otu2", "otu2", "otu2", "otu2", "otu2", "otu2", "otu2", "otu2",
-    "otu3", "otu3", "otu3", "otu3"
+  bin_ids <- c(
+    "bin1", "bin1", "bin1", "bin1",
+    "bin2", "bin2", "bin2", "bin2", "bin2", "bin2", "bin2", "bin2",
+    "bin3", "bin3", "bin3", "bin3"
   )
   seq_ids <- c(
     "seq1", "seq2", "seq3", "seq3",
@@ -328,9 +265,9 @@ test_that("sequence_data - get_list get_rabund, get_shared", {
     1, 2, 3, 4
   )
 
-  dataset$assign_otus(otu_ids, sample_abundances, samples, seq_ids)
+  dataset$assign_bins(bin_ids, sample_abundances, samples, seq_ids)
 
-  expect_equal(dataset$get_num_otus(), 3)
+  expect_equal(dataset$get_num_bins(), 3)
   expect_equal(dataset$get_num_samples(), 6)
   expect_equal(
     dataset$get_sample_summary(TRUE)[[1]]$total,
@@ -600,30 +537,30 @@ test_that("sequence_data - ", {
     95, 95
   ))
 
-  # add otu assignments
-  otus <- c("otu1", "otu1", "otu1", "otu2")
-  dataset$assign_otus(otus, seq_ids = names)
+  # add bin assignments
+  bins <- c("bin1", "bin1", "bin1", "bin2")
+  dataset$assign_bins(bins, seq_ids = names)
 
-  report <- dataset$get_otu_taxonomy_report()
+  report <- dataset$get_bin_taxonomy_report()
 
   ids <- c(
-    "otu1", "otu1", "otu1", "otu1",
-    "otu2", "otu2", "otu2", "otu2"
+    "bin1", "bin1", "bin1", "bin1",
+    "bin2", "bin2", "bin2", "bin2"
   )
 
-  expect_equal(report$id, ids)
-  expect_equal(report$taxon, c(
+  expect_equal(ids, report$id)
+  expect_equal(c(
     "Bacteria", "Bacteroidetes",
     "Bacteroidia(sub_category)",
     "Bacteroidales",
     "Bacteria", "Proteobacteria",
     "Proteobacteria_unclassified",
     "Proteobacteria_unclassified"
-  ))
+  ), report$taxon)
   expect_equal(report$confidence, c(100, 34, 34, 34, 100, 100, 100, 100))
 
   dataset$clear()
-  otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+  bin_ids <- c("bin1", "bin2", "bin3", "bin4")
   taxonomies <- c(
     "Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
     "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
@@ -631,24 +568,24 @@ test_that("sequence_data - ", {
     "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;"
   )
 
-  expect_error(dataset$assign_otu_taxonomy(otu_ids, taxonomies))
-  expect_error(dataset$assign_otus(otu_ids))
+  expect_error(dataset$assign_bin_taxonomy(bin_ids, taxonomies))
+  expect_error(dataset$assign_bins(bin_ids))
   expect_equal(dataset$get_contigs_report(), data.frame())
   expect_equal(dataset$get_sample_summary(), list())
   expect_equal(dataset$get_sequence_summary(), list())
   expect_false(dataset$has_sample("noSample"))
 
   abunds <- c(200, 40, 100, 5)
-  dataset$assign_otus(otu_ids, abunds)
-  dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+  dataset$assign_bins(bin_ids, abunds)
+  dataset$assign_bin_taxonomy(bin_ids, taxonomies)
 
-  report <- dataset$get_otu_taxonomy_report()
+  report <- dataset$get_bin_taxonomy_report()
 
   ids <- c(
-    "otu1", "otu1", "otu1", "otu1",
-    "otu2", "otu2", "otu2", "otu2",
-    "otu3", "otu3", "otu3", "otu3",
-    "otu4", "otu4", "otu4", "otu4"
+    "bin1", "bin1", "bin1", "bin1",
+    "bin2", "bin2", "bin2", "bin2",
+    "bin3", "bin3", "bin3", "bin3",
+    "bin4", "bin4", "bin4", "bin4"
   )
 
   expect_equal(report$id, ids)
@@ -671,9 +608,9 @@ test_that("sequence_data - ", {
     "Bacteria(100);Proteobacteria(65);Gammaproteobacteria(60);"
   )
 
-  dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+  dataset$assign_bin_taxonomy(bin_ids, taxonomies)
 
-  report <- dataset$get_otu_taxonomy_report()
+  report <- dataset$get_bin_taxonomy_report()
 
   expect_equal(report$id, ids)
   expect_equal(report$taxon, c(

@@ -450,10 +450,6 @@
 #'
 #' @field dataset_name a string containing the dataset name
 #' @field is_aligned boolean indicating the dataset's alignment status
-#' @field num_samples integer containing the number of samples in the dataset
-#' @field num_treatments integer containing the number of treatments in the
-#' dataset
-#' @field num_otus integer containing the number of otus in the dataset
 #' @field num_unique integer containing the number of distinct sequences in the
 #'  dataset
 #' @field has_align_data boolean indicating the dataset includes an alignment

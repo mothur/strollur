@@ -1,17 +1,17 @@
 #include <testthat.h>
 #include "../inst/include/rdataset.h"
 
-context("OtuTable class C++ unit tests") {
+context("BinTable class C++ unit tests") {
 
     test_that("Tests constructor") {
-        OtuTable otuTable("0.03");
+        BinTable otuTable("0.03");
 
         expect_true(otuTable.label == "0.03");
-        expect_true(otuTable.numOtus == 0);
+        expect_true(otuTable.numBins == 0);
     }
 
     test_that("Tests add, get, getAbundance, getAbundances") {
-        OtuTable otuTable("0.03");
+        BinTable otuTable("0.03");
 
         vector<string> otuNames(10, "otu1");
         otuNames[1] = "otu2";
@@ -29,7 +29,7 @@ context("OtuTable class C++ unit tests") {
         otuTable.assignAbundance(otuNames, abundances);
 
         expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numOtus == 10);
+        expect_true(otuTable.numBins == 10);
 
         // no sequence data was given
         expect_true(otuTable.getAbundance("otu1") == 10);
@@ -62,7 +62,7 @@ context("OtuTable class C++ unit tests") {
         otuTable.assignAbundance(otuNames, abundances, samples);
 
         expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numOtus == 4);
+        expect_true(otuTable.numBins == 4);
         expect_true(otuTable.getNumSamples() == 6);
 
         expect_true(otuTable.getAbundance("otu1") == 30);
@@ -87,7 +87,7 @@ context("OtuTable class C++ unit tests") {
     }
 
     test_that("Tests getScrapReport, getRAbundVector, getRAbund, getSharedVector, hasSample") {
-        OtuTable otuTable("0.03");
+        BinTable otuTable("0.03");
 
         Rcpp::DataFrame rabund = otuTable.getRAbund();
         expect_true(rabund.size() == 0);
@@ -108,7 +108,7 @@ context("OtuTable class C++ unit tests") {
         otuTable.assignAbundance(otuNames, abundances);
 
         expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numOtus == 10);
+        expect_true(otuTable.numBins == 10);
         expect_true(otuTable.getAbundance("otu1") == 10);
         vector<int> temp(1, 10);
         expect_true(otuTable.getAbundances("otu1") == temp);
@@ -160,7 +160,7 @@ context("OtuTable class C++ unit tests") {
         otuTable.assignAbundance(otuNames, abundances, samples);
 
         expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numOtus == 4);
+        expect_true(otuTable.numBins == 4);
         expect_true(otuTable.getNumSamples() == 6);
 
         vector<int> otuRabundVector(4, 0);
@@ -169,11 +169,11 @@ context("OtuTable class C++ unit tests") {
         otuRabundVector[2] = 10;
         otuRabundVector[3] = 40;
 
-        vector<string> uniqueOtuNames(4);
-        uniqueOtuNames[0] = "otu1";
-        uniqueOtuNames[1] = "otu2";
-        uniqueOtuNames[2] = "otu3";
-        uniqueOtuNames[3] = "otu4";
+        vector<string> uniqueBinNames(4);
+        uniqueBinNames[0] = "otu1";
+        uniqueBinNames[1] = "otu2";
+        uniqueBinNames[2] = "otu3";
+        uniqueBinNames[3] = "otu4";
 
         expect_true(otuTable.getAbundance("otu1") == otuRabundVector[0]);
         expect_true(otuTable.getAbundance("otu2") == otuRabundVector[1]);
@@ -189,7 +189,7 @@ context("OtuTable class C++ unit tests") {
         expect_true(otuTable.getAbundances("otu2") == temp);
 
         rabund = otuTable.getRAbund();
-        expect_true(uniqueOtuNames == Rcpp::as<vector<string>>(rabund[0]));
+        expect_true(uniqueBinNames == Rcpp::as<vector<string>>(rabund[0]));
         expect_true(otuRabundVector == Rcpp::as<vector<int>>(rabund[1]));
 
         Rcpp::DataFrame shared = otuTable.getShared();

@@ -37,7 +37,8 @@ void AbundTable::add(vector<int>& names) {
     if (hasSampleData) {
         string message = "[ERROR]: The dataset contains sample information, ";
         message += "you must provide by sample data.\n\n";
-        RcppThread::Rcout << endl << message;
+        RcppThread::Rcerr << endl << message;
+        throw Rcpp::exception(message.c_str());
     }else{
 
         counts.resize(counts.size()+names.size());
@@ -224,7 +225,7 @@ void AbundTable::assignTreatments(vector<string> s,
            if (itSample != sampleIndex.end()) {
                sampleTreatment[itSample->second] = t[i];
            }else {
-               string message = "[WARNING]: The dataset does not sample ,";
+               string message = "[WARNING]: The dataset does not contain sample ,";
                message += s[i] + "'. Ignoring '" + s[i] + "'.";
                RcppThread::Rcout << endl << message << endl;
            }
@@ -568,7 +569,6 @@ void AbundTable::setAbundance(int name, vector<int> abunds) {
                 int diff = origAbunds[index] - abunds[index];
                 sampleTotals[i] -= diff;
                 diffAbund += diff;
-
                 index++;
             }
         }
@@ -579,15 +579,35 @@ void AbundTable::setAbundance(int name, vector<int> abunds) {
 }
 /******************************************************************************/
 // set abundance - for datasets without samples
-void AbundTable::setAbundance(int name, int abund) {
+void AbundTable::setAbundance(int name, int abund, string sample) {
 
-    if (!hasSampleData) {
+    if (!hasSampleData && (sample == "")) {
         int origAbund = getAbundance(name);
 
         sampleAbunds thisCount(0, abund);
         counts[name] = thisCount;
 
         total -= (origAbund - abund);
+    }else if (hasSampleData && (sample != "")) {
+        vector<int> abunds = getAbundances(name);
+
+        // valid sample
+        auto it = sampleIndex.find(sample);
+
+        if (it != sampleIndex.end()) {
+            int index = it->second;
+
+            // "good" sample
+            if (tableSamples[index]) {
+                abunds[index] = abund;
+                setAbundance(name, abunds);
+            }
+        }
+    }else{
+        string message = "[ERROR]: The dataset contains sample information, ";
+        message += "you must provide by parsed abundance data.\n\n";
+        RcppThread::Rcerr << endl << message;
+        throw Rcpp::exception(message.c_str());
     }
 }
 /******************************************************************************/

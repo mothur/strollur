@@ -20,12 +20,6 @@ analysis across multiple R packages.
 
 dataset <- sequence_data$new("soil")
 
-# to create a dataset containing sequences from your fasta file,
-#  run the following:
-
-dataset <- sequence_data$new(name = "soil",
-                             fasta = rdataset_example("test.fasta"))
-
 
 ## ------------------------------------------------
 ## Method `sequence_data$add_sequences`
@@ -33,75 +27,75 @@ dataset <- sequence_data$new(name = "soil",
 
 
   dataset <- sequence_data$new("my_dataset")
-  sequences <- read_fasta(rdataset_example("test.fasta"))
+  sequences <- read_fasta(rdataset_example("final.fasta"))
   dataset$add_sequences(sequences$names, sequences$sequences)
 
 
 ## ------------------------------------------------
-## Method `sequence_data$assign_otus`
+## Method `sequence_data$assign_bins`
 ## ------------------------------------------------
 
 
-  # otu_ids  seq_ids
-  #  otu1     seq1
-  #  otu1     seq2
-  #  otu1     seq4
-  #  otu2     seq3
-  #  otu2     seq6
-  #  otu3     seq5
+  # bin_ids  seq_ids
+  #  bin1     seq1
+  #  bin1     seq2
+  #  bin1     seq4
+  #  bin2     seq3
+  #  bin2     seq6
+  #  bin3     seq5
 
-  # To assign sequences to otus:
+  # To assign sequences to bins:
 
   dataset <- sequence_data$new("my_dataset")
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-  dataset$assign_otus(otu_ids, seq_ids = seq_ids)
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+  dataset$assign_bins(bin_ids, seq_ids = seq_ids)
 
-  # otus would look like:
-  #            otu1             otu2        otu3
+  # bins would look like:
+  #            bin1             bin2        bin3
   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
 
-  # To add abundance only otu assignments:
+  # To add abundance only bin assignments:
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu2", "otu3")
+  bin_ids <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
-  dataset$assign_otus(otu_ids, abundances)
+  dataset$assign_bins(bin_ids, abundances)
 
-  # otus would look like:
-  #            otu1             otu2        otu3
+  # bins would look like:
+  #            bin1             bin2        bin3
   # (rabund)   110              525         80
 
-  # To add abundance otu assignments parsed by sample:
+  # To add abundance bin assignments parsed by sample:
 
-  # otu_ids  samples  abundances
-  #  otu1     sample1        10
-  #  otu1     sample2        100
-  #  otu1     sample5        1
-  #  otu2     sample1        500
-  #  otu2     sample3        25
-  #  otu3     sample1        80
+  # bin_ids  samples  abundances
+  #  bin1     sample1        10
+  #  bin1     sample2        100
+  #  bin1     sample5        1
+  #  bin2     sample1        500
+  #  bin2     sample3        25
+  #  bin3     sample1        80
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus(otu_ids, sample_abundances, samples)
+  dataset$assign_bins(bin_ids, sample_abundances, samples)
 
-  # (shared) otus would look like:
-  # label  sample   otu1   otu2   otu3
+  # (shared) bins would look like:
+  # label  sample   bin1   bin2   bin3
   # 0.03   sample1  10     500    80
   # 0.03   sample2  100    0      0
   # 0.03   sample3  0      25     0
   # 0.03   sample5  1      0      0
 
-  # To assign sequences to otus with their abundances parsed by sample:
+  # To assign sequences to bins with their abundances parsed by sample:
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu1", "otu1", "otu1",
-               "otu2", "otu2", "otu2",
-               "otu3", "otu3")
+  bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
+               "bin2", "bin2", "bin2",
+               "bin3", "bin3")
   seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
                "seq3", "seq3", "seq6",
                "seq5", "seq5")
@@ -110,10 +104,10 @@ dataset <- sequence_data$new(name = "soil",
                "sample2", "sample3", "sample1",
                "sample1", "sample6")
   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-  dataset$assign_otus(otu_ids, abundances, samples, seq_ids)
+  dataset$assign_bins(bin_ids, abundances, samples, seq_ids)
 
-  # otus would look like:
-  #            otu1             otu2        otu3
+  # bins would look like:
+  #            bin1             bin2        bin3
   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
   # (rabund)   716              85          65
 
@@ -151,11 +145,11 @@ dataset$assign_sequence_abundance(names, abundances, samples)
 
 
 ## ------------------------------------------------
-## Method `sequence_data$assign_otu_taxonomy`
+## Method `sequence_data$assign_bin_taxonomy`
 ## ------------------------------------------------
 
 
-otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+bin_ids <- c("bin1", "bin2", "bin3", "bin4")
 abunds <- c(200, 40, 100, 5)
 taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
@@ -163,8 +157,8 @@ taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_otus(otu_ids, abunds)
-dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+dataset$assign_bins(bin_ids, abunds)
+dataset$assign_bin_taxonomy(bin_ids, taxonomies)
 
 
 ## ------------------------------------------------
@@ -214,30 +208,30 @@ dataset$assign_treatments(unique(samples), treatments)
   dataset <- sequence_data$new("my_dataset")
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-  dataset$assign_otus(otu_ids, sequence_abundances, seq_ids = seq_ids)
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+  dataset$assign_bins(bin_ids, sequence_abundances, seq_ids = seq_ids)
 
-  # (list) otus would look like:
-  # otu1             otu2        otu3
+  # (list) bins would look like:
+  # bin1             bin2        bin3
   # seq1,seq2,seq4   seq3,seq6   seq5
 
   list <- dataset$get_list()
 
-  #  list$otu_id  list$seq_id
-  #  otu1          seq1
-  #  otu1          seq2
-  #  otu1          seq4
-  #  otu2          seq3
-  #  otu2          seq6
-  #  otu3          seq5
+  #  list$bin_id  list$seq_id
+  #  bin1          seq1
+  #  bin1          seq2
+  #  bin1          seq4
+  #  bin2          seq3
+  #  bin2          seq6
+  #  bin3          seq5
 
 
 ## ------------------------------------------------
-## Method `sequence_data$get_otu_taxonomy_report`
+## Method `sequence_data$get_bin_taxonomy_report`
 ## ------------------------------------------------
 
 
-otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+bin_ids <- c("bin1", "bin2", "bin3", "bin4")
 abunds <- c(200, 40, 100, 5)
 taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
@@ -245,9 +239,9 @@ taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_otus(otu_ids, abunds)
-dataset$assign_otu_taxonomy(otu_ids, taxonomies)
-dataset$get_otu_taxonomy_report()
+dataset$assign_bins(bin_ids, abunds)
+dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+dataset$get_bin_taxonomy_report()
 
 
 ## ------------------------------------------------
@@ -255,20 +249,20 @@ dataset$get_otu_taxonomy_report()
 ## ------------------------------------------------
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu2", "otu3")
-  otu_abundances <- c(111, 525, 80)
-  dataset$assign_otus(otu_ids, otu_abundances)
+  bin_ids <- c("bin1", "bin2", "bin3")
+  bin_abundances <- c(111, 525, 80)
+  dataset$assign_bins(bin_ids, bin_abundances)
 
-  # (rabund) otus would look like:
-  # otu1  otu2  otu3
+  # (rabund) bins would look like:
+  # bin1  bin2  bin3
   # 110   525   80
 
   rabund <- dataset$get_rabund()
 
-  #  rabund$otu_id  rabund$abundance
-  #  otu1           111
-  #  otu2           525
-  #  otu3           80
+  #  rabund$bin_id  rabund$abundance
+  #  bin1           111
+  #  bin2           525
+  #  bin3           80
 
 
 ## ------------------------------------------------
@@ -292,14 +286,14 @@ dataset$get_sequence_taxonomy_report()
 ## ------------------------------------------------
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus(otu_ids, sample_abundances, samples)
+  dataset$assign_bins(bin_ids, sample_abundances, samples)
 
-  # (shared) otus would look like:
-  # label  sample   otu1   otu2   otu3
+  # (shared) bins would look like:
+  # label  sample   bin1   bin2   bin3
   # 0.03   sample1  10     500    80
   # 0.03   sample2  100    0      0
   # 0.03   sample3  0      25     0
@@ -307,13 +301,13 @@ dataset$get_sequence_taxonomy_report()
 
   shared <- dataset$get_shared()
 
-  # shared$otu_id  shared$sample  shared$abundance
-  # otu1           sample1        10
-  # otu1           sample2        100
-  # otu1           sample5        1
-  # otu2           sample1        500
-  # otu2           sample3        25
-  # otu3           sample1        80
+  # shared$bin_id  shared$sample  shared$abundance
+  # bin1           sample1        10
+  # bin1           sample2        100
+  # bin1           sample5        1
+  # bin2           sample1        500
+  # bin2           sample3        25
+  # bin3           sample1        80
 
 }
 \author{
@@ -334,9 +328,9 @@ additional functionality.}
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
 \item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
-\item \href{#method-sequence_data-assign_otus}{\code{sequence_data$assign_otus()}}
+\item \href{#method-sequence_data-assign_bins}{\code{sequence_data$assign_bins()}}
 \item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
-\item \href{#method-sequence_data-assign_otu_taxonomy}{\code{sequence_data$assign_otu_taxonomy()}}
+\item \href{#method-sequence_data-assign_bin_taxonomy}{\code{sequence_data$assign_bin_taxonomy()}}
 \item \href{#method-sequence_data-assign_sequence_taxonomy}{\code{sequence_data$assign_sequence_taxonomy()}}
 \item \href{#method-sequence_data-assign_treatments}{\code{sequence_data$assign_treatments()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
@@ -347,12 +341,12 @@ additional functionality.}
 \item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
 \item \href{#method-sequence_data-get_ids}{\code{sequence_data$get_ids()}}
 \item \href{#method-sequence_data-get_list}{\code{sequence_data$get_list()}}
-\item \href{#method-sequence_data-get_num_otus}{\code{sequence_data$get_num_otus()}}
+\item \href{#method-sequence_data-get_num_bins}{\code{sequence_data$get_num_bins()}}
 \item \href{#method-sequence_data-get_num_samples}{\code{sequence_data$get_num_samples()}}
 \item \href{#method-sequence_data-get_num_sequences}{\code{sequence_data$get_num_sequences()}}
 \item \href{#method-sequence_data-get_num_treatments}{\code{sequence_data$get_num_treatments()}}
 \item \href{#method-sequence_data-get_oligos}{\code{sequence_data$get_oligos()}}
-\item \href{#method-sequence_data-get_otu_taxonomy_report}{\code{sequence_data$get_otu_taxonomy_report()}}
+\item \href{#method-sequence_data-get_bin_taxonomy_report}{\code{sequence_data$get_bin_taxonomy_report()}}
 \item \href{#method-sequence_data-get_rabund}{\code{sequence_data$get_rabund()}}
 \item \href{#method-sequence_data-get_samples}{\code{sequence_data$get_samples()}}
 \item \href{#method-sequence_data-get_sample_summary}{\code{sequence_data$get_sample_summary()}}
@@ -374,19 +368,13 @@ additional functionality.}
 \subsection{Method \code{new()}}{
 Create a new sequence dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$new(
-  name = "",
-  fasta = NULL,
-  processors = parallelly::availableCores()
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$new(name = "", processors = parallelly::availableCores())}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{String, name of dataset (optional)}
-
-\item{\code{fasta}}{String name of FASTA file}
 
 \item{\code{processors}}{Integer, number of cores to use.
 Default = all available}
@@ -402,12 +390,6 @@ A new `sequence_data` object.
 # to create an empty dataset, run the following:
 
 dataset <- sequence_data$new("soil")
-
-# to create a dataset containing sequences from your fasta file,
-#  run the following:
-
-dataset <- sequence_data$new(name = "soil",
-                             fasta = rdataset_example("test.fasta"))
 
 }
 \if{html}{\out{</div>}}
@@ -449,7 +431,7 @@ Add new sequence data
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
   dataset <- sequence_data$new("my_dataset")
-  sequences <- read_fasta(rdataset_example("test.fasta"))
+  sequences <- read_fasta(rdataset_example("final.fasta"))
   dataset$add_sequences(sequences$names, sequences$sequences)
 
 }
@@ -459,13 +441,13 @@ Add new sequence data
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-assign_otus"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-assign_otus}{}}}
-\subsection{Method \code{assign_otus()}}{
-Add otu data
+\if{html}{\out{<a id="method-sequence_data-assign_bins"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_bins}{}}}
+\subsection{Method \code{assign_bins()}}{
+Add bin data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_otus(
-  otu_ids,
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_bins(
+  bin_ids,
   abundances = NULL,
   samples = NULL,
   seq_ids = NULL,
@@ -476,7 +458,7 @@ Add otu data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{otu_ids}}{a vector of otu labels}
+\item{\code{bin_ids}}{a vector of bin labels}
 
 \item{\code{abundances}}{a vector of abundances (optional). You must provide
 either abundances or seq_ids.}
@@ -486,74 +468,74 @@ either abundances or seq_ids.}
 \item{\code{seq_ids}}{a vector of sequence names (optional) You must provide
 either abundances or seq_ids.}
 
-\item{\code{type}}{a string indicating the type of otu assignments. Options
-include: 'otu', 'asv', or 'phylotype'. Default = 'otu'.}
+\item{\code{type}}{a string indicating the type of bin assignments. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
-  # otu_ids  seq_ids
-  #  otu1     seq1
-  #  otu1     seq2
-  #  otu1     seq4
-  #  otu2     seq3
-  #  otu2     seq6
-  #  otu3     seq5
+  # bin_ids  seq_ids
+  #  bin1     seq1
+  #  bin1     seq2
+  #  bin1     seq4
+  #  bin2     seq3
+  #  bin2     seq6
+  #  bin3     seq5
 
-  # To assign sequences to otus:
+  # To assign sequences to bins:
 
   dataset <- sequence_data$new("my_dataset")
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-  dataset$assign_otus(otu_ids, seq_ids = seq_ids)
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+  dataset$assign_bins(bin_ids, seq_ids = seq_ids)
 
-  # otus would look like:
-  #            otu1             otu2        otu3
+  # bins would look like:
+  #            bin1             bin2        bin3
   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
 
-  # To add abundance only otu assignments:
+  # To add abundance only bin assignments:
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu2", "otu3")
+  bin_ids <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
-  dataset$assign_otus(otu_ids, abundances)
+  dataset$assign_bins(bin_ids, abundances)
 
-  # otus would look like:
-  #            otu1             otu2        otu3
+  # bins would look like:
+  #            bin1             bin2        bin3
   # (rabund)   110              525         80
 
-  # To add abundance otu assignments parsed by sample:
+  # To add abundance bin assignments parsed by sample:
 
-  # otu_ids  samples  abundances
-  #  otu1     sample1        10
-  #  otu1     sample2        100
-  #  otu1     sample5        1
-  #  otu2     sample1        500
-  #  otu2     sample3        25
-  #  otu3     sample1        80
+  # bin_ids  samples  abundances
+  #  bin1     sample1        10
+  #  bin1     sample2        100
+  #  bin1     sample5        1
+  #  bin2     sample1        500
+  #  bin2     sample3        25
+  #  bin3     sample1        80
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus(otu_ids, sample_abundances, samples)
+  dataset$assign_bins(bin_ids, sample_abundances, samples)
 
-  # (shared) otus would look like:
-  # label  sample   otu1   otu2   otu3
+  # (shared) bins would look like:
+  # label  sample   bin1   bin2   bin3
   # 0.03   sample1  10     500    80
   # 0.03   sample2  100    0      0
   # 0.03   sample3  0      25     0
   # 0.03   sample5  1      0      0
 
-  # To assign sequences to otus with their abundances parsed by sample:
+  # To assign sequences to bins with their abundances parsed by sample:
 
   dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu1", "otu1", "otu1",
-               "otu2", "otu2", "otu2",
-               "otu3", "otu3")
+  bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
+               "bin2", "bin2", "bin2",
+               "bin3", "bin3")
   seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
                "seq3", "seq3", "seq6",
                "seq5", "seq5")
@@ -562,10 +544,10 @@ include: 'otu', 'asv', or 'phylotype'. Default = 'otu'.}
                "sample2", "sample3", "sample1",
                "sample1", "sample6")
   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-  dataset$assign_otus(otu_ids, abundances, samples, seq_ids)
+  dataset$assign_bins(bin_ids, abundances, samples, seq_ids)
 
-  # otus would look like:
-  #            otu1             otu2        otu3
+  # bins would look like:
+  #            bin1             bin2        bin3
   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
   # (rabund)   716              85          65
 
@@ -638,30 +620,30 @@ dataset$assign_sequence_abundance(names, abundances, samples)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-assign_otu_taxonomy"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-assign_otu_taxonomy}{}}}
-\subsection{Method \code{assign_otu_taxonomy()}}{
-Assign otu classification.
+\if{html}{\out{<a id="method-sequence_data-assign_bin_taxonomy"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_bin_taxonomy}{}}}
+\subsection{Method \code{assign_bin_taxonomy()}}{
+Assign bin classification.
 
-Note, if you assign sequence taxonomies and assign otus, 'sequence_data'
-will find the concensus taxonomy for each otu for you.
+Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
+will find the concensus taxonomy for each bin for you.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_otu_taxonomy(otu_ids, taxonomies)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_bin_taxonomy(bin_ids, taxonomies, type = "otu")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{otu_ids}}{a vector of otu names}
+\item{\code{bin_ids}}{a vector of bin names}
 
-\item{\code{taxonomies}}{a vector of otu classifications}
+\item{\code{taxonomies}}{a vector of bin classifications}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
-otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+bin_ids <- c("bin1", "bin2", "bin3", "bin4")
 abunds <- c(200, 40, 100, 5)
 taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
@@ -669,8 +651,8 @@ taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_otus(otu_ids, abunds)
-dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+dataset$assign_bins(bin_ids, abunds)
+dataset$assign_bin_taxonomy(bin_ids, taxonomies)
 
 }
 \if{html}{\out{</div>}}
@@ -863,11 +845,19 @@ vector of ids
 \if{html}{\out{<a id="method-sequence_data-get_list"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_list}{}}}
 \subsection{Method \code{get_list()}}{
-Get data frame containing sequence otu assignments
+Get data frame containing sequence bin assignments
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_list()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_list(type = "otu")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{a string indicating the type of clusters. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 data.frame
 }
@@ -876,22 +866,22 @@ data.frame
 \preformatted{  dataset <- sequence_data$new("my_dataset")
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-  dataset$assign_otus(otu_ids, sequence_abundances, seq_ids = seq_ids)
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+  dataset$assign_bins(bin_ids, sequence_abundances, seq_ids = seq_ids)
 
-  # (list) otus would look like:
-  # otu1             otu2        otu3
+  # (list) bins would look like:
+  # bin1             bin2        bin3
   # seq1,seq2,seq4   seq3,seq6   seq5
 
   list <- dataset$get_list()
 
-  #  list$otu_id  list$seq_id
-  #  otu1          seq1
-  #  otu1          seq2
-  #  otu1          seq4
-  #  otu2          seq3
-  #  otu2          seq6
-  #  otu3          seq5
+  #  list$bin_id  list$seq_id
+  #  bin1          seq1
+  #  bin1          seq2
+  #  bin1          seq4
+  #  bin2          seq3
+  #  bin2          seq6
+  #  bin3          seq5
 
 }
 \if{html}{\out{</div>}}
@@ -900,14 +890,22 @@ data.frame
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_num_otus"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_num_otus}{}}}
-\subsection{Method \code{get_num_otus()}}{
-Get the number of otus in the dataset
+\if{html}{\out{<a id="method-sequence_data-get_num_bins"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_num_bins}{}}}
+\subsection{Method \code{get_num_bins()}}{
+Get the number of bins in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_num_otus()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_num_bins(type = "otu")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{a string indicating the type of clusters. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 An integer
 }
@@ -977,13 +975,13 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_otu_taxonomy_report"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_otu_taxonomy_report}{}}}
-\subsection{Method \code{get_otu_taxonomy_report()}}{
-Get report containing the sequence taxonomy table -
+\if{html}{\out{<a id="method-sequence_data-get_bin_taxonomy_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_bin_taxonomy_report}{}}}
+\subsection{Method \code{get_bin_taxonomy_report()}}{
+Get report containing the bin taxonomy table -
 ids, taxonomy by levels
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_otu_taxonomy_report()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_bin_taxonomy_report(type = "otu")}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -992,7 +990,7 @@ data.frame
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
-otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+bin_ids <- c("bin1", "bin2", "bin3", "bin4")
 abunds <- c(200, 40, 100, 5)
 taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
@@ -1000,9 +998,9 @@ taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_otus(otu_ids, abunds)
-dataset$assign_otu_taxonomy(otu_ids, taxonomies)
-dataset$get_otu_taxonomy_report()
+dataset$assign_bins(bin_ids, abunds)
+dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+dataset$get_bin_taxonomy_report()
 
 }
 \if{html}{\out{</div>}}
@@ -1014,31 +1012,39 @@ dataset$get_otu_taxonomy_report()
 \if{html}{\out{<a id="method-sequence_data-get_rabund"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_rabund}{}}}
 \subsection{Method \code{get_rabund()}}{
-Get data frame containing sequence otu assignments
+Get data frame containing sequence bin assignments
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_rabund()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_rabund(type = "otu")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{a string indicating the type of clusters. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 data.frame
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{  dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu2", "otu3")
-  otu_abundances <- c(111, 525, 80)
-  dataset$assign_otus(otu_ids, otu_abundances)
+  bin_ids <- c("bin1", "bin2", "bin3")
+  bin_abundances <- c(111, 525, 80)
+  dataset$assign_bins(bin_ids, bin_abundances)
 
-  # (rabund) otus would look like:
-  # otu1  otu2  otu3
+  # (rabund) bins would look like:
+  # bin1  bin2  bin3
   # 110   525   80
 
   rabund <- dataset$get_rabund()
 
-  #  rabund$otu_id  rabund$abundance
-  #  otu1           111
-  #  otu2           525
-  #  otu3           80
+  #  rabund$bin_id  rabund$abundance
+  #  bin1           111
+  #  bin2           525
+  #  bin3           80
 
 }
 \if{html}{\out{</div>}}
@@ -1083,7 +1089,7 @@ list
 \if{html}{\out{<a id="method-sequence_data-get_scrap_report"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_scrap_report}{}}}
 \subsection{Method \code{get_scrap_report()}}{
-Get report containing the scrapped sequences / otus -
+Get report containing the scrapped sequences / bins -
 ids, trash_codes
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_scrap_report()}\if{html}{\out{</div>}}
@@ -1181,25 +1187,33 @@ Get vector containing sequence nucleotide strings
 \if{html}{\out{<a id="method-sequence_data-get_shared"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_shared}{}}}
 \subsection{Method \code{get_shared()}}{
-Get data frame containing sequence otu assignments by sample
+Get data frame containing sequence bin assignments by sample
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_shared()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_shared(type = "otu")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{a string indicating the type of clusters. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 data.frame
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{  dataset <- sequence_data$new("my_dataset")
-  otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   samples <- c("sample1", "sample2", "sample5",
    "sample1", "sample3", "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_otus(otu_ids, sample_abundances, samples)
+  dataset$assign_bins(bin_ids, sample_abundances, samples)
 
-  # (shared) otus would look like:
-  # label  sample   otu1   otu2   otu3
+  # (shared) bins would look like:
+  # label  sample   bin1   bin2   bin3
   # 0.03   sample1  10     500    80
   # 0.03   sample2  100    0      0
   # 0.03   sample3  0      25     0
@@ -1207,13 +1221,13 @@ data.frame
 
   shared <- dataset$get_shared()
 
-  # shared$otu_id  shared$sample  shared$abundance
-  # otu1           sample1        10
-  # otu1           sample2        100
-  # otu1           sample5        1
-  # otu2           sample1        500
-  # otu2           sample3        25
-  # otu3           sample1        80
+  # shared$bin_id  shared$sample  shared$abundance
+  # bin1           sample1        10
+  # bin1           sample2        100
+  # bin1           sample5        1
+  # bin2           sample1        500
+  # bin2           sample3        25
+  # bin3           sample1        80
 
 }
 \if{html}{\out{</div>}}

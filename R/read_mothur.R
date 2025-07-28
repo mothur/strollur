@@ -118,18 +118,18 @@ read_mothur <- function(fasta = NULL, count = NULL,
         # phylotype otus, and rabund for asv's.
         if (!is.null(list)) {
             df <- read_mothur_list(list)
-            dataset$assign_otus(df$otu_id, seq_ids = df$seq_id,
+            dataset$assign_bins(df$bin_id, seq_ids = df$seq_id,
                                 type = list_type)
         }
 
         if (!is.null(rabund)) {
             df <- read_mothur_rabund(rabund)
-            dataset$assign_otus(df$otu_id, df$abundance, type = rabund_type)
+            dataset$assign_bins(df$bin_id, df$abundance, type = rabund_type)
         }
 
         if (!is.null(shared)) {
             df <- read_mothur_shared(shared)
-            dataset$assign_otus(df$otu_id, df$abundance,
+            dataset$assign_bins(df$bin_id, df$abundance,
                                 df$sample, type = shared_type)
         }
     }
@@ -140,7 +140,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
         # remove size
         df <- df[, -c(2)]
-        dataset$assign_otu_taxonomy(df[[1]], df[[2]])
+        dataset$assign_bin_taxonomy(df[[1]], df[[2]])
     }
 
     dataset

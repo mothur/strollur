@@ -17,7 +17,7 @@ Read a FASTA formatted sequence file
 }
 \examples{
 
-fasta_data <- read_fasta(rdataset_example("test.fasta"))
+fasta_data <- read_fasta(rdataset_example("final.fasta"))
 
 # fasta_data is a named list.
 # To access the names of the sequences in the file, run the following:

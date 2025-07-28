@@ -24,7 +24,6 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Create a new sequence dataset
     #' @param name String, name of dataset (optional)
-    #' @param fasta String name of FASTA file
     #' @param processors Integer, number of cores to use.
     #'  Default = all available
     #' @examples
@@ -33,21 +32,10 @@ sequence_data <- R6Class("sequence_data",
     #'
     #' dataset <- sequence_data$new("soil")
     #'
-    #' # to create a dataset containing sequences from your fasta file,
-    #' #  run the following:
-    #'
-    #' dataset <- sequence_data$new(name = "soil",
-    #'                              fasta = rdataset_example("test.fasta"))
-    #'
     #' @return A new `sequence_data` object.
-    initialize = function(name = "", fasta = NULL,
+    initialize = function(name = "",
                           processors = parallelly::availableCores()) {
       self$data <- new(Dataset, name, processors)
-
-      if (!is.null(fasta)) {
-        fasta_data <- read_fasta(fasta)
-        self$add_sequences(fasta_data$names, fasta_data$sequences)
-      }
       invisible(self)
     },
 
@@ -74,14 +62,26 @@ sequence_data <- R6Class("sequence_data",
         "\n"
       )
 
-      if (self$get_num_otus() != 0) {
+      if (self$get_num_bins("otu") != 0) {
           cat(
-              paste("Total number of otus:", self$get_num_otus()),
+              paste("Total number of otus:", self$get_num_bins("otu")),
               "\n"
           )
-      } else {
-          cat("\n")
       }
+      if (self$get_num_bins("asv") != 0) {
+          cat(
+              paste("Total number of asvs:", self$get_num_bins("asv"),
+                    "\n")
+          )
+      }
+      if (self$get_num_bins("phylotype") != 0) {
+          cat(
+              paste("Total number of phylotype bins:",
+                    self$get_num_bins("phylotype"),
+                    "\n")
+          )
+      }
+      cat("\n")
     },
 
     #' @description
@@ -92,7 +92,7 @@ sequence_data <- R6Class("sequence_data",
     #' @examples
     #'
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   sequences <- read_fasta(rdataset_example("test.fasta"))
+    #'   sequences <- read_fasta(rdataset_example("final.fasta"))
     #'   dataset$add_sequences(sequences$names, sequences$sequences)
     #'
     add_sequences = function(names, sequences = NULL, comments = NULL) {
@@ -108,77 +108,77 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Add otu data
-    #' @param otu_ids a vector of otu labels
+    #' Add bin data
+    #' @param bin_ids a vector of bin labels
     #' @param abundances a vector of abundances (optional). You must provide
     #'  either abundances or seq_ids.
     #' @param samples a vector of sample assignments (optional)
     #' @param seq_ids a vector of sequence names (optional) You must provide
     #'  either abundances or seq_ids.
-    #' @param type a string indicating the type of otu assignments. Options
-    #' include: 'otu', 'asv', or 'phylotype'. Default = 'otu'.
+    #' @param type a string indicating the type of bin assignments. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
     #' @examples
     #'
-    #'   # otu_ids  seq_ids
-    #'   #  otu1     seq1
-    #'   #  otu1     seq2
-    #'   #  otu1     seq4
-    #'   #  otu2     seq3
-    #'   #  otu2     seq6
-    #'   #  otu3     seq5
+    #'   # bin_ids  seq_ids
+    #'   #  bin1     seq1
+    #'   #  bin1     seq2
+    #'   #  bin1     seq4
+    #'   #  bin2     seq3
+    #'   #  bin2     seq6
+    #'   #  bin3     seq5
     #'
-    #'   # To assign sequences to otus:
+    #'   # To assign sequences to bins:
     #'
     #'   dataset <- sequence_data$new("my_dataset")
     #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-    #'   dataset$assign_otus(otu_ids, seq_ids = seq_ids)
+    #'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+    #'   dataset$assign_bins(bin_ids, seq_ids = seq_ids)
     #'
-    #'   # otus would look like:
-    #'   #            otu1             otu2        otu3
+    #'   # bins would look like:
+    #'   #            bin1             bin2        bin3
     #'   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
     #'
-    #'   # To add abundance only otu assignments:
+    #'   # To add abundance only bin assignments:
     #'
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   otu_ids <- c("otu1", "otu2", "otu3")
+    #'   bin_ids <- c("bin1", "bin2", "bin3")
     #'   abundances <- c(110, 525, 80)
-    #'   dataset$assign_otus(otu_ids, abundances)
+    #'   dataset$assign_bins(bin_ids, abundances)
     #'
-    #'   # otus would look like:
-    #'   #            otu1             otu2        otu3
+    #'   # bins would look like:
+    #'   #            bin1             bin2        bin3
     #'   # (rabund)   110              525         80
     #'
-    #'   # To add abundance otu assignments parsed by sample:
+    #'   # To add abundance bin assignments parsed by sample:
     #'
-    #'   # otu_ids  samples  abundances
-    #'   #  otu1     sample1        10
-    #'   #  otu1     sample2        100
-    #'   #  otu1     sample5        1
-    #'   #  otu2     sample1        500
-    #'   #  otu2     sample3        25
-    #'   #  otu3     sample1        80
+    #'   # bin_ids  samples  abundances
+    #'   #  bin1     sample1        10
+    #'   #  bin1     sample2        100
+    #'   #  bin1     sample5        1
+    #'   #  bin2     sample1        500
+    #'   #  bin2     sample3        25
+    #'   #  bin3     sample1        80
     #'
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+    #'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
     #'   samples <- c("sample1", "sample2", "sample5",
     #'    "sample1", "sample3", "sample1")
     #'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_otus(otu_ids, sample_abundances, samples)
+    #'   dataset$assign_bins(bin_ids, sample_abundances, samples)
     #'
-    #'   # (shared) otus would look like:
-    #'   # label  sample   otu1   otu2   otu3
+    #'   # (shared) bins would look like:
+    #'   # label  sample   bin1   bin2   bin3
     #'   # 0.03   sample1  10     500    80
     #'   # 0.03   sample2  100    0      0
     #'   # 0.03   sample3  0      25     0
     #'   # 0.03   sample5  1      0      0
     #'
-    #'   # To assign sequences to otus with their abundances parsed by sample:
+    #'   # To assign sequences to bins with their abundances parsed by sample:
     #'
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu1", "otu1", "otu1",
-    #'                "otu2", "otu2", "otu2",
-    #'                "otu3", "otu3")
+    #'   bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
+    #'                "bin2", "bin2", "bin2",
+    #'                "bin3", "bin3")
     #'   seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
     #'                "seq3", "seq3", "seq6",
     #'                "seq5", "seq5")
@@ -187,16 +187,16 @@ sequence_data <- R6Class("sequence_data",
     #'                "sample2", "sample3", "sample1",
     #'                "sample1", "sample6")
     #'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-    #'   dataset$assign_otus(otu_ids, abundances, samples, seq_ids)
+    #'   dataset$assign_bins(bin_ids, abundances, samples, seq_ids)
     #'
-    #'   # otus would look like:
-    #'   #            otu1             otu2        otu3
+    #'   # bins would look like:
+    #'   #            bin1             bin2        bin3
     #'   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
     #'   # (rabund)   716              85          65
     #'
     #'   dataset$get_shared()
     #'
-    assign_otus = function(otu_ids, abundances = NULL,
+    assign_bins = function(bin_ids, abundances = NULL,
                            samples = NULL, seq_ids = NULL, type = "otu") {
       if (is.null(abundances) && is.null(seq_ids)) {
         cli::cli_abort("[ERROR]: You must provide either
@@ -204,17 +204,17 @@ sequence_data <- R6Class("sequence_data",
       }
 
       if (is.null(samples)) {
-        samples <- rep("", length(otu_ids))
+        samples <- rep("", length(bin_ids))
       }
       if (is.null(abundances)) {
-        abundances <- rep(0, length(otu_ids))
+        abundances <- rep(0, length(bin_ids))
       }
       if (is.null(seq_ids)) {
-        seq_ids <- rep("", length(otu_ids))
+        seq_ids <- rep("", length(bin_ids))
       }
 
-      self$data$assign_otus(
-        otu_ids, abundances,
+      self$data$assign_bins(
+        bin_ids, abundances,
         samples, seq_ids, type
       )
 
@@ -287,15 +287,15 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Assign otu classification.
+    #' Assign bin classification.
     #'
-    #' Note, if you assign sequence taxonomies and assign otus, 'sequence_data'
-    #' will find the concensus taxonomy for each otu for you.
-    #' @param otu_ids a vector of otu names
-    #' @param taxonomies a vector of otu classifications
+    #' Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
+    #' will find the concensus taxonomy for each bin for you.
+    #' @param bin_ids a vector of bin names
+    #' @param taxonomies a vector of bin classifications
     #' @examples
     #'
-    #' otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+    #' bin_ids <- c("bin1", "bin2", "bin3", "bin4")
     #' abunds <- c(200, 40, 100, 5)
     #' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
     #'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
@@ -303,15 +303,16 @@ sequence_data <- R6Class("sequence_data",
     #'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
     #'
     #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_otus(otu_ids, abunds)
-    #' dataset$assign_otu_taxonomy(otu_ids, taxonomies)
+    #' dataset$assign_bins(bin_ids, abunds)
+    #' dataset$assign_bin_taxonomy(bin_ids, taxonomies)
     #'
-    assign_otu_taxonomy = function(otu_ids, taxonomies) {
-      if (self$data$num_otus == 0) {
-        cli::cli_abort("[ERROR]: No otu data, please assign otus using the
-                           'assign_otus' function then try again.")
+    assign_bin_taxonomy = function(bin_ids, taxonomies, type = "otu") {
+      if (self$data$get_num_bins(type) == 0) {
+        cli::cli_abort("[ERROR]: No bin data for type " + type + ", please
+                          assign bins using the 'assign_bins' function then
+                       try again.")
       }
-      self$data$assign_otu_taxonomy(otu_ids, taxonomies)
+      self$data$assign_bin_taxonomy(bin_ids, taxonomies, type)
       invisible(self)
     },
 
@@ -430,45 +431,49 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get data frame containing sequence otu assignments
+    #' Get data frame containing sequence bin assignments
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
     #' @examples
     #'   dataset <- sequence_data$new("my_dataset")
     #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
     #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
-    #'   dataset$assign_otus(otu_ids, sequence_abundances, seq_ids = seq_ids)
+    #'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+    #'   dataset$assign_bins(bin_ids, sequence_abundances, seq_ids = seq_ids)
     #'
-    #'   # (list) otus would look like:
-    #'   # otu1             otu2        otu3
+    #'   # (list) bins would look like:
+    #'   # bin1             bin2        bin3
     #'   # seq1,seq2,seq4   seq3,seq6   seq5
     #'
     #'   list <- dataset$get_list()
     #'
-    #'   #  list$otu_id  list$seq_id
-    #'   #  otu1          seq1
-    #'   #  otu1          seq2
-    #'   #  otu1          seq4
-    #'   #  otu2          seq3
-    #'   #  otu2          seq6
-    #'   #  otu3          seq5
+    #'   #  list$bin_id  list$seq_id
+    #'   #  bin1          seq1
+    #'   #  bin1          seq2
+    #'   #  bin1          seq4
+    #'   #  bin2          seq3
+    #'   #  bin2          seq6
+    #'   #  bin3          seq5
     #'
     #' @return data.frame
-    get_list = function() {
-      self$data$get_list()
+    get_list = function(type = "otu") {
+      self$data$get_list(type)
     },
 
     #' @description
-    #' Get the number of otus in the dataset
+    #' Get the number of bins in the dataset
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
     #' @return An integer
-    get_num_otus = function() {
-      self$data$num_otus
+    get_num_bins = function(type = "otu") {
+      self$data$get_num_bins(type)
     },
 
     #' @description
     #' Get number of samples in the dataset
     #' @return An integer
     get_num_samples = function() {
-      self$data$num_samples
+      self$data$get_num_samples()
     },
 
     #' @description
@@ -482,6 +487,7 @@ sequence_data <- R6Class("sequence_data",
       if (is.null(sample)) {
         sample <- ""
       }
+
       if (distinct) {
         self$data$get_unique_total(sample)
       } else {
@@ -493,7 +499,7 @@ sequence_data <- R6Class("sequence_data",
     #' Get the number of treatments in the dataset
     #' @return An integer
     get_num_treatments = function() {
-      self$data$num_treatments
+      self$data$get_num_treatments()
     },
 
     #' @description
@@ -505,11 +511,11 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get report containing the sequence taxonomy table -
+    #' Get report containing the bin taxonomy table -
     #' ids, taxonomy by levels
     #' @examples
     #'
-    #' otu_ids <- c("otu1", "otu2", "otu3", "otu4")
+    #' bin_ids <- c("bin1", "bin2", "bin3", "bin4")
     #' abunds <- c(200, 40, 100, 5)
     #' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
     #'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
@@ -517,37 +523,39 @@ sequence_data <- R6Class("sequence_data",
     #'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
     #'
     #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_otus(otu_ids, abunds)
-    #' dataset$assign_otu_taxonomy(otu_ids, taxonomies)
-    #' dataset$get_otu_taxonomy_report()
+    #' dataset$assign_bins(bin_ids, abunds)
+    #' dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+    #' dataset$get_bin_taxonomy_report()
     #'
     #' @return data.frame
-    get_otu_taxonomy_report = function() {
-      self$data$get_otu_taxonomy_report()
+    get_bin_taxonomy_report = function(type = "otu") {
+      self$data$get_bin_taxonomy_report(type)
     },
 
     #' @description
-    #' Get data frame containing sequence otu assignments
+    #' Get data frame containing sequence bin assignments
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
     #' @examples
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   otu_ids <- c("otu1", "otu2", "otu3")
-    #'   otu_abundances <- c(111, 525, 80)
-    #'   dataset$assign_otus(otu_ids, otu_abundances)
+    #'   bin_ids <- c("bin1", "bin2", "bin3")
+    #'   bin_abundances <- c(111, 525, 80)
+    #'   dataset$assign_bins(bin_ids, bin_abundances)
     #'
-    #'   # (rabund) otus would look like:
-    #'   # otu1  otu2  otu3
+    #'   # (rabund) bins would look like:
+    #'   # bin1  bin2  bin3
     #'   # 110   525   80
     #'
     #'   rabund <- dataset$get_rabund()
     #'
-    #'   #  rabund$otu_id  rabund$abundance
-    #'   #  otu1           111
-    #'   #  otu2           525
-    #'   #  otu3           80
+    #'   #  rabund$bin_id  rabund$abundance
+    #'   #  bin1           111
+    #'   #  bin2           525
+    #'   #  bin3           80
     #'
     #' @return data.frame
-    get_rabund = function() {
-      self$data$get_rabund()
+    get_rabund = function(type = "otu") {
+      self$data$get_rabund(type)
     },
 
     #' @description
@@ -562,7 +570,7 @@ sequence_data <- R6Class("sequence_data",
     #' @param silent Default = FALSE, meaning print sample summary
     #' @return list
     get_sample_summary = function(silent = FALSE) {
-      if (self$data$num_samples != 0) {
+      if (self$data$get_num_samples() != 0) {
         sample_totals <- self$data$get_sample_totals()
         sample_names <- self$get_samples()
 
@@ -603,7 +611,7 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get report containing the scrapped sequences / otus -
+    #' Get report containing the scrapped sequences / bins -
     #' ids, trash_codes
     #' @return list of data.frames
     get_scrap_report = function() {
@@ -611,9 +619,17 @@ sequence_data <- R6Class("sequence_data",
       list_names <- c("sequence_scrap_report")
       scrap_sequence_report <- self$data$get_scrap_report("sequence")
       results[[1]] <- scrap_sequence_report
-      if (self$data$num_otus != 0) {
+      if (self$data$get_num_bins("otu") != 0) {
         results[[2]] <- self$data$get_scrap_report("otu")
         list_names <- c(list_names, "otu_scrap_report")
+      }
+      if (self$data$get_num_bins("asv") != 0) {
+          results[[3]] <- self$data$get_scrap_report("asv")
+          list_names <- c(list_names, "asv_scrap_report")
+      }
+      if (self$data$get_num_bins("phylotype") != 0) {
+          results[[4]] <- self$data$get_scrap_report("phylotype")
+          list_names <- c(list_names, "phylotype_scrap_report")
       }
       names(results) <- list_names
       results
@@ -930,17 +946,19 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get data frame containing sequence otu assignments by sample
+    #' Get data frame containing sequence bin assignments by sample
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
     #' @examples
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   otu_ids <- c("otu1", "otu1", "otu1", "otu2", "otu2", "otu3")
+    #'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
     #'   samples <- c("sample1", "sample2", "sample5",
     #'    "sample1", "sample3", "sample1")
     #'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_otus(otu_ids, sample_abundances, samples)
+    #'   dataset$assign_bins(bin_ids, sample_abundances, samples)
     #'
-    #'   # (shared) otus would look like:
-    #'   # label  sample   otu1   otu2   otu3
+    #'   # (shared) bins would look like:
+    #'   # label  sample   bin1   bin2   bin3
     #'   # 0.03   sample1  10     500    80
     #'   # 0.03   sample2  100    0      0
     #'   # 0.03   sample3  0      25     0
@@ -948,17 +966,17 @@ sequence_data <- R6Class("sequence_data",
     #'
     #'   shared <- dataset$get_shared()
     #'
-    #'   # shared$otu_id  shared$sample  shared$abundance
-    #'   # otu1           sample1        10
-    #'   # otu1           sample2        100
-    #'   # otu1           sample5        1
-    #'   # otu2           sample1        500
-    #'   # otu2           sample3        25
-    #'   # otu3           sample1        80
+    #'   # shared$bin_id  shared$sample  shared$abundance
+    #'   # bin1           sample1        10
+    #'   # bin1           sample2        100
+    #'   # bin1           sample5        1
+    #'   # bin2           sample1        500
+    #'   # bin2           sample3        25
+    #'   # bin3           sample1        80
     #'
     #' @return data.frame
-    get_shared = function() {
-      self$data$get_shared()
+    get_shared = function(type = "otu") {
+      self$data$get_shared(type)
     },
 
     #' @description

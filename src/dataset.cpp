@@ -4,33 +4,29 @@
 #include "summary.h"
 #include "dataset.h"
 #include "utils.h"
-#include "phylotree.h"
+
 
 /******************************************************************************/
 Dataset::Dataset(string n, int proc) : datasetName(n) {
     isAligned = false;
     hasContigsData = false;
     hasAlignData = false;
-    hasOtuData = false;
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
-    hasOtuTaxonomy = false;
-    runClassifyOtu = true;
-    numSamples = 0;
-    numTreatments = 0;
-    numOtus = 0;
-    label = "";
     numUnique = 0;
     uniqueBad = 0;
     alignmentLength = 0;
     processors = proc;
     count = new AbundTable();
-    otuTable = nullptr;
 }
 /******************************************************************************/
 Dataset::~Dataset() {
     delete count;
-    if (otuTable != nullptr) { delete otuTable; }
+    if (binTables.size() != 0) {
+        for (auto it = binTables.begin(); it != binTables.end(); it++) {
+            delete it->second;
+        }
+    }
 }
 /******************************************************************************/
 void Dataset::clear() {
@@ -39,12 +35,6 @@ void Dataset::clear() {
     hasAlignData = false;
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
-    hasOtuTaxonomy = false;
-    runClassifyOtu = true;
-    numSamples = 0;
-    numTreatments = 0;
-    numOtus = 0;
-    label = "";
     numUnique = 0;
     uniqueBad = 0;
     alignmentLength = 0;
@@ -86,14 +76,16 @@ void Dataset::clear() {
 
     count->clear();
 
-    // if you have an otuTable then otuTable.clear();
-    if (hasOtuData) {
-        otuTable->clear();
-        otuTable->setLabel(label);
-        seqOtus.clear();
-        list.clear();
-        hasOtuData = false;
+    // if you have an binTable then binTable.clear();
+    for (auto it = binTables.begin(); it != binTables.end(); it++) {
+        delete it->second;
     }
+    binTables.clear();
+}
+/******************************************************************************/
+SEXP Dataset::getPointer() {
+    Rcpp::XPtr<Dataset> ptr(this);
+    return ptr;
 }
 /******************************************************************************/
 Rcpp::List Dataset::exportDataset(){
@@ -111,14 +103,14 @@ Rcpp::List Dataset::exportDataset(){
     // sequence abundance table
     // id, abundance, sample, treatment
 
-    // sequence otu table
+    // sequence bin table
     // id, abundance, sample, seq_id
 
     // sequence taxonomy table
 
-    // otu taxonomy table
+    // bin taxonomy table
 
-    // otu trashCodes
+    // bin trashCodes
 
     // align report
 
@@ -178,13 +170,13 @@ void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c)
     // set isAligned and aligned length
     getAlignedLength();
 
-    // add to "good" sequence count - giving preference to otuTable
+    // add to "good" sequence count - giving preference to binTable
     numUnique += names.size();
 
     hasSequenceData = true;
 }
 /******************************************************************************/
-void Dataset::assignOtus(vector<string> otuIds,
+void Dataset::assignBins(vector<string> binIds,
                         vector<int> abunds,
                         vector<string> samples,
                         vector<string> seqIds, string type) {
@@ -217,24 +209,30 @@ void Dataset::assignOtus(vector<string> otuIds,
     }
 
 
-    if (!useSeqIds && (otuIds.size() != abunds.size())) {
-        string message = "[ERROR]: Size mismatch. otu_ids and abunds must be";
+    if (!useSeqIds && (binIds.size() != abunds.size())) {
+        string message = "[ERROR]: Size mismatch. bin_ids and abunds must be";
         message += " the same size.";
 
         throw Rcpp::exception(message.c_str());
     }
 
-    // new table
-    if (otuTable == nullptr) {
-        otuTable = new OtuTable("otu");
+    BinTable* binTable = nullptr;
+    auto itTableType = binTables.find(type);
+
+    // new table type
+    if (itTableType == binTables.end()) {
+        binTable = new BinTable(type);
+        binTables[type] = binTable;
     }else{
-        otuTable->clear();
-        otuTable->setLabel("otu");
+        // existing table type
+        binTable = itTableType->second;
+        //binTable->clear();
+        binTable->setLabel(type);
     }
 
     if (useSeqIds) {
 
-        // if you don't have sequence data, but are adding seq_names for otus,
+        // if you don't have sequence data, but are adding seq_names for bins,
         // add seqs, add abundances if provided
         if (!hasSequenceData) {
 
@@ -255,194 +253,35 @@ void Dataset::assignOtus(vector<string> otuIds,
         abunds.clear();
         samples.clear();
 
-        // if the user provides seqIds,
-        // we need to calculate the otu abunds by sample
-        vector<string> allSamples = count->getSamples();
-
-        // does the sequence abundance include samples
-        bool hasSamples = false;
-        if (!allSamples.empty()) {
-            hasSamples = true;
-        }
-
-        // otuName -> (sampleName -> abundance)
-        map<string, map<string, int>> otuAbunds;
-
-        // maps seqName to otuName
-        map<string, string> seqOtu;
-        seqOtus.resize(names.size(), "");
-
-        for (int i = 0; i < seqIds.size(); i++) {
-
-            string otuName = otuIds[i];
-
-            auto itSeq = seqOtu.find(seqIds[i]);
-            bool firstTimeSeq = false;
-
-            // first time we are seeing this seqName, add seq to otu
-            if (itSeq == seqOtu.end()) {
-                firstTimeSeq = true;
-                seqOtu[seqIds[i]] = otuName;
-
-                auto seqI = seqIndex.find(seqIds[i]);
-
-                // this seq is in the dataset
-                if (seqI != seqIndex.end()) {
-
-                    seqOtus[seqI->second] = otuName;
-                    auto itList = list.find(otuName);
-
-                    // add to list - (list file)
-                    if (itList != list.end()) {
-
-                        (itList->second).push_back(seqI->second);
-                    }else{
-                        vector<int> temp; temp.push_back(seqI->second);
-                        list[otuName] = temp;
-                    }
-                }else{
-                    continue;
-                }
-            }
-
-            auto it = otuAbunds.find(otuName);
-
-            // first time seeing this otu, initialize sample counts
-            if (it == otuAbunds.end()) {
-                map<string, int> thisSeqsSampleAbunds;
-
-                // inputs from dataset
-                int thisIndex = seqIndex[seqIds[i]];
-                vector<int> abunds = count->getAbundances(thisIndex);
-
-                // count has samples
-                if (hasSamples) {
-                    for (int j = 0; j < abunds.size(); j++) {
-                        if (abunds[j] != 0) {
-                            thisSeqsSampleAbunds[allSamples[j]] = abunds[j];
-                        }
-                    }
-                }else{
-                    thisSeqsSampleAbunds["total"] = abunds[0];
-                }
-
-                otuAbunds[otuName] = thisSeqsSampleAbunds;
-            }else{
-                // inputs from dataset
-                if (firstTimeSeq) {
-
-                    int thisIndex = seqIndex[seqIds[i]];
-                    vector<int> abunds = count->getAbundances(thisIndex);
-
-                    // count has samples
-                    if (hasSamples) {
-                        for (int j = 0; j < abunds.size(); j++) {
-                            if (abunds[j] != 0) {
-                                // have we seen this sample before?
-                                auto itSample = it->second.find(allSamples[j]);
-                                if (itSample == it->second.end()) {
-                                    it->second[allSamples[j]] = abunds[j];
-                                }else{
-                                    itSample->second += abunds[j];
-                                }
-                            }
-                        }
-                    }else{
-                        it->second["total"] += abunds[0];
-                    }
-                }
-            }
-        }
-
-        // abundances are parsed by samples
-        otuIds.clear();
-        if (hasSamples) {
-
-            for (auto it = otuAbunds.begin(); it != otuAbunds.end(); it++) {
-
-                map<string, int> abundances = it->second;
-                for (auto itSamples = abundances.begin();
-                     itSamples != abundances.end(); itSamples++) {
-                    otuIds.push_back(it->first);
-                    samples.push_back(itSamples->first);
-                    abunds.push_back(itSamples->second);
-                }
-            }
-
-            otuTable->assignAbundance(otuIds, abunds, samples);
-
-            // inputs from dataset
-            if (hasSamples) {
-                // if there are treatments add them to otu
-                if (count->getNumTreatments() != 0) {
-                    map<string, string> sampleTreatments =
-                        count->getSampleTreatmentAssignments();
-
-                    vector<string> samples(sampleTreatments.size());
-                    vector<string> treatments(sampleTreatments.size());
-
-                    int index = 0;
-                    for (auto itTreatments = sampleTreatments.begin();
-                         itTreatments != sampleTreatments.end(); itTreatments++) {
-                        samples[index] = itTreatments->first;
-                        treatments[index] = itTreatments->second;
-                        index++;
-                    }
-
-                    otuTable->assignTreatments(samples, treatments);
-                }
-            }
-
-        }else{
-
-            for (auto it = otuAbunds.begin(); it != otuAbunds.end(); it++) {
-                otuIds.push_back(it->first);
-                abunds.push_back(it->second["total"]);
-            }
-
-            otuTable->assignAbundance(otuIds, abunds);
-        }
-
-        hasOtuData = true;
-
-        // if the sequences have been assigned taxonomy,
-        // assign the otu taxonomy
-        if (hasSequenceTaxonomy) { classifyOtus(); }
+        binTable->assignAbundance(binIds, abunds, samples,
+                                  getIndexes(seqIds), count);
     }else{
-        // add otus - shared
-        otuTable->assignAbundance(otuIds, abunds, samples);
+        // add bins - shared
+        binTable->assignAbundance(binIds, abunds, samples,
+                                  nullIntVector, count);
     }
-
-    hasOtuData = true;
-    numOtus = otuTable->numOtus;
-    label = otuTable->label;
-    numSamples = otuTable->getNumSamples();
-    numTreatments = otuTable->getNumTreatments();
 }
 /******************************************************************************/
-void Dataset::assignOtuTaxonomy(vector<string> otuIds, vector<string> taxs) {
+void Dataset::assignBinTaxonomy(vector<string> binIds, vector<string> taxs,
+                                string type) {
 
-    if (hasOtuData) {
-        if (otuIds.size() != taxs.size()) {
-            string message = "[ERROR]: Size mismatch. otu_ids and taxonomies ";
+    if (hasBinTable(type)) {
+        if (binIds.size() != taxs.size()) {
+            string message = "[ERROR]: Size mismatch. bin_ids and taxonomies ";
             message += "must be the same size.";
             throw Rcpp::exception(message.c_str());
         }
 
-        otuTable->assignTaxonomy(otuIds, taxs);
-        hasOtuTaxonomy = true;
-        runClassifyOtu = false;
+        binTables[type]->assignTaxonomy(binIds, taxs);
     }
 }
 /******************************************************************************/
 void Dataset::assignTreatments(vector<string> samples, vector<string> treatments) {
     count->assignTreatments(samples, treatments);
-    numSamples = count->getNumSamples();
-    numTreatments = count->getNumTreatments();
-    if (hasOtuData) {
-        otuTable->assignTreatments(samples, treatments);
-        numSamples = otuTable->getNumSamples();
-        numTreatments = otuTable->getNumTreatments();
+
+    // for each type of binTable, pass new sample assignments
+    for (auto it = binTables.begin(); it != binTables.end(); it++) {
+        it->second->assignTreatments(samples, treatments);
     }
 }
 /******************************************************************************/
@@ -467,9 +306,6 @@ void Dataset::assignSequenceAbundance(vector<string> ids,
     vector<int> idIndexes = getIndexes(ids);
 
     count->assignAbundance(idIndexes, abunds, samples, treatments);
-
-    numSamples = count->getNumSamples();
-    numTreatments = count->getNumTreatments();
 }
 /******************************************************************************/
 void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
@@ -508,8 +344,6 @@ void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
     }
 
     hasSequenceTaxonomy = true;
-
-    if (hasOtuData) { classifyOtus(); }
 }
 /******************************************************************************/
 // align_seqs will create searchScores, simScores and longestInserts
@@ -613,88 +447,6 @@ void Dataset::addContigsReport(vector<string>& n, vector<int>& ol,
     }
 }
 /******************************************************************************/
-string Dataset::classifyOtu(string otuName){
-    string otuTax = "";
-
-    auto it = list.find(otuName);
-
-    // valid otu
-    if (it != list.end()) {
-
-        vector<int> otuSeqs = it->second;
-
-        PhyloTree phylo;
-        int size = 0;
-
-        // add all "good" seqs in otu to phylotree
-        for (int index : otuSeqs) {
-
-            // is a "good" seq
-            if (tableSeqs[index]) {
-                int seqAbund = count->getAbundance(index);
-                size += seqAbund;
-                phylo.addSeqToTree(taxonomies[index], seqAbund);
-            }
-        }
-
-        TaxNode currentNode = phylo.getRoot();
-
-        while (currentNode.total != 0) {
-
-            TaxNode bestChild;
-            int bestChildSize = 0;
-
-            //go through children
-            for (auto itChild = currentNode.children.begin();
-                 itChild != currentNode.children.end(); itChild++) {
-
-                TaxNode temp = phylo.get(itChild->second);
-
-                // select taxonomy with most seqs assigned to it
-                if (temp.total > bestChildSize) {
-                    bestChild = phylo.get(itChild->second);
-                    bestChildSize = temp.total;
-                }
-            }
-
-            //phylotree adds an extra unknown so we want to remove that
-            if (bestChild.name == "unknown") { bestChildSize--; }
-
-            int consensusConfidence = ceil((bestChildSize /
-                                           (float) size) * 100);
-
-            if (bestChild.name != "") {
-                otuTax += bestChild.name + "(" + toString(consensusConfidence) + ");";
-            }
-            //move down a level
-            currentNode = bestChild;
-        }
-    }
-
-    if (otuTax == "") {  otuTax = "unknown;";  }
-
-    return otuTax;
-}
-/******************************************************************************/
-void Dataset::classifyOtus() {
-    if (hasOtuData) {
-        // get names of "good" otus
-        vector<string> otuNames = otuTable->getOtuIds();
-        vector<string> otuClassifications(otuNames.size(), "");
-        for (int i = 0; i < otuNames.size(); i++) {
-            otuClassifications[i] = classifyOtu(otuNames[i]);
-        }
-        otuTable->assignTaxonomy(otuNames, otuClassifications);
-
-        hasOtuTaxonomy = true;
-        numOtus = otuTable->numOtus;
-        label = otuTable->label;
-        numSamples = otuTable->getNumSamples();
-        numTreatments = otuTable->getNumTreatments();
-        runClassifyOtu = false;
-    }
-}
-/******************************************************************************/
 /*
  id         level  taxon                 confidence
  seq1     1       Bacteria             100.0
@@ -709,9 +461,20 @@ Rcpp::DataFrame Dataset::fillTaxReport(string mode) {
 
     vector<string> ids, taxes;
 
-    if (mode == "otu") {
-        ids = otuTable->getOtuIds();
-        taxes = otuTable->getTaxonomies();
+    if (mode != "sequence") {
+        if (hasBinTable(mode)) {
+            ids = binTables[mode]->getIds();
+            taxes = binTables[mode]->getTaxonomies(taxonomies, count);
+
+            // taxes is empty if no bin classifications have been added
+            if (taxes.empty()) {
+                Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+                return empty;
+            }
+        }else{
+            Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+            return empty;
+        }
     }else {
         ids = getNames();
         taxes = select(taxonomies, tableSeqs);
@@ -760,7 +523,6 @@ Rcpp::DataFrame Dataset::fillTaxReport(string mode) {
 
     taxons.clear();
     confidences.clear();
-
 
     if (!hasConfidences) {
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
@@ -889,50 +651,17 @@ vector<int> Dataset::getIndexes(vector<string>& ids) {
     return indexes;
 }
 /******************************************************************************/
-Rcpp::DataFrame Dataset::getList() {
-    if (hasOtuData && list.size() != 0) {
-        vector<string> otuNames = otuTable->getOtuIds();
-
-        vector<string> ids, seqids;
-        for (int i = 0; i < otuNames.size(); i++) {
-            auto it = list.find(otuNames[i]);
-
-            if (it != list.end()) {
-                // add each sequence name
-                for (int j = 0; j < it->second.size(); j++) {
-                    int index = it->second[j];
-                    if (tableSeqs[index]) {
-                        seqids.push_back(names[index]);
-                        ids.push_back(otuNames[i]);
-                    }
-
-                }
-            }
-        }
-
-        string tag = otuTable->label + "_id";
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                Rcpp::Named(tag.c_str()) = ids,
-                Rcpp::_["seq_id"] = seqids);
-        return df;
+Rcpp::DataFrame Dataset::getList(string type) {
+    if (hasBinTable(type)) {
+        return binTables[type]->getList(names);
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
 }
 /******************************************************************************/
-vector<string> Dataset::getListVector() {
-    if (hasOtuData && list.size() != 0) {
-        vector<string> otuNames = otuTable->getOtuIds();
-
-        vector<string> otus;
-        for (int i = 0; i < otuNames.size(); i++) {
-            string otu = getOtu(otuNames[i]);
-            // is this a "good" otu
-            if (otu != "") {
-                otus.push_back(otu);
-            }
-        }
-        return otus;
+vector<string> Dataset::getListVector(string type) {
+    if (hasBinTable(type)) {
+        return binTables[type]->getListVector(names);
     }
 
     return nullVector;
@@ -977,69 +706,74 @@ vector<vector<string> > Dataset::getNamesBySample(vector<string> samples){
     return result;
 }
 /******************************************************************************/
-// total abundance for a given outID
-int Dataset::getOtuAbundance(string otuId) {
-    if (hasOtuData) {
-        return otuTable->getAbundance(otuId, "");
+int Dataset::getNumSamples() {
+
+    if (binTables.size() != 0) {
+        return binTables.begin()->second->getNumSamples();
+    }
+
+    return count->getNumSamples();
+}
+/******************************************************************************/
+int Dataset::getNumTreatments() {
+    if (binTables.size() != 0) {
+        return binTables.begin()->second->getNumTreatments();
+    }
+
+    return count->getNumTreatments();
+}
+/******************************************************************************/
+// TODO document in module_exports.R
+int Dataset::getNumBins(string type) {
+    int numBins = 0;
+
+    auto it = binTables.find(type);
+
+    if (it != binTables.end()) {
+        return it->second->numBins;
+    }
+
+    return numBins;
+}
+/******************************************************************************/
+// total abundance for a given binID
+int Dataset::getBinAbundance(string binId, string type) {
+    if (hasBinTable(type)) {
+        return binTables[type]->getAbundance(binId, "");
     }
     return 0;
 }
 /******************************************************************************/
-// abundances for given otuID broken down by sample
-vector<int> Dataset::getOtuAbundances(string otuId) {
-    if (hasOtuData) {
-        return otuTable->getAbundances(otuId);
+// abundances for given binID broken down by sample
+vector<int> Dataset::getBinAbundances(string binId, string type) {
+    if (hasBinTable(type)) {
+        return binTables[type]->getAbundances(binId);
     }
     return nullIntVector;
 }
 /******************************************************************************/
-// string containing sequence names for given otuID
-string Dataset::getOtu(string otuId) {
-    if (hasOtuData) {
-        // provided sequence otu data
-        if (list.size() != 0) {
-            // is this a good otu
-            if (otuTable->hasId(otuId)) {
-
-                auto it = list.find(otuId);
-
-                vector<string> otuSeqNames;
-                vector<int> otuSeqIndexes = it->second;
-                for (int j = 0; j < otuSeqIndexes.size(); j++) {
-                    if (tableSeqs[otuSeqIndexes[j]]) {
-                        otuSeqNames.push_back(names[otuSeqIndexes[j]]);
-                    }
-                }
-                return toString(otuSeqNames, ',');
-            }
-        }
+// string containing sequence names for given binID
+string Dataset::getBin(string binId, string type) {
+    if (hasBinTable(type)) {
+        return binTables[type]->get(binId, names);
     }
     return "";
 }
 /******************************************************************************/
-vector<string> Dataset::getOtuIds() {
-    if (hasOtuData) {
-        return otuTable->getOtuIds();
+vector<string> Dataset::getBinIds(string type) {
+    if (hasBinTable(type)) {
+        return binTables[type]->getIds();
     }
     return nullVector;
 }
 /******************************************************************************/
-Rcpp::DataFrame Dataset::getOtuTaxonomyReport() {
-    if (hasOtuTaxonomy){
-        // this is set if you have removed sequences after classifying
-        if (runClassifyOtu) {
-            classifyOtus();
-        }
-        return (fillTaxReport("otu"));
-    }
-
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+Rcpp::DataFrame Dataset::getBinTaxonomyReport(string type) {
+    return (fillTaxReport(type));
 }
 /******************************************************************************/
-Rcpp::DataFrame Dataset::getRAbund() {
-    if (hasOtuData) {
-        return otuTable->getRAbund();
+Rcpp::DataFrame Dataset::getRAbund(string type) {
+    if (hasBinTable(type)) {
+        return binTables[type]->getRAbund();
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
@@ -1047,15 +781,16 @@ Rcpp::DataFrame Dataset::getRAbund() {
 /******************************************************************************/
 // sample functions
 vector<string> Dataset::getSamples(){
-    if (hasOtuData) {
-       return otuTable->getSamples();
+    // maybe we just provided an binTable with no seqIds
+    if (binTables.size() != 0) {
+        return binTables.begin()->second->getSamples();
     }
     return count->getSamples();
 }
 /******************************************************************************/
 vector<int> Dataset::getSampleTotals(){
-    if (hasOtuData) {
-        return otuTable->getSampleTotals();
+    if (binTables.size() != 0) {
+        return binTables.begin()->second->getSampleTotals();
     }
     return count->getSampleTotals();
 }
@@ -1084,9 +819,9 @@ Rcpp::DataFrame Dataset::getScrapReport(string mode) {
                 Rcpp::_["trash_code"] = badCodes);
             return df;
         }
-    }else if (mode == "otu") {
-        if (hasOtuData) {
-            return otuTable->getScrapReport();
+    }else {
+        if (hasBinTable(mode)) {
+            return binTables[mode]->getScrapReport();
         }
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
@@ -1121,9 +856,12 @@ Rcpp::List Dataset::getScrapSummary() {
         listNames.push_back("sequence_scrap_summary");
     }
 
-    if (hasOtuData) {
-        list.push_back(otuTable->getScrapSummary());
-        listNames.push_back("otu_scrap_summary");
+    if (binTables.size() != 0) {
+        for (auto it = binTables.begin(); it != binTables.end(); it++) {
+            list.push_back(it->second->getScrapSummary());
+            string tag = it->second->label + "_scrap_summary";
+            listNames.push_back(tag);
+        }
     }
 
     list.attr("names") = listNames;
@@ -1277,32 +1015,35 @@ Rcpp::DataFrame Dataset::getSequenceTaxonomyReport() {
     return empty;
 }
 /******************************************************************************/
-Rcpp::DataFrame Dataset::getShared() {
-    if (hasOtuData) {
-        return otuTable->getShared();
+Rcpp::DataFrame Dataset::getShared(string type) {
+    if (hasBinTable(type)) {
+        return binTables[type]->getShared();
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
 }
 /******************************************************************************/
 vector<string> Dataset::getTreatments(){
-    if (hasOtuData) {
-        return otuTable->getTreatments();
+    // maybe we just provided an binTable with no seqIds
+    if (binTables.size() != 0) {
+        return binTables.begin()->second->getTreatments();
     }
     return count->getTreatments();
 }
 /******************************************************************************/
 vector<int> Dataset::getTreatmentTotals(){
-    if (hasOtuData) {
-        return otuTable->getTreatmentTotals();
+    // maybe we just provided an binTable with no seqIds
+    if (binTables.size() != 0) {
+        return binTables.begin()->second->getTreatmentTotals();
     }
     return count->getTreatmentTotals();
 }
 /******************************************************************************/
 long long Dataset::getTotal(string sample){
-    if (hasOtuData) {
-        return otuTable->getTotal(sample);
+    if (binTables.size() != 0) {
+        return binTables.begin()->second->getTotal(sample);
     }
+
     return count->getTotal(sample);
 }
 /******************************************************************************/
@@ -1313,7 +1054,15 @@ long long Dataset::getUniqueTotal(string sample){
     return getNames(sample).size();
 }
 /******************************************************************************/
+bool Dataset::hasBinTable(string type) {
+    auto it = binTables.find(type);
+    return (it != binTables.end());
+}
+/******************************************************************************/
 bool Dataset::hasSample(string sample){
+    if (binTables.size() != 0) {
+        return binTables.begin()->second->hasSample(sample);
+    }
     return count->hasSample(sample);
 }
 /******************************************************************************/
@@ -1334,17 +1083,29 @@ void Dataset::mergeSequences(vector<string> ids, string reason){
 
         vector<int> indexes = getIndexes(ids);
 
-        // sanity check: if you have assigned otus, make sure the sequences
-        // are in the same otu
-        if (hasOtuData) {
-            string otu = seqOtus[indexes[0]];
-            for (int i = 1; i < indexes.size(); i++) {
-                if (seqOtus[indexes[i]] != otu) {
-                    string message = "[ERROR]: can not merge sequences assigned";
-                    message += " to different otus.";
-                    RcppThread::Rcerr << endl << message << endl;
-                    throw Rcpp::exception(message.c_str());
+        // sanity check: if you have assigned bins, make sure the sequences
+        // are in the same bin
+        if (binTables.size() != 0) {
+            // innocent until proven guilty
+            vector<bool> okToMerge(binTables.size(), true);
+
+            int tableIndex = 0;
+            string message = "[ERROR]: can not merge sequences assigned";
+            message += " to different bins.";
+            for (auto it = binTables.begin(); it != binTables.end(); it++) {
+
+                // if seqs were assigned to otus
+                if (!it->second->okToMerge(indexes)) {
+                    okToMerge[tableIndex] = false;
+                    message += " The '" + it->second->label + "' bin table has";
+                    message += " sequences assigned to different bins.";
                 }
+                tableIndex++;
+            }
+
+            if (!isTrue(okToMerge)) {
+                RcppThread::Rcerr << endl << message << endl;
+                throw Rcpp::exception(message.c_str());
             }
         }
 
@@ -1357,47 +1118,18 @@ void Dataset::mergeSequences(vector<string> ids, string reason){
     }
 }
 /******************************************************************************/
-void Dataset::mergeOtus(vector<string> ids, string reason){
+void Dataset::mergeBins(vector<string> ids, string reason, string type){
     if (ids.size() != 1) {
-        if (hasOtuData) {
-
-            // if we have assigned sequences to otus
-            if ((list.size() != 0) && (ids.size() != 1)) {
-
-                string mergeOtu = "";
-                vector<int> mergedSeqs;
-                for (int i = 0; i < ids.size(); i++) {
-                    // is this a good otu
-                    if (otuTable->hasId(ids[i])) {
-                        if (mergeOtu == "") {
-                            mergeOtu = ids[i];
-                            mergedSeqs = list[ids[i]];
-                        }else {
-                            vector<int> thisOtusSeqs = list[ids[i]];
-                            mergedSeqs.insert(mergedSeqs.end(),
-                                              thisOtusSeqs.begin(),
-                                              thisOtusSeqs.end());
-                            for (int j = 0; j < thisOtusSeqs.size(); j++) {
-                                seqOtus[thisOtusSeqs[j]] = mergeOtu;
-                            }
-                        }
-                    }
-                }
-
-                if (mergeOtu != "") {
-                    list[mergeOtu] = mergedSeqs;
-                }
-            }
-
-            otuTable->merge(ids);
-            numOtus = otuTable->numOtus;
+        if (hasBinTable(type)) {
+            binTables[type]->merge(ids);
         }
     }
 }
 /******************************************************************************/
 void Dataset::removeLineages(vector<string> contaminants, string trashTag) {
 
-    if (!hasSequenceTaxonomy && !hasOtuTaxonomy ) { return; }
+    // if no sequence taxonomy or clusters
+    if (!hasSequenceTaxonomy && (binTables.size() == 0)) { return; }
 
     Utils util;
     vector<vector<string> > conTax(contaminants.size());
@@ -1415,10 +1147,9 @@ void Dataset::removeLineages(vector<string> contaminants, string trashTag) {
         }
     }
 
-    bool foundContaminants = false;
     if (hasSequenceTaxonomy) {
         // you have sequence taxonomies, remove contaminants
-        // and reclassify otus (below)
+        // and reclassify bins (below)
 
         // remove seqs assigned to this taxonomy
         for (int i = 0; i < taxonomies.size(); i++) {
@@ -1433,120 +1164,98 @@ void Dataset::removeLineages(vector<string> contaminants, string trashTag) {
                                    conHasConfidences,
                                    conTax, conConfidenceThreshold)) {
                     removeSequence(i, trashTag);
-                    foundContaminants = true;
                 }
             }
         }
-    }else if (!hasSequenceTaxonomy && hasOtuTaxonomy) {
-        // if you have only have otu classifications, remove otus
+    }
 
-        vector<string> otuIds = otuTable->getOtuIds();
-        vector<string> otuTaxes = otuTable->getTaxonomies();
+    for (auto itTable = binTables.begin(); itTable != binTables.end();
+    itTable++) {
 
-        // remove otus assigned to this taxonomy
-        for (int i = 0; i < otuTaxes.size(); i++) {
+        BinTable* binTable = itTable->second;
+
+        vector<string> binIds = binTable->getIds();
+        vector<string> binTaxes;
+
+        // if you have only have bin classifications, and no seq classifications
+        if (!hasSequenceTaxonomy) {
+            if (binTable->hasBinTaxonomy) {
+                binTaxes = binTable->getTaxonomies(binTaxes, nullptr);
+            }
+        }else{
+            binTaxes = binTable->getTaxonomies(taxonomies, count);
+        }
+
+        // remove bins assigned to this taxonomy
+        for (int i = 0; i < binTaxes.size(); i++) {
             vector<string> userTax;
-            split(otuTaxes[i], ';', back_inserter(userTax));
+            split(binTaxes[i], ';', back_inserter(userTax));
             vector<int> userConfidences = util.removeConfidences(userTax);
 
             // if this seq is a contaminant, remove it
             if (util.searchTax(userTax, userConfidences,
                                conHasConfidences,
                                conTax, conConfidenceThreshold)) {
-                otuTable->remove(otuIds[i], trashTag);
+                vector<string> binToRemove(1, binIds[i]);
+                vector<string> trashTags(1, trashTag);
+                removeBins(binToRemove, trashTags, itTable->first);
             }
         }
+        binTable->updateTotals();
     }
 
     count->updateTotals();
-    numSamples = count->getNumSamples();
-    numTreatments = count->getNumTreatments();
-
-    // if you have otu classifications and sequence classifications
-    // removing contaminant should force a reclassification of the otus
-    // using the new data
-    if (hasSequenceTaxonomy && hasOtuTaxonomy && foundContaminants) {
-        classifyOtus();
-    }
-
-    if (hasOtuTaxonomy) {
-        otuTable->updateTotals();
-        numSamples = otuTable->getNumSamples();
-        numTreatments = otuTable->getNumTreatments();
-        numOtus = otuTable->numOtus;
-    }
 }
 /******************************************************************************/
-void Dataset::removeOtus(vector<string> namesToRemove,
-                              vector<string> trashTags){
+void Dataset::removeBins(vector<string> namesToRemove,
+                              vector<string> trashTags, string type){
 
-    if (!hasOtuData) { return; }
+    if (binTables.size() == 0) { return; }
 
-    if (namesToRemove.size() != trashTags.size()) {
-        string message = "[ERROR]: Size mismatch. You must provide a trash";
-        message += " code for each otu.";
-        RcppThread::Rcerr << endl << message << endl;
-        throw Rcpp::exception(message.c_str());
-    }
+    if (hasBinTable(type)) {
 
-    for (int i = 0; i < namesToRemove.size(); i++) {
-        otuTable->remove(namesToRemove[i], trashTags[i]);
+        if (namesToRemove.size() != trashTags.size()) {
+            string message = "[ERROR]: Size mismatch. You must provide a trash";
+            message += " code for each bin.";
+            RcppThread::Rcerr << endl << message << endl;
+            throw Rcpp::exception(message.c_str());
+        }
 
-        if (list.size() != 0) {
-            auto it = list.find(namesToRemove[i]);
-
-            if (it != list.end()) {
-                // remove any sequences from removed otu
-                for (int j = 0; j < it->second.size(); j++) {
-                    removeSequence(it->second[j], trashTags[i], true);
-                }
+        for (int i = 0; i < namesToRemove.size(); i++) {
+            vector<int> seqsToRemove = binTables[type]->remove(namesToRemove[i],
+                                                               trashTags[i]);
+            // remove any sequences from removed bin
+            for (int seq : seqsToRemove) {
+                removeSequence(seq, trashTags[i], true, false);
             }
         }
+
+        count->updateTotals();
+        binTables[type]->updateTotals();
     }
-
-    count->updateTotals();
-    numSamples = count->getNumSamples();
-    numTreatments = count->getNumTreatments();
-
-    otuTable->updateTotals();
-    numSamples = otuTable->getNumSamples();
-    numTreatments = otuTable->getNumTreatments();
-    numOtus = otuTable->numOtus;
 }
 /******************************************************************************/
-void Dataset::removeSequence(int index, string reasons, bool update) {
+void Dataset::removeSequence(int index, string reasons,
+                             bool update, bool removeFromBin) {
     // remove from tableSeqs and add trashCode
     tableSeqs[index] = false;
     trashCodes[index] += reasons + ",";
     numUnique--;
-    runClassifyOtu = true;
 
     // remove from counts
     int abund = 1;
     if (update) {
-        abund = count->remove(index);
-        if (hasOtuData) {
-            // seqIds assigned to otus
-            if (list.size() != 0) {
-                string otuName = seqOtus[index];
+        if ((binTables.size() != 0) && removeFromBin) {
 
-                if (otuTable->hasId(otuName)) {
-
-                    // sequence abundance parsed by sample
-                    vector<int> abunds = count->getAbundances(index);
-                    // otuAbundances parsed by sample
-                    vector<int> otuAbunds = otuTable->getAbundances(otuName);
-                    // subtract this seqs abunds from otuAbunds
-                    subtract(otuAbunds, abunds);
-                    // wrap
-                    vector<string> otuNames(1, otuName);
-                    vector<vector<int>> otuAbundances(1);
-                    otuAbundances[0] = otuAbunds;
-                    // set otus new abundances
-                    otuTable->setAbundances(otuNames, otuAbundances, reasons);
+            // remove from list otus
+            for (auto it = binTables.begin(); it != binTables.end(); it++) {
+                if (it->second->hasListAssignments) {
+                    it->second->remove(index, count, reasons, update);
                 }
             }
         }
+
+        abund = count->remove(index);
     }else{
         abund = count->getAbundance(index);
     }
@@ -1599,14 +1308,13 @@ void Dataset::removeSequences(vector<string> namesToRemove,
     }
 
     count->updateTotals();
-    numSamples = count->getNumSamples();
-    numTreatments = count->getNumTreatments();
 
-    if (hasOtuData && (list.size() != 0)) {
-        otuTable->updateTotals();
-        numSamples = otuTable->getNumSamples();
-        numTreatments = otuTable->getNumTreatments();
-        numOtus = otuTable->numOtus;
+    if (binTables.size() != 0) {
+        for (auto it = binTables.begin(); it != binTables.end(); it++) {
+            if (it->second->hasListAssignments) {
+                it->second->updateTotals();
+            }
+        }
     }
 }
 /******************************************************************************/
@@ -1643,8 +1351,6 @@ void Dataset::setAbundance(vector<string> n, vector<int> abunds,
     }
 
     count->updateTotals();
-    numSamples = count->getNumSamples();
-    numTreatments = count->getNumTreatments();
 }
 /******************************************************************************/
 // for datasets with samples
@@ -1680,63 +1386,37 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
     }
 
     count->updateTotals();
-    numSamples = count->getNumSamples();
-    numTreatments = count->getNumTreatments();
 }
 /******************************************************************************/
 // for datasets without samples
-void Dataset::setOtuAbundance(vector<string> otuIDS, vector<int> abunds,
-                     string reason) {
-    if (hasOtuData) {
-        vector<string> otusToRemove = otuTable->setAbundance(otuIDS, abunds,
+void Dataset::setBinAbundance(vector<string> binIDS, vector<int> abunds,
+                     string reason, string type) {
+    if (hasBinTable(type)) {
+        vector<int> seqsToRemove = binTables[type]->setAbundance(binIDS, abunds,
                                                              reason);
-        if (list.size() != 0) {
-            for (int i = 0; i < otusToRemove.size(); i++) {
-
-                auto it = list.find(otusToRemove[i]);
-
-                if (it != list.end()) {
-                    // remove any sequences from removed otu
-                    for (int j = 0; j < it->second.size(); j++) {
-                        removeSequence(it->second[j], reason, true);
-                    }
-                }
-            }
+        // remove any sequences from removed bin
+        for (int seq : seqsToRemove) {
+            removeSequence(seq, reason, true, false);
         }
 
-        otuTable->updateTotals();
-        numSamples = otuTable->getNumSamples();
-        numTreatments = otuTable->getNumTreatments();
-        numOtus = otuTable->numOtus;
+        binTables[type]->updateTotals();
     }
 }
 /******************************************************************************/
 // for datasets with samples
-void Dataset::setOtuAbundances(vector<string> otuIDS,
+void Dataset::setBinAbundances(vector<string> binIDS,
                                vector<vector<int> > abunds,
-                               string reason) {
-    if (hasOtuData) {
-        vector<string> otusToRemove = otuTable->setAbundances(otuIDS, abunds,
+                               string reason, string type) {
+    if (hasBinTable(type)) {
+        vector<int> seqsToRemove = binTables[type]->setAbundances(binIDS, abunds,
                                                               reason);
 
-        if (list.size() != 0) {
-            for (int i = 0; i < otusToRemove.size(); i++) {
-
-                auto it = list.find(otusToRemove[i]);
-
-                if (it != list.end()) {
-                    // remove any sequences from removed otu
-                    for (int j = 0; j < it->second.size(); j++) {
-                        removeSequence(it->second[j], reason, true);
-                    }
-                }
-            }
+        // remove any sequences from removed bin
+        for (int seq : seqsToRemove) {
+            removeSequence(seq, reason, true, false);
         }
 
-        otuTable->updateTotals();
-        numSamples = otuTable->getNumSamples();
-        numTreatments = otuTable->getNumTreatments();
-        numOtus = otuTable->numOtus;
+        binTables[type]->updateTotals();
     }
 }
 /******************************************************************************/

@@ -23,6 +23,6 @@ Read a mothur formatted
 otu_data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
 
 dataset <- sequence_data$new()
-dataset$assign_otus(otu_data$otu_id, otu_data$abundance)
+dataset$assign_bins(otu_data$bin_id, otu_data$abundance)
 
 }

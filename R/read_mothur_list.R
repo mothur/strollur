@@ -9,7 +9,7 @@
 #' otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 #'
 #' dataset <- sequence_data$new()
-#' dataset$assign_otus(otu_data$otu_id, seq_ids = otu_data$seq_id)
+#' dataset$assign_bins(otu_data$bin_id, seq_ids = otu_data$seq_id)
 #'
 #' @return A data.table containing the sequence otu assignments
 #' @export
@@ -39,7 +39,7 @@ read_mothur_list <- function(list) {
     }
 
     data.table(
-        otu_id = otu_assignments,
+        bin_id = otu_assignments,
         seq_id = sequence_names
     )
 }

@@ -458,13 +458,6 @@ for an otu is 0.
 
 \item{\code{is_aligned}}{boolean indicating the dataset's alignment status}
 
-\item{\code{num_samples}}{integer containing the number of samples in the dataset}
-
-\item{\code{num_treatments}}{integer containing the number of treatments in the
-dataset}
-
-\item{\code{num_otus}}{integer containing the number of otus in the dataset}
-
 \item{\code{num_unique}}{integer containing the number of distinct sequences in the
 dataset}
 

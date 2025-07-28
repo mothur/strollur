@@ -48,13 +48,13 @@ const vector<double> nullDoubleVector;  // used to pass blank double
  * sampleIndex <- c(0,2,4) - zero indexing of c++
  * abunds <- c(20, 35, 5)
  *
- * This structure is also used to store OTU abundance data for samples
+ * This structure is also used to store bin abundance data for samples
  *
- * otu1 <- c(10, 0, 0, 250, 1) meaning otu1 has abundance of 10 in sample1
- *                                     otu1 has abundance of 0 in sample2
- *                                     otu1 has abundance of 0 in sample3
- *                                     otu1 has abundance of 250 in sample4
- *                                     otu1 has abundance of 1 in sample5
+ * bin1 <- c(10, 0, 0, 250, 1) meaning bin1 has abundance of 10 in sample1
+ *                                     bin1 has abundance of 0 in sample2
+ *                                     bin1 has abundance of 0 in sample3
+ *                                     bin1 has abundance of 250 in sample4
+ *                                     bin1 has abundance of 1 in sample5
  *
  */
 struct sampleAbunds {
@@ -89,9 +89,9 @@ struct sampleAbunds {
  * The 'AbundTable' class will store abundance data for samples.
  *
  * It is used by 'Dataset' to store sequence abundances by sample / treatment.
- * It is used by 'OTUTable' to store OTU abundances by sample.
+ * It is used by 'BinTable' to store bin abundances by sample.
  *
- * The "names" of the sequences or OTUs are stored as indexes to save space.
+ * The "names" of the sequences or bins are stored as indexes to save space.
  */
 
 class AbundTable {
@@ -124,10 +124,10 @@ public:
                          vector<string> samples = nullVector,
                          vector<string> treatments = nullVector);
 
-    // set abundance parsed by sample - for datasets WITH samples
+    // set abundance parsed by sample
     void setAbundance(int name, vector<int> abunds);
-    // set abundance - for datasets WITHOUT samples
-    void setAbundance(int name, int abund);
+    // set abundance, assumes no samples if sample is blank
+    void setAbundance(int name, int abund, string sample = "");
 
     // removes id, returns abund. Be sure to run updateTotals after.
     // totals are not updated in function for time savings when removing multiple
@@ -165,7 +165,7 @@ public:
     // if name provided, does the sequence have this sample
     bool hasSample(string sample, int name = -1);
     // does the table have sample information
-    bool hasSamples();
+    bool hasSamples() { return hasSampleData; }
 
 private:
 
@@ -202,47 +202,55 @@ private:
 
 /******************************************************************************/
 /*
- * The 'OtuTable' class will store OTU data.
+ * The 'BinTable' class will store asv / otu / phylotype data.
  */
 
-class OtuTable {
+class BinTable {
 
 public:
 
-    OtuTable(string label);
-    ~OtuTable();
+    BinTable(string label);
+    ~BinTable();
 
-    int numOtus;
+    int numBins;
     string label;
+    bool hasListAssignments, hasBinTaxonomy;
 
-    // OTUIDs, abundances, samples(optional)
-    void assignAbundance(vector<string> otuIDs, vector<int> abundance,
-             vector<string> samples = nullVector);
+    // ids, abundances, samples(optional)
+    void assignAbundance(vector<string> ids, vector<int> abundance,
+             vector<string> samples = nullVector,
+             vector<int> seqIds = nullIntVector, AbundTable* count = nullptr);
 
-    void assignTaxonomy(vector<string> otuIDs, vector<string> taxonomies);
+    void assignTaxonomy(vector<string> ids, vector<string> taxonomies);
 
     void assignTreatments(vector<string> samples,
                           vector<string> treatments);
 
     void clear();
 
-    // names of OTUs
-    vector<string> getOtuIds();
-    // classifications of OTUs
-    vector<string> getTaxonomies();
-    // 2 column dataframe - otu_id, abundance
+    // string containing seqs in bin, comma separated
+    string get(string binName, vector<string>& seqNames);
+    // total abundance for a given binId, optional sample
+    int getAbundance(string binId, string sample = "");
+    // abundances for given binId broken down by sample
+    vector<int> getAbundances(string binId);
+    string getBinAssignment(int seqIndex);
+    vector<string> getListVector(vector<string>& seqNames);
+    // 2 column dataframe - bin_id, seq_id
+    Rcpp::DataFrame getList(vector<string>& seqNames);
+    // names of bins
+    vector<string> getIds();
+    // 2 column dataframe - bin_id, abundance
     Rcpp::DataFrame getRAbund();
-    // vector of total abundances for each outID
+    // vector of total abundances for each binId
     vector<int> getRAbundVector();
-    // 3 column dataframe - otu_id, abundance, sample
+    // 3 column dataframe - bin_id, abundance, sample
     Rcpp::DataFrame getShared();
-    // abundances for each OTU broken down by sample
+    // abundances for each bin broken down by sample
     vector<vector<int> > getSharedVector();
-
-    // total abundance for a given outID, optional sample
-    int getAbundance(string otuID, string sample = "");
-    // abundances for given otuID broken down by sample
-    vector<int> getAbundances(string otuID);
+    // classifications of bins
+    vector<string> getTaxonomies(vector<string>& tax,
+                                 AbundTable* count = nullptr);
 
     // sample functions
     int getNumSamples();
@@ -250,7 +258,7 @@ public:
     vector<string> getSamples();
     vector<int> getSampleTotals();
     Rcpp::DataFrame getScrapReport();
-    // trashCode, otuCount, abundanceCount
+    // trashCode, binCount, abundanceCount
     Rcpp::DataFrame getScrapSummary();
     vector<string> getTreatments();
     // vector containing total abundance for each treatment
@@ -258,17 +266,20 @@ public:
     // total number of sequences
     int getTotal(string sample = "");
     bool hasSample(string sample);
-    bool hasId(string otuId);
+    bool hasId(string binId);
 
-    void merge(vector<string> otuIDS, string reason = "merged");
-    // remove given outID
-    void remove(string otuID, string reason, bool update = true);
+    void merge(vector<string> binIds, string reason = "merged");
+    // returns false if seqs are in different bins
+    bool okToMerge(vector<int> seqIds);
+    void remove(int seqId, AbundTable* count, string reason, bool update = true);
+    // remove given binId, return seqs removed
+    vector<int> remove(string binId, string reason, bool update = true);
 
-    // for datasets without samples
-    vector<string> setAbundance(vector<string> otuIDS, vector<int> abunds,
+    // for datasets without samples, return seqs removed by binRemoval
+    vector<int> setAbundance(vector<string> binIds, vector<int> abunds,
                       string reason = "merged");
-    // for datasets with samples
-    vector<string> setAbundances(vector<string> otuIDS,
+    // for datasets with samples, return seqs removed by binRemoval
+    vector<int> setAbundances(vector<string> binIds,
                                  vector<vector<int>> abunds,
                        string reason = "merged");
 
@@ -278,25 +289,37 @@ public:
 
 private:
 
-    // maps otu name to index
-    map<string, int> otuIndex;
-    // filter for "good" otus
-    vector<bool> tableOtus;
-    vector<string> otuNames, trashCodes, taxonomies;
+    // maps bin name to index
+    map<string, int> binIndex;
+    // filter for "good" bins
+    vector<bool> tableBins;
+    vector<string> binNames, trashCodes, taxonomies;
+    bool runClassify;
 
-    // map reason for deletion to vector containing the number of otus removed
-    // for that reason, and the total number of sequences removed by those otus
+    // binList[binIndex] -> vector of sequence indexes
+    // binList[1] (aka "bin1") -> 1,3,5
+    // "bin1" -> "seq1,seq3,seq5"
+    vector<set<int> > binList;
+    // seqIndex -> binIndex
+    // 2 -> 1
+    // "seq2" -> "bin1"
+    map<int, int> seqBins;
+
+    // map reason for deletion to vector containing the number of bins removed
+    // for that reason, and the total number of sequences removed by those bins
     // example: "cons_taxonomy" ->  c(10,  230) means cons_taxonomy merged
-    // 10 OTUs that represented 230 sequences.
+    // 10 bins that represented 230 sequences.
     map<string, vector<int> > badAccnos;
     int uniqueBad;
 
     // count table data
-    // otu abundances, parsed by sample
-    AbundTable* otuCount;
+    // bin abundances, parsed by sample
+    AbundTable* binCount;
 
     vector<int> getGoodIndexes();
     vector<int> getIndexes(vector<string>&);
+    void classify(vector<string>& taxs, AbundTable* count);
+    string classifyBin(int binIndex, vector<string>& tax, AbundTable* count);
 
 };
 /******************************************************************************/
@@ -313,15 +336,13 @@ public:
     ~Dataset();
 
     // public fields exposed through RCPP_MODULE
-    string datasetName, label;
+    string datasetName;
 
     bool isAligned;
     // -1 if unaligned
     int alignmentLength;
-    bool hasContigsData, hasAlignData, hasOtuData, hasSequenceData;
-    bool hasSequenceTaxonomy, hasOtuTaxonomy;
-
-    int numSamples, numTreatments, numOtus;
+    bool hasContigsData, hasAlignData, hasSequenceData;
+    bool hasSequenceTaxonomy;
     long long numUnique;
     int processors;
 
@@ -329,6 +350,7 @@ public:
 
     void clear();
     Rcpp::List exportDataset();
+    SEXP getPointer();
 
     // add seqs
     void addSequences(vector<string> n, vector<string> s = nullVector,
@@ -349,58 +371,62 @@ public:
                                vector<int> abunds,
                                vector<string> samples = nullVector,
                                vector<string> treatments = nullVector);
-    // otuIds, abundances, samples(optional), seqIDs(optional), label (optional)
-    void assignOtus(vector<string> otuIds,
+    // binIds, abundances, samples(optional), seqIDs(optional), label (optional)
+    void assignBins(vector<string> binIds,
                                  vector<int> abunds = nullIntVector,
                                  vector<string> samples = nullVector,
                                  vector<string> seqIDs = nullVector,
                                  string type = "otu");
 
     void assignSequenceTaxonomy(vector<string> names, vector<string> taxonomies);
-    void assignOtuTaxonomy(vector<string> otuIds, vector<string> taxonomies);
+    void assignBinTaxonomy(vector<string> binIds, vector<string> taxonomies,
+                           string type = "otu");
 
     void assignTreatments(vector<string> samples,
                           vector<string> treatments);
 
     // **** functions for summarizing dataset **** //
+    // align summary data: search_score, sim_score, longest_insert
+    Rcpp::DataFrame getAlignReport();
+    // n columns: id, taxonomy split by level
+    Rcpp::DataFrame getBinTaxonomyReport(string type = "otu");
+    // contigs report data: lengths, olengths, ostarts, oends, mismatches,
+    //                      numns, ee
+    Rcpp::DataFrame getContigsReport();
+    Rcpp::DataFrame getScrapReport(string mode = "sequence");
+    // trashCode, uniqueCount, totalCount
+    Rcpp::List getScrapSummary();
     // sequence report: starts, ends, lengths, ambigs, polymers, numns
     Rcpp::DataFrame getSequenceReport();
     // sequence summary summarizes sequence, contigs and align reports
     Rcpp::List getSequenceSummary();
-    // trashCode, uniqueCount, totalCount
-    Rcpp::List getScrapSummary();
-    Rcpp::DataFrame getScrapReport(string mode = "sequence");
-    // contigs report data: lengths, olengths, ostarts, oends, mismatches,
-    //                      numns, ee
-    Rcpp::DataFrame getContigsReport();
-    // align summary data: search_score, sim_score, longest_insert
-    Rcpp::DataFrame getAlignReport();
+
     // 3 columns: id, sample, abundance
     Rcpp::DataFrame getSequenceAbundanceTable();
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getSequenceTaxonomyReport();
-    // n columns: id, taxonomy split by level
-    Rcpp::DataFrame getOtuTaxonomyReport();
+
 
     int getAbundance(string name);
     // abundances for seq broken down by sample
     vector<int> getAbundances(string name);
     // total abundance for a given outID, optional sample
-    int getOtuAbundance(string otuID);
-    // abundances for given otuID broken down by sample
-    vector<int> getOtuAbundances(string otuID);
-    // string containing sequence names for given otuID
-    string getOtu(string otuID);
+    int getBinAbundance(string binID, string type = "otu");
+    // abundances for given binID broken down by sample
+    vector<int> getBinAbundances(string binID, string type = "otu");
+    // string containing sequence names for given binID
+    string getBin(string binID, string type = "otu");
     // total abundance for each sequence
     vector<int> getSequenceAbundances();
     // vector[5][1] contains the abundance of seq5 in sample1
     vector<vector<int>> getSeqsAbundsBySample();
 
-    // sample functions
     vector<string> getSamples();
     vector<string> getTreatments();
     vector<int> getSampleTotals();
     vector<int> getTreatmentTotals();
+    int getNumSamples();
+    int getNumTreatments();
     long long getTotal(string sample = "");
     long long getUniqueTotal(string sample = "");
     bool hasSample(string sample);
@@ -413,11 +439,13 @@ public:
     vector<vector<string> > getSequencesBySample(vector<string> samples);
 
     // modifiers
-    void removeOtus(vector<string> otuIDs, vector<string> trashTags);
+    void removeBins(vector<string> binIDs, vector<string> trashTags,
+                    string type = "otu");
     void removeSequences(vector<string> names, vector<string> trashTags);
     void removeLineages(vector<string> taxonomies,
                         string trashTag = "contaminant");
-    void mergeOtus(vector<string> otuIDS, string reason = "merged");
+    void mergeBins(vector<string> binIDS, string reason = "merged",
+                   string type = "otu");
     void mergeSequences(vector<string>, string reason = "merged");
 
     // set sequence string and optionally comments
@@ -433,27 +461,27 @@ public:
                        string reason = "merged");
 
     // for datasets without samples
-    void setOtuAbundance(vector<string> otuIDS, vector<int> abunds,
-                         string reason = "merged");
+    void setBinAbundance(vector<string> binIDS, vector<int> abunds,
+                         string reason = "merged", string type = "otu");
     // for datasets with samples
-    void setOtuAbundances(vector<string> otuIDS, vector<vector<int>> abunds,
-                          string reason = "merged");
+    void setBinAbundances(vector<string> binIDS, vector<vector<int>> abunds,
+                          string reason = "merged", string type = "otu");
 
-    // OTU functions
-    // vector string containing sequence names for each otu
-    vector<string> getListVector();
-    // 2 column dataframe - otu_id, seq_id
-    Rcpp::DataFrame getList();
-    // names of OTUs
-    vector<string> getOtuIds();
-    // 2 column dataframe - otu_id, abundance
-    Rcpp::DataFrame getRAbund();
-    // vector of total abundances for each OTU
-    vector<int> getRAbundVector();
-    // abundances for each OTU broken down by sample
-    vector<vector<int> > getSharedVector();
-    // 3 column dataframe - otu_id, abundance, sample
-    Rcpp::DataFrame getShared();
+    // bin functions
+    int getNumBins(string type = "otu");
+    vector<string> getListVector(string type = "otu");
+    // 2 column dataframe - bin_id, seq_id
+    Rcpp::DataFrame getList(string type = "otu");
+    // names of bins
+    vector<string> getBinIds(string type = "otu");
+    // 2 column dataframe - bin_id, abundance
+    Rcpp::DataFrame getRAbund(string type = "otu");
+    // vector of total abundances for each bin
+    vector<int> getRAbundVector(string type = "otu");
+    // abundances for each bin broken down by sample
+    vector<vector<int> > getSharedVector(string type = "otu");
+    // 3 column dataframe - bin_id, abundance, sample
+    Rcpp::DataFrame getShared(string type = "otu");
 
 private:
     // fasta data
@@ -482,27 +510,22 @@ private:
     // sequences that represented 230 total sequences.
     map<string, vector<int> > badAccnos;
     int uniqueBad;
-    bool runClassifyOtu;
 
     // count table data
     AbundTable* count;
 
-    // otu table, shared / rabund
-    OtuTable* otuTable;
-    // otuName -> vector of sequence indexes
-    // "otu1" -> 1,3,5
-    // "otu1" -> "seq1,seq3,seq5"
-    map<string, vector<int> > list;
-    // vector of otuNames assigned to sequences
-    vector<string> seqOtus;
+    // bin table, shared / rabund
+    // maps type of table to table
+    // ie. otu, asv, phylotype
+    map<string, BinTable*> binTables;
 
     // if unaligned, returns -1
     int getAlignedLength();
     vector<int> getIncludedNamesIndexes();
     vector<int> getIndexes(vector<string>&);
-    void removeSequence(int index, string reasons, bool update = true);
-    void classifyOtus();
-    string classifyOtu(string otuName);
+    bool hasBinTable(string type);
+    void removeSequence(int index, string reasons, bool update = true,
+                        bool removeFromBin = true);
     Rcpp::DataFrame fillTaxReport(string mode);
 };
 

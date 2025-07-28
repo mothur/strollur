@@ -15,5 +15,5 @@ directory. This function make them easy to access.
 }
 \examples{
 rdataset_example()
-rdataset_example("test.fasta")
+rdataset_example("final.fasta")
 }

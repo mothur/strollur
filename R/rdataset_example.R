@@ -7,7 +7,7 @@
 #' @export
 #' @examples
 #' rdataset_example()
-#' rdataset_example("test.fasta")
+#' rdataset_example("final.fasta")
 rdataset_example <- function(file = NULL) {
   path <- ""
 
