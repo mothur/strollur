@@ -273,7 +273,7 @@
 #' \item @seealso [sequence_data$get_sequence_report()]
 #' }
 #'
-#'@field get_sequence_summary Get list of data.frames containing summaries of
+#' @field get_sequence_summary Get list of data.frames containing summaries of
 #' the sequence various sequence reports.
 #' \itemize{
 #' \item Returns a list of data.frames: 'sequence_summary', 'contigs_summary' (

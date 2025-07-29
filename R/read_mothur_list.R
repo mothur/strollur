@@ -14,32 +14,36 @@
 #' @return A data.table containing the sequence otu assignments
 #' @export
 read_mothur_list <- function(list) {
-    if (!file.exists(list)) {
-        abort_nonexistant_file(list)
-    }
+  if (!file.exists(list)) {
+    abort_nonexistant_file(list)
+  }
 
-    df <- readr::read_table(file=list, col_names=TRUE,
-                            show_col_types = FALSE)
+  df <- readr::read_table(
+    file = list, col_names = TRUE,
+    show_col_types = FALSE
+  )
 
-    # remove label and numOtus columns
-    df <- df[, -c(1, 2)]
-    otu_names <- names(df)
+  # remove label and numOtus columns
+  df <- df[, -c(1, 2)]
+  otu_names <- names(df)
 
-    df <- apply(df, 2, split_at_char)
+  df <- apply(df, 2, split_at_char)
 
-    otu_assignments <- c()
-    sequence_names <- c()
+  otu_assignments <- c()
+  sequence_names <- c()
 
-    i <- 1
-    for (otu in df) {
-        sequence_names <- c(sequence_names, otu)
-        otu_assignments <- c(otu_assignments,
-                             rep(otu_names[i], length(otu)))
-        i <- i + 1
-    }
-
-    data.table(
-        bin_id = otu_assignments,
-        seq_id = sequence_names
+  i <- 1
+  for (otu in df) {
+    sequence_names <- c(sequence_names, otu)
+    otu_assignments <- c(
+      otu_assignments,
+      rep(otu_names[i], length(otu))
     )
+    i <- i + 1
+  }
+
+  data.table(
+    bin_id = otu_assignments,
+    seq_id = sequence_names
+  )
 }

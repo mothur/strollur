@@ -1,93 +1,114 @@
 # test "sequence_data"
 
 test_that("sequence_data - intialize from read_mothur / print", {
+  dataset <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    taxonomy = rdataset_example("final.taxonomy"),
+    design = rdataset_example("mouse.time.design"),
+    list = rdataset_example("final.opti_mcc.list"),
+    dataset_name = "miseq_sop"
+  )
 
-    dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-                           count = rdataset_example("final.count_table"),
-                           taxonomy = rdataset_example("final.taxonomy"),
-                           design = rdataset_example("mouse.time.design"),
-                           list = rdataset_example("final.opti_mcc.list"),
-                           dataset_name = "miseq_sop")
+  expect_equal(dataset$get_dataset_name(), "miseq_sop")
+  expect_equal(dataset$get_num_sequences(TRUE), 2425)
+  expect_equal(dataset$get_num_sequences(), 113963)
+  expect_equal(dataset$get_num_treatments(), 2)
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_bins("otu"), 531)
 
-    expect_equal(dataset$get_dataset_name(), "miseq_sop")
-    expect_equal(dataset$get_num_sequences(TRUE), 2425)
-    expect_equal(dataset$get_num_sequences(), 113963)
-    expect_equal(dataset$get_num_treatments(), 2)
-    expect_equal(dataset$get_num_samples(), 19)
-    expect_equal(dataset$get_num_bins("otu"), 531)
+  # add phylotype list
+  phylo_list <- read_mothur_list(list = rdataset_example("final.tx.list"))
+  dataset$assign_bins(phylo_list$bin_id,
+    abundances = NULL,
+    samples = NULL, seq_id = phylo_list$seq_id,
+    type = "phylotype"
+  )
 
-    # add phylotype list
-    phylo_list = read_mothur_list(list = rdataset_example("final.tx.list"))
-    dataset$assign_bins(phylo_list$bin_id, abundances = NULL,
-                        samples = NULL, seq_id = phylo_list$seq_id,
-                        type = "phylotype")
+  expect_equal(dataset$get_num_sequences(TRUE), 2425)
+  expect_equal(dataset$get_num_sequences(), 113963)
+  expect_equal(dataset$get_num_treatments(), 2)
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_bins("phylotype"), 63)
 
-    expect_equal(dataset$get_num_sequences(TRUE), 2425)
-    expect_equal(dataset$get_num_sequences(), 113963)
-    expect_equal(dataset$get_num_treatments(), 2)
-    expect_equal(dataset$get_num_samples(), 19)
-    expect_equal(dataset$get_num_bins("phylotype"), 63)
+  asv_list <- read_mothur_list(list = rdataset_example("final.asv.list"))
+  dataset$assign_bins(asv_list$bin_id,
+    abundances = NULL,
+    samples = NULL, seq_id = asv_list$seq_id,
+    type = "asv"
+  )
 
-    asv_list = read_mothur_list(list = rdataset_example("final.asv.list"))
-    dataset$assign_bins(asv_list$bin_id, abundances = NULL,
-                        samples = NULL, seq_id = asv_list$seq_id,
-                        type = "asv")
+  expect_equal(dataset$get_num_sequences(TRUE), 2425)
+  expect_equal(dataset$get_num_sequences(), 113963)
+  expect_equal(dataset$get_num_treatments(), 2)
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_bins("asv"), 2425)
 
-    expect_equal(dataset$get_num_sequences(TRUE), 2425)
-    expect_equal(dataset$get_num_sequences(), 113963)
-    expect_equal(dataset$get_num_treatments(), 2)
-    expect_equal(dataset$get_num_samples(), 19)
-    expect_equal(dataset$get_num_bins("asv"), 2425)
+  expect_snapshot(
+    waldo::compare(dataset$print(), dataset$print())
+  )
 
-    expect_snapshot(
-        waldo::compare(dataset$print(), dataset$print())
-    )
+  # remove bin from "phylotype" list and confirm that it removes seqs from all
+  # from all list types
 
-    # remove bin from "phylotype" list and confirm that it removes seqs from all
-    # from all list types
+  expect_equal(dataset$data$get_bin_abundance("Phylo05", "phylotype"), 5337)
+  expect_equal(dataset$data$get_bin_abundance("Phylo06", "phylotype"), 715)
 
-    expect_equal(dataset$data$get_bin_abundance("Phylo05", "phylotype"), 5337)
-    expect_equal(dataset$data$get_bin_abundance("Phylo06", "phylotype"), 715)
+  phylo05 <- dataset$data$get_bin("Phylo05", "phylotype")
+  expect_equal(length(split_at_char(phylo05)), 54)
 
-    phylo05 <- dataset$data$get_bin("Phylo05", "phylotype")
-    expect_equal(length(split_at_char(phylo05)), 54)
+  phylo06 <- dataset$data$get_bin("Phylo06", "phylotype")
+  expect_equal(length(split_at_char(phylo06)), 47)
 
-    phylo06 <- dataset$data$get_bin("Phylo06", "phylotype")
-    expect_equal(length(split_at_char(phylo06)), 47)
+  dataset$data$remove_bins(
+    c("Phylo05", "Phylo06"),
+    c("test", "test"),
+    "phylotype"
+  )
 
-    dataset$data$remove_bins(c("Phylo05", "Phylo06"),
-                             c("test", "test"),
-                             "phylotype")
+  expect_equal(dataset$get_num_bins("phylotype"), 61)
+  expect_equal(dataset$get_num_bins("otu"), 512)
+  expect_equal(dataset$get_num_bins("asv"), 2324)
+  expect_equal(dataset$get_num_sequences(), 107911)
+  expect_equal(dataset$get_num_sequences(TRUE), 2324)
+  expect_equal(dataset$get_num_treatments(), 2)
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_sequences(sample = "F3D0"), 5977)
+  expect_equal(dataset$get_num_sequences(sample = "F3D1"), 4467)
+  # note that the number of seqs removed will be less that 297+266 because
+  # some seqs are assigned to both samples and some seqs will be present in
+  # other samples
+  expect_equal(dataset$get_num_sequences(TRUE, "F3D0"), 297)
+  expect_equal(dataset$get_num_sequences(TRUE, "F3D1"), 266)
 
-    expect_equal(dataset$get_num_bins("phylotype"), 61)
-    expect_equal(dataset$get_num_bins("otu"), 512)
-    expect_equal(dataset$get_num_bins("asv"), 2324) #2425 - (54 + 47)
-    expect_equal(dataset$get_num_sequences(), 107911)
-    expect_equal(dataset$get_num_sequences(TRUE), 2324)
-    expect_equal(dataset$get_num_treatments(), 2)
-    expect_equal(dataset$get_num_samples(), 19)
-    expect_equal(dataset$get_num_sequences(sample = "F3D0"), 5977)
-    expect_equal(dataset$get_num_sequences(sample = "F3D1"), 4467)
-    # note that the number of seqs removed will be less that 297+266 because
-    # some seqs are assigned to both samples and some seqs will be present in
-    # other samples
-    expect_equal(dataset$get_num_sequences(TRUE, "F3D0"), 297)
-    expect_equal(dataset$get_num_sequences(TRUE, "F3D1"), 266)
+  # remove samples
+  dataset$remove_samples(c("F3D0", "F3D1"))
+  expect_equal(dataset$get_num_treatments(), 2)
+  expect_equal(dataset$get_num_samples(), 17)
+  expect_equal(dataset$get_num_bins("phylotype"), 57)
+  expect_equal(dataset$get_num_bins("otu"), 482)
+  expect_equal(dataset$get_num_bins("asv"), 2124)
+  expect_equal(dataset$get_num_sequences(), 107700)
+  expect_equal(dataset$get_num_sequences(TRUE), 2124)
+  expect_equal(dataset$get_num_sequences(TRUE, "F3D0"), 0)
+  expect_equal(dataset$get_num_sequences(TRUE, "F3D1"), 0)
+  expect_equal(dataset$get_num_sequences(sample = "F3D0"), 0)
+  expect_equal(dataset$get_num_sequences(sample = "F3D1"), 0)
 
-    # remove samples
-    dataset$remove_samples(c("F3D0", "F3D1"))
-    expect_equal(dataset$get_num_treatments(), 2)
-    expect_equal(dataset$get_num_samples(), 17)
-    expect_equal(dataset$get_num_bins("phylotype"), 57)
-    expect_equal(dataset$get_num_bins("otu"), 482)
-    expect_equal(dataset$get_num_bins("asv"), 2124)
-    expect_equal(dataset$get_num_sequences(), 107700)
-    expect_equal(dataset$get_num_sequences(TRUE), 2124)
-    expect_equal(dataset$get_num_sequences(TRUE, "F3D0"), 0)
-    expect_equal(dataset$get_num_sequences(TRUE, "F3D1"), 0)
-    expect_equal(dataset$get_num_sequences(sample = "F3D0"), 0)
-    expect_equal(dataset$get_num_sequences(sample = "F3D1"), 0)
+  # remove things just classified to bacteria, and things classified to
+  # Bacteria;"Bacteroidetes"; with confidence less than 95
+  dataset$remove_lineages(c(
+    "Bacteria;Bacteria_unclassified;",
+    "Bacteria(100);\"Bacteroidetes\"(95);"
+  ))
 
+  expect_equal(dataset$get_num_treatments(), 2)
+  expect_equal(dataset$get_num_samples(), 17)
+  expect_equal(dataset$get_num_bins("phylotype"), 57)
+  expect_equal(dataset$get_num_bins("otu"), 475)
+  expect_equal(dataset$get_num_bins("asv"), 2086)
+  expect_equal(dataset$get_num_sequences(), 107661)
+  expect_equal(dataset$get_num_sequences(TRUE), 2086)
 })
 
 test_that("sequence_data - addSeqs, assign samples", {
@@ -130,6 +151,10 @@ test_that("sequence_data - addSeqs, assign samples", {
 
   expect_equal(data$get_list()$otu_id, c("bin1", "bin1", "bin2", "bin2"))
   expect_equal(data$get_list()$seq_id, c("seq1", "seq3", "seq2", "seq4"))
+
+  # get asv generated by dataset
+  expect_equal(data$get_list("asv")$asv_id, c("ASV1", "ASV2", "ASV3", "ASV4"))
+  expect_equal(data$get_list("asv")$seq_id, c("seq1", "seq2", "seq3", "seq4"))
 
   expect_equal(data$get_rabund()$otu_id, c("bin1", "bin2"))
   expect_equal(data$get_rabund()$abundance, c(1200, 120))
@@ -175,7 +200,8 @@ test_that("sequence_data - addSeqs, assign samples", {
 
   results <- list(
     sequence_scrap_report = data.frame(),
-    otu_scrap_report = data.frame()
+    otu_scrap_report = data.frame(),
+    asv_scrap_report = data.frame()
   )
 
   expect_equal(results, data$get_scrap_report())

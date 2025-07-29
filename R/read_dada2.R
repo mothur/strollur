@@ -13,41 +13,42 @@
 #' \dontrun{
 #' # Follow the dada2 tutorial above to generate seqtab from your fastq files.
 #'
-#' dim(seqtab)
-#' [1]  20 293
+#' # dim(seqtab)
+#' # [1]  20 293
 #'
-#' dataset <- read_dada2(seqtab, "dada2")
-#'}
+#' # dataset <- read_dada2(seqtab, "dada2")
+#' }
 #' @return A 'sequence_data' object
 #' @export
 read_dada2 <- function(sequence_table, dataset_name = "") {
+  # generate sequence names
+  num_seqs <- ncol(sequence_table)
+  seq_names <- c(1:num_seqs)
+  seq_names <- paste("seq_", seq_names, sep = "")
 
-    # generate sequence names
-    num_seqs <- ncol(sequence_table)
-    seq_names <- c(1:num_seqs)
-    seq_names <- paste("seq_", seq_names, sep="")
+  # create new sequence_data object
+  dataset <- sequence_data$new(dataset_name)
+  dataset$add_sequences(
+    seq_names,
+    colnames(sequence_table),
+    rep("dada2", num_seqs)
+  )
 
-    # create new sequence_data object
-    dataset <- sequence_data$new(dataset_name)
-    dataset$add_sequences(seq_names,
-                          colnames(sequence_table),
-                          rep("dada2", num_seqs))
+  sample_names <- rownames(sequence_table)
+  names <- c()
+  samples <- c()
+  abundances <- c()
 
-    sample_names <- rownames(sequence_table)
-    names <- c()
-    samples <- c()
-    abundances <- c()
+  # create a count table
+  for (i in 1:ncol(sequence_table)) {
+    abunds <- sequence_table[, i]
+    non_zero_samples <- which(abunds != 0)
 
-    # create a count table
-    for (i in 1:ncol(sequence_table)) {
-        abunds <- sequence_table[ ,i]
-        non_zero_samples <- which(abunds != 0)
+    names <- c(names, rep(seq_names[i], length(non_zero_samples)))
+    samples <- c(samples, sample_names[non_zero_samples])
+    abundances <- c(abundances, abunds[non_zero_samples])
+  }
 
-        names <- c(names, rep(seq_names[i], length(non_zero_samples)))
-        samples <- c(samples, sample_names[non_zero_samples])
-        abundances <- c(abundances, abunds[non_zero_samples])
-    }
-
-    dataset$assign_sequence_abundance(names, abundances, samples)
-    dataset
+  dataset$assign_sequence_abundance(names, abundances, samples)
+  dataset
 }

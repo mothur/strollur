@@ -653,7 +653,17 @@ vector<int> Dataset::getIndexes(vector<string>& ids) {
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getList(string type) {
     if (hasBinTable(type)) {
+
         return binTables[type]->getList(names);
+
+    }else if ((type == "asv") && (hasSequenceData)) {
+        vector<string> seqIds = getNames();
+        vector<string> asvIds(seqIds.size(), "");
+        for (int i = 0; i < asvIds.size(); i++) {
+            asvIds[i] = "ASV" + toString(i+1);
+        }
+        assignBins(asvIds, nullIntVector, nullVector, seqIds, "asv");
+        return binTables["asv"]->getList(names);
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;

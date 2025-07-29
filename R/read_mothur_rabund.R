@@ -15,20 +15,22 @@
 #' @return A data.table containing the sequence otu assignments
 #' @export
 read_mothur_rabund <- function(rabund) {
-    if (!file.exists(rabund)) {
-        abort_nonexistant_file(rabund)
-    }
+  if (!file.exists(rabund)) {
+    abort_nonexistant_file(rabund)
+  }
 
-    df <- readr::read_table(file=rabund, col_names=FALSE,
-                            show_col_types = FALSE)
-    num_otus <- df[[2]]
-    df <- df[, -c(1, 2)]
+  df <- readr::read_table(
+    file = rabund, col_names = FALSE,
+    show_col_types = FALSE
+  )
+  num_otus <- df[[2]]
+  df <- df[, -c(1, 2)]
 
-    otu_assignments <- paste0("otu", c(1:num_otus))
-    abundance <- transpose(df)[[1]]
+  otu_assignments <- paste0("otu", c(1:num_otus))
+  abundance <- transpose(df)[[1]]
 
-    data.table(
-        bin_id = otu_assignments,
-        abundance = abundance
-    )
+  data.table(
+    bin_id = otu_assignments,
+    abundance = abundance
+  )
 }

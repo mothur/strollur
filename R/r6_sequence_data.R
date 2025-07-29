@@ -43,8 +43,8 @@ sequence_data <- R6Class("sequence_data",
     #' Get summary of sequence data
     print = function() {
       if (self$get_dataset_name() != "") {
-          cat(self$get_dataset_name())
-          cat(":\n\n")
+        cat(self$get_dataset_name())
+        cat(":\n\n")
       }
       self$get_sequence_summary()
       cat("\n\n")
@@ -63,23 +63,27 @@ sequence_data <- R6Class("sequence_data",
       )
 
       if (self$get_num_bins("otu") != 0) {
-          cat(
-              paste("Total number of otus:", self$get_num_bins("otu")),
-              "\n"
-          )
+        cat(
+          paste("Total number of otus:", self$get_num_bins("otu")),
+          "\n"
+        )
       }
       if (self$get_num_bins("asv") != 0) {
-          cat(
-              paste("Total number of asvs:", self$get_num_bins("asv"),
-                    "\n")
+        cat(
+          paste(
+            "Total number of asvs:", self$get_num_bins("asv"),
+            "\n"
           )
+        )
       }
       if (self$get_num_bins("phylotype") != 0) {
-          cat(
-              paste("Total number of phylotype bins:",
-                    self$get_num_bins("phylotype"),
-                    "\n")
+        cat(
+          paste(
+            "Total number of phylotype bins:",
+            self$get_num_bins("phylotype"),
+            "\n"
           )
+        )
       }
       cat("\n")
     },
@@ -624,12 +628,12 @@ sequence_data <- R6Class("sequence_data",
         list_names <- c(list_names, "otu_scrap_report")
       }
       if (self$data$get_num_bins("asv") != 0) {
-          results[[3]] <- self$data$get_scrap_report("asv")
-          list_names <- c(list_names, "asv_scrap_report")
+        results[[3]] <- self$data$get_scrap_report("asv")
+        list_names <- c(list_names, "asv_scrap_report")
       }
       if (self$data$get_num_bins("phylotype") != 0) {
-          results[[4]] <- self$data$get_scrap_report("phylotype")
-          list_names <- c(list_names, "phylotype_scrap_report")
+        results[[4]] <- self$data$get_scrap_report("phylotype")
+        list_names <- c(list_names, "phylotype_scrap_report")
       }
       names(results) <- list_names
       results
@@ -1002,6 +1006,28 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Remove contaminants from the dataset
+    #' @param contaminants vector of strings containing the taxonomies you would
+    #' like to remove
+    #' @examples
+    #' dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+    #'                        count = rdataset_example("final.count_table"),
+    #'                        taxonomy = rdataset_example("final.taxonomy"),
+    #'                        design = rdataset_example("mouse.time.design"),
+    #'                        list = rdataset_example("final.opti_mcc.list"),
+    #'                        dataset_name = "miseq_sop")
+    #'
+    #' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
+    #'  "Eukaryota")
+    #'
+    #' dataset$remove_lineages(contaminants)
+    #'
+    remove_lineages = function(contaminants) {
+      self$data$remove_lineages(contaminants, "contaminant")
+    },
+
+
+    #' @description
     #' Remove samples from the dataset
     #' @param samples vector of strings containing the names of the samples to
     #' @examples
@@ -1021,9 +1047,8 @@ sequence_data <- R6Class("sequence_data",
     #' dataset$get_num_samples()
     #'
     remove_samples = function(samples) {
-        self$data$remove_samples(samples)
+      self$data$remove_samples(samples)
     }
-
   ),
   private = list(
     # Clear sequences from dataset

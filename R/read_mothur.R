@@ -44,104 +44,121 @@
 #' @examples
 #' # For dataset's including sequence data:
 #'
-#' dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-#'                        count = rdataset_example("final.count_table"),
-#'                        taxonomy = rdataset_example("final.taxonomy"),
-#'                        design = rdataset_example("mouse.time.design"),
-#'                        list = rdataset_example("final.opti_mcc.list"),
-#'                        dataset_name = "miseq_sop")
+#' dataset <- read_mothur(
+#'   fasta = rdataset_example("final.fasta"),
+#'   count = rdataset_example("final.count_table"),
+#'   taxonomy = rdataset_example("final.taxonomy"),
+#'   design = rdataset_example("mouse.time.design"),
+#'   list = rdataset_example("final.opti_mcc.list"),
+#'   dataset_name = "miseq_sop"
+#' )
 #'
 #' # For dataset's with only otu data:
 #'
-#' dataset <- read_mothur(shared = rdataset_example("final.opti_mcc.shared"),
-#'                        cons_taxonomy = rdataset_example(
-#'                        "final.cons.taxonomy"),
-#'                        design = rdataset_example("mouse.time.design"),
-#'                        dataset_name = "miseq_sop")
+#' dataset <- read_mothur(
+#'   shared = rdataset_example("final.opti_mcc.shared"),
+#'   cons_taxonomy = rdataset_example(
+#'     "final.cons.taxonomy"
+#'   ),
+#'   design = rdataset_example("mouse.time.design"),
+#'   dataset_name = "miseq_sop"
+#' )
 #'
 #' @return A 'sequence_data' object
 #' @export
 read_mothur <- function(fasta = NULL, count = NULL,
-                       taxonomy = NULL, list = NULL, design = NULL,
-                       shared = NULL, rabund = NULL, cons_taxonomy = NULL,
-                       dataset_name = "", list_type = "otu",
-                       shared_type = "otu", rabund_type = "otu") {
+                        taxonomy = NULL, list = NULL, design = NULL,
+                        shared = NULL, rabund = NULL, cons_taxonomy = NULL,
+                        dataset_name = "", list_type = "otu",
+                        shared_type = "otu", rabund_type = "otu") {
+  # create new blank dataset
+  dataset <- sequence_data$new(name = dataset_name)
 
-    # create new blank dataset
-    dataset <- sequence_data$new(name = dataset_name)
+  # add sequence nucleotide strings
+  if (!is.null(fasta)) {
+    fasta_data <- read_fasta(fasta)
+    dataset$add_sequences(fasta_data$names, fasta_data$sequences)
+  }
 
-    # add sequence nucleotide strings
-    if (!is.null(fasta)) {
-        fasta_data <- read_fasta(fasta)
-        dataset$add_sequences(fasta_data$names, fasta_data$sequences)
+  # add sequence abundance data
+  if (!is.null(count)) {
+    count_table <- read_mothur_count(count)
+
+    # you did not add fasta seqs
+    if (is.null(fasta)) {
+      dataset$add_sequences(unique(count_table$id))
     }
 
-    # add sequence abundance data
-    if (!is.null(count)) {
-        count_table <- read_mothur_count(count)
+    # if the count file include samples, add them
+    if ("sample" %in% names(count_table)) {
+      dataset$assign_sequence_abundance(
+        count_table$id,
+        count_table$abundance,
+        count_table$sample
+      )
+    } else {
+      dataset$assign_sequence_abundance(
+        count_table$id,
+        count_table$abundance
+      )
+    }
+  }
 
-        # you did not add fasta seqs
-        if (is.null(fasta)) {
-            dataset$add_sequences(unique(count_table$id))
-        }
+  # add taxonomy data
+  if (!is.null(taxonomy)) {
+    df <- readr::read_table(
+      file = taxonomy, col_names = FALSE,
+      show_col_types = FALSE
+    )
+    dataset$assign_sequence_taxonomy(df[[1]], df[[2]])
+  }
 
-        # if the count file include samples, add them
-        if ("sample" %in% names(count_table) ) {
-            dataset$assign_sequence_abundance(count_table$id,
-                                          count_table$abundance,
-                                          count_table$sample)
-        }else {
-            dataset$assign_sequence_abundance(count_table$id,
-                                              count_table$abundance)
-        }
+  # add sample / treatment assignments
+  if (!is.null(design)) {
+    df <- readr::read_table(
+      file = design, col_names = TRUE,
+      show_col_types = FALSE
+    )
+    dataset$assign_treatments(df[[1]], df[[2]])
+  }
+
+  # add sequence otu assignments
+  if (!is.null(list) || !is.null(shared) || !is.null(rabund)) {
+    # only one file should be used to assign the otus unless the types are
+    # different. ie. list file for distance based otus, and file for
+    # phylotype otus, and rabund for asv's.
+    if (!is.null(list)) {
+      df <- read_mothur_list(list)
+      dataset$assign_bins(df$bin_id,
+        seq_ids = df$seq_id,
+        type = list_type
+      )
     }
 
-    # add taxonomy data
-    if (!is.null(taxonomy)) {
-        df <- readr::read_table(file=taxonomy, col_names=FALSE,
-                                show_col_types = FALSE)
-        dataset$assign_sequence_taxonomy(df[[1]], df[[2]])
+    if (!is.null(rabund)) {
+      df <- read_mothur_rabund(rabund)
+      dataset$assign_bins(df$bin_id, df$abundance, type = rabund_type)
     }
 
-    # add sample / treatment assignments
-    if (!is.null(design)) {
-        df <- readr::read_table(file=design, col_names=TRUE,
-                                show_col_types = FALSE)
-        dataset$assign_treatments(df[[1]], df[[2]])
+    if (!is.null(shared)) {
+      df <- read_mothur_shared(shared)
+      dataset$assign_bins(df$bin_id, df$abundance,
+        df$sample,
+        type = shared_type
+      )
     }
+  }
 
-    # add sequence otu assignments
-    if (!is.null(list) || !is.null(shared) || !is.null(rabund)) {
+  if (!is.null(cons_taxonomy)) {
+    df <- readr::read_table(
+      file = cons_taxonomy, col_names = TRUE,
+      show_col_types = FALSE
+    )
 
-        # only one file should be used to assign the otus unless the types are
-        # different. ie. list file for distance based otus, and file for
-        # phylotype otus, and rabund for asv's.
-        if (!is.null(list)) {
-            df <- read_mothur_list(list)
-            dataset$assign_bins(df$bin_id, seq_ids = df$seq_id,
-                                type = list_type)
-        }
+    # remove size
+    df <- df[, -c(2)]
+    dataset$assign_bin_taxonomy(df[[1]], df[[2]])
+  }
 
-        if (!is.null(rabund)) {
-            df <- read_mothur_rabund(rabund)
-            dataset$assign_bins(df$bin_id, df$abundance, type = rabund_type)
-        }
-
-        if (!is.null(shared)) {
-            df <- read_mothur_shared(shared)
-            dataset$assign_bins(df$bin_id, df$abundance,
-                                df$sample, type = shared_type)
-        }
-    }
-
-    if (!is.null(cons_taxonomy)) {
-        df <- readr::read_table(file=cons_taxonomy, col_names=TRUE,
-                                show_col_types = FALSE)
-
-        # remove size
-        df <- df[, -c(2)]
-        dataset$assign_bin_taxonomy(df[[1]], df[[2]])
-    }
-
-    dataset
+  dataset
 }
