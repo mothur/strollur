@@ -88,6 +88,18 @@ test_that("sequence_data - intialize from read_mothur / print", {
     expect_equal(dataset$get_num_sequences(sample = "F3D0"), 0)
     expect_equal(dataset$get_num_sequences(sample = "F3D1"), 0)
 
+    # remove things just classified to bacteria, and things classified to
+    # Bacteria;"Bacteroidetes"; with confidence less than 95
+    dataset$remove_lineages(c("Bacteria;Bacteria_unclassified;",
+                              "Bacteria(100);\"Bacteroidetes\"(95);"))
+
+    expect_equal(dataset$get_num_treatments(), 2)
+    expect_equal(dataset$get_num_samples(), 17)
+    expect_equal(dataset$get_num_bins("phylotype"), 57)
+    expect_equal(dataset$get_num_bins("otu"), 475)
+    expect_equal(dataset$get_num_bins("asv"), 2086)
+    expect_equal(dataset$get_num_sequences(), 107661)
+    expect_equal(dataset$get_num_sequences(TRUE), 2086)
 })
 
 test_that("sequence_data - addSeqs, assign samples", {
