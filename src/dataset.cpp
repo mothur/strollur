@@ -1113,7 +1113,7 @@ void Dataset::mergeSequences(vector<string> ids, string reason){
 
         for (int i = 1; i < indexes.size(); i++) {
             // no need to update the sample and treatment counts
-            removeSequence(indexes[i], reason, false);
+            removeSequence(indexes[i], reason, false, true);
         }
     }
 }
@@ -1163,7 +1163,7 @@ void Dataset::removeLineages(vector<string> contaminants, string trashTag) {
                 if (util.searchTax(userTax, userConfidences,
                                    conHasConfidences,
                                    conTax, conConfidenceThreshold)) {
-                    removeSequence(i, trashTag);
+                    removeSequence(i, trashTag, true, true);
                 }
             }
         }
@@ -1228,10 +1228,19 @@ void Dataset::removeBins(vector<string> namesToRemove,
             for (int seq : seqsToRemove) {
                 removeSequence(seq, trashTags[i], true, false);
             }
+
+            // remove from other lists
+            for (auto it = binTables.begin(); it != binTables.end(); it++) {
+                if (it->second->hasListAssignments && (it->first != type)) {
+                    for (int seq : seqsToRemove) {
+                        it->second->remove(seq, count, trashTags[i], true);
+                    }
+                }
+                it->second->updateTotals();
+            }
         }
 
         count->updateTotals();
-        binTables[type]->updateTotals();
     }
 }
 /******************************************************************************/
@@ -1299,7 +1308,7 @@ void Dataset::removeSequences(vector<string> namesToRemove,
         if (it != seqIndex.end()) {
             int index = it->second;
 
-            removeSequence(index, trashTags[i]);
+            removeSequence(index, trashTags[i], true, true);
         }else{
             string message = "[WARNING]: " + namesToRemove[i] + " is not in ";
             message += "your dataset, ignoring.";
@@ -1338,7 +1347,7 @@ void Dataset::setAbundance(vector<string> n, vector<int> abunds,
             int index = it->second;
 
             if (abunds[i] == 0) {
-                removeSequence(index, reason);
+                removeSequence(index, reason, true, true);
             }else{
                 count->setAbundance(index, abunds[i]);
             }
@@ -1373,7 +1382,7 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
             int index = it->second;
 
             if (sum(abunds[i]) == 0) {
-                removeSequence(index, reason);
+                removeSequence(index, reason, true, true);
             }else{
                 count->setAbundance(index, abunds[i]);
             }
@@ -1394,12 +1403,20 @@ void Dataset::setBinAbundance(vector<string> binIDS, vector<int> abunds,
     if (hasBinTable(type)) {
         vector<int> seqsToRemove = binTables[type]->setAbundance(binIDS, abunds,
                                                              reason);
-        // remove any sequences from removed bin
+        // remove any sequences from removed bin from dataset
         for (int seq : seqsToRemove) {
             removeSequence(seq, reason, true, false);
         }
 
-        binTables[type]->updateTotals();
+        // remove from other lists
+        for (auto it = binTables.begin(); it != binTables.end(); it++) {
+            if (it->second->hasListAssignments && (it->first != type)) {
+                for (int seq : seqsToRemove) {
+                    it->second->remove(seq, count, reason, true);
+                }
+            }
+            it->second->updateTotals();
+        }
     }
 }
 /******************************************************************************/
@@ -1416,7 +1433,15 @@ void Dataset::setBinAbundances(vector<string> binIDS,
             removeSequence(seq, reason, true, false);
         }
 
-        binTables[type]->updateTotals();
+        // remove from other lists
+        for (auto it = binTables.begin(); it != binTables.end(); it++) {
+            if (it->second->hasListAssignments && (it->first != type)) {
+                for (int seq : seqsToRemove) {
+                    it->second->remove(seq, count, reason, true);
+                }
+            }
+            it->second->updateTotals();
+        }
     }
 }
 /******************************************************************************/

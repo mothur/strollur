@@ -43,6 +43,27 @@ test_that("sequence_data - intialize from read_mothur / print", {
         waldo::compare(dataset$print(), dataset$print())
     )
 
+    # remove bin from "phylotype" list and confirm that it removes seqs from all
+    # from all list types
+
+    expect_equal(dataset$data$get_bin_abundance("Phylo05", "phylotype"), 5337)
+    expect_equal(dataset$data$get_bin_abundance("Phylo06", "phylotype"), 715)
+
+    phylo05 <- dataset$data$get_bin("Phylo05", "phylotype")
+    expect_equal(length(split_at_char(phylo05)), 54)
+
+    phylo06 <- dataset$data$get_bin("Phylo06", "phylotype")
+    expect_equal(length(split_at_char(phylo06)), 47)
+
+    dataset$data$remove_bins(c("Phylo05", "Phylo06"),
+                             c("test", "test"),
+                             "phylotype")
+
+    expect_equal(dataset$get_num_bins("phylotype"), 61)
+    expect_equal(dataset$get_num_bins("otu"), 512)
+    expect_equal(dataset$get_num_bins("asv"), 2324) #2425 - (54 + 47)
+    expect_equal(dataset$get_num_sequences(), 107911)
+    expect_equal(dataset$get_num_sequences(TRUE), 2324)
 })
 
 test_that("sequence_data - addSeqs, assign samples", {
