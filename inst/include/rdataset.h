@@ -133,6 +133,7 @@ public:
     // totals are not updated in function for time savings when removing multiple
     // ids. Only calc totals once rather than after each removal.
     int remove(int name);
+    void removeSamples(vector<string> samples);
     void updateTotals();
     // adds counts of idsToMerge[1-n] into idsToMerge[0]
     void merge(vector<int> idsToMerge);
@@ -274,6 +275,7 @@ public:
     void remove(int seqId, AbundTable* count, string reason, bool update = true);
     // remove given binId, return seqs removed
     vector<int> remove(string binId, string reason, bool update = true);
+    void removeSamples(vector<string> samples);
 
     // for datasets without samples, return seqs removed by binRemoval
     vector<int> setAbundance(vector<string> binIds, vector<int> abunds,
@@ -441,9 +443,10 @@ public:
     // modifiers
     void removeBins(vector<string> binIDs, vector<string> trashTags,
                     string type = "otu");
-    void removeSequences(vector<string> names, vector<string> trashTags);
     void removeLineages(vector<string> taxonomies,
                         string trashTag = "contaminant");
+    void removeSequences(vector<string> names, vector<string> trashTags);
+    void removeSamples(vector<string> samples);
     void mergeBins(vector<string> binIDS, string reason = "merged",
                    string type = "otu");
     void mergeSequences(vector<string>, string reason = "merged");

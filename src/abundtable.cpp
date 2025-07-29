@@ -551,6 +551,28 @@ int AbundTable::remove(int name) {
     return abund;
 }
 /******************************************************************************/
+void AbundTable::removeSamples(vector<string> samples) {
+    if (hasSampleData) {
+
+        for (int i = 0; i < samples.size(); i++) {
+
+            auto it = sampleIndex.find(samples[i]);
+
+            if (it != sampleIndex.end()) {
+                tableSamples[it->second] = false;
+                numSamples--;
+            }
+        }
+
+        // if no samples left
+        if (isFalse(tableSamples)) {
+            hasSampleData = false;
+        }
+
+        updateTotals();
+    }
+}
+/******************************************************************************/
 // set abundance parsed by sample - for datasets with samples
 void AbundTable::setAbundance(int name, vector<int> abunds) {
 

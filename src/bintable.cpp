@@ -761,6 +761,20 @@ void BinTable::remove(int seqId, AbundTable* count,
     }
 }
 /******************************************************************************/
+void BinTable::removeSamples(vector<string> samples) {
+   binCount->removeSamples(samples);
+
+   // remove any bins only assigned to these samples
+   for (int i = 0; i < binNames.size(); i++) {
+       // included bin
+       if (tableBins[i]) {
+           if (sum(binCount->getAbundances(i)) == 0) {
+               remove(binNames[i], "removedSamples", true);
+           }
+       }
+   }
+}
+/******************************************************************************/
 // remove given outID, returns seqs removed
 vector<int> BinTable::remove(string binID, string reason, bool update){
 

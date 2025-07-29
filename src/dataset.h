@@ -197,6 +197,16 @@ static bool inline isTrue(vector<bool> c) {
     return true;
 }
 /**********************************************************************/
+static bool inline isFalse(vector<bool> c) {
+
+    if (c.size() == 1) { return (c[0] == false); }
+
+    if (toSet(c).size() > 1) {
+        return false;
+    }
+    return true;
+}
+/**********************************************************************/
 inline string toString(const set<string>& x, string delim) {
     string result = "";
 

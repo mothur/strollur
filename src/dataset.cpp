@@ -1244,6 +1244,28 @@ void Dataset::removeBins(vector<string> namesToRemove,
     }
 }
 /******************************************************************************/
+void Dataset::removeSamples(vector<string> samples) {
+
+    // remove samples from count
+    count->removeSamples(samples);
+
+    // remove any seqs only assigned to these samples
+    for (int i = 0; i < names.size(); i++) {
+        // included seq
+        if (tableSeqs[i]) {
+            if (sum(count->getAbundances(i)) == 0) {
+                removeSequence(i, "removedSamples", true, true);
+            }
+        }
+    }
+
+    // remove samples from binTables
+    for (auto it = binTables.begin(); it != binTables.end(); it++) {
+        it->second->removeSamples(samples);
+        it->second->updateTotals();
+    }
+}
+/******************************************************************************/
 void Dataset::removeSequence(int index, string reasons,
                              bool update, bool removeFromBin) {
     // remove from tableSeqs and add trashCode

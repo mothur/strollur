@@ -999,7 +999,31 @@ sequence_data <- R6Class("sequence_data",
     #' @return bool
     is_aligned = function() {
       self$data$is_aligned
+    },
+
+    #' @description
+    #' Remove samples from the dataset
+    #' @param samples vector of strings containing the names of the samples to
+    #' @examples
+    #' dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+    #'                        count = rdataset_example("final.count_table"),
+    #'                        taxonomy = rdataset_example("final.taxonomy"),
+    #'                        design = rdataset_example("mouse.time.design"),
+    #'                        list = rdataset_example("final.opti_mcc.list"),
+    #'                        dataset_name = "miseq_sop")
+    #'
+    #' dataset$get_num_samples()
+    #'
+    #' # To remove samples 'F3D0' and 'F3D1'
+    #'
+    #' dataset$remove_samples(c("F3D0", "F3D1"))
+    #'
+    #' dataset$get_num_samples()
+    #'
+    remove_samples = function(samples) {
+        self$data$remove_samples(samples)
     }
+
   ),
   private = list(
     # Clear sequences from dataset

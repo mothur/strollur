@@ -83,6 +83,7 @@ RCPP_MODULE(Dataset) {
 
     .method("remove_lineages", &Dataset::removeLineages, "Get sequence contaminants")
     .method("remove_bins", &Dataset::removeBins, "Remove bins")
+    .method("remove_samples", &Dataset::removeSamples, "Remove samples from dataset")
     .method("remove_sequences", &Dataset::removeSequences, "Remove sequences")
 
     .method("set_abundance", &Dataset::setAbundance, "Set sequence abundances for datasets without sample data")

@@ -16,6 +16,10 @@ context("Dataset class C++ unit tests") {
         notAllTrue[0] = false;
 
         expect_false(isTrue(notAllTrue));
+        expect_false(isFalse(notAllTrue));
+
+        notAllTrue[1] = false;
+        expect_true(isFalse(notAllTrue));
 
         int x;
         expect_error(convert("notANumber", x));

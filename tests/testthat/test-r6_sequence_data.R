@@ -64,6 +64,30 @@ test_that("sequence_data - intialize from read_mothur / print", {
     expect_equal(dataset$get_num_bins("asv"), 2324) #2425 - (54 + 47)
     expect_equal(dataset$get_num_sequences(), 107911)
     expect_equal(dataset$get_num_sequences(TRUE), 2324)
+    expect_equal(dataset$get_num_treatments(), 2)
+    expect_equal(dataset$get_num_samples(), 19)
+    expect_equal(dataset$get_num_sequences(sample = "F3D0"), 5977)
+    expect_equal(dataset$get_num_sequences(sample = "F3D1"), 4467)
+    # note that the number of seqs removed will be less that 297+266 because
+    # some seqs are assigned to both samples and some seqs will be present in
+    # other samples
+    expect_equal(dataset$get_num_sequences(TRUE, "F3D0"), 297)
+    expect_equal(dataset$get_num_sequences(TRUE, "F3D1"), 266)
+
+    # remove samples
+    dataset$remove_samples(c("F3D0", "F3D1"))
+    expect_equal(dataset$get_num_treatments(), 2)
+    expect_equal(dataset$get_num_samples(), 17)
+    expect_equal(dataset$get_num_bins("phylotype"), 57)
+    expect_equal(dataset$get_num_bins("otu"), 482)
+    expect_equal(dataset$get_num_bins("asv"), 2124)
+    expect_equal(dataset$get_num_sequences(), 107700)
+    expect_equal(dataset$get_num_sequences(TRUE), 2124)
+    expect_equal(dataset$get_num_sequences(TRUE, "F3D0"), 0)
+    expect_equal(dataset$get_num_sequences(TRUE, "F3D1"), 0)
+    expect_equal(dataset$get_num_sequences(sample = "F3D0"), 0)
+    expect_equal(dataset$get_num_sequences(sample = "F3D1"), 0)
+
 })
 
 test_that("sequence_data - addSeqs, assign samples", {
