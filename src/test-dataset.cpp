@@ -4,6 +4,23 @@
 
 context("Dataset class C++ unit tests") {
 
+    test_that("Tests dataset.h utils") {
+        vector<int> vector_with_dups(10, 1);
+
+        expect_true(toSet(vector_with_dups).size() == 1);
+
+        vector<bool> notAllTrue(2, true);
+
+        expect_true(isTrue(notAllTrue));
+
+        notAllTrue[0] = false;
+
+        expect_false(isTrue(notAllTrue));
+
+        int x;
+        expect_error(convert("notANumber", x));
+    }
+
     test_that("Tests constructor") {
         Dataset data("mydata", 1);
 

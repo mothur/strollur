@@ -1,6 +1,6 @@
 # test "sequence_data"
 
-test_that("sequence_data - intialize from read_mothur", {
+test_that("sequence_data - intialize from read_mothur / print", {
 
     dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
                            count = rdataset_example("final.count_table"),
@@ -38,6 +38,10 @@ test_that("sequence_data - intialize from read_mothur", {
     expect_equal(dataset$get_num_treatments(), 2)
     expect_equal(dataset$get_num_samples(), 19)
     expect_equal(dataset$get_num_bins("asv"), 2425)
+
+    expect_snapshot(
+        waldo::compare(dataset$print(), dataset$print())
+    )
 
 })
 
@@ -275,43 +279,6 @@ test_that("sequence_data - get_list get_rabund, get_shared", {
   )
 })
 
-test_that("sequence_data - print", {
-  names <- c("seq1", "seq2", "seq3", "seq4")
-  seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
-
-  ids <- c(
-    "seq1", "seq1", "seq1",
-    "seq2", "seq2", "seq2",
-    "seq3", "seq3",
-    "seq4", "seq4"
-  )
-  samples <- c(
-    "sample2", "sample3", "sample4",
-    "sample2", "sample3", "sample4",
-    "sample2", "sample3",
-    "sample2", "sample4"
-  )
-  abundances <- c(
-    250, 400, 500,
-    25, 40, 50,
-    25, 25,
-    1, 4
-  )
-  treatments <- c(
-    "early", "early", "late",
-    "early", "early", "late",
-    "early", "early",
-    "early", "late"
-  )
-
-  data <- sequence_data$new("mydata")
-  data$add_sequences(names, seqs)
-  data$assign_sequence_abundance(ids, abundances, samples, treatments)
-
-  expect_snapshot(
-    waldo::compare(data$print(), data$print())
-  )
-})
 
 test_that("sequence_data - get_align_report, get_contigs_report", {
   names <- c("seq1", "seq2", "seq3", "seq4")
