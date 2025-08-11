@@ -669,3 +669,51 @@ test_that("sequence_data - ", {
   expect_equal(dataset$get_sequence_taxonomy_report(), data.frame())
   expect_equal(dataset$get_shared(), data.frame())
 })
+
+# assign_sequence_taxonomy, get_sequence_taxonomy_report
+test_that("sequence_data - add_metadata, get_metadata", {
+
+
+    dataset <- sequence_data$new("my_dataset")
+
+    expect_equal(dataset$get_metadata(), data.frame())
+    expect_error(dataset$add_metadata(c("bad_type")))
+
+    # with filter = true
+    metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+                                col_names = TRUE, show_col_types = FALSE)
+
+    dataset$add_metadata(metadata)
+    metadata <- dataset$get_metadata()
+
+    expect_equal(names(metadata), c("sample-id", "barcode-sequence",
+                                    "body-site", "year", "month", "day",
+                                    "subject", "reported-antibiotic-usage",
+                                    "days-since-experiment-start"))
+    expect_equal(nrow(metadata), 34)
+
+    # random spot checks
+    expect_equal(metadata[[5, 8]], "No")
+    expect_equal(metadata[[8, 3]], "left palm")
+    expect_equal(metadata[[2, 3]], "gut")
+    expect_equal(metadata[[3, 7]], "subject-1")
+
+    # with filter = true
+    metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+                                col_names = TRUE, show_col_types = FALSE)
+
+    dataset$add_metadata(metadata, FALSE)
+    metadata <- dataset$get_metadata()
+
+    expect_equal(names(metadata), c("sample-id", "barcode-sequence",
+                                    "body-site", "year", "month", "day",
+                                    "subject", "reported-antibiotic-usage",
+                                    "days-since-experiment-start"))
+    expect_equal(nrow(metadata), 36)
+
+    # random spot checks
+    expect_equal(metadata[[5, 8]], "No")
+    expect_equal(metadata[[8, 3]], "left palm")
+    expect_equal(metadata[[2, 3]], "gut")
+    expect_true(is.na(metadata[[3, 7]]))
+})

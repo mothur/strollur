@@ -12,6 +12,7 @@
 #' @importFrom parallelly, availableCores
 #' @importFrom waldo compare
 #' @import cli
+#' @import dplyr
 #' @export
 sequence_data <- R6Class("sequence_data",
   public = list(
@@ -88,6 +89,31 @@ sequence_data <- R6Class("sequence_data",
       cat("\n")
     },
 
+    #' @description
+    #' Add metadata about your dataset
+    #' @param metadata a data.frame containing metadata about your dataset
+    #' @examples
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+    #'    col_names = TRUE, show_col_types = FALSE)
+    #'   dataset$add_metadata(metadata)
+    #'
+    add_metadata = function(metadata, filter = TRUE) {
+
+        if (!is.data.frame(metadata)) {
+            abort_incorrect_type("data.frame", class(metadata)[1])
+        }
+
+        # remove any rows beginning with '#' char
+        if (filter) {
+            metadata <- metadata %>% filter(substr(metadata[,1][[1]],
+                                                   1, 1) != '#')
+        }
+        private$metadata <- metadata
+
+        invisible(self)
+    },
     #' @description
     #' Add new sequence data
     #' @param names a vector of sequence names
@@ -374,6 +400,7 @@ sequence_data <- R6Class("sequence_data",
     #' Remove all data from dataset
     clear = function() {
       self$data$clear()
+      metadata <- data.frame()
       invisible(self)
     },
 
@@ -462,6 +489,20 @@ sequence_data <- R6Class("sequence_data",
     #' @return data.frame
     get_list = function(type = "otu") {
       self$data$get_list(type)
+    },
+
+    #' @description
+    #' Get data.frame containing metadata for the dataset
+    #' @examples
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+    #'    col_names = TRUE, show_col_types = FALSE)
+    #'   dataset$add_metadata(metadata)
+    #'   dataset$get_metadata()
+    #'
+    #' @return data.frame()
+    get_metadata = function() {
+        private$metadata
     },
 
     #' @description
@@ -1051,6 +1092,10 @@ sequence_data <- R6Class("sequence_data",
     }
   ),
   private = list(
+
+    metadata = data.frame(),
+    references = data.frame(),
+
     # Clear sequences from dataset
     finalize = function() {
       self$clear()
