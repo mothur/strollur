@@ -15,4 +15,3 @@ multiple R packages.
 \seealso{
 '?sequence_data'
 }
-\keyword{internal}

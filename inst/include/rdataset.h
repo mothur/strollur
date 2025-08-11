@@ -64,6 +64,11 @@ struct sampleAbunds {
     sampleAbunds() {}
     ~sampleAbunds() {}
 
+    sampleAbunds(const sampleAbunds& sa) {
+        sampleIndex = sa.sampleIndex;
+        abunds = sa.abunds;
+    }
+
     // no samples constructor
     sampleAbunds(int i, int a) {
         sampleIndex.push_back(i);
@@ -99,6 +104,7 @@ class AbundTable {
 public:
 
     AbundTable();
+    AbundTable(const AbundTable& abundTable);
     ~AbundTable();
 
     void clear();
@@ -211,6 +217,7 @@ class BinTable {
 public:
 
     BinTable(string label);
+    BinTable(const BinTable& binTable);
     ~BinTable();
 
     int numBins;
@@ -334,7 +341,8 @@ class Dataset {
 
 public:
 
-     Dataset(string name, int processors);
+    Dataset(string name, int processors);
+    Dataset(const Dataset& dataset);
     ~Dataset();
 
     // public fields exposed through RCPP_MODULE

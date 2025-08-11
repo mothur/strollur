@@ -27,9 +27,9 @@ To generate the dada2 sequence table you can follow
 \dontrun{
 # Follow the dada2 tutorial above to generate seqtab from your fastq files.
 
-dim(seqtab)
-[1]  20 293
+# dim(seqtab)
+# [1]  20 293
 
-dataset <- read_dada2(seqtab, "dada2")
+# dataset <- read_dada2(seqtab, "dada2")
 }
 }

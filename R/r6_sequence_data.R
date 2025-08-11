@@ -12,7 +12,6 @@
 #' @importFrom parallelly, availableCores
 #' @importFrom waldo compare
 #' @import cli
-#' @import dplyr
 #' @export
 sequence_data <- R6Class("sequence_data",
   public = list(
@@ -27,6 +26,7 @@ sequence_data <- R6Class("sequence_data",
     #' @param name String, name of dataset (optional)
     #' @param processors Integer, number of cores to use.
     #'  Default = all available
+    #' @param dataset a `sequence_data` object.
     #' @examples
     #'
     #' # to create an empty dataset, run the following:
@@ -35,8 +35,23 @@ sequence_data <- R6Class("sequence_data",
     #'
     #' @return A new `sequence_data` object.
     initialize = function(name = "",
-                          processors = parallelly::availableCores()) {
-      self$data <- new(Dataset, name, processors)
+                          processors = parallelly::availableCores(),
+                          dataset = NULL) {
+        if (is.null(dataset)) {
+            self$data <- new(Dataset, name, processors)
+        }else {
+            # copy of dataset backend
+            self$data <- new(Dataset, dataset$data)
+            self$data$processors <- processors
+            # assign new name
+            if (name != "") {
+                self$data$dataset_name <- name
+            }
+
+            # copy metadata
+            private$metadata <- dataset$get_metadata()
+        }
+
       invisible(self)
     },
 
@@ -99,17 +114,12 @@ sequence_data <- R6Class("sequence_data",
     #'    col_names = TRUE, show_col_types = FALSE)
     #'   dataset$add_metadata(metadata)
     #'
-    add_metadata = function(metadata, filter = TRUE) {
+    add_metadata = function(metadata) {
 
         if (!is.data.frame(metadata)) {
             abort_incorrect_type("data.frame", class(metadata)[1])
         }
 
-        # remove any rows beginning with '#' char
-        if (filter) {
-            metadata <- metadata %>% filter(substr(metadata[,1][[1]],
-                                                   1, 1) != '#')
-        }
         private$metadata <- metadata
 
         invisible(self)
@@ -323,6 +333,8 @@ sequence_data <- R6Class("sequence_data",
     #' will find the concensus taxonomy for each bin for you.
     #' @param bin_ids a vector of bin names
     #' @param taxonomies a vector of bin classifications
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
     #' @examples
     #'
     #' bin_ids <- c("bin1", "bin2", "bin3", "bin4")
@@ -558,6 +570,8 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get report containing the bin taxonomy table -
     #' ids, taxonomy by levels
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
     #' @examples
     #'
     #' bin_ids <- c("bin1", "bin2", "bin3", "bin4")
@@ -1094,7 +1108,6 @@ sequence_data <- R6Class("sequence_data",
   private = list(
 
     metadata = data.frame(),
-    references = data.frame(),
 
     # Clear sequences from dataset
     finalize = function() {

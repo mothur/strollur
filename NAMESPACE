@@ -8,7 +8,6 @@ exportPattern("^[[:alpha:]]+")
 
 # general
 import(cli)
-import(dplyr)
 
 # c++ code
 import(RcppThread)

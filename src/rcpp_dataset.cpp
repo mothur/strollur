@@ -1,11 +1,6 @@
 #include <Rcpp.h>
 #include "../inst/include/rdataset.h"
 
-RCPP_EXPOSED_AS(Dataset);
-
-
-/******************************************************************************/
-
 //' @name Rcpp_Dataset
 //' @title Rcpp_Dataset
 //' @description The 'Dataset' class is the backend C++ implementation of the R6
@@ -17,14 +12,19 @@ RCPP_EXPOSED_AS(Dataset);
 //' multiple R packages.
 //'
 //' @seealso '?sequence_data'
-//'
-//' @keywords internal
+//' @export
+RCPP_EXPOSED_AS(Dataset);
+
+
+/******************************************************************************/
 RCPP_MODULE(Dataset) {
     Rcpp::class_< Dataset >("Dataset")
     .constructor<string, int>("Create new dataset")
+    .constructor<const Dataset&>("Exposes a copy constructor")
 
     // ******* exposed properties ******* //
     .field("dataset_name", &Dataset::datasetName, "Get dataset name")
+    .field("processors", &Dataset::processors, "Get number of threads used")
     .field("is_aligned", &Dataset::isAligned, "Get dataset alignment status")
     .field("num_unique", &Dataset::numUnique, "Get number of unique sequences")
     .field("has_contigs_data", &Dataset::hasContigsData, "Get contigs data status")

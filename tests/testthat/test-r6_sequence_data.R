@@ -111,6 +111,45 @@ test_that("sequence_data - intialize from read_mothur / print", {
   expect_equal(dataset$get_num_sequences(TRUE), 2086)
 })
 
+test_that("sequence_data - intialize from sequence_data object", {
+    temp <- read_mothur(
+        fasta = rdataset_example("final.fasta"),
+        count = rdataset_example("final.count_table"),
+        taxonomy = rdataset_example("final.taxonomy"),
+        design = rdataset_example("mouse.time.design"),
+        list = rdataset_example("final.opti_mcc.list"),
+        dataset_name = "miseq_sop"
+    )
+
+    # add phylotype list
+    phylo_list <- read_mothur_list(list = rdataset_example("final.tx.list"))
+    temp$assign_bins(phylo_list$bin_id,
+                        abundances = NULL,
+                        samples = NULL, seq_id = phylo_list$seq_id,
+                        type = "phylotype"
+    )
+
+    asv_list <- read_mothur_list(list = rdataset_example("final.asv.list"))
+    temp$assign_bins(asv_list$bin_id,
+                        abundances = NULL,
+                        samples = NULL, seq_id = asv_list$seq_id,
+                        type = "asv"
+    )
+
+    dataset <- sequence_data$new(name = "clone_of_miseq", dataset = temp,
+                                 processors = 4)
+
+    expect_equal(dataset$get_dataset_name(), "clone_of_miseq")
+    expect_equal(dataset$get_num_sequences(TRUE), 2425)
+    expect_equal(dataset$get_num_sequences(), 113963)
+    expect_equal(dataset$get_num_treatments(), 2)
+    expect_equal(dataset$get_num_samples(), 19)
+    expect_equal(dataset$get_num_bins("otu"), 531)
+    expect_equal(dataset$get_num_bins("phylotype"), 63)
+    expect_equal(dataset$get_num_bins("asv"), 2425)
+    expect_equal(dataset$data$processors, 4)
+})
+
 test_that("sequence_data - addSeqs, assign samples", {
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
@@ -679,7 +718,6 @@ test_that("sequence_data - add_metadata, get_metadata", {
     expect_equal(dataset$get_metadata(), data.frame())
     expect_error(dataset$add_metadata(c("bad_type")))
 
-    # with filter = true
     metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
                                 col_names = TRUE, show_col_types = FALSE)
 
@@ -697,23 +735,5 @@ test_that("sequence_data - add_metadata, get_metadata", {
     expect_equal(metadata[[8, 3]], "left palm")
     expect_equal(metadata[[2, 3]], "gut")
     expect_equal(metadata[[3, 7]], "subject-1")
-
-    # with filter = true
-    metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
-                                col_names = TRUE, show_col_types = FALSE)
-
-    dataset$add_metadata(metadata, FALSE)
-    metadata <- dataset$get_metadata()
-
-    expect_equal(names(metadata), c("sample-id", "barcode-sequence",
-                                    "body-site", "year", "month", "day",
-                                    "subject", "reported-antibiotic-usage",
-                                    "days-since-experiment-start"))
-    expect_equal(nrow(metadata), 36)
-
-    # random spot checks
-    expect_equal(metadata[[5, 8]], "No")
-    expect_equal(metadata[[8, 3]], "left palm")
-    expect_equal(metadata[[2, 3]], "gut")
-    expect_true(is.na(metadata[[3, 7]]))
 })
+

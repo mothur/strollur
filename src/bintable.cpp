@@ -13,6 +13,28 @@ BinTable::BinTable(string l) {
     binCount = new AbundTable();
 }
 /******************************************************************************/
+BinTable::BinTable(const BinTable& binTable) {
+    numBins = binTable.numBins;
+    label = binTable.label;
+    hasListAssignments = binTable.hasListAssignments;
+    hasBinTaxonomy = binTable.hasBinTaxonomy;
+
+    binIndex = binTable.binIndex;
+    tableBins = binTable.tableBins;
+    binNames = binTable.binNames;
+    trashCodes = binTable.trashCodes;
+    taxonomies = binTable.taxonomies;
+    runClassify = binTable.runClassify;
+
+    binList = binTable.binList;
+    seqBins = binTable.seqBins;
+
+    badAccnos = binTable.badAccnos;
+    uniqueBad = binTable.uniqueBad;
+
+    binCount = new AbundTable(*binTable.binCount);
+}
+/******************************************************************************/
 BinTable::~BinTable() { delete binCount; }
 /******************************************************************************/
 void BinTable::clear() {

@@ -12,7 +12,6 @@
 #' multiple R packages.
 #'
 #' @seealso '?sequence_data'
-#'
-#' @keywords internal
+#' @export
 NULL
 

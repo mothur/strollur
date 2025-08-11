@@ -81,19 +81,24 @@ not providing the list and count files.
 \examples{
 # For dataset's including sequence data:
 
-dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-                       count = rdataset_example("final.count_table"),
-                       taxonomy = rdataset_example("final.taxonomy"),
-                       design = rdataset_example("mouse.time.design"),
-                       list = rdataset_example("final.opti_mcc.list"),
-                       dataset_name = "miseq_sop")
+dataset <- read_mothur(
+  fasta = rdataset_example("final.fasta"),
+  count = rdataset_example("final.count_table"),
+  taxonomy = rdataset_example("final.taxonomy"),
+  design = rdataset_example("mouse.time.design"),
+  list = rdataset_example("final.opti_mcc.list"),
+  dataset_name = "miseq_sop"
+)
 
 # For dataset's with only otu data:
 
-dataset <- read_mothur(shared = rdataset_example("final.opti_mcc.shared"),
-                       cons_taxonomy = rdataset_example(
-                       "final.cons.taxonomy"),
-                       design = rdataset_example("mouse.time.design"),
-                       dataset_name = "miseq_sop")
+dataset <- read_mothur(
+  shared = rdataset_example("final.opti_mcc.shared"),
+  cons_taxonomy = rdataset_example(
+    "final.cons.taxonomy"
+  ),
+  design = rdataset_example("mouse.time.design"),
+  dataset_name = "miseq_sop"
+)
 
 }

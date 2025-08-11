@@ -20,6 +20,56 @@ Dataset::Dataset(string n, int proc) : datasetName(n) {
     count = new AbundTable();
 }
 /******************************************************************************/
+Dataset::Dataset(const Dataset& dataset) {
+
+    // public
+    datasetName = dataset.datasetName;
+    isAligned = dataset.isAligned;
+    alignmentLength = dataset.alignmentLength;
+    hasContigsData = dataset.hasContigsData;
+    hasAlignData = dataset.hasAlignData;
+    hasSequenceData = dataset.hasSequenceData;
+    hasSequenceTaxonomy = dataset.hasSequenceTaxonomy;
+    numUnique = dataset.numUnique;
+    processors = dataset.processors;
+
+    // private
+    names = dataset.names;
+    seqs = dataset.seqs;
+    comments = dataset.comments;
+    trashCodes = dataset.trashCodes;
+
+    olengths = dataset.olengths;
+    ostarts = dataset.ostarts;
+    oends = dataset.oends;
+    mismatches = dataset.mismatches;
+    ee = dataset.ee;
+
+    starts = dataset.starts;
+    ends = dataset.ends;
+    lengths = dataset.lengths;
+    ambigs = dataset.ambigs;
+    polymers = dataset.polymers;
+    numns = dataset.numns;
+
+    longestInsert = dataset.longestInsert;
+    searchScore = dataset.searchScore;
+    simScore = dataset.simScore;
+    taxonomies = dataset.taxonomies;
+    seqIndex = dataset.seqIndex;
+    tableSeqs = dataset.tableSeqs;
+
+    badAccnos = dataset.badAccnos;
+    uniqueBad = dataset.uniqueBad;
+
+    count = new AbundTable(*dataset.count);
+
+    for (auto it = dataset.binTables.begin(); it != dataset.binTables.end();
+        it++) {
+        binTables[it->first] = new BinTable(*it->second);
+    }
+}
+/******************************************************************************/
 Dataset::~Dataset() {
     delete count;
     if (binTables.size() != 0) {

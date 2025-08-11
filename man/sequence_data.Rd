@@ -22,6 +22,17 @@ dataset <- sequence_data$new("soil")
 
 
 ## ------------------------------------------------
+## Method `sequence_data$add_metadata`
+## ------------------------------------------------
+
+
+  dataset <- sequence_data$new("my_dataset")
+  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_metadata(metadata)
+
+
+## ------------------------------------------------
 ## Method `sequence_data$add_sequences`
 ## ------------------------------------------------
 
@@ -227,6 +238,17 @@ dataset$assign_treatments(unique(samples), treatments)
 
 
 ## ------------------------------------------------
+## Method `sequence_data$get_metadata`
+## ------------------------------------------------
+
+  dataset <- sequence_data$new("my_dataset")
+  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_metadata(metadata)
+  dataset$get_metadata()
+
+
+## ------------------------------------------------
 ## Method `sequence_data$get_bin_taxonomy_report`
 ## ------------------------------------------------
 
@@ -309,6 +331,43 @@ dataset$get_sequence_taxonomy_report()
   # bin2           sample3        25
   # bin3           sample1        80
 
+
+## ------------------------------------------------
+## Method `sequence_data$remove_lineages`
+## ------------------------------------------------
+
+dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+                       count = rdataset_example("final.count_table"),
+                       taxonomy = rdataset_example("final.taxonomy"),
+                       design = rdataset_example("mouse.time.design"),
+                       list = rdataset_example("final.opti_mcc.list"),
+                       dataset_name = "miseq_sop")
+
+contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
+ "Eukaryota")
+
+dataset$remove_lineages(contaminants)
+
+
+## ------------------------------------------------
+## Method `sequence_data$remove_samples`
+## ------------------------------------------------
+
+dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+                       count = rdataset_example("final.count_table"),
+                       taxonomy = rdataset_example("final.taxonomy"),
+                       design = rdataset_example("mouse.time.design"),
+                       list = rdataset_example("final.opti_mcc.list"),
+                       dataset_name = "miseq_sop")
+
+dataset$get_num_samples()
+
+# To remove samples 'F3D0' and 'F3D1'
+
+dataset$remove_samples(c("F3D0", "F3D1"))
+
+dataset$get_num_samples()
+
 }
 \author{
 Sarah Westcott, \email{swestcot@umich.edu}
@@ -327,6 +386,7 @@ additional functionality.}
 \itemize{
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
+\item \href{#method-sequence_data-add_metadata}{\code{sequence_data$add_metadata()}}
 \item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
 \item \href{#method-sequence_data-assign_bins}{\code{sequence_data$assign_bins()}}
 \item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
@@ -341,6 +401,7 @@ additional functionality.}
 \item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
 \item \href{#method-sequence_data-get_ids}{\code{sequence_data$get_ids()}}
 \item \href{#method-sequence_data-get_list}{\code{sequence_data$get_list()}}
+\item \href{#method-sequence_data-get_metadata}{\code{sequence_data$get_metadata()}}
 \item \href{#method-sequence_data-get_num_bins}{\code{sequence_data$get_num_bins()}}
 \item \href{#method-sequence_data-get_num_samples}{\code{sequence_data$get_num_samples()}}
 \item \href{#method-sequence_data-get_num_sequences}{\code{sequence_data$get_num_sequences()}}
@@ -359,6 +420,8 @@ additional functionality.}
 \item \href{#method-sequence_data-get_treatments}{\code{sequence_data$get_treatments()}}
 \item \href{#method-sequence_data-has_sample}{\code{sequence_data$has_sample()}}
 \item \href{#method-sequence_data-is_aligned}{\code{sequence_data$is_aligned()}}
+\item \href{#method-sequence_data-remove_lineages}{\code{sequence_data$remove_lineages()}}
+\item \href{#method-sequence_data-remove_samples}{\code{sequence_data$remove_samples()}}
 \item \href{#method-sequence_data-clone}{\code{sequence_data$clone()}}
 }
 }
@@ -368,7 +431,11 @@ additional functionality.}
 \subsection{Method \code{new()}}{
 Create a new sequence dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$new(name = "", processors = parallelly::availableCores())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$new(
+  name = "",
+  processors = parallelly::availableCores(),
+  dataset = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -378,6 +445,8 @@ Create a new sequence dataset
 
 \item{\code{processors}}{Integer, number of cores to use.
 Default = all available}
+
+\item{\code{dataset}}{a `sequence_data` object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -404,6 +473,36 @@ dataset <- sequence_data$new("soil")
 Get summary of sequence data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-add_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-add_metadata}{}}}
+\subsection{Method \code{add_metadata()}}{
+Add metadata about your dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_metadata(metadata)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{metadata}}{a data.frame containing metadata about your dataset}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+  dataset <- sequence_data$new("my_dataset")
+  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_metadata(metadata)
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -637,6 +736,9 @@ will find the concensus taxonomy for each bin for you.
 \item{\code{bin_ids}}{a vector of bin names}
 
 \item{\code{taxonomies}}{a vector of bin classifications}
+
+\item{\code{type}}{a string indicating the type of clusters. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
 }
 \if{html}{\out{</div>}}
 }
@@ -890,6 +992,32 @@ data.frame
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_metadata}{}}}
+\subsection{Method \code{get_metadata()}}{
+Get data.frame containing metadata for the dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_metadata()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame()
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{  dataset <- sequence_data$new("my_dataset")
+  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_metadata(metadata)
+  dataset$get_metadata()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_num_bins"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-get_num_bins}{}}}
 \subsection{Method \code{get_num_bins()}}{
@@ -984,6 +1112,14 @@ ids, taxonomy by levels
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_bin_taxonomy_report(type = "otu")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{a string indicating the type of clusters. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 data.frame
 }
@@ -1280,6 +1416,82 @@ Determine if the dataset is aligned
 \subsection{Returns}{
 bool
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-remove_lineages"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-remove_lineages}{}}}
+\subsection{Method \code{remove_lineages()}}{
+Remove contaminants from the dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$remove_lineages(contaminants)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{contaminants}}{vector of strings containing the taxonomies you would
+like to remove}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+                       count = rdataset_example("final.count_table"),
+                       taxonomy = rdataset_example("final.taxonomy"),
+                       design = rdataset_example("mouse.time.design"),
+                       list = rdataset_example("final.opti_mcc.list"),
+                       dataset_name = "miseq_sop")
+
+contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
+ "Eukaryota")
+
+dataset$remove_lineages(contaminants)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-remove_samples"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-remove_samples}{}}}
+\subsection{Method \code{remove_samples()}}{
+Remove samples from the dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$remove_samples(samples)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{samples}}{vector of strings containing the names of the samples to}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+                       count = rdataset_example("final.count_table"),
+                       taxonomy = rdataset_example("final.taxonomy"),
+                       design = rdataset_example("mouse.time.design"),
+                       list = rdataset_example("final.opti_mcc.list"),
+                       dataset_name = "miseq_sop")
+
+dataset$get_num_samples()
+
+# To remove samples 'F3D0' and 'F3D1'
+
+dataset$remove_samples(c("F3D0", "F3D1"))
+
+dataset$get_num_samples()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-clone"></a>}}

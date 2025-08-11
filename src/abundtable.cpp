@@ -10,6 +10,27 @@ AbundTable::AbundTable() {
     numTreatments = 0;
 }
 /******************************************************************************/
+AbundTable::AbundTable(const AbundTable& abundTable) {
+    counts = abundTable.counts;
+
+    total = abundTable.total;
+    numSamples = abundTable.numSamples;
+    numTreatments = abundTable.numTreatments;
+
+    sampleIndex = abundTable.sampleIndex;
+    sampleNames = abundTable.sampleNames;
+    sampleTotals = abundTable.sampleTotals;
+    tableSamples = abundTable.tableSamples;
+
+    treatmentIndex = abundTable.treatmentIndex;
+    treatmentTotals = abundTable.treatmentTotals;
+    tableTreatments = abundTable.tableTreatments;
+    sampleTreatment = abundTable.sampleTreatment;
+
+    hasSampleData = abundTable.hasSampleData;
+    hasTreatments = abundTable.hasTreatments;
+}
+/******************************************************************************/
 AbundTable::~AbundTable() {}
 /******************************************************************************/
 void AbundTable::clear() {
