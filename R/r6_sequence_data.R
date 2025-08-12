@@ -124,6 +124,110 @@ sequence_data <- R6Class("sequence_data",
 
         invisible(self)
     },
+
+    #' @description
+    #' Add information about the references used to analyze your dataset
+    #' @param reference a data.frame containing multiple references. The only
+    #' required column is reference_name. Optional columns can include: version,
+    #' usage, note and url. Default = NULL. Either the reference or
+    #' reference_name parameter is required.
+    #' @param reference_name a string containing the name of the reference. For
+    #' example: 'silva.bacteria.fasta' Default = NULL. Either the reference
+    #' or reference_name parameter is required.
+    #' @param version a string containing the version of the reference. For
+    #' eaxmple: '138.2' Default = NULL.
+    #' @param usage a string containing the usage of the reference in
+    #' your analysis. For example: 'alignment using mothur2' Default = NULL.
+    #' @param note a string containing the any additional notes about the
+    #' reference. For example: 'custom reference using silva version 1.38.2 with
+    #' additional sequences tailored for this analysis'. Default = NULL.
+    #' @param url a string containing a web address where the reference may be
+    #' downloaded. For example: 'https://mothur.org/wiki/silva_reference_files/'
+    #' . Default = NULL.
+    #' @examples
+    #'
+    #' # To add a single reference:
+    #' dataset <- sequence_data$new("my_dataset")
+    #' dataset$add_references(reference_name = "silva.v4.fasta",
+    #' version = "1.38.1", usage = "alignment", note = "custom reference
+    #'  created by trimming silva.bacteria.fasta to the V4 region",
+    #'  url = "https://mothur.org/wiki/silva_reference_files/")
+    #'
+    #' # To add multiple references:
+    #' reference <- readr::read_csv(rdataset_example("references.csv"))
+    #' dataset$add_references(reference = reference)
+    #'
+    add_references = function(reference = NULL, reference_name = NULL,
+                             version = NULL, usage = NULL, note = NULL,
+                             url = NULL) {
+
+        # make sure at least one reference is given
+        if (is.null(reference) && is.null(reference_name)) {
+            parameters <- list("reference", "reference_name")
+            abort_provide_at_least_one(parameters)
+        }
+
+        # add multiple references
+        if (!is.null(reference)) {
+            if (!is.data.frame(reference)) {
+                abort_incorrect_type("data.frame", class(reference)[1])
+            }
+
+            if (!("reference_name" %in% names(reference))) {
+                cli::cli_abort("[ERROR]: The reference data.frame must include
+                               a 'reference_name' column.")
+            }else{
+                rows <- nrow(private$references)
+                if (rows == 0) {
+                    private$references <- reference
+                }else {
+                    # find missing columns
+                    missing_columns <- setdiff(names(reference),
+                                               names(private$references))
+                    print(private$references)
+
+                    # add missing columns to existing references
+                    for (col in missing_columns) {
+                        private$references[rows, col] <- NA
+                    }
+                    print(private$references)
+
+                    private$references <- rbind(private$references, reference)
+
+                    print(private$references)
+                }
+            }
+        }
+
+        # add single reference if provided
+        if (!is.null(reference_name)) {
+            rows <- nrow(private$references) + 1
+
+            # new blank row with all columns in the reference
+            private$references[rows, ] <- NA
+
+            private$references[rows, "reference_name"] <- reference_name
+
+            if (!is.null(version)) {
+                private$references[rows, "version"] <- version
+            }
+
+            if (!is.null(usage)) {
+                private$references[rows, "usage"] <- usage
+            }
+
+            if (!is.null(note)) {
+                private$references[rows, "note"] <- note
+            }
+
+            if (!is.null(url)) {
+                private$references[rows, "url"] <- url
+            }
+        }
+
+        invisible(self)
+    },
+
     #' @description
     #' Add new sequence data
     #' @param names a vector of sequence names
@@ -262,6 +366,38 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Assign bin classification.
+    #'
+    #' Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
+    #' will find the concensus taxonomy for each bin for you.
+    #' @param bin_ids a vector of bin names
+    #' @param taxonomies a vector of bin classifications
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
+    #' @examples
+    #'
+    #' bin_ids <- c("bin1", "bin2", "bin3", "bin4")
+    #' abunds <- c(200, 40, 100, 5)
+    #' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+    #'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+    #'                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+    #'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+    #'
+    #' dataset <- sequence_data$new("my_dataset")
+    #' dataset$assign_bins(bin_ids, abunds)
+    #' dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+    #'
+    assign_bin_taxonomy = function(bin_ids, taxonomies, type = "otu") {
+        if (self$data$get_num_bins(type) == 0) {
+            cli::cli_abort("[ERROR]: No bin data for type " + type + ", please
+                          assign bins using the 'assign_bins' function then
+                       try again.")
+        }
+        self$data$assign_bin_taxonomy(bin_ids, taxonomies, type)
+        invisible(self)
+    },
+
+    #' @description
     #' Add sequence abundance data with optional sample / treatment assignments
     #' @param names a vector of sequence names
     #' @param abundances a vector of sequence abundances
@@ -327,38 +463,6 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Assign bin classification.
-    #'
-    #' Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
-    #' will find the concensus taxonomy for each bin for you.
-    #' @param bin_ids a vector of bin names
-    #' @param taxonomies a vector of bin classifications
-    #' @param type a string indicating the type of clusters. Options
-    #' include: "otu", "asv", or "phylotype". Default = "otu".
-    #' @examples
-    #'
-    #' bin_ids <- c("bin1", "bin2", "bin3", "bin4")
-    #' abunds <- c(200, 40, 100, 5)
-    #' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-    #'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-    #'                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-    #'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
-    #'
-    #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_bins(bin_ids, abunds)
-    #' dataset$assign_bin_taxonomy(bin_ids, taxonomies)
-    #'
-    assign_bin_taxonomy = function(bin_ids, taxonomies, type = "otu") {
-      if (self$data$get_num_bins(type) == 0) {
-        cli::cli_abort("[ERROR]: No bin data for type " + type + ", please
-                          assign bins using the 'assign_bins' function then
-                       try again.")
-      }
-      self$data$assign_bin_taxonomy(bin_ids, taxonomies, type)
-      invisible(self)
-    },
-
-    #' @description
     #' Assign sequence classification
     #' @param names a vector of sequence names
     #' @param taxonomies a vector of sequence classifications
@@ -413,6 +517,7 @@ sequence_data <- R6Class("sequence_data",
     clear = function() {
       self$data$clear()
       metadata <- data.frame()
+      references <- data.frame()
       invisible(self)
     },
 
@@ -615,6 +720,20 @@ sequence_data <- R6Class("sequence_data",
     #' @return data.frame
     get_rabund = function(type = "otu") {
       self$data$get_rabund(type)
+    },
+
+    #' @description
+    #' Get data.frame containing information about the references used in the
+    #' analysis of the dataset
+    #' @examples
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   reference <- readr::read_csv(rdataset_example("references.csv"))
+    #'   dataset$add_references(reference = reference)
+    #'   dataset$get_references()
+    #'
+    #' @return data.frame()
+    get_references = function() {
+        private$references
     },
 
     #' @description
@@ -1108,6 +1227,7 @@ sequence_data <- R6Class("sequence_data",
   private = list(
 
     metadata = data.frame(),
+    references = data.frame(),
 
     # Clear sequences from dataset
     finalize = function() {

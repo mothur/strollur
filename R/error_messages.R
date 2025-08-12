@@ -17,7 +17,7 @@ abort_nonexistant_file <- function(filename) {
 
 #' @title abort_incorrect_type
 #' @description
-#' Report file does not exist
+#' Report incorrect type provided
 #' @param type_expected String, containing name of the type expected
 #' @param type_received String, containing name of the type received
 abort_incorrect_type <- function(type_expected, type_received) {
@@ -46,6 +46,16 @@ abort_length_mismatch <- function(name1, name2, length1, length2) {
 alert_missing_name <- function(name, return_value) {
   cli::cli_alert("{.var {name}} is not in your dataset,
                        returning {.var {return_value}}.")
+}
+
+#' @title abort_provide_at_least_one
+#' @description
+#' Report missing parameter
+#' @param parameters a list of parameter where one must be selected
+abort_provide_at_least_one <- function(parameters) {
+    parameter_string <- paste(parameters, collapse = ", ")
+    cli::cli_abort("[ERROR]: Expected at least one of the following parameters
+    to be provided {.var {parameter_string}}.")
 }
 
 #' @title alert_eliminated_name
