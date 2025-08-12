@@ -21,7 +21,7 @@ abort_nonexistant_file <- function(filename) {
 #' @param type_expected String, containing name of the type expected
 #' @param type_received String, containing name of the type received
 abort_incorrect_type <- function(type_expected, type_received) {
-    cli::cli_abort("[ERROR]: Expected a {.var {type_expected}}
+  cli::cli_abort("[ERROR]: Expected a {.var {type_expected}}
           but received a {.var {type_received}}.")
 }
 
@@ -53,9 +53,12 @@ alert_missing_name <- function(name, return_value) {
 #' Report missing parameter
 #' @param parameters a list of parameter where one must be selected
 abort_provide_at_least_one <- function(parameters) {
-    parameter_string <- paste(parameters, collapse = ", ")
-    cli::cli_abort("[ERROR]: Expected at least one of the following parameters
-    to be provided {.var {parameter_string}}.")
+  message <- paste("[ERROR]: Expected at least one of the following parameters",
+    "to be provided ", paste(parameters, collapse = ", "),
+    ".",
+    collapse = ""
+  )
+  cli::cli_abort(message)
 }
 
 #' @title alert_eliminated_name

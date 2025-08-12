@@ -37,20 +37,20 @@ sequence_data <- R6Class("sequence_data",
     initialize = function(name = "",
                           processors = parallelly::availableCores(),
                           dataset = NULL) {
-        if (is.null(dataset)) {
-            self$data <- new(Dataset, name, processors)
-        }else {
-            # copy of dataset backend
-            self$data <- new(Dataset, dataset$data)
-            self$data$processors <- processors
-            # assign new name
-            if (name != "") {
-                self$data$dataset_name <- name
-            }
-
-            # copy metadata
-            private$metadata <- dataset$get_metadata()
+      if (is.null(dataset)) {
+        self$data <- new(Dataset, name, processors)
+      } else {
+        # copy of dataset backend
+        self$data <- new(Dataset, dataset$data)
+        self$data$processors <- processors
+        # assign new name
+        if (name != "") {
+          self$data$dataset_name <- name
         }
+
+        # copy metadata
+        private$metadata <- dataset$get_metadata()
+      }
 
       invisible(self)
     },
@@ -115,14 +115,13 @@ sequence_data <- R6Class("sequence_data",
     #'   dataset$add_metadata(metadata)
     #'
     add_metadata = function(metadata) {
+      if (!is.data.frame(metadata)) {
+        abort_incorrect_type("data.frame", class(metadata)[1])
+      }
 
-        if (!is.data.frame(metadata)) {
-            abort_incorrect_type("data.frame", class(metadata)[1])
-        }
+      private$metadata <- metadata
 
-        private$metadata <- metadata
-
-        invisible(self)
+      invisible(self)
     },
 
     #' @description
@@ -158,70 +157,71 @@ sequence_data <- R6Class("sequence_data",
     #' dataset$add_references(reference = reference)
     #'
     add_references = function(reference = NULL, reference_name = NULL,
-                             version = NULL, usage = NULL, note = NULL,
-                             url = NULL) {
+                              version = NULL, usage = NULL, note = NULL,
+                              url = NULL) {
+      # make sure at least one reference is given
+      if (is.null(reference) && is.null(reference_name)) {
+        parameters <- list("reference", "reference_name")
+        abort_provide_at_least_one(parameters)
+      }
 
-        # make sure at least one reference is given
-        if (is.null(reference) && is.null(reference_name)) {
-            parameters <- list("reference", "reference_name")
-            abort_provide_at_least_one(parameters)
+      # add multiple references
+      if (!is.null(reference)) {
+        if (!is.data.frame(reference)) {
+          abort_incorrect_type("data.frame", class(reference)[1])
         }
 
-        # add multiple references
-        if (!is.null(reference)) {
-            if (!is.data.frame(reference)) {
-                abort_incorrect_type("data.frame", class(reference)[1])
-            }
-
-            if (!("reference_name" %in% names(reference))) {
-                cli::cli_abort("[ERROR]: The reference data.frame must include
+        if (!("reference_name" %in% names(reference))) {
+          cli::cli_abort("[ERROR]: The reference data.frame must include
                                a 'reference_name' column.")
-            }else{
-                rows <- nrow(private$references)
-                if (rows == 0) {
-                    private$references <- reference
-                }else {
-                    # find missing columns
-                    missing_columns <- setdiff(names(reference),
-                                               names(private$references))
+        } else {
+          rows <- nrow(private$references)
+          if (rows == 0) {
+            private$references <- reference
+          } else {
+            # find missing columns
+            missing_columns <- setdiff(
+              names(reference),
+              names(private$references)
+            )
 
-                    # add missing columns to existing references
-                    for (col in missing_columns) {
-                        private$references[rows, col] <- NA
-                    }
-
-                    private$references <- rbind(private$references, reference)
-                }
+            # add missing columns to existing references
+            for (col in missing_columns) {
+              private$references[rows, col] <- NA
             }
+
+            private$references <- rbind(private$references, reference)
+          }
+        }
+      }
+
+      # add single reference if provided
+      if (!is.null(reference_name)) {
+        rows <- nrow(private$references) + 1
+
+        # new blank row with all columns in the reference
+        private$references[rows, ] <- NA
+
+        private$references[rows, "reference_name"] <- reference_name
+
+        if (!is.null(version)) {
+          private$references[rows, "version"] <- version
         }
 
-        # add single reference if provided
-        if (!is.null(reference_name)) {
-            rows <- nrow(private$references) + 1
-
-            # new blank row with all columns in the reference
-            private$references[rows, ] <- NA
-
-            private$references[rows, "reference_name"] <- reference_name
-
-            if (!is.null(version)) {
-                private$references[rows, "version"] <- version
-            }
-
-            if (!is.null(usage)) {
-                private$references[rows, "usage"] <- usage
-            }
-
-            if (!is.null(note)) {
-                private$references[rows, "note"] <- note
-            }
-
-            if (!is.null(url)) {
-                private$references[rows, "url"] <- url
-            }
+        if (!is.null(usage)) {
+          private$references[rows, "usage"] <- usage
         }
 
-        invisible(self)
+        if (!is.null(note)) {
+          private$references[rows, "note"] <- note
+        }
+
+        if (!is.null(url)) {
+          private$references[rows, "url"] <- url
+        }
+      }
+
+      invisible(self)
     },
 
     #' @description
@@ -384,13 +384,13 @@ sequence_data <- R6Class("sequence_data",
     #' dataset$assign_bin_taxonomy(bin_ids, taxonomies)
     #'
     assign_bin_taxonomy = function(bin_ids, taxonomies, type = "otu") {
-        if (self$data$get_num_bins(type) == 0) {
-            cli::cli_abort("[ERROR]: No bin data for type " + type + ", please
+      if (self$data$get_num_bins(type) == 0) {
+        cli::cli_abort("[ERROR]: No bin data for type " + type + ", please
                           assign bins using the 'assign_bins' function then
                        try again.")
-        }
-        self$data$assign_bin_taxonomy(bin_ids, taxonomies, type)
-        invisible(self)
+      }
+      self$data$assign_bin_taxonomy(bin_ids, taxonomies, type)
+      invisible(self)
     },
 
     #' @description
@@ -462,6 +462,17 @@ sequence_data <- R6Class("sequence_data",
     #' Assign sequence classification
     #' @param names a vector of sequence names
     #' @param taxonomies a vector of sequence classifications
+    #' @param reference_name a string containing the name of the reference used
+    #' in the classification of the sequences. For example:
+    #' 'trainset9_032012.pds.zip' Default = NULL.
+    #' @param reference_version a string containing the version of the reference
+    #' used in the classification of the sequences. For example: '9_032012'.
+    #' Default = NULL.
+    #' @param reference_note a string containing the any additional notes about
+    #' the reference. For example: 'custom reference based on RDP'.
+    #' Default = NULL.
+    #' @param reference_url a string containing a web address where the
+    #' reference may be downloaded. Default = NULL.
     #' @examples
     #'
     #' names <- c("seq1", "seq2", "seq3", "seq4")
@@ -473,8 +484,34 @@ sequence_data <- R6Class("sequence_data",
     #' dataset <- sequence_data$new("my_dataset")
     #' dataset$assign_sequence_taxonomy(names, taxonomies)
     #'
-    assign_sequence_taxonomy = function(names, taxonomies) {
+    #' # With the additional parameters to add information about the reference
+    #'
+    #' url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
+    #'          "9_032012.pds.zip", collapse = "")
+    #'
+    #' dataset$assign_sequence_taxonomy(names = names, taxonomies = taxonomies,
+    #' reference_name = "trainset9_032012.pds.zip",
+    #' reference_note = "classification by mothur2 v1.0 using default options",
+    #' reference_version = "9_032012", reference_url = url)
+    #'
+    assign_sequence_taxonomy = function(names, taxonomies,
+                                        reference_name = NULL,
+                                        reference_version = NULL,
+                                        reference_note = NULL,
+                                        reference_url = NULL) {
       self$data$assign_sequence_taxonomy(names, taxonomies)
+
+      # if a reference is given, save it
+      if (!is.null(reference_name)) {
+        self$add_references(
+          reference_name = reference_name,
+          version = reference_version,
+          usage = "sequence_classification",
+          note = reference_note,
+          url = reference_url
+        )
+      }
+
       invisible(self)
     },
 
@@ -615,7 +652,7 @@ sequence_data <- R6Class("sequence_data",
     #'
     #' @return data.frame()
     get_metadata = function() {
-        private$metadata
+      private$metadata
     },
 
     #' @description
@@ -729,7 +766,7 @@ sequence_data <- R6Class("sequence_data",
     #'
     #' @return data.frame()
     get_references = function() {
-        private$references
+      private$references
     },
 
     #' @description
@@ -1221,7 +1258,6 @@ sequence_data <- R6Class("sequence_data",
     }
   ),
   private = list(
-
     metadata = data.frame(),
     references = data.frame(),
 

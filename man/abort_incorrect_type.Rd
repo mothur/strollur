@@ -12,5 +12,5 @@ abort_incorrect_type(type_expected, type_received)
 \item{type_received}{String, containing name of the type received}
 }
 \description{
-Report file does not exist
+Report incorrect type provided
 }

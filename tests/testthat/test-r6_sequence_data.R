@@ -112,42 +112,44 @@ test_that("sequence_data - intialize from read_mothur / print", {
 })
 
 test_that("sequence_data - intialize from sequence_data object", {
-    temp <- read_mothur(
-        fasta = rdataset_example("final.fasta"),
-        count = rdataset_example("final.count_table"),
-        taxonomy = rdataset_example("final.taxonomy"),
-        design = rdataset_example("mouse.time.design"),
-        list = rdataset_example("final.opti_mcc.list"),
-        dataset_name = "miseq_sop"
-    )
+  temp <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    taxonomy = rdataset_example("final.taxonomy"),
+    design = rdataset_example("mouse.time.design"),
+    list = rdataset_example("final.opti_mcc.list"),
+    dataset_name = "miseq_sop"
+  )
 
-    # add phylotype list
-    phylo_list <- read_mothur_list(list = rdataset_example("final.tx.list"))
-    temp$assign_bins(phylo_list$bin_id,
-                        abundances = NULL,
-                        samples = NULL, seq_id = phylo_list$seq_id,
-                        type = "phylotype"
-    )
+  # add phylotype list
+  phylo_list <- read_mothur_list(list = rdataset_example("final.tx.list"))
+  temp$assign_bins(phylo_list$bin_id,
+    abundances = NULL,
+    samples = NULL, seq_id = phylo_list$seq_id,
+    type = "phylotype"
+  )
 
-    asv_list <- read_mothur_list(list = rdataset_example("final.asv.list"))
-    temp$assign_bins(asv_list$bin_id,
-                        abundances = NULL,
-                        samples = NULL, seq_id = asv_list$seq_id,
-                        type = "asv"
-    )
+  asv_list <- read_mothur_list(list = rdataset_example("final.asv.list"))
+  temp$assign_bins(asv_list$bin_id,
+    abundances = NULL,
+    samples = NULL, seq_id = asv_list$seq_id,
+    type = "asv"
+  )
 
-    dataset <- sequence_data$new(name = "clone_of_miseq", dataset = temp,
-                                 processors = 4)
+  dataset <- sequence_data$new(
+    name = "clone_of_miseq", dataset = temp,
+    processors = 4
+  )
 
-    expect_equal(dataset$get_dataset_name(), "clone_of_miseq")
-    expect_equal(dataset$get_num_sequences(TRUE), 2425)
-    expect_equal(dataset$get_num_sequences(), 113963)
-    expect_equal(dataset$get_num_treatments(), 2)
-    expect_equal(dataset$get_num_samples(), 19)
-    expect_equal(dataset$get_num_bins("otu"), 531)
-    expect_equal(dataset$get_num_bins("phylotype"), 63)
-    expect_equal(dataset$get_num_bins("asv"), 2425)
-    expect_equal(dataset$data$processors, 4)
+  expect_equal(dataset$get_dataset_name(), "clone_of_miseq")
+  expect_equal(dataset$get_num_sequences(TRUE), 2425)
+  expect_equal(dataset$get_num_sequences(), 113963)
+  expect_equal(dataset$get_num_treatments(), 2)
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_bins("otu"), 531)
+  expect_equal(dataset$get_num_bins("phylotype"), 63)
+  expect_equal(dataset$get_num_bins("asv"), 2425)
+  expect_equal(dataset$data$processors, 4)
 })
 
 test_that("sequence_data - addSeqs, assign samples", {
@@ -493,8 +495,31 @@ test_that("sequence_data - ", {
   taxonomies <- c(tax1, tax2, tax3, tax4)
 
   dataset <- sequence_data$new("my_dataset")
-  dataset$add_sequences(names)
-  dataset$assign_sequence_taxonomy(names, taxonomies)
+
+  url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
+    "9_032012.pds.zip",
+    collapse = ""
+  )
+
+  # assign taxonomy with reference
+  dataset$assign_sequence_taxonomy(
+    names = names, taxonomies = taxonomies,
+    reference_name = "trainset9_032012.pds.zip",
+    reference_note = "classification by mothur2 v1.0 using default options",
+    reference_version = "9_032012", reference_url = url
+  )
+
+  references <- dataset$get_references()
+
+  note <- "classification by mothur2 v1.0 using default options"
+  expect_equal(nrow(references), 1)
+  expect_equal(references[[1, 1]], "trainset9_032012.pds.zip")
+  expect_equal(references[[1, 2]], "9_032012")
+  expect_equal(references[[1, 3]], "sequence_classification")
+  expect_equal(references[[1, 4]], note)
+  expect_equal(references[[1, 5]], url)
+
+
   report <- dataset$get_sequence_taxonomy_report()
 
   ids <- c(
@@ -710,90 +735,92 @@ test_that("sequence_data - ", {
 })
 
 test_that("sequence_data - add_metadata, get_metadata", {
+  dataset <- sequence_data$new("my_dataset")
 
+  expect_equal(dataset$get_metadata(), data.frame())
+  expect_error(dataset$add_metadata(c("bad_type")))
 
-    dataset <- sequence_data$new("my_dataset")
+  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
 
-    expect_equal(dataset$get_metadata(), data.frame())
-    expect_error(dataset$add_metadata(c("bad_type")))
+  dataset$add_metadata(metadata)
+  metadata <- dataset$get_metadata()
 
-    metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
-                                col_names = TRUE, show_col_types = FALSE)
+  expect_equal(names(metadata), c(
+    "sample-id", "barcode-sequence",
+    "body-site", "year", "month", "day",
+    "subject", "reported-antibiotic-usage",
+    "days-since-experiment-start"
+  ))
+  expect_equal(nrow(metadata), 34)
 
-    dataset$add_metadata(metadata)
-    metadata <- dataset$get_metadata()
-
-    expect_equal(names(metadata), c("sample-id", "barcode-sequence",
-                                    "body-site", "year", "month", "day",
-                                    "subject", "reported-antibiotic-usage",
-                                    "days-since-experiment-start"))
-    expect_equal(nrow(metadata), 34)
-
-    # random spot checks
-    expect_equal(metadata[[5, 8]], "No")
-    expect_equal(metadata[[8, 3]], "left palm")
-    expect_equal(metadata[[2, 3]], "gut")
-    expect_equal(metadata[[3, 7]], "subject-1")
+  # random spot checks
+  expect_equal(metadata[[5, 8]], "No")
+  expect_equal(metadata[[8, 3]], "left palm")
+  expect_equal(metadata[[2, 3]], "gut")
+  expect_equal(metadata[[3, 7]], "subject-1")
 })
 
 test_that("sequence_data - add_references, get_references", {
+  dataset <- sequence_data$new("my_dataset")
+
+  expect_equal(dataset$get_references(), data.frame())
+  expect_error(dataset$add_references(reference = c("bad_type")))
+  expect_error(dataset$add_references(data.frame()))
+  expect_error(dataset$add_references())
+
+  references <- dataset$get_references()
+  expect_equal(nrow(references), 0)
+
+  reference <- readr::read_csv(rdataset_example("references.csv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+
+  mothur_url <- "https://github.com/mothur/mothur/releases/tag/v1.48.2"
+
+  # add data.frame and single reference at the same time
+  dataset$add_references(
+    reference = reference,
+    reference_name = "mothur software package",
+    usage = "analysis of dataset",
+    version = "1.48.2", url = mothur_url
+  )
+
+  references <- dataset$get_references()
+
+  # random spot checks
+  expect_equal(nrow(references), 3)
+  expect_equal(references[[1, 1]], "trainset9_032012.pds.zip")
+  expect_equal(references[[2, 1]], "silva.v4.fasta")
+  expect_equal(references[[3, 1]], "mothur software package")
+  expect_equal(references[[1, 4]], NA_character_)
+  expect_equal(references[[2, 4]], "1.38.1")
+  expect_equal(references[[3, 4]], "1.48.2")
 
 
-    dataset <- sequence_data$new("my_dataset")
+  dataset <- sequence_data$new("my_dataset")
 
-    expect_equal(dataset$get_references(), data.frame())
-    expect_error(dataset$add_references(reference = c("bad_type")))
-    expect_error(dataset$add_references(data.frame()))
-    expect_error(dataset$add_references())
+  # add single reference then dataframe
+  dataset$add_references(
+    reference_name = "mothur software package",
+    usage = "analysis of dataset",
+    version = "1.48.2", url = mothur_url,
+    note = "This is my mothur note"
+  )
 
-    references <- dataset$get_references()
-    expect_equal(nrow(references), 0)
+  references <- dataset$get_references()
+  expect_equal(nrow(references), 1)
 
-    reference <- readr::read_csv(rdataset_example("references.csv"),
-                                 col_names = TRUE, show_col_types = FALSE)
+  dataset$add_references(reference = reference)
 
-    mothur_url <- "https://github.com/mothur/mothur/releases/tag/v1.48.2"
+  references <- dataset$get_references()
+  expect_equal(nrow(references), 3)
 
-    # add data.frame and single reference at the same time
-    dataset$add_references(reference = reference,
-                           reference_name = "mothur software package",
-                           usage = "analysis of dataset",
-                           version = "1.48.2", url = mothur_url)
-
-    references <- dataset$get_references()
-
-    # random spot checks
-    expect_equal(nrow(references), 3)
-    expect_equal(references[[1, 1]], "trainset9_032012.pds.zip")
-    expect_equal(references[[2, 1]], "silva.v4.fasta")
-    expect_equal(references[[3, 1]], "mothur software package")
-    expect_equal(references[[1, 4]], NA_character_)
-    expect_equal(references[[2, 4]], "1.38.1")
-    expect_equal(references[[3, 4]], "1.48.2")
-
-
-    dataset <- sequence_data$new("my_dataset")
-
-    # add single reference then dataframe
-    dataset$add_references(reference_name = "mothur software package",
-                           usage = "analysis of dataset",
-                           version = "1.48.2", url = mothur_url,
-                           note = "This is my mothur note")
-
-    references <- dataset$get_references()
-    expect_equal(nrow(references), 1)
-
-    dataset$add_references(reference = reference)
-
-    references <- dataset$get_references()
-    expect_equal(nrow(references), 3)
-
-    expect_equal(references[[2, 1]], "trainset9_032012.pds.zip")
-    expect_equal(references[[3, 1]], "silva.v4.fasta")
-    expect_equal(references[[1, 1]], "mothur software package")
-    expect_equal(references[[2, 2]], NA_character_)
-    expect_equal(references[[3, 2]], "1.38.1")
-    expect_equal(references[[1, 4]], "This is my mothur note")
-
+  expect_equal(references[[2, 1]], "trainset9_032012.pds.zip")
+  expect_equal(references[[3, 1]], "silva.v4.fasta")
+  expect_equal(references[[1, 1]], "mothur software package")
+  expect_equal(references[[2, 2]], NA_character_)
+  expect_equal(references[[3, 2]], "1.38.1")
+  expect_equal(references[[1, 4]], "This is my mothur note")
 })
-

@@ -20,5 +20,5 @@
 #' @return A 'sequence_data' object
 #' @export
 clone <- function(dataset) {
-    cloned <- sequence_data$new(dataset = dataset)
+  sequence_data$new(dataset = dataset)
 }

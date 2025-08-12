@@ -33,6 +33,23 @@ dataset <- sequence_data$new("soil")
 
 
 ## ------------------------------------------------
+## Method `sequence_data$add_references`
+## ------------------------------------------------
+
+
+# To add a single reference:
+dataset <- sequence_data$new("my_dataset")
+dataset$add_references(reference_name = "silva.v4.fasta",
+version = "1.38.1", usage = "alignment", note = "custom reference
+ created by trimming silva.bacteria.fasta to the V4 region",
+ url = "https://mothur.org/wiki/silva_reference_files/")
+
+# To add multiple references:
+reference <- readr::read_csv(rdataset_example("references.csv"))
+dataset$add_references(reference = reference)
+
+
+## ------------------------------------------------
 ## Method `sequence_data$add_sequences`
 ## ------------------------------------------------
 
@@ -126,6 +143,23 @@ dataset <- sequence_data$new("soil")
 
 
 ## ------------------------------------------------
+## Method `sequence_data$assign_bin_taxonomy`
+## ------------------------------------------------
+
+
+bin_ids <- c("bin1", "bin2", "bin3", "bin4")
+abunds <- c(200, 40, 100, 5)
+taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+
+dataset <- sequence_data$new("my_dataset")
+dataset$assign_bins(bin_ids, abunds)
+dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+
+
+## ------------------------------------------------
 ## Method `sequence_data$assign_sequence_abundance`
 ## ------------------------------------------------
 
@@ -156,23 +190,6 @@ dataset$assign_sequence_abundance(names, abundances, samples)
 
 
 ## ------------------------------------------------
-## Method `sequence_data$assign_bin_taxonomy`
-## ------------------------------------------------
-
-
-bin_ids <- c("bin1", "bin2", "bin3", "bin4")
-abunds <- c(200, 40, 100, 5)
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
-
-dataset <- sequence_data$new("my_dataset")
-dataset$assign_bins(bin_ids, abunds)
-dataset$assign_bin_taxonomy(bin_ids, taxonomies)
-
-
-## ------------------------------------------------
 ## Method `sequence_data$assign_sequence_taxonomy`
 ## ------------------------------------------------
 
@@ -185,6 +202,16 @@ taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
 
 dataset <- sequence_data$new("my_dataset")
 dataset$assign_sequence_taxonomy(names, taxonomies)
+
+# With the additional parameters to add information about the reference
+
+url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
+         "9_032012.pds.zip", collapse = "")
+
+dataset$assign_sequence_taxonomy(names = names, taxonomies = taxonomies,
+reference_name = "trainset9_032012.pds.zip",
+reference_note = "classification by mothur2 v1.0 using default options",
+reference_version = "9_032012", reference_url = url)
 
 
 ## ------------------------------------------------
@@ -288,6 +315,16 @@ dataset$get_bin_taxonomy_report()
 
 
 ## ------------------------------------------------
+## Method `sequence_data$get_references`
+## ------------------------------------------------
+
+  dataset <- sequence_data$new("my_dataset")
+  reference <- readr::read_csv(rdataset_example("references.csv"))
+  dataset$add_references(reference = reference)
+  dataset$get_references()
+
+
+## ------------------------------------------------
 ## Method `sequence_data$get_sequence_taxonomy_report`
 ## ------------------------------------------------
 
@@ -387,10 +424,11 @@ additional functionality.}
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
 \item \href{#method-sequence_data-add_metadata}{\code{sequence_data$add_metadata()}}
+\item \href{#method-sequence_data-add_references}{\code{sequence_data$add_references()}}
 \item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
 \item \href{#method-sequence_data-assign_bins}{\code{sequence_data$assign_bins()}}
-\item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
 \item \href{#method-sequence_data-assign_bin_taxonomy}{\code{sequence_data$assign_bin_taxonomy()}}
+\item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
 \item \href{#method-sequence_data-assign_sequence_taxonomy}{\code{sequence_data$assign_sequence_taxonomy()}}
 \item \href{#method-sequence_data-assign_treatments}{\code{sequence_data$assign_treatments()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
@@ -409,6 +447,7 @@ additional functionality.}
 \item \href{#method-sequence_data-get_oligos}{\code{sequence_data$get_oligos()}}
 \item \href{#method-sequence_data-get_bin_taxonomy_report}{\code{sequence_data$get_bin_taxonomy_report()}}
 \item \href{#method-sequence_data-get_rabund}{\code{sequence_data$get_rabund()}}
+\item \href{#method-sequence_data-get_references}{\code{sequence_data$get_references()}}
 \item \href{#method-sequence_data-get_samples}{\code{sequence_data$get_samples()}}
 \item \href{#method-sequence_data-get_sample_summary}{\code{sequence_data$get_sample_summary()}}
 \item \href{#method-sequence_data-get_scrap_report}{\code{sequence_data$get_scrap_report()}}
@@ -499,6 +538,70 @@ Add metadata about your dataset
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
   dataset$add_metadata(metadata)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-add_references"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-add_references}{}}}
+\subsection{Method \code{add_references()}}{
+Add information about the references used to analyze your dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_references(
+  reference = NULL,
+  reference_name = NULL,
+  version = NULL,
+  usage = NULL,
+  note = NULL,
+  url = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{reference}}{a data.frame containing multiple references. The only
+required column is reference_name. Optional columns can include: version,
+usage, note and url. Default = NULL. Either the reference or
+reference_name parameter is required.}
+
+\item{\code{reference_name}}{a string containing the name of the reference. For
+example: 'silva.bacteria.fasta' Default = NULL. Either the reference
+or reference_name parameter is required.}
+
+\item{\code{version}}{a string containing the version of the reference. For
+eaxmple: '138.2' Default = NULL.}
+
+\item{\code{usage}}{a string containing the usage of the reference in
+your analysis. For example: 'alignment using mothur2' Default = NULL.}
+
+\item{\code{note}}{a string containing the any additional notes about the
+reference. For example: 'custom reference using silva version 1.38.2 with
+additional sequences tailored for this analysis'. Default = NULL.}
+
+\item{\code{url}}{a string containing a web address where the reference may be
+downloaded. For example: 'https://mothur.org/wiki/silva_reference_files/'
+. Default = NULL.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+# To add a single reference:
+dataset <- sequence_data$new("my_dataset")
+dataset$add_references(reference_name = "silva.v4.fasta",
+version = "1.38.1", usage = "alignment", note = "custom reference
+ created by trimming silva.bacteria.fasta to the V4 region",
+ url = "https://mothur.org/wiki/silva_reference_files/")
+
+# To add multiple references:
+reference <- readr::read_csv(rdataset_example("references.csv"))
+dataset$add_references(reference = reference)
 
 }
 \if{html}{\out{</div>}}
@@ -659,6 +762,50 @@ include: "otu", "asv", or "phylotype". Default = "otu".}
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-assign_bin_taxonomy"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-assign_bin_taxonomy}{}}}
+\subsection{Method \code{assign_bin_taxonomy()}}{
+Assign bin classification.
+
+Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
+will find the concensus taxonomy for each bin for you.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_bin_taxonomy(bin_ids, taxonomies, type = "otu")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{bin_ids}}{a vector of bin names}
+
+\item{\code{taxonomies}}{a vector of bin classifications}
+
+\item{\code{type}}{a string indicating the type of clusters. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+bin_ids <- c("bin1", "bin2", "bin3", "bin4")
+abunds <- c(200, 40, 100, 5)
+taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+
+dataset <- sequence_data$new("my_dataset")
+dataset$assign_bins(bin_ids, abunds)
+dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-assign_sequence_abundance"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-assign_sequence_abundance}{}}}
 \subsection{Method \code{assign_sequence_abundance()}}{
@@ -719,56 +866,19 @@ dataset$assign_sequence_abundance(names, abundances, samples)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-assign_bin_taxonomy"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-assign_bin_taxonomy}{}}}
-\subsection{Method \code{assign_bin_taxonomy()}}{
-Assign bin classification.
-
-Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
-will find the concensus taxonomy for each bin for you.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_bin_taxonomy(bin_ids, taxonomies, type = "otu")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{bin_ids}}{a vector of bin names}
-
-\item{\code{taxonomies}}{a vector of bin classifications}
-
-\item{\code{type}}{a string indicating the type of clusters. Options
-include: "otu", "asv", or "phylotype". Default = "otu".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-bin_ids <- c("bin1", "bin2", "bin3", "bin4")
-abunds <- c(200, 40, 100, 5)
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
-
-dataset <- sequence_data$new("my_dataset")
-dataset$assign_bins(bin_ids, abunds)
-dataset$assign_bin_taxonomy(bin_ids, taxonomies)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-assign_sequence_taxonomy"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-assign_sequence_taxonomy}{}}}
 \subsection{Method \code{assign_sequence_taxonomy()}}{
 Assign sequence classification
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sequence_taxonomy(names, taxonomies)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sequence_taxonomy(
+  names,
+  taxonomies,
+  reference_name = NULL,
+  reference_version = NULL,
+  reference_note = NULL,
+  reference_url = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -777,6 +887,21 @@ Assign sequence classification
 \item{\code{names}}{a vector of sequence names}
 
 \item{\code{taxonomies}}{a vector of sequence classifications}
+
+\item{\code{reference_name}}{a string containing the name of the reference used
+in the classification of the sequences. For example:
+'trainset9_032012.pds.zip' Default = NULL.}
+
+\item{\code{reference_version}}{a string containing the version of the reference
+used in the classification of the sequences. For example: '9_032012'.
+Default = NULL.}
+
+\item{\code{reference_note}}{a string containing the any additional notes about
+the reference. For example: 'custom reference based on RDP'.
+Default = NULL.}
+
+\item{\code{reference_url}}{a string containing a web address where the
+reference may be downloaded. Default = NULL.}
 }
 \if{html}{\out{</div>}}
 }
@@ -791,6 +916,16 @@ taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
 
 dataset <- sequence_data$new("my_dataset")
 dataset$assign_sequence_taxonomy(names, taxonomies)
+
+# With the additional parameters to add information about the reference
+
+url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
+         "9_032012.pds.zip", collapse = "")
+
+dataset$assign_sequence_taxonomy(names = names, taxonomies = taxonomies,
+reference_name = "trainset9_032012.pds.zip",
+reference_note = "classification by mothur2 v1.0 using default options",
+reference_version = "9_032012", reference_url = url)
 
 }
 \if{html}{\out{</div>}}
@@ -1181,6 +1316,32 @@ data.frame
   #  bin1           111
   #  bin2           525
   #  bin3           80
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_references"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_references}{}}}
+\subsection{Method \code{get_references()}}{
+Get data.frame containing information about the references used in the
+analysis of the dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_references()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame()
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{  dataset <- sequence_data$new("my_dataset")
+  reference <- readr::read_csv(rdataset_example("references.csv"))
+  dataset$add_references(reference = reference)
+  dataset$get_references()
 
 }
 \if{html}{\out{</div>}}
