@@ -184,17 +184,13 @@ sequence_data <- R6Class("sequence_data",
                     # find missing columns
                     missing_columns <- setdiff(names(reference),
                                                names(private$references))
-                    print(private$references)
 
                     # add missing columns to existing references
                     for (col in missing_columns) {
                         private$references[rows, col] <- NA
                     }
-                    print(private$references)
 
                     private$references <- rbind(private$references, reference)
-
-                    print(private$references)
                 }
             }
         }

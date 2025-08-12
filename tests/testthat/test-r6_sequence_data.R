@@ -709,7 +709,6 @@ test_that("sequence_data - ", {
   expect_equal(dataset$get_shared(), data.frame())
 })
 
-# assign_sequence_taxonomy, get_sequence_taxonomy_report
 test_that("sequence_data - add_metadata, get_metadata", {
 
 
@@ -735,5 +734,66 @@ test_that("sequence_data - add_metadata, get_metadata", {
     expect_equal(metadata[[8, 3]], "left palm")
     expect_equal(metadata[[2, 3]], "gut")
     expect_equal(metadata[[3, 7]], "subject-1")
+})
+
+test_that("sequence_data - add_references, get_references", {
+
+
+    dataset <- sequence_data$new("my_dataset")
+
+    expect_equal(dataset$get_references(), data.frame())
+    expect_error(dataset$add_references(reference = c("bad_type")))
+    expect_error(dataset$add_references(data.frame()))
+    expect_error(dataset$add_references())
+
+    references <- dataset$get_references()
+    expect_equal(nrow(references), 0)
+
+    reference <- readr::read_csv(rdataset_example("references.csv"),
+                                 col_names = TRUE, show_col_types = FALSE)
+
+    mothur_url <- "https://github.com/mothur/mothur/releases/tag/v1.48.2"
+
+    # add data.frame and single reference at the same time
+    dataset$add_references(reference = reference,
+                           reference_name = "mothur software package",
+                           usage = "analysis of dataset",
+                           version = "1.48.2", url = mothur_url)
+
+    references <- dataset$get_references()
+
+    # random spot checks
+    expect_equal(nrow(references), 3)
+    expect_equal(references[[1, 1]], "trainset9_032012.pds.zip")
+    expect_equal(references[[2, 1]], "silva.v4.fasta")
+    expect_equal(references[[3, 1]], "mothur software package")
+    expect_equal(references[[1, 4]], NA_character_)
+    expect_equal(references[[2, 4]], "1.38.1")
+    expect_equal(references[[3, 4]], "1.48.2")
+
+
+    dataset <- sequence_data$new("my_dataset")
+
+    # add single reference then dataframe
+    dataset$add_references(reference_name = "mothur software package",
+                           usage = "analysis of dataset",
+                           version = "1.48.2", url = mothur_url,
+                           note = "This is my mothur note")
+
+    references <- dataset$get_references()
+    expect_equal(nrow(references), 1)
+
+    dataset$add_references(reference = reference)
+
+    references <- dataset$get_references()
+    expect_equal(nrow(references), 3)
+
+    expect_equal(references[[2, 1]], "trainset9_032012.pds.zip")
+    expect_equal(references[[3, 1]], "silva.v4.fasta")
+    expect_equal(references[[1, 1]], "mothur software package")
+    expect_equal(references[[2, 2]], NA_character_)
+    expect_equal(references[[3, 2]], "1.38.1")
+    expect_equal(references[[1, 4]], "This is my mothur note")
+
 })
 
