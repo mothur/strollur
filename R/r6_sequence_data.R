@@ -235,12 +235,12 @@ sequence_data <- R6Class("sequence_data",
     #' @param comments a vector of sequence comments, (optional)
     #' @param reference_name a string containing the name of the reference used
     #' in the classification of the sequences. For example:
-    #' 'trainset9_032012.pds.zip' Default = NULL. (optional)
+    #' 'silva.bacteria.fasta' Default = NULL. (optional)
     #' @param reference_version a string containing the version of the reference
-    #' used in the classification of the sequences. For example: '9_032012'.
+    #' used in the preparing of the sequences. For example: '1.38.1'.
     #' Default = NULL. (optional)
     #' @param reference_note a string containing the any additional notes about
-    #' the reference. For example: 'custom reference based on RDP'.
+    #' the reference. For example: 'used for alignment using mothur2 v1.0'.
     #' Default = NULL. (optional)
     #' @param reference_url a string containing a web address where the
     #' reference may be downloaded. Default = NULL. (optional)
@@ -410,6 +410,17 @@ sequence_data <- R6Class("sequence_data",
     #' @param taxonomies a vector of bin classifications
     #' @param type a string indicating the type of clusters. Options
     #' include: "otu", "asv", or "phylotype". Default = "otu".
+    #' @param reference_name a string containing the name of the reference used
+    #' in the classification of the bins. For example:
+    #' 'trainset9_032012.pds.zip' Default = NULL.
+    #' @param reference_version a string containing the version of the reference
+    #' used in the classification of the bins For example: '9_032012'.
+    #' Default = NULL.
+    #' @param reference_note a string containing the any additional notes about
+    #' the reference. For example: 'custom reference based on RDP'.
+    #' Default = NULL.
+    #' @param reference_url a string containing a web address where the
+    #' reference may be downloaded. Default = NULL.
     #' @examples
     #'
     #' bin_ids <- c("bin1", "bin2", "bin3", "bin4")
@@ -423,13 +434,40 @@ sequence_data <- R6Class("sequence_data",
     #' dataset$assign_bins(bin_ids, abunds)
     #' dataset$assign_bin_taxonomy(bin_ids, taxonomies)
     #'
-    assign_bin_taxonomy = function(bin_ids, taxonomies, type = "otu") {
+    #' # With the additional parameters to add information about the reference
+    #' # You can also add references using the 'add_references' function.
+    #'
+    #' url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
+    #'          "9_032012.pds.zip", collapse = "")
+    #'
+    #' dataset$assign_bin_taxonomy(bin_ids, taxonomies,
+    #' reference_name = "trainset9_032012.pds.zip",
+    #' reference_note = "classification by mothur2 v1.0 using default options",
+    #' reference_version = "9_032012", reference_url = url)
+    #'
+    assign_bin_taxonomy = function(bin_ids, taxonomies, type = "otu",
+                                   reference_name = NULL,
+                                   reference_version = NULL,
+                                   reference_note = NULL,
+                                   reference_url = NULL) {
       if (self$data$get_num_bins(type) == 0) {
         cli::cli_abort("[ERROR]: No bin data for type " + type + ", please
                           assign bins using the 'assign_bins' function then
                        try again.")
       }
       self$data$assign_bin_taxonomy(bin_ids, taxonomies, type)
+
+      # if a reference is given, save it
+      if (!is.null(reference_name)) {
+        self$add_references(
+          reference_name = reference_name,
+          version = reference_version,
+          usage = "bin_classification",
+          note = reference_note,
+          url = reference_url
+        )
+      }
+
       invisible(self)
     },
 

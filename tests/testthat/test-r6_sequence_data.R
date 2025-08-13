@@ -537,7 +537,6 @@ test_that("sequence_data - ", {
   expect_equal(references[[1, 4]], note)
   expect_equal(references[[1, "url"]], url)
 
-
   report <- dataset$get_sequence_taxonomy_report()
 
   ids <- c(
@@ -697,7 +696,22 @@ test_that("sequence_data - ", {
 
   abunds <- c(200, 40, 100, 5)
   dataset$assign_bins(bin_ids, abunds)
-  dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+  dataset$assign_bin_taxonomy(bin_ids, taxonomies,
+    reference_name = "trainset9_032012.pds.zip",
+    reference_note = "classification by mothur2 v1.0",
+    reference_version = "9_032012",
+    reference_url = url
+  )
+
+  references <- dataset$get_references()
+
+  note <- "classification by mothur2 v1.0"
+  expect_equal(nrow(references), 1)
+  expect_equal(references[[1, "reference_name"]], "trainset9_032012.pds.zip")
+  expect_equal(references[[1, "version"]], "9_032012")
+  expect_equal(references[[1, "usage"]], "bin_classification")
+  expect_equal(references[[1, "note"]], note)
+  expect_equal(references[[1, "url"]], url)
 
   report <- dataset$get_bin_taxonomy_report()
 

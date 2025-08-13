@@ -40,13 +40,15 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
   abundances <- c()
 
   # create a count table
-  for (i in 1:ncol(sequence_table)) {
-    abunds <- sequence_table[, i]
+  index <- 1
+  for (col in colnames(sequence_table)) {
+    abunds <- sequence_table[, index]
     non_zero_samples <- which(abunds != 0)
 
-    names <- c(names, rep(seq_names[i], length(non_zero_samples)))
+    names <- c(names, rep(seq_names[index], length(non_zero_samples)))
     samples <- c(samples, sample_names[non_zero_samples])
     abundances <- c(abundances, abunds[non_zero_samples])
+    index <- index + 1
   }
 
   dataset$assign_sequence_abundance(names, abundances, samples)

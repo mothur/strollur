@@ -1896,5 +1896,6 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getNumBins() == 1);
         expect_true(data.getBin("otu1") == "seq1,seq2");
         expect_true(data.getBin("otu2") == "");
+        expect_error(data.assignBinTaxonomy(otus, nullVector));
     }
 }

@@ -13,7 +13,9 @@ clone(dataset)
 A 'sequence_data' object
 }
 \description{
-The clone function will create a deep copy of 'sequence_data' object.
+The clone function will create a deep copy of 'sequence_data' object. Note:
+'sequence_data' is an R6 class with reference semantics and requires a deep
+copy.
 }
 \examples{
 # For dataset's including sequence data:

@@ -58,6 +58,17 @@ dataset$add_references(reference = reference)
   sequences <- read_fasta(rdataset_example("final.fasta"))
   dataset$add_sequences(sequences$names, sequences$sequences)
 
+# With the additional parameters to add information about the reference
+# You can also add references using the 'add_references' function.
+
+url <- "https://mothur.org/wiki/silva_reference_files/"
+
+dataset <- sequence_data$new("my_dataset")
+dataset$add_sequences(sequences$names, sequences$sequences,
+reference_name = "silva.bacteria.fasta",
+reference_note = "alignment by mothur2 v1.0 using default options",
+reference_version = "1.38.1", reference_url = url)
+
 
 ## ------------------------------------------------
 ## Method `sequence_data$assign_bins`
@@ -158,6 +169,17 @@ dataset <- sequence_data$new("my_dataset")
 dataset$assign_bins(bin_ids, abunds)
 dataset$assign_bin_taxonomy(bin_ids, taxonomies)
 
+# With the additional parameters to add information about the reference
+# You can also add references using the 'add_references' function.
+
+url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
+         "9_032012.pds.zip", collapse = "")
+
+dataset$assign_bin_taxonomy(bin_ids, taxonomies,
+reference_name = "trainset9_032012.pds.zip",
+reference_note = "classification by mothur2 v1.0 using default options",
+reference_version = "9_032012", reference_url = url)
+
 
 ## ------------------------------------------------
 ## Method `sequence_data$assign_sequence_abundance`
@@ -204,6 +226,7 @@ dataset <- sequence_data$new("my_dataset")
 dataset$assign_sequence_taxonomy(names, taxonomies)
 
 # With the additional parameters to add information about the reference
+# You can also add references using the 'add_references' function.
 
 url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
          "9_032012.pds.zip", collapse = "")
@@ -615,7 +638,15 @@ dataset$add_references(reference = reference)
 \subsection{Method \code{add_sequences()}}{
 Add new sequence data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_sequences(names, sequences = NULL, comments = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_sequences(
+  names,
+  sequences = NULL,
+  comments = NULL,
+  reference_name = NULL,
+  reference_version = NULL,
+  reference_note = NULL,
+  reference_url = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -626,6 +657,21 @@ Add new sequence data
 \item{\code{sequences}}{a vector of sequence data}
 
 \item{\code{comments}}{a vector of sequence comments, (optional)}
+
+\item{\code{reference_name}}{a string containing the name of the reference used
+in the classification of the sequences. For example:
+'silva.bacteria.fasta' Default = NULL. (optional)}
+
+\item{\code{reference_version}}{a string containing the version of the reference
+used in the preparing of the sequences. For example: '1.38.1'.
+Default = NULL. (optional)}
+
+\item{\code{reference_note}}{a string containing the any additional notes about
+the reference. For example: 'used for alignment using mothur2 v1.0'.
+Default = NULL. (optional)}
+
+\item{\code{reference_url}}{a string containing a web address where the
+reference may be downloaded. Default = NULL. (optional)}
 }
 \if{html}{\out{</div>}}
 }
@@ -635,6 +681,17 @@ Add new sequence data
   dataset <- sequence_data$new("my_dataset")
   sequences <- read_fasta(rdataset_example("final.fasta"))
   dataset$add_sequences(sequences$names, sequences$sequences)
+
+# With the additional parameters to add information about the reference
+# You can also add references using the 'add_references' function.
+
+url <- "https://mothur.org/wiki/silva_reference_files/"
+
+dataset <- sequence_data$new("my_dataset")
+dataset$add_sequences(sequences$names, sequences$sequences,
+reference_name = "silva.bacteria.fasta",
+reference_note = "alignment by mothur2 v1.0 using default options",
+reference_version = "1.38.1", reference_url = url)
 
 }
 \if{html}{\out{</div>}}
@@ -770,7 +827,15 @@ Assign bin classification.
 Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
 will find the concensus taxonomy for each bin for you.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_bin_taxonomy(bin_ids, taxonomies, type = "otu")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_bin_taxonomy(
+  bin_ids,
+  taxonomies,
+  type = "otu",
+  reference_name = NULL,
+  reference_version = NULL,
+  reference_note = NULL,
+  reference_url = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -782,6 +847,21 @@ will find the concensus taxonomy for each bin for you.
 
 \item{\code{type}}{a string indicating the type of clusters. Options
 include: "otu", "asv", or "phylotype". Default = "otu".}
+
+\item{\code{reference_name}}{a string containing the name of the reference used
+in the classification of the bins. For example:
+'trainset9_032012.pds.zip' Default = NULL.}
+
+\item{\code{reference_version}}{a string containing the version of the reference
+used in the classification of the bins For example: '9_032012'.
+Default = NULL.}
+
+\item{\code{reference_note}}{a string containing the any additional notes about
+the reference. For example: 'custom reference based on RDP'.
+Default = NULL.}
+
+\item{\code{reference_url}}{a string containing a web address where the
+reference may be downloaded. Default = NULL.}
 }
 \if{html}{\out{</div>}}
 }
@@ -798,6 +878,17 @@ taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
 dataset <- sequence_data$new("my_dataset")
 dataset$assign_bins(bin_ids, abunds)
 dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+
+# With the additional parameters to add information about the reference
+# You can also add references using the 'add_references' function.
+
+url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
+         "9_032012.pds.zip", collapse = "")
+
+dataset$assign_bin_taxonomy(bin_ids, taxonomies,
+reference_name = "trainset9_032012.pds.zip",
+reference_note = "classification by mothur2 v1.0 using default options",
+reference_version = "9_032012", reference_url = url)
 
 }
 \if{html}{\out{</div>}}
@@ -918,6 +1009,7 @@ dataset <- sequence_data$new("my_dataset")
 dataset$assign_sequence_taxonomy(names, taxonomies)
 
 # With the additional parameters to add information about the reference
+# You can also add references using the 'add_references' function.
 
 url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
          "9_032012.pds.zip", collapse = "")
