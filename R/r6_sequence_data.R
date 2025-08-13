@@ -625,11 +625,30 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Remove all data from dataset
-    clear = function() {
-      self$data$clear()
-      metadata <- data.frame()
-      references <- data.frame()
+    #' Remove 'all', 'metadata', 'references', 'alignment' or 'contigs' data
+    #' from your dataset
+    #' @param type a string indicating the type data you want to remove. Options
+    #' include: "all", "metadata", "references", "alignment" or "contigs".
+    #' Default = "all".
+    clear = function(type = "all") {
+      if (type == "all") {
+          self$data$clear()
+          private$metadata <- data.frame()
+          private$references <- data.frame()
+          private$alignment_data <- data.frame()
+          private$contigs_data <- data.frame()
+      }else if (type == "metadata") {
+          private$metadata <- data.frame()
+      }else if (type == "references") {
+          private$references <- data.frame()
+      }else if (type == "alignment") {
+          private$alignment_data <- data.frame()
+      }else if (type == "contigs") {
+          private$contigs_data <- data.frame()
+      }else {
+          cli_alert("{.var {type}} is not a valid type to clear, ignoring.")
+      }
+
       invisible(self)
     },
 
@@ -1339,6 +1358,9 @@ sequence_data <- R6Class("sequence_data",
   private = list(
     metadata = data.frame(),
     references = data.frame(),
+    alignment_data = data.frame(),
+    contigs_data = data.frame(),
+
 
     # Clear sequences from dataset
     finalize = function() {

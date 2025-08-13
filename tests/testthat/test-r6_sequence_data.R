@@ -792,6 +792,10 @@ test_that("sequence_data - add_metadata, get_metadata", {
   expect_equal(metadata[[8, 3]], "left palm")
   expect_equal(metadata[[2, 3]], "gut")
   expect_equal(metadata[[3, 7]], "subject-1")
+
+  dataset$clear("metadata")
+  metadata <- dataset$get_metadata()
+  expect_equal(nrow(metadata), 0)
 })
 
 test_that("sequence_data - add_references, get_references", {
@@ -855,4 +859,8 @@ test_that("sequence_data - add_references, get_references", {
   expect_equal(references[[2, 2]], NA_character_)
   expect_equal(references[[3, 2]], "1.38.1")
   expect_equal(references[[1, 4]], "This is my mothur note")
+
+  dataset$clear("references")
+  references <- dataset$get_references()
+  expect_equal(nrow(references), 0)
 })
