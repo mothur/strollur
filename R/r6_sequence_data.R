@@ -202,23 +202,27 @@ sequence_data <- R6Class("sequence_data",
         # new blank row with all columns in the reference
         private$references[rows, ] <- NA
 
+        if (is.null(version)) {
+          version <- NA
+        }
+
+        if (is.null(usage)) {
+          usage <- NA
+        }
+
+        if (is.null(note)) {
+          note <- NA
+        }
+
+        if (is.null(url)) {
+          url <- NA
+        }
+
         private$references[rows, "reference_name"] <- reference_name
-
-        if (!is.null(version)) {
-          private$references[rows, "version"] <- version
-        }
-
-        if (!is.null(usage)) {
-          private$references[rows, "usage"] <- usage
-        }
-
-        if (!is.null(note)) {
-          private$references[rows, "note"] <- note
-        }
-
-        if (!is.null(url)) {
-          private$references[rows, "url"] <- url
-        }
+        private$references[rows, "version"] <- version
+        private$references[rows, "usage"] <- usage
+        private$references[rows, "note"] <- note
+        private$references[rows, "url"] <- url
       }
 
       invisible(self)
@@ -229,13 +233,39 @@ sequence_data <- R6Class("sequence_data",
     #' @param names a vector of sequence names
     #' @param sequences a vector of sequence data
     #' @param comments a vector of sequence comments, (optional)
+    #' @param reference_name a string containing the name of the reference used
+    #' in the classification of the sequences. For example:
+    #' 'trainset9_032012.pds.zip' Default = NULL. (optional)
+    #' @param reference_version a string containing the version of the reference
+    #' used in the classification of the sequences. For example: '9_032012'.
+    #' Default = NULL. (optional)
+    #' @param reference_note a string containing the any additional notes about
+    #' the reference. For example: 'custom reference based on RDP'.
+    #' Default = NULL. (optional)
+    #' @param reference_url a string containing a web address where the
+    #' reference may be downloaded. Default = NULL. (optional)
     #' @examples
     #'
     #'   dataset <- sequence_data$new("my_dataset")
     #'   sequences <- read_fasta(rdataset_example("final.fasta"))
     #'   dataset$add_sequences(sequences$names, sequences$sequences)
     #'
-    add_sequences = function(names, sequences = NULL, comments = NULL) {
+    #' # With the additional parameters to add information about the reference
+    #' # You can also add references using the 'add_references' function.
+    #'
+    #' url <- "https://mothur.org/wiki/silva_reference_files/"
+    #'
+    #' dataset <- sequence_data$new("my_dataset")
+    #' dataset$add_sequences(sequences$names, sequences$sequences,
+    #' reference_name = "silva.bacteria.fasta",
+    #' reference_note = "alignment by mothur2 v1.0 using default options",
+    #' reference_version = "1.38.1", reference_url = url)
+    #'
+    add_sequences = function(names, sequences = NULL, comments = NULL,
+                             reference_name = NULL,
+                             reference_version = NULL,
+                             reference_note = NULL,
+                             reference_url = NULL) {
       if (is.null(comments)) {
         comments <- rep("", length(names))
       }
@@ -243,6 +273,16 @@ sequence_data <- R6Class("sequence_data",
         sequences <- rep("", length(names))
       }
       self$data$add_sequences(names, sequences, comments)
+
+      # if a reference is given, save it
+      if (!is.null(reference_name)) {
+        self$add_references(
+          reference_name = reference_name,
+          version = reference_version,
+          note = reference_note,
+          url = reference_url
+        )
+      }
 
       invisible(self)
     },
@@ -485,6 +525,7 @@ sequence_data <- R6Class("sequence_data",
     #' dataset$assign_sequence_taxonomy(names, taxonomies)
     #'
     #' # With the additional parameters to add information about the reference
+    #' # You can also add references using the 'add_references' function.
     #'
     #' url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
     #'          "9_032012.pds.zip", collapse = "")

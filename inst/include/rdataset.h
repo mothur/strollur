@@ -242,7 +242,6 @@ public:
     int getAbundance(string binId, string sample = "");
     // abundances for given binId broken down by sample
     vector<int> getAbundances(string binId);
-    string getBinAssignment(int seqIndex);
     vector<string> getListVector(vector<string>& seqNames);
     // 2 column dataframe - bin_id, seq_id
     Rcpp::DataFrame getList(vector<string>& seqNames);

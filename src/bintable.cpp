@@ -350,16 +350,6 @@ string BinTable::get(string binName, vector<string>& seqNames) {
     return bin;
 }
 /******************************************************************************/
-string BinTable::getBinAssignment(int seqIndex) {
-    string binName = "";
-
-    auto it = seqBins.find(seqIndex);
-    if (it != seqBins.end()) {
-        return binNames[it->second];
-    }
-    return binName;
-}
-/******************************************************************************/
 vector<string> BinTable::getListVector(vector<string>& seqNames) {
     vector<string> listVector;
 

@@ -1,6 +1,8 @@
 #' @title clone
 #' @description
-#' The clone function will create a deep copy of 'sequence_data' object.
+#' The clone function will create a deep copy of 'sequence_data' object. Note:
+#' 'sequence_data' is an R6 class with reference semantics and requires a deep
+#' copy.
 #' @param dataset a 'sequence_data' object
 #' @examples
 #' # For dataset's including sequence data:

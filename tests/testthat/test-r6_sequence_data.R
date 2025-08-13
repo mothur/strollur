@@ -182,14 +182,32 @@ test_that("sequence_data - addSeqs, assign samples", {
   )
 
   data <- sequence_data$new("mydata")
-  data$add_sequences(names, seqs)
+
+  # include reference
+  url <- "https://mothur.org/wiki/silva_reference_files/"
+  data$add_sequences(names, seqs,
+    reference_name = "silva.bacteria.fasta",
+    reference_note = "alignment by mothur2 v1.0",
+    reference_version = "1.38.1", reference_url = url
+  )
+
+  references <- data$get_references()
+
+  expect_equal(nrow(references), 1)
+  expect_equal(references[[1, "reference_name"]], "silva.bacteria.fasta")
+  expect_equal(references[[1, "version"]], "1.38.1")
+  expect_equal(references[[1, "usage"]], NA)
+  expect_equal(references[[1, "note"]], "alignment by mothur2 v1.0")
+  expect_equal(references[[1, "url"]], url)
+
+
   data$assign_sequence_abundance(ids, abundances, samples, treatments)
 
   # assign bins
   bins <- c("bin1", "bin2", "bin1", "bin2")
   data$assign_bins(bins, seq_ids = names)
-  expect_equal(data$get_num_bins(), 2)
 
+  expect_equal(data$get_num_bins(), 2)
   expect_equal(data$get_list()$otu_id, c("bin1", "bin1", "bin2", "bin2"))
   expect_equal(data$get_list()$seq_id, c("seq1", "seq3", "seq2", "seq4"))
 
@@ -517,7 +535,7 @@ test_that("sequence_data - ", {
   expect_equal(references[[1, 2]], "9_032012")
   expect_equal(references[[1, 3]], "sequence_classification")
   expect_equal(references[[1, 4]], note)
-  expect_equal(references[[1, 5]], url)
+  expect_equal(references[[1, "url"]], url)
 
 
   report <- dataset$get_sequence_taxonomy_report()

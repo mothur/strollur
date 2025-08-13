@@ -28,7 +28,6 @@ public:
 
     // numeric helpers
     bool isPositiveNumeric(string s);
-    float round2Places(float var);
 
 private:
 
