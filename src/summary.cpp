@@ -249,6 +249,18 @@ Rcpp::DataFrame Summary::summarizeFasta(vector<vector<int>> report,
              Rcpp::_["polymers"] = getValues(results["polymers"]),
              Rcpp::_["numns"] = getValues(results["numns"]),
              Rcpp::_["numseqs"] = wrappedNumSeqs);
+
+         vector<string> rowNames(8, "");
+         rowNames[0] = "Minimum:";
+         rowNames[1] = "2.5%-tile:";
+         rowNames[2] = "25%-tile:";
+         rowNames[3] = "Median:   ";
+         rowNames[4] = "75%-tile:";
+         rowNames[5] = "97.5%-tile:";
+         rowNames[6] = "Maximum:";
+         rowNames[7] = "Mean:      ";
+         df.attr("row.names") = rowNames;
+
         return (df);
 }
 //**************************************************************************
@@ -361,6 +373,17 @@ Rcpp::DataFrame Summary::summarize(Rcpp::DataFrame df, vector<int> counts,
         }
         sort(dfNames.begin(), dfNames.end());
         summaryResult.attr("names") = dfNames;
+
+        vector<string> rowNames(8, "");
+        rowNames[0] = "Minimum:";
+        rowNames[1] = "2.5%-tile:";
+        rowNames[2] = "25%-tile:";
+        rowNames[3] = "Median:   ";
+        rowNames[4] = "75%-tile:";
+        rowNames[5] = "97.5%-tile:";
+        rowNames[6] = "Maximum:";
+        rowNames[7] = "Mean:      ";
+        summaryResult.attr("row.names") = rowNames;
 
         return (summaryResult);
 }

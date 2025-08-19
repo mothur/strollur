@@ -1175,20 +1175,12 @@ sequence_data <- R6Class("sequence_data",
     get_sequence_summary = function(silent = FALSE) {
       results <- self$data$get_sequence_summary()
 
-      results_row_names <- c(
-        "Minimum:", "2.5%-tile:", "25%-tile:", "Median:   ",
-        "75%-tile:", "97.5%-tile:", "Maximum:", "Mean:      "
-      )
-
       if (nrow(private$contigs_data) != 0) {
-        contigs_summary <- private$summarize(private$contigs_data)
-        results[["contigs_summary"]] <- contigs_summary
-
-        rownames(contigs_summary) <- results_row_names
+        results[["contigs_summary"]] <- private$summarize(private$contigs_data)
 
         # if you have summary results to print
         if (!silent) {
-          print(contigs_summary)
+          print(results[["contigs_summary"]])
           cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
           cat("Total seqs:\t", self$get_num_sequences(), "\n")
         }
@@ -1196,14 +1188,12 @@ sequence_data <- R6Class("sequence_data",
 
       # if you have alignment data, then print
       if (nrow(private$alignment_data) != 0) {
-        align_summary <- private$summarize(private$alignment_data)
-        results[["alignment_summary"]] <- align_summary
-
-        rownames(align_summary) <- results_row_names
+        results[["alignment_summary"]] <- private$summarize(
+            private$alignment_data)
 
         # if you have summary results to print
         if (!silent) {
-          print(align_summary)
+          print(results[["alignment_summary"]])
           cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
           cat("Total seqs:\t", self$get_num_sequences(), "\n")
         }
@@ -1211,8 +1201,6 @@ sequence_data <- R6Class("sequence_data",
 
       # if you have summary results to print
       if (!all(self$get_sequences() == "") && (!silent)) {
-        rownames(results[[1]]) <- results_row_names
-
         # if you have summary results to print
         if (!silent) {
           print(results[[1]])

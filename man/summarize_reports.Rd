@@ -19,3 +19,18 @@ DataFrame with summary values
 \description{
 Summarizes a report
 }
+\examples{
+
+alignment_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+
+# for this simple example we assume all the sequences in the report are
+# unique, therefore we set their abundance to 1.
+counts <- rep(1, 5)
+
+# extract numeric columns to summarize
+numeric_report <- alignment_report[sapply(alignment_report, is.numeric)]
+
+report_summary <- summarize_reports(numeric_report, counts, 10)
+
+}
