@@ -1,0 +1,6 @@
+QueryName	QueryLength	TemplateName	TemplateLength	SearchMethod	SearchScore	AlignmentMethod	QueryStart	QueryEnd	TemplateStart	TemplateEnd	PairwiseAlignmentLength	GapsInQuery	GapsInTemplate	LongestInsert	SimBtwnQuery&Template
+seq1	253	AF371552.1	293	kmer	66.26	needleman	1	253	20	272	253	0	0	0	94.07
+seq2	253	AY169428.1	293	kmer	74.79	needleman	1	253	20	272	253	0	0	0	96.04
+seq3	253	AF132257.1	293	kmer	71.13	needleman	1	253	20	272	253	0	0	0	94.07
+seq4	252	AJ400264.1	292	kmer	57.55	needleman	1	252	20	271	252	0	0	0	92.06
+seq5	252	AJ400264.1	292	kmer	82.44	needleman	1	252	20	271	252	0	0	0	97.22

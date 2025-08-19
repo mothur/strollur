@@ -23,5 +23,5 @@ test_that("test read_dada2", {
   expect_equal(data$get_num_sequences(TRUE), 100)
   expect_equal(data$get_num_sequences(), 45150)
   expect_equal(data$get_sequences(), rep("ATGCTTT", 100))
-  expect_equal(length(data$get_ids()), 100)
+  expect_equal(length(data$get_sequence_names()), 100)
 })

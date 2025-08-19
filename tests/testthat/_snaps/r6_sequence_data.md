@@ -5,15 +5,15 @@
     Output
       miseq_sop:
       
-      		start	end	length	ambigs	polymer	num_ns	numseqs
-      Minimum:	1	375	249	0	3	0	1 
-      2.5%-tile:	1	375	252	0	3	0	2850 
-      25%-tile:	1	375	252	0	4	0	28491 
-      Median:   	1	375	252	0	4	0	56982 
-      75%-tile:	1	375	253	0	5	0	85473 
-      97.5%-tile:	1	375	253	0	6	0	111114 
-      Maximum:	1	375	256	0	6	0	113963 
-      Mean:      	1	375	252	0	4	0 
+                  starts ends   nbases ambigs polymers numns numseqs
+      Minimum:         1  375 249.0000      0 3.000000     0       1
+      2.5%-tile:       1  375 252.0000      0 3.000000     0    2850
+      25%-tile:        1  375 252.0000      0 4.000000     0   28491
+      Median:          1  375 252.0000      0 4.000000     0   56982
+      75%-tile:        1  375 253.0000      0 5.000000     0   85473
+      97.5%-tile:      1  375 253.0000      0 6.000000     0  111114
+      Maximum:         1  375 256.0000      0 6.000000     0  113963
+      Mean:            1  375 252.4472      0 4.368699     0        
       Unique seqs:	 2425 
       Total seqs:	 113963 
       
@@ -52,15 +52,15 @@
       
       miseq_sop:
       
-      		start	end	length	ambigs	polymer	num_ns	numseqs
-      Minimum:	1	375	249	0	3	0	1 
-      2.5%-tile:	1	375	252	0	3	0	2850 
-      25%-tile:	1	375	252	0	4	0	28491 
-      Median:   	1	375	252	0	4	0	56982 
-      75%-tile:	1	375	253	0	5	0	85473 
-      97.5%-tile:	1	375	253	0	6	0	111114 
-      Maximum:	1	375	256	0	6	0	113963 
-      Mean:      	1	375	252	0	4	0 
+                  starts ends   nbases ambigs polymers numns numseqs
+      Minimum:         1  375 249.0000      0 3.000000     0       1
+      2.5%-tile:       1  375 252.0000      0 3.000000     0    2850
+      25%-tile:        1  375 252.0000      0 4.000000     0   28491
+      Median:          1  375 252.0000      0 4.000000     0   56982
+      75%-tile:        1  375 253.0000      0 5.000000     0   85473
+      97.5%-tile:      1  375 253.0000      0 6.000000     0  111114
+      Maximum:         1  375 256.0000      0 6.000000     0  113963
+      Mean:            1  375 252.4472      0 4.368699     0        
       Unique seqs:	 2425 
       Total seqs:	 113963 
       

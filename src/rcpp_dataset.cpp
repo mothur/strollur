@@ -1,20 +1,9 @@
 #include <Rcpp.h>
 #include "../inst/include/rdataset.h"
 
-//' @name Rcpp_Dataset
-//' @title Rcpp_Dataset
-//' @description The 'Dataset' class is the backend C++ implementation of the R6
-//' 'sequence_data' object. Along with the rcpp_module this class allows
-//' package developers access to additional functionality. 'Dataset' stores
-//' nucleotide sequences, abundance, sample and treatment assignments,
-//' taxonomic classifications, asv / otu clusters. It creates various reports
-//' and summaries. It is designed to facilitate data transfer and access across
-//' multiple R packages.
-//'
-//' @seealso '?sequence_data'
-//' @export
-RCPP_EXPOSED_AS(Dataset);
 
+
+RCPP_EXPOSED_AS(Dataset);
 
 /******************************************************************************/
 RCPP_MODULE(Dataset) {
@@ -27,12 +16,8 @@ RCPP_MODULE(Dataset) {
     .field("processors", &Dataset::processors, "Get number of threads used")
     .field("is_aligned", &Dataset::isAligned, "Get dataset alignment status")
     .field("num_unique", &Dataset::numUnique, "Get number of unique sequences")
-    .field("has_contigs_data", &Dataset::hasContigsData, "Get contigs data status")
-    .field("has_align_data", &Dataset::hasAlignData, "Get align data status")
 
     // ******* exposed functions ******* //
-    .method("add_align_report", &Dataset::addAlignReport, "Add alignment report to dataset")
-    .method("add_contigs_report", &Dataset::addContigsReport, "Add contigs report to dataset")
     .method("add_sequences", &Dataset::addSequences, "Add sequences to dataset")
     .method("assign_bins", &Dataset::assignBins, "Add bin assignments to dataset")
     .method("assign_bin_taxonomy", &Dataset::assignBinTaxonomy, "Assign bin classification")
@@ -46,8 +31,6 @@ RCPP_MODULE(Dataset) {
 
     .method("get_abundance", &Dataset::getSequenceAbundances, "Get total abundance for each sequence")
     .method("get_abundances", &Dataset::getSeqsAbundsBySample, "Get abundances for sequences by sample")
-    .method("get_align_report", &Dataset::getAlignReport, "Get align report data: search_score, sim_score, longest_insert")
-    .method("get_contigs_report", &Dataset::getContigsReport, "Get contigs report data: olengths, ostarts, oends, mismatches, ee")
     .method("get_list", &Dataset::getList, "Get data.frame containing sequence bin assignments")
     .method("get_names", &Dataset::getNames, "Get names of sequences in dataset")
     .method("get_names_by_sample", &Dataset::getNamesBySample, "Get names of sequences parsed by sample")

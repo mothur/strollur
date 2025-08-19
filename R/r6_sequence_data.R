@@ -39,6 +39,10 @@ sequence_data <- R6Class("sequence_data",
                           dataset = NULL) {
       if (is.null(dataset)) {
         self$data <- new(Dataset, name, processors)
+        private$references <- data.frame()
+        private$metadata <- data.frame()
+        private$alignment_data <- data.frame()
+        private$contigs_data <- data.frame()
       } else {
         # copy of dataset backend
         self$data <- new(Dataset, dataset$data)
@@ -50,6 +54,10 @@ sequence_data <- R6Class("sequence_data",
 
         # copy metadata
         private$metadata <- dataset$get_metadata()
+        private$references <- dataset$get_references()
+        private$alignment_data <- dataset$get_alignment_report()
+        private$contigs_data <- dataset$get_contigs_assembly_report()
+        private$processors <- processors
       }
 
       invisible(self)
@@ -123,6 +131,155 @@ sequence_data <- R6Class("sequence_data",
 
       invisible(self)
     },
+
+    #' @description
+    #' Add alignment report for your dataset
+    #' @param report a data.frame containing alignment data about your dataset
+    #' @param sequence_name_column a string containing the name of the column
+    #' containing the sequence names.
+    #' @examples
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+    #'    col_names = TRUE, show_col_types = FALSE)
+    #'   dataset$add_alignment_report(align_report, "QueryName")
+    #'
+    add_alignment_report = function(report, sequence_name_column) {
+      if (!is.data.frame(report)) {
+        abort_incorrect_type("data.frame", class(report)[1])
+      }
+
+      if (!(sequence_name_column %in% names(report))) {
+        message <- paste("[ERROR]: The alignment report must include a ",
+          "column containing sequence names. ",
+          sequence_name_column,
+          " is not a named column in your alignment_report.",
+          collapse = ""
+        )
+        cli::cli_abort(message)
+      } else {
+        # no sequence data yet, add the sequences
+        if (self$get_num_sequences() == 0) {
+          self$add_sequences(report[[sequence_name_column]])
+          private$alignment_data <- report
+          # save name column
+          attr(
+            private$alignment_data,
+            "sequence_name_column"
+          ) <- sequence_name_column
+        } else {
+          # seqs in dataset and not in report
+          missing_seqs <- setdiff(
+            self$get_sequence_names(),
+            report[[sequence_name_column]]
+          )
+
+          # make sure there is a report entry for each sequence in dataset
+          if (length(missing_seqs) == 0) {
+            # preserve order of dataset
+            private$alignment_data <- report[order(
+              match(
+                report[[sequence_name_column]],
+                self$get_sequence_names()
+              )
+            ), ]
+            # save name column
+            attr(
+              private$alignment_data,
+              "sequence_name_column"
+            ) <- sequence_name_column
+          } else {
+            message <- paste("[WARNING]: Your alignment report does no",
+              "t contain an entry for every sequence in",
+              " your dataset, ignoring alignment report",
+              ". Missing alignment report entries for: ",
+              paste(missing_seqs, collapse = ", "),
+              ".",
+              collapse = ""
+            )
+            cli_alert(message)
+          }
+        }
+      }
+
+      invisible(self)
+    },
+
+    #' @description
+    #' Add contigs assembly report for your dataset
+    #' @param report a data.frame containing contigs assembly data about your
+    #' dataset
+    #' @param sequence_name_column a string containing the name of the column
+    #' containing the sequence names.
+    #' @examples
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+    #'    col_names = TRUE, show_col_types = FALSE)
+    #'   dataset$add_contigs_assembly_report(contigs_report, "Name")
+    #'
+    add_contigs_assembly_report = function(report, sequence_name_column) {
+      if (!is.data.frame(report)) {
+        abort_incorrect_type("data.frame", class(report)[1])
+      }
+
+      if (!(sequence_name_column %in% names(report))) {
+        message <- paste("[ERROR]: The contigs assembly report must ",
+          "include a column containing sequence names. ",
+          sequence_name_column,
+          " is not a named column in your contigs_report.",
+          collapse = ""
+        )
+        cli::cli_abort(message)
+      } else {
+        # no sequence data yet, add the sequences
+        if (self$get_num_sequences() == 0) {
+          self$add_sequences(report[[sequence_name_column]])
+          private$contigs_data <- report
+          # save name column
+          attr(
+            private$contigs_data,
+            "sequence_name_column"
+          ) <- sequence_name_column
+        } else {
+          # seqs in dataset and not in report
+          missing_seqs <- setdiff(
+            self$get_sequence_names(),
+            report[[sequence_name_column]]
+          )
+
+          # make sure there is a report entry for each sequence in dataset
+          if (length(missing_seqs) == 0) {
+            # preserve order of dataset
+            private$contigs_data <- report[order(
+              match(
+                report[[sequence_name_column]],
+                self$get_sequence_names()
+              )
+            ), ]
+            # save name column
+            attr(
+              private$contigs_data,
+              "sequence_name_column"
+            ) <- sequence_name_column
+          } else {
+            message <- paste("[WARNING]: Your contigs assembly report ",
+              "does not contain an entry for every ",
+              "sequence in your dataset, ignoring. ",
+              "Missing contigs",
+              " assembly report entries for: ",
+              paste(missing_seqs, collapse = ", "),
+              ".",
+              collapse = ""
+            )
+            cli_alert(message)
+          }
+        }
+      }
+
+      invisible(self)
+    },
+
 
     #' @description
     #' Add information about the references used to analyze your dataset
@@ -512,7 +669,7 @@ sequence_data <- R6Class("sequence_data",
 
       # sanity check, make sure names are present in dataset
       unique_names <- sort(unique(names))
-      dataset_names <- sort(self$get_ids())
+      dataset_names <- sort(self$get_sequence_names())
 
       if (!identical(unique_names, dataset_names)) {
         cli::cli_abort("[ERROR]: You must provide assignments for all
@@ -625,28 +782,28 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Remove 'all', 'metadata', 'references', 'alignment' or 'contigs' data
-    #' from your dataset
-    #' @param type a string indicating the type data you want to remove. Options
-    #' include: "all", "metadata", "references", "alignment" or "contigs".
-    #' Default = "all".
+    #' Remove 'all', 'metadata', 'references', 'alignment_report' or
+    #' 'contigs_assembly_report' data from your dataset.
+    #' @param type a string indicating the type of data you want to remove.
+    #' Options include: "all", "metadata", "references", "alignment_report" or
+    #' "contigs_assembly_report". Default = "all".
     clear = function(type = "all") {
       if (type == "all") {
-          self$data$clear()
-          private$metadata <- data.frame()
-          private$references <- data.frame()
-          private$alignment_data <- data.frame()
-          private$contigs_data <- data.frame()
-      }else if (type == "metadata") {
-          private$metadata <- data.frame()
-      }else if (type == "references") {
-          private$references <- data.frame()
-      }else if (type == "alignment") {
-          private$alignment_data <- data.frame()
-      }else if (type == "contigs") {
-          private$contigs_data <- data.frame()
-      }else {
-          cli_alert("{.var {type}} is not a valid type to clear, ignoring.")
+        self$data$clear()
+        private$metadata <- data.frame()
+        private$references <- data.frame()
+        private$alignment_data <- data.frame()
+        private$contigs_data <- data.frame()
+      } else if (type == "metadata") {
+        private$metadata <- data.frame()
+      } else if (type == "references") {
+        private$references <- data.frame()
+      } else if (type == "alignment_report") {
+        private$alignment_data <- data.frame()
+      } else if (type == "contigs_assembly_report") {
+        private$contigs_data <- data.frame()
+      } else {
+        cli_alert("{.var {type}} is not a valid type to clear, ignoring.")
       }
 
       invisible(self)
@@ -660,23 +817,61 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get report containing align report table -
-    #' ids, search_scores, sim_scores, longest_insert
+    #' Get data.frame containing the alignment report data
+    #' @examples
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+    #'    col_names = TRUE, show_col_types = FALSE)
+    #'   dataset$add_alignment_report(align_report, "QueryName")
+    #'   dataset$get_alignment_report()
+    #'
     #' @return data.frame
-    get_align_report = function() {
-      if (self$data$has_align_data) {
-        return(self$data$get_align_report())
+    get_alignment_report = function() {
+      # if there is alignment data
+      if (nrow(private$alignment_data) != 0) {
+        name_col <- attr(private$alignment_data, "sequence_name_column")
+
+        # select alignment data for the "good" sequences
+        df <- private$alignment_data[
+          private$alignment_data[[name_col]] %in%
+            self$get_sequence_names(),
+        ]
+        # match order to sequences
+        return(as.data.frame(df[order(match(
+          df[[name_col]],
+          self$get_sequence_names()
+        )), ]))
       }
       data.frame()
     },
 
     #' @description
-    #' Get report containing contigs report table -
-    #' ids, lengths, ostarts, oends, olengths, mismatches, numns, ee
+    #' Get data.frame containing contigs report
+    #' @examples
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+    #'    col_names = TRUE, show_col_types = FALSE)
+    #'   dataset$add_contigs_assembly_report(contigs_report, "Name")
+    #'   dataset$get_contigs_assembly_report()
+    #'
     #' @return data.frame
-    get_contigs_report = function() {
-      if (self$data$has_contigs_data) {
-        return(self$data$get_contigs_report())
+    get_contigs_assembly_report = function() {
+      # if there is contigs data
+      if (nrow(private$contigs_data) != 0) {
+        name_col <- attr(private$contigs_data, "sequence_name_column")
+
+        # select alignment data for the "good" sequences
+        df <- private$contigs_data[
+          private$contigs_data[[name_col]] %in%
+            self$get_sequence_names(),
+        ]
+        # match order to sequences
+        return(as.data.frame(df[order(match(
+          df[[name_col]],
+          self$get_sequence_names()
+        )), ]))
       }
       data.frame()
     },
@@ -701,7 +896,7 @@ sequence_data <- R6Class("sequence_data",
     #' Get names of sequences in the dataset
     #' @param sample String, name of sample
     #' @return vector of ids
-    get_ids = function(sample = NULL) {
+    get_sequence_names = function(sample = NULL) {
       if (is.null(sample)) {
         sample <- ""
       }
@@ -980,250 +1175,50 @@ sequence_data <- R6Class("sequence_data",
     get_sequence_summary = function(silent = FALSE) {
       results <- self$data$get_sequence_summary()
 
-      if (length(results) == 0) {
-        cli::cli_alert("Your dataset does not include sequence data, ignoring.")
-        return(list())
-      }
-
       results_row_names <- c(
-        "Minimum:", "2.5%-tile:", "25%-tile:",
-        "Median:   ", "75%-tile:", "97.5%-tile:",
-        "Maximum:", "Mean:      "
+        "Minimum:", "2.5%-tile:", "25%-tile:", "Median:   ",
+        "75%-tile:", "97.5%-tile:", "Maximum:", "Mean:      "
       )
 
-      rownames(results[[1]]) <- results_row_names
+      if (nrow(private$contigs_data) != 0) {
+        contigs_summary <- private$summarize(private$contigs_data)
+        results[["contigs_summary"]] <- contigs_summary
 
-      if (self$data$has_contigs_data) {
-        rownames(results$contigs_summary) <- results_row_names
+        rownames(contigs_summary) <- results_row_names
 
         # if you have summary results to print
-        if ((length(results$contigs_summary$ostarts) == 8) && (!silent)) {
-          cat("\t\toverlap_start\toverlap_end\tlength\toverlap_length\t")
-          cat("mismatches\tnum_ns\tnumseqs\n")
-          cat(paste(
-            results_row_names[1], results$contigs_summary$ostarts[1],
-            results$contigs_summary$oends[1],
-            results$contigs_summary$lengths[1],
-            results$contigs_summary$olengths[1],
-            results$contigs_summary$mismatches[1],
-            results$contigs_summary$numns[1],
-            results$contigs_summary$numseqs[1],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[2], results$contigs_summary$ostarts[2],
-            results$contigs_summary$oends[2],
-            results$contigs_summary$lengths[2],
-            results$contigs_summary$olengths[2],
-            results$contigs_summary$mismatches[2],
-            results$contigs_summary$numns[2],
-            results$contigs_summary$numseqs[2],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[3], results$contigs_summary$ostarts[3],
-            results$contigs_summary$oends[3],
-            results$contigs_summary$lengths[3],
-            results$contigs_summary$olengths[3],
-            results$contigs_summary$mismatches[3],
-            results$contigs_summary$numns[3],
-            results$contigs_summary$numseqs[3],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[4], results$contigs_summary$ostarts[4],
-            results$contigs_summary$oends[4],
-            results$contigs_summary$lengths[4],
-            results$contigs_summary$olengths[4],
-            results$contigs_summary$mismatches[4],
-            results$contigs_summary$numns[4],
-            results$contigs_summary$numseqs[4],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[5], results$contigs_summary$ostarts[5],
-            results$contigs_summary$oends[5],
-            results$contigs_summary$lengths[5],
-            results$contigs_summary$olengths[5],
-            results$contigs_summary$mismatches[5],
-            results$contigs_summary$numns[5],
-            results$contigs_summary$numseqs[5],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[6], results$contigs_summary$ostarts[6],
-            results$contigs_summary$oends[6],
-            results$contigs_summary$lengths[6],
-            results$contigs_summary$olengths[6],
-            results$contigs_summary$mismatches[6],
-            results$contigs_summary$numns[6],
-            results$contigs_summary$numseqs[6],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[7], results$contigs_summary$ostarts[7],
-            results$contigs_summary$oends[7],
-            results$contigs_summary$lengths[7],
-            results$contigs_summary$olengths[7],
-            results$contigs_summary$mismatches[7],
-            results$contigs_summary$numns[7],
-            results$contigs_summary$numseqs[7],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[8], results$contigs_summary$ostarts[8],
-            results$contigs_summary$oends[8],
-            results$contigs_summary$lengths[8],
-            results$contigs_summary$olengths[8],
-            results$contigs_summary$mismatches[8],
-            results$contigs_summary$numns[8],
-            sep = "\t"
-          ), "\n")
+        if (!silent) {
+          print(contigs_summary)
           cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
           cat("Total seqs:\t", self$get_num_sequences(), "\n")
         }
       }
 
       # if you have alignment data, then print
-      if (self$data$has_align_data) {
-        rownames(results$align_summary) <- results_row_names
+      if (nrow(private$alignment_data) != 0) {
+        align_summary <- private$summarize(private$alignment_data)
+        results[["alignment_summary"]] <- align_summary
 
-        if ((length(results$align_summary$search_scores) == 8) && (!silent)) {
-          cat("\t\tsearch_scores\tsim_scores\tlongest_inserts\n")
-          cat(paste(
-            results_row_names[1], results$align_summary$search_scores[1],
-            results$align_summary$sim_scores[1],
-            results$align_summary$longest_inserts[1],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[2], results$align_summary$search_scores[2],
-            results$align_summary$sim_scores[2],
-            results$align_summary$longest_inserts[2],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[3], results$align_summary$search_scores[3],
-            results$align_summary$sim_scores[3],
-            results$align_summary$longest_inserts[3],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[4], results$align_summary$search_scores[4],
-            results$align_summary$sim_scores[4],
-            results$align_summary$longest_inserts[4],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[5], results$align_summary$search_scores[5],
-            results$align_summary$sim_scores[5],
-            results$align_summary$longest_inserts[5],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[6], results$align_summary$search_scores[6],
-            results$align_summary$sim_scores[6],
-            results$align_summary$longest_inserts[6],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[7], results$align_summary$search_scores[7],
-            results$align_summary$sim_scores[7],
-            results$align_summary$longest_inserts[7],
-            sep = "\t"
-          ), "\n")
-          cat(paste(
-            results_row_names[8], results$align_summary$search_scores[8],
-            results$align_summary$sim_scores[8],
-            results$align_summary$longest_inserts[8],
-            sep = "\t"
-          ), "\n")
+        rownames(align_summary) <- results_row_names
+
+        # if you have summary results to print
+        if (!silent) {
+          print(align_summary)
           cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
           cat("Total seqs:\t", self$get_num_sequences(), "\n")
         }
       }
 
       # if you have summary results to print
-      if (self$data$has_sequence_strings() && (!silent)) {
-        cat("\t\tstart\tend\tlength\tambigs\tpolymer\tnum_ns\tnumseqs\n")
-        cat(
-          paste(results_row_names[1], results[[1]]$starts[1],
-            results[[1]]$ends[1],
-            results[[1]]$nbases[1], results[[1]]$ambigs[1],
-            results[[1]]$polymers[1], results[[1]]$numns[1],
-            results[[1]]$numseqs[1],
-            sep = "\t"
-          ),
-          "\n"
-        )
-        cat(
-          paste(results_row_names[2], results[[1]]$starts[2],
-            results[[1]]$ends[2],
-            results[[1]]$nbases[2], results[[1]]$ambigs[2],
-            results[[1]]$polymers[2], results[[1]]$numns[2],
-            results[[1]]$numseqs[2],
-            sep = "\t"
-          ),
-          "\n"
-        )
-        cat(
-          paste(results_row_names[3], results[[1]]$starts[3],
-            results[[1]]$ends[3],
-            results[[1]]$nbases[3], results[[1]]$ambigs[3],
-            results[[1]]$polymers[3], results[[1]]$numns[3],
-            results[[1]]$numseqs[3],
-            sep = "\t"
-          ),
-          "\n"
-        )
-        cat(
-          paste(results_row_names[4], results[[1]]$starts[4],
-            results[[1]]$ends[4],
-            results[[1]]$nbases[4], results[[1]]$ambigs[4],
-            results[[1]]$polymers[4], results[[1]]$numns[4],
-            results[[1]]$numseqs[4],
-            sep = "\t"
-          ),
-          "\n"
-        )
-        cat(
-          paste(results_row_names[5], results[[1]]$starts[5],
-            results[[1]]$ends[5],
-            results[[1]]$nbases[5], results[[1]]$ambigs[5],
-            results[[1]]$polymers[5], results[[1]]$numns[5],
-            results[[1]]$numseqs[5],
-            sep = "\t"
-          ),
-          "\n"
-        )
-        cat(
-          paste(results_row_names[6], results[[1]]$starts[6],
-            results[[1]]$ends[6],
-            results[[1]]$nbases[6], results[[1]]$ambigs[6],
-            results[[1]]$polymers[6], results[[1]]$numns[6],
-            results[[1]]$numseqs[6],
-            sep = "\t"
-          ),
-          "\n"
-        )
-        cat(
-          paste(results_row_names[7], results[[1]]$starts[7],
-            results[[1]]$ends[7],
-            results[[1]]$nbases[7], results[[1]]$ambigs[7],
-            results[[1]]$polymers[7], results[[1]]$numns[7],
-            results[[1]]$numseqs[7],
-            sep = "\t"
-          ),
-          "\n"
-        )
-        cat(paste(
-          results_row_names[8], results[[1]]$starts[8], results[[1]]$ends[8],
-          results[[1]]$nbases[8], results[[1]]$ambigs[8],
-          results[[1]]$polymers[8], results[[1]]$numns[8],
-          sep = "\t"
-        ), "\n")
-        cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
-        cat("Total seqs:\t", self$get_num_sequences(), "\n")
+      if (!all(self$get_sequences() == "") && (!silent)) {
+        rownames(results[[1]]) <- results_row_names
+
+        # if you have summary results to print
+        if (!silent) {
+          print(results[[1]])
+          cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
+          cat("Total seqs:\t", self$get_num_sequences(), "\n")
+        }
       }
 
       if ("scrap_summary" %in% names(results)) {
@@ -1360,11 +1355,23 @@ sequence_data <- R6Class("sequence_data",
     references = data.frame(),
     alignment_data = data.frame(),
     contigs_data = data.frame(),
-
+    processors = 1,
 
     # Clear sequences from dataset
     finalize = function() {
       self$clear()
+    },
+
+    # summarize numeric column in a dataframe
+    summarize = function(report) {
+      numeric_report <- report[sapply(report, is.numeric)]
+      counts <- self$data$get_abundance()
+
+      report_summary <- summarize_reports(
+        numeric_report,
+        self$data$get_abundance(),
+        private$processors
+      )
     }
   )
 )

@@ -17,6 +17,17 @@ test_that("sequence_data - intialize from read_mothur / print", {
   expect_equal(dataset$get_num_samples(), 19)
   expect_equal(dataset$get_num_bins("otu"), 531)
 
+  seqs_summary <- dataset$get_sequence_summary()[["sequence_summary"]]
+
+  expect_equal(seqs_summary$starts[1], 1)
+  expect_equal(seqs_summary$ends[1], 375)
+  expect_equal(seqs_summary$ambigs[2], 0)
+  expect_equal(seqs_summary$numns[4], 0)
+  expect_equal(seqs_summary$nbases[1], 249)
+  expect_equal(seqs_summary$nbases[7], 256)
+  expect_equal(seqs_summary$polymers[1], 3)
+  expect_equal(seqs_summary$polymers[7], 6)
+
   # add phylotype list
   phylo_list <- read_mothur_list(list = rdataset_example("final.tx.list"))
   dataset$assign_bins(phylo_list$bin_id,
@@ -229,11 +240,11 @@ test_that("sequence_data - addSeqs, assign samples", {
   expect_equal(data$get_shared()$abundance, c(275, 425, 500, 26, 40, 54))
 
   expect_true(data$is_aligned())
-  expect_equal(data$get_ids(), names)
+  expect_equal(data$get_sequence_names(), names)
   expect_equal(data$get_sequences(), seqs)
-  expect_equal(data$get_ids("sample2"), names)
-  expect_equal(data$get_ids("sample3"), c("seq1", "seq2", "seq3"))
-  expect_equal(data$get_ids("sample4"), c("seq1", "seq2", "seq4"))
+  expect_equal(data$get_sequence_names("sample2"), names)
+  expect_equal(data$get_sequence_names("sample3"), c("seq1", "seq2", "seq3"))
+  expect_equal(data$get_sequence_names("sample4"), c("seq1", "seq2", "seq4"))
   expect_equal(data$get_sequences("sample2"), seqs)
   expect_equal(data$get_sequences("sample3"), c("ATTGC", "ATTGC", "ATTGC"))
   expect_equal(data$get_sequences("sample4"), c("ATTGC", "ATTGC", "ATTGC"))
@@ -406,98 +417,6 @@ test_that("sequence_data - get_list get_rabund, get_shared", {
   expect_equal(
     dataset$get_sample_summary(TRUE)[[1]]$total,
     c(36, 25, 2, 20, 13, 4)
-  )
-})
-
-
-test_that("sequence_data - get_align_report, get_contigs_report", {
-  names <- c("seq1", "seq2", "seq3", "seq4")
-  seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
-
-  ids <- c(
-    "seq1", "seq1", "seq1",
-    "seq2", "seq2", "seq2",
-    "seq3", "seq3",
-    "seq4", "seq4"
-  )
-  samples <- c(
-    "sample2", "sample3", "sample4",
-    "sample2", "sample3", "sample4",
-    "sample2", "sample3",
-    "sample2", "sample4"
-  )
-  abundances <- c(
-    250, 400, 500,
-    25, 40, 50,
-    25, 25,
-    1, 4
-  )
-
-  data <- sequence_data$new("mydata")
-  data$add_sequences(names, seqs)
-  data$assign_sequence_abundance(ids, abundances, samples)
-
-  treatments <- c("early", "early", "late")
-
-  data$assign_treatments(unique(samples), treatments)
-
-  expect_equal(data$get_align_report(), data.frame())
-
-  search_scores <- c(77.7, 87.6, 98.5, 75.6)
-  sim_scores <- c(97.7, 97.6, 98.5, 95.6)
-  longest_inserts <- c(5, 2, 8, 1)
-
-  data$data$add_align_report(
-    unique(ids), search_scores,
-    sim_scores, longest_inserts
-  )
-
-
-  align_report <- data$get_align_report()
-  expect_equal(align_report$id, unique(ids))
-  expect_equal(
-    round(align_report$search_score, digits = 2),
-    round(search_scores, digits = 2)
-  )
-  expect_equal(
-    round(align_report$sim_score, digits = 2),
-    round(sim_scores, digits = 2)
-  )
-  expect_equal(align_report$longest_insert, longest_inserts)
-
-  overlap_lengths <- c(3, 4, 5, 3)
-  overlap_starts <- c(2, 1, 1, 1)
-  overlap_ends <- c(5, 4, 5, 3)
-  mismatches <- c(0, 1, 0, 0)
-  expected_errors <- c(5.7, 0.6, 34.5, 3.6)
-
-  data$data$add_contigs_report(
-    unique(ids), overlap_lengths,
-    overlap_starts, overlap_ends,
-    mismatches, expected_errors
-  )
-
-
-  contigs_report <- data$get_contigs_report()
-  expect_equal(contigs_report$id, unique(ids))
-  expect_equal(contigs_report$length, c(5, 5, 5, 5))
-  expect_equal(contigs_report$num_n, c(0, 0, 0, 0))
-  expect_equal(contigs_report$overlap_length, overlap_lengths)
-  expect_equal(contigs_report$overlap_start, overlap_starts)
-  expect_equal(contigs_report$overlap_end, overlap_ends)
-  expect_equal(contigs_report$mismatches, mismatches)
-  expect_equal(
-    round(contigs_report$ee, digits = 2),
-    round(expected_errors, digits = 2)
-  )
-
-  summary <- data$get_sequence_summary()
-
-  expect_equal(length(summary), 3)
-  expect_equal(summary$contigs_summary$olengths, c(3, 3, 3, 3, 3, 5, 5, 3))
-  expect_equal(
-    summary$align_summary$longest_inserts,
-    c(1, 2, 5, 5, 5, 8, 8, 4)
   )
 })
 
@@ -689,7 +608,7 @@ test_that("sequence_data - ", {
 
   expect_error(dataset$assign_bin_taxonomy(bin_ids, taxonomies))
   expect_error(dataset$assign_bins(bin_ids))
-  expect_equal(dataset$get_contigs_report(), data.frame())
+  expect_equal(dataset$get_contigs_assembly_report(), data.frame())
   expect_equal(dataset$get_sample_summary(), list())
   expect_equal(dataset$get_sequence_summary(), list())
   expect_false(dataset$has_sample("noSample"))
@@ -860,7 +779,94 @@ test_that("sequence_data - add_references, get_references", {
   expect_equal(references[[3, 2]], "1.38.1")
   expect_equal(references[[1, 4]], "This is my mothur note")
 
+  dataset$clear("bad_type")
+  expect_equal(nrow(dataset$get_references()), 3)
+
   dataset$clear("references")
-  references <- dataset$get_references()
-  expect_equal(nrow(references), 0)
+  expect_equal(nrow(dataset$get_references()), 0)
+})
+
+test_that("sequence_data - add_alignment_report, get_alignment_report", {
+  dataset <- sequence_data$new("my_dataset")
+
+  expect_equal(dataset$get_alignment_report(), data.frame())
+  expect_error(dataset$add_alignment_report(report = c("bad_type")))
+  expect_error(dataset$add_alignment_report(data.frame()))
+  expect_error(dataset$add_alignment_report())
+
+  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+  dataset$add_alignment_report(align_report, "QueryName")
+
+  align_report <- dataset$get_alignment_report()
+
+  # random spot checks
+  expect_equal(nrow(align_report), 5)
+  expect_equal(align_report[, 1], c("seq1", "seq2", "seq3", "seq4", "seq5"))
+  expect_equal(align_report[[2, 2]], 253)
+  expect_equal(align_report[[3, 3]], "AF132257.1")
+  expect_equal(align_report[[1, 4]], 293)
+  expect_equal(align_report[[5, 8]], 1)
+  expect_equal(align_report[[4, 4]], 292)
+
+  dataset$clear("alignment_report")
+  expect_equal(nrow(dataset$get_alignment_report()), 0)
+})
+
+test_that("sequence_data - add / get _contigs_assembly_report,", {
+  dataset <- sequence_data$new("my_dataset")
+
+  expect_equal(dataset$get_contigs_assembly_report(), data.frame())
+  expect_error(dataset$add_contigs_assembly_report(report = c("bad_type")))
+  expect_error(dataset$add_contigs_assembly_report(data.frame()))
+  expect_error(dataset$add_contigs_assembly_report())
+
+  report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+  dataset$add_contigs_assembly_report(report, "Name")
+
+  report <- dataset$get_contigs_assembly_report()
+
+  # random spot checks
+  expect_equal(nrow(report), 5)
+  expect_equal(report[, 1], c("seq1", "seq2", "seq3", "seq4", "seq5"))
+  expect_equal(report[[2, 2]], 252)
+  expect_equal(report[[3, 3]], 249)
+  expect_equal(report[[1, 4]], 2)
+  expect_equal(round(report[[5, 8]], digits = 4), 0.0257)
+  expect_equal(report[[4, 4]], 2)
+
+  dataset$clear("contigs_assembly_report")
+  expect_equal(nrow(dataset$get_contigs_assembly_report()), 0)
+})
+
+test_that("sequence_data - get_sequence_summary,", {
+  dataset <- sequence_data$new("my_dataset")
+
+  report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+  dataset$add_contigs_assembly_report(report, "Name")
+
+  report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+  dataset$add_alignment_report(report, "QueryName")
+
+  summary <- dataset$get_sequence_summary()
+
+  expect_equal(summary$contigs_summary$MisMatches, c(0, 0, 0, 1, 2, 7, 7, 2))
+  expect_equal(summary$contigs_summary$Overlap_End, rep(251, 8))
+  expect_equal(summary$contigs_summary$Length[1], 252)
+  expect_equal(summary$contigs_summary$Length[7], 253)
+
+  expect_equal(summary$alignment_summary$QueryLength, c(
+    252, 252, 252, 253,
+    253, 253, 253, 252.6
+  ))
+  expect_equal(summary$alignment_summary$GapsInQuery, rep(0, 8))
+  expect_equal(summary$alignment_summary$SearchScore[1], 57.55)
+  expect_equal(summary$alignment_summary$SearchScore[7], 82.44)
 })

@@ -12,11 +12,25 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// summarize_reports
+Rcpp::DataFrame summarize_reports(Rcpp::DataFrame& report, Rcpp::IntegerVector& count, int processors);
+RcppExport SEXP _rdataset_summarize_reports(SEXP reportSEXP, SEXP countSEXP, SEXP processorsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame& >::type report(reportSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector& >::type count(countSEXP);
+    Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
+    rcpp_result_gen = Rcpp::wrap(summarize_reports(report, count, processors));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 RcppExport SEXP run_testthat_tests(SEXP);
 RcppExport SEXP _rcpp_module_boot_Dataset();
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_rdataset_summarize_reports", (DL_FUNC) &_rdataset_summarize_reports, 3},
     {"_rcpp_module_boot_Dataset", (DL_FUNC) &_rcpp_module_boot_Dataset, 0},
     {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
     {NULL, NULL, 0}

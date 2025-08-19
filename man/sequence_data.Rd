@@ -33,6 +33,28 @@ dataset <- sequence_data$new("soil")
 
 
 ## ------------------------------------------------
+## Method `sequence_data$add_alignment_report`
+## ------------------------------------------------
+
+
+  dataset <- sequence_data$new("my_dataset")
+  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_alignment_report(align_report, "QueryName")
+
+
+## ------------------------------------------------
+## Method `sequence_data$add_contigs_assembly_report`
+## ------------------------------------------------
+
+
+  dataset <- sequence_data$new("my_dataset")
+  contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_contigs_assembly_report(contigs_report, "Name")
+
+
+## ------------------------------------------------
 ## Method `sequence_data$add_references`
 ## ------------------------------------------------
 
@@ -263,6 +285,30 @@ dataset$assign_treatments(unique(samples), treatments)
 
 
 ## ------------------------------------------------
+## Method `sequence_data$get_alignment_report`
+## ------------------------------------------------
+
+
+  dataset <- sequence_data$new("my_dataset")
+  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_alignment_report(align_report, "QueryName")
+  dataset$get_alignment_report()
+
+
+## ------------------------------------------------
+## Method `sequence_data$get_contigs_assembly_report`
+## ------------------------------------------------
+
+
+  dataset <- sequence_data$new("my_dataset")
+  contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_contigs_assembly_report(contigs_report, "Name")
+  dataset$get_contigs_assembly_report()
+
+
+## ------------------------------------------------
 ## Method `sequence_data$get_list`
 ## ------------------------------------------------
 
@@ -447,6 +493,8 @@ additional functionality.}
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
 \item \href{#method-sequence_data-add_metadata}{\code{sequence_data$add_metadata()}}
+\item \href{#method-sequence_data-add_alignment_report}{\code{sequence_data$add_alignment_report()}}
+\item \href{#method-sequence_data-add_contigs_assembly_report}{\code{sequence_data$add_contigs_assembly_report()}}
 \item \href{#method-sequence_data-add_references}{\code{sequence_data$add_references()}}
 \item \href{#method-sequence_data-add_sequences}{\code{sequence_data$add_sequences()}}
 \item \href{#method-sequence_data-assign_bins}{\code{sequence_data$assign_bins()}}
@@ -456,11 +504,11 @@ additional functionality.}
 \item \href{#method-sequence_data-assign_treatments}{\code{sequence_data$assign_treatments()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
-\item \href{#method-sequence_data-get_align_report}{\code{sequence_data$get_align_report()}}
-\item \href{#method-sequence_data-get_contigs_report}{\code{sequence_data$get_contigs_report()}}
+\item \href{#method-sequence_data-get_alignment_report}{\code{sequence_data$get_alignment_report()}}
+\item \href{#method-sequence_data-get_contigs_assembly_report}{\code{sequence_data$get_contigs_assembly_report()}}
 \item \href{#method-sequence_data-get_count_table}{\code{sequence_data$get_count_table()}}
 \item \href{#method-sequence_data-get_dataset_name}{\code{sequence_data$get_dataset_name()}}
-\item \href{#method-sequence_data-get_ids}{\code{sequence_data$get_ids()}}
+\item \href{#method-sequence_data-get_sequence_names}{\code{sequence_data$get_sequence_names()}}
 \item \href{#method-sequence_data-get_list}{\code{sequence_data$get_list()}}
 \item \href{#method-sequence_data-get_metadata}{\code{sequence_data$get_metadata()}}
 \item \href{#method-sequence_data-get_num_bins}{\code{sequence_data$get_num_bins()}}
@@ -561,6 +609,73 @@ Add metadata about your dataset
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
   dataset$add_metadata(metadata)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-add_alignment_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-add_alignment_report}{}}}
+\subsection{Method \code{add_alignment_report()}}{
+Add alignment report for your dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_alignment_report(report, sequence_name_column)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{report}}{a data.frame containing alignment data about your dataset}
+
+\item{\code{sequence_name_column}}{a string containing the name of the column
+containing the sequence names.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+  dataset <- sequence_data$new("my_dataset")
+  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_alignment_report(align_report, "QueryName")
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-add_contigs_assembly_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-add_contigs_assembly_report}{}}}
+\subsection{Method \code{add_contigs_assembly_report()}}{
+Add contigs assembly report for your dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_contigs_assembly_report(report, sequence_name_column)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{report}}{a data.frame containing contigs assembly data about your
+dataset}
+
+\item{\code{sequence_name_column}}{a string containing the name of the column
+containing the sequence names.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+  dataset <- sequence_data$new("my_dataset")
+  contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_contigs_assembly_report(contigs_report, "Name")
 
 }
 \if{html}{\out{</div>}}
@@ -1075,11 +1190,21 @@ dataset$assign_treatments(unique(samples), treatments)
 \if{html}{\out{<a id="method-sequence_data-clear"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-clear}{}}}
 \subsection{Method \code{clear()}}{
-Remove all data from dataset
+Remove 'all', 'metadata', 'references', 'alignment_report' or
+'contigs_assembly_report' data from your dataset.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$clear()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$clear(type = "all")}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{a string indicating the type of data you want to remove.
+Options include: "all", "metadata", "references", "alignment_report" or
+"contigs_assembly_report". Default = "all".}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-export"></a>}}
@@ -1095,32 +1220,58 @@ List
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_align_report"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_align_report}{}}}
-\subsection{Method \code{get_align_report()}}{
-Get report containing align report table -
-ids, search_scores, sim_scores, longest_insert
+\if{html}{\out{<a id="method-sequence_data-get_alignment_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_alignment_report}{}}}
+\subsection{Method \code{get_alignment_report()}}{
+Get data.frame containing the alignment report data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_align_report()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_alignment_report()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
 data.frame
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+  dataset <- sequence_data$new("my_dataset")
+  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_alignment_report(align_report, "QueryName")
+  dataset$get_alignment_report()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_contigs_report"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_contigs_report}{}}}
-\subsection{Method \code{get_contigs_report()}}{
-Get report containing contigs report table -
-ids, lengths, ostarts, oends, olengths, mismatches, numns, ee
+\if{html}{\out{<a id="method-sequence_data-get_contigs_assembly_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_contigs_assembly_report}{}}}
+\subsection{Method \code{get_contigs_assembly_report()}}{
+Get data.frame containing contigs report
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_contigs_report()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_contigs_assembly_report()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
 data.frame
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+  dataset <- sequence_data$new("my_dataset")
+  contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+  dataset$add_contigs_assembly_report(contigs_report, "Name")
+  dataset$get_contigs_assembly_report()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_count_table"></a>}}
@@ -1151,12 +1302,12 @@ String
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-sequence_data-get_ids"></a>}}
-\if{latex}{\out{\hypertarget{method-sequence_data-get_ids}{}}}
-\subsection{Method \code{get_ids()}}{
+\if{html}{\out{<a id="method-sequence_data-get_sequence_names"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_names}{}}}
+\subsection{Method \code{get_sequence_names()}}{
 Get names of sequences in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_ids(sample = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_names(sample = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

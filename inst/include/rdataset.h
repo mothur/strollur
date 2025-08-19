@@ -346,17 +346,12 @@ public:
 
     // public fields exposed through RCPP_MODULE
     string datasetName;
-
-    bool isAligned;
-    // -1 if unaligned
-    int alignmentLength;
-    bool hasContigsData, hasAlignData, hasSequenceData;
-    bool hasSequenceTaxonomy;
+    int alignmentLength; // -1 if unaligned
+    bool isAligned, hasSequenceData, hasSequenceTaxonomy;
     long long numUnique;
     int processors;
 
     // ********** public functions exposed through RCPP_MODULE ********** //
-
     void clear();
     Rcpp::List exportDataset();
     SEXP getPointer();
@@ -364,16 +359,6 @@ public:
     // add seqs
     void addSequences(vector<string> n, vector<string> s = nullVector,
                  vector<string> c = nullVector);
-
-    // align_seqs will create searchScores, simScores and longestInserts
-    void addAlignReport(vector<string>& n, vector<double>& ss,
-                          vector<double>& sims, vector<int>& li);
-
-    // make_contigs will create overlapLengths, overlapStarts, overlapEnds,
-    // mismatches, and expectedErrors
-    void addContigsReport(vector<string>& n, vector<int>& ol,
-                          vector<int>& os, vector<int>& oe,
-                          vector<int>& m, vector<double>& e);
 
     // names, abundances, samples(optional), treatments(optional)
     void assignSequenceAbundance(vector<string> names,
@@ -395,19 +380,14 @@ public:
                           vector<string> treatments);
 
     // **** functions for summarizing dataset **** //
-    // align summary data: search_score, sim_score, longest_insert
-    Rcpp::DataFrame getAlignReport();
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getBinTaxonomyReport(string type = "otu");
-    // contigs report data: lengths, olengths, ostarts, oends, mismatches,
-    //                      numns, ee
-    Rcpp::DataFrame getContigsReport();
     Rcpp::DataFrame getScrapReport(string mode = "sequence");
     // trashCode, uniqueCount, totalCount
     Rcpp::List getScrapSummary();
     // sequence report: starts, ends, lengths, ambigs, polymers, numns
     Rcpp::DataFrame getSequenceReport();
-    // sequence summary summarizes sequence, contigs and align reports
+    // sequence summary summarizes sequence, and scrap reports
     Rcpp::List getSequenceSummary();
 
     // 3 columns: id, sample, abundance
@@ -497,23 +477,17 @@ private:
     // fasta data
     vector<string> names, seqs, comments, trashCodes;
 
-    // contigs report
-    vector<int> olengths, ostarts, oends, mismatches;
-    vector<double> ee;
-
     // fasta summary data
     vector<int> starts, ends, lengths, ambigs, polymers, numns;
-
-    // alignment report
-    vector<int> longestInsert;
-    vector<float> searchScore, simScore;
 
     // sequence taxonomy assignments
     vector<string> taxonomies;
 
-    // maps sequence name to index in summary vectors
-    map<string, int> seqIndex;
+    // boolean indicating if sequences is "good"
     vector<bool> tableSeqs;
+
+    // maps sequence name to index in vectors above ^
+    map<string, int> seqIndex;
 
     // map reason for deletion to vector containing unique and total counts
     // example: "pre_cluster" ->  c(10,  230) means precluster removed 10 unique
