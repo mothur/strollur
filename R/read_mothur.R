@@ -15,21 +15,27 @@
 #' \href{https://mothur.org/wiki/design_file/}{design file}
 #' @param taxonomy filename, a mothur
 #' \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}
-#' @param list filename, a mothur
-#' \href{https://mothur.org/wiki/list_file/}{list file}
-#' @param shared filename, a mothur
-#' \href{https://mothur.org/wiki/shared_file/}{shared file}
-#' @param rabund filename, a mothur
-#' \href{https://mothur.org/wiki/rabund_file/}{rabund file}
+#' @param otu_list filename, a mothur
+#' \href{https://mothur.org/wiki/list_file/}{list file} containing otu bin
+#'  assignments.
+#' @param asv_list filename, a mothur
+#' \href{https://mothur.org/wiki/list_file/}{list file} containing asv bin
+#'  assignments.
+#' @param phylo_list filename, a mothur
+#' \href{https://mothur.org/wiki/list_file/}{list file} containing phylotype bin
+#'  assignments.
+#' @param otu_shared filename, a mothur
+#' \href{https://mothur.org/wiki/shared_file/}{shared file} containing otu bin
+#' sample abundance assignments.
+#' @param asv_shared filename, a mothur
+#' \href{https://mothur.org/wiki/shared_file/}{shared file} containing asv bin
+#' sample abundance assignments.
+#' @param phylo_shared filename, a mothur
+#' \href{https://mothur.org/wiki/shared_file/}{shared file} containing phylotype
+#'  bin sample abundance assignments.
 #' @param cons_taxonomy filename, a mothur consensus taxonomy file
 #' \href{https://mothur.org/wiki/constaxonomy_file/}{constaxonomy file}
-#' @param list_type string containing the type of list file. Options include:
-#' 'otu', 'asv' or 'phylotype'. Default = 'otu'.
-#' @param shared_type string containing the type of shared file. Options
-#' include: 'otu', 'asv' or 'phylotype'. Default = 'otu'.
-#' @param rabund_type string containing the type of rabund file. Options
-#'  include: 'otu', 'asv' or 'phylotype'. Default = 'otu'.
-#'
+
 #' @note
 #' \itemize{
 #' \item \emph{consensus taxonomy}, The 'sequence_data' object will generate
@@ -49,14 +55,16 @@
 #'   count = rdataset_example("final.count_table"),
 #'   taxonomy = rdataset_example("final.taxonomy"),
 #'   design = rdataset_example("mouse.time.design"),
-#'   list = rdataset_example("final.opti_mcc.list"),
+#'   otu_list = rdataset_example("final.opti_mcc.list"),
+#'   asv_list = rdataset_example("final.asv.list"),
+#'   phylo_list = rdataset_example("final.tx.list"),
 #'   dataset_name = "miseq_sop"
 #' )
 #'
 #' # For dataset's with only otu data:
 #'
 #' dataset <- read_mothur(
-#'   shared = rdataset_example("final.opti_mcc.shared"),
+#'   otu_shared = rdataset_example("final.opti_mcc.shared"),
 #'   cons_taxonomy = rdataset_example(
 #'     "final.cons.taxonomy"
 #'   ),
@@ -67,10 +75,10 @@
 #' @return A 'sequence_data' object
 #' @export
 read_mothur <- function(fasta = NULL, count = NULL,
-                        taxonomy = NULL, list = NULL, design = NULL,
-                        shared = NULL, rabund = NULL, cons_taxonomy = NULL,
-                        dataset_name = "", list_type = "otu",
-                        shared_type = "otu", rabund_type = "otu") {
+                        taxonomy = NULL, otu_list = NULL, asv_list = NULL,
+                        phylo_list = NULL, design = NULL, cons_taxonomy = NULL,
+                        otu_shared = NULL, asv_shared = NULL,
+                        phylo_shared = NULL, dataset_name = "") {
   # create new blank dataset
   dataset <- sequence_data$new(name = dataset_name)
 
@@ -123,31 +131,38 @@ read_mothur <- function(fasta = NULL, count = NULL,
   }
 
   # add sequence otu assignments
-  if (!is.null(list) || !is.null(shared) || !is.null(rabund)) {
-    # only one file should be used to assign the otus unless the types are
-    # different. ie. list file for distance based otus, and file for
-    # phylotype otus, and rabund for asv's.
-    if (!is.null(list)) {
-      df <- read_mothur_list(list)
-      dataset$assign_bins(df$bin_id,
-        seq_ids = df$seq_id,
-        type = list_type
-      )
-    }
-
-    if (!is.null(rabund)) {
-      df <- read_mothur_rabund(rabund)
-      dataset$assign_bins(df$bin_id, df$abundance, type = rabund_type)
-    }
-
-    if (!is.null(shared)) {
-      df <- read_mothur_shared(shared)
-      dataset$assign_bins(df$bin_id, df$abundance,
-        df$sample,
-        type = shared_type
-      )
-    }
+  if (!is.null(otu_list)) {
+    df <- read_mothur_list(otu_list)
+    dataset$assign_bins(df$bin_id, seq_ids = df$seq_id, type = "otu")
   }
+
+  if (!is.null(otu_shared)) {
+    df <- read_mothur_shared(otu_shared)
+    dataset$assign_bins(df$bin_id, df$abundance, df$sample, type = "otu")
+  }
+
+  if (!is.null(asv_list)) {
+    df <- read_mothur_list(asv_list)
+    dataset$assign_bins(df$bin_id, seq_ids = df$seq_id, type = "asv")
+  }
+
+  if (!is.null(asv_shared)) {
+    df <- read_mothur_shared(asv_shared)
+    dataset$assign_bins(df$bin_id, df$abundance, df$sample, type = "asv")
+  }
+
+  if (!is.null(phylo_list)) {
+    df <- read_mothur_list(phylo_list)
+    dataset$assign_bins(df$bin_id, seq_ids = df$seq_id, type = "phylotype")
+  }
+
+  if (!is.null(phylo_shared)) {
+    df <- read_mothur_shared(phylo_shared)
+    dataset$assign_bins(df$bin_id, df$abundance, df$sample,
+      type = "phylotype"
+    )
+  }
+
 
   if (!is.null(cons_taxonomy)) {
     df <- readr::read_table(

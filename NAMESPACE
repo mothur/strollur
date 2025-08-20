@@ -9,6 +9,9 @@ exportPattern("^[[:alpha:]]+")
 # general
 import(cli)
 
+# tree data
+import(ape)
+
 # c++ code
 import(RcppThread)
 importFrom(Rcpp, evalCpp)

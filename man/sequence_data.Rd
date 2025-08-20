@@ -260,6 +260,16 @@ reference_version = "9_032012", reference_url = url)
 
 
 ## ------------------------------------------------
+## Method `sequence_data$add_sequence_tree`
+## ------------------------------------------------
+
+
+ dataset <- sequence_data$new("my_dataset")
+ tree <- read.tree(rdataset_example("final.phylip.tre"))
+ dataset$add_sequence_tree(tree)
+
+
+## ------------------------------------------------
 ## Method `sequence_data$assign_treatments`
 ## ------------------------------------------------
 
@@ -410,6 +420,25 @@ dataset$get_sequence_taxonomy_report()
 
 
 ## ------------------------------------------------
+## Method `sequence_data$get_sequence_tree`
+## ------------------------------------------------
+
+
+ # You can provide a tree associating your sequences:
+
+ dataset <- sequence_data$new("my_dataset")
+ tree <- read.tree(rdataset_example("final.phylip.tre"))
+ dataset$add_sequence_tree(tree)
+ dataset$get_sequence_tree()
+
+ # Alternatively, a tree will be created for you if added nucleotide
+ # sequence strings
+
+  dataset <- read_mothur(fasta = rdataset_example("final.fasta"))
+  dataset$get_sequence_tree()
+
+
+## ------------------------------------------------
 ## Method `sequence_data$get_shared`
 ## ------------------------------------------------
 
@@ -501,6 +530,7 @@ additional functionality.}
 \item \href{#method-sequence_data-assign_bin_taxonomy}{\code{sequence_data$assign_bin_taxonomy()}}
 \item \href{#method-sequence_data-assign_sequence_abundance}{\code{sequence_data$assign_sequence_abundance()}}
 \item \href{#method-sequence_data-assign_sequence_taxonomy}{\code{sequence_data$assign_sequence_taxonomy()}}
+\item \href{#method-sequence_data-add_sequence_tree}{\code{sequence_data$add_sequence_tree()}}
 \item \href{#method-sequence_data-assign_treatments}{\code{sequence_data$assign_treatments()}}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
@@ -524,6 +554,7 @@ additional functionality.}
 \item \href{#method-sequence_data-get_scrap_report}{\code{sequence_data$get_scrap_report()}}
 \item \href{#method-sequence_data-get_sequence_report}{\code{sequence_data$get_sequence_report()}}
 \item \href{#method-sequence_data-get_sequence_taxonomy_report}{\code{sequence_data$get_sequence_taxonomy_report()}}
+\item \href{#method-sequence_data-get_sequence_tree}{\code{sequence_data$get_sequence_tree()}}
 \item \href{#method-sequence_data-get_sequence_summary}{\code{sequence_data$get_sequence_summary()}}
 \item \href{#method-sequence_data-get_sequences}{\code{sequence_data$get_sequences()}}
 \item \href{#method-sequence_data-get_shared}{\code{sequence_data$get_shared()}}
@@ -1141,6 +1172,35 @@ reference_version = "9_032012", reference_url = url)
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-add_sequence_tree"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-add_sequence_tree}{}}}
+\subsection{Method \code{add_sequence_tree()}}{
+Add phylo tree relating the sequences in your dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_sequence_tree(tree)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tree}}{a phylo tree object created by ape::read.tree.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+ dataset <- sequence_data$new("my_dataset")
+ tree <- read.tree(rdataset_example("final.phylip.tre"))
+ dataset$add_sequence_tree(tree)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-assign_treatments"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-assign_treatments}{}}}
 \subsection{Method \code{assign_treatments()}}{
@@ -1679,6 +1739,37 @@ taxonomies <- c(tax1, tax2, tax3, tax4)
 dataset <- sequence_data$new("my_dataset")
 dataset$assign_sequence_taxonomy(names, taxonomies)
 dataset$get_sequence_taxonomy_report()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_sequence_tree"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_sequence_tree}{}}}
+\subsection{Method \code{get_sequence_tree()}}{
+Get phylo tree relating the sequences in your dataset.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_sequence_tree()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+ # You can provide a tree associating your sequences:
+
+ dataset <- sequence_data$new("my_dataset")
+ tree <- read.tree(rdataset_example("final.phylip.tre"))
+ dataset$add_sequence_tree(tree)
+ dataset$get_sequence_tree()
+
+ # Alternatively, a tree will be created for you if added nucleotide
+ # sequence strings
+
+  dataset <- read_mothur(fasta = rdataset_example("final.fasta"))
+  dataset$get_sequence_tree()
 
 }
 \if{html}{\out{</div>}}

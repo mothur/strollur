@@ -39,92 +39,6 @@ vector<long long> Summary::getDefaults() {
         return locations;
 }
 //**************************************************************************
-long long Summary::getValue(map<int, long long>& spots, double value) {
-
-    long long percentage = 1+(long long)(total * value * 0.01);
-    long long result = 0;
-    long long totalSoFar = 0;
-    long long lastValue = 0;
-
-    //minimum
-    if ((spots.begin())->first == -1) { result = 0; }
-    else {result = (spots.begin())->first; }
-
-    for (auto it = spots.begin(); it != spots.end(); it++) {
-        long long value = it->first; if (value == -1) { value = 0; }
-        totalSoFar += it->second;
-
-        if (((totalSoFar <= percentage) && (totalSoFar > 1)) ||
-            ((lastValue < percentage) && (totalSoFar > percentage))){
-            result = value;
-        }
-        lastValue = totalSoFar;
-    }
-
-    return result;
-
-}
-//**************************************************************************
-vector<int> Summary::getValues(map<int, long long>& positions) {
-        vector<long long> defaults = getDefaults();
-        vector<int> results; results.resize(7,0);
-        long long meanPosition; meanPosition = 0;
-        long long totalSoFar = 0;
-        int lastValue = 0;
-
-        // minimum
-        if ((positions.begin())->first != -1) {
-            results[0] = (positions.begin())->first;
-        }
-
-        results[1] = results[0]; results[2] = results[0];
-        results[3] = results[0]; results[4] = results[0];
-        results[5] = results[0];
-
-        for (auto it = positions.begin(); it != positions.end(); it++) {
-
-            int value = it->first; if (value == -1) { value = 0; }
-            meanPosition += (value*it->second);
-            totalSoFar += it->second;
-
-            if (((totalSoFar <= defaults[1]) && (totalSoFar > 1)) ||
-                ((lastValue < defaults[1]) && (totalSoFar > defaults[1]))){
-                results[1] = value;
-            } //save value
-            if (((totalSoFar <= defaults[2]) && (totalSoFar > defaults[1])) ||
-                ((lastValue < defaults[2]) && (totalSoFar > defaults[2]))) {
-                results[2] = value;
-            } //save value
-            if (((totalSoFar <= defaults[3]) && (totalSoFar > defaults[2])) ||
-                ((lastValue < defaults[3]) && (totalSoFar > defaults[3]))) {
-                results[3] = value;
-            } //save value
-            if (((totalSoFar <= defaults[4]) && (totalSoFar > defaults[3])) ||
-                ((lastValue < defaults[4]) && (totalSoFar > defaults[4]))) {
-                results[4] = value;
-            } //save value
-            if (((totalSoFar <= defaults[5]) && (totalSoFar > defaults[4])) ||
-                ((lastValue < defaults[5]) && (totalSoFar > defaults[5]))) {
-                results[5] = value;
-            } //save value
-            if ((totalSoFar <= defaults[6]) && (totalSoFar > defaults[5])) {
-                results[6] = value;
-            } //save value
-            lastValue = totalSoFar;
-        }
-        // maximum
-        results[6] = (positions.rbegin())->first;
-
-
-        double meansPosition = meanPosition / (double) total;
-
-        // mean
-        results.push_back(meansPosition);
-
-        return results;
-}
-
-//**************************************************************************
 vector<double> Summary::getValues(map<double, long long>& positions) {
         vector<long long> defaults = getDefaults();
         vector<double> results; results.resize(7,0);
@@ -260,7 +174,6 @@ Rcpp::DataFrame Summary::summarizeFasta(vector<vector<int>> report,
          rowNames[6] = "Maximum:";
          rowNames[7] = "Mean:      ";
          df.attr("row.names") = rowNames;
-
         return (df);
 }
 //**************************************************************************

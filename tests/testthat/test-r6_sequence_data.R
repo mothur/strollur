@@ -6,7 +6,9 @@ test_that("sequence_data - intialize from read_mothur / print", {
     count = rdataset_example("final.count_table"),
     taxonomy = rdataset_example("final.taxonomy"),
     design = rdataset_example("mouse.time.design"),
-    list = rdataset_example("final.opti_mcc.list"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
+    phylo_list = rdataset_example("final.tx.list"),
+    asv_list = rdataset_example("final.asv.list"),
     dataset_name = "miseq_sop"
   )
 
@@ -16,6 +18,8 @@ test_that("sequence_data - intialize from read_mothur / print", {
   expect_equal(dataset$get_num_treatments(), 2)
   expect_equal(dataset$get_num_samples(), 19)
   expect_equal(dataset$get_num_bins("otu"), 531)
+  expect_equal(dataset$get_num_bins("phylotype"), 63)
+  expect_equal(dataset$get_num_bins("asv"), 2425)
 
   seqs_summary <- dataset$get_sequence_summary()[["sequence_summary"]]
 
@@ -27,33 +31,6 @@ test_that("sequence_data - intialize from read_mothur / print", {
   expect_equal(seqs_summary$nbases[7], 256)
   expect_equal(seqs_summary$polymers[1], 3)
   expect_equal(seqs_summary$polymers[7], 6)
-
-  # add phylotype list
-  phylo_list <- read_mothur_list(list = rdataset_example("final.tx.list"))
-  dataset$assign_bins(phylo_list$bin_id,
-    abundances = NULL,
-    samples = NULL, seq_id = phylo_list$seq_id,
-    type = "phylotype"
-  )
-
-  expect_equal(dataset$get_num_sequences(TRUE), 2425)
-  expect_equal(dataset$get_num_sequences(), 113963)
-  expect_equal(dataset$get_num_treatments(), 2)
-  expect_equal(dataset$get_num_samples(), 19)
-  expect_equal(dataset$get_num_bins("phylotype"), 63)
-
-  asv_list <- read_mothur_list(list = rdataset_example("final.asv.list"))
-  dataset$assign_bins(asv_list$bin_id,
-    abundances = NULL,
-    samples = NULL, seq_id = asv_list$seq_id,
-    type = "asv"
-  )
-
-  expect_equal(dataset$get_num_sequences(TRUE), 2425)
-  expect_equal(dataset$get_num_sequences(), 113963)
-  expect_equal(dataset$get_num_treatments(), 2)
-  expect_equal(dataset$get_num_samples(), 19)
-  expect_equal(dataset$get_num_bins("asv"), 2425)
 
   expect_snapshot(
     waldo::compare(dataset$print(), dataset$print())
@@ -128,23 +105,10 @@ test_that("sequence_data - intialize from sequence_data object", {
     count = rdataset_example("final.count_table"),
     taxonomy = rdataset_example("final.taxonomy"),
     design = rdataset_example("mouse.time.design"),
-    list = rdataset_example("final.opti_mcc.list"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
+    phylo_list = rdataset_example("final.tx.list"),
+    asv_list = rdataset_example("final.asv.list"),
     dataset_name = "miseq_sop"
-  )
-
-  # add phylotype list
-  phylo_list <- read_mothur_list(list = rdataset_example("final.tx.list"))
-  temp$assign_bins(phylo_list$bin_id,
-    abundances = NULL,
-    samples = NULL, seq_id = phylo_list$seq_id,
-    type = "phylotype"
-  )
-
-  asv_list <- read_mothur_list(list = rdataset_example("final.asv.list"))
-  temp$assign_bins(asv_list$bin_id,
-    abundances = NULL,
-    samples = NULL, seq_id = asv_list$seq_id,
-    type = "asv"
   )
 
   dataset <- sequence_data$new(
@@ -797,6 +761,8 @@ test_that("sequence_data - add_alignment_report, get_alignment_report", {
   align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
+
+  expect_error(dataset$add_alignment_report(align_report, "badName"))
   dataset$add_alignment_report(align_report, "QueryName")
 
   align_report <- dataset$get_alignment_report()
@@ -812,6 +778,12 @@ test_that("sequence_data - add_alignment_report, get_alignment_report", {
 
   dataset$clear("alignment_report")
   expect_equal(nrow(dataset$get_alignment_report()), 0)
+
+  # no report added because of missing entries
+  dataset$clear("alignment_report")
+  dataset$add_sequences(c("seq6"))
+  dataset$add_alignment_report(align_report, "QueryName")
+  expect_equal(nrow(dataset$get_alignment_report()), 0)
 })
 
 test_that("sequence_data - add / get _contigs_assembly_report,", {
@@ -825,6 +797,8 @@ test_that("sequence_data - add / get _contigs_assembly_report,", {
   report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
+  expect_error(dataset$add_contigs_assembly_report(report, "badName"))
+
   dataset$add_contigs_assembly_report(report, "Name")
 
   report <- dataset$get_contigs_assembly_report()
@@ -839,6 +813,19 @@ test_that("sequence_data - add / get _contigs_assembly_report,", {
   expect_equal(report[[4, 4]], 2)
 
   dataset$clear("contigs_assembly_report")
+  expect_equal(nrow(dataset$get_contigs_assembly_report()), 0)
+  expect_equal(dataset$get_num_sequences(), 5)
+  dataset$add_contigs_assembly_report(report, "Name")
+
+  report <- dataset$get_contigs_assembly_report()
+
+  expect_equal(nrow(report), 5)
+  expect_equal(report[, 1], c("seq1", "seq2", "seq3", "seq4", "seq5"))
+
+  # no report added because of missing entries
+  dataset$clear("contigs_assembly_report")
+  dataset$add_sequences(c("seq6"))
+  dataset$add_contigs_assembly_report(report, "Name")
   expect_equal(nrow(dataset$get_contigs_assembly_report()), 0)
 })
 
@@ -869,4 +856,102 @@ test_that("sequence_data - get_sequence_summary,", {
   expect_equal(summary$alignment_summary$GapsInQuery, rep(0, 8))
   expect_equal(summary$alignment_summary$SearchScore[1], 57.55)
   expect_equal(summary$alignment_summary$SearchScore[7], 82.44)
+})
+
+test_that("sequence_data - add_sequence_tree / get_sequence_tree,", {
+  # create tree from sequences
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
+  dataset <- sequence_data$new()
+
+  expect_error(dataset$add_sequence_tree(tree = c("bad_type")))
+
+  dataset$add_sequences(names, seqs)
+  tree <- dataset$get_sequence_tree()
+
+  expect_equal(sort(dataset$get_sequence_names()), sort(tree$tip.label))
+  expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
+  expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
+  expect_equal(
+    round(tree$edge.length, digits = 2),
+    c(0.26, 0.33, 0.07, 0.33, 0.26)
+  )
+
+  # add full tree
+  dataset <- sequence_data$new()
+  dataset$add_sequences(names)
+
+  l <- lapply(strsplit(seqs, split = ""), "[")
+  names(l) <- names
+
+  # should alert that the tree is missing reads, and not save it
+  dataset$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
+
+  tree <- dataset$get_sequence_tree()
+
+  expect_equal(sort(dataset$get_sequence_names()), sort(tree$tip.label))
+  expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
+  expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
+  expect_equal(
+    round(tree$edge.length, digits = 2),
+    c(0.26, 0.33, 0.07, 0.33, 0.26)
+  )
+
+  # remove seq and make sure tree is pruned as well
+  dataset$data$remove_sequences(c("seq1"), c("bad"))
+
+  tree <- dataset$get_sequence_tree()
+
+  expect_equal(sort(dataset$get_sequence_names()), sort(tree$tip.label))
+  expect_equal(tree$edge[, 1], c(4, 4, 4))
+  expect_equal(tree$edge[, 2], c(3, 2, 1))
+  expect_equal(
+    round(tree$edge.length, digits = 2),
+    c(0.26, 0.33, 0.33)
+  )
+
+  # add tree with missing sequences
+  l <- lapply(strsplit(seqs[1:3], split = ""), "[")
+  names(l) <- names[1:3]
+
+  # should alert that the tree is missing reads, and not save it
+  dataset <- sequence_data$new()
+  dataset$add_sequences(names)
+  dataset$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
+  expect_equal(dataset$get_sequence_tree(), NULL)
+
+  # add tree from file
+  dataset <- sequence_data$new()
+  dataset$add_sequence_tree(read.tree(rdataset_example("final.phylip.tre")))
+  tree <- dataset$get_sequence_tree()
+
+  expect_equal(sort(dataset$get_sequence_names()), sort(tree$tip.label))
+  expect_equal(tree$edge[1:5, 1], c(2426, 2427, 2427, 2426, 2428))
+  expect_equal(tree$edge[1:5, 2], c(2427, 1, 2, 2428, 2429))
+  expect_equal(
+    round(tree$edge.length[1:5], digits = 3),
+    c(NaN, 0.004, 0.004, 0.000, 0.002)
+  )
+
+  # add tree with extra sequences, forcing prune
+  dataset <- sequence_data$new()
+  dataset$add_sequences(names)
+
+  seqs <- c(seqs, "ACTGC")
+  names <- c(names, "seq5")
+
+  # add tree with extra sequences, forcing prune
+  l <- lapply(strsplit(seqs, split = ""), "[")
+  names(l) <- names
+  dataset$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
+
+  tree <- dataset$get_sequence_tree()
+
+  expect_equal(sort(dataset$get_sequence_names()), sort(tree$tip.label))
+  expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
+  expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
+  expect_equal(
+    round(tree$edge.length, digits = 2),
+    c(0.26, 0.33, 0.07, 0.33, 0.26)
+  )
 })

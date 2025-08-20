@@ -43,6 +43,8 @@ sequence_data <- R6Class("sequence_data",
         private$metadata <- data.frame()
         private$alignment_data <- data.frame()
         private$contigs_data <- data.frame()
+        private$sequence_tree <- NULL
+        private$processors <- processors
       } else {
         # copy of dataset backend
         self$data <- new(Dataset, dataset$data)
@@ -58,6 +60,7 @@ sequence_data <- R6Class("sequence_data",
         private$alignment_data <- dataset$get_alignment_report()
         private$contigs_data <- dataset$get_contigs_assembly_report()
         private$processors <- processors
+        private$sequence_tree <- dataset$get_sequence_tree()
       }
 
       invisible(self)
@@ -752,6 +755,69 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Add phylo tree relating the sequences in your dataset
+    #' @param tree a phylo tree object created by ape::read.tree.
+    #' @examples
+    #'
+    #'  dataset <- sequence_data$new("my_dataset")
+    #'  tree <- read.tree(rdataset_example("final.phylip.tre"))
+    #'  dataset$add_sequence_tree(tree)
+    #'
+    add_sequence_tree = function(tree) {
+      # incorrect type
+      if (class(tree) != "phylo") {
+        abort_incorrect_type("phylo", class(tree)[1])
+      }
+
+      # if no seqs yet, add sequences in tree to dataset
+      if (self$get_num_sequences() == 0) {
+        self$add_sequences(tree$tip.label)
+
+        # save tree
+        private$sequence_tree <- tree
+      } else {
+        # make sure the tree includes all "good" sequences
+        if (identical(
+          sort(tree$tip.label),
+          sort(self$get_sequence_names())
+        )) {
+          # save tree
+          private$sequence_tree <- tree
+        } else {
+          # seqs in dataset and not in tree
+          missing_seqs <- setdiff(
+            self$get_sequence_names(),
+            tree$tip.label
+          )
+
+          # if tree is "missing" names, then ignore tree
+          if (length(missing_seqs) != 0) {
+            message <- paste("[WARNING]: Your tree does not",
+              "contain a node for every sequence in",
+              "your dataset, ignoring tree.",
+              "Missing tree nodes for:",
+              paste(missing_seqs, collapse = ", "),
+              ".",
+              collapse = ""
+            )
+            cli_alert(message)
+          } else {
+            # seqs in tree and not in dataset
+            extra_seqs <- setdiff(
+              tree$tip.label,
+              self$get_sequence_names()
+            )
+
+            # if tree contains "extra" names, prune the tree
+            private$sequence_tree <- drop.tip(tree, tip = extra_seqs)
+          }
+        }
+      }
+
+      invisible(self)
+    },
+
+    #' @description
     #' Assign samples to treatments
     #' @param samples a vector of sample names
     #' @param treatments a vector of treatment names
@@ -794,6 +860,7 @@ sequence_data <- R6Class("sequence_data",
         private$references <- data.frame()
         private$alignment_data <- data.frame()
         private$contigs_data <- data.frame()
+        private$sequence_tree <- NULL
       } else if (type == "metadata") {
         private$metadata <- data.frame()
       } else if (type == "references") {
@@ -1169,6 +1236,45 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
+    #' Get phylo tree relating the sequences in your dataset.
+    #' @examples
+    #'
+    #'  # You can provide a tree associating your sequences:
+    #'
+    #'  dataset <- sequence_data$new("my_dataset")
+    #'  tree <- read.tree(rdataset_example("final.phylip.tre"))
+    #'  dataset$add_sequence_tree(tree)
+    #'  dataset$get_sequence_tree()
+    #'
+    #'  # Alternatively, a tree will be created for you if added nucleotide
+    #'  # sequence strings
+    #'
+    #'   dataset <- read_mothur(fasta = rdataset_example("final.fasta"))
+    #'   dataset$get_sequence_tree()
+    #'
+    get_sequence_tree = function() {
+      if (is.null(private$sequence_tree)) {
+        private$build_sequence_nj_tree()
+      } else {
+        # prune tree if needed
+
+        # seqs in tree and not in dataset
+        extra_seqs <- setdiff(
+          private$sequence_tree$tip.label,
+          self$get_sequence_names()
+        )
+
+        if (length(extra_seqs) != 0) {
+          # if tree contains "extra" names, prune the tree
+          private$sequence_tree <- drop.tip(private$sequence_tree,
+            tip = extra_seqs
+          )
+        }
+      }
+      return(private$sequence_tree)
+    },
+
+    #' @description
     #' Get summary of the sequence reports
     #' @param silent Default = FALSE, meaning print summaries
     #' @return list of data.frames
@@ -1176,7 +1282,9 @@ sequence_data <- R6Class("sequence_data",
       results <- self$data$get_sequence_summary()
 
       if (nrow(private$contigs_data) != 0) {
-        results[["contigs_summary"]] <- private$summarize(private$contigs_data)
+        results[["contigs_summary"]] <- private$summarize(
+          self$get_contigs_assembly_report()
+        )
 
         # if you have summary results to print
         if (!silent) {
@@ -1189,7 +1297,8 @@ sequence_data <- R6Class("sequence_data",
       # if you have alignment data, then print
       if (nrow(private$alignment_data) != 0) {
         results[["alignment_summary"]] <- private$summarize(
-            private$alignment_data)
+          self$get_alignment_report()
+        )
 
         # if you have summary results to print
         if (!silent) {
@@ -1343,6 +1452,7 @@ sequence_data <- R6Class("sequence_data",
     references = data.frame(),
     alignment_data = data.frame(),
     contigs_data = data.frame(),
+    sequence_tree = NULL,
     processors = 1,
 
     # Clear sequences from dataset
@@ -1350,11 +1460,29 @@ sequence_data <- R6Class("sequence_data",
       self$clear()
     },
 
-    # summarize numeric column in a dataframe
+    # uses ape to build tree from sequence strings
+    build_sequence_nj_tree = function() {
+      seqs <- self$get_sequences()
+
+      # if you have sequences
+      if (!all(seqs == "")) {
+        # format data for ape
+        # seq1 -> "ATGCCC" -> "A" "T" "G" "C" "C" "C"
+        l <- lapply(strsplit(seqs, split = ""), "[")
+        names(l) <- self$get_sequence_names()
+
+        # create tree using ape
+        private$sequence_tree <- nj(dist.dna(as.DNAbin(l)))
+      }
+      invisible(self)
+    },
+
+    # summarize numeric columns in a dataframe
     summarize = function(report) {
       numeric_report <- report[sapply(report, is.numeric)]
       counts <- self$data$get_abundance()
 
+      # rcpp function - calls summary.cpp
       report_summary <- summarize_reports(
         numeric_report,
         self$data$get_abundance(),

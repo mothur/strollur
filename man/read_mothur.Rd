@@ -8,15 +8,15 @@ read_mothur(
   fasta = NULL,
   count = NULL,
   taxonomy = NULL,
-  list = NULL,
+  otu_list = NULL,
+  asv_list = NULL,
+  phylo_list = NULL,
   design = NULL,
-  shared = NULL,
-  rabund = NULL,
   cons_taxonomy = NULL,
-  dataset_name = "",
-  list_type = "otu",
-  shared_type = "otu",
-  rabund_type = "otu"
+  otu_shared = NULL,
+  asv_shared = NULL,
+  phylo_shared = NULL,
+  dataset_name = ""
 )
 }
 \arguments{
@@ -29,31 +29,37 @@ read_mothur(
 \item{taxonomy}{filename, a mothur
 \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}}
 
-\item{list}{filename, a mothur
-\href{https://mothur.org/wiki/list_file/}{list file}}
+\item{otu_list}{filename, a mothur
+\href{https://mothur.org/wiki/list_file/}{list file} containing otu bin
+ assignments.}
+
+\item{asv_list}{filename, a mothur
+\href{https://mothur.org/wiki/list_file/}{list file} containing asv bin
+ assignments.}
+
+\item{phylo_list}{filename, a mothur
+\href{https://mothur.org/wiki/list_file/}{list file} containing phylotype bin
+ assignments.}
 
 \item{design}{filename, a mothur
 \href{https://mothur.org/wiki/design_file/}{design file}}
 
-\item{shared}{filename, a mothur
-\href{https://mothur.org/wiki/shared_file/}{shared file}}
-
-\item{rabund}{filename, a mothur
-\href{https://mothur.org/wiki/rabund_file/}{rabund file}}
-
 \item{cons_taxonomy}{filename, a mothur consensus taxonomy file
 \href{https://mothur.org/wiki/constaxonomy_file/}{constaxonomy file}}
 
+\item{otu_shared}{filename, a mothur
+\href{https://mothur.org/wiki/shared_file/}{shared file} containing otu bin
+sample abundance assignments.}
+
+\item{asv_shared}{filename, a mothur
+\href{https://mothur.org/wiki/shared_file/}{shared file} containing asv bin
+sample abundance assignments.}
+
+\item{phylo_shared}{filename, a mothur
+\href{https://mothur.org/wiki/shared_file/}{shared file} containing phylotype
+ bin sample abundance assignments.}
+
 \item{dataset_name}{A string containing a name for your dataset.}
-
-\item{list_type}{string containing the type of list file. Options include:
-'otu', 'asv' or 'phylotype'. Default = 'otu'.}
-
-\item{shared_type}{string containing the type of shared file. Options
-include: 'otu', 'asv' or 'phylotype'. Default = 'otu'.}
-
-\item{rabund_type}{string containing the type of rabund file. Options
-include: 'otu', 'asv' or 'phylotype'. Default = 'otu'.}
 }
 \value{
 A 'sequence_data' object
@@ -86,14 +92,16 @@ dataset <- read_mothur(
   count = rdataset_example("final.count_table"),
   taxonomy = rdataset_example("final.taxonomy"),
   design = rdataset_example("mouse.time.design"),
-  list = rdataset_example("final.opti_mcc.list"),
+  otu_list = rdataset_example("final.opti_mcc.list"),
+  asv_list = rdataset_example("final.asv.list"),
+  phylo_list = rdataset_example("final.tx.list"),
   dataset_name = "miseq_sop"
 )
 
 # For dataset's with only otu data:
 
 dataset <- read_mothur(
-  shared = rdataset_example("final.opti_mcc.shared"),
+  otu_shared = rdataset_example("final.opti_mcc.shared"),
   cons_taxonomy = rdataset_example(
     "final.cons.taxonomy"
   ),

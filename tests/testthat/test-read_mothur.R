@@ -7,7 +7,7 @@ test_that("test read_mothur", {
     count = rdataset_example("final.count_table"),
     taxonomy = rdataset_example("final.taxonomy"),
     design = rdataset_example("mouse.time.design"),
-    list = rdataset_example("final.opti_mcc.list"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
     dataset_name = "miseq_sop"
   )
 
@@ -31,7 +31,7 @@ test_that("test read_mothur", {
 
   # test shared file and cons_tax
   dataset <- read_mothur(
-    shared = rdataset_example("final.opti_mcc.shared"),
+    otu_shared = rdataset_example("final.opti_mcc.shared"),
     cons_taxonomy = rdataset_example(
       "final.cons.taxonomy"
     )
@@ -52,13 +52,7 @@ test_that("test read_mothur", {
   expect_equal(report[2708, 3], "\"Bacteroidetes\"")
   expect_equal(report[2708, 4], 100)
 
-  # read just rabund
-  dataset <- read_mothur(rabund = rdataset_example("final.opti_mcc.rabund"))
-  expect_equal(dataset$get_num_sequences(), 2425)
-  expect_equal(dataset$get_num_samples(), 0)
-  expect_equal(dataset$get_num_bins("otu"), 531)
-
   # error
-  expect_error(read_mothur(rabund = "non_existant_filename"))
+  expect_error(read_mothur(rabund = "bad_parameter"))
   expect_error(read_mothur(list = "non_existant_filename"))
 })

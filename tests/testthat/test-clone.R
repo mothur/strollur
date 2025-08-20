@@ -6,23 +6,10 @@ test_that("clone - deep copy of sequence_data object", {
     count = rdataset_example("final.count_table"),
     taxonomy = rdataset_example("final.taxonomy"),
     design = rdataset_example("mouse.time.design"),
-    list = rdataset_example("final.opti_mcc.list"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
+    phylo_list = rdataset_example("final.tx.list"),
+    asv_list = rdataset_example("final.asv.list"),
     dataset_name = "miseq_sop"
-  )
-
-  # add phylotype list
-  phylo_list <- read_mothur_list(list = rdataset_example("final.tx.list"))
-  temp$assign_bins(phylo_list$bin_id,
-    abundances = NULL,
-    samples = NULL, seq_id = phylo_list$seq_id,
-    type = "phylotype"
-  )
-
-  asv_list <- read_mothur_list(list = rdataset_example("final.asv.list"))
-  temp$assign_bins(asv_list$bin_id,
-    abundances = NULL,
-    samples = NULL, seq_id = asv_list$seq_id,
-    type = "asv"
   )
 
   dataset <- clone(temp)

@@ -20,7 +20,8 @@ Imports: Rcpp (>= 1.0.14),
     R6,
     waldo,
     data.table,
-    readr
+    readr,
+    ape
 LinkingTo: Rcpp, RcppThread, cli, testthat
 Suggests: 
     testthat (>= 3.0.0), xml2
