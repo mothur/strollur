@@ -760,14 +760,10 @@ sequence_data <- R6Class("sequence_data",
     #' @examples
     #'
     #'  dataset <- sequence_data$new("my_dataset")
-    #'  tree <- read.tree(rdataset_example("final.phylip.tre"))
+    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
     #'  dataset$add_sequence_tree(tree)
     #'
     add_sequence_tree = function(tree) {
-      # incorrect type
-      if (class(tree) != "phylo") {
-        abort_incorrect_type("phylo", class(tree)[1])
-      }
 
       # if no seqs yet, add sequences in tree to dataset
       if (self$get_num_sequences() == 0) {
@@ -861,6 +857,7 @@ sequence_data <- R6Class("sequence_data",
         private$alignment_data <- data.frame()
         private$contigs_data <- data.frame()
         private$sequence_tree <- NULL
+        private$raw <- NULL
       } else if (type == "metadata") {
         private$metadata <- data.frame()
       } else if (type == "references") {
@@ -1239,39 +1236,26 @@ sequence_data <- R6Class("sequence_data",
     #' Get phylo tree relating the sequences in your dataset.
     #' @examples
     #'
-    #'  # You can provide a tree associating your sequences:
-    #'
     #'  dataset <- sequence_data$new("my_dataset")
-    #'  tree <- read.tree(rdataset_example("final.phylip.tre"))
+    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
     #'  dataset$add_sequence_tree(tree)
     #'  dataset$get_sequence_tree()
     #'
-    #'  # Alternatively, a tree will be created for you if added nucleotide
-    #'  # sequence strings
-    #'
-    #'   dataset <- read_mothur(fasta = rdataset_example("final.fasta"))
-    #'   dataset$get_sequence_tree()
-    #'
     get_sequence_tree = function() {
-      if (is.null(private$sequence_tree)) {
-        private$build_sequence_nj_tree()
-      } else {
-        # prune tree if needed
+      # prune tree if needed
+      # seqs in tree and not in dataset
+      extra_seqs <- setdiff(
+        private$sequence_tree$tip.label,
+        self$get_sequence_names()
+      )
 
-        # seqs in tree and not in dataset
-        extra_seqs <- setdiff(
-          private$sequence_tree$tip.label,
-          self$get_sequence_names()
+      if (length(extra_seqs) != 0) {
+        # if tree contains "extra" names, prune the tree
+        private$sequence_tree <- drop.tip(private$sequence_tree,
+          tip = extra_seqs
         )
-
-        if (length(extra_seqs) != 0) {
-          # if tree contains "extra" names, prune the tree
-          private$sequence_tree <- drop.tip(private$sequence_tree,
-            tip = extra_seqs
-          )
-        }
       }
-      return(private$sequence_tree)
+      private$sequence_tree
     },
 
     #' @description
@@ -1411,7 +1395,7 @@ sequence_data <- R6Class("sequence_data",
     #'                        count = rdataset_example("final.count_table"),
     #'                        taxonomy = rdataset_example("final.taxonomy"),
     #'                        design = rdataset_example("mouse.time.design"),
-    #'                        list = rdataset_example("final.opti_mcc.list"),
+    #'                        otu_list = rdataset_example("final.opti_mcc.list"),
     #'                        dataset_name = "miseq_sop")
     #'
     #' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
@@ -1421,6 +1405,7 @@ sequence_data <- R6Class("sequence_data",
     #'
     remove_lineages = function(contaminants) {
       self$data$remove_lineages(contaminants, "contaminant")
+      invisible(self)
     },
 
 
@@ -1432,7 +1417,7 @@ sequence_data <- R6Class("sequence_data",
     #'                        count = rdataset_example("final.count_table"),
     #'                        taxonomy = rdataset_example("final.taxonomy"),
     #'                        design = rdataset_example("mouse.time.design"),
-    #'                        list = rdataset_example("final.opti_mcc.list"),
+    #'                        otu_list = rdataset_example("final.opti_mcc.list"),
     #'                        dataset_name = "miseq_sop")
     #'
     #' dataset$get_num_samples()
@@ -1445,6 +1430,52 @@ sequence_data <- R6Class("sequence_data",
     #'
     remove_samples = function(samples) {
       self$data$remove_samples(samples)
+      invisible(self)
+    },
+
+    #' @description
+    #' Serialize data from self$data to prepare for saving object as '.rds'
+    #' @examples
+    #' dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+    #'                        count = rdataset_example("final.count_table"),
+    #'                        taxonomy = rdataset_example("final.taxonomy"),
+    #'                        design = rdataset_example("mouse.time.design"),
+    #'                        otu_list = rdataset_example("final.opti_mcc.list"),
+    #'                        dataset_name = "miseq_sop")
+    #'
+    #' dataset$serialize()
+    #' saveRDS(dataset, file = "miseq_sop.rds")
+    #'
+    #' # Alternatively, you can save the dataset using the save function.
+    #'
+    #' save(dataset, file = "miseq_sop.rds")
+    #'
+    serialize = function() {
+      private$raw <- self$data$serialize_dataset()
+      invisible(self)
+    },
+
+    #' @description
+    #' Deserialize data from self$data to load object saved as '.rds'
+    #' @examples
+    #'
+    #' dataset <- readRDS(file = rdataset_example("miseq_sop.rds"))
+    #' dataset$data <- new(Dataset, "", 1)
+    #' dataset$deserialize()
+    #' dataset
+    #'
+    #' # Alternatively, the dataset can be created from a file using the load
+    #' # function.
+    #'
+    #' dataset <- load(rdataset_example("miseq_sop.rds"))
+    #' dataset
+    #'
+    deserialize = function() {
+      if (!is.null(private$raw)) {
+        self$data$load(private$raw)
+        private$raw <- NULL
+      }
+      invisible(self)
     }
   ),
   private = list(
@@ -1454,27 +1485,11 @@ sequence_data <- R6Class("sequence_data",
     contigs_data = data.frame(),
     sequence_tree = NULL,
     processors = 1,
+    raw = NULL,
 
     # Clear sequences from dataset
     finalize = function() {
       self$clear()
-    },
-
-    # uses ape to build tree from sequence strings
-    build_sequence_nj_tree = function() {
-      seqs <- self$get_sequences()
-
-      # if you have sequences
-      if (!all(seqs == "")) {
-        # format data for ape
-        # seq1 -> "ATGCCC" -> "A" "T" "G" "C" "C" "C"
-        l <- lapply(strsplit(seqs, split = ""), "[")
-        names(l) <- self$get_sequence_names()
-
-        # create tree using ape
-        private$sequence_tree <- nj(dist.dna(as.DNAbin(l)))
-      }
-      invisible(self)
     },
 
     # summarize numeric columns in a dataframe

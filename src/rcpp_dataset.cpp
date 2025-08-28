@@ -1,8 +1,6 @@
 #include <Rcpp.h>
 #include "../inst/include/rdataset.h"
 
-
-
 RCPP_EXPOSED_AS(Dataset);
 
 /******************************************************************************/
@@ -26,6 +24,7 @@ RCPP_MODULE(Dataset) {
     .method("assign_treatments", &Dataset::assignTreatments, "Assign samples to treatments")
 
     .method("clear", &Dataset::clear, "Clear dataset")
+    .method("load", &Dataset::loadFromSerialized, "Load dataset from serialized data")
     .method("export", &Dataset::exportDataset, "Export list containing dataset")
     .method("get_pointer", &Dataset::getPointer, "Get pointer to dataset c++ class")
 
@@ -74,7 +73,7 @@ RCPP_MODULE(Dataset) {
     .method("set_bin_abundance", &Dataset::setBinAbundance, "Set abundance of bins without samples")
     .method("set_bin_abundances", &Dataset::setBinAbundances, "Set abundance of bins without samples")
     .method("set_sequences", &Dataset::setSequences, "Set sequence strings")
+    .method("serialize_dataset", &Dataset::serializeDataset, "Serialize Dataset class into binary string")
     ;
 }
 /******************************************************************************/
-

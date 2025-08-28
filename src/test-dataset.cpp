@@ -1004,7 +1004,7 @@ context("Dataset class C++ unit tests") {
         expect_error(data.assignBins(otuNames, abundances));
     }
 
-    test_that("Tests mergeBins, removeBins, getScrapReport, getScrapSummary") {
+     test_that("Tests mergeBins, removeBins, getScrapReport, getScrapSummary") {
 
         Dataset data("mydata", 1);
 
@@ -1043,6 +1043,7 @@ context("Dataset class C++ unit tests") {
         otusToMerge[1] = "otu2";
         otusToMerge[2] = "otu4";
         otusToMerge[3] = "otu6";
+
         data.mergeBins(otusToMerge);
 
         expect_true(data.getTotal() == 100);
@@ -1306,7 +1307,7 @@ context("Dataset class C++ unit tests") {
 
         otuNames.clear();
         expect_error(data.assignBins(otuNames, abundances));
-    }
+     }
 
     test_that("Tests setBinAbundance, setBinAbundances") {
 
@@ -1483,11 +1484,9 @@ context("Dataset class C++ unit tests") {
     }
 
     test_that("Tests assignSequenceTaxonomy, assignBinTaxonomy, removeLineages") {
-        vector<string> names(4);
-        names[0] = "seq1";
-        names[1] = "seq2";
-        names[2] = "seq3";
-        names[3] = "seq4";
+        vector<string> names = {"seq1", "seq2", "seq3", "seq4"};
+        vector<string> otus = {"otu1", "otu1", "otu2", "otu2"};
+        vector<int> abunds = {100, 10, 10, 5};
 
         vector<string> taxonomies(4);
         taxonomies[0] = "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);";
@@ -1498,67 +1497,36 @@ context("Dataset class C++ unit tests") {
         Dataset data("mydata", 1);
         expect_error(data.assignSequenceTaxonomy(names, nullVector));
         data.assignSequenceTaxonomy(names, taxonomies);
-        Rcpp::DataFrame report = data.getSequenceTaxonomyReport();
-
-        // assign otus, and check otu classifications
-        vector<string> otus(4);
-        otus[0] = "otu1";
-        otus[1] = "otu1";
-        otus[2] = "otu2";
-        otus[3] = "otu2";
-
-        vector<int> abunds(4);
-        abunds[0] = 100;
-        abunds[1] = 10;
-        abunds[2] = 10;
-        abunds[3] = 5;
 
         // assign sequence abundance
         data.assignSequenceAbundance(names, abunds);
+        // assign otus, and check otu classifications
         data.assignBins(otus, nullIntVector, nullVector, names);
 
         names.resize(12);
-        names[0] = "seq1";
-        names[1] = "seq1";
-        names[2] = "seq1";
-        names[3] = "seq2";
-        names[4] = "seq2";
-        names[5] = "seq2";
-        names[6] = "seq3";
-        names[7] = "seq3";
-        names[8] = "seq3";
-        names[9] = "seq4";
-        names[10] = "seq4";
-        names[11] = "seq4";
+        names[0] = "seq1"; names[3] = "seq2"; names[6] = "seq3";
+        names[1] = "seq1"; names[4] = "seq2"; names[7] = "seq3";
+        names[2] = "seq1"; names[5] = "seq2"; names[8] = "seq3";
+        names[9] = "seq4"; names[10] = "seq4"; names[11] = "seq4";
 
         vector<string> taxons(12);
-        taxons[0] = "Bacteria";
-        taxons[1] = "Bacteroidetes";
-        taxons[2] = "Bacteroidia";
-        taxons[3] = "Bacteria";
-        taxons[4] = "Proteobacteria";
-        taxons[5] = "Betaproteobacteria";
-        taxons[6] = "Bacteria";
-        taxons[7] = "Firmicutes";
-        taxons[8] = "Bacilli";
-        taxons[9] = "Bacteria";
-        taxons[10] = "Firmicutes";
-        taxons[11] = "Bacilli";
+        // seq1                       seq2
+        taxons[0] = "Bacteria";      taxons[3] = "Bacteria";
+        taxons[1] = "Bacteroidetes"; taxons[4] = "Proteobacteria";
+        taxons[2] = "Bacteroidia";   taxons[5] = "Betaproteobacteria";
+        // seq3                      seq4
+        taxons[6] = "Bacteria";    taxons[9] = "Bacteria";
+        taxons[7] = "Firmicutes";  taxons[10] = "Firmicutes";
+        taxons[8] = "Bacilli";     taxons[11] = "Bacilli";
+
 
         vector<int> conf(12);
-        conf[0] = 100;
-        conf[1] = 95;
-        conf[2] = 90;
-        conf[3] = 100;
-        conf[4] = 89;
-        conf[5] = 85;
-        conf[6] = 100;
-        conf[7] = 99;
-        conf[8] = 90;
-        conf[9] = 100;
-        conf[10] = 87;
-        conf[11] = 85;
+        // seq1         seq2            seq3            seq4
+        conf[0] = 100;  conf[3] = 100; conf[6] = 100; conf[9] = 100;
+        conf[1] = 95;   conf[4] = 89;  conf[7] = 99;  conf[10] = 87;
+        conf[2] = 90;   conf[5] = 85;  conf[8] = 90;  conf[11] = 85;
 
+        Rcpp::DataFrame report = data.getSequenceTaxonomyReport();
         expect_true(names == Rcpp::as<vector<string>>(report[0]));
         expect_true(taxons == Rcpp::as<vector<string>>(report[2]));
         expect_true(conf == Rcpp::as<vector<int>>(report[3]));
@@ -1566,20 +1534,14 @@ context("Dataset class C++ unit tests") {
         Rcpp::DataFrame otuReport = data.getBinTaxonomyReport();
 
         taxons.resize(6);
-        taxons[0] = "Bacteria";
-        taxons[1] = "Bacteroidetes";
-        taxons[2] = "Bacteroidia";
-        taxons[3] = "Bacteria";
-        taxons[4] = "Firmicutes";
-        taxons[5] = "Bacilli";
+        taxons[0] = "Bacteria";       taxons[3] = "Bacteria";
+        taxons[1] = "Bacteroidetes";  taxons[4] = "Firmicutes";
+        taxons[2] = "Bacteroidia";    taxons[5] = "Bacilli";
 
         conf.resize(6);
-        conf[0] = 100;
-        conf[1] = 91;
-        conf[2] = 91;
-        conf[3] = 100;
-        conf[4] = 100;
-        conf[5] = 100;
+        conf[0] = 100;  conf[3] = 100;
+        conf[1] = 91;   conf[4] = 100;
+        conf[2] = 91;   conf[5] = 100;
 
         otus.resize(6);
         otus[0] = "otu1";
@@ -1620,26 +1582,20 @@ context("Dataset class C++ unit tests") {
         names.pop_back();
 
         taxons.resize(9);
-        taxons[0] = "Bacteria";
-        taxons[1] = "Bacteroidetes";
-        taxons[2] = "Bacteroidia";
-        taxons[3] = "Bacteria";
-        taxons[4] = "Proteobacteria";
-        taxons[5] = "Betaproteobacteria";
+        // seq1                      seq2
+        taxons[0] = "Bacteria";      taxons[3] = "Bacteria";
+        taxons[1] = "Bacteroidetes"; taxons[4] = "Proteobacteria";
+        taxons[2] = "Bacteroidia";   taxons[5] = "Betaproteobacteria";
+        // seq3
         taxons[6] = "Bacteria";
         taxons[7] = "Firmicutes";
         taxons[8] = "Bacilli";
 
         conf.resize(9);
-        conf[0] = 100;
-        conf[1] = 95;
-        conf[2] = 90;
-        conf[3] = 100;
-        conf[4] = 89;
-        conf[5] = 85;
-        conf[6] = 100;
-        conf[7] = 99;
-        conf[8] = 90;
+        // seq1        seq2            seq3
+        conf[0] = 100; conf[3] = 100; conf[6] = 100;
+        conf[1] = 95;  conf[4] = 89;  conf[7] = 99;
+        conf[2] = 90;  conf[5] = 85;  conf[8] = 90;
 
         expect_true(names == Rcpp::as<vector<string>>(report[0]));
         expect_true(taxons == Rcpp::as<vector<string>>(report[2]));
@@ -1655,5 +1611,115 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getBin("otu1") == "seq1,seq2");
         expect_true(data.getBin("otu2") == "");
         expect_error(data.assignBinTaxonomy(otus, nullVector));
+
+        data.clear();
+
+        // tests remove.lineage with only bin tax assignments
+        vector<string> otuTaxons(6);
+        // otu1                             otu2
+        otuTaxons[0] = "Bacteria";      otuTaxons[3] = "Bacteria";
+        otuTaxons[1] = "Bacteroidetes"; otuTaxons[4] = "Proteobacteria";
+        otuTaxons[2] = "Bacteroidia";   otuTaxons[5] = "Betaproteobacteria";
+
+        vector<string> otuNames = {"otu1", "otu2"};
+        vector<string> otuTaxs = {"Bacteria;Bacteroidetes;Bacteroidia;",
+                                  "Bacteria;Proteobacteria;Betaproteobacteria;"};
+        vector<int> otuAbunds = {100, 500};
+
+        data.assignBins(otuNames, otuAbunds);
+        data.assignBinTaxonomy(otuNames, otuTaxs);
+
+        otuReport = data.getBinTaxonomyReport();
+
+        expect_true(otuTaxons == Rcpp::as<vector<string>>(otuReport[2]));
+        expect_true(data.getTotal() == 600);
+        expect_true(data.getNumBins() == 2);
+
+        contaminants[0] = "Proteobacteria";
+        data.removeLineages(contaminants);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.getNumBins() == 1);
+    }
+
+    test_that("Tests removeSamples") {
+
+        Dataset data;
+
+        // test adding otuNames, seqNames, abundances (list)
+        vector<string> seqNames(16, "");
+        vector<string> otuNames(16, "");
+        vector<int> abundances(16, 10);
+        vector<string> samples(16, "");
+        otuNames[0] = "otu1"; seqNames[0] = "seq1";  samples[0] = "sample1";  abundances[0] = 10;
+        otuNames[1] = "otu1"; seqNames[1] = "seq2";  samples[1] = "sample2";  abundances[1] = 10;
+        otuNames[2] = "otu1"; seqNames[2] = "seq3";  samples[2] = "sample4";  abundances[2] = 5;
+        otuNames[3] = "otu1"; seqNames[3] = "seq3";  samples[3] = "sample5";  abundances[3] = 5;
+        otuNames[4] = "otu2"; seqNames[4] = "seq4";  samples[4] = "sample1";  abundances[4] = 5;
+        otuNames[5] = "otu2"; seqNames[5] = "seq4"; samples[5] = "sample2";  abundances[5] = 5;
+        otuNames[6] = "otu2"; seqNames[6] = "seq5";  samples[6] = "sample1";  abundances[6] = 10;
+        otuNames[7] = "otu2"; seqNames[7] = "seq6";  samples[7] = "sample1";  abundances[7] = 10;
+        otuNames[8] = "otu2"; seqNames[8] = "seq7";  samples[8] = "sample2";  abundances[8] = 10;
+        otuNames[9] = "otu2"; seqNames[9] = "seq8";  samples[9] = "sample4";  abundances[9] = 10;
+        otuNames[10] = "otu2"; seqNames[10] = "seq9";  samples[10] = "sample4";  abundances[10] = 5;
+        otuNames[11] = "otu2"; seqNames[11] = "seq9"; samples[11] = "sample5";  abundances[11] = 5;
+        otuNames[12] = "otu3"; seqNames[12] = "seq10";  samples[12] = "sample1";  abundances[12] = 1;
+        otuNames[13] = "otu3"; seqNames[13] = "seq10";  samples[13] = "sample3";  abundances[13] = 2;
+        otuNames[14] = "otu3"; seqNames[14] = "seq10";  samples[14] = "sample5";  abundances[14] = 3;
+        otuNames[15] = "otu3"; seqNames[15] = "seq10";  samples[15] = "sample6";  abundances[15] = 4;
+
+        data.assignBins(otuNames, abundances, samples, seqNames);
+
+        vector<string> uniqueSamples(6, "");
+        uniqueSamples[0] = "sample1";
+        uniqueSamples[1] = "sample2";
+        uniqueSamples[2] = "sample3";
+        uniqueSamples[3] = "sample4";
+        uniqueSamples[4] = "sample5";
+        uniqueSamples[5] = "sample6";
+
+        // assign treatments differently
+        vector<string> treatments(6, "early");
+        treatments[3] = "late";
+        treatments[4] = "late";
+        treatments[5] = "late";
+
+        data.assignTreatments(uniqueSamples, treatments);
+
+        expect_true(data.getBinAbundance("otu1") == 30);
+        expect_true(data.getBinAbundance("otu2") == 60);
+        expect_true(data.getBinAbundance("otu3") == 10);
+
+        vector<int> sampleTotals(6, 0);
+        sampleTotals[0] = 36;
+        sampleTotals[1] = 25;
+        sampleTotals[2] = 2;
+        sampleTotals[3] = 20;
+        sampleTotals[4] = 13;
+        sampleTotals[5] = 4;
+
+        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(data.getSamples() == uniqueSamples);
+
+        vector<int> treatmentTotals(2, 0);
+        treatmentTotals[0] = 63;
+        treatmentTotals[1] = 37;
+
+        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(data.getTreatments() == unique(treatments));
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.getNumBins() == 3);
+        expect_true(data.numUnique == 10);
+        expect_true(data.getNumSamples() == 6);
+
+        vector<string> samplesToRemove(2, "sample5");
+        samplesToRemove[1] = "sample6";
+        data.removeSamples(samplesToRemove);
+
+        expect_true(data.getTotal() == 83);
+        expect_true(data.getNumBins() == 3);
+        expect_true(data.numUnique == 10);
+        expect_true(data.getNumSamples() == 4);
     }
 }

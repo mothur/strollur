@@ -4,6 +4,7 @@
 // io libraries
 #include <string.h>
 #include <iostream>
+#include <sstream> // For in-memory serialization
 
 // containers
 #include <vector>
@@ -15,8 +16,16 @@
 #include <RcppThread.h>
 #include <cli/progress.h>
 
+// serialization
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp> // Include for std::string
+#include <cereal/types/vector.hpp> // Include for std::vector serialization
+#include <cereal/types/set.hpp> // Include for std::set serialization
+#include <cereal/types/map.hpp>   // Include for std::map serialization
+
 // [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::depends(RcppThread)]]
+// [[Rcpp::depends(Rcereal)]]
 
 using namespace std;
 
@@ -76,16 +85,24 @@ struct sampleAbunds {
     }
 
     // sparse format constructor
-    sampleAbunds(vector<int> i, vector<int> a) : sampleIndex(i), abunds(a) {}
-
-    // full format constructor
-    sampleAbunds(vector<int> fullAbunds) {
-        for (int i = 0; i < fullAbunds.size(); i++){
-            if (fullAbunds[i] != 0) {
-                sampleIndex.push_back(i);
-                abunds.push_back(fullAbunds[i]);
+    sampleAbunds(vector<int> ind, vector<int> a, string mode)  {
+        if (mode == "sparse") {
+            sampleIndex = ind;
+            abunds = a;
+        }else{
+            for (int i = 0; i < a.size(); i++){
+                if (a[i] != 0) {
+                    sampleIndex.push_back(ind[i]);
+                    abunds.push_back(a[i]);
+                }
             }
         }
+    }
+
+    // This method lets Cereal know how to serialize.
+    template<class Archive>
+    void serialize(Archive & archive) {
+        archive(sampleIndex, abunds);
     }
 };
 
@@ -108,6 +125,7 @@ public:
     ~AbundTable();
 
     void clear();
+    void clone(const AbundTable& abundTable);
 
     // 2, 3 or 4 columns: id, abundance, sample (optional -
     //                                   added when table includes sample data),
@@ -201,10 +219,20 @@ private:
     bool hasSampleData, hasTreatments;
 
     int getSparseIndex(int, int);
+    vector<int> getSampleIndexes();
     void addSamples(vector<string> samples);
     void addTreatments(vector<string> treatments);
     void updateSampleTotals(vector<int> diffAbunds);
 
+    friend class cereal::access; // Grants Cereal access
+
+    template<class Archive>
+    void serialize(Archive& ar) {
+        ar(counts, total, numSamples, numTreatments,
+           sampleIndex, sampleNames, sampleTotals, tableSamples,
+           treatmentIndex, treatmentTotals, tableTreatments,
+           sampleTreatment, hasSampleData, hasTreatments);
+    }
 };
 
 /******************************************************************************/
@@ -216,6 +244,7 @@ class BinTable {
 
 public:
 
+    BinTable();
     BinTable(string label);
     BinTable(const BinTable& binTable);
     ~BinTable();
@@ -226,8 +255,7 @@ public:
 
     // ids, abundances, samples(optional)
     void assignAbundance(vector<string> ids, vector<int> abundance,
-             vector<string> samples = nullVector,
-             vector<int> seqIds = nullIntVector, AbundTable* count = nullptr);
+             vector<string> samples, vector<int> seqIds, AbundTable& count);
 
     void assignTaxonomy(vector<string> ids, vector<string> taxonomies);
 
@@ -235,6 +263,7 @@ public:
                           vector<string> treatments);
 
     void clear();
+    void clone(const BinTable& binTable);
 
     // string containing seqs in bin, comma separated
     string get(string binName, vector<string>& seqNames);
@@ -256,8 +285,7 @@ public:
     // abundances for each bin broken down by sample
     vector<vector<int> > getSharedVector();
     // classifications of bins
-    vector<string> getTaxonomies(vector<string>& tax,
-                                 AbundTable* count = nullptr);
+    vector<string> getTaxonomies(vector<string>& tax, AbundTable& count);
 
     // sample functions
     int getNumSamples();
@@ -278,7 +306,7 @@ public:
     void merge(vector<string> binIds, string reason = "merged");
     // returns false if seqs are in different bins
     bool okToMerge(vector<int> seqIds);
-    void remove(int seqId, AbundTable* count, string reason, bool update = true);
+    void remove(int seqId, AbundTable& count, string reason, bool update = true);
     // remove given binId, return seqs removed
     vector<int> remove(string binId, string reason, bool update = true);
     void removeSamples(vector<string> samples);
@@ -290,9 +318,6 @@ public:
     vector<int> setAbundances(vector<string> binIds,
                                  vector<vector<int>> abunds,
                        string reason = "merged");
-
-    void setLabel(string label);
-
     void updateTotals();
 
 private:
@@ -322,12 +347,21 @@ private:
 
     // count table data
     // bin abundances, parsed by sample
-    AbundTable* binCount;
+    AbundTable binCount;
 
     vector<int> getGoodIndexes();
     vector<int> getIndexes(vector<string>&);
-    void classify(vector<string>& taxs, AbundTable* count);
-    string classifyBin(int binIndex, vector<string>& tax, AbundTable* count);
+    void classify(vector<string>& taxs, AbundTable& count);
+    string classifyBin(int binIndex, vector<string>& tax, AbundTable& count);
+
+    friend class cereal::access; // Grants Cereal access
+
+    template<class Archive>
+    void serialize(Archive& ar) {
+        ar(numBins, label, hasListAssignments, hasBinTaxonomy,
+           binIndex, tableBins, binNames, trashCodes, taxonomies,
+           runClassify, binList, seqBins, badAccnos, uniqueBad, binCount);
+    }
 
 };
 /******************************************************************************/
@@ -340,6 +374,7 @@ class Dataset {
 
 public:
 
+    Dataset();
     Dataset(string name, int processors);
     Dataset(const Dataset& dataset);
     ~Dataset();
@@ -473,6 +508,9 @@ public:
     // 3 column dataframe - bin_id, abundance, sample
     Rcpp::DataFrame getShared(string type = "otu");
 
+    Rcpp::RawVector serializeDataset();
+    void loadFromSerialized(Rcpp::RawVector);
+
 private:
     // fasta data
     vector<string> names, seqs, comments, trashCodes;
@@ -496,12 +534,12 @@ private:
     int uniqueBad;
 
     // count table data
-    AbundTable* count;
+    AbundTable count;
 
     // bin table, shared / rabund
-    // maps type of table to table
+    // tables label stores type
     // ie. otu, asv, phylotype
-    map<string, BinTable*> binTables;
+    vector<BinTable> binTables;
 
     // if unaligned, returns -1
     int getAlignedLength();
@@ -511,6 +549,18 @@ private:
     void removeSequence(int index, string reasons, bool update = true,
                         bool removeFromBin = true);
     Rcpp::DataFrame fillTaxReport(string mode);
+    int getBinTableIndex(string type);
+
+    friend class cereal::access; // Grants Cereal access
+
+    template<class Archive>
+    void serialize(Archive& ar) {
+        ar(names, seqs, comments, trashCodes,
+           starts, ends, lengths, ambigs, polymers, numns, taxonomies,
+           tableSeqs, seqIndex, badAccnos, uniqueBad, count, binTables,
+           datasetName, alignmentLength, isAligned,
+           hasSequenceData, hasSequenceTaxonomy, numUnique, processors);
+    }
 };
 
 /******************************************************************************/

@@ -10,7 +10,7 @@ read_mothur_shared(shared)
 \item{shared}{file name (required)}
 }
 \value{
-A data.table containing the sequence otu assignments
+A data.frame containing the sequence otu assignments
 }
 \description{
 Read a mothur formatted

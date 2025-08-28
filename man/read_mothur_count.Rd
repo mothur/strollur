@@ -10,7 +10,7 @@ read_mothur_count(filename)
 \item{filename}{count file name (required)}
 }
 \value{
-data.table
+data.frame
 }
 \description{
 Read a mothur formatted count file

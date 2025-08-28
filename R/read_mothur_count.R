@@ -38,7 +38,7 @@
 #' )
 #' dataset
 #'
-#' @return data.table
+#' @return data.frame
 #' @export
 read_mothur_count <- function(filename) {
   directory <- dirname(filename)
@@ -141,7 +141,7 @@ read_mothur_count <- function(filename) {
       }
 
       if (!has_sample_data) {
-        return(data.table(
+        return(data.frame(
           id = table_names,
           abundance = table_abunds
         ))
@@ -149,7 +149,7 @@ read_mothur_count <- function(filename) {
     }
   }
 
-  data.table(
+  data.frame(
     id = table_names,
     sample = table_samples,
     abundance = table_abunds

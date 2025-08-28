@@ -10,7 +10,7 @@ read_mothur_list(list)
 \item{list}{file name (required)}
 }
 \value{
-A data.table containing the sequence otu assignments
+A data.frame containing the sequence otu assignments
 }
 \description{
 Read a mothur formatted \href{https://mothur.org/wiki/list_file/}{list file}

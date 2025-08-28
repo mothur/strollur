@@ -26,7 +26,9 @@ context("BinTable class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        otuTable.assignAbundance(otuNames, abundances);
+        AbundTable ab;
+        otuTable.assignAbundance(otuNames, abundances,
+                                 nullVector, nullIntVector, ab);
 
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numBins == 10);
@@ -59,7 +61,8 @@ context("BinTable class C++ unit tests") {
         otuNames[14] = "otu4";   samples[14] = "sample5";  abundances[14] = 5;
 
         // add shared data
-        otuTable.assignAbundance(otuNames, abundances, samples);
+        otuTable.assignAbundance(otuNames, abundances, samples,
+                                 nullIntVector, ab);
 
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numBins == 4);
@@ -105,7 +108,9 @@ context("BinTable class C++ unit tests") {
         vector<int> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
-        otuTable.assignAbundance(otuNames, abundances);
+        AbundTable ab;
+        otuTable.assignAbundance(otuNames, abundances,
+                                 nullVector, nullIntVector, ab);
 
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numBins == 10);
@@ -157,7 +162,8 @@ context("BinTable class C++ unit tests") {
         sharedVector[3][4] = 5;
 
         // add shared data
-        otuTable.assignAbundance(otuNames, abundances, samples);
+        otuTable.assignAbundance(otuNames, abundances, samples,
+                                 nullIntVector, ab);
 
         expect_true(otuTable.getTotal() == 100);
         expect_true(otuTable.numBins == 4);

@@ -12,7 +12,7 @@
 #'   count = rdataset_example("final.count_table"),
 #'   taxonomy = rdataset_example("final.taxonomy"),
 #'   design = rdataset_example("mouse.time.design"),
-#'   list = rdataset_example("final.opti_mcc.list"),
+#'   otu_list = rdataset_example("final.opti_mcc.list"),
 #'   dataset_name = "miseq_sop"
 #' )
 #'

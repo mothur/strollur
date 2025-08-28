@@ -8,6 +8,7 @@ exportPattern("^[[:alpha:]]+")
 
 # general
 import(cli)
+import(Rcereal)
 
 # tree data
 import(ape)
@@ -21,7 +22,6 @@ importFrom(Rcpp, loadModule)
 importFrom(R6, R6Class)
 importFrom(methods, new)
 importFrom(waldo, compare)
-import(data.table)
 
 # read fastq files
 importFrom(microseq, readFastq)

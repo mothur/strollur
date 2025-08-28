@@ -11,7 +11,7 @@
 #' dataset <- sequence_data$new()
 #' dataset$assign_bins(otu_data$bin_id, seq_ids = otu_data$seq_id)
 #'
-#' @return A data.table containing the sequence otu assignments
+#' @return A data.frame containing the sequence otu assignments
 #' @export
 read_mothur_list <- function(list) {
   if (!file.exists(list)) {
@@ -42,7 +42,7 @@ read_mothur_list <- function(list) {
     i <- i + 1
   }
 
-  data.table(
+  data.frame(
     bin_id = otu_assignments,
     seq_id = sequence_names
   )

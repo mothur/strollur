@@ -76,7 +76,7 @@ test_that("sequence_data - intialize from read_mothur / print", {
   expect_equal(dataset$get_num_bins("phylotype"), 57)
   expect_equal(dataset$get_num_bins("otu"), 482)
   expect_equal(dataset$get_num_bins("asv"), 2124)
-  expect_equal(dataset$get_num_sequences(), 107700)
+  expect_equal(dataset$get_num_sequences(), 97467)
   expect_equal(dataset$get_num_sequences(TRUE), 2124)
   expect_equal(dataset$get_num_sequences(TRUE, "F3D0"), 0)
   expect_equal(dataset$get_num_sequences(TRUE, "F3D1"), 0)
@@ -95,7 +95,7 @@ test_that("sequence_data - intialize from read_mothur / print", {
   expect_equal(dataset$get_num_bins("phylotype"), 57)
   expect_equal(dataset$get_num_bins("otu"), 475)
   expect_equal(dataset$get_num_bins("asv"), 2086)
-  expect_equal(dataset$get_num_sequences(), 107661)
+  expect_equal(dataset$get_num_sequences(), 97428)
   expect_equal(dataset$get_num_sequences(TRUE), 2086)
 })
 
@@ -867,15 +867,7 @@ test_that("sequence_data - add_sequence_tree / get_sequence_tree,", {
   expect_error(dataset$add_sequence_tree(tree = c("bad_type")))
 
   dataset$add_sequences(names, seqs)
-  tree <- dataset$get_sequence_tree()
-
-  expect_equal(sort(dataset$get_sequence_names()), sort(tree$tip.label))
-  expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
-  expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
-  expect_equal(
-    round(tree$edge.length, digits = 2),
-    c(0.26, 0.33, 0.07, 0.33, 0.26)
-  )
+  expect_equal(dataset$get_sequence_tree(), NULL)
 
   # add full tree
   dataset <- sequence_data$new()

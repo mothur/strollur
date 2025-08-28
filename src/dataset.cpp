@@ -5,7 +5,17 @@
 #include "dataset.h"
 #include "utils.h"
 
-
+/******************************************************************************/
+Dataset::Dataset() {
+    datasetName = "";
+    isAligned = false;
+    hasSequenceData = false;
+    hasSequenceTaxonomy = false;
+    numUnique = 0;
+    uniqueBad = 0;
+    alignmentLength = 0;
+    processors = 1;
+}
 /******************************************************************************/
 Dataset::Dataset(string n, int proc) : datasetName(n) {
     isAligned = false;
@@ -15,7 +25,6 @@ Dataset::Dataset(string n, int proc) : datasetName(n) {
     uniqueBad = 0;
     alignmentLength = 0;
     processors = proc;
-    count = new AbundTable();
 }
 /******************************************************************************/
 Dataset::Dataset(const Dataset& dataset) {
@@ -49,22 +58,26 @@ Dataset::Dataset(const Dataset& dataset) {
     badAccnos = dataset.badAccnos;
     uniqueBad = dataset.uniqueBad;
 
-    count = new AbundTable(*dataset.count);
+    count.clone(dataset.count);
 
-    for (auto it = dataset.binTables.begin(); it != dataset.binTables.end();
-        it++) {
-        binTables[it->first] = new BinTable(*it->second);
+    for (int i = 0; i < dataset.binTables.size(); i++) {
+        BinTable table;
+        table.clone(dataset.binTables[i]);
+        binTables.push_back(table);
     }
 }
 /******************************************************************************/
-Dataset::~Dataset() {
-    delete count;
-    if (binTables.size() != 0) {
-        for (auto it = binTables.begin(); it != binTables.end(); it++) {
-            delete it->second;
-        }
+void Dataset::loadFromSerialized(Rcpp::RawVector serializedDataset) {
+    std::string serialized_data(reinterpret_cast<const char*>(serializedDataset.begin()),
+                                serializedDataset.size());
+    std::stringstream ss(serialized_data);
+    {
+        cereal::BinaryInputArchive iarchive(ss);
+        iarchive(*this);
     }
 }
+/******************************************************************************/
+Dataset::~Dataset() {}
 /******************************************************************************/
 void Dataset::clear() {
     isAligned = false;
@@ -96,12 +109,7 @@ void Dataset::clear() {
     tableSeqs.clear();
 
     badAccnos.clear();
-    count->clear();
-
-    // if you have an binTable then binTable.clear();
-    for (auto it = binTables.begin(); it != binTables.end(); it++) {
-        delete it->second;
-    }
+    count.clear();
     binTables.clear();
 }
 /******************************************************************************/
@@ -163,7 +171,7 @@ void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c)
     }
 
     // add to count
-    count->add(countNames);
+    count.add(countNames);
     countNames.clear();
 
     // add to names
@@ -243,18 +251,14 @@ void Dataset::assignBins(vector<string> binIds,
         throw Rcpp::exception(message.c_str());
     }
 
-    BinTable* binTable = nullptr;
-    auto itTableType = binTables.find(type);
+    int binTableIndex = getBinTableIndex(type);
 
     // new table type
-    if (itTableType == binTables.end()) {
-        binTable = new BinTable(type);
-        binTables[type] = binTable;
-    }else{
-        // existing table type
-        binTable = itTableType->second;
-        //binTable->clear();
-        binTable->setLabel(type);
+    if (binTableIndex == -1) {
+        BinTable binTable;
+        binTable.label = type;
+        binTableIndex = binTables.size();
+        binTables.push_back(binTable);
     }
 
     if (useSeqIds) {
@@ -280,11 +284,11 @@ void Dataset::assignBins(vector<string> binIds,
         abunds.clear();
         samples.clear();
 
-        binTable->assignAbundance(binIds, abunds, samples,
+        binTables[binTableIndex].assignAbundance(binIds, abunds, samples,
                                   getIndexes(seqIds), count);
     }else{
         // add bins - shared
-        binTable->assignAbundance(binIds, abunds, samples,
+        binTables[binTableIndex].assignAbundance(binIds, abunds, samples,
                                   nullIntVector, count);
     }
 }
@@ -299,16 +303,16 @@ void Dataset::assignBinTaxonomy(vector<string> binIds, vector<string> taxs,
             throw Rcpp::exception(message.c_str());
         }
 
-        binTables[type]->assignTaxonomy(binIds, taxs);
+        binTables[getBinTableIndex(type)].assignTaxonomy(binIds, taxs);
     }
 }
 /******************************************************************************/
 void Dataset::assignTreatments(vector<string> samples, vector<string> treatments) {
-    count->assignTreatments(samples, treatments);
+    count.assignTreatments(samples, treatments);
 
     // for each type of binTable, pass new sample assignments
-    for (auto it = binTables.begin(); it != binTables.end(); it++) {
-        it->second->assignTreatments(samples, treatments);
+    for (int i = 0; i < binTables.size(); i++) {
+        binTables[i].assignTreatments(samples, treatments);
     }
 }
 /******************************************************************************/
@@ -332,7 +336,7 @@ void Dataset::assignSequenceAbundance(vector<string> ids,
 
     vector<int> idIndexes = getIndexes(ids);
 
-    count->assignAbundance(idIndexes, abunds, samples, treatments);
+    count.assignAbundance(idIndexes, abunds, samples, treatments);
 }
 /******************************************************************************/
 void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
@@ -389,8 +393,9 @@ Rcpp::DataFrame Dataset::fillTaxReport(string mode) {
 
     if (mode != "sequence") {
         if (hasBinTable(mode)) {
-            ids = binTables[mode]->getIds();
-            taxes = binTables[mode]->getTaxonomies(taxonomies, count);
+            int binTableIndex = getBinTableIndex(mode);
+            ids = binTables[binTableIndex].getIds();
+            taxes = binTables[binTableIndex].getTaxonomies(taxonomies, count);
 
             // taxes is empty if no bin classifications have been added
             if (taxes.empty()) {
@@ -472,7 +477,7 @@ int Dataset::getAbundance(string name){
     auto it = seqIndex.find(name);
     if (it != seqIndex.end()) {
         if (tableSeqs[it->second]) {
-            abund = count->getAbundance(it->second, "");
+            abund = count.getAbundance(it->second, "");
         }
     }
     return abund;
@@ -483,7 +488,7 @@ vector<int> Dataset::getAbundances(string name){
     auto it = seqIndex.find(name);
     if (it != seqIndex.end()) {
         if (tableSeqs[it->second]) {
-            abunds = count->getAbundances(it->second);
+            abunds = count.getAbundances(it->second);
         }
     }
     return abunds;
@@ -541,7 +546,7 @@ vector<int> Dataset::getIndexes(vector<string>& ids) {
 Rcpp::DataFrame Dataset::getList(string type) {
     if (hasBinTable(type)) {
 
-        return binTables[type]->getList(names);
+        return binTables[getBinTableIndex(type)].getList(names);
 
     }else if ((type == "asv") && (hasSequenceData)) {
         vector<string> seqIds = getNames();
@@ -550,7 +555,7 @@ Rcpp::DataFrame Dataset::getList(string type) {
             asvIds[i] = "ASV" + toString(i+1);
         }
         assignBins(asvIds, nullIntVector, nullVector, seqIds, "asv");
-        return binTables["asv"]->getList(names);
+        return binTables[getBinTableIndex(type)].getList(names);
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
@@ -558,7 +563,7 @@ Rcpp::DataFrame Dataset::getList(string type) {
 /******************************************************************************/
 vector<string> Dataset::getListVector(string type) {
     if (hasBinTable(type)) {
-        return binTables[type]->getListVector(names);
+        return binTables[getBinTableIndex(type)].getListVector(names);
     }
 
     return nullVector;
@@ -576,13 +581,13 @@ vector<string> Dataset::getNames(string sample){
         }
     // get all "good" names in specific sample
     }else {
-        if (count->hasSample(sample)) {
+        if (count.hasSample(sample)) {
             // all seqs
             for (int i = 0; i < tableSeqs.size(); i++) {
                 // if "good" seq
                 if (tableSeqs[i]) {
                     // if this sequence is in sample
-                    if (count->hasSample(sample, i)) {
+                    if (count.hasSample(sample, i)) {
                         included.push_back(names[i]);
                     }
                 }
@@ -604,30 +609,27 @@ vector<vector<string> > Dataset::getNamesBySample(vector<string> samples){
 }
 /******************************************************************************/
 int Dataset::getNumSamples() {
-
     if (binTables.size() != 0) {
-        return binTables.begin()->second->getNumSamples();
+        return binTables[0].getNumSamples();
     }
 
-    return count->getNumSamples();
+    return count.getNumSamples();
 }
 /******************************************************************************/
 int Dataset::getNumTreatments() {
     if (binTables.size() != 0) {
-        return binTables.begin()->second->getNumTreatments();
+        return binTables[0].getNumTreatments();
     }
 
-    return count->getNumTreatments();
+    return count.getNumTreatments();
 }
 /******************************************************************************/
 // TODO document in module_exports.R
 int Dataset::getNumBins(string type) {
     int numBins = 0;
 
-    auto it = binTables.find(type);
-
-    if (it != binTables.end()) {
-        return it->second->numBins;
+    if (hasBinTable(type)) {
+        return binTables[getBinTableIndex(type)].numBins;
     }
 
     return numBins;
@@ -636,7 +638,7 @@ int Dataset::getNumBins(string type) {
 // total abundance for a given binID
 int Dataset::getBinAbundance(string binId, string type) {
     if (hasBinTable(type)) {
-        return binTables[type]->getAbundance(binId, "");
+        return binTables[getBinTableIndex(type)].getAbundance(binId, "");
     }
     return 0;
 }
@@ -644,7 +646,7 @@ int Dataset::getBinAbundance(string binId, string type) {
 // abundances for given binID broken down by sample
 vector<int> Dataset::getBinAbundances(string binId, string type) {
     if (hasBinTable(type)) {
-        return binTables[type]->getAbundances(binId);
+        return binTables[getBinTableIndex(type)].getAbundances(binId);
     }
     return nullIntVector;
 }
@@ -652,14 +654,14 @@ vector<int> Dataset::getBinAbundances(string binId, string type) {
 // string containing sequence names for given binID
 string Dataset::getBin(string binId, string type) {
     if (hasBinTable(type)) {
-        return binTables[type]->get(binId, names);
+        return binTables[getBinTableIndex(type)].get(binId, names);
     }
     return "";
 }
 /******************************************************************************/
 vector<string> Dataset::getBinIds(string type) {
     if (hasBinTable(type)) {
-        return binTables[type]->getIds();
+        return binTables[getBinTableIndex(type)].getIds();
     }
     return nullVector;
 }
@@ -670,7 +672,7 @@ Rcpp::DataFrame Dataset::getBinTaxonomyReport(string type) {
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getRAbund(string type) {
     if (hasBinTable(type)) {
-        return binTables[type]->getRAbund();
+        return binTables[getBinTableIndex(type)].getRAbund();
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
@@ -680,16 +682,16 @@ Rcpp::DataFrame Dataset::getRAbund(string type) {
 vector<string> Dataset::getSamples(){
     // maybe we just provided an binTable with no seqIds
     if (binTables.size() != 0) {
-        return binTables.begin()->second->getSamples();
+        return binTables[0].getSamples();
     }
-    return count->getSamples();
+    return count.getSamples();
 }
 /******************************************************************************/
 vector<int> Dataset::getSampleTotals(){
     if (binTables.size() != 0) {
-        return binTables.begin()->second->getSampleTotals();
+        return binTables[0].getSampleTotals();
     }
-    return count->getSampleTotals();
+    return count.getSampleTotals();
 }
 /******************************************************************************/
 // id, trashCode
@@ -718,7 +720,7 @@ Rcpp::DataFrame Dataset::getScrapReport(string mode) {
         }
     }else {
         if (hasBinTable(mode)) {
-            return binTables[mode]->getScrapReport();
+            return binTables[getBinTableIndex(mode)].getScrapReport();
         }
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
@@ -754,9 +756,9 @@ Rcpp::List Dataset::getScrapSummary() {
     }
 
     if (binTables.size() != 0) {
-        for (auto it = binTables.begin(); it != binTables.end(); it++) {
-            list.push_back(it->second->getScrapSummary());
-            string tag = it->second->label + "_scrap_summary";
+        for (int i = 0; i < binTables.size(); i++) {
+            list.push_back(binTables[i].getScrapSummary());
+            string tag = binTables[i].label + "_scrap_summary";
             listNames.push_back(tag);
         }
     }
@@ -769,17 +771,17 @@ Rcpp::List Dataset::getScrapSummary() {
 // ids, abundances, sample(optional), treatment(optional)
 // This table represents mothur's count and design files.
 Rcpp::DataFrame Dataset::getSequenceAbundanceTable() {
-    return count->getAbundanceTable(select(names, tableSeqs),
+    return count.getAbundanceTable(select(names, tableSeqs),
                                             getIncludedNamesIndexes());
 }
 /******************************************************************************/
 // total abundance for each sequence
 vector<int> Dataset::getSequenceAbundances(){
-    return count->getTotalAbundances(getIncludedNamesIndexes());
+    return count.getTotalAbundances(getIncludedNamesIndexes());
 }
 /******************************************************************************/
 vector<vector<int>> Dataset::getSeqsAbundsBySample(){
-    return count->getAbundances(getIncludedNamesIndexes());
+    return count.getAbundances(getIncludedNamesIndexes());
 }
 /******************************************************************************/
 vector<string> Dataset::getSequences(string sample){
@@ -792,13 +794,13 @@ vector<string> Dataset::getSequences(string sample){
             }
         }
     }else{
-        if (count->hasSample(sample)) {
+        if (count.hasSample(sample)) {
             // all seqs
             for (int i = 0; i < tableSeqs.size(); i++) {
                 // if "good" seq
                 if (tableSeqs[i]) {
                     // if this sequence is in sample
-                    if (count->hasSample(sample, i)) {
+                    if (count.hasSample(sample, i)) {
                         included.push_back(seqs[i]);
                     }
                 }
@@ -856,7 +858,7 @@ Rcpp::List Dataset::getSequenceSummary() {
     report.push_back(select(numns, tableSeqs));
 
     Rcpp::DataFrame seqResults = summary->summarizeFasta(
-        report, count->getTotalAbundances(getIncludedNamesIndexes()));
+        report, count.getTotalAbundances(getIncludedNamesIndexes()));
 
     result.push_back(seqResults);
     result_names.push_back("sequence_summary");
@@ -884,7 +886,7 @@ Rcpp::DataFrame Dataset::getSequenceTaxonomyReport() {
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getShared(string type) {
     if (hasBinTable(type)) {
-        return binTables[type]->getShared();
+        return binTables[getBinTableIndex(type)].getShared();
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
@@ -893,25 +895,40 @@ Rcpp::DataFrame Dataset::getShared(string type) {
 vector<string> Dataset::getTreatments(){
     // maybe we just provided an binTable with no seqIds
     if (binTables.size() != 0) {
-        return binTables.begin()->second->getTreatments();
+        return binTables[0].getTreatments();
     }
-    return count->getTreatments();
+    return count.getTreatments();
 }
 /******************************************************************************/
 vector<int> Dataset::getTreatmentTotals(){
     // maybe we just provided an binTable with no seqIds
     if (binTables.size() != 0) {
-        return binTables.begin()->second->getTreatmentTotals();
+        return binTables[0].getTreatmentTotals();
     }
-    return count->getTreatmentTotals();
+    return count.getTreatmentTotals();
 }
 /******************************************************************************/
 long long Dataset::getTotal(string sample){
+    // set<int> totals; totals.insert(count.getTotal(sample));
+    //
+    // if (binTables.size() != 0) {
+    //     for (int i = 0; i < binTables.size(); i++) {
+    //         totals.insert(binTables[i].getTotal(sample));
+    //     }
+    // }
+    //
+    // if (totals.size() > 1) {
+    //     cout << "count " << count.getTotal(sample) << endl;
+    //     for (int i = 0; i < binTables.size(); i++) {
+    //         cout << binTables[i].label << '\t' << binTables[i].getTotal(sample) << endl;
+    //     }
+    // }
+
     if (binTables.size() != 0) {
-        return binTables.begin()->second->getTotal(sample);
+        return binTables[0].getTotal(sample);
     }
 
-    return count->getTotal(sample);
+    return count.getTotal(sample);
 }
 /******************************************************************************/
 long long Dataset::getUniqueTotal(string sample){
@@ -922,15 +939,28 @@ long long Dataset::getUniqueTotal(string sample){
 }
 /******************************************************************************/
 bool Dataset::hasBinTable(string type) {
-    auto it = binTables.find(type);
-    return (it != binTables.end());
+    for (int i = 0; i < binTables.size(); i++) {
+        if (binTables[i].label == type) {
+            return true;
+        }
+    }
+    return false;
+}
+/******************************************************************************/
+int Dataset::getBinTableIndex(string type) {
+    for (int i = 0; i < binTables.size(); i++) {
+        if (binTables[i].label == type) {
+            return i;
+        }
+    }
+    return -1;
 }
 /******************************************************************************/
 bool Dataset::hasSample(string sample){
     if (binTables.size() != 0) {
-        return binTables.begin()->second->hasSample(sample);
+        return binTables[0].hasSample(sample);
     }
-    return count->hasSample(sample);
+    return count.hasSample(sample);
 }
 /******************************************************************************/
 bool Dataset::hasSeqs() {
@@ -959,12 +989,12 @@ void Dataset::mergeSequences(vector<string> ids, string reason){
             int tableIndex = 0;
             string message = "[ERROR]: can not merge sequences assigned";
             message += " to different bins.";
-            for (auto it = binTables.begin(); it != binTables.end(); it++) {
+            for (int i = 0; i < binTables.size(); i++) {
 
                 // if seqs were assigned to otus
-                if (!it->second->okToMerge(indexes)) {
+                if (!binTables[i].okToMerge(indexes)) {
                     okToMerge[tableIndex] = false;
-                    message += " The '" + it->second->label + "' bin table has";
+                    message += " The '" + binTables[i].label + "' bin table has";
                     message += " sequences assigned to different bins.";
                 }
                 tableIndex++;
@@ -976,11 +1006,11 @@ void Dataset::mergeSequences(vector<string> ids, string reason){
             }
         }
 
-        count->merge(indexes);
+        count.merge(indexes);
 
         for (int i = 1; i < indexes.size(); i++) {
             // no need to update the sample and treatment counts
-            removeSequence(indexes[i], reason, false, true);
+            removeSequence(indexes[i], reason, false, false);
         }
     }
 }
@@ -988,13 +1018,12 @@ void Dataset::mergeSequences(vector<string> ids, string reason){
 void Dataset::mergeBins(vector<string> ids, string reason, string type){
     if (ids.size() != 1) {
         if (hasBinTable(type)) {
-            binTables[type]->merge(ids);
+            binTables[getBinTableIndex(type)].merge(ids);
         }
     }
 }
 /******************************************************************************/
 void Dataset::removeLineages(vector<string> contaminants, string trashTag) {
-
     // if no sequence taxonomy or clusters
     if (!hasSequenceTaxonomy && (binTables.size() == 0)) { return; }
 
@@ -1036,42 +1065,41 @@ void Dataset::removeLineages(vector<string> contaminants, string trashTag) {
         }
     }
 
-    for (auto itTable = binTables.begin(); itTable != binTables.end();
-    itTable++) {
+    for (int i = 0; i < binTables.size(); i++) {
 
-        BinTable* binTable = itTable->second;
-
-        vector<string> binIds = binTable->getIds();
+        vector<string> binIds = binTables[i].getIds();
         vector<string> binTaxes;
 
         // if you have only have bin classifications, and no seq classifications
         if (!hasSequenceTaxonomy) {
-            if (binTable->hasBinTaxonomy) {
-                binTaxes = binTable->getTaxonomies(binTaxes, nullptr);
+            if (binTables[i].hasBinTaxonomy) {
+                binTaxes = binTables[i].getTaxonomies(binTaxes, count);
             }
         }else{
-            binTaxes = binTable->getTaxonomies(taxonomies, count);
+            binTaxes = binTables[i].getTaxonomies(taxonomies, count);
         }
 
         // remove bins assigned to this taxonomy
-        for (int i = 0; i < binTaxes.size(); i++) {
+        for (int j = 0; j < binTaxes.size(); j++) {
+
             vector<string> userTax;
-            split(binTaxes[i], ';', back_inserter(userTax));
+            split(binTaxes[j], ';', back_inserter(userTax));
             vector<int> userConfidences = util.removeConfidences(userTax);
 
             // if this seq is a contaminant, remove it
             if (util.searchTax(userTax, userConfidences,
                                conHasConfidences,
                                conTax, conConfidenceThreshold)) {
-                vector<string> binToRemove(1, binIds[i]);
+                vector<string> binToRemove(1, binIds[j]);
                 vector<string> trashTags(1, trashTag);
-                removeBins(binToRemove, trashTags, itTable->first);
+
+                removeBins(binToRemove, trashTags, binTables[i].label);
             }
         }
-        binTable->updateTotals();
+        binTables[i].updateTotals();
     }
 
-    count->updateTotals();
+    count.updateTotals();
 }
 /******************************************************************************/
 void Dataset::removeBins(vector<string> namesToRemove,
@@ -1089,48 +1117,58 @@ void Dataset::removeBins(vector<string> namesToRemove,
         }
 
         for (int i = 0; i < namesToRemove.size(); i++) {
-            vector<int> seqsToRemove = binTables[type]->remove(namesToRemove[i],
-                                                               trashTags[i]);
+            vector<int> seqsToRemove = binTables[getBinTableIndex(type)].remove(namesToRemove[i], trashTags[i]);
             // remove any sequences from removed bin
             for (int seq : seqsToRemove) {
                 removeSequence(seq, trashTags[i], true, false);
             }
 
             // remove from other lists
-            for (auto it = binTables.begin(); it != binTables.end(); it++) {
-                if (it->second->hasListAssignments && (it->first != type)) {
-                    for (int seq : seqsToRemove) {
-                        it->second->remove(seq, count, trashTags[i], true);
+            for (int j = 0; j < binTables.size(); j++) {
+                if (binTables[j].label != type) {
+                    if (binTables[j].hasListAssignments) {
+                        for (int seq : seqsToRemove) {
+                            binTables[j].remove(seq, count, trashTags[i], true);
+                        }
+                    }else {
+                        binTables[j].remove(namesToRemove[i], trashTags[i]);
                     }
                 }
-                it->second->updateTotals();
+                binTables[j].updateTotals();
             }
         }
 
-        count->updateTotals();
+        count.updateTotals();
     }
 }
 /******************************************************************************/
 void Dataset::removeSamples(vector<string> samples) {
+    count.removeSamples(samples);
 
-    // remove samples from count
-    count->removeSamples(samples);
-
+    // // remove samples from count
     // remove any seqs only assigned to these samples
     for (int i = 0; i < names.size(); i++) {
         // included seq
         if (tableSeqs[i]) {
-            if (sum(count->getAbundances(i)) == 0) {
-                removeSequence(i, "removedSamples", true, true);
+            if (sum(count.getAbundances(i)) == 0) {
+                removeSequence(i, "removedSamples", true, false);
+
+                // remove from list otus
+                for (int j = 0; j < binTables.size(); j++) {
+                    if (binTables[j].hasListAssignments) {
+                        binTables[j].remove(i, count, "removedSamples", false);
+                    }
+                }
             }
         }
     }
 
-    // remove samples from binTables
-    for (auto it = binTables.begin(); it != binTables.end(); it++) {
-        it->second->removeSamples(samples);
-        it->second->updateTotals();
+    // // remove samples from binTables
+    for (int i = 0; i < binTables.size(); i++) {
+        binTables[i].removeSamples(samples);
+        binTables[i].updateTotals();
     }
+    count.updateTotals();
 }
 /******************************************************************************/
 void Dataset::removeSequence(int index, string reasons,
@@ -1146,16 +1184,16 @@ void Dataset::removeSequence(int index, string reasons,
         if ((binTables.size() != 0) && removeFromBin) {
 
             // remove from list otus
-            for (auto it = binTables.begin(); it != binTables.end(); it++) {
-                if (it->second->hasListAssignments) {
-                    it->second->remove(index, count, reasons, update);
+            for (int i = 0; i < binTables.size(); i++) {
+                if (binTables[i].hasListAssignments) {
+                    binTables[i].remove(index, count, reasons, update);
                 }
             }
         }
 
-        abund = count->remove(index);
+        abund = count.remove(index);
     }else{
-        abund = count->getAbundance(index);
+        abund = count.getAbundance(index);
     }
 
     // add to badAccnos
@@ -1205,12 +1243,12 @@ void Dataset::removeSequences(vector<string> namesToRemove,
         }
     }
 
-    count->updateTotals();
+    count.updateTotals();
 
     if (binTables.size() != 0) {
-        for (auto it = binTables.begin(); it != binTables.end(); it++) {
-            if (it->second->hasListAssignments) {
-                it->second->updateTotals();
+        for (int i = 0; i < binTables.size(); i++) {
+            if (binTables[i].hasListAssignments) {
+                binTables[i].updateTotals();
             }
         }
     }
@@ -1238,7 +1276,7 @@ void Dataset::setAbundance(vector<string> n, vector<int> abunds,
             if (abunds[i] == 0) {
                 removeSequence(index, reason, true, true);
             }else{
-                count->setAbundance(index, abunds[i]);
+                count.setAbundance(index, abunds[i]);
             }
 
         }else{
@@ -1248,7 +1286,7 @@ void Dataset::setAbundance(vector<string> n, vector<int> abunds,
         }
     }
 
-    count->updateTotals();
+    count.updateTotals();
 }
 /******************************************************************************/
 // for datasets with samples
@@ -1273,7 +1311,7 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
             if (sum(abunds[i]) == 0) {
                 removeSequence(index, reason, true, true);
             }else{
-                count->setAbundance(index, abunds[i]);
+                count.setAbundance(index, abunds[i]);
             }
 
         }else{
@@ -1283,14 +1321,14 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
         }
     }
 
-    count->updateTotals();
+    count.updateTotals();
 }
 /******************************************************************************/
 // for datasets without samples
 void Dataset::setBinAbundance(vector<string> binIDS, vector<int> abunds,
                      string reason, string type) {
     if (hasBinTable(type)) {
-        vector<int> seqsToRemove = binTables[type]->setAbundance(binIDS, abunds,
+        vector<int> seqsToRemove = binTables[getBinTableIndex(type)].setAbundance(binIDS, abunds,
                                                              reason);
         // remove any sequences from removed bin from dataset
         for (int seq : seqsToRemove) {
@@ -1298,13 +1336,13 @@ void Dataset::setBinAbundance(vector<string> binIDS, vector<int> abunds,
         }
 
         // remove from other lists
-        for (auto it = binTables.begin(); it != binTables.end(); it++) {
-            if (it->second->hasListAssignments && (it->first != type)) {
+        for (int i = 0; i < binTables.size(); i++) {
+            if (binTables[i].hasListAssignments && (binTables[i].label != type)) {
                 for (int seq : seqsToRemove) {
-                    it->second->remove(seq, count, reason, true);
+                    binTables[i].remove(seq, count, reason, true);
                 }
             }
-            it->second->updateTotals();
+            binTables[i].updateTotals();
         }
     }
 }
@@ -1314,8 +1352,8 @@ void Dataset::setBinAbundances(vector<string> binIDS,
                                vector<vector<int> > abunds,
                                string reason, string type) {
     if (hasBinTable(type)) {
-        vector<int> seqsToRemove = binTables[type]->setAbundances(binIDS, abunds,
-                                                              reason);
+        vector<int> seqsToRemove = binTables[getBinTableIndex(type)].
+        setAbundances(binIDS, abunds, reason);
 
         // remove any sequences from removed bin
         for (int seq : seqsToRemove) {
@@ -1323,13 +1361,13 @@ void Dataset::setBinAbundances(vector<string> binIDS,
         }
 
         // remove from other lists
-        for (auto it = binTables.begin(); it != binTables.end(); it++) {
-            if (it->second->hasListAssignments && (it->first != type)) {
+        for (int i = 0; i < binTables.size(); i++) {
+            if (binTables[i].hasListAssignments && (binTables[i].label != type)) {
                 for (int seq : seqsToRemove) {
-                    it->second->remove(seq, count, reason, true);
+                    binTables[i].remove(seq, count, reason, true);
                 }
             }
-            it->second->updateTotals();
+            binTables[i].updateTotals();
         }
     }
 }
@@ -1390,6 +1428,20 @@ void Dataset::setSequences(vector<string> n, vector<string> s,
 
     // set isAligned and aligned length
     getAlignedLength();
+}
+/******************************************************************************/
+Rcpp::RawVector Dataset::serializeDataset() {
+    std::stringstream ss; // Use stringstream for in-memory serialization
+    {
+        cereal::BinaryOutputArchive oarchive(ss);
+        oarchive(*this);
+    }
+
+    // Convert stringstream content to Rcpp::RawVector
+    std::string serialized_data = ss.str();
+    Rcpp::RawVector retval(serialized_data.size());
+    std::copy(serialized_data.begin(), serialized_data.end(), retval.begin());
+    return retval;
 }
 /******************************************************************************/
 

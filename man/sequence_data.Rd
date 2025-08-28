@@ -265,7 +265,7 @@ reference_version = "9_032012", reference_url = url)
 
 
  dataset <- sequence_data$new("my_dataset")
- tree <- read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
  dataset$add_sequence_tree(tree)
 
 
@@ -424,18 +424,10 @@ dataset$get_sequence_taxonomy_report()
 ## ------------------------------------------------
 
 
- # You can provide a tree associating your sequences:
-
  dataset <- sequence_data$new("my_dataset")
- tree <- read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
  dataset$add_sequence_tree(tree)
  dataset$get_sequence_tree()
-
- # Alternatively, a tree will be created for you if added nucleotide
- # sequence strings
-
-  dataset <- read_mothur(fasta = rdataset_example("final.fasta"))
-  dataset$get_sequence_tree()
 
 
 ## ------------------------------------------------
@@ -475,7 +467,7 @@ dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
                        count = rdataset_example("final.count_table"),
                        taxonomy = rdataset_example("final.taxonomy"),
                        design = rdataset_example("mouse.time.design"),
-                       list = rdataset_example("final.opti_mcc.list"),
+                       otu_list = rdataset_example("final.opti_mcc.list"),
                        dataset_name = "miseq_sop")
 
 contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
@@ -492,7 +484,7 @@ dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
                        count = rdataset_example("final.count_table"),
                        taxonomy = rdataset_example("final.taxonomy"),
                        design = rdataset_example("mouse.time.design"),
-                       list = rdataset_example("final.opti_mcc.list"),
+                       otu_list = rdataset_example("final.opti_mcc.list"),
                        dataset_name = "miseq_sop")
 
 dataset$get_num_samples()
@@ -502,6 +494,42 @@ dataset$get_num_samples()
 dataset$remove_samples(c("F3D0", "F3D1"))
 
 dataset$get_num_samples()
+
+
+## ------------------------------------------------
+## Method `sequence_data$serialize`
+## ------------------------------------------------
+
+dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+                       count = rdataset_example("final.count_table"),
+                       taxonomy = rdataset_example("final.taxonomy"),
+                       design = rdataset_example("mouse.time.design"),
+                       otu_list = rdataset_example("final.opti_mcc.list"),
+                       dataset_name = "miseq_sop")
+
+dataset$serialize()
+saveRDS(dataset, file = "miseq_sop.rds")
+
+# Alternatively, you can save the dataset using the save function.
+
+save(dataset, file = "miseq_sop.rds")
+
+
+## ------------------------------------------------
+## Method `sequence_data$deserialize`
+## ------------------------------------------------
+
+
+dataset <- readRDS(file = rdataset_example("miseq_sop.rds"))
+dataset$data <- new(Dataset, "", 1)
+dataset$deserialize()
+dataset
+
+# Alternatively, the dataset can be created from a file using the load
+# function.
+
+dataset <- load(rdataset_example("miseq_sop.rds"))
+dataset
 
 }
 \author{
@@ -563,6 +591,8 @@ additional functionality.}
 \item \href{#method-sequence_data-is_aligned}{\code{sequence_data$is_aligned()}}
 \item \href{#method-sequence_data-remove_lineages}{\code{sequence_data$remove_lineages()}}
 \item \href{#method-sequence_data-remove_samples}{\code{sequence_data$remove_samples()}}
+\item \href{#method-sequence_data-serialize}{\code{sequence_data$serialize()}}
+\item \href{#method-sequence_data-deserialize}{\code{sequence_data$deserialize()}}
 \item \href{#method-sequence_data-clone}{\code{sequence_data$clone()}}
 }
 }
@@ -1191,7 +1221,7 @@ Add phylo tree relating the sequences in your dataset
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
  dataset <- sequence_data$new("my_dataset")
- tree <- read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
  dataset$add_sequence_tree(tree)
 
 }
@@ -1758,18 +1788,10 @@ Get phylo tree relating the sequences in your dataset.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
- # You can provide a tree associating your sequences:
-
  dataset <- sequence_data$new("my_dataset")
- tree <- read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
  dataset$add_sequence_tree(tree)
  dataset$get_sequence_tree()
-
- # Alternatively, a tree will be created for you if added nucleotide
- # sequence strings
-
-  dataset <- read_mothur(fasta = rdataset_example("final.fasta"))
-  dataset$get_sequence_tree()
 
 }
 \if{html}{\out{</div>}}
@@ -1935,7 +1957,7 @@ like to remove}
                        count = rdataset_example("final.count_table"),
                        taxonomy = rdataset_example("final.taxonomy"),
                        design = rdataset_example("mouse.time.design"),
-                       list = rdataset_example("final.opti_mcc.list"),
+                       otu_list = rdataset_example("final.opti_mcc.list"),
                        dataset_name = "miseq_sop")
 
 contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
@@ -1971,7 +1993,7 @@ Remove samples from the dataset
                        count = rdataset_example("final.count_table"),
                        taxonomy = rdataset_example("final.taxonomy"),
                        design = rdataset_example("mouse.time.design"),
-                       list = rdataset_example("final.opti_mcc.list"),
+                       otu_list = rdataset_example("final.opti_mcc.list"),
                        dataset_name = "miseq_sop")
 
 dataset$get_num_samples()
@@ -1981,6 +2003,66 @@ dataset$get_num_samples()
 dataset$remove_samples(c("F3D0", "F3D1"))
 
 dataset$get_num_samples()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-serialize"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-serialize}{}}}
+\subsection{Method \code{serialize()}}{
+Serialize data from self$data to prepare for saving object as '.rds'
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$serialize()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+                       count = rdataset_example("final.count_table"),
+                       taxonomy = rdataset_example("final.taxonomy"),
+                       design = rdataset_example("mouse.time.design"),
+                       otu_list = rdataset_example("final.opti_mcc.list"),
+                       dataset_name = "miseq_sop")
+
+dataset$serialize()
+saveRDS(dataset, file = "miseq_sop.rds")
+
+# Alternatively, you can save the dataset using the save function.
+
+save(dataset, file = "miseq_sop.rds")
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-deserialize"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-deserialize}{}}}
+\subsection{Method \code{deserialize()}}{
+Deserialize data from self$data to load object saved as '.rds'
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$deserialize()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+dataset <- readRDS(file = rdataset_example("miseq_sop.rds"))
+dataset$data <- new(Dataset, "", 1)
+dataset$deserialize()
+dataset
+
+# Alternatively, the dataset can be created from a file using the load
+# function.
+
+dataset <- load(rdataset_example("miseq_sop.rds"))
+dataset
 
 }
 \if{html}{\out{</div>}}

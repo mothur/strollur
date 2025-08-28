@@ -52,6 +52,27 @@ void AbundTable::clear() {
     sampleTreatment.clear();
 }
 /******************************************************************************/
+void AbundTable::clone(const AbundTable& abundTable) {
+    counts = abundTable.counts;
+
+    total = abundTable.total;
+    numSamples = abundTable.numSamples;
+    numTreatments = abundTable.numTreatments;
+
+    sampleIndex = abundTable.sampleIndex;
+    sampleNames = abundTable.sampleNames;
+    sampleTotals = abundTable.sampleTotals;
+    tableSamples = abundTable.tableSamples;
+
+    treatmentIndex = abundTable.treatmentIndex;
+    treatmentTotals = abundTable.treatmentTotals;
+    tableTreatments = abundTable.tableTreatments;
+    sampleTreatment = abundTable.sampleTreatment;
+
+    hasSampleData = abundTable.hasSampleData;
+    hasTreatments = abundTable.hasTreatments;
+}
+/******************************************************************************/
 // the names are the indexes in dataset
 void AbundTable::add(vector<int>& names) {
 
@@ -345,6 +366,24 @@ vector<string> AbundTable::getSamples() {
     return samples;
 }
 /******************************************************************************/
+vector<int> AbundTable::getSampleIndexes() {
+    vector<int> sampleIndexes;
+
+    if (hasSampleData) {
+
+        vector<string> s = getSamples();
+        sampleIndexes.resize(s.size(), 0);
+        for (int i = 0; i < s.size(); i++) {
+            sampleIndexes[i] = sampleIndex[s[i]];
+        }
+
+    }else {
+        sampleIndexes.resize(1, 0);
+    }
+
+    return sampleIndexes;
+}
+/******************************************************************************/
 vector<int> AbundTable::getSampleTotals() {
     vector<int> totals;
     if (hasSampleData) {
@@ -532,10 +571,10 @@ void AbundTable::merge(vector<int> idsToMerge) {
         for (int i = 1; i < idsToMerge.size(); i++) {
             int dupSeq = idsToMerge[i];
             vector<int> dupAbunds = getAbundances(dupSeq);
-
             sum(kAbunds, dupAbunds);
         }
-        sampleAbunds newKeeper(kAbunds);
+
+        sampleAbunds newKeeper(getSampleIndexes(), kAbunds, "full");
         counts[keeperSeq] = newKeeper;
     }
 }
@@ -582,6 +621,7 @@ void AbundTable::removeSamples(vector<string> samples) {
             if (it != sampleIndex.end()) {
                 tableSamples[it->second] = false;
                 numSamples--;
+                sampleTotals[it->second] = 0;
             }
         }
 
@@ -599,7 +639,7 @@ void AbundTable::setAbundance(int name, vector<int> abunds) {
 
     vector<int> origAbunds = getAbundances(name);
 
-    sampleAbunds newAbunds(abunds);
+    sampleAbunds newAbunds(getSampleIndexes(), abunds, "full");
     counts[name] = newAbunds;
 
     if (hasSampleData) {
@@ -615,6 +655,7 @@ void AbundTable::setAbundance(int name, vector<int> abunds) {
                 index++;
             }
         }
+
         total -= diffAbund;
     }else{
         total -= (origAbunds[0] - abunds[0]);
@@ -632,8 +673,6 @@ void AbundTable::setAbundance(int name, int abund, string sample) {
 
         total -= (origAbund - abund);
     }else if (hasSampleData && (sample != "")) {
-        vector<int> abunds = getAbundances(name);
-
         // valid sample
         auto it = sampleIndex.find(sample);
 
@@ -642,8 +681,23 @@ void AbundTable::setAbundance(int name, int abund, string sample) {
 
             // "good" sample
             if (tableSamples[index]) {
-                abunds[index] = abund;
-                setAbundance(name, abunds);
+                // if the sequence does not have this sample, -1 returned
+                int thisSamplesIndex = getSparseIndex(name, index);
+
+                int orig = 0;
+                if (thisSamplesIndex != -1) {
+                    // update existing abunds
+                    orig = counts[name].abunds[thisSamplesIndex];
+                    counts[name].abunds[thisSamplesIndex] = abund;
+                }else{
+                    // add new abund
+                    counts[name].abunds.push_back(abund);
+                    counts[name].sampleIndex.push_back(index);
+                }
+
+                int diff = orig - abund;
+                sampleTotals[index] -= diff;
+                total -= diff;
             }
         }
     }else{
@@ -666,6 +720,8 @@ void AbundTable::updateTotals() {
             numSamples--;
         }
     }
+
+    total = sum(sampleTotals);
 
     if (hasTreatments) {
 

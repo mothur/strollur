@@ -1,7 +1,7 @@
 Package: rdataset
 Type: Package
 Title: R package used to store data for the analysis of DNA sequences
-Version: 1.0
+Version: 1.0.0
 Date: 2025-05-09
 Authors@R: c(person("Sarah", "Westcott", role = c("aut", "cre"), 
   email = "swestcot@umich.edu"))
@@ -11,7 +11,7 @@ URL: https://github.com/SchlossLab/rdataset,
 BugReports: https://github.com/SchlossLab/rdataset/issues
 License: GPL (>= 2)
 RoxygenNote: 7.3.2
-Imports: Rcpp (>= 1.0.14),
+Imports: Rcpp (>= 1.1.0),
     RcppThread,
     cli,
     methods,
@@ -19,10 +19,10 @@ Imports: Rcpp (>= 1.0.14),
     microseq,
     R6,
     waldo,
-    data.table,
     readr,
-    ape
-LinkingTo: Rcpp, RcppThread, cli, testthat
+    ape,
+    Rcereal
+LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
 Suggests: 
     testthat (>= 3.0.0), xml2
 Config/testthat/edition: 3

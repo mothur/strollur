@@ -12,7 +12,7 @@
 #' dataset <- sequence_data$new()
 #' dataset$assign_bins(otu_data$bin_id, otu_data$abundance, otu_data$sample)
 #'
-#' @return A data.table containing the sequence otu assignments
+#' @return A data.frame containing the sequence otu assignments
 #' @export
 read_mothur_shared <- function(shared) {
   if (!file.exists(shared)) {
@@ -46,7 +46,7 @@ read_mothur_shared <- function(shared) {
     i <- i + 1
   }
 
-  data.table(
+  data.frame(
     bin_id = otu_assignments,
     abundance = abundance,
     sample = sample

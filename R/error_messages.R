@@ -1,4 +1,3 @@
-
 #' @title abort_nonexistant_file
 #' @description
 #' Report file does not exist
