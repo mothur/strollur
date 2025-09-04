@@ -414,7 +414,11 @@ sequence_data <- R6Class("sequence_data",
 
       # if no samples, add sequences in tree to dataset
       if (self$get_num_samples() == 0) {
-        # warn and bail
+        message <- paste0("[Warning]: Your dataset does not contain sample ",
+          "data, ignoring sample tree.",
+          collapse = ""
+        )
+        cli::cli_alert(message)
       } else {
         # make sure the tree includes all "good" samples
         if (identical(
@@ -431,7 +435,7 @@ sequence_data <- R6Class("sequence_data",
           )
 
           # if tree is "missing" names, then ignore tree
-          if (length(missing_seqs) != 0) {
+          if (length(missing_samples) != 0) {
             message <- paste("[WARNING]: Your tree does not",
               "contain a node for every sample in",
               "your dataset, ignoring tree.",
@@ -1225,18 +1229,20 @@ sequence_data <- R6Class("sequence_data",
     #'  dataset$get_sample_tree()
     #'
     get_sample_tree = function() {
-      # prune tree if needed
-      # samples in tree and not in dataset
-      extra_samples <- setdiff(
-        private$sample_tree$tip.label,
-        self$get_samples()
-      )
-
-      if (length(extra_samples) != 0) {
-        # if tree contains "extra" samples, prune the tree
-        private$sample_tree <- drop.tip(private$sample_tree,
-          tip = extra_samples
+      if (!is.null(private$sample_tree)) {
+        # prune tree if needed
+        # samples in tree and not in dataset
+        extra_samples <- setdiff(
+          private$sample_tree$tip.label,
+          self$get_samples()
         )
+
+        if (length(extra_samples) != 0) {
+          # if tree contains "extra" samples, prune the tree
+          private$sample_tree <- drop.tip(private$sample_tree,
+            tip = extra_samples
+          )
+        }
       }
       private$sample_tree
     },
@@ -1397,18 +1403,20 @@ sequence_data <- R6Class("sequence_data",
     #'  dataset$get_sequence_tree()
     #'
     get_sequence_tree = function() {
-      # prune tree if needed
-      # seqs in tree and not in dataset
-      extra_seqs <- setdiff(
-        private$sequence_tree$tip.label,
-        self$get_sequence_names()
-      )
-
-      if (length(extra_seqs) != 0) {
-        # if tree contains "extra" names, prune the tree
-        private$sequence_tree <- drop.tip(private$sequence_tree,
-          tip = extra_seqs
+      if (!is.null(private$sequence_tree)) {
+        # prune tree if needed
+        # seqs in tree and not in dataset
+        extra_seqs <- setdiff(
+          private$sequence_tree$tip.label,
+          self$get_sequence_names()
         )
+
+        if (length(extra_seqs) != 0) {
+          # if tree contains "extra" names, prune the tree
+          private$sequence_tree <- drop.tip(private$sequence_tree,
+            tip = extra_seqs
+          )
+        }
       }
       private$sequence_tree
     },

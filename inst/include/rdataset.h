@@ -32,6 +32,7 @@ using namespace std;
 const vector<string> nullVector;  // used to pass blank vector
 const vector< vector<string> > null2DVector;  // used to pass blank vector
 const vector<int> nullIntVector;  // used to pass blank ints
+const vector< vector<int> > null2DIntVector;  // used to pass blank vector
 const vector<bool> nullBoolVector;  // used to pass blank ints
 const vector<double> nullDoubleVector;  // used to pass blank double
 
@@ -301,7 +302,6 @@ public:
     // total number of sequences
     int getTotal(string sample = "");
     bool hasSample(string sample);
-    bool hasId(string binId);
 
     void merge(vector<string> binIds, string reason = "merged");
     // returns false if seqs are in different bins
@@ -389,7 +389,6 @@ public:
     // ********** public functions exposed through RCPP_MODULE ********** //
     void clear();
     Rcpp::List exportDataset();
-    //SEXP getPointer();
 
     // add seqs
     void addSequences(vector<string> n, vector<string> s = nullVector,

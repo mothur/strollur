@@ -76,13 +76,6 @@ void AbundTable::clone(const AbundTable& abundTable) {
 // the names are the indexes in dataset
 void AbundTable::add(vector<int>& names) {
 
-    if (hasSampleData) {
-        string message = "[ERROR]: The dataset contains sample information, ";
-        message += "you must provide by sample data.\n\n";
-        RcppThread::Rcerr << endl << message;
-        throw Rcpp::exception(message.c_str());
-    }else{
-
         counts.resize(counts.size()+names.size());
 
         for (int i = 0; i < names.size(); i++) {
@@ -100,7 +93,7 @@ void AbundTable::add(vector<int>& names) {
         numTreatments = 1;
 
         total += names.size();
-    }
+
 }
 /******************************************************************************/
 // private function
@@ -154,36 +147,19 @@ void AbundTable::assignAbundance(vector<int> names,
         vector<string> uniqueSamples = unique(samples);
         vector<string> uniqueTreatments = unique(treatments);
 
-        if (uniqueSamples.size() > 1) {
+        if (uniqueSamples.size() >= 1) {
             addSamples(uniqueSamples);
             numSamples = uniqueSamples.size();
 
-            if (uniqueTreatments.size() > 1) {
+            if (uniqueTreatments.size() >= 1) {
                 addTreatments(uniqueTreatments);
                 numTreatments = uniqueTreatments.size();
-            }else if ((uniqueTreatments.size() == 1) &&
-                (uniqueTreatments[0] != "")) {
-                addTreatments(uniqueTreatments);
-                numTreatments = 1;
             }else {
                 tableTreatments.push_back(true);
                 numTreatments = 1;
             }
-        }else if ((uniqueSamples.size() == 1) && (uniqueSamples[0] != "")) {
-            addSamples(uniqueSamples);
-            numSamples = 1;
-            numTreatments = 1;
-        }else{
-            // empty strings passed in for samples, ignore
-            hasSampleData = false;
-            hasTreatments = false;
-            tableSamples.push_back(true);
-            tableTreatments.push_back(true);
-            numSamples = 1; // placeholder for sparse abundances
-            numTreatments = 1;
         }
     }
-
 
     // update counts, sampleTotals and total
     if (hasSampleData) {
@@ -229,12 +205,6 @@ void AbundTable::assignAbundance(vector<int> names,
 void AbundTable::assignTreatments(vector<string> s,
                                   vector<string> t) {
 
-   if (s.size() != t.size()) {
-       string message = "[ERROR]: Size mismatch. You must provide a treatment";
-       message += " for each sample.";
-       throw Rcpp::exception(message.c_str());
-   }
-
    if (hasSampleData) {
        if (hasTreatments) {
            treatmentIndex.clear();
@@ -252,10 +222,6 @@ void AbundTable::assignTreatments(vector<string> s,
            (uniqueTreatments[0] != "")) {
            addTreatments(uniqueTreatments);
            numTreatments = 1;
-       }else {
-           tableTreatments.push_back(true);
-           numTreatments = 1;
-           return;
        }
 
         // create sample to treatment map
@@ -700,11 +666,6 @@ void AbundTable::setAbundance(int name, int abund, string sample) {
                 total -= diff;
             }
         }
-    }else{
-        string message = "[ERROR]: The dataset contains sample information, ";
-        message += "you must provide by parsed abundance data.\n\n";
-        RcppThread::Rcerr << endl << message;
-        throw Rcpp::exception(message.c_str());
     }
 }
 /******************************************************************************/

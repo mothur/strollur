@@ -642,20 +642,6 @@ bool BinTable::hasSample(string sample){
     return binCount.hasSample(sample);
 }
 /******************************************************************************/
-bool BinTable::hasId(string binId) {
-
-    auto it = binIndex.find(binId);
-
-    // bin is in dataset
-    if (it != binIndex.end()) {
-        // bin is "good"
-        if (tableBins[it->second]) {
-            return true;
-        }
-    }
-    return false;
-}
-/******************************************************************************/
 vector<string> BinTable::getTreatments(){
     return binCount.getTreatments();
 }

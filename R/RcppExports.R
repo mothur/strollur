@@ -446,6 +446,32 @@ get_list <- function(data, type = "otu") {
     .Call(`_rdataset_get_list`, data, type)
 }
 
+#' @title get_list_vector
+#' @description
+#' Get vector of strings containing the sequences bin data
+#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+#'  'Dataset' c++ class.
+#' @param type a string indicating the type of bin assignments. Default "otu".
+#' @examples
+#'
+#'   dataset <- new_dataset("my_dataset", 4)
+#'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+#'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+#'   assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
+#'
+#'   # (list) bins would look like:
+#'   # bin1             bin2        bin3
+#'   # seq1,seq2,seq4   seq3,seq6   seq5
+#'
+#'   get_list_vector(dataset)
+#'
+#' @return vector of strings containing the sequences in each bin separated
+#' by commas
+get_list_vector <- function(data, type = "otu") {
+    .Call(`_rdataset_get_list_vector`, data, type)
+}
+
 #' @title get_num_processors
 #' @description
 #' Get the number of processors used to summarize an instance of the
@@ -558,6 +584,31 @@ get_num_treatments <- function(data) {
 #' @return data.frame
 get_rabund <- function(data, type = "otu") {
     .Call(`_rdataset_get_rabund`, data, type)
+}
+
+#' @title get_rabund_vector
+#' @description
+#' Get vector of integers containing bin abundance data
+#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+#'  'Dataset' c++ class.
+#' @param type a string indicating the type of bin assignments. Default "otu".
+#' @examples
+#'
+#'   dataset <- new_dataset("my_dataset", 4)
+#'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+#'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+#'   assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
+#'
+#'   # (rabund) bins would look like:
+#'   # bin1  bin2  bin3
+#'   # 111   525   80
+#'
+#'   get_rabund_vector(dataset)
+#'
+#' @return vector of integers containing each bins abundance
+get_rabund_vector <- function(data, type = "otu") {
+    .Call(`_rdataset_get_rabund_vector`, data, type)
 }
 
 #' @title get_samples
@@ -912,6 +963,36 @@ get_sequence_taxonomy_report <- function(data) {
 #' @return data.frame
 get_shared <- function(data, type = "otu") {
     .Call(`_rdataset_get_shared`, data, type)
+}
+
+#' @title get_shared_vector
+#' @description
+#' Get 2D vector of integers containing bin abundance data by sample
+#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+#'  'Dataset' c++ class.
+#' @param type a string indicating the type of bin assignments. Default "otu".
+#' @examples
+#'
+#'   dataset <- new_dataset("my_dataset", 4)
+#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+#'   samples <- c("sample1", "sample2", "sample5",
+#'    "sample1", "sample3", "sample1")
+#'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
+#'   assign_bins(dataset, bin_ids, sample_abundances, samples, "")
+#'
+#'   # (shared) bins would look like:
+#'   # sample   bin1   bin2   bin3
+#'   # sample1  10     500    80
+#'   # sample2  100    0      0
+#'   # sample3  0      25     0
+#'   # sample5  1      0      0
+#'
+#'   get_shared_vector(dataset)
+#'
+#' @return 2D vector of integers ([num_bins][num_samples]) containing
+#' the abundances of each bin parsed by sample.
+get_shared_vector <- function(data, type = "otu") {
+    .Call(`_rdataset_get_shared_vector`, data, type)
 }
 
 #' @title get_treatments

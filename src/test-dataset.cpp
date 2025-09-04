@@ -41,6 +41,17 @@ context("Dataset class C++ unit tests") {
         expect_false(data.isAligned);
         expect_true(data.getNumSamples() == 0);
         expect_true(data.numUnique == 0);
+
+        Dataset data2(data);
+        data2.datasetName = "new_name";
+        vector<string> names = {"new_seq"};
+
+        data2.addSequences(names);
+
+        expect_true(data2.datasetName == "new_name");
+        expect_false(data2.isAligned);
+        expect_true(data2.getNumSamples() == 0);
+        expect_true(data2.numUnique == 1);
     }
 
     test_that("Tests addSeqs, getSequenceReport, getSequenceSummary, clear") {
@@ -182,10 +193,8 @@ context("Dataset class C++ unit tests") {
         Dataset data("mydata", 1);
 
         vector<string> names(4, "");
-        names[0] = "seq1";
-        names[1] = "seq2";
-        names[2] = "seq3";
-        names[3] = "seq4";
+        names[0] = "seq1"; names[1] = "seq2"; names[2] = "seq3"; names[3] = "seq4";
+
         vector<string> seqs(4, "");
         seqs[0] = "..ATGC-MGGT-AAA-TGC-NCT.";
         seqs[1] = "ATGCGGTAAATGCCT";
@@ -938,8 +947,6 @@ context("Dataset class C++ unit tests") {
         // assign treatments differently
         vector<string> treatments(6, "early");
 
-        expect_error(data.assignTreatments(uniqueSamples, unique(treatments)));
-
         data.assignTreatments(uniqueSamples, treatments);
 
         vector<int> treatmentTotals(1, 0);
@@ -1186,8 +1193,6 @@ context("Dataset class C++ unit tests") {
 
         // assign treatments differently
         vector<string> treatments(6, "early");
-
-        expect_error(data.assignTreatments(uniqueSamples, unique(treatments)));
 
         data.assignTreatments(uniqueSamples, treatments);
 

@@ -54,5 +54,5 @@ test_that("test read_mothur", {
 
   # error
   expect_error(read_mothur(rabund = "bad_parameter"))
-  expect_error(read_mothur(list = "non_existant_filename"))
+  expect_error(read_mothur(otu_list = "non_existant_filename"))
 })

@@ -209,6 +209,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_list_vector
+vector<string> get_list_vector(Rcpp::XPtr<Dataset> data, string type);
+RcppExport SEXP _rdataset_get_list_vector(SEXP dataSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_list_vector(data, type));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_num_processors
 int get_num_processors(Rcpp::XPtr<Dataset> data);
 RcppExport SEXP _rdataset_get_num_processors(SEXP dataSEXP) {
@@ -276,6 +288,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
     rcpp_result_gen = Rcpp::wrap(get_rabund(data, type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_rabund_vector
+vector<int> get_rabund_vector(Rcpp::XPtr<Dataset> data, string type);
+RcppExport SEXP _rdataset_get_rabund_vector(SEXP dataSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_rabund_vector(data, type));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -436,6 +460,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
     rcpp_result_gen = Rcpp::wrap(get_shared(data, type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_shared_vector
+vector<vector<int> > get_shared_vector(Rcpp::XPtr<Dataset> data, string type);
+RcppExport SEXP _rdataset_get_shared_vector(SEXP dataSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_shared_vector(data, type));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -712,12 +748,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_bin_taxonomy_report", (DL_FUNC) &_rdataset_get_bin_taxonomy_report, 2},
     {"_rdataset_get_dataset_name", (DL_FUNC) &_rdataset_get_dataset_name, 1},
     {"_rdataset_get_list", (DL_FUNC) &_rdataset_get_list, 2},
+    {"_rdataset_get_list_vector", (DL_FUNC) &_rdataset_get_list_vector, 2},
     {"_rdataset_get_num_processors", (DL_FUNC) &_rdataset_get_num_processors, 1},
     {"_rdataset_get_num_bins", (DL_FUNC) &_rdataset_get_num_bins, 2},
     {"_rdataset_get_num_samples", (DL_FUNC) &_rdataset_get_num_samples, 1},
     {"_rdataset_get_num_sequences", (DL_FUNC) &_rdataset_get_num_sequences, 3},
     {"_rdataset_get_num_treatments", (DL_FUNC) &_rdataset_get_num_treatments, 1},
     {"_rdataset_get_rabund", (DL_FUNC) &_rdataset_get_rabund, 2},
+    {"_rdataset_get_rabund_vector", (DL_FUNC) &_rdataset_get_rabund_vector, 2},
     {"_rdataset_get_samples", (DL_FUNC) &_rdataset_get_samples, 1},
     {"_rdataset_get_sample_totals", (DL_FUNC) &_rdataset_get_sample_totals, 1},
     {"_rdataset_get_scrap_report", (DL_FUNC) &_rdataset_get_scrap_report, 2},
@@ -732,6 +770,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_sequence_summary", (DL_FUNC) &_rdataset_get_sequence_summary, 1},
     {"_rdataset_get_sequence_taxonomy_report", (DL_FUNC) &_rdataset_get_sequence_taxonomy_report, 1},
     {"_rdataset_get_shared", (DL_FUNC) &_rdataset_get_shared, 2},
+    {"_rdataset_get_shared_vector", (DL_FUNC) &_rdataset_get_shared_vector, 2},
     {"_rdataset_get_treatments", (DL_FUNC) &_rdataset_get_treatments, 1},
     {"_rdataset_get_treatment_totals", (DL_FUNC) &_rdataset_get_treatment_totals, 1},
     {"_rdataset_has_sample", (DL_FUNC) &_rdataset_has_sample, 2},

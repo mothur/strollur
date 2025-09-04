@@ -156,11 +156,11 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
   # add sample / treatment assignments
   if (!is.null(design)) {
-      df <- readr::read_table(
-          file = design, col_names = TRUE,
-          show_col_types = FALSE
-      )
-      dataset$assign_treatments(df[[1]], df[[2]])
+    df <- readr::read_table(
+      file = design, col_names = TRUE,
+      show_col_types = FALSE
+    )
+    dataset$assign_treatments(df[[1]], df[[2]])
   }
 
   if (!is.null(cons_taxonomy)) {

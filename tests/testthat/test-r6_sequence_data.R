@@ -330,12 +330,26 @@ test_that("sequence_data - get_list get_rabund, get_shared", {
 
   expect_equal(list$otu_id, bin_ids)
   expect_equal(list$seq_id, seq_ids)
+  expect_equal(dataset$get_list("non_existance_bin_type"), data.frame())
+  expect_equal(
+    get_list_vector(dataset$data, "non_existance_bin_type"),
+    character()
+  )
 
   rabund <- dataset$get_rabund()
 
   abunds <- c(111, 525, 80)
   expect_equal(rabund$otu_id, unique(bin_ids))
   expect_equal(rabund$abundance, abunds)
+
+  expect_equal(
+    get_rabund_vector(dataset$data, "non_existance_bin_type"),
+    numeric()
+  )
+  expect_equal(
+    get_rabund_vector(dataset$data, "otu"),
+    abunds
+  )
 
   dataset <- sequence_data$new("my_dataset")
   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
@@ -351,6 +365,17 @@ test_that("sequence_data - get_list get_rabund, get_shared", {
   expect_equal(shared$abundance, sample_abundances)
   expect_equal(shared$sample, samples)
   expect_equal(dataset$get_num_bins(), 3)
+
+  expect_equal(get_shared(dataset$data, "non_existance_bin_type"), data.frame())
+  expect_equal(get_shared_vector(dataset$data, "otu"), list(
+    c(10, 100, 0, 1),
+    c(500, 0, 25, 0),
+    c(80, 0, 0, 0)
+  ))
+  expect_equal(length(get_shared_vector(dataset$data, "bad_type")), 0)
+
+  expect_true(has_sample(dataset$data, "sample1"))
+  expect_false(has_sample(dataset$data, "non_existant_sample"))
 
   dataset <- sequence_data$new("my_dataset")
   bin_ids <- c(
@@ -947,4 +972,55 @@ test_that("sequence_data - add_sequence_tree / get_sequence_tree,", {
     round(tree$edge.length, digits = 2),
     c(0.26, 0.33, 0.07, 0.33, 0.26)
   )
+})
+
+test_that("sequence_data - add_sample_tree / get_sample_tree,", {
+  dataset <- sequence_data$new()
+  expect_null(dataset$get_sample_tree())
+
+  sample_tree <- ape::read.tree(
+    rdataset_example("final.opti_mcc.jclass.ave.tre")
+  )
+
+  # should report no samples and not save
+  dataset$add_sample_tree(sample_tree)
+  expect_null(dataset$get_sample_tree())
+
+  dataset <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    taxonomy = rdataset_example("final.taxonomy"),
+    design = rdataset_example("mouse.time.design"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
+    dataset_name = "miseq_sop"
+  )
+
+  expect_error(dataset$add_sample_tree(tree = c("bad_type")))
+
+  sequence_tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+
+  # should report missing samples since this is a sequence tree and not save
+  dataset$add_sample_tree(sequence_tree)
+  expect_null(dataset$get_sample_tree())
+
+  dataset$add_sample_tree(sample_tree)
+
+  tree <- dataset$get_sample_tree()
+
+  expect_equal(sort(dataset$get_samples()), sort(tree$tip.label))
+  expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
+
+  remove_samples(dataset$data, c("F3D1", "F3D141"))
+
+  tree <- dataset$get_sample_tree()
+
+  expect_equal(sort(dataset$get_samples()), sort(tree$tip.label))
+
+  # add tree with all groups, prune tree on add
+  dataset$add_sample_tree(sample_tree)
+
+  tree <- dataset$get_sample_tree()
+
+  # confirm pruning
+  expect_equal(sort(dataset$get_samples()), sort(tree$tip.label))
 })

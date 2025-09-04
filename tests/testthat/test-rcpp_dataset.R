@@ -18,6 +18,7 @@ test_that("rcpp_dataset - new_dataset, copy_dataset", {
 
 test_that("rcpp_dataset - add_sequences", {
   dataset <- new_dataset("miseq_sop", 4)
+
   sequences <- read_fasta(rdataset_example("final.fasta"))
   comments <- rep("my comments", length(sequences$names))
 
@@ -25,6 +26,11 @@ test_that("rcpp_dataset - add_sequences", {
   add_sequences(dataset, sequences$names, sequences$sequences, comments)
   expect_equal(get_num_sequences(dataset), 2425)
   expect_true(has_sequence_strings(dataset))
+  expect_error(set_sequences(
+    dataset, sequences$names,
+    sequences$sequences,
+    c("not_enough_comments", "comment")
+  ))
 
   clear(dataset)
 
@@ -35,9 +41,11 @@ test_that("rcpp_dataset - add_sequences", {
 
   seq_report <- get_sequence_report(dataset)
 
-  first_three_seqs <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
-                        "M00967_43_000000000-A3JHG_1_1113_12711_3318",
-                        "M00967_43_000000000-A3JHG_1_2108_14707_9807")
+  first_three_seqs <- c(
+    "M00967_43_000000000-A3JHG_1_2101_16474_12783",
+    "M00967_43_000000000-A3JHG_1_1113_12711_3318",
+    "M00967_43_000000000-A3JHG_1_2108_14707_9807"
+  )
   expect_equal((seq_report[[1]][1:3]), first_three_seqs)
   expect_equal((seq_report[[4]][1:3]), c(253, 253, 253))
   expect_equal((seq_report[[5]][10:12]), c(0, 0, 0))
@@ -54,6 +62,13 @@ test_that("rcpp_dataset - add_sequences", {
   clear(dataset)
 
   expect_error(add_sequences(dataset))
+
+  message <- capture_output(set_sequences(
+    dataset,
+    c("non_existant_sequence"),
+    c("ATGC"), ""
+  ))
+  expect_true(grepl("non_existant_sequence", message))
 })
 
 test_that("rcpp_dataset - assign_bins", {
@@ -197,6 +212,31 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
   expect_equal(abund_table$abundance, abundances)
   expect_equal(abund_table$sample, samples)
 
+  message <- capture_output(set_abundances(
+    dataset,
+    c("non_existant_sequence"),
+    list(c(0, 0, 0))
+  ))
+
+  expect_true(grepl("non_existant_sequence", message))
+  expect_error(set_abundance(dataset, c("seq1"), c(0)))
+
+  clear(dataset)
+
+  names <- c("seq1", "seq2")
+  abundances <- c(100, 50)
+
+  assign_sequence_abundance(dataset, names, abundances, "", "")
+  expect_equal(get_sequence_abundances(dataset), abundances)
+
+  expect_error(set_abundances(dataset, c("seq1"), list(c(0))))
+
+  message <- capture_output(set_abundance(
+    dataset,
+    c("non_existant_sequence"),
+    c(0)
+  ))
+  expect_true(grepl("non_existant_sequence", message))
 })
 
 test_that("rcpp_dataset - assign_sequence_taxonomy", {
@@ -224,6 +264,13 @@ test_that("rcpp_dataset - assign_sequence_taxonomy", {
   expect_equal(report[[3]][[6]], "Proteobacteria")
   expect_equal(get_num_bins(dataset), 0)
   expect_equal(get_num_samples(dataset), 0)
+
+  message <- capture_output(assign_sequence_taxonomy(
+    dataset,
+    c("non_existant_sequence"),
+    c("bad_tax;")
+  ))
+  expect_true(grepl("non_existant_sequence", message))
 })
 
 test_that("rcpp_dataset - assign_treatments", {
@@ -266,105 +313,204 @@ test_that("rcpp_dataset - assign_treatments", {
   expect_equal(get_num_samples(dataset), 3)
   expect_equal(get_num_treatments(dataset), 2)
 
-  abunds_by_sample <- list(c(250, 400, 500), c(25, 40, 50),
-                           c(25, 25, 0), c(0, 0, 4))
+  abunds_by_sample <- list(
+    c(250, 400, 500), c(25, 40, 50),
+    c(25, 25, 0), c(0, 0, 4)
+  )
   expect_equal(get_sequence_abundances_by_sample(dataset), abunds_by_sample)
-
 })
 
 test_that("rcpp_dataset - get_names / sequences_by_sample", {
-    dataset <- new_dataset("miseq_sop", 4)
+  dataset <- new_dataset("miseq_sop", 4)
 
-    # assign sequence abundances then bins
-    names <- c(
-        "seq1", "seq1", "seq1", "seq2", "seq2",
-        "seq2", "seq3", "seq3", "seq4"
-    )
-    samples <- c(
-        "sample2", "sample3", "sample4",
-        "sample2", "sample3", "sample4",
-        "sample2", "sample3", "sample4"
-    )
-    abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
+  # assign sequence abundances then bins
+  names <- c(
+    "seq1", "seq1", "seq1", "seq2", "seq2",
+    "seq2", "seq3", "seq3", "seq4"
+  )
+  samples <- c(
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3", "sample4"
+  )
+  abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
-    assign_sequence_abundance(dataset, names, abundances, samples, "")
+  assign_sequence_abundance(dataset, names, abundances, samples, "")
 
-    names_by_sample <- get_sequence_names_by_sample(dataset, "")
-    expect_equal(length(names_by_sample), 3)
+  names_by_sample <- get_sequence_names_by_sample(dataset, "")
+  expect_equal(length(names_by_sample), 3)
 
-    # seqs in sample2
-    expect_equal(names_by_sample[[1]], c("seq1", "seq2", "seq3"))
-    # seqs in sample4
-    expect_equal(names_by_sample[[3]], c("seq1", "seq2", "seq4"))
+  # seqs in sample2
+  expect_equal(names_by_sample[[1]], c("seq1", "seq2", "seq3"))
+  # seqs in sample4
+  expect_equal(names_by_sample[[3]], c("seq1", "seq2", "seq4"))
 
-    seqs <- c("ATGCCT", "GTGCCT", "CTGCCT", "TTGCCT")
-    set_sequences(dataset, unique(names), seqs, "")
+  seqs <- c("ATGCCT", "GTGCCT", "CTGCCT", "TTGCCT")
+  set_sequences(dataset, unique(names), seqs, "")
 
-    seqs_by_sample <- get_sequences_by_sample(dataset, "")
-    expect_equal(length(seqs_by_sample), 3)
+  seqs_by_sample <- get_sequences_by_sample(dataset, "")
+  expect_equal(length(seqs_by_sample), 3)
 
-    # seqs in sample2
-    expect_equal(seqs_by_sample[[1]], c("ATGCCT", "GTGCCT", "CTGCCT"))
-    # seqs in sample4
-    expect_equal(seqs_by_sample[[3]], c("ATGCCT", "GTGCCT", "TTGCCT"))
+  # seqs in sample2
+  expect_equal(seqs_by_sample[[1]], c("ATGCCT", "GTGCCT", "CTGCCT"))
+  # seqs in sample4
+  expect_equal(seqs_by_sample[[3]], c("ATGCCT", "GTGCCT", "TTGCCT"))
 
-    names_by_sample <- get_sequence_names_by_sample(dataset, c("sample3"))
+  names_by_sample <- get_sequence_names_by_sample(dataset, c("sample3"))
 
-    # seqs in sample3
-    expect_equal(names_by_sample[[1]], c("seq1", "seq2", "seq3"))
-    expect_equal(length(names_by_sample), 1)
+  # seqs in sample3
+  expect_equal(names_by_sample[[1]], c("seq1", "seq2", "seq3"))
+  expect_equal(length(names_by_sample), 1)
 
-    seqs_by_sample <- get_sequences_by_sample(dataset, c("sample3"))
+  seqs_by_sample <- get_sequences_by_sample(dataset, c("sample3"))
 
-    # seqs in sample3
-    expect_equal(seqs_by_sample[[1]], c("ATGCCT", "GTGCCT", "CTGCCT"))
-    expect_equal(length(seqs_by_sample), 1)
+  # seqs in sample3
+  expect_equal(seqs_by_sample[[1]], c("ATGCCT", "GTGCCT", "CTGCCT"))
+  expect_equal(length(seqs_by_sample), 1)
 })
 
 test_that("rcpp_dataset - merge_bins / merge_seqs", {
-    dataset <- new_dataset("miseq_sop", 4)
+  dataset <- new_dataset("miseq_sop", 4)
 
-    # assign sequence abundances then bins
-    names <- c(
-        "seq1", "seq1", "seq1", "seq2", "seq2",
-        "seq2", "seq3", "seq3", "seq4"
-    )
-    samples <- c(
-        "sample2", "sample3", "sample4",
-        "sample2", "sample3", "sample4",
-        "sample2", "sample3", "sample4"
-    )
-    abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
+  # assign sequence abundances then bins
+  names <- c(
+    "seq1", "seq1", "seq1", "seq2", "seq2",
+    "seq2", "seq3", "seq3", "seq4"
+  )
+  samples <- c(
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3", "sample4",
+    "sample2", "sample3", "sample4"
+  )
+  abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
-    assign_sequence_abundance(dataset, names, abundances, samples, "")
+  assign_sequence_abundance(dataset, names, abundances, samples, "")
 
-    expect_equal(get_num_sequences(dataset), 1319)
-    expect_equal(get_num_sequences(dataset, TRUE), 4)
-    expect_equal(get_num_bins(dataset), 0)
-    expect_equal(get_num_samples(dataset), 3)
+  expect_equal(get_num_sequences(dataset), 1319)
+  expect_equal(get_num_sequences(dataset, TRUE), 4)
+  expect_equal(get_num_bins(dataset), 0)
+  expect_equal(get_num_samples(dataset), 3)
 
-    expect_equal(get_sequence_abundances(dataset), c(1150, 115, 50, 4))
+  expect_equal(get_sequence_abundances(dataset), c(1150, 115, 50, 4))
 
-    merge_sequences(dataset, c("seq3", "seq1"))
+  merge_sequences(dataset, c("seq3", "seq1"))
 
-    expect_equal(get_num_sequences(dataset), 1319)
-    expect_equal(get_num_sequences(dataset, TRUE), 3)
-    expect_equal(get_num_bins(dataset), 0)
-    expect_equal(get_num_samples(dataset), 3)
+  expect_equal(get_num_sequences(dataset), 1319)
+  expect_equal(get_num_sequences(dataset, TRUE), 3)
+  expect_equal(get_num_bins(dataset), 0)
+  expect_equal(get_num_samples(dataset), 3)
 
-    assign_bins(dataset, c("bin1", "bin1", "bin2"), 0, "",
-                c("seq2", "seq3", "seq4"))
+  assign_bins(
+    dataset, c("bin1", "bin1", "bin2"), 0, "",
+    c("seq2", "seq3", "seq4")
+  )
 
-    expect_equal(get_num_sequences(dataset), 1319)
-    expect_equal(get_num_sequences(dataset, TRUE), 3)
-    expect_equal(get_num_bins(dataset), 2)
-    expect_equal(get_num_samples(dataset), 3)
+  expect_equal(get_num_sequences(dataset), 1319)
+  expect_equal(get_num_sequences(dataset, TRUE), 3)
+  expect_equal(get_num_bins(dataset), 2)
+  expect_equal(get_num_samples(dataset), 3)
 
-    merge_bins(dataset, c("bin1", "bin2"))
+  merge_bins(dataset, c("bin1", "bin2"))
 
-    expect_equal(get_num_sequences(dataset), 1319)
-    expect_equal(get_num_sequences(dataset, TRUE), 3)
-    expect_equal(get_num_bins(dataset), 1)
-    expect_equal(get_num_samples(dataset), 3)
+  expect_equal(get_num_sequences(dataset), 1319)
+  expect_equal(get_num_sequences(dataset, TRUE), 3)
+  expect_equal(get_num_bins(dataset), 1)
+  expect_equal(get_num_samples(dataset), 3)
 
+  expect_error(merge_sequences(dataset, c("seq3", "non_existant_seq")))
+
+  message <- capture_output(remove_sequences(
+    dataset,
+    c("non_existent_seq"),
+    c("trash_tag")
+  ))
+  expect_true(grepl("non_existent_seq", message))
+
+  message <- capture_output(remove_sequences(
+    dataset,
+    c("non_existent_seq"),
+    c("trash_tag")
+  ))
+  expect_true(grepl("non_existent_seq", message))
+})
+
+test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
+  dataset <- new_dataset("miseq_sop", 4)
+
+  # test with no samples bins
+  assign_bins(
+    dataset, c("bin1", "bin2", "bin3"),
+    c(10, 20, 30), "", ""
+  )
+
+  expect_equal(get_bin_abundance(dataset, "bin1"), 10)
+  expect_equal(get_num_sequences(dataset), 60)
+
+  message <- capture_output(set_bin_abundance(
+    dataset,
+    c("bin1", "non_existent_bin"),
+    c(100, 20)
+  ))
+  # set bin1, ignore non_existent_bin
+  expect_equal(get_bin_abundance(dataset, "bin1"), 100)
+  expect_equal(get_num_sequences(dataset), 150)
+  expect_true(grepl("non_existent_bin", message))
+
+  expect_error(set_bin_abundances(
+    dataset,
+    c("bin1"), list(c(100, 20))
+  ))
+
+  clear(dataset)
+
+  # test with samples bins
+  assign_bins(
+    dataset, c("bin1", "bin1", "bin2", "bin3", "bin3"),
+    c(10, 20, 30, 40, 50), c(
+      "sample1", "sample2", "sample1",
+      "sample1", "sample2"
+    ), ""
+  )
+
+  expect_equal(get_bin_abundances(dataset, "bin1"), c(10, 20))
+  expect_equal(get_num_sequences(dataset), 150)
+  expect_equal(get_sample_totals(dataset), c(80, 70))
+
+  message <- capture_output(set_bin_abundances(
+    dataset,
+    c("bin1", "non_existent_bin"),
+    list(c(100, 20), c(10, 0))
+  ))
+  expect_equal(get_num_sequences(dataset), 240)
+  expect_equal(get_sample_totals(dataset), c(170, 70))
+  expect_true(grepl("non_existent_bin", message))
+  expect_error(set_bin_abundance(
+    dataset,
+    c("bin1"), c(100)
+  ))
+
+  # remove samples that will force bin2 removal
+  remove_samples(dataset, c("sample1"))
+
+  expect_equal(get_num_bins(dataset), 2)
+  expect_equal(get_rabund_vector(dataset), c(20, 50))
+  expect_equal(get_num_samples(dataset), 1)
+  expect_equal(get_num_sequences(dataset), 70)
+
+  expect_error(remove_bins(dataset, c("bin1"), c("trash_tag", "extra_one")))
+})
+
+test_that("rcpp_dataset - misc ", {
+  dataset <- new_dataset("miseq_sop", 4)
+
+  # no bin data
+  expect_equal(get_bin_taxonomy_report(dataset), data.frame())
+
+  assign_bins(
+    dataset, c("bin1", "bin2", "bin3"),
+    c(10, 20, 30), "", ""
+  )
+
+  # no bin taxonomies
+  expect_equal(get_bin_taxonomy_report(dataset), data.frame())
 })

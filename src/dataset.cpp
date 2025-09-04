@@ -113,11 +113,6 @@ void Dataset::clear() {
     binTables.clear();
 }
 /******************************************************************************/
-// SEXP Dataset::getPointer() {
-//     Rcpp::XPtr<Dataset> ptr(this);
-//     return ptr;
-// }
-/******************************************************************************/
 Rcpp::List Dataset::exportDataset(){
     Rcpp::List result;
 
@@ -217,37 +212,13 @@ void Dataset::assignBins(vector<string> binIds,
                         vector<string> seqIds, string type) {
 
 
-    // sanity checks - R6 object passes blank strings if seqIds == NULL
+
     bool useSeqIds = false;
-    if (!seqIds.empty()) {
-        useSeqIds = true;
-        string id = "";
-        if (allIdentical(seqIds, id)) {
-            if (id == "") { seqIds.clear(); useSeqIds = false; }
-        }
-    }
-
-    // sanity checks - R6 object passes blank strings if samples == NULL
-    if (!samples.empty()) {
-        string id = "";
-        if (allIdentical(samples, id)) {
-            if (id == "") { samples.clear(); }
-        }
-    }
-
-    // sanity checks - R6 object passes all 0's if abundance == NULL
-    if (!abunds.empty()) {
-        int id = 0;
-        if (allIdentical(abunds, id)) {
-            if (id == 0) { abunds.clear();  }
-        }
-    }
-
+    if (!seqIds.empty()) { useSeqIds = true;  }
 
     if (!useSeqIds && (binIds.size() != abunds.size())) {
         string message = "[ERROR]: Size mismatch. bin_ids and abunds must be";
         message += " the same size.";
-
         throw Rcpp::exception(message.c_str());
     }
 
@@ -506,6 +477,11 @@ int Dataset::getAlignedLength() {
     if (seqLengths.size() == 1) {
         isAligned = true;
         alignmentLength = *(seqLengths.begin());
+
+        if (alignmentLength == 0) {
+            isAligned = false;
+            alignmentLength = -1;
+        }
     }else{
         isAligned = false;
         alignmentLength = -1;
@@ -681,6 +657,13 @@ Rcpp::DataFrame Dataset::getRAbund(string type) {
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
+}
+/******************************************************************************/
+vector<int> Dataset::getRAbundVector(string type) {
+    if (hasBinTable(type)) {
+        return binTables[getBinTableIndex(type)].getRAbundVector();
+    }
+    return nullIntVector;
 }
 /******************************************************************************/
 // sample functions
@@ -900,6 +883,13 @@ Rcpp::DataFrame Dataset::getShared(string type) {
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
+}
+/******************************************************************************/
+vector<vector<int> > Dataset::getSharedVector(string type) {
+    if (hasBinTable(type)) {
+        return binTables[getBinTableIndex(type)].getSharedVector();
+    }
+    return null2DIntVector;
 }
 /******************************************************************************/
 vector<string> Dataset::getTreatments(){

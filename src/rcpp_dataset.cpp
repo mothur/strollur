@@ -631,6 +631,33 @@ Rcpp::DataFrame get_list(Rcpp::XPtr<Dataset> data, string type = "otu") {
      return data.get()->getList(type);
 }
 /******************************************************************************/
+//' @title get_list_vector
+//' @description
+//' Get vector of strings containing the sequences bin data
+//' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+//'  'Dataset' c++ class.
+//' @param type a string indicating the type of bin assignments. Default "otu".
+//' @examples
+//'
+//'   dataset <- new_dataset("my_dataset", 4)
+//'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+//'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+//'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+//'   assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
+//'
+//'   # (list) bins would look like:
+//'   # bin1             bin2        bin3
+//'   # seq1,seq2,seq4   seq3,seq6   seq5
+//'
+//'   get_list_vector(dataset)
+//'
+//' @return vector of strings containing the sequences in each bin separated
+//' by commas
+//[[Rcpp::export]]
+vector<string> get_list_vector(Rcpp::XPtr<Dataset> data, string type = "otu") {
+     return data.get()->getListVector(type);
+}
+/******************************************************************************/
 //' @title get_num_processors
 //' @description
 //' Get the number of processors used to summarize an instance of the
@@ -755,6 +782,32 @@ int get_num_treatments(Rcpp::XPtr<Dataset> data) {
 //[[Rcpp::export]]
 Rcpp::DataFrame get_rabund(Rcpp::XPtr<Dataset> data, string type = "otu") {
     return data.get()->getRAbund(type);
+}
+/******************************************************************************/
+//' @title get_rabund_vector
+//' @description
+//' Get vector of integers containing bin abundance data
+//' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+//'  'Dataset' c++ class.
+//' @param type a string indicating the type of bin assignments. Default "otu".
+//' @examples
+//'
+//'   dataset <- new_dataset("my_dataset", 4)
+//'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
+//'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+//'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+//'   assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
+//'
+//'   # (rabund) bins would look like:
+//'   # bin1  bin2  bin3
+//'   # 111   525   80
+//'
+//'   get_rabund_vector(dataset)
+//'
+//' @return vector of integers containing each bins abundance
+//[[Rcpp::export]]
+vector<int> get_rabund_vector(Rcpp::XPtr<Dataset> data, string type = "otu") {
+    return data.get()->getRAbundVector(type);
 }
 /******************************************************************************/
 //' @title get_samples
@@ -1143,6 +1196,37 @@ Rcpp::DataFrame get_shared(Rcpp::XPtr<Dataset> data, string type = "otu") {
      return data.get()->getShared(type);
 }
 /******************************************************************************/
+//' @title get_shared_vector
+//' @description
+//' Get 2D vector of integers containing bin abundance data by sample
+//' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+//'  'Dataset' c++ class.
+//' @param type a string indicating the type of bin assignments. Default "otu".
+//' @examples
+//'
+//'   dataset <- new_dataset("my_dataset", 4)
+//'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+//'   samples <- c("sample1", "sample2", "sample5",
+//'    "sample1", "sample3", "sample1")
+//'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
+//'   assign_bins(dataset, bin_ids, sample_abundances, samples, "")
+//'
+//'   # (shared) bins would look like:
+//'   # sample   bin1   bin2   bin3
+//'   # sample1  10     500    80
+//'   # sample2  100    0      0
+//'   # sample3  0      25     0
+//'   # sample5  1      0      0
+//'
+//'   get_shared_vector(dataset)
+//'
+//' @return 2D vector of integers ([num_bins][num_samples]) containing
+//' the abundances of each bin parsed by sample.
+//[[Rcpp::export]]
+vector<vector<int> > get_shared_vector(Rcpp::XPtr<Dataset> data, string type = "otu") {
+     return data.get()->getSharedVector(type);
+}
+/******************************************************************************/
 //' @title get_treatments
 //' @description
 //' Get the treatments in an instance of the 'Dataset' class.
@@ -1426,7 +1510,17 @@ void remove_sequences(Rcpp::XPtr<Dataset> data,
 void set_abundance(Rcpp::XPtr<Dataset> data,
                    vector<string> sequence_names, vector<int> sequence_abundances,
                    string reason = "update") {
-    data.get()->setAbundance(sequence_names, sequence_abundances, reason);
+
+    if (get_num_samples(data) == 0) {
+        data.get()->setAbundance(sequence_names, sequence_abundances, reason);
+    }else{
+        string message = "[ERROR]: You cannot set the total sequence abundance";
+        message += " for sequences whose abundances are parsed by sample. ";
+        message += "Try 'set_abundances' instead of 'set_abundance'.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
 }
 /******************************************************************************/
 //' @title set_abundances
@@ -1460,7 +1554,15 @@ void set_abundance(Rcpp::XPtr<Dataset> data,
 void set_abundances(Rcpp::XPtr<Dataset> data,
                    vector<string> sequence_names, vector<vector<int>> abundances,
                    string reason = "update") {
-    data.get()->setAbundances(sequence_names, abundances, reason);
+    if (get_num_samples(data) != 0) {
+        data.get()->setAbundances(sequence_names, abundances, reason);
+    }else {
+        string message = "[ERROR]: You cannot set parsed sequence abundances ";
+        message += "when your dataset does not include sample data. ";
+        message += "Try 'set_abundance' instead of 'set_abundances'.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
 }
 /******************************************************************************/
 //' @title set_bin_abundance
@@ -1495,6 +1597,13 @@ void set_bin_abundance(Rcpp::XPtr<Dataset> data,
     if (data.get()->hasListAssignments(type)) {
         string message = "[ERROR]: You cannot set the bin abundance for bin ";
         message += "clusters with sequence assignments.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+
+    }else if (get_num_samples(data) != 0) {
+        string message = "[ERROR]: You cannot set the total bin abundance";
+        message += " for bins whose abundances are parsed by sample. ";
+        message += "Try 'set_bin_abundances' instead of 'set_bin_abundance'.";
         RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }else{
@@ -1540,6 +1649,12 @@ void set_bin_abundances(Rcpp::XPtr<Dataset> data,
     if (data.get()->hasListAssignments(type)) {
         string message = "[ERROR]: You cannot set the bin abundance for bin ";
         message += "clusters with sequence assignments.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }else if (get_num_samples(data) == 0) {
+        string message = "[ERROR]: You cannot set parsed bin abundances ";
+        message += "when your dataset does not include sample data. ";
+        message += "Try 'set_bin_abundance' instead of 'set_bin_abundances'.";
         RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }else{
