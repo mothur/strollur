@@ -18,7 +18,7 @@ test_that("test read_dada2", {
 
   data <- read_dada2(dada2_seqtab, "data")
 
-  expect_equal(data$data$dataset_name, "data")
+  expect_equal(data$get_dataset_name(), "data")
   expect_equal(data$get_samples(), c("sample1", "sample2", "sample3"))
   expect_equal(data$get_num_sequences(TRUE), 100)
   expect_equal(data$get_num_sequences(), 45150)

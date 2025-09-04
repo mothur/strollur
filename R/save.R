@@ -20,9 +20,9 @@
 #' @export
 save <- function(dataset, file) {
   if (class(dataset)[1] != "sequence_data") {
-    abort_incorrect_type("sequence_data", class(dataset)[1])
+    abort_incorrect_type("sequence_data", dataset)
   }
 
-  dataset$serialize()
+  dataset$raw <- serialize(dataset$data)
   saveRDS(dataset, file = file)
 }

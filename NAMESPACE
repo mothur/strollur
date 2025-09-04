@@ -1,6 +1,5 @@
 
 # exports
-export(Dataset)
 export(sequence_data)
 
 useDynLib(rdataset, .registration=TRUE)

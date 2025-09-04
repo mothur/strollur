@@ -23,6 +23,15 @@ context("Dataset class C++ unit tests") {
 
         int x;
         expect_error(convert("notANumber", x));
+
+        vector<int> test1 = {1,2,3,4,5};
+        vector<int> test2 = {3,2,1,5,4};
+
+        expect_true(identical(test1, test2));
+
+        test2[2] = 6;
+
+        expect_false(identical(test1, test2));
     }
 
     test_that("Tests constructor") {
@@ -245,7 +254,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getSampleTotals() == sampleTotals);
         expect_true(data.getTotal() == 1320);
 
-        vector<vector<string>> parsed = data.getNamesBySample(unique(samples));
+        vector<vector<string>> parsed = data.getSequenceNamesBySample(unique(samples));
 
         vector<string> uniqueIds = unique(ids);
         expect_true(parsed[0] == uniqueIds);
@@ -1004,7 +1013,7 @@ context("Dataset class C++ unit tests") {
         expect_error(data.assignBins(otuNames, abundances));
     }
 
-     test_that("Tests mergeBins, removeBins, getScrapReport, getScrapSummary") {
+    test_that("Tests mergeBins, removeBins, getScrapReport, getScrapSummary") {
 
         Dataset data("mydata", 1);
 
@@ -1252,7 +1261,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getBinAbundances("badotu") == nullIntVector);
 
         auto countMatrix = data.getSeqsAbundsBySample();
-        auto goodNames = data.getNames();
+        auto goodNames = data.getSequenceNames();
         vector<int> abunds(6, 0);
         //seq1
         abunds[0] = 10;
@@ -1518,7 +1527,6 @@ context("Dataset class C++ unit tests") {
         taxons[6] = "Bacteria";    taxons[9] = "Bacteria";
         taxons[7] = "Firmicutes";  taxons[10] = "Firmicutes";
         taxons[8] = "Bacilli";     taxons[11] = "Bacilli";
-
 
         vector<int> conf(12);
         // seq1         seq2            seq3            seq4

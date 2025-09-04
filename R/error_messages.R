@@ -10,10 +10,10 @@ abort_nonexistant_file <- function(filename) {
 #' @description
 #' Report incorrect type provided
 #' @param type_expected String, containing name of the type expected
-#' @param type_received String, containing name of the type received
-abort_incorrect_type <- function(type_expected, type_received) {
+#' @param obj R object of wrong type
+abort_incorrect_type <- function(type_expected, obj) {
   cli::cli_abort("[ERROR]: Expected a {.var {type_expected}}
-          but received a {.var {type_received}}.")
+          but received " + class(obj) + ".")
 }
 
 #' @title abort_provide_at_least_one

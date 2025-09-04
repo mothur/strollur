@@ -4,12 +4,12 @@
 \alias{abort_incorrect_type}
 \title{abort_incorrect_type}
 \usage{
-abort_incorrect_type(type_expected, type_received)
+abort_incorrect_type(type_expected, obj)
 }
 \arguments{
 \item{type_expected}{String, containing name of the type expected}
 
-\item{type_received}{String, containing name of the type received}
+\item{obj}{R object of wrong type}
 }
 \description{
 Report incorrect type provided

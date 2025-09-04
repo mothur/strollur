@@ -121,15 +121,6 @@ read_mothur <- function(fasta = NULL, count = NULL,
     dataset$assign_sequence_taxonomy(df[[1]], df[[2]])
   }
 
-  # add sample / treatment assignments
-  if (!is.null(design)) {
-    df <- readr::read_table(
-      file = design, col_names = TRUE,
-      show_col_types = FALSE
-    )
-    dataset$assign_treatments(df[[1]], df[[2]])
-  }
-
   # add sequence otu assignments
   if (!is.null(otu_list)) {
     df <- read_mothur_list(otu_list)
@@ -163,6 +154,14 @@ read_mothur <- function(fasta = NULL, count = NULL,
     )
   }
 
+  # add sample / treatment assignments
+  if (!is.null(design)) {
+      df <- readr::read_table(
+          file = design, col_names = TRUE,
+          show_col_types = FALSE
+      )
+      dataset$assign_treatments(df[[1]], df[[2]])
+  }
 
   if (!is.null(cons_taxonomy)) {
     df <- readr::read_table(

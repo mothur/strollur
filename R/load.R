@@ -15,6 +15,8 @@ load <- function(file) {
   }
 
   dataset <- readRDS(file)
-  dataset$data <- new(Dataset, "", 1)
-  dataset$deserialize()
+  dataset$data <- new_dataset("", 1)
+  load_dataset(dataset$data, dataset$raw)
+  dataset$raw <- NULL
+  dataset
 }

@@ -113,10 +113,10 @@ void Dataset::clear() {
     binTables.clear();
 }
 /******************************************************************************/
-SEXP Dataset::getPointer() {
-    Rcpp::XPtr<Dataset> ptr(this);
-    return ptr;
-}
+// SEXP Dataset::getPointer() {
+//     Rcpp::XPtr<Dataset> ptr(this);
+//     return ptr;
+// }
 /******************************************************************************/
 Rcpp::List Dataset::exportDataset(){
     Rcpp::List result;
@@ -341,6 +341,13 @@ void Dataset::assignSequenceAbundance(vector<string> ids,
 /******************************************************************************/
 void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
 
+    if (n.size() != t.size()) {
+        string message = "[ERROR]: Size mismatch. ids and taxonomies must be";
+        message += " the same size.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
     if (!hasSequenceData) {
         addSequences(n);
     }
@@ -348,13 +355,6 @@ void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
     // allocate space
     if (taxonomies.size() != names.size()) {
         taxonomies.resize(names.size(), "");
-    }
-
-    if (n.size() != t.size()) {
-        string message = "[ERROR]: Size mismatch. ids and taxonomies must be";
-        message += " the same size.";
-        RcppThread::Rcerr << endl << message << endl;
-        throw Rcpp::exception(message.c_str());
     }
 
     for (int i = 0; i < n.size(); i++) {
@@ -407,7 +407,7 @@ Rcpp::DataFrame Dataset::fillTaxReport(string mode) {
             return empty;
         }
     }else {
-        ids = getNames();
+        ids = getSequenceNames();
         taxes = select(taxonomies, tableSeqs);
     }
 
@@ -549,7 +549,7 @@ Rcpp::DataFrame Dataset::getList(string type) {
         return binTables[getBinTableIndex(type)].getList(names);
 
     }else if ((type == "asv") && (hasSequenceData)) {
-        vector<string> seqIds = getNames();
+        vector<string> seqIds = getSequenceNames();
         vector<string> asvIds(seqIds.size(), "");
         for (int i = 0; i < asvIds.size(); i++) {
             asvIds[i] = "ASV" + toString(i+1);
@@ -569,7 +569,7 @@ vector<string> Dataset::getListVector(string type) {
     return nullVector;
 }
 /******************************************************************************/
-vector<string> Dataset::getNames(string sample){
+vector<string> Dataset::getSequenceNames(string sample){
     vector<string> included;
 
     // get all "good" names in dataset
@@ -598,11 +598,16 @@ vector<string> Dataset::getNames(string sample){
     return included;
 }
 /******************************************************************************/
-vector<vector<string> > Dataset::getNamesBySample(vector<string> samples){
+vector<vector<string> > Dataset::getSequenceNamesBySample(vector<string> samples){
     vector<vector<string> > result;
 
+    // return all samples if none specified
+    if (samples.size() == 0) {
+        samples = getSamples();
+    }
+
     for (int i = 0; i < samples.size(); i++) {
-        result.push_back(getNames(samples[i]));
+        result.push_back(getSequenceNames(samples[i]));
     }
 
     return result;
@@ -814,6 +819,11 @@ vector<string> Dataset::getSequences(string sample){
 vector<vector<string> > Dataset::getSequencesBySample(vector<string> samples){
     vector<vector<string> > result;
 
+    // return all samples if none specified
+    if (samples.size() == 0) {
+        samples = getSamples();
+    }
+
     for (int i = 0; i < samples.size(); i++) {
         result.push_back(getSequences(samples[i]));
     }
@@ -909,20 +919,6 @@ vector<int> Dataset::getTreatmentTotals(){
 }
 /******************************************************************************/
 long long Dataset::getTotal(string sample){
-    // set<int> totals; totals.insert(count.getTotal(sample));
-    //
-    // if (binTables.size() != 0) {
-    //     for (int i = 0; i < binTables.size(); i++) {
-    //         totals.insert(binTables[i].getTotal(sample));
-    //     }
-    // }
-    //
-    // if (totals.size() > 1) {
-    //     cout << "count " << count.getTotal(sample) << endl;
-    //     for (int i = 0; i < binTables.size(); i++) {
-    //         cout << binTables[i].label << '\t' << binTables[i].getTotal(sample) << endl;
-    //     }
-    // }
 
     if (binTables.size() != 0) {
         return binTables[0].getTotal(sample);
@@ -935,7 +931,7 @@ long long Dataset::getUniqueTotal(string sample){
     if (sample == "") {
         return numUnique;
     }
-    return getNames(sample).size();
+    return getSequenceNames(sample).size();
 }
 /******************************************************************************/
 bool Dataset::hasBinTable(string type) {
@@ -961,6 +957,13 @@ bool Dataset::hasSample(string sample){
         return binTables[0].hasSample(sample);
     }
     return count.hasSample(sample);
+}
+/******************************************************************************/
+bool Dataset::hasListAssignments(string type){
+    if (hasBinTable(type)) {
+        return binTables[getBinTableIndex(type)].hasListAssignments;
+    }
+    return false;
 }
 /******************************************************************************/
 bool Dataset::hasSeqs() {

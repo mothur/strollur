@@ -389,7 +389,7 @@ public:
     // ********** public functions exposed through RCPP_MODULE ********** //
     void clear();
     Rcpp::List exportDataset();
-    SEXP getPointer();
+    //SEXP getPointer();
 
     // add seqs
     void addSequences(vector<string> n, vector<string> s = nullVector,
@@ -414,23 +414,6 @@ public:
     void assignTreatments(vector<string> samples,
                           vector<string> treatments);
 
-    // **** functions for summarizing dataset **** //
-    // n columns: id, taxonomy split by level
-    Rcpp::DataFrame getBinTaxonomyReport(string type = "otu");
-    Rcpp::DataFrame getScrapReport(string mode = "sequence");
-    // trashCode, uniqueCount, totalCount
-    Rcpp::List getScrapSummary();
-    // sequence report: starts, ends, lengths, ambigs, polymers, numns
-    Rcpp::DataFrame getSequenceReport();
-    // sequence summary summarizes sequence, and scrap reports
-    Rcpp::List getSequenceSummary();
-
-    // 3 columns: id, sample, abundance
-    Rcpp::DataFrame getSequenceAbundanceTable();
-    // n columns: id, taxonomy split by level
-    Rcpp::DataFrame getSequenceTaxonomyReport();
-
-
     int getAbundance(string name);
     // abundances for seq broken down by sample
     vector<int> getAbundances(string name);
@@ -440,73 +423,81 @@ public:
     vector<int> getBinAbundances(string binID, string type = "otu");
     // string containing sequence names for given binID
     string getBin(string binID, string type = "otu");
-    // total abundance for each sequence
-    vector<int> getSequenceAbundances();
-    // vector[5][1] contains the abundance of seq5 in sample1
-    vector<vector<int>> getSeqsAbundsBySample();
-
-    vector<string> getSamples();
-    vector<string> getTreatments();
-    vector<int> getSampleTotals();
-    vector<int> getTreatmentTotals();
-    int getNumSamples();
-    int getNumTreatments();
-    long long getTotal(string sample = "");
-    long long getUniqueTotal(string sample = "");
-    bool hasSample(string sample);
-    bool hasSeqs();
-
-    // fasta sequence data
-    vector<string> getNames(string sample = "");
-    vector<vector<string> > getNamesBySample(vector<string> samples);
-    vector<string> getSequences(string sample = "");
-    vector<vector<string> > getSequencesBySample(vector<string> samples);
-
-    // modifiers
-    void removeBins(vector<string> binIDs, vector<string> trashTags,
-                    string type = "otu");
-    void removeLineages(vector<string> taxonomies,
-                        string trashTag = "contaminant");
-    void removeSequences(vector<string> names, vector<string> trashTags);
-    void removeSamples(vector<string> samples);
-    void mergeBins(vector<string> binIDS, string reason = "merged",
-                   string type = "otu");
-    void mergeSequences(vector<string>, string reason = "merged");
-
-    // set sequence string and optionally comments
-    void setSequences(vector<string> names, vector<string> sequences,
-                 vector<string> comments = nullVector);
-
-    // set abundances
-    // for datasets with samples
-    void setAbundances(vector<string> names, vector<vector<int>> abunds,
-                       string reason = "merged");
-    // for datasets without samples
-    void setAbundance(vector<string> names, vector<int> abunds,
-                       string reason = "merged");
-
-    // for datasets without samples
-    void setBinAbundance(vector<string> binIDS, vector<int> abunds,
-                         string reason = "merged", string type = "otu");
-    // for datasets with samples
-    void setBinAbundances(vector<string> binIDS, vector<vector<int>> abunds,
-                          string reason = "merged", string type = "otu");
-
-    // bin functions
-    int getNumBins(string type = "otu");
-    vector<string> getListVector(string type = "otu");
-    // 2 column dataframe - bin_id, seq_id
-    Rcpp::DataFrame getList(string type = "otu");
     // names of bins
     vector<string> getBinIds(string type = "otu");
+    // n columns: id, taxonomy split by level
+    Rcpp::DataFrame getBinTaxonomyReport(string type = "otu");
+    // 2 column dataframe - bin_id, seq_id
+    Rcpp::DataFrame getList(string type = "otu");
+    vector<string> getListVector(string type = "otu");
+    int getNumBins(string type = "otu");
+    int getNumSamples();
+    int getNumTreatments();
     // 2 column dataframe - bin_id, abundance
     Rcpp::DataFrame getRAbund(string type = "otu");
     // vector of total abundances for each bin
     vector<int> getRAbundVector(string type = "otu");
+    vector<string> getSamples();
+    vector<int> getSampleTotals();
+    Rcpp::DataFrame getScrapReport(string mode = "sequence");
+    // trashCode, uniqueCount, totalCount
+    Rcpp::List getScrapSummary();
+    // vector[5][1] contains the abundance of seq5 in sample1
+    vector<vector<int>> getSeqsAbundsBySample();
+    // total abundance for each sequence
+    vector<int> getSequenceAbundances();
+    // 3 columns: id, sample, abundance
+    Rcpp::DataFrame getSequenceAbundanceTable();
+    // sequence report: starts, ends, lengths, ambigs, polymers, numns
+    vector<string> getSequenceNames(string sample = "");
+    vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector);
+    Rcpp::DataFrame getSequenceReport();
+    vector<string> getSequences(string sample = "");
+    vector<vector<string> > getSequencesBySample(vector<string> samples);
+    // sequence summary summarizes sequence, and scrap reports
+    Rcpp::List getSequenceSummary();
+    // n columns: id, taxonomy split by level
+    Rcpp::DataFrame getSequenceTaxonomyReport();
+
     // abundances for each bin broken down by sample
     vector<vector<int> > getSharedVector(string type = "otu");
     // 3 column dataframe - bin_id, abundance, sample
     Rcpp::DataFrame getShared(string type = "otu");
+    long long getTotal(string sample = "");
+    vector<string> getTreatments();
+    vector<int> getTreatmentTotals();
+    long long getUniqueTotal(string sample = "");
+
+    bool hasSample(string sample);
+    bool hasListAssignments(string type = "otu");
+    bool hasSeqs();
+    void mergeBins(vector<string> binIDS, string reason = "merged",
+                   string type = "otu");
+    void mergeSequences(vector<string>, string reason = "merged");
+
+    void removeBins(vector<string> binIDs, vector<string> trashTags,
+                    string type = "otu");
+    void removeLineages(vector<string> taxonomies,
+                        string trashTag = "contaminant");
+    void removeSamples(vector<string> samples);
+    void removeSequences(vector<string> names, vector<string> trashTags);
+
+    // for datasets without samples
+    void setAbundance(vector<string> names, vector<int> abunds,
+                      string reason = "update");
+    // for datasets with samples
+    void setAbundances(vector<string> names, vector<vector<int>> abunds,
+                       string reason = "update");
+    // for datasets without samples
+    void setBinAbundance(vector<string> binIDS, vector<int> abunds,
+                         string reason = "update", string type = "otu");
+    // for datasets with samples
+    void setBinAbundances(vector<string> binIDS, vector<vector<int>> abunds,
+                          string reason = "update", string type = "otu");
+
+    // set sequence string and optionally comments
+    void setSequences(vector<string> names, vector<string> sequences,
+                 vector<string> comments = nullVector);
 
     Rcpp::RawVector serializeDataset();
     void loadFromSerialized(Rcpp::RawVector);

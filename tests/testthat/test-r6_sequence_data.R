@@ -39,16 +39,17 @@ test_that("sequence_data - intialize from read_mothur / print", {
   # remove bin from "phylotype" list and confirm that it removes seqs from all
   # from all list types
 
-  expect_equal(dataset$data$get_bin_abundance("Phylo05", "phylotype"), 5337)
-  expect_equal(dataset$data$get_bin_abundance("Phylo06", "phylotype"), 715)
+  expect_equal(get_bin_abundance(dataset$data, "Phylo05", "phylotype"), 5337)
+  expect_equal(get_bin_abundance(dataset$data, "Phylo06", "phylotype"), 715)
 
-  phylo05 <- dataset$data$get_bin("Phylo05", "phylotype")
+  phylo05 <- get_bin(dataset$data, "Phylo05", "phylotype")
   expect_equal(length(split_at_char(phylo05)), 54)
 
-  phylo06 <- dataset$data$get_bin("Phylo06", "phylotype")
+  phylo06 <- get_bin(dataset$data, "Phylo06", "phylotype")
   expect_equal(length(split_at_char(phylo06)), 47)
 
-  dataset$data$remove_bins(
+  remove_bins(
+    dataset$data,
     c("Phylo05", "Phylo06"),
     c("test", "test"),
     "phylotype"
@@ -124,7 +125,7 @@ test_that("sequence_data - intialize from sequence_data object", {
   expect_equal(dataset$get_num_bins("otu"), 531)
   expect_equal(dataset$get_num_bins("phylotype"), 63)
   expect_equal(dataset$get_num_bins("asv"), 2425)
-  expect_equal(dataset$data$processors, 4)
+  expect_equal(get_num_processors(dataset$data), 4)
 })
 
 test_that("sequence_data - addSeqs, assign samples", {
@@ -302,7 +303,7 @@ test_that("sequence_data - assign_sequence_abundance, remove_sequences", {
   data$assign_sequence_abundance(ids, abundances, groups, treatments)
   expect_equal(data$get_num_treatments(), 2)
 
-  data$data$remove_sequences(seqs_to_remove, trash_codes)
+  remove_sequences(data$data, seqs_to_remove, trash_codes)
 
   expect_equal(data$get_num_sequences(), 29)
   expect_equal(data$get_num_sequences(TRUE), 2)
@@ -890,7 +891,7 @@ test_that("sequence_data - add_sequence_tree / get_sequence_tree,", {
   )
 
   # remove seq and make sure tree is pruned as well
-  dataset$data$remove_sequences(c("seq1"), c("bad"))
+  remove_sequences(dataset$data, c("seq1"), c("bad"))
 
   tree <- dataset$get_sequence_tree()
 
