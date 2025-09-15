@@ -51,6 +51,6 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
     index <- index + 1
   }
 
-  dataset$assign_sequence_abundance(names, abundances, samples)
+  dataset$assign_sequence_abundance(data = NULL, names, abundances, samples)
   dataset
 }

@@ -129,20 +129,23 @@ test_that("sequence_data - intialize from sequence_data object", {
 })
 
 test_that("sequence_data - addSeqs, assign samples", {
+  data <- sequence_data$new("mydata")
 
-    data <- sequence_data$new("mydata")
-
-    # missing data and names
-    expect_error(data$add_sequences())
+  # missing data and names
+  expect_error(data$add_sequences())
 
   fasta_data <- read_fasta(rdataset_example("final.fasta"))
   names(fasta_data) <- c("myNameTag", "mySeqTag")
 
-  expect_error(data$add_sequences(fasta_data, names = "names",
-                                  sequences = "mySeqTag"))
+  expect_error(data$add_sequences(fasta_data,
+    names = "names",
+    sequences = "mySeqTag"
+  ))
 
-  data$add_sequences(fasta_data, names = "myNameTag",
-                     sequences = "mySeqTag")
+  data$add_sequences(fasta_data,
+    names = "myNameTag",
+    sequences = "mySeqTag"
+  )
 
   expect_equal(data$get_num_sequences(), 2425)
 
@@ -161,8 +164,10 @@ test_that("sequence_data - addSeqs, assign samples", {
   expect_equal(data$get_sequences(), seqs)
   data$clear()
 
-  expect_error(data$add_sequences(fasta_data, sequences = "seqs",
-                                  comments = "comments23"))
+  expect_error(data$add_sequences(fasta_data,
+    sequences = "seqs",
+    comments = "comments23"
+  ))
   data$add_sequences(fasta_data, sequences = "seqs", comments = "comments")
 
   expect_equal(data$get_num_sequences(), 4)
@@ -218,11 +223,14 @@ test_that("sequence_data - addSeqs, assign samples", {
   expect_equal(references[[1, "url"]], url)
 
 
-  data$assign_sequence_abundance(ids, abundances, samples, treatments)
+  data$assign_sequence_abundance(
+    data = NULL, ids, abundances,
+    samples, treatments
+  )
 
   # assign bins
   bins <- c("bin1", "bin2", "bin1", "bin2")
-  data$assign_bins(bins, seq_ids = names)
+  data$assign_bins(bins, sequence_names = names)
 
   expect_equal(data$get_num_bins(), 2)
   expect_equal(data$get_list()$otu_id, c("bin1", "bin1", "bin2", "bin2"))
@@ -284,6 +292,81 @@ test_that("sequence_data - addSeqs, assign samples", {
 })
 
 test_that("sequence_data - assign_sequence_abundance, remove_sequences", {
+  data <- sequence_data$new("mydata")
+
+  # missing data and names
+  expect_error(data$assign_sequence_abundance())
+
+  sequence_abundance <- readr::read_tsv(rdataset_example(
+    "mothur2_count_table.tsv"
+  ))
+  data$assign_sequence_abundance(sequence_abundance)
+
+  expect_equal(data$get_num_sequences(TRUE), 2425)
+  expect_equal(data$get_num_samples(), 19)
+  expect_equal(data$get_num_treatments(), 2)
+
+  names(sequence_abundance) <- c("ids", "abunds", "groups", "time")
+
+  expect_error(data$assign_sequence_abundance(sequence_abundance,
+    sequence_names = "ids"
+  ))
+  expect_error(data$assign_sequence_abundance(sequence_abundance,
+    sequence_names = "ids",
+    abundances = "abunds",
+    samples = "samples"
+  ))
+  expect_error(data$assign_sequence_abundance(sequence_abundance,
+    sequence_names = "ids",
+    abundances = "abunds",
+    treatments = "treatments"
+  ))
+
+  data$assign_sequence_abundance(sequence_abundance,
+    sequence_names = "ids",
+    abundances = "abunds",
+    samples = "groups", treatments = NULL
+  )
+
+  expect_equal(data$get_num_sequences(TRUE), 2425)
+  expect_equal(data$get_num_samples(), 19)
+  expect_equal(data$get_num_treatments(), 0)
+
+
+  data$assign_sequence_abundance(sequence_abundance,
+    sequence_names = "ids",
+    abundances = "abunds",
+    samples = "groups", treatments = "time"
+  )
+
+  expect_equal(data$get_num_sequences(TRUE), 2425)
+  expect_equal(data$get_num_samples(), 19)
+  expect_equal(data$get_num_treatments(), 2)
+
+  data$clear()
+
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  abunds <- c(10, 20, 30)
+
+  expect_error(data$assign_sequence_abundance(
+    data = NULL,
+    sequence_names = names,
+    abundances = abunds
+  ))
+
+  expect_error(data$assign_sequence_abundance(
+    data = NULL,
+    sequence_names = NULL,
+    abundances = abunds
+  ))
+
+  expect_error(data$assign_sequence_abundance(
+    data = NULL,
+    sequence_names = names,
+    abundances = NULL
+  ))
+  data$clear()
+
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
 
@@ -315,10 +398,7 @@ test_that("sequence_data - assign_sequence_abundance, remove_sequences", {
   seqs_to_remove <- c("seq1", "seq2")
   trash_codes <- c("trashTest", "trashTest2")
 
-  data <- sequence_data$new("mydata")
-  data$add_sequences(names = names, sequences = seqs)
-
-  data$assign_sequence_abundance(names, rabunds)
+  data$assign_sequence_abundance(sequence_names = names, abundances = rabunds)
 
   expect_equal(data$get_num_sequences(), 1269)
   expect_equal(data$get_num_sequences(TRUE), 4)
@@ -334,14 +414,17 @@ test_that("sequence_data - assign_sequence_abundance, remove_sequences", {
   )
   expect_error(data$assign_sequence_abundance(missing_ids, abundances))
 
-  data$assign_sequence_abundance(ids, abundances, groups)
+  data$assign_sequence_abundance(data = NULL, ids, abundances, groups)
 
   expect_equal(data$get_num_sequences(), 1269)
   expect_equal(data$get_num_sequences(TRUE), 4)
   expect_equal(data$get_num_samples(), 3)
   expect_equal(data$get_num_treatments(), 0)
 
-  data$assign_sequence_abundance(ids, abundances, groups, treatments)
+  data$assign_sequence_abundance(
+    data = NULL, ids, abundances,
+    groups, treatments
+  )
   expect_equal(data$get_num_treatments(), 2)
 
   remove_sequences(data$data, seqs_to_remove, trash_codes)
@@ -358,9 +441,9 @@ test_that("sequence_data - get_list get_rabund, get_shared", {
   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
   dataset$assign_bins(
-    bin_ids = bin_ids,
+    bin_names = bin_ids,
     abundances = sequence_abundances,
-    seq_ids = seq_ids
+    sequence_names = seq_ids
   )
   # bins would look like:
   # label  bin1             bin2        bin3 ...
@@ -608,7 +691,7 @@ test_that("sequence_data - ", {
 
   # add bin assignments
   bins <- c("bin1", "bin1", "bin1", "bin2")
-  dataset$assign_bins(bins, seq_ids = names)
+  dataset$assign_bins(bins, sequence_names = names)
 
   report <- dataset$get_bin_taxonomy_report()
 

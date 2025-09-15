@@ -654,12 +654,17 @@ sequence_data <- R6Class("sequence_data",
 
     #' @description
     #' Add bin assignments
-    #' @param bin_ids a vector of bin labels
+    #'
+    #' @param data a data.frame containing bin_names, abundances(optional) and
+    #' samples(optional), sequence_names(optional). You must provide either
+    #' abundances or sequence_names.
+    #'
+    #' @param bin_names a vector of bin labels
     #' @param abundances a vector of abundances (optional). You must provide
-    #'  either abundances or seq_ids.
+    #'  either abundances or sequence_names
     #' @param samples a vector of sample assignments (optional)
-    #' @param seq_ids a vector of sequence names (optional) You must provide
-    #'  either abundances or seq_ids.
+    #' @param sequence_names a vector of sequence names (optional) You must
+    #' provide either abundances or sequence_names
     #' @param type a string indicating the type of bin assignments.
     #' Default = "otu".
     #' @examples
@@ -669,7 +674,7 @@ sequence_data <- R6Class("sequence_data",
     #'   dataset <- sequence_data$new("my_dataset")
     #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
     #'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-    #'   dataset$assign_bins(bin_ids, seq_ids = seq_ids)
+    #'   dataset$assign_bins(bin_names = bin_ids, sequence_names = seq_ids)
     #'
     #'   # bins would look like:
     #'   #            bin1             bin2        bin3
@@ -680,7 +685,7 @@ sequence_data <- R6Class("sequence_data",
     #'   dataset <- sequence_data$new("my_dataset")
     #'   bin_ids <- c("bin1", "bin2", "bin3")
     #'   abundances <- c(110, 525, 80)
-    #'   dataset$assign_bins(bin_ids, abundances)
+    #'   dataset$assign_bins(bin_names = bin_ids, abundances)
     #'
     #'   # bins would look like:
     #'   #            bin1             bin2        bin3
@@ -693,7 +698,7 @@ sequence_data <- R6Class("sequence_data",
     #'   samples <- c("sample1", "sample2", "sample5",
     #'    "sample1", "sample3", "sample1")
     #'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_bins(bin_ids, sample_abundances, samples)
+    #'   dataset$assign_bins(bin_names = bin_ids, sample_abundances, samples)
     #'
     #'   # (shared) bins would look like:
     #'   # sample   bin1   bin2   bin3
@@ -716,7 +721,7 @@ sequence_data <- R6Class("sequence_data",
     #'                "sample2", "sample3", "sample1",
     #'                "sample1", "sample6")
     #'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-    #'   dataset$assign_bins(bin_ids, abundances, samples, seq_ids)
+    #'   dataset$assign_bins(bin_names = bin_ids, abundances, samples, seq_ids)
     #'
     #'   # bins would look like:
     #'   #            bin1             bin2        bin3
@@ -725,11 +730,11 @@ sequence_data <- R6Class("sequence_data",
     #'
     #'   dataset$get_shared()
     #'
-    assign_bins = function(bin_ids, abundances = NULL,
-                           samples = NULL, seq_ids = NULL, type = "otu") {
-      if (is.null(abundances) && is.null(seq_ids)) {
+    assign_bins = function(bin_names, abundances = NULL, samples = NULL,
+                           sequence_names = NULL, type = "otu") {
+      if (is.null(abundances) && is.null(sequence_names)) {
         cli::cli_abort("[ERROR]: You must provide either
-                           abundances or seq_ids.")
+                           abundances or sequence_names")
       }
 
       if (is.null(samples)) {
@@ -738,14 +743,14 @@ sequence_data <- R6Class("sequence_data",
       if (is.null(abundances)) {
         abundances <- 0
       }
-      if (is.null(seq_ids)) {
-        seq_ids <- ""
+      if (is.null(sequence_names)) {
+        sequence_names <- ""
       }
 
       assign_bins(
         self$data,
-        bin_ids, abundances,
-        samples, seq_ids, type
+        bin_names, abundances,
+        samples, sequence_names, type
       )
 
       invisible(self)
@@ -817,48 +822,130 @@ sequence_data <- R6Class("sequence_data",
 
     #' @description
     #' Add sequence abundance data with optional sample / treatment assignments
-    #' @param names a vector of sequence names
-    #' @param abundances a vector of sequence abundances
-    #' @param samples a vector of sample assignments (optional)
-    #' @param treatments a vector of treatment assignments (optional)
+    #'
+    #' @param data a data.frame containing sequence_names, abundances,
+    #' samples(optional), treatments(optional). Either 'data' or
+    #'  'sequence_names' and 'abundances' is required.
+    #'
+    #' @param sequence_names a vector of sequence names or if using the 'data'
+    #' parameter a string containing the name of the column in 'data' that
+    #' contains the sequence names. Default column name is 'names'. Either
+    #' 'data' or 'sequence_names' and 'abundances' is required.
+    #' @param abundances a vector of sequence abundances or if using the 'data'
+    #' parameter a string containing the name of the column in 'data' that
+    #' contains the sequence abundances. Default column name is 'abundances'.
+    #' Either 'data' or 'sequence_names' and 'abundances' is required.
+    #' @param samples a vector of sample names or if using the 'data'
+    #' parameter a string containing the name of the column in 'data' that
+    #' contains the sample names. Default column name is 'samples'.
+    #' (optional)
+    #' @param treatments a vector of treatment assignments or if using the
+    #' 'data' parameter a string containing the name of the column in 'data'
+    #' that contains the treatments names. Default column name is 'treatments'.
+    #' (optional)
+    #'
     #' @examples
     #'
-    #'  # mothur count file
-    #'  # Representative_Sequence     total   sample2	sample3	sample4
-    #'  # seq1	1150	250	400	500
-    #'  # seq2	115	25	40	50
-    #'  # seq3	50	25	25	0
-    #'  # seq4	4	0	0	4
+    #' dataset <- sequence_data$new("miseq_sop")
+    #' sequence_abundance <- readr::read_tsv(rdataset_example(
+    #'                                       "mothur2_count_table.tsv"))
+    #' dataset$assign_sequence_abundance(sequence_abundance)
     #'
-    #' # inputted as a sample table
-    #' names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-    #'              "seq2", "seq3", "seq3", "seq4")
-    #' samples <- c("sample2", "sample3", "sample4",
-    #'             "sample2", "sample3", "sample4",
-    #'            "sample2", "sample3",
-    #'            "sample4")
-    #' abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
-    #'
-    #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_sequence_abundance(names, abundances, samples)
-    #'
-    assign_sequence_abundance = function(names, abundances, samples = NULL,
+    assign_sequence_abundance = function(data = NULL, sequence_names = NULL,
+                                         abundances = NULL, samples = NULL,
                                          treatments = NULL) {
-      if (length(names) != length(abundances)) {
-        cli::cli_abort("[ERROR]: The names and abundances must be the same
-                         length.")
+      if (is.null(data) && (is.null(sequence_names))) {
+        abort_provide_at_least_one(c("data", "sequence_names"))
       }
 
-      if (is.null(samples)) {
-        samples <- ""
-      }
+      if (!is.null(data)) {
+        data_names <- names(data)
 
-      if (is.null(treatments)) {
-        treatments <- ""
+        # required
+        if (is.null(sequence_names)) {
+          sequence_names <- "names"
+        }
+
+        if (length(sequence_names) == 1) {
+          if (sequence_names %in% data_names) {
+            sequence_names <- data[[sequence_names]]
+          } else {
+            abort_missing_column(sequence_names)
+          }
+        }
+
+        # required
+        if (is.null(abundances)) {
+          abundances <- "abundances"
+        }
+
+        if (length(abundances) == 1) {
+          if (abundances %in% data_names) {
+            abundances <- data[[abundances]]
+          } else {
+            abort_missing_column(abundances)
+          }
+        }
+
+        # optional
+        if (!is.null(samples)) {
+          if (length(samples) == 1) {
+            if (samples %in% data_names) {
+              samples <- data[[samples]]
+            } else {
+              abort_missing_column(samples)
+            }
+          }
+        } else {
+          # look for default column 'samples'
+          samples <- "samples"
+          if (samples %in% data_names) {
+            samples <- data[[samples]]
+          } else {
+            samples <- ""
+          }
+        }
+
+        # optional
+        if (!is.null(treatments)) {
+          if (length(treatments) == 1) {
+            if (treatments %in% data_names) {
+              treatments <- data[[treatments]]
+            } else {
+              abort_missing_column(treatments)
+            }
+          }
+        } else {
+          # look for default column 'treatments'
+          treatments <- "treatments"
+          if (treatments %in% data_names) {
+            treatments <- data[[treatments]]
+          } else {
+            treatments <- ""
+          }
+        }
+      } else {
+        if (is.null(sequence_names) || (is.null(abundances))) {
+          cli::cli_abort("[ERROR]: Unless using the data parameter,
+                         'sequence_names' and 'abundances' are required.")
+        }
+
+        if (length(sequence_names) != length(abundances)) {
+          cli::cli_abort("[ERROR]: sequence_names and abundances must be the
+                         same length.")
+        }
+
+        if (is.null(samples)) {
+          samples <- ""
+        }
+
+        if (is.null(treatments)) {
+          treatments <- ""
+        }
       }
 
       assign_sequence_abundance(
-        self$data, names, abundances,
+        self$data, sequence_names, abundances,
         samples, treatments
       )
       invisible(self)
@@ -1096,7 +1183,8 @@ sequence_data <- R6Class("sequence_data",
     #'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
     #'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
     #'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-    #'   dataset$assign_bins(bin_ids, sequence_abundances, seq_ids = seq_ids)
+    #'   dataset$assign_bins(bin_ids, sequence_abundances,
+    #'    sequence_names = seq_ids)
     #'
     #'   # (list) bins would look like:
     #'   # bin1             bin2        bin3

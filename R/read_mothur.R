@@ -100,12 +100,14 @@ read_mothur <- function(fasta = NULL, count = NULL,
     # if the count file include samples, add them
     if ("sample" %in% names(count_table)) {
       dataset$assign_sequence_abundance(
+        data = NULL,
         count_table$id,
         count_table$abundance,
         count_table$sample
       )
     } else {
       dataset$assign_sequence_abundance(
+        data = NULL,
         count_table$id,
         count_table$abundance
       )
@@ -124,7 +126,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
   # add sequence otu assignments
   if (!is.null(otu_list)) {
     df <- read_mothur_list(otu_list)
-    dataset$assign_bins(df$bin_id, seq_ids = df$seq_id, type = "otu")
+    dataset$assign_bins(df$bin_id, sequence_names = df$seq_id, type = "otu")
   }
 
   if (!is.null(otu_shared)) {
@@ -134,7 +136,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
   if (!is.null(asv_list)) {
     df <- read_mothur_list(asv_list)
-    dataset$assign_bins(df$bin_id, seq_ids = df$seq_id, type = "asv")
+    dataset$assign_bins(df$bin_id, sequence_names = df$seq_id, type = "asv")
   }
 
   if (!is.null(asv_shared)) {
@@ -144,7 +146,10 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
   if (!is.null(phylo_list)) {
     df <- read_mothur_list(phylo_list)
-    dataset$assign_bins(df$bin_id, seq_ids = df$seq_id, type = "phylotype")
+    dataset$assign_bins(df$bin_id,
+      sequence_names = df$seq_id,
+      type = "phylotype"
+    )
   }
 
   if (!is.null(phylo_shared)) {
