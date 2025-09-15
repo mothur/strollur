@@ -79,38 +79,56 @@ void Dataset::loadFromSerialized(Rcpp::RawVector serializedDataset) {
 /******************************************************************************/
 Dataset::~Dataset() {}
 /******************************************************************************/
-void Dataset::clear() {
-    isAligned = false;
-    hasSequenceData = false;
-    hasSequenceTaxonomy = false;
-    numUnique = 0;
-    uniqueBad = 0;
-    alignmentLength = 0;
+void Dataset::clear(vector<string> tags) {
 
-    // sequence data
-    names.clear();
-    seqs.clear();
-    comments.clear();
-    trashCodes.clear();
+    // clear all
+    if (tags.empty()) {
+        isAligned = false;
+        hasSequenceData = false;
+        hasSequenceTaxonomy = false;
+        numUnique = 0;
+        uniqueBad = 0;
+        alignmentLength = 0;
 
-    // sequence summary data
-    starts.clear();
-    ends.clear();
-    lengths.clear();
-    ambigs.clear();
-    polymers.clear();
-    numns.clear();
+        // sequence data
+        names.clear();
+        seqs.clear();
+        comments.clear();
+        trashCodes.clear();
 
-    // sequence taxonomy assignments
-    taxonomies.clear();
+        // sequence summary data
+        starts.clear();
+        ends.clear();
+        lengths.clear();
+        ambigs.clear();
+        polymers.clear();
+        numns.clear();
 
-    // maps sequence name to index in vectors
-    seqIndex.clear();
-    tableSeqs.clear();
+        // sequence taxonomy assignments
+        taxonomies.clear();
 
-    badAccnos.clear();
-    count.clear();
-    binTables.clear();
+        // maps sequence name to index in vectors
+        seqIndex.clear();
+        tableSeqs.clear();
+
+        badAccnos.clear();
+        count.clear();
+        binTables.clear();
+    }else {
+
+        for (string tag : tags) {
+            if (tag == "sequence_taxonomy") {
+                hasSequenceTaxonomy = false;
+                taxonomies.clear();
+            }else if (tag == "bin_taxonomy") {
+                for (int i = 0; i < binTables.size(); i++) {
+                    binTables[i].clear("taxonomy");
+                }
+            }else if (tag == "bin_assignment") {
+                binTables.clear();
+            }
+        }
+    }
 }
 /******************************************************************************/
 Rcpp::List Dataset::exportDataset(){

@@ -264,7 +264,7 @@ public:
     void assignTreatments(vector<string> samples,
                           vector<string> treatments);
 
-    void clear();
+    void clear(string tag = "");
     void clone(const BinTable& binTable);
 
     // string containing seqs in bin, comma separated
@@ -393,7 +393,7 @@ public:
     int processors;
 
     // ********** public functions exposed through RCPP_MODULE ********** //
-    void clear();
+    void clear(vector<string> tags = nullVector);
     Rcpp::List exportDataset();
 
     // add seqs

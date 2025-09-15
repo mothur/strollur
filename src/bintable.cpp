@@ -45,21 +45,33 @@ BinTable::BinTable(const BinTable& binTable) {
 /******************************************************************************/
 BinTable::~BinTable() {}
 /******************************************************************************/
-void BinTable::clear() {
-    numBins = 0;
-    uniqueBad = 0;
-    label = "";
-    hasListAssignments = false;
-    hasBinTaxonomy = false;
-    runClassify = false;
+void BinTable::clear(string tag) {
 
-    binIndex.clear();
-    tableBins.clear();
-    binNames.clear();
-    badAccnos.clear();
-    trashCodes.clear();
+    // clear all
+    if (tag == "") {
+        numBins = 0;
+        uniqueBad = 0;
+        label = "";
+        hasListAssignments = false;
+        hasBinTaxonomy = false;
+        runClassify = false;
 
-    binCount.clear();
+        binIndex.clear();
+        tableBins.clear();
+        binNames.clear();
+        badAccnos.clear();
+        trashCodes.clear();
+        seqBins.clear();
+        binList.clear();
+        taxonomies.clear();
+        binCount.clear();
+
+    }else if (tag == "taxonomy") {
+        hasBinTaxonomy = false;
+        runClassify = false;
+        taxonomies.clear();
+    }
+
 }
 /******************************************************************************/
 void BinTable::clone(const BinTable& binTable) {

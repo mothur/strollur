@@ -1632,6 +1632,21 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getBin("otu2") == "");
         expect_error(data.assignBinTaxonomy(otus, nullVector));
 
+        otuReport = data.getBinTaxonomyReport();
+        report = data.getSequenceTaxonomyReport();
+
+        expect_true(otuReport.size() == 4);
+        expect_true(report.size() == 4);
+
+        vector<string> clearTags(1, "sequence_taxonomy");
+        data.clear(clearTags);
+
+        otuReport = data.getBinTaxonomyReport();
+        report = data.getSequenceTaxonomyReport();
+
+        expect_true(otuReport.size() == 4);
+        expect_true(report.size() == 0);
+
         data.clear();
 
         // tests remove.lineage with only bin tax assignments
@@ -1660,6 +1675,16 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTotal() == 100);
         expect_true(data.getNumBins() == 1);
+
+        clearTags[0] = "bin_taxonomy";
+        data.clear(clearTags);
+
+        otuReport = data.getBinTaxonomyReport();
+
+        // still has bins just no classifications
+        expect_true(data.getTotal() == 100);
+        expect_true(data.getNumBins() == 1);
+        expect_true(otuReport.size() == 0);
     }
 
     test_that("Tests removeSamples") {
@@ -1796,5 +1821,14 @@ context("Dataset class C++ unit tests") {
         expect_true(data.numUnique == 10);
         expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
         expect_true(data.getBinAbundance("otu4") == 44);
+
+        vector<string> clearTags(1, "bin_assignment");
+        data.clear(clearTags);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.getNumBins() == 0);
+        expect_true(data.numUnique == 10);
+        expect_true(data.getBin("otu4") == "");
+        expect_true(data.getBinAbundance("otu4") == 0);
     }
 }
