@@ -85,8 +85,36 @@ void BinTable::clone(const BinTable& binTable) {
 }
 /******************************************************************************/
 void BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
-         vector<string> samples, vector<int> seqIds, AbundTable& count){
+         vector<string> samples, vector<int> seqIds, AbundTable& count,
+         bool update){
 
+    if (update) {
+        // seqs have been assigned to bins, we are using count to update
+        // the bin abundance. This is a case where (mothur1) list file was
+        // added, then sequence abundances are assigned. We want to update the
+        // bin abundance with the new seq abundances.
+
+        // we need to calculate the bin abunds by sample
+        vector<string> allSamples = count.getSamples();
+
+                // does the sequence abundance include samples
+        bool hasSamples = false;
+        if (!allSamples.empty()) {
+            hasSamples = true;
+        }
+
+        // binName -> (sampleName -> abundance)
+        map<int, map<string, int>> binAbunds;
+
+        // seq2 -> bin1
+        for (auto it = seqBins.begin(); it != seqBins.end(); it++) {
+            updateBinAbunds(binAbunds, count, it->second, it->first, allSamples);
+        }
+
+        updateBins(binAbunds, count, hasSamples);
+        runClassify = true;
+
+    }else{
     // just abundances
     if (seqIds.empty()) {
         for (int i = 0; i < binIds.size(); i++) {
@@ -151,102 +179,16 @@ void BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
                 binList[index].insert(seqIndex);
             }
 
-            auto it = binAbunds.find(index);
-
-            // first time seeing this bin, initialize sample counts
-            if (it == binAbunds.end()) {
-                map<string, int> thisSeqsSampleAbunds;
-
-                // inputs from dataset
-                vector<int> abunds = count.getAbundances(seqIndex);
-
-                // count has samples
-                if (hasSamples) {
-                    for (int j = 0; j < abunds.size(); j++) {
-                        if (abunds[j] != 0) {
-                            thisSeqsSampleAbunds[allSamples[j]] = abunds[j];
-                        }
-                    }
-                }else{
-                    thisSeqsSampleAbunds["total"] = abunds[0];
-                }
-
-                binAbunds[index] = thisSeqsSampleAbunds;
-            }else{
-                // inputs from dataset
-                if (firstTimeSeq) {
-                    vector<int> abunds = count.getAbundances(seqIndex);
-
-                    // count has samples
-                    if (hasSamples) {
-                        for (int j = 0; j < abunds.size(); j++) {
-                            if (abunds[j] != 0) {
-                                // have we seen this sample before?
-                                auto itSample = it->second.find(allSamples[j]);
-                                if (itSample == it->second.end()) {
-                                    it->second[allSamples[j]] = abunds[j];
-                                }else{
-                                    itSample->second += abunds[j];
-                                }
-                            }
-                        }
-                    }else{
-                        it->second["total"] += abunds[0];
-                    }
-                }
-            }
+            updateBinAbunds(binAbunds, count, index, seqIndex, allSamples,
+                      firstTimeSeq);
         }
 
-        // abundances are parsed by samples
         binIds.clear();
-        if (hasSamples) {
-
-            vector<int> ids;
-            for (auto it = binAbunds.begin(); it != binAbunds.end(); it++) {
-
-                map<string, int> abundances = it->second;
-                for (auto itSamples = abundances.begin();
-                     itSamples != abundances.end(); itSamples++) {
-                    ids.push_back(it->first);
-                    samples.push_back(itSamples->first);
-                    abundance.push_back(itSamples->second);
-                }
-            }
-
-            binCount.assignAbundance(ids, abundance, samples);
-
-            // inputs from dataset
-            if (hasSamples) {
-                // if there are treatments add them to bin
-                if (count.getNumTreatments() != 0) {
-                    map<string, string> sampleTreatments =
-                        count.getSampleTreatmentAssignments();
-
-                    vector<string> samples(sampleTreatments.size());
-                    vector<string> treatments(sampleTreatments.size());
-
-                    int index = 0;
-                    for (auto itTreatments = sampleTreatments.begin();
-                         itTreatments != sampleTreatments.end(); itTreatments++) {
-                        samples[index] = itTreatments->first;
-                        treatments[index] = itTreatments->second;
-                        index++;
-                    }
-                    assignTreatments(samples, treatments);
-                }
-            }
-        }else{
-            vector<int> ids;
-            for (auto it = binAbunds.begin(); it != binAbunds.end(); it++) {
-                ids.push_back(it->first);
-                abundance.push_back(it->second["total"]);
-            }
-
-            binCount.assignAbundance(ids, abundance);
-        }
+        updateBins(binAbunds, count, hasSamples);
 
         hasListAssignments = true;
         runClassify = true;
+    }
     }
 }
 /******************************************************************************/
@@ -888,6 +830,7 @@ vector<int> BinTable::setAbundance(vector<string> n,
     }
     return seqsRemoved;
 }
+
 /******************************************************************************/
 // for datasets with samples
 vector<int> BinTable::setAbundances(vector<string> n, vector<vector<int>> abunds,
@@ -927,6 +870,106 @@ vector<int> BinTable::setAbundances(vector<string> n, vector<vector<int>> abunds
     binCount.updateTotals();
 
     return seqsRemoved;
+}
+/******************************************************************************/
+void BinTable::updateBinAbunds(map<int, map<string, int>>& binAbunds,
+               AbundTable& count, int bIndex, int seqIndex,
+               vector<string>& allSamples, bool firstTimeSeq) {
+
+    bool hasSamples = !(allSamples.empty());
+
+    auto it = binAbunds.find(bIndex);
+
+    // first time seeing this bin, initialize sample counts
+    if (it == binAbunds.end()) {
+        map<string, int> thisSeqsSampleAbunds;
+
+        // inputs from dataset
+        vector<int> abunds = count.getAbundances(seqIndex);
+
+        // count has samples
+        if (hasSamples) {
+            for (int j = 0; j < abunds.size(); j++) {
+                if (abunds[j] != 0) {
+                    thisSeqsSampleAbunds[allSamples[j]] = abunds[j];
+                }
+            }
+        }else{
+            thisSeqsSampleAbunds["total"] = abunds[0];
+        }
+
+        binAbunds[bIndex] = thisSeqsSampleAbunds;
+    }else{
+        // inputs from dataset
+        if (firstTimeSeq) {
+            vector<int> abunds = count.getAbundances(seqIndex);
+
+            // count has samples
+            if (hasSamples) {
+                for (int j = 0; j < abunds.size(); j++) {
+                    if (abunds[j] != 0) {
+                        // have we seen this sample before?
+                        auto itSample = it->second.find(allSamples[j]);
+                        if (itSample == it->second.end()) {
+                            it->second[allSamples[j]] = abunds[j];
+                        }else{
+                            itSample->second += abunds[j];
+                        }
+                    }
+                }
+            }else{
+                it->second["total"] += abunds[0];
+            }
+        }
+    }
+}
+/******************************************************************************/
+void BinTable::updateBins(map<int, map<string, int>>& binAbunds,
+                          AbundTable& count, bool hasSamples) {
+    if (hasSamples) {
+
+        vector<int> ids, abundance;
+        vector<string> samples;
+        for (auto it = binAbunds.begin(); it != binAbunds.end(); it++) {
+
+            map<string, int> abundances = it->second;
+            for (auto itSamples = abundances.begin();
+                 itSamples != abundances.end(); itSamples++) {
+                ids.push_back(it->first);
+                samples.push_back(itSamples->first);
+                abundance.push_back(itSamples->second);
+            }
+        }
+
+        binCount.assignAbundance(ids, abundance, samples);
+
+        // if there are treatments add them to bin
+        if (count.getNumTreatments() != 0) {
+            map<string, string> sampleTreatments =
+                count.getSampleTreatmentAssignments();
+
+            vector<string> samples(sampleTreatments.size());
+            vector<string> treatments(sampleTreatments.size());
+
+            int index = 0;
+            for (auto itTreatments = sampleTreatments.begin();
+                 itTreatments != sampleTreatments.end(); itTreatments++) {
+                samples[index] = itTreatments->first;
+                treatments[index] = itTreatments->second;
+                index++;
+            }
+            assignTreatments(samples, treatments);
+        }
+
+    }else{
+        vector<int> ids, abundance;
+        for (auto it = binAbunds.begin(); it != binAbunds.end(); it++) {
+            ids.push_back(it->first);
+            abundance.push_back(it->second["total"]);
+        }
+
+        binCount.assignAbundance(ids, abundance);
+    }
 }
 /******************************************************************************/
 void BinTable::updateTotals() {

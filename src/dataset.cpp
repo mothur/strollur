@@ -308,6 +308,15 @@ void Dataset::assignSequenceAbundance(vector<string> ids,
     vector<int> idIndexes = getIndexes(ids);
 
     count.assignAbundance(idIndexes, abunds, samples, treatments);
+
+    // update list assignments if they include sequence ids
+    for (int i = 0; i < binTables.size(); i++) {
+        if (binTables[i].hasListAssignments) {
+            binTables[i].assignAbundance(nullVector, nullIntVector,
+                                         nullVector, nullIntVector,
+                                         count, true);
+        }
+    }
 }
 /******************************************************************************/
 void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
@@ -1280,6 +1289,15 @@ void Dataset::setAbundance(vector<string> n, vector<int> abunds,
     }
 
     count.updateTotals();
+
+    // update list assignments if they include sequence ids
+    for (int i = 0; i < binTables.size(); i++) {
+        if (binTables[i].hasListAssignments) {
+            binTables[i].assignAbundance(nullVector, nullIntVector,
+                                         nullVector, nullIntVector,
+                                         count, true);
+        }
+    }
 }
 /******************************************************************************/
 // for datasets with samples
@@ -1315,12 +1333,30 @@ void Dataset::setAbundances(vector<string> n, vector<vector<int>> abunds,
     }
 
     count.updateTotals();
+
+    // update list assignments if they include sequence ids
+    for (int i = 0; i < binTables.size(); i++) {
+        if (binTables[i].hasListAssignments) {
+            binTables[i].assignAbundance(nullVector, nullIntVector,
+                                         nullVector, nullIntVector,
+                                         count, true);
+        }
+    }
 }
 /******************************************************************************/
 // for datasets without samples
 void Dataset::setBinAbundance(vector<string> binIDS, vector<int> abunds,
                      string reason, string type) {
     if (hasBinTable(type)) {
+
+        if (binTables[getBinTableIndex(type)].hasListAssignments) {
+            string message = "[WARNING]: cannot assign bin abundance for bins ";
+            message += " with sequences assigned to them. Doing so could cause ";
+            message += "inconsistencies, ignoring bin assignments.";
+            RcppThread::Rcout << endl << message << endl;
+            return;
+        }
+
         vector<int> seqsToRemove = binTables[getBinTableIndex(type)].setAbundance(binIDS, abunds,
                                                              reason);
         // remove any sequences from removed bin from dataset
@@ -1345,6 +1381,15 @@ void Dataset::setBinAbundances(vector<string> binIDS,
                                vector<vector<int> > abunds,
                                string reason, string type) {
     if (hasBinTable(type)) {
+
+        if (binTables[getBinTableIndex(type)].hasListAssignments) {
+            string message = "[WARNING]: cannot assign bin abundance for bins ";
+            message += " with sequences assigned to them. Doing so could cause ";
+            message += "inconsistencies, ignoring bin assignments.";
+            RcppThread::Rcout << endl << message << endl;
+            return;
+        }
+
         vector<int> seqsToRemove = binTables[getBinTableIndex(type)].
         setAbundances(binIDS, abunds, reason);
 

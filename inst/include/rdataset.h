@@ -256,7 +256,8 @@ public:
 
     // ids, abundances, samples(optional)
     void assignAbundance(vector<string> ids, vector<int> abundance,
-             vector<string> samples, vector<int> seqIds, AbundTable& count);
+             vector<string> samples, vector<int> seqIds, AbundTable& count,
+             bool update = false);
 
     void assignTaxonomy(vector<string> ids, vector<string> taxonomies);
 
@@ -353,6 +354,11 @@ private:
     vector<int> getIndexes(vector<string>&);
     void classify(vector<string>& taxs, AbundTable& count);
     string classifyBin(int binIndex, vector<string>& tax, AbundTable& count);
+    void updateBinAbunds(map<int, map<string, int>>& binAbunds,
+                         AbundTable& count, int bIndex, int seqIndex,
+                         vector<string>& allSamples, bool firstTimeSeq = true);
+    void updateBins(map<int, map<string, int>>& binAbunds, AbundTable& count,
+                    bool hasSamples);
 
     friend class cereal::access; // Grants Cereal access
 

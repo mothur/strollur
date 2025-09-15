@@ -823,8 +823,8 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 4);
     }
 
-    // Bin tests
-    test_that("Tests assignBins, getBinIds, getList, getRabund, getShared") {
+    // // Bin tests
+     test_that("Tests assignBins, getBinIds, getList, getRabund, getShared") {
 
         Dataset data("mydata", 1);
 
@@ -1018,7 +1018,7 @@ context("Dataset class C++ unit tests") {
 
         otuNames.clear();
         expect_error(data.assignBins(otuNames, abundances));
-    }
+     }
 
     test_that("Tests mergeBins, removeBins, getScrapReport, getScrapSummary") {
 
@@ -1147,10 +1147,9 @@ context("Dataset class C++ unit tests") {
 
         // remove otu by setting abundance to 0
         vector<string> testRemove(1, "otu2");
-        vector<int> r(6, 0);
-        vector<vector<int>> abundsRemove; abundsRemove.push_back(r);
+        vector<string> testTrash(1, "zeroedOTU");
 
-        data.setBinAbundances(testRemove, abundsRemove, "zeroedOTU");
+        data.removeBins(testRemove, testTrash);
 
         expect_true(data.getTotal() == 30);
         expect_true(data.getNumBins() == 1);
@@ -1409,14 +1408,22 @@ context("Dataset class C++ unit tests") {
         temp[0] = 20;
         expect_true(data.getBinAbundances("otu2") == temp);
 
-        otusToChange.resize(2);
-        otusToChange[0] = "otu1";
-        otusToChange[1] = "otu4";
-        abundsToChange.resize(2);
-        abundsToChange[0] = 70;
-        abundsToChange[1] = 0;
+        vector<string> seqsToChange(6);
+        seqsToChange[0] = "seq1";
+        seqsToChange[1] = "seq2";
+        seqsToChange[2] = "seq7";
+        seqsToChange[3] = "seq8";
+        seqsToChange[4] = "seq9";
+        seqsToChange[5] = "seq10";
+        abundsToChange.resize(6);
+        abundsToChange[0] = 40;
+        abundsToChange[1] = 20;
+        abundsToChange[2] = 0;
+        abundsToChange[3] = 0;
+        abundsToChange[4] = 0;
+        abundsToChange[5] = 0;
 
-        data.setBinAbundance(otusToChange, abundsToChange, "zeroAbundance");
+        data.setAbundance(seqsToChange, abundsToChange);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.getNumBins() == 3);
@@ -1734,5 +1741,60 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getNumBins() == 3);
         expect_true(data.numUnique == 10);
         expect_true(data.getNumSamples() == 4);
+    }
+
+    test_that("Tests assignBins and assignSequenceAbundance together") {
+
+        Dataset data;
+
+        // test adding bins
+        vector<string> seqNames(10, "");
+        vector<string> otuNames(10, "");
+        otuNames[0] = "otu1";   seqNames[0] = "seq1";
+        otuNames[1] = "otu1";   seqNames[1] = "seq2";
+        otuNames[2] = "otu1";   seqNames[2] = "seq3";
+        otuNames[3] = "otu2";   seqNames[3] = "seq4";
+        otuNames[4] = "otu2";   seqNames[4] = "seq5";
+        otuNames[5] = "otu3";   seqNames[5] = "seq6";
+        otuNames[6] = "otu4";   seqNames[6] = "seq10";
+        otuNames[7] = "otu4";   seqNames[7] = "seq7";
+        otuNames[8] = "otu4";   seqNames[8] = "seq8";
+        otuNames[9] = "otu4";   seqNames[9] = "seq9";
+
+        data.assignBins(otuNames, nullIntVector, nullVector, seqNames);
+
+        expect_true(data.getTotal() == 10);
+        expect_true(data.getNumBins() == 4);
+        expect_true(data.numUnique == 10);
+        expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
+        expect_true(data.getBinAbundance("otu4") == 4);
+
+        // then assigning sequence abundance
+        seqNames.resize(15);
+        vector<string> samples(15, "");
+        vector<int> abundances(15, 0);
+        seqNames[0] = "seq1";   samples[0] = "sample1";  abundances[0] = 10;
+        seqNames[1] = "seq1";   samples[1] = "sample2";  abundances[1] = 10;
+        seqNames[2] = "seq2";   samples[2] = "sample1";  abundances[2] = 5;
+        seqNames[3] = "seq2";   samples[3] = "sample2";  abundances[3] = 5;
+        seqNames[4] = "seq3";   samples[4] = "sample1";  abundances[4] = 5;
+        seqNames[5] = "seq3";   samples[5] = "sample2";  abundances[5] = 5;
+        seqNames[6] = "seq4";   samples[6] = "sample2";  abundances[6] = 10;
+        seqNames[7] = "seq5";   samples[7] = "sample1";  abundances[7] = 1;
+        seqNames[8] = "seq6";   samples[8] = "sample1";  abundances[8] = 2;
+        seqNames[9] = "seq6";   samples[9] = "sample2";  abundances[9] = 3;
+        seqNames[10] = "seq7";   samples[10] = "sample1";  abundances[10] = 4;
+        seqNames[11] = "seq8";   samples[11] = "sample1";  abundances[11] = 20;
+        seqNames[12] = "seq9";   samples[12] = "sample1";  abundances[12] = 10;
+        seqNames[13] = "seq9";   samples[13] = "sample2";  abundances[13] = 5;
+        seqNames[14] = "seq10";   samples[14] = "sample2";  abundances[14] = 5;
+
+        data.assignSequenceAbundance(seqNames, abundances, samples);
+
+        expect_true(data.getTotal() == 100);
+        expect_true(data.getNumBins() == 4);
+        expect_true(data.numUnique == 10);
+        expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
+        expect_true(data.getBinAbundance("otu4") == 44);
     }
 }
