@@ -6,7 +6,7 @@
 #'
 #' fasta_data <- read_fasta(rdataset_example("final.fasta"))
 #'
-#' # fasta_data is a named list.
+#' # fasta_data is a data.frame.
 #' # To access the names of the sequences in the file, run the following:
 #'
 #' fasta_data$names
@@ -15,7 +15,7 @@
 #'
 #' fasta_data$sequences
 #'
-#' @return A list containing the FASTA sequence data
+#' @return A data.frame containing the FASTA sequence data
 #' @export
 read_fasta <- function(fasta) {
   if (!file.exists(fasta)) {
@@ -48,8 +48,12 @@ read_fasta <- function(fasta) {
   }
 
   if (has_comments) {
-    return(list(names = names, sequences = df$Sequence, comments = comments))
+    return(data.frame(
+      names = names,
+      sequences = df$Sequence,
+      comments = comments
+    ))
   }
 
-  list(names = names, sequences = df$Sequence)
+  data.frame(names = names, sequences = df$Sequence)
 }

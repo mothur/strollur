@@ -129,8 +129,50 @@ test_that("sequence_data - intialize from sequence_data object", {
 })
 
 test_that("sequence_data - addSeqs, assign samples", {
+
+    data <- sequence_data$new("mydata")
+
+    # missing data and names
+    expect_error(data$add_sequences())
+
+  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+  names(fasta_data) <- c("myNameTag", "mySeqTag")
+
+  expect_error(data$add_sequences(fasta_data, names = "names",
+                                  sequences = "mySeqTag"))
+
+  data$add_sequences(fasta_data, names = "myNameTag",
+                     sequences = "mySeqTag")
+
+  expect_equal(data$get_num_sequences(), 2425)
+
+  data$clear()
+
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+  comments <- c("ddd", "ftf", "efr", "ssd")
+
+  fasta_data <- data.frame(names = names, seqs = seqs, comments = comments)
+
+  expect_error(data$add_sequences(fasta_data, sequences = "sequences"))
+  data$add_sequences(fasta_data, sequences = "seqs")
+
+  expect_equal(data$get_num_sequences(), 4)
+  expect_equal(data$get_sequences(), seqs)
+  data$clear()
+
+  expect_error(data$add_sequences(fasta_data, sequences = "seqs",
+                                  comments = "comments23"))
+  data$add_sequences(fasta_data, sequences = "seqs", comments = "comments")
+
+  expect_equal(data$get_num_sequences(), 4)
+  expect_equal(data$get_sequences(), seqs)
+
+  data$clear()
+  data$add_sequences(fasta_data, comments = "comments")
+  expect_equal(data$get_num_sequences(), 4)
+  expect_equal(data$get_sequences(), rep("", 4))
+  data$clear()
 
   ids <- c(
     "seq1", "seq1", "seq1",
@@ -157,11 +199,10 @@ test_that("sequence_data - addSeqs, assign samples", {
     "early", "late"
   )
 
-  data <- sequence_data$new("mydata")
-
   # include reference
   url <- "https://mothur.org/wiki/silva_reference_files/"
-  data$add_sequences(names, seqs,
+  data$add_sequences(
+    names = names, sequences = seqs,
     reference_name = "silva.bacteria.fasta",
     reference_note = "alignment by mothur2 v1.0",
     reference_version = "1.38.1", reference_url = url
@@ -275,7 +316,7 @@ test_that("sequence_data - assign_sequence_abundance, remove_sequences", {
   trash_codes <- c("trashTest", "trashTest2")
 
   data <- sequence_data$new("mydata")
-  data$add_sequences(names, seqs)
+  data$add_sequences(names = names, sequences = seqs)
 
   data$assign_sequence_abundance(names, rabunds)
 
@@ -807,7 +848,7 @@ test_that("sequence_data - add_alignment_report, get_alignment_report", {
 
   # no report added because of missing entries
   dataset$clear("alignment_report")
-  dataset$add_sequences(c("seq6"))
+  dataset$add_sequences(names = c("seq6"))
   dataset$add_alignment_report(align_report, "QueryName")
   expect_equal(nrow(dataset$get_alignment_report()), 0)
 })
@@ -850,7 +891,7 @@ test_that("sequence_data - add / get _contigs_assembly_report,", {
 
   # no report added because of missing entries
   dataset$clear("contigs_assembly_report")
-  dataset$add_sequences(c("seq6"))
+  dataset$add_sequences(names = c("seq6"))
   dataset$add_contigs_assembly_report(report, "Name")
   expect_equal(nrow(dataset$get_contigs_assembly_report()), 0)
 })
@@ -892,12 +933,12 @@ test_that("sequence_data - add_sequence_tree / get_sequence_tree,", {
 
   expect_error(dataset$add_sequence_tree(tree = c("bad_type")))
 
-  dataset$add_sequences(names, seqs)
+  dataset$add_sequences(names = names, sequences = seqs)
   expect_equal(dataset$get_sequence_tree(), NULL)
 
   # add full tree
   dataset <- sequence_data$new()
-  dataset$add_sequences(names)
+  dataset$add_sequences(names = names)
 
   l <- lapply(strsplit(seqs, split = ""), "[")
   names(l) <- names
@@ -934,7 +975,7 @@ test_that("sequence_data - add_sequence_tree / get_sequence_tree,", {
 
   # should alert that the tree is missing reads, and not save it
   dataset <- sequence_data$new()
-  dataset$add_sequences(names)
+  dataset$add_sequences(names = names)
   dataset$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
   expect_equal(dataset$get_sequence_tree(), NULL)
 
@@ -953,7 +994,7 @@ test_that("sequence_data - add_sequence_tree / get_sequence_tree,", {
 
   # add tree with extra sequences, forcing prune
   dataset <- sequence_data$new()
-  dataset$add_sequences(names)
+  dataset$add_sequences(names = names)
 
   seqs <- c(seqs, "ACTGC")
   names <- c(names, "seq5")

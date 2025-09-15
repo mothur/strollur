@@ -29,9 +29,9 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
   # create new sequence_data object
   dataset <- sequence_data$new(dataset_name)
   dataset$add_sequences(
-    seq_names,
-    colnames(sequence_table),
-    rep("dada2", num_seqs)
+    names = seq_names,
+    sequences = colnames(sequence_table),
+    comments = rep("dada2", num_seqs)
   )
 
   sample_names <- rownames(sequence_table)

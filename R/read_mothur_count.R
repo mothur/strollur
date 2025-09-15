@@ -30,7 +30,6 @@
 #' # You can add your sequence abundance data to your dataset as follows:
 #'
 #' dataset <- sequence_data$new()
-#' dataset$add_sequences(unique(sample_table$id))
 #' dataset$assign_sequence_abundance(
 #'   sample_table$id,
 #'   sample_table$abundance,

@@ -28,3 +28,15 @@ abort_provide_at_least_one <- function(parameters) {
   )
   cli::cli_abort(message)
 }
+
+#' @title abort_missing_column
+#' @description
+#' Data.frame is missing necassary columns
+#' @param parameter name of missing required column
+abort_missing_column <- function(parameter) {
+  message <- paste("[ERROR]: Expected a data.frame column named ",
+    parameter, " to be provided.",
+    collapse = ""
+  )
+  cli::cli_abort(message)
+}

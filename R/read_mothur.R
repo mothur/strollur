@@ -85,7 +85,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
   # add sequence nucleotide strings
   if (!is.null(fasta)) {
     fasta_data <- read_fasta(fasta)
-    dataset$add_sequences(fasta_data$names, fasta_data$sequences)
+    dataset$add_sequences(fasta_data)
   }
 
   # add sequence abundance data
@@ -94,7 +94,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
     # you did not add fasta seqs
     if (is.null(fasta)) {
-      dataset$add_sequences(unique(count_table$id))
+      dataset$add_sequences(names = unique(count_table$id))
     }
 
     # if the count file include samples, add them

@@ -150,7 +150,7 @@ sequence_data <- R6Class("sequence_data",
       } else {
         # no sequence data yet, add the sequences
         if (self$get_num_sequences() == 0) {
-          self$add_sequences(report[[sequence_name_column]])
+          self$add_sequences(names = report[[sequence_name_column]])
           private$alignment_data <- report
           # save name column
           attr(
@@ -224,7 +224,7 @@ sequence_data <- R6Class("sequence_data",
       } else {
         # no sequence data yet, add the sequences
         if (self$get_num_sequences() == 0) {
-          self$add_sequences(report[[sequence_name_column]])
+          self$add_sequences(names = report[[sequence_name_column]])
           private$contigs_data <- report
           # save name column
           attr(
@@ -477,7 +477,7 @@ sequence_data <- R6Class("sequence_data",
 
       # if no seqs yet, add sequences in tree to dataset
       if (self$get_num_sequences() == 0) {
-        self$add_sequences(tree$tip.label)
+        self$add_sequences(names = tree$tip.label)
 
         # save tree
         private$sequence_tree <- tree
@@ -525,9 +525,20 @@ sequence_data <- R6Class("sequence_data",
 
     #' @description
     #' Add new sequence data
-    #' @param names a vector of sequence names
-    #' @param sequences a vector of sequence data
-    #' @param comments a vector of sequence comments, (optional)
+    #'
+    #' @param data a data.frame containing names, sequences(optional) and
+    #' comments(optional).
+    #' @param names a vector of sequence names or if using the 'data' parameter
+    #' a string containing the name of the column in 'data' that contains the
+    #' sequence names. Default column name is 'names'.
+    #' @param sequences a vector of sequence nucleotide strings or if using the
+    #' 'data' parameter a string containing the name of the column in 'data'
+    #' that contains the sequence nucleotide strings. Default column name is
+    #'  'sequences'.
+    #' @param comments a vector of sequence comments or if using the
+    #' 'data' parameter a string containing the name of the column in 'data'
+    #' that contains the sequence comments. Default column name is 'comments'.
+    #'
     #' @param reference_name a string containing the name of the reference used
     #' in the classification of the sequences. For example:
     #' 'silva.bacteria.fasta' Default = NULL. (optional)
@@ -542,8 +553,8 @@ sequence_data <- R6Class("sequence_data",
     #' @examples
     #'
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   sequences <- read_fasta(rdataset_example("final.fasta"))
-    #'   dataset$add_sequences(sequences$names, sequences$sequences)
+    #'   fasta_data <- read_fasta(rdataset_example("final.fasta"))
+    #'   dataset$add_sequences(fasta_data)
     #'
     #' # With the additional parameters to add information about the reference
     #' # You can also add references using the 'add_references' function.
@@ -551,22 +562,81 @@ sequence_data <- R6Class("sequence_data",
     #' url <- "https://mothur.org/wiki/silva_reference_files/"
     #'
     #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$add_sequences(sequences$names, sequences$sequences,
+    #' dataset$add_sequences(fasta_data,
     #' reference_name = "silva.bacteria.fasta",
     #' reference_note = "alignment by mothur2 v1.0 using default options",
     #' reference_version = "1.38.1", reference_url = url)
     #'
-    add_sequences = function(names, sequences = NULL, comments = NULL,
+    add_sequences = function(data = NULL,
+                             names = NULL, sequences = NULL, comments = NULL,
                              reference_name = NULL,
                              reference_version = NULL,
                              reference_note = NULL,
                              reference_url = NULL) {
-      if (is.null(comments)) {
-        comments <- c("")
+      if (is.null(data) && (is.null(names))) {
+        abort_provide_at_least_one(c("data", "names"))
       }
-      if (is.null(sequences)) {
-        sequences <- c("")
+
+      if (!is.null(data)) {
+        data_names <- names(data)
+
+        # look for default column 'names'
+        if (is.null(names)) {
+          names <- "names"
+        }
+
+        if (length(names) == 1) {
+          if (names %in% data_names) {
+            names <- data[[names]]
+          } else {
+            abort_missing_column("names")
+          }
+        }
+
+        if (!is.null(sequences)) {
+          if (length(sequences) == 1) {
+            if (sequences %in% data_names) {
+              sequences <- data[[sequences]]
+            } else {
+              abort_missing_column(sequences)
+            }
+          }
+        } else {
+          # look for default column 'sequences'
+          sequences <- "sequences"
+          if (sequences %in% data_names) {
+            sequences <- data[[sequences]]
+          } else {
+            sequences <- c("")
+          }
+        }
+
+        if (!is.null(comments)) {
+          if (length(comments) == 1) {
+            if (comments %in% data_names) {
+              comments <- data[[comments]]
+            } else {
+              abort_missing_column(comments)
+            }
+          }
+        } else {
+          # look for default column 'sequences'
+          comments <- "comments"
+          if (comments %in% data_names) {
+            comments <- data[[comments]]
+          } else {
+            comments <- c("")
+          }
+        }
+      } else {
+        if (is.null(comments)) {
+          comments <- c("")
+        }
+        if (is.null(sequences)) {
+          sequences <- c("")
+        }
       }
+
       add_sequences(self$data, names, sequences, comments)
 
       # if a reference is given, save it
