@@ -440,9 +440,15 @@ test_that("sequence_data - assign_sequence_abundance, remove_sequences", {
 
 test_that("sequence_data - get_list get_rabund, get_bin_assignments", {
   dataset <- sequence_data$new("my_dataset")
+
+  expect_error(dataset$assign_bins())
+
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
+
+  expect_error(dataset$assign_bins(data = NULL))
+
   dataset$assign_bins(
     bin_names = bin_ids,
     abundances = sequence_abundances,
@@ -564,17 +570,16 @@ test_that("sequence_data - get_list get_rabund, get_bin_assignments", {
   dataset$clear()
 
   bin_table <- readr::read_tsv(rdataset_example(
-      "mothur2_bin_assignments_list.tsv"
+    "mothur2_bin_assignments_list.tsv"
   ))
 
   dataset$assign_bins(bin_table,
-                      bin_names = "otu_id",
-                      sequence_names = "seq_id"
+    bin_names = "otu_id",
+    sequence_names = "seq_id"
   )
 
   expect_equal(dataset$get_num_bins(), 531)
   expect_equal(dataset$get_num_sequences(), 2425)
-
 })
 
 # assign_sequence_taxonomy, get_sequence_taxonomy_report
@@ -763,7 +768,7 @@ test_that("sequence_data - ", {
     "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;"
   )
 
-  expect_error(dataset$assign_bin_taxonomy(bin_ids, taxonomies))
+  expect_error(dataset$assign_bin_taxonomy(data = NULL, bin_ids, taxonomies))
   expect_error(dataset$assign_bins(bin_ids))
   expect_equal(dataset$get_contigs_assembly_report(), data.frame())
   expect_equal(dataset$get_sample_summary(), list())
@@ -772,7 +777,8 @@ test_that("sequence_data - ", {
 
   abunds <- c(200, 40, 100, 5)
   dataset$assign_bins(bin_names = bin_ids, abundances = abunds)
-  dataset$assign_bin_taxonomy(bin_ids, taxonomies,
+  dataset$assign_bin_taxonomy(
+    data = NULL, bin_ids, taxonomies,
     reference_name = "trainset9_032012.pds.zip",
     reference_note = "classification by mothur2 v1.0",
     reference_version = "9_032012",
@@ -818,7 +824,8 @@ test_that("sequence_data - ", {
     "Bacteria(100);Proteobacteria(65);Gammaproteobacteria(60);"
   )
 
-  dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+
+  dataset$assign_bin_taxonomy(data = NULL, bin_ids, taxonomies)
 
   report <- dataset$get_bin_taxonomy_report()
 
@@ -840,6 +847,35 @@ test_that("sequence_data - ", {
 
   expect_equal(dataset$get_sequence_taxonomy_report(), data.frame())
   expect_equal(dataset$get_bin_assignments(), data.frame())
+
+  dataset$clear()
+
+  expect_error(dataset$assign_bin_taxonomy())
+
+  table <- readr::read_tsv(rdataset_example("final.cons.taxonomy"))
+  bin_table <- readr::read_tsv(rdataset_example(
+    "mothur2_bin_assignments_list.tsv"
+  ))
+
+  dataset$assign_bins(bin_table,
+    bin_names = "otu_id",
+    sequence_names = "seq_id"
+  )
+
+  dataset$assign_bin_taxonomy(table,
+    bin_names = "OTU",
+    taxonomies = "Taxonomy"
+  )
+
+  table <- dataset$get_bin_taxonomy_report()
+
+  expect_equal(table[2758, 1], "Otu460")
+  expect_equal(table[2758, 3], "\"Bacteroidales\"")
+  expect_equal(table[2758, 2], 4)
+
+  expect_equal(table[2881, 1], "Otu481")
+  expect_equal(table[2881, 3], "Bacteria")
+  expect_equal(table[2881, 2], 1)
 })
 
 test_that("sequence_data - add_metadata, get_metadata", {

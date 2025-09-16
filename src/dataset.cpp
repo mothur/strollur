@@ -287,7 +287,7 @@ void Dataset::assignBinTaxonomy(vector<string> binIds, vector<string> taxs,
 
     if (hasBinTable(type)) {
         if (binIds.size() != taxs.size()) {
-            string message = "[ERROR]: Size mismatch. bin_ids and taxonomies ";
+            string message = "[ERROR]: Size mismatch. bin_names and taxonomies ";
             message += "must be the same size.";
             throw Rcpp::exception(message.c_str());
         }

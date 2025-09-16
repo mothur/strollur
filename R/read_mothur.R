@@ -190,7 +190,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
     # remove size
     df <- df[, -c(2)]
-    dataset$assign_bin_taxonomy(df[[1]], df[[2]])
+    dataset$assign_bin_taxonomy(data = NULL, df[[1]], df[[2]])
   }
 
   dataset

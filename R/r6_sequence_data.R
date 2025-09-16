@@ -726,8 +726,8 @@ sequence_data <- R6Class("sequence_data",
         if ((lbn != length(abundances)) && (lbn != length(sequence_names))) {
           cli::cli_abort("[ERROR]: You must provide either
                                 abundances or sequence_names")
-        }else if (lbn != length(abundances)) {
-            abundances <- 0
+        } else if (lbn != length(abundances)) {
+          abundances <- 0
         }
       } else {
         if (is.null(abundances) && is.null(sequence_names)) {
@@ -759,10 +759,20 @@ sequence_data <- R6Class("sequence_data",
     #' Assign bin classification.
     #'
     #' Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
-    #' will find the concensus taxonomy for each bin for you.
-    #' @param bin_ids a vector of bin names
-    #' @param taxonomies a vector of bin classifications
+    #' will find the consensus taxonomy for each bin for you.
+    #'
+    #' @param data a data.frame containing bin_names and taxonomies for your
+    #' data.
+    #'
+    #' @param bin_names a vector strings containing bin names or if using the
+    #' 'data' parameter a string containing the name of the column in 'data'
+    #' that contains the bin names. Default column name is 'bin_names'.
+    #' @param taxonomies a vector of strings containing bin classifications or
+    #' if using the 'data' parameter a string containing the name of the column
+    #' in 'data' that contains the bin names. Default column name is
+    #'  'taxonomies'.
     #' @param type a string indicating the type of clusters. Default = "otu".
+    #'
     #' @param reference_name a string containing the name of the reference used
     #' in the classification of the bins. For example:
     #' 'trainset9_032012.pds.zip' Default = NULL.
@@ -798,12 +808,32 @@ sequence_data <- R6Class("sequence_data",
     #' reference_note = "classification by mothur2 v1.0 using default options",
     #' reference_version = "9_032012", reference_url = url)
     #'
-    assign_bin_taxonomy = function(bin_ids, taxonomies, type = "otu",
+    assign_bin_taxonomy = function(data = NULL, bin_names = NULL,
+                                   taxonomies = NULL,
+                                   type = "otu",
                                    reference_name = NULL,
                                    reference_version = NULL,
                                    reference_note = NULL,
                                    reference_url = NULL) {
-      assign_bin_taxonomy(self$data, bin_ids, taxonomies, type)
+      if (is.null(data) && (is.null(bin_names))) {
+        abort_provide_at_least_one(c("data", "bin_names"))
+      }
+
+      if (!is.null(data)) {
+        # required
+        bin_names <- private$fill_required_param(
+          bin_names, data,
+          "bin_names"
+        )
+
+        # required
+        taxonomies <- private$fill_required_param(
+          taxonomies, data,
+          "taxonomies"
+        )
+      }
+
+      assign_bin_taxonomy(self$data, bin_names, taxonomies, type)
 
       # if a reference is given, save it
       if (!is.null(reference_name)) {
