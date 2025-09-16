@@ -94,7 +94,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
     # you did not add fasta seqs
     if (is.null(fasta)) {
-      dataset$add_sequences(names = unique(count_table$id))
+      dataset$add_sequences(sequence_names = unique(count_table$id))
     }
 
     # if the count file include samples, add them
@@ -126,27 +126,40 @@ read_mothur <- function(fasta = NULL, count = NULL,
   # add sequence otu assignments
   if (!is.null(otu_list)) {
     df <- read_mothur_list(otu_list)
-    dataset$assign_bins(df$bin_id, sequence_names = df$seq_id, type = "otu")
+    dataset$assign_bins(
+      data = NULL, df$bin_id, sequence_names = df$seq_id,
+      type = "otu"
+    )
   }
 
   if (!is.null(otu_shared)) {
     df <- read_mothur_shared(otu_shared)
-    dataset$assign_bins(df$bin_id, df$abundance, df$sample, type = "otu")
+    dataset$assign_bins(
+      data = NULL, df$bin_id, df$abundance, df$sample,
+      type = "otu"
+    )
   }
 
   if (!is.null(asv_list)) {
     df <- read_mothur_list(asv_list)
-    dataset$assign_bins(df$bin_id, sequence_names = df$seq_id, type = "asv")
+    dataset$assign_bins(
+      data = NULL, df$bin_id, sequence_names = df$seq_id,
+      type = "asv"
+    )
   }
 
   if (!is.null(asv_shared)) {
     df <- read_mothur_shared(asv_shared)
-    dataset$assign_bins(df$bin_id, df$abundance, df$sample, type = "asv")
+    dataset$assign_bins(
+      data = NULL, df$bin_id, df$abundance, df$sample,
+      type = "asv"
+    )
   }
 
   if (!is.null(phylo_list)) {
     df <- read_mothur_list(phylo_list)
-    dataset$assign_bins(df$bin_id,
+    dataset$assign_bins(
+      data = NULL, df$bin_id,
       sequence_names = df$seq_id,
       type = "phylotype"
     )
@@ -154,7 +167,8 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
   if (!is.null(phylo_shared)) {
     df <- read_mothur_shared(phylo_shared)
-    dataset$assign_bins(df$bin_id, df$abundance, df$sample,
+    dataset$assign_bins(
+      data = NULL, df$bin_id, df$abundance, df$sample,
       type = "phylotype"
     )
   }

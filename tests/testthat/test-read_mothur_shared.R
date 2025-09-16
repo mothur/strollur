@@ -9,6 +9,7 @@ test_that("test read_mothur_shared", {
 
   dataset <- sequence_data$new()
   dataset$assign_bins(
+    data = NULL,
     shared_data$bin_id,
     shared_data$abundance,
     shared_data$sample

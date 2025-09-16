@@ -936,9 +936,9 @@ get_sequence_taxonomy_report <- function(data) {
     .Call(`_rdataset_get_sequence_taxonomy_report`, data)
 }
 
-#' @title get_shared
+#' @title get_bin_assignments
 #' @description
-#' Get data.frame containing bin abundance data by sample
+#' Get data.frame containing bin abundance data
 #' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 #'  'Dataset' c++ class.
 #' @param type a string indicating the type of bin assignments. Default "otu".
@@ -958,11 +958,11 @@ get_sequence_taxonomy_report <- function(data) {
 #'   # sample3  0      25     0
 #'   # sample5  1      0      0
 #'
-#'   get_shared(dataset)
+#'   get_bin_assignments(dataset)
 #'
 #' @return data.frame
-get_shared <- function(data, type = "otu") {
-    .Call(`_rdataset_get_shared`, data, type)
+get_bin_assignments <- function(data, type = "otu") {
+    .Call(`_rdataset_get_bin_assignments`, data, type)
 }
 
 #' @title get_shared_vector

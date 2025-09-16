@@ -1166,9 +1166,9 @@ Rcpp::DataFrame get_sequence_taxonomy_report(Rcpp::XPtr<Dataset> data) {
     return data.get()->getSequenceTaxonomyReport();
 }
 /******************************************************************************/
-//' @title get_shared
+//' @title get_bin_assignments
 //' @description
-//' Get data.frame containing bin abundance data by sample
+//' Get data.frame containing bin abundance data
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
 //' @param type a string indicating the type of bin assignments. Default "otu".
@@ -1188,11 +1188,11 @@ Rcpp::DataFrame get_sequence_taxonomy_report(Rcpp::XPtr<Dataset> data) {
 //'   # sample3  0      25     0
 //'   # sample5  1      0      0
 //'
-//'   get_shared(dataset)
+//'   get_bin_assignments(dataset)
 //'
 //' @return data.frame
 //[[Rcpp::export]]
-Rcpp::DataFrame get_shared(Rcpp::XPtr<Dataset> data, string type = "otu") {
+Rcpp::DataFrame get_bin_assignments(Rcpp::XPtr<Dataset> data, string type = "otu") {
      return data.get()->getShared(type);
 }
 /******************************************************************************/

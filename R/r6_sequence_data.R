@@ -150,7 +150,7 @@ sequence_data <- R6Class("sequence_data",
       } else {
         # no sequence data yet, add the sequences
         if (self$get_num_sequences() == 0) {
-          self$add_sequences(names = report[[sequence_name_column]])
+          self$add_sequences(sequence_names = report[[sequence_name_column]])
           private$alignment_data <- report
           # save name column
           attr(
@@ -224,7 +224,7 @@ sequence_data <- R6Class("sequence_data",
       } else {
         # no sequence data yet, add the sequences
         if (self$get_num_sequences() == 0) {
-          self$add_sequences(names = report[[sequence_name_column]])
+          self$add_sequences(sequence_names = report[[sequence_name_column]])
           private$contigs_data <- report
           # save name column
           attr(
@@ -477,7 +477,7 @@ sequence_data <- R6Class("sequence_data",
 
       # if no seqs yet, add sequences in tree to dataset
       if (self$get_num_sequences() == 0) {
-        self$add_sequences(names = tree$tip.label)
+        self$add_sequences(sequence_names = tree$tip.label)
 
         # save tree
         private$sequence_tree <- tree
@@ -528,9 +528,9 @@ sequence_data <- R6Class("sequence_data",
     #'
     #' @param data a data.frame containing names, sequences(optional) and
     #' comments(optional).
-    #' @param names a vector of sequence names or if using the 'data' parameter
-    #' a string containing the name of the column in 'data' that contains the
-    #' sequence names. Default column name is 'names'.
+    #' @param sequence_names a vector of sequence names or if using the 'data'
+    #' parameter a string containing the name of the column in 'data' that
+    #' contains the sequence names. Default column name is 'names'.
     #' @param sequences a vector of sequence nucleotide strings or if using the
     #' 'data' parameter a string containing the name of the column in 'data'
     #' that contains the sequence nucleotide strings. Default column name is
@@ -568,66 +568,28 @@ sequence_data <- R6Class("sequence_data",
     #' reference_version = "1.38.1", reference_url = url)
     #'
     add_sequences = function(data = NULL,
-                             names = NULL, sequences = NULL, comments = NULL,
+                             sequence_names = NULL, sequences = NULL,
+                             comments = NULL,
                              reference_name = NULL,
                              reference_version = NULL,
                              reference_note = NULL,
                              reference_url = NULL) {
-      if (is.null(data) && (is.null(names))) {
-        abort_provide_at_least_one(c("data", "names"))
+      if (is.null(data) && (is.null(sequence_names))) {
+        abort_provide_at_least_one(c("data", "sequence_names"))
       }
 
       if (!is.null(data)) {
-        data_names <- names(data)
+        # required
+        sequence_names <- private$fill_required_param(
+          sequence_names, data,
+          "names"
+        )
 
-        # look for default column 'names'
-        if (is.null(names)) {
-          names <- "names"
-        }
+        # optional
+        sequences <- private$fill_optional_param(sequences, data, "sequences")
 
-        if (length(names) == 1) {
-          if (names %in% data_names) {
-            names <- data[[names]]
-          } else {
-            abort_missing_column("names")
-          }
-        }
-
-        if (!is.null(sequences)) {
-          if (length(sequences) == 1) {
-            if (sequences %in% data_names) {
-              sequences <- data[[sequences]]
-            } else {
-              abort_missing_column(sequences)
-            }
-          }
-        } else {
-          # look for default column 'sequences'
-          sequences <- "sequences"
-          if (sequences %in% data_names) {
-            sequences <- data[[sequences]]
-          } else {
-            sequences <- c("")
-          }
-        }
-
-        if (!is.null(comments)) {
-          if (length(comments) == 1) {
-            if (comments %in% data_names) {
-              comments <- data[[comments]]
-            } else {
-              abort_missing_column(comments)
-            }
-          }
-        } else {
-          # look for default column 'sequences'
-          comments <- "comments"
-          if (comments %in% data_names) {
-            comments <- data[[comments]]
-          } else {
-            comments <- c("")
-          }
-        }
+        # optional
+        comments <- private$fill_optional_param(comments, data, "comments")
       } else {
         if (is.null(comments)) {
           comments <- c("")
@@ -637,7 +599,7 @@ sequence_data <- R6Class("sequence_data",
         }
       }
 
-      add_sequences(self$data, names, sequences, comments)
+      add_sequences(self$data, sequence_names, sequences, comments)
 
       # if a reference is given, save it
       if (!is.null(reference_name)) {
@@ -659,12 +621,22 @@ sequence_data <- R6Class("sequence_data",
     #' samples(optional), sequence_names(optional). You must provide either
     #' abundances or sequence_names.
     #'
-    #' @param bin_names a vector of bin labels
-    #' @param abundances a vector of abundances (optional). You must provide
-    #'  either abundances or sequence_names
-    #' @param samples a vector of sample assignments (optional)
-    #' @param sequence_names a vector of sequence names (optional) You must
-    #' provide either abundances or sequence_names
+    #' @param bin_names a vector strings containing bin labels or if using the
+    #' 'data' parameter a string containing the name of the column in 'data'
+    #' that contains the bin names. Default column name is 'bin_names'.
+    #' (required)
+    #' @param abundances a vector of abundances or if using the 'data' parameter
+    #'  a string containing the name of the column in 'data' that contains
+    #'  the abundances. Default column name is 'abundances'. You must provide
+    #'  either 'abundances' or 'sequence_names'.
+    #' @param samples a vector of strings containing sample assignments or if
+    #'  using the 'data' parameter a string containing the name of the column
+    #'  in 'data' that contains the samples. Default column name is 'samples'.
+    #' @param sequence_names a vector of strings containing sequence names or if
+    #' using the 'data' parameter a string containing the name of the column in
+    #' 'data' that contains the sequence names. Default column name is
+    #' 'sequence_names'. You must provide either 'abundances' or
+    #' 'sequence_names'.
     #' @param type a string indicating the type of bin assignments.
     #' Default = "otu".
     #' @examples
@@ -694,18 +666,10 @@ sequence_data <- R6Class("sequence_data",
     #'   # To add abundance bin assignments parsed by sample:
     #'
     #'   dataset <- sequence_data$new("my_dataset")
-    #'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-    #'   samples <- c("sample1", "sample2", "sample5",
-    #'    "sample1", "sample3", "sample1")
-    #'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_bins(bin_names = bin_ids, sample_abundances, samples)
-    #'
-    #'   # (shared) bins would look like:
-    #'   # sample   bin1   bin2   bin3
-    #'   # sample1  10     500    80
-    #'   # sample2  100    0      0
-    #'   # sample3  0      25     0
-    #'   # sample5  1      0      0
+    #'   bin_table <- readr::read_tsv(rdataset_example(
+    #'                                "mothur2_bin_assignments_shared.tsv")))
+    #'   dataset$assign_bins(bin_table, bin_names = "id",
+    #'                       abundances = "abundance", samples = "sample")
     #'
     #'   # To assign sequences to bins with their abundances parsed by sample:
     #'
@@ -728,23 +692,58 @@ sequence_data <- R6Class("sequence_data",
     #'   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
     #'   # (rabund)   716              85          65
     #'
-    #'   dataset$get_shared()
+    #'   dataset$get_bin_assignments()
     #'
-    assign_bins = function(bin_names, abundances = NULL, samples = NULL,
-                           sequence_names = NULL, type = "otu") {
-      if (is.null(abundances) && is.null(sequence_names)) {
-        cli::cli_abort("[ERROR]: You must provide either
-                           abundances or sequence_names")
+    assign_bins = function(data = NULL, bin_names = NULL, abundances = NULL,
+                           samples = NULL, sequence_names = NULL,
+                           type = "otu") {
+      if (is.null(data) && (is.null(bin_names))) {
+        abort_provide_at_least_one(c("data", "bin_names"))
       }
 
-      if (is.null(samples)) {
-        samples <- ""
-      }
-      if (is.null(abundances)) {
-        abundances <- 0
-      }
-      if (is.null(sequence_names)) {
-        sequence_names <- ""
+      if (!is.null(data)) {
+        # required
+        bin_names <- private$fill_required_param(
+          bin_names, data,
+          "bin_names"
+        )
+        # optional
+        abundances <- private$fill_optional_param(
+          abundances, data,
+          "abundances"
+        )
+        # optional
+        samples <- private$fill_optional_param(samples, data, "samples")
+
+        # optional
+        sequence_names <- private$fill_optional_param(
+          sequence_names, data,
+          "sequence_names"
+        )
+
+        # neither abundances or sequence_names were provided or found
+        lbn <- length(bin_names)
+        if ((lbn != length(abundances)) && (lbn != length(sequence_names))) {
+          cli::cli_abort("[ERROR]: You must provide either
+                                abundances or sequence_names")
+        }else if (lbn != length(abundances)) {
+            abundances <- 0
+        }
+      } else {
+        if (is.null(abundances) && is.null(sequence_names)) {
+          cli::cli_abort("[ERROR]: You must provide either
+                                abundances or sequence_names")
+        }
+
+        if (is.null(samples)) {
+          samples <- ""
+        }
+        if (is.null(abundances)) {
+          abundances <- 0
+        }
+        if (is.null(sequence_names)) {
+          sequence_names <- ""
+        }
       }
 
       assign_bins(
@@ -859,71 +858,24 @@ sequence_data <- R6Class("sequence_data",
       }
 
       if (!is.null(data)) {
-        data_names <- names(data)
-
         # required
-        if (is.null(sequence_names)) {
-          sequence_names <- "names"
-        }
-
-        if (length(sequence_names) == 1) {
-          if (sequence_names %in% data_names) {
-            sequence_names <- data[[sequence_names]]
-          } else {
-            abort_missing_column(sequence_names)
-          }
-        }
-
+        sequence_names <- private$fill_required_param(
+          sequence_names, data,
+          "names"
+        )
         # required
-        if (is.null(abundances)) {
-          abundances <- "abundances"
-        }
-
-        if (length(abundances) == 1) {
-          if (abundances %in% data_names) {
-            abundances <- data[[abundances]]
-          } else {
-            abort_missing_column(abundances)
-          }
-        }
+        abundances <- private$fill_required_param(
+          abundances, data,
+          "abundances"
+        )
+        # optional
+        samples <- private$fill_optional_param(samples, data, "samples")
 
         # optional
-        if (!is.null(samples)) {
-          if (length(samples) == 1) {
-            if (samples %in% data_names) {
-              samples <- data[[samples]]
-            } else {
-              abort_missing_column(samples)
-            }
-          }
-        } else {
-          # look for default column 'samples'
-          samples <- "samples"
-          if (samples %in% data_names) {
-            samples <- data[[samples]]
-          } else {
-            samples <- ""
-          }
-        }
-
-        # optional
-        if (!is.null(treatments)) {
-          if (length(treatments) == 1) {
-            if (treatments %in% data_names) {
-              treatments <- data[[treatments]]
-            } else {
-              abort_missing_column(treatments)
-            }
-          }
-        } else {
-          # look for default column 'treatments'
-          treatments <- "treatments"
-          if (treatments %in% data_names) {
-            treatments <- data[[treatments]]
-          } else {
-            treatments <- ""
-          }
-        }
+        treatments <- private$fill_optional_param(
+          treatments, data,
+          "treatments"
+        )
       } else {
         if (is.null(sequence_names) || (is.null(abundances))) {
           cli::cli_abort("[ERROR]: Unless using the data parameter,
@@ -1028,7 +980,8 @@ sequence_data <- R6Class("sequence_data",
     #' treatments <- c("early", "early", "late")
     #'
     #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_sequence_abundance(names, abundances, samples)
+    #' dataset$assign_sequence_abundance(data = NULL,
+    #'                                   names, abundances, samples)
     #' dataset$assign_treatments(unique(samples), treatments)
     #'
     assign_treatments = function(samples, treatments) {
@@ -1102,6 +1055,40 @@ sequence_data <- R6Class("sequence_data",
         )), ]))
       }
       data.frame()
+    },
+
+    #' @description
+    #' Get data frame containing sequence bin assignments
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
+    #' @examples
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+    #'   samples <- c("sample1", "sample2", "sample5",
+    #'    "sample1", "sample3", "sample1")
+    #'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
+    #'   dataset$assign_bins(bin_ids, sample_abundances, samples)
+    #'
+    #'   # (shared) bins would look like:
+    #'   # label  sample   bin1   bin2   bin3
+    #'   # 0.03   sample1  10     500    80
+    #'   # 0.03   sample2  100    0      0
+    #'   # 0.03   sample3  0      25     0
+    #'   # 0.03   sample5  1      0      0
+    #'
+    #'   shared <- dataset$get_bin_assignments()
+    #'
+    #'   # shared$bin_id  shared$sample  shared$abundance
+    #'   # bin1           sample1        10
+    #'   # bin1           sample2        100
+    #'   # bin1           sample5        1
+    #'   # bin2           sample1        500
+    #'   # bin2           sample3        25
+    #'   # bin3           sample1        80
+    #'
+    #' @return data.frame
+    get_bin_assignments = function(type = "otu") {
+      get_bin_assignments(self$data, type)
     },
 
     #' @description
@@ -1449,7 +1436,8 @@ sequence_data <- R6Class("sequence_data",
     #'                4)
     #'
     #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_sequence_abundance(names, abundances, samples)
+    #' dataset$assign_sequence_abundance(data = NULL,
+    #'                                 names, abundances, samples)
     #' dataset$get_sequence_names()
     #'
     #' @return vector of sequence names
@@ -1591,40 +1579,6 @@ sequence_data <- R6Class("sequence_data",
     },
 
     #' @description
-    #' Get data frame containing sequence bin assignments by sample
-    #' @param type a string indicating the type of clusters. Options
-    #' include: "otu", "asv", or "phylotype". Default = "otu".
-    #' @examples
-    #'   dataset <- sequence_data$new("my_dataset")
-    #'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-    #'   samples <- c("sample1", "sample2", "sample5",
-    #'    "sample1", "sample3", "sample1")
-    #'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-    #'   dataset$assign_bins(bin_ids, sample_abundances, samples)
-    #'
-    #'   # (shared) bins would look like:
-    #'   # label  sample   bin1   bin2   bin3
-    #'   # 0.03   sample1  10     500    80
-    #'   # 0.03   sample2  100    0      0
-    #'   # 0.03   sample3  0      25     0
-    #'   # 0.03   sample5  1      0      0
-    #'
-    #'   shared <- dataset$get_shared()
-    #'
-    #'   # shared$bin_id  shared$sample  shared$abundance
-    #'   # bin1           sample1        10
-    #'   # bin1           sample2        100
-    #'   # bin1           sample5        1
-    #'   # bin2           sample1        500
-    #'   # bin2           sample3        25
-    #'   # bin3           sample1        80
-    #'
-    #' @return data.frame
-    get_shared = function(type = "otu") {
-      get_shared(self$data, type)
-    },
-
-    #' @description
     #' Get names of treatments in the dataset
     #' @return A character vector
     get_treatments = function() {
@@ -1711,6 +1665,48 @@ sequence_data <- R6Class("sequence_data",
         get_sequence_abundances(self$data),
         private$processors
       )
+    },
+    fill_required_param = function(param, data, default_value) {
+      data_names <- names(data)
+
+      # required
+      if (is.null(param)) {
+        param <- default_value
+      }
+
+      if (length(param) == 1) {
+        if (param %in% data_names) {
+          param <- data[[param]]
+        } else {
+          abort_missing_column(param)
+        }
+      }
+
+      param
+    },
+    fill_optional_param = function(param, data, default_value) {
+      data_names <- names(data)
+
+      # optional
+      if (!is.null(param)) {
+        if (length(param) == 1) {
+          if (param %in% data_names) {
+            param <- data[[param]]
+          } else {
+            abort_missing_column(param)
+          }
+        }
+      } else {
+        # look for default column
+        param <- default_value
+        if (param %in% data_names) {
+          param <- data[[param]]
+        } else {
+          param <- ""
+        }
+      }
+
+      param
     }
   )
 )

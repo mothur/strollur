@@ -31,6 +31,7 @@
 #'
 #' dataset <- sequence_data$new()
 #' dataset$assign_sequence_abundance(
+#'   data = NULL,
 #'   sample_table$id,
 #'   sample_table$abundance,
 #'   sample_table$sample

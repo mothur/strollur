@@ -10,7 +10,7 @@ read_fasta(fasta)
 \item{fasta}{FASTA file name (required)}
 }
 \value{
-A list containing the FASTA sequence data
+A data.frame containing the FASTA sequence data
 }
 \description{
 Read a FASTA formatted sequence file
@@ -19,7 +19,7 @@ Read a FASTA formatted sequence file
 
 fasta_data <- read_fasta(rdataset_example("final.fasta"))
 
-# fasta_data is a named list.
+# fasta_data is a data.frame.
 # To access the names of the sequences in the file, run the following:
 
 fasta_data$names

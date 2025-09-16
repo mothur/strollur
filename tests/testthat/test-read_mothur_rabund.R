@@ -9,8 +9,8 @@ test_that("test read_mothur_rabund", {
 
   dataset <- sequence_data$new()
   dataset$assign_bins(
-    data$bin_id,
-    data$abundance
+    bin_names = data$bin_id,
+    abundances = data$abundance
   )
 
   expect_equal(dataset$get_num_sequences(), 2425)

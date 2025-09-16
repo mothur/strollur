@@ -422,13 +422,7 @@ Rcpp::DataFrame BinTable::getShared() {
         for (int i = 0; i < ids.size(); i++) {
             indexes[i] = binIndex[ids[i]];
         }
-        Rcpp::DataFrame df = binCount.getAbundanceTable(ids, indexes, false);
-        vector<string> names(3);
-        names[0] = label + "_id";
-        names[1] = "abundance";
-        names[2] = "sample";
-        df.attr("names") = names;
-
+        Rcpp::DataFrame df = binCount.getAbundanceTable(ids, indexes, true);
         return df;
     }
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();

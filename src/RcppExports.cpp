@@ -451,15 +451,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// get_shared
-Rcpp::DataFrame get_shared(Rcpp::XPtr<Dataset> data, string type);
-RcppExport SEXP _rdataset_get_shared(SEXP dataSEXP, SEXP typeSEXP) {
+// get_bin_assignments
+Rcpp::DataFrame get_bin_assignments(Rcpp::XPtr<Dataset> data, string type);
+RcppExport SEXP _rdataset_get_bin_assignments(SEXP dataSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_shared(data, type));
+    rcpp_result_gen = Rcpp::wrap(get_bin_assignments(data, type));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -769,7 +769,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_sequence_report", (DL_FUNC) &_rdataset_get_sequence_report, 1},
     {"_rdataset_get_sequence_summary", (DL_FUNC) &_rdataset_get_sequence_summary, 1},
     {"_rdataset_get_sequence_taxonomy_report", (DL_FUNC) &_rdataset_get_sequence_taxonomy_report, 1},
-    {"_rdataset_get_shared", (DL_FUNC) &_rdataset_get_shared, 2},
+    {"_rdataset_get_bin_assignments", (DL_FUNC) &_rdataset_get_bin_assignments, 2},
     {"_rdataset_get_shared_vector", (DL_FUNC) &_rdataset_get_shared_vector, 2},
     {"_rdataset_get_treatments", (DL_FUNC) &_rdataset_get_treatments, 1},
     {"_rdataset_get_treatment_totals", (DL_FUNC) &_rdataset_get_treatment_totals, 1},
