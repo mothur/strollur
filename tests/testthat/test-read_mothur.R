@@ -68,3 +68,35 @@ test_that("test read_mothur shared", {
   expect_equal(dataset$get_num_bins(type = "asv"), 531)
   expect_equal(dataset$get_num_bins(type = "phylotype"), 531)
 })
+
+test_that("test read taxonomy files", {
+
+    data <- read_mothur_cons_taxonomy(rdataset_example(
+        "final.cons.taxonomy"))
+
+    expect_equal(nrow(data), 531)
+    expect_error(read_mothur_cons_taxonomy(taxonomy = "bad_parameter"))
+
+    data <- read_mothur_taxonomy(rdataset_example(
+        "final.taxonomy"))
+
+    expect_equal(nrow(data), 2425)
+    expect_error(read_mothur_taxonomy(taxonomy = "bad_parameter"))
+
+})
+
+# test_that("test rdataset_example", {
+#   # path only
+#   example_file_location <- rdataset_example()
+#
+#   file_path <- file.path("rdataset", "inst", "extdata")
+#
+#   expect_true(grepl(file_path, example_file_location))
+#
+#   # path and file
+#   example_file_location <- rdataset_example("final.fasta")
+#
+#   file_path <- file.path("rdataset", "inst", "extdata", "final.fasta")
+#
+#   expect_true(grepl(file_path, example_file_location))
+# })

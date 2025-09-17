@@ -9,7 +9,7 @@
 #' # fasta_data is a data.frame.
 #' # To access the names of the sequences in the file, run the following:
 #'
-#' fasta_data$names
+#' fasta_data$sequence_names
 #'
 #' # To access the sequences in the file, run the following:
 #'
@@ -49,11 +49,11 @@ read_fasta <- function(fasta) {
 
   if (has_comments) {
     return(data.frame(
-      names = names,
+      sequence_names = names,
       sequences = df$Sequence,
       comments = comments
     ))
   }
 
-  data.frame(names = names, sequences = df$Sequence)
+  data.frame(sequence_names = names, sequences = df$Sequence)
 }

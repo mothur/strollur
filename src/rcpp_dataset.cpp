@@ -79,7 +79,7 @@ Rcpp::XPtr<Dataset> copy_dataset(Rcpp::XPtr<Dataset> dataset) {
 //'
 //'  dataset <- new_dataset("miseq_sop", 4)
 //'  sequences <- read_fasta(rdataset_example("final.fasta"))
-//'  add_sequences(dataset, sequences$names, sequences$sequences, "")
+//'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
 //'
 //' @seealso [sequence_data$add_sequences()]
 //' @return double containing the number of sequences added
@@ -129,41 +129,28 @@ double add_sequences(Rcpp::XPtr<Dataset> data,
 //'
 //'   # To assign sequences to bins:
 //'
-//'   dataset <- new_dataset("my_dataset", 4)
-//'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-//'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-//'   assign_bins(dataset, bin_ids, 0, "", seq_ids, "otu")
+//'   dataset <- new_dataset("miseq_sop", 4)
 //'
-//'   # bins would look like:
-//'   #            bin1             bin2        bin3
-//'   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
+//'   otu_data <- read_mothur_list(rdataset_example(
+//'                             "final.opti_mcc.list"))
+//'   assign_bins(dataset, otu_data$bin_names, 0, "", otu_data$sequence_names)
 //'
 //'   # To add abundance only bin assignments:
 //'
-//'   dataset <- new_dataset("my_dataset", 4)
-//'   bin_ids <- c("bin1", "bin2", "bin3")
-//'   abundances <- c(110, 525, 80)
-//'   assign_bins(dataset, bin_ids, abundances, "", "", "otu")
+//'   dataset <- new_dataset("miseq_sop", 4)
 //'
-//'   # bins would look like:
-//'   #            bin1             bin2        bin3
-//'   # (rabund)   110              525         80
+//'   otu_data <- read_mothur_rabund(rdataset_example(
+//'                             "final.opti_mcc.rabund"))
+//'   assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
 //'
 //'   # To add abundance bin assignments parsed by sample:
 //'
-//'   dataset <- new_dataset("my_dataset", 4)
-//'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-//'   samples <- c("sample1", "sample2", "sample5",
-//'    "sample1", "sample3", "sample1")
-//'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-//'   assign_bins(dataset, bin_ids, sample_abundances, samples, "", "otu")
+//'   dataset <- new_dataset("miseq_sop", 4)
+//'   bin_table <- readr::read_tsv(rdataset_example(
+//'                                "mothur2_bin_assignments_shared.tsv"))
 //'
-//'   # (shared) bins would look like:
-//'   # sample   bin1   bin2   bin3
-//'   # sample1  10     500    80
-//'   # sample2  100    0      0
-//'   # sample3  0      25     0
-//'   # sample5  1      0      0
+//'   assign_bins(dataset, bin_table$bin_names, bin_table$abundances,
+//'                  bin_table$samples, "")
 //'
 //'   # To assign sequences to bins with their abundances parsed by sample:
 //'
@@ -180,11 +167,6 @@ double add_sequences(Rcpp::XPtr<Dataset> data,
 //'                "sample1", "sample6")
 //'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
 //'   assign_bins(dataset, bin_ids, abundances, samples, seq_ids, "otu")
-//'
-//'   # bins would look like:
-//'   #            bin1             bin2        bin3
-//'   # (list)     seq1,seq2,seq4   seq3,seq6   seq5
-//'   # (rabund)   716              85          65
 //'
 //' @seealso [sequence_data$assign_bins()]
 //' @return double containing the number of bins assigned
@@ -263,16 +245,12 @@ double assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
 //' @param type a string indicating the type of clusters. Default = "otu"
 //' @examples
 //'
-//' bin_names <- c("bin1", "bin2", "bin3", "bin4")
-//' abunds <- c(200, 40, 100, 5)
-//' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-//'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-//'                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-//'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+//' otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+//'                         "final.cons.taxonomy"))
 //'
 //' dataset <- new_dataset("my_dataset", 4)
-//' assign_bins(dataset, bin_names, abunds, "", "")
-//' assign_bin_taxonomy(dataset, bin_names, taxonomies)
+//' assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
+//' assign_bin_taxonomy(dataset, otu_data$bin_names, otu_data$taxonomies)
 //'
 //' @seealso [sequence_data$assign_bin_taxonomy()]
 //' @return double containing the number of bins assigned
@@ -1069,7 +1047,7 @@ vector<vector<string> > get_sequence_names_by_sample(
 //'
 //'  dataset <- new_dataset("miseq_sop", 4)
 //'  sequences <- read_fasta(rdataset_example("final.fasta"))
-//'  add_sequences(dataset, sequences$names, sequences$sequences, "")
+//'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
 //'  get_sequences(dataset)
 //'
 //' @return vector of string containing nucleotide strings of the sequences in
@@ -1129,7 +1107,7 @@ vector<vector<string> > get_sequences_by_sample(
 //'
 //'  dataset <- new_dataset("miseq_sop", 4)
 //'  sequences <- read_fasta(rdataset_example("final.fasta"))
-//'  add_sequences(dataset, sequences$names, sequences$sequences, "")
+//'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
 //'  get_sequence_report(dataset)
 //'
 //' @return data.frame
@@ -1148,7 +1126,7 @@ Rcpp::DataFrame get_sequence_report(Rcpp::XPtr<Dataset> data) {
 //'
 //'  dataset <- new_dataset("miseq_sop", 4)
 //'  sequences <- read_fasta(rdataset_example("final.fasta"))
-//'  add_sequences(dataset, sequences$names, sequences$sequences, "")
+//'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
 //'  get_sequence_summary(dataset)
 //'
 //' @return data.frame

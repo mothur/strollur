@@ -10,7 +10,7 @@
 #' otu_data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
 #'
 #' dataset <- sequence_data$new()
-#' dataset$assign_bins(otu_data$bin_id, otu_data$abundance)
+#' dataset$assign_bins(otu_data)
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export
@@ -30,7 +30,7 @@ read_mothur_rabund <- function(rabund) {
   abundance <- t(df)
 
   data.frame(
-    bin_id = otu_assignments,
-    abundance = abundance
+    bin_names = otu_assignments,
+    abundances = abundance
   )
 }

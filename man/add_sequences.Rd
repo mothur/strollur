@@ -16,6 +16,9 @@ add_sequences(data, sequence_names, sequences, comments)
 
 \item{comments}{a vector of strings containing sequence comments}
 }
+\value{
+double containing the number of sequences added
+}
 \description{
 Add sequence data to an instance of the 'Dataset' class
 }
@@ -23,7 +26,7 @@ Add sequence data to an instance of the 'Dataset' class
 
  dataset <- new_dataset("miseq_sop", 4)
  sequences <- read_fasta(rdataset_example("final.fasta"))
- add_sequences(dataset, sequences$names, sequences$sequences, "")
+ add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
 
 }
 \seealso{

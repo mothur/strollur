@@ -21,7 +21,7 @@ homopolymers and numns.
 
  dataset <- new_dataset("miseq_sop", 4)
  sequences <- read_fasta(rdataset_example("final.fasta"))
- add_sequences(dataset, sequences$names, sequences$sequences, "")
+ add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
  get_sequence_report(dataset)
 
 }

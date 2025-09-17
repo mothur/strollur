@@ -135,7 +135,7 @@ public:
     // used to export AbundTable
     Rcpp::DataFrame getAbundanceTable(vector<string> outputNames,
                                               vector<int> names,
-                                              bool includeTreatments = true);
+                                              string tag = "sequence");
 
     // names, sets abundance to 1
     double add(vector<int>& names);

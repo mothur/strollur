@@ -10,5 +10,5 @@ abort_missing_column(parameter)
 \item{parameter}{name of missing required column}
 }
 \description{
-Data.frame is missing necassary columns
+Data.frame is missing necessary columns
 }

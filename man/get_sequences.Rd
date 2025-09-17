@@ -25,7 +25,7 @@ Get the nucleotide strings for each sequence in an instance of the 'Dataset'
 
  dataset <- new_dataset("miseq_sop", 4)
  sequences <- read_fasta(rdataset_example("final.fasta"))
- add_sequences(dataset, sequences$names, sequences$sequences, "")
+ add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
  get_sequences(dataset)
 
 }

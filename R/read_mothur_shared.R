@@ -10,7 +10,7 @@
 #' otu_data <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 #'
 #' dataset <- sequence_data$new()
-#' dataset$assign_bins(otu_data$bin_id, otu_data$abundance, otu_data$sample)
+#' dataset$assign_bins(otu_data)
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export
@@ -47,8 +47,8 @@ read_mothur_shared <- function(shared) {
   }
 
   data.frame(
-    bin_id = otu_assignments,
-    abundance = abundance,
-    sample = sample
+    bin_names = otu_assignments,
+    abundances = abundance,
+    samples = sample
   )
 }

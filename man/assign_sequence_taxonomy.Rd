@@ -14,6 +14,9 @@ assign_sequence_taxonomy(data, sequence_names, taxonomies)
 
 \item{taxonomies}{a vector of strings containing sequence classifications}
 }
+\value{
+double containing the number of sequences assigned
+}
 \description{
 Assign sequence classifications to an instance of the 'Dataset' class.
 

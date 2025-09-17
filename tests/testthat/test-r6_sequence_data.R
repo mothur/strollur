@@ -142,6 +142,8 @@ test_that("sequence_data - addSeqs, assign samples", {
     sequences = "mySeqTag"
   ))
 
+  expect_error(data$add_sequences("not_a_data.frame"))
+
   data$add_sequences(fasta_data,
     sequence_names = "myNameTag",
     sequences = "mySeqTag"
@@ -157,10 +159,14 @@ test_that("sequence_data - addSeqs, assign samples", {
 
   fasta_data <- data.frame(names = names, seqs = seqs, comments = comments)
 
-  expect_error(data$add_sequences(fasta_data, sequence_names = "names",
-                                  sequences = "sequences"))
-  data$add_sequences(fasta_data, sequence_names = "names",
-                     sequences = "seqs")
+  expect_error(data$add_sequences(fasta_data,
+    sequence_names = "names",
+    sequences = "sequences"
+  ))
+  data$add_sequences(fasta_data,
+    sequence_names = "names",
+    sequences = "seqs"
+  )
 
   expect_equal(data$get_num_sequences(), 4)
   expect_equal(data$get_sequences(), seqs)
@@ -170,15 +176,19 @@ test_that("sequence_data - addSeqs, assign samples", {
     sequences = "seqs",
     comments = "comments23"
   ))
-  data$add_sequences(fasta_data, sequence_names = "names",
-                     sequences = "seqs", comments = "comments")
+  data$add_sequences(fasta_data,
+    sequence_names = "names",
+    sequences = "seqs", comments = "comments"
+  )
 
   expect_equal(data$get_num_sequences(), 4)
   expect_equal(data$get_sequences(), seqs)
 
   data$clear()
-  data$add_sequences(fasta_data, sequence_names = "names",
-                     comments = "comments")
+  data$add_sequences(fasta_data,
+    sequence_names = "names",
+    comments = "comments"
+  )
   expect_equal(data$get_num_sequences(), 4)
   expect_equal(data$get_sequences(), rep("", 4))
   data$clear()
@@ -247,15 +257,15 @@ test_that("sequence_data - addSeqs, assign samples", {
   expect_equal(data$get_rabund()$otu_id, c("bin1", "bin2"))
   expect_equal(data$get_rabund()$abundance, c(1200, 120))
 
-  expect_equal(data$get_bin_assignments()$id, c(
+  expect_equal(data$get_bin_assignments()$bin_names, c(
     "bin1", "bin1", "bin1",
     "bin2", "bin2", "bin2"
   ))
-  expect_equal(data$get_bin_assignments()$sample, c(
+  expect_equal(data$get_bin_assignments()$samples, c(
     "sample2", "sample3", "sample4",
     "sample2", "sample3", "sample4"
   ))
-  expect_equal(data$get_bin_assignments()$abundance, c(
+  expect_equal(data$get_bin_assignments()$abundances, c(
     275, 425, 500,
     26, 40, 54
   ))
@@ -452,6 +462,7 @@ test_that("sequence_data - get_list get_rabund, get_bin_assignments", {
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
 
   expect_error(dataset$assign_bins(data = NULL))
+  expect_error(dataset$assign_bins(data = NULL, bin_names = bin_ids))
 
   dataset$assign_bins(
     bin_names = bin_ids,
@@ -501,9 +512,9 @@ test_that("sequence_data - get_list get_rabund, get_bin_assignments", {
   )
 
   shared <- dataset$get_bin_assignments()
-  expect_equal(shared$id, bin_ids)
-  expect_equal(shared$abundance, sample_abundances)
-  expect_equal(shared$sample, samples)
+  expect_equal(shared$bin_names, bin_ids)
+  expect_equal(shared$abundances, sample_abundances)
+  expect_equal(shared$samples, samples)
   expect_equal(dataset$get_num_bins(), 3)
 
   expect_equal(
@@ -563,10 +574,7 @@ test_that("sequence_data - get_list get_rabund, get_bin_assignments", {
     bin_names = "id", samples = "sample"
   ))
 
-  dataset$assign_bins(bin_table,
-    bin_names = "id",
-    abundances = "abundance", samples = "sample"
-  )
+  dataset$assign_bins(bin_table)
 
   expect_equal(dataset$get_num_bins(), 531)
   expect_equal(dataset$get_num_samples(), 19)
@@ -773,6 +781,7 @@ test_that("sequence_data - ", {
   )
 
   expect_error(dataset$assign_bin_taxonomy(data = NULL, bin_ids, taxonomies))
+  expect_error(dataset$assign_bin_taxonomy(data = "not_a_data.frame"))
   expect_error(dataset$assign_bins(bin_ids))
   expect_equal(dataset$get_contigs_assembly_report(), data.frame())
   expect_equal(dataset$get_sample_summary(), list())
@@ -857,7 +866,8 @@ test_that("sequence_data - ", {
   expect_error(dataset$assign_bin_taxonomy())
 
   table <- readr::read_tsv(rdataset_example("final.cons.taxonomy"),
-                           show_col_types = FALSE)
+    show_col_types = FALSE
+  )
   bin_table <- readr::read_tsv(rdataset_example(
     "mothur2_bin_assignments_list.tsv"
   ), show_col_types = FALSE)
@@ -1231,4 +1241,121 @@ test_that("sequence_data - add_sample_tree / get_sample_tree,", {
 
   # confirm pruning
   expect_equal(sort(dataset$get_samples()), sort(tree$tip.label))
+})
+
+test_that("sequence_data - assign_treatments,", {
+  # create dataset without treatment assignments
+  dataset <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
+    phylo_list = rdataset_example("final.tx.list"),
+    asv_list = rdataset_example("final.asv.list"),
+    dataset_name = "miseq_sop"
+  )
+
+  design_table <- readr::read_tsv(
+    rdataset_example(
+      "mouse.time.design"
+    ),
+    show_col_types = FALSE
+  )
+
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_treatments(), 0)
+
+  expect_error(dataset$assign_treatments(design_table, samples = "group"))
+  expect_error(dataset$assign_treatments(design_table, treaments = "time"))
+  expect_error(dataset$assign_treatments())
+  expect_error(dataset$assign_treatments(data = NULL, samples = "not_valid"))
+  expect_error(dataset$assign_treatments("not_a_data.frame"))
+
+  # test with data.frame
+  dataset$assign_treatments(design_table)
+
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_treatments(), 2)
+
+  dataset <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
+    phylo_list = rdataset_example("final.tx.list"),
+    asv_list = rdataset_example("final.asv.list"),
+    dataset_name = "miseq_sop"
+  )
+
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_treatments(), 0)
+
+  # test with samples and treatments
+  dataset$assign_treatments(
+    data = NULL, design_table[[1]],
+    design_table[[2]]
+  )
+
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_treatments(), 2)
+})
+
+test_that("sequence_data - assign_sequence_taxonomy,", {
+  # create dataset without taxonomy assignments
+  dataset <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
+    dataset_name = "miseq_sop"
+  )
+
+  tax_table <- readr::read_tsv(
+    rdataset_example(
+      "final.taxonomy"
+    ),
+    show_col_types = FALSE,
+    col_names = FALSE
+  )
+
+  names(tax_table) <- c("sequence_names", "taxonomies")
+
+  # no taxonomies yet
+  expect_equal(dataset$get_sequence_taxonomy_report(), data.frame())
+
+  expect_error(dataset$assign_sequence_taxonomy(tax_table,
+    sequence_names = "not_valid"
+  ))
+  expect_error(dataset$assign_sequence_taxonomy(tax_table,
+    treaments = "not_valid"
+  ))
+  expect_error(dataset$assign_sequence_taxonomy())
+  expect_error(dataset$assign_sequence_taxonomy(
+    data = NULL,
+    sequence_names = "not_valid"
+  ))
+  expect_error(dataset$assign_sequence_taxonomy("not_a_data.frame"))
+
+  # test with data.frame
+  dataset$assign_sequence_taxonomy(tax_table)
+
+  report <- dataset$get_sequence_taxonomy_report()
+
+  expect_equal(nrow(dataset$get_sequence_taxonomy_report()), 14550)
+
+  dataset <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
+    dataset_name = "miseq_sop"
+  )
+
+  expect_equal(dataset$get_sequence_taxonomy_report(), data.frame())
+
+  # test with samples and treatments
+  dataset$assign_sequence_taxonomy(
+    data = NULL, tax_table[[1]],
+    tax_table[[2]]
+  )
+
+  report <- dataset$get_sequence_taxonomy_report()
+
+  expect_equal(nrow(dataset$get_sequence_taxonomy_report()), 14550)
 })

@@ -22,6 +22,6 @@ Read a mothur formatted \href{https://mothur.org/wiki/list_file/}{list file}
 otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 
 dataset <- sequence_data$new()
-dataset$assign_bins(otu_data$bin_id, sequence_names = otu_data$seq_id)
+dataset$assign_bins(otu_data)
 
 }

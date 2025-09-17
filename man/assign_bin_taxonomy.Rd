@@ -16,6 +16,9 @@ assign_bin_taxonomy(data, bin_names, taxonomies, type = "otu")
 
 \item{type}{a string indicating the type of clusters. Default = "otu"}
 }
+\value{
+double containing the number of bins assigned
+}
 \description{
 Assign bin classifications to an instance of the 'Dataset' class.
 
@@ -24,16 +27,12 @@ Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 }
 \examples{
 
-bin_names <- c("bin1", "bin2", "bin3", "bin4")
-abunds <- c(200, 40, 100, 5)
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+                        "final.cons.taxonomy"))
 
 dataset <- new_dataset("my_dataset", 4)
-assign_bins(dataset, bin_names, abunds, "", "")
-assign_bin_taxonomy(dataset, bin_names, taxonomies)
+assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
+assign_bin_taxonomy(dataset, otu_data$bin_names, otu_data$taxonomies)
 
 }
 \seealso{

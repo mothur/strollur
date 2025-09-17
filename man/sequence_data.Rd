@@ -78,10 +78,13 @@ dataset$add_references(reference = reference)
 
 
  dataset <- sequence_data$new("my_dataset")
+
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
- dataset$assign_bins(df$bin_id, df$abundance, df$sample)
+ dataset$assign_bins(df)
+
  tree <- ape::read.tree(rdataset_example(
  "final.opti_mcc.jclass.ave.tre"))
+
  dataset$add_sample_tree(tree)
 
 
@@ -124,40 +127,26 @@ reference_version = "1.38.1", reference_url = url)
   # To assign sequences to bins:
 
   dataset <- sequence_data$new("my_dataset")
-  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  dataset$assign_bins(bin_names = bin_ids, sequence_names = seq_ids)
 
-  # bins would look like:
-  #            bin1             bin2        bin3
-  # (list)     seq1,seq2,seq4   seq3,seq6   seq5
+  otu_data <- read_mothur_list(rdataset_example(
+                            "final.opti_mcc.list"))
+  dataset$assign_bins(otu_data)
 
   # To add abundance only bin assignments:
 
   dataset <- sequence_data$new("my_dataset")
-  bin_ids <- c("bin1", "bin2", "bin3")
-  abundances <- c(110, 525, 80)
-  dataset$assign_bins(bin_names = bin_ids, abundances)
 
-  # bins would look like:
-  #            bin1             bin2        bin3
-  # (rabund)   110              525         80
+  otu_data <- read_mothur_rabund(rdataset_example(
+                            "final.opti_mcc.rabund"))
+  dataset$assign_bins(otu_data)
 
   # To add abundance bin assignments parsed by sample:
 
   dataset <- sequence_data$new("my_dataset")
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  samples <- c("sample1", "sample2", "sample5",
-   "sample1", "sample3", "sample1")
-  sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_bins(bin_names = bin_ids, sample_abundances, samples)
-
-  # (shared) bins would look like:
-  # sample   bin1   bin2   bin3
-  # sample1  10     500    80
-  # sample2  100    0      0
-  # sample3  0      25     0
-  # sample5  1      0      0
+  bin_table <- readr::read_tsv(rdataset_example(
+                               "mothur2_bin_assignments_shared.tsv"),
+                               show_col_types = FALSE)
+  dataset$assign_bins(bin_table)
 
   # To assign sequences to bins with their abundances parsed by sample:
 
@@ -173,14 +162,9 @@ reference_version = "1.38.1", reference_url = url)
                "sample2", "sample3", "sample1",
                "sample1", "sample6")
   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-  dataset$assign_bins(bin_names = bin_ids, abundances, samples, seq_ids)
 
-  # bins would look like:
-  #            bin1             bin2        bin3
-  # (list)     seq1,seq2,seq4   seq3,seq6   seq5
-  # (rabund)   716              85          65
-
-  dataset$get_bin_assignments()
+  dataset$assign_bins(NULL,
+   bin_names = bin_ids, abundances, samples, seq_ids)
 
 
 ## ------------------------------------------------
@@ -188,16 +172,12 @@ reference_version = "1.38.1", reference_url = url)
 ## ------------------------------------------------
 
 
-bin_ids <- c("bin1", "bin2", "bin3", "bin4")
-abunds <- c(200, 40, 100, 5)
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+                        "final.cons.taxonomy"))
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_bins(bin_ids, abunds)
-dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+dataset$assign_bins(otu_data)
+dataset$assign_bin_taxonomy(otu_data)
 
 # With the additional parameters to add information about the reference
 # You can also add references using the 'add_references' function.
@@ -205,7 +185,7 @@ dataset$assign_bin_taxonomy(bin_ids, taxonomies)
 url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
          "9_032012.pds.zip", collapse = "")
 
-dataset$assign_bin_taxonomy(bin_ids, taxonomies,
+dataset$assign_bin_taxonomy(otu_data,
 reference_name = "trainset9_032012.pds.zip",
 reference_note = "classification by mothur2 v1.0 using default options",
 reference_version = "9_032012", reference_url = url)
@@ -218,7 +198,8 @@ reference_version = "9_032012", reference_url = url)
 
 dataset <- sequence_data$new("miseq_sop")
 sequence_abundance <- readr::read_tsv(rdataset_example(
-                                      "mothur2_count_table.tsv"))
+                                      "mothur2_count_table.tsv"),
+                                      show_col_types = FALSE)
 dataset$assign_sequence_abundance(sequence_abundance)
 
 
@@ -227,14 +208,11 @@ dataset$assign_sequence_abundance(sequence_abundance)
 ## ------------------------------------------------
 
 
-names <- c("seq1", "seq2", "seq3", "seq4")
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+                        "final.taxonomy"))
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_sequence_taxonomy(names, taxonomies)
+dataset$assign_sequence_taxonomy(sequence_classifications)
 
 # With the additional parameters to add information about the reference
 # You can also add references using the 'add_references' function.
@@ -242,7 +220,7 @@ dataset$assign_sequence_taxonomy(names, taxonomies)
 url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
          "9_032012.pds.zip", collapse = "")
 
-dataset$assign_sequence_taxonomy(names = names, taxonomies = taxonomies,
+dataset$assign_sequence_taxonomy(sequence_classifications,
 reference_name = "trainset9_032012.pds.zip",
 reference_note = "classification by mothur2 v1.0 using default options",
 reference_version = "9_032012", reference_url = url)
@@ -268,7 +246,7 @@ treatments <- c("early", "early", "late")
 dataset <- sequence_data$new("my_dataset")
 dataset$assign_sequence_abundance(data = NULL,
                                   names, abundances, samples)
-dataset$assign_treatments(unique(samples), treatments)
+dataset$assign_treatments(data = NULL, unique(samples), treatments)
 
 
 ## ------------------------------------------------
@@ -288,28 +266,14 @@ dataset$assign_treatments(unique(samples), treatments)
 ## ------------------------------------------------
 
   dataset <- sequence_data$new("my_dataset")
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  samples <- c("sample1", "sample2", "sample5",
-   "sample1", "sample3", "sample1")
-  sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_bins(bin_ids, sample_abundances, samples)
 
-  # (shared) bins would look like:
-  # label  sample   bin1   bin2   bin3
-  # 0.03   sample1  10     500    80
-  # 0.03   sample2  100    0      0
-  # 0.03   sample3  0      25     0
-  # 0.03   sample5  1      0      0
+  bin_table <- readr::read_tsv(rdataset_example(
+                               "mothur2_bin_assignments_shared.tsv"),
+                               show_col_types = FALSE)
+
+  dataset$assign_bins(bin_table)
 
   shared <- dataset$get_bin_assignments()
-
-  # shared$bin_id  shared$sample  shared$abundance
-  # bin1           sample1        10
-  # bin1           sample2        100
-  # bin1           sample5        1
-  # bin2           sample1        500
-  # bin2           sample3        25
-  # bin3           sample1        80
 
 
 ## ------------------------------------------------
@@ -317,16 +281,13 @@ dataset$assign_treatments(unique(samples), treatments)
 ## ------------------------------------------------
 
 
-bin_ids <- c("bin1", "bin2", "bin3", "bin4")
-abunds <- c(200, 40, 100, 5)
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+                        "final.cons.taxonomy"))
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_bins(bin_ids, abunds)
-dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+dataset$assign_bins(otu_data)
+dataset$assign_bin_taxonomy(otu_data)
+
 dataset$get_bin_taxonomy_report()
 
 
@@ -346,26 +307,14 @@ dataset$get_bin_taxonomy_report()
 ## Method `sequence_data$get_list`
 ## ------------------------------------------------
 
+
+  otu_data <- read_mothur_list(rdataset_example(
+                            "final.opti_mcc.list"))
+
   dataset <- sequence_data$new("my_dataset")
-  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  dataset$assign_bins(bin_ids, sequence_abundances,
-   sequence_names = seq_ids)
+  dataset$assign_bins(otu_data)
 
-  # (list) bins would look like:
-  # bin1             bin2        bin3
-  # seq1,seq2,seq4   seq3,seq6   seq5
-
-  list <- dataset$get_list()
-
-  #  list$bin_id  list$seq_id
-  #  bin1          seq1
-  #  bin1          seq2
-  #  bin1          seq4
-  #  bin2          seq3
-  #  bin2          seq6
-  #  bin3          seq5
+  dataset$get_list()
 
 
 ## ------------------------------------------------
@@ -384,11 +333,12 @@ dataset$get_bin_taxonomy_report()
 ## ------------------------------------------------
 
 
- dataset <- sequence_data$new("my_dataset")
- bin_ids <- c("bin1", "bin2", "bin3")
- abundances <- c(110, 525, 80)
- dataset$assign_bins(bin_ids, abundances)
- dataset$get_num_bins()
+  otu_data <- read_mothur_list(rdataset_example(
+                            "final.opti_mcc.list"))
+
+  dataset <- sequence_data$new("my_dataset")
+  dataset$assign_bins(otu_data)
+  dataset$get_num_bins()
 
 
 ## ------------------------------------------------
@@ -396,34 +346,26 @@ dataset$get_bin_taxonomy_report()
 ## ------------------------------------------------
 
 
-dataset <- sequence_data$new("my_dataset")
-bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-samples <- c("sample1", "sample2", "sample5", "sample1",
- "sample3", "sample1")
-sample_abundances <- c(10, 100, 1, 500, 25, 80)
-dataset$assign_bins(bin_ids, sample_abundances, samples)
-dataset$get_num_samples()
+  dataset <- sequence_data$new("my_dataset")
+  bin_table <- readr::read_tsv(rdataset_example(
+                               "mothur2_bin_assignments_shared.tsv"),
+                               show_col_types = FALSE)
+  dataset$assign_bins(bin_table)
+
+  dataset$get_num_samples()
 
 
 ## ------------------------------------------------
 ## Method `sequence_data$get_rabund`
 ## ------------------------------------------------
 
+
   dataset <- sequence_data$new("my_dataset")
-  bin_ids <- c("bin1", "bin2", "bin3")
-  bin_abundances <- c(111, 525, 80)
-  dataset$assign_bins(bin_ids, bin_abundances)
 
-  # (rabund) bins would look like:
-  # bin1  bin2  bin3
-  # 110   525   80
-
+  otu_data <- read_mothur_rabund(rdataset_example(
+                            "final.opti_mcc.rabund"))
+  dataset$assign_bins(otu_data)
   rabund <- dataset$get_rabund()
-
-  #  rabund$bin_id  rabund$abundance
-  #  bin1           111
-  #  bin2           525
-  #  bin3           80
 
 
 ## ------------------------------------------------
@@ -441,11 +383,13 @@ dataset$get_num_samples()
 ## ------------------------------------------------
 
 
- dataset <- sequence_data$new("my_dataset")
- df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
- dataset$assign_bins(df$bin_id, df$abundance, df$sample)
  tree <- ape::read.tree(rdataset_example(
- "final.opti_mcc.jclass.ave.tre"))
+  "final.opti_mcc.jclass.ave.tre"))
+
+ df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+
+ dataset <- sequence_data$new("my_dataset")
+ dataset$assign_bins(df)
  dataset$add_sample_tree(tree)
  dataset$get_sample_tree()
 
@@ -455,20 +399,11 @@ dataset$get_num_samples()
 ## ------------------------------------------------
 
 
-sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-             "seq2", "seq3", "seq3", "seq4")
-samples <- c("sample2", "sample3", "sample4",
-            "sample2", "sample3", "sample4",
-           "sample2", "sample3",
-           "sample4")
-abundances <- c(250, 400, 500,
-               25, 40, 50,
-               25, 25,
-               4)
-
-dataset <- sequence_data$new("my_dataset")
-dataset$assign_sequence_abundance(data = NULL,
-                                  names, abundances, samples)
+dataset <- sequence_data$new("miseq_sop")
+sequence_abundance <- readr::read_tsv(rdataset_example(
+                                      "mothur2_count_table.tsv"),
+                                      show_col_types = FALSE)
+dataset$assign_sequence_abundance(sequence_abundance)
 dataset$get_sequence_names()
 
 
@@ -476,15 +411,12 @@ dataset$get_sequence_names()
 ## Method `sequence_data$get_sequence_taxonomy_report`
 ## ------------------------------------------------
 
-names <- c("seq1", "seq2", "seq3", "seq4")
-tax1 <- "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);"
-tax2 <- "Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);"
-tax3 <- "Bacteria(100);Firmicutes(99);Bacilli(90);"
-tax4 <- "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);"
-taxonomies <- c(tax1, tax2, tax3, tax4)
+
+sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+                        "final.taxonomy"))
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_sequence_taxonomy(names, taxonomies)
+dataset$assign_sequence_taxonomy(sequence_classifications)
 dataset$get_sequence_taxonomy_report()
 
 
@@ -837,10 +769,13 @@ Add phylo tree relating the samples in your dataset
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
  dataset <- sequence_data$new("my_dataset")
+
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
- dataset$assign_bins(df$bin_id, df$abundance, df$sample)
+ dataset$assign_bins(df)
+
  tree <- ape::read.tree(rdataset_example(
  "final.opti_mcc.jclass.ave.tre"))
+
  dataset$add_sample_tree(tree)
 
 }
@@ -904,7 +839,7 @@ comments(optional).}
 
 \item{\code{sequence_names}}{a vector of sequence names or if using the 'data'
 parameter a string containing the name of the column in 'data' that
-contains the sequence names. Default column name is 'names'.}
+contains the sequence names. Default column name is 'sequence_names'.}
 
 \item{\code{sequences}}{a vector of sequence nucleotide strings or if using the
 'data' parameter a string containing the name of the column in 'data'
@@ -963,7 +898,8 @@ reference_version = "1.38.1", reference_url = url)
 Add bin assignments
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_bins(
-  bin_names,
+  data = NULL,
+  bin_names = NULL,
   abundances = NULL,
   samples = NULL,
   sequence_names = NULL,
@@ -974,22 +910,32 @@ Add bin assignments
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{bin_names}}{a vector of bin labels}
-
-\item{\code{abundances}}{a vector of abundances (optional). You must provide
-either abundances or sequence_names}
-
-\item{\code{samples}}{a vector of sample assignments (optional)}
-
-\item{\code{sequence_names}}{a vector of sequence names (optional) You must
-provide either abundances or sequence_names}
-
-\item{\code{type}}{a string indicating the type of bin assignments.
-Default = "otu".}
-
 \item{\code{data}}{a data.frame containing bin_names, abundances(optional) and
 samples(optional), sequence_names(optional). You must provide either
 abundances or sequence_names.}
+
+\item{\code{bin_names}}{a vector strings containing bin labels or if using the
+'data' parameter a string containing the name of the column in 'data'
+that contains the bin names. Default column name is 'bin_names'.
+(required)}
+
+\item{\code{abundances}}{a vector of abundances or if using the 'data' parameter
+a string containing the name of the column in 'data' that contains
+the abundances. Default column name is 'abundances'. You must provide
+either 'abundances' or 'sequence_names'.}
+
+\item{\code{samples}}{a vector of strings containing sample assignments or if
+using the 'data' parameter a string containing the name of the column
+in 'data' that contains the samples. Default column name is 'samples'.}
+
+\item{\code{sequence_names}}{a vector of strings containing sequence names or if
+using the 'data' parameter a string containing the name of the column in
+'data' that contains the sequence names. Default column name is
+'sequence_names'. You must provide either 'abundances' or
+'sequence_names'.}
+
+\item{\code{type}}{a string indicating the type of bin assignments.
+Default = "otu".}
 }
 \if{html}{\out{</div>}}
 }
@@ -999,40 +945,26 @@ abundances or sequence_names.}
   # To assign sequences to bins:
 
   dataset <- sequence_data$new("my_dataset")
-  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  dataset$assign_bins(bin_names = bin_ids, sequence_names = seq_ids)
 
-  # bins would look like:
-  #            bin1             bin2        bin3
-  # (list)     seq1,seq2,seq4   seq3,seq6   seq5
+  otu_data <- read_mothur_list(rdataset_example(
+                            "final.opti_mcc.list"))
+  dataset$assign_bins(otu_data)
 
   # To add abundance only bin assignments:
 
   dataset <- sequence_data$new("my_dataset")
-  bin_ids <- c("bin1", "bin2", "bin3")
-  abundances <- c(110, 525, 80)
-  dataset$assign_bins(bin_names = bin_ids, abundances)
 
-  # bins would look like:
-  #            bin1             bin2        bin3
-  # (rabund)   110              525         80
+  otu_data <- read_mothur_rabund(rdataset_example(
+                            "final.opti_mcc.rabund"))
+  dataset$assign_bins(otu_data)
 
   # To add abundance bin assignments parsed by sample:
 
   dataset <- sequence_data$new("my_dataset")
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  samples <- c("sample1", "sample2", "sample5",
-   "sample1", "sample3", "sample1")
-  sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_bins(bin_names = bin_ids, sample_abundances, samples)
-
-  # (shared) bins would look like:
-  # sample   bin1   bin2   bin3
-  # sample1  10     500    80
-  # sample2  100    0      0
-  # sample3  0      25     0
-  # sample5  1      0      0
+  bin_table <- readr::read_tsv(rdataset_example(
+                               "mothur2_bin_assignments_shared.tsv"),
+                               show_col_types = FALSE)
+  dataset$assign_bins(bin_table)
 
   # To assign sequences to bins with their abundances parsed by sample:
 
@@ -1048,14 +980,9 @@ abundances or sequence_names.}
                "sample2", "sample3", "sample1",
                "sample1", "sample6")
   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-  dataset$assign_bins(bin_names = bin_ids, abundances, samples, seq_ids)
 
-  # bins would look like:
-  #            bin1             bin2        bin3
-  # (list)     seq1,seq2,seq4   seq3,seq6   seq5
-  # (rabund)   716              85          65
-
-  dataset$get_bin_assignments()
+  dataset$assign_bins(NULL,
+   bin_names = bin_ids, abundances, samples, seq_ids)
 
 }
 \if{html}{\out{</div>}}
@@ -1070,11 +997,12 @@ abundances or sequence_names.}
 Assign bin classification.
 
 Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
-will find the concensus taxonomy for each bin for you.
+will find the consensus taxonomy for each bin for you.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_bin_taxonomy(
-  bin_ids,
-  taxonomies,
+  data = NULL,
+  bin_names = NULL,
+  taxonomies = NULL,
   type = "otu",
   reference_name = NULL,
   reference_version = NULL,
@@ -1086,9 +1014,17 @@ will find the concensus taxonomy for each bin for you.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{bin_ids}}{a vector of bin names}
+\item{\code{data}}{a data.frame containing bin_names and taxonomies for your
+data.}
 
-\item{\code{taxonomies}}{a vector of bin classifications}
+\item{\code{bin_names}}{a vector strings containing bin names or if using the
+'data' parameter a string containing the name of the column in 'data'
+that contains the bin names. Default column name is 'bin_names'.}
+
+\item{\code{taxonomies}}{a vector of strings containing bin classifications or
+if using the 'data' parameter a string containing the name of the column
+in 'data' that contains the bin names. Default column name is
+ 'taxonomies'.}
 
 \item{\code{type}}{a string indicating the type of clusters. Default = "otu".}
 
@@ -1112,16 +1048,12 @@ reference may be downloaded. Default = NULL.}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
-bin_ids <- c("bin1", "bin2", "bin3", "bin4")
-abunds <- c(200, 40, 100, 5)
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+                        "final.cons.taxonomy"))
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_bins(bin_ids, abunds)
-dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+dataset$assign_bins(otu_data)
+dataset$assign_bin_taxonomy(otu_data)
 
 # With the additional parameters to add information about the reference
 # You can also add references using the 'add_references' function.
@@ -1129,7 +1061,7 @@ dataset$assign_bin_taxonomy(bin_ids, taxonomies)
 url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
          "9_032012.pds.zip", collapse = "")
 
-dataset$assign_bin_taxonomy(bin_ids, taxonomies,
+dataset$assign_bin_taxonomy(otu_data,
 reference_name = "trainset9_032012.pds.zip",
 reference_note = "classification by mothur2 v1.0 using default options",
 reference_version = "9_032012", reference_url = url)
@@ -1189,7 +1121,8 @@ that contains the treatments names. Default column name is 'treatments'.
 \preformatted{
 dataset <- sequence_data$new("miseq_sop")
 sequence_abundance <- readr::read_tsv(rdataset_example(
-                                      "mothur2_count_table.tsv"))
+                                      "mothur2_count_table.tsv"),
+                                      show_col_types = FALSE)
 dataset$assign_sequence_abundance(sequence_abundance)
 
 }
@@ -1205,8 +1138,9 @@ dataset$assign_sequence_abundance(sequence_abundance)
 Assign sequence classification
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_sequence_taxonomy(
-  names,
-  taxonomies,
+  data = NULL,
+  sequence_names = NULL,
+  taxonomies = NULL,
   reference_name = NULL,
   reference_version = NULL,
   reference_note = NULL,
@@ -1217,9 +1151,18 @@ Assign sequence classification
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{names}}{a vector of sequence names}
+\item{\code{data}}{a data.frame containing sequence_names, abundances,
+samples(optional), treatments(optional). Either 'data' or
+ 'sequence_names' and 'abundances' is required.}
 
-\item{\code{taxonomies}}{a vector of sequence classifications}
+\item{\code{sequence_names}}{a vector of sequence names or if using the 'data'
+parameter a string containing the name of the column in 'data' that
+contains the sequence names. Default column name is 'sequence_names'.}
+
+\item{\code{taxonomies}}{a vector of sequence classifications or if using the
+'data' parameter a string containing the name of the column in 'data'
+ that contains the sequence classifications. Default column name is
+ taxonomies'.}
 
 \item{\code{reference_name}}{a string containing the name of the reference used
 in the classification of the sequences. For example:
@@ -1241,14 +1184,11 @@ reference may be downloaded. Default = NULL.}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
-names <- c("seq1", "seq2", "seq3", "seq4")
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+                        "final.taxonomy"))
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_sequence_taxonomy(names, taxonomies)
+dataset$assign_sequence_taxonomy(sequence_classifications)
 
 # With the additional parameters to add information about the reference
 # You can also add references using the 'add_references' function.
@@ -1256,7 +1196,7 @@ dataset$assign_sequence_taxonomy(names, taxonomies)
 url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
          "9_032012.pds.zip", collapse = "")
 
-dataset$assign_sequence_taxonomy(names = names, taxonomies = taxonomies,
+dataset$assign_sequence_taxonomy(sequence_classifications,
 reference_name = "trainset9_032012.pds.zip",
 reference_note = "classification by mothur2 v1.0 using default options",
 reference_version = "9_032012", reference_url = url)
@@ -1273,15 +1213,22 @@ reference_version = "9_032012", reference_url = url)
 \subsection{Method \code{assign_treatments()}}{
 Assign samples to treatments
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_treatments(samples, treatments)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$assign_treatments(data = NULL, samples = NULL, treatments = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{samples}}{a vector of sample names}
+\item{\code{data}}{a data.frame containing samples and treatments. Either 'data'
+or 'samples' and 'treatments' is required.}
 
-\item{\code{treatments}}{a vector of treatment names}
+\item{\code{samples}}{a vector of sample names or if using the 'data'
+parameter a string containing the name of the column in 'data' that
+contains the sample names. Default column name is 'samples'.}
+
+\item{\code{treatments}}{a vector of treatment names or if using the 'data'
+parameter a string containing the name of the column in 'data' that
+contains the treatment names. Default column name is 'treatments'.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1303,7 +1250,7 @@ treatments <- c("early", "early", "late")
 dataset <- sequence_data$new("my_dataset")
 dataset$assign_sequence_abundance(data = NULL,
                                   names, abundances, samples)
-dataset$assign_treatments(unique(samples), treatments)
+dataset$assign_treatments(data = NULL, unique(samples), treatments)
 
 }
 \if{html}{\out{</div>}}
@@ -1394,28 +1341,14 @@ data.frame
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{  dataset <- sequence_data$new("my_dataset")
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  samples <- c("sample1", "sample2", "sample5",
-   "sample1", "sample3", "sample1")
-  sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  dataset$assign_bins(bin_ids, sample_abundances, samples)
 
-  # (shared) bins would look like:
-  # label  sample   bin1   bin2   bin3
-  # 0.03   sample1  10     500    80
-  # 0.03   sample2  100    0      0
-  # 0.03   sample3  0      25     0
-  # 0.03   sample5  1      0      0
+  bin_table <- readr::read_tsv(rdataset_example(
+                               "mothur2_bin_assignments_shared.tsv"),
+                               show_col_types = FALSE)
+
+  dataset$assign_bins(bin_table)
 
   shared <- dataset$get_bin_assignments()
-
-  # shared$bin_id  shared$sample  shared$abundance
-  # bin1           sample1        10
-  # bin1           sample2        100
-  # bin1           sample5        1
-  # bin2           sample1        500
-  # bin2           sample3        25
-  # bin3           sample1        80
 
 }
 \if{html}{\out{</div>}}
@@ -1447,16 +1380,13 @@ data.frame
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
-bin_ids <- c("bin1", "bin2", "bin3", "bin4")
-abunds <- c(200, 40, 100, 5)
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+                        "final.cons.taxonomy"))
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_bins(bin_ids, abunds)
-dataset$assign_bin_taxonomy(bin_ids, taxonomies)
+dataset$assign_bins(otu_data)
+dataset$assign_bin_taxonomy(otu_data)
+
 dataset$get_bin_taxonomy_report()
 
 }
@@ -1542,26 +1472,14 @@ data.frame
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{  dataset <- sequence_data$new("my_dataset")
-  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  dataset$assign_bins(bin_ids, sequence_abundances,
-   sequence_names = seq_ids)
+\preformatted{
+  otu_data <- read_mothur_list(rdataset_example(
+                            "final.opti_mcc.list"))
 
-  # (list) bins would look like:
-  # bin1             bin2        bin3
-  # seq1,seq2,seq4   seq3,seq6   seq5
+  dataset <- sequence_data$new("my_dataset")
+  dataset$assign_bins(otu_data)
 
-  list <- dataset$get_list()
-
-  #  list$bin_id  list$seq_id
-  #  bin1          seq1
-  #  bin1          seq2
-  #  bin1          seq4
-  #  bin2          seq3
-  #  bin2          seq6
-  #  bin3          seq5
+  dataset$get_list()
 
 }
 \if{html}{\out{</div>}}
@@ -1617,11 +1535,12 @@ An integer
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
- dataset <- sequence_data$new("my_dataset")
- bin_ids <- c("bin1", "bin2", "bin3")
- abundances <- c(110, 525, 80)
- dataset$assign_bins(bin_ids, abundances)
- dataset$get_num_bins()
+  otu_data <- read_mothur_list(rdataset_example(
+                            "final.opti_mcc.list"))
+
+  dataset <- sequence_data$new("my_dataset")
+  dataset$assign_bins(otu_data)
+  dataset$get_num_bins()
 
 }
 \if{html}{\out{</div>}}
@@ -1644,13 +1563,13 @@ An integer
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
-dataset <- sequence_data$new("my_dataset")
-bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-samples <- c("sample1", "sample2", "sample5", "sample1",
- "sample3", "sample1")
-sample_abundances <- c(10, 100, 1, 500, 25, 80)
-dataset$assign_bins(bin_ids, sample_abundances, samples)
-dataset$get_num_samples()
+  dataset <- sequence_data$new("my_dataset")
+  bin_table <- readr::read_tsv(rdataset_example(
+                               "mothur2_bin_assignments_shared.tsv"),
+                               show_col_types = FALSE)
+  dataset$assign_bins(bin_table)
+
+  dataset$get_num_samples()
 
 }
 \if{html}{\out{</div>}}
@@ -1731,21 +1650,13 @@ data.frame
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{  dataset <- sequence_data$new("my_dataset")
-  bin_ids <- c("bin1", "bin2", "bin3")
-  bin_abundances <- c(111, 525, 80)
-  dataset$assign_bins(bin_ids, bin_abundances)
+\preformatted{
+  dataset <- sequence_data$new("my_dataset")
 
-  # (rabund) bins would look like:
-  # bin1  bin2  bin3
-  # 110   525   80
-
+  otu_data <- read_mothur_rabund(rdataset_example(
+                            "final.opti_mcc.rabund"))
+  dataset$assign_bins(otu_data)
   rabund <- dataset$get_rabund()
-
-  #  rabund$bin_id  rabund$abundance
-  #  bin1           111
-  #  bin2           525
-  #  bin3           80
 
 }
 \if{html}{\out{</div>}}
@@ -1824,11 +1735,13 @@ Get phylo tree relating the samples in your dataset.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
- dataset <- sequence_data$new("my_dataset")
- df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
- dataset$assign_bins(df$bin_id, df$abundance, df$sample)
  tree <- ape::read.tree(rdataset_example(
- "final.opti_mcc.jclass.ave.tre"))
+  "final.opti_mcc.jclass.ave.tre"))
+
+ df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+
+ dataset <- sequence_data$new("my_dataset")
+ dataset$assign_bins(df)
  dataset$add_sample_tree(tree)
  dataset$get_sample_tree()
 
@@ -1876,20 +1789,11 @@ vector of sequence names
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
-sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-             "seq2", "seq3", "seq3", "seq4")
-samples <- c("sample2", "sample3", "sample4",
-            "sample2", "sample3", "sample4",
-           "sample2", "sample3",
-           "sample4")
-abundances <- c(250, 400, 500,
-               25, 40, 50,
-               25, 25,
-               4)
-
-dataset <- sequence_data$new("my_dataset")
-dataset$assign_sequence_abundance(data = NULL,
-                                  names, abundances, samples)
+dataset <- sequence_data$new("miseq_sop")
+sequence_abundance <- readr::read_tsv(rdataset_example(
+                                      "mothur2_count_table.tsv"),
+                                      show_col_types = FALSE)
+dataset$assign_sequence_abundance(sequence_abundance)
 dataset$get_sequence_names()
 
 }
@@ -1948,15 +1852,12 @@ data.frame
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{names <- c("seq1", "seq2", "seq3", "seq4")
-tax1 <- "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);"
-tax2 <- "Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);"
-tax3 <- "Bacteria(100);Firmicutes(99);Bacilli(90);"
-tax4 <- "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);"
-taxonomies <- c(tax1, tax2, tax3, tax4)
+\preformatted{
+sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+                        "final.taxonomy"))
 
 dataset <- sequence_data$new("my_dataset")
-dataset$assign_sequence_taxonomy(names, taxonomies)
+dataset$assign_sequence_taxonomy(sequence_classifications)
 dataset$get_sequence_taxonomy_report()
 
 }

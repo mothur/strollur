@@ -2,7 +2,7 @@
 % Please edit documentation in R/rdataset_example.R
 \name{rdataset_example}
 \alias{rdataset_example}
-\title{Get path to rdataset example}
+\title{rdataset_example}
 \usage{
 rdataset_example(file = NULL)
 }
@@ -11,7 +11,10 @@ rdataset_example(file = NULL)
 }
 \description{
 rdataset comes bundled with some example files in its `inst/extdata`
-directory. This function make them easy to access.
+directory. This function make them easy to access them.
+}
+\details{
+Get path to rdataset example
 }
 \examples{
 rdataset_example()

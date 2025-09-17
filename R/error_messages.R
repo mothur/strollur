@@ -47,10 +47,10 @@ abort_missing_column <- function(parameter) {
 #' @param num integer containing the number of items added.
 #' @param tag string containing item added. Default = 'sequences'.
 added_message <- function(num, tag = "sequences") {
-    message <- paste0("Added ", as.character(num), " ", tag, ".",
-                     collapse = ""
-    )
-    cli::cli_alert_info(message)
+  message <- paste0("Added ", as.character(num), " ", tag, ".",
+    collapse = ""
+  )
+  cli::cli_alert_info(message)
 }
 
 #' @title assigned_message
@@ -59,8 +59,8 @@ added_message <- function(num, tag = "sequences") {
 #' @param num integer containing the number of items assigned
 #' @param tag string containing item assigned Default = 'sequences'.
 assigned_message <- function(num, tag = "sequences") {
-    message <- paste0("Assigned ", as.character(num), tag,
-                     collapse = ""
-    )
-    cli::cli_alert_info(message)
+  message <- paste0("Assigned ", as.character(num), tag,
+    collapse = ""
+  )
+  cli::cli_alert_info(message)
 }

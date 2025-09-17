@@ -24,6 +24,9 @@ assign_sequence_abundance(
 
 \item{treatments}{a vector of strings containing treatment assignments}
 }
+\value{
+double containing the number of sequences assigned
+}
 \description{
 Set sequence abundance and optionally assign sample and treatment data to
  an instance of the 'Dataset' class.

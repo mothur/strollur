@@ -22,6 +22,9 @@ Note: You must provide either abundances or seq_ids.}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
+\value{
+double containing the number of bins assigned
+}
 \description{
 Add bin assignments to an instance of the 'Dataset' class.
 }
@@ -29,41 +32,28 @@ Add bin assignments to an instance of the 'Dataset' class.
 
   # To assign sequences to bins:
 
-  dataset <- new_dataset("my_dataset", 4)
-  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  assign_bins(dataset, bin_ids, 0, "", seq_ids, "otu")
+  dataset <- new_dataset("miseq_sop", 4)
 
-  # bins would look like:
-  #            bin1             bin2        bin3
-  # (list)     seq1,seq2,seq4   seq3,seq6   seq5
+  otu_data <- read_mothur_list(rdataset_example(
+                            "final.opti_mcc.list"))
+  assign_bins(dataset, otu_data$bin_names, 0, "", otu_data$sequence_names)
 
   # To add abundance only bin assignments:
 
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin2", "bin3")
-  abundances <- c(110, 525, 80)
-  assign_bins(dataset, bin_ids, abundances, "", "", "otu")
+  dataset <- new_dataset("miseq_sop", 4)
 
-  # bins would look like:
-  #            bin1             bin2        bin3
-  # (rabund)   110              525         80
+  otu_data <- read_mothur_rabund(rdataset_example(
+                            "final.opti_mcc.rabund"))
+  assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
 
   # To add abundance bin assignments parsed by sample:
 
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  samples <- c("sample1", "sample2", "sample5",
-   "sample1", "sample3", "sample1")
-  sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  assign_bins(dataset, bin_ids, sample_abundances, samples, "", "otu")
+  dataset <- new_dataset("miseq_sop", 4)
+  bin_table <- readr::read_tsv(rdataset_example(
+                               "mothur2_bin_assignments_shared.tsv"))
 
-  # (shared) bins would look like:
-  # sample   bin1   bin2   bin3
-  # sample1  10     500    80
-  # sample2  100    0      0
-  # sample3  0      25     0
-  # sample5  1      0      0
+  assign_bins(dataset, bin_table$bin_names, bin_table$abundances,
+                 bin_table$samples, "")
 
   # To assign sequences to bins with their abundances parsed by sample:
 
@@ -80,11 +70,6 @@ Add bin assignments to an instance of the 'Dataset' class.
                "sample1", "sample6")
   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
   assign_bins(dataset, bin_ids, abundances, samples, seq_ids, "otu")
-
-  # bins would look like:
-  #            bin1             bin2        bin3
-  # (list)     seq1,seq2,seq4   seq3,seq6   seq5
-  # (rabund)   716              85          65
 
 }
 \seealso{

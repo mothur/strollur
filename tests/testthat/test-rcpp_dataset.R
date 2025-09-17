@@ -23,7 +23,10 @@ test_that("rcpp_dataset - add_sequences", {
   comments <- rep("my comments", length(sequences$names))
 
   # add with all 3 parameters
-  add_sequences(dataset, sequences$names, sequences$sequences, comments)
+  add_sequences(
+    dataset, sequences$sequence_names,
+    sequences$sequences, comments
+  )
   expect_equal(get_num_sequences(dataset), 2425)
   expect_true(has_sequence_strings(dataset))
   expect_error(set_sequences(
@@ -35,7 +38,7 @@ test_that("rcpp_dataset - add_sequences", {
   clear(dataset)
 
   # add with 2 parameters
-  add_sequences(dataset, sequences$names, sequences$sequences, "")
+  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
   expect_equal(get_num_sequences(dataset), 2425)
   expect_true(has_sequence_strings(dataset))
 
@@ -55,7 +58,7 @@ test_that("rcpp_dataset - add_sequences", {
   clear(dataset)
 
   # add with only names
-  add_sequences(dataset, sequences$names, "", "")
+  add_sequences(dataset, sequences$sequence_names, "", "")
   expect_equal(get_num_sequences(dataset), 2425)
   expect_false(has_sequence_strings(dataset))
 
@@ -208,9 +211,9 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
 
   abund_table <- get_sequence_abundance_table(dataset)
 
-  expect_equal(abund_table$id, names)
-  expect_equal(abund_table$abundance, abundances)
-  expect_equal(abund_table$sample, samples)
+  expect_equal(abund_table$sequence_names, names)
+  expect_equal(abund_table$abundances, abundances)
+  expect_equal(abund_table$samples, samples)
 
   message <- capture_output(set_abundances(
     dataset,

@@ -404,7 +404,7 @@ vector<int> AbundTable::getTotalAbundances(vector<int> names) {
 /******************************************************************************/
 Rcpp::DataFrame AbundTable::getAbundanceTable(vector<string> outputNames,
                                           vector<int> names,
-                                          bool includeTreatments) {
+                                          string tag) {
 
 
     if (hasSampleData) {
@@ -428,25 +428,25 @@ Rcpp::DataFrame AbundTable::getAbundanceTable(vector<string> outputNames,
                     abunds.push_back(data.abunds[j]);
                     samples.push_back(sampleNames[data.sampleIndex[j]]);
 
-                    if (hasTreatments && includeTreatments) {
+                    if (hasTreatments) {
                         treaments.push_back(sampleTreatment[data.sampleIndex[j]]);
                     }
                 }
             }
         }
 
-        if (hasTreatments && includeTreatments) {
+        if (hasTreatments) {
             Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                Rcpp::Named("id") = ids,
-                Rcpp::_["abundance"] = abunds,
-                Rcpp::_["sample"] = samples,
-                Rcpp::_["treatment"] = treaments);
+                Rcpp::Named(tag+"_names") = ids,
+                Rcpp::_["abundances"] = abunds,
+                Rcpp::_["samples"] = samples,
+                Rcpp::_["treatments"] = treaments);
             return df;
         }else{
             Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                Rcpp::Named("id") = ids,
-                Rcpp::_["abundance"] = abunds,
-                Rcpp::_["sample"] = samples);
+                Rcpp::Named(tag+"_names") = ids,
+                Rcpp::_["abundances"] = abunds,
+                Rcpp::_["samples"] = samples);
             return df;
         }
     }else{

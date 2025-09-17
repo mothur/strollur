@@ -1,4 +1,4 @@
-id	abundance	sample	treatment
+bin_names	abundances	samples	treatments
 Otu001	499	F3D0	Early
 Otu001	351	F3D1	Early
 Otu001	388	F3D141	Late

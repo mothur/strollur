@@ -85,7 +85,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
   # add sequence nucleotide strings
   if (!is.null(fasta)) {
     fasta_data <- read_fasta(fasta)
-    dataset$add_sequences(fasta_data, sequence_names = "names")
+    dataset$add_sequences(fasta_data)
   }
 
   # add sequence abundance data
@@ -116,61 +116,39 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
   # add taxonomy data
   if (!is.null(taxonomy)) {
-    df <- readr::read_table(
-      file = taxonomy, col_names = FALSE,
-      show_col_types = FALSE
-    )
-    dataset$assign_sequence_taxonomy(data = NULL, df[[1]], df[[2]])
+    df <- read_mothur_taxonomy(taxonomy)
+    dataset$assign_sequence_taxonomy(df)
   }
 
   # add sequence otu assignments
   if (!is.null(otu_list)) {
     df <- read_mothur_list(otu_list)
-    dataset$assign_bins(
-      data = NULL, df$bin_id, sequence_names = df$seq_id,
-      type = "otu"
-    )
+    dataset$assign_bins(df, type = "otu")
   }
 
   if (!is.null(otu_shared)) {
     df <- read_mothur_shared(otu_shared)
-    dataset$assign_bins(
-      data = NULL, df$bin_id, df$abundance, df$sample,
-      type = "otu"
-    )
+    dataset$assign_bins(df, type = "otu")
   }
 
   if (!is.null(asv_list)) {
     df <- read_mothur_list(asv_list)
-    dataset$assign_bins(
-      data = NULL, df$bin_id, sequence_names = df$seq_id,
-      type = "asv"
-    )
+    dataset$assign_bins(df, type = "asv")
   }
 
   if (!is.null(asv_shared)) {
     df <- read_mothur_shared(asv_shared)
-    dataset$assign_bins(
-      data = NULL, df$bin_id, df$abundance, df$sample,
-      type = "asv"
-    )
+    dataset$assign_bins(df, type = "asv")
   }
 
   if (!is.null(phylo_list)) {
     df <- read_mothur_list(phylo_list)
-    dataset$assign_bins(
-      data = NULL, df$bin_id,
-      sequence_names = df$seq_id,
-      type = "phylotype"
-    )
+    dataset$assign_bins(df, type = "phylotype")
   }
 
   if (!is.null(phylo_shared)) {
     df <- read_mothur_shared(phylo_shared)
-    dataset$assign_bins(
-      data = NULL, df$bin_id, df$abundance, df$sample,
-      type = "phylotype"
-    )
+    dataset$assign_bins(df, type = "phylotype")
   }
 
   # add sample / treatment assignments
@@ -179,18 +157,12 @@ read_mothur <- function(fasta = NULL, count = NULL,
       file = design, col_names = TRUE,
       show_col_types = FALSE
     )
-    dataset$assign_treatments(df[[1]], df[[2]])
+    dataset$assign_treatments(data = NULL, df[[1]], df[[2]])
   }
 
   if (!is.null(cons_taxonomy)) {
-    df <- readr::read_table(
-      file = cons_taxonomy, col_names = TRUE,
-      show_col_types = FALSE
-    )
-
-    # remove size
-    df <- df[, -c(2)]
-    dataset$assign_bin_taxonomy(data = NULL, df[[1]], df[[2]])
+    df <- read_mothur_cons_taxonomy(cons_taxonomy)
+    dataset$assign_bin_taxonomy(df)
   }
 
   dataset

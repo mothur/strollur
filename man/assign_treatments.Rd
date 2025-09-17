@@ -14,6 +14,9 @@ assign_treatments(data, samples, treatments)
 
 \item{treatments}{a vector of strings containing treatment names}
 }
+\value{
+double containing the number of bins assigned
+}
 \description{
 Assign samples to treatments in an instance of the 'Dataset' class.
 }
