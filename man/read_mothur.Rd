@@ -27,25 +27,33 @@ read_mothur(
 \href{https://mothur.org/wiki/count_file/}{count file}}
 
 \item{taxonomy}{filename, a mothur
-\href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}}
+\href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}, created by
+\href{https://mothur.org/wiki/classify.seqs/}{classify.seqs}}
 
 \item{otu_list}{filename, a mothur
 \href{https://mothur.org/wiki/list_file/}{list file} containing otu bin
- assignments.}
+ assignments. The otu_list file is created by
+\href{https://mothur.org/wiki/cluster/}{cluster},
+\href{https://mothur.org/wiki/cluster.split/}{cluster.split}, and
+\href{https://mothur.org/wiki/cluster.fit/}{cluster.fit}}
 
 \item{asv_list}{filename, a mothur
 \href{https://mothur.org/wiki/list_file/}{list file} containing asv bin
- assignments.}
+ assignments. The asv_list file is created by
+\href{https://mothur.org/wiki/cluster/}{cluster} using the 'unique' method.}
 
 \item{phylo_list}{filename, a mothur
 \href{https://mothur.org/wiki/list_file/}{list file} containing phylotype bin
- assignments.}
+ assignments. The phylo_list file is created by
+\href{https://mothur.org/wiki/phylotype/}{phylotype}.}
 
 \item{design}{filename, a mothur
 \href{https://mothur.org/wiki/design_file/}{design file}}
 
 \item{cons_taxonomy}{filename, a mothur consensus taxonomy file
-\href{https://mothur.org/wiki/constaxonomy_file/}{constaxonomy file}}
+\href{https://mothur.org/wiki/constaxonomy_file/}{constaxonomy file}. The
+cons_taxonomy file is created by
+\href{https://mothur.org/wiki/classify.otu/}{classify.otu}.}
 
 \item{otu_shared}{filename, a mothur
 \href{https://mothur.org/wiki/shared_file/}{shared file} containing otu bin

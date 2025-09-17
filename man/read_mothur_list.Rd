@@ -7,7 +7,13 @@
 read_mothur_list(list)
 }
 \arguments{
-\item{list}{file name (required)}
+\item{list}{file name. The
+\href{https://mothur.org/wiki/list_file/}{list file} can be created using
+several of mothur's commands.
+\href{https://mothur.org/wiki/cluster/}{cluster},
+\href{https://mothur.org/wiki/cluster.split/}{cluster.split},
+\href{https://mothur.org/wiki/cluster.fit/}{cluster.fit} and
+\href{https://mothur.org/wiki/phylotype/}{phylotype}.}
 }
 \value{
 A data.frame containing the sequence otu assignments

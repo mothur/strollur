@@ -2,7 +2,9 @@
 #' @description
 #' Read a mothur formatted
 #' \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}
-#' @param taxonomy file name (required)
+#' @param taxonomy file name. a mothur
+#' \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}, created by
+#' \href{https://mothur.org/wiki/classify.seqs/}{classify.seqs}
 #' @examples
 #'
 #' # You can add the sequences and their taxonomies to the your data set

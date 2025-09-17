@@ -70,19 +70,52 @@ test_that("test read_mothur shared", {
 })
 
 test_that("test read taxonomy files", {
+  data <- read_mothur_cons_taxonomy(rdataset_example(
+    "final.cons.taxonomy"
+  ))
 
-    data <- read_mothur_cons_taxonomy(rdataset_example(
-        "final.cons.taxonomy"))
+  expect_equal(nrow(data), 531)
+  expect_error(read_mothur_cons_taxonomy(taxonomy = "bad_parameter"))
 
-    expect_equal(nrow(data), 531)
-    expect_error(read_mothur_cons_taxonomy(taxonomy = "bad_parameter"))
+  data <- read_mothur_taxonomy(rdataset_example(
+    "final.taxonomy"
+  ))
 
-    data <- read_mothur_taxonomy(rdataset_example(
-        "final.taxonomy"))
+  expect_equal(nrow(data), 2425)
+  expect_error(read_mothur_taxonomy(taxonomy = "bad_parameter"))
+})
 
-    expect_equal(nrow(data), 2425)
-    expect_error(read_mothur_taxonomy(taxonomy = "bad_parameter"))
+test_that("test read taxonomy files", {
+  dataset <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    taxonomy = rdataset_example("final.taxonomy"),
+    design = rdataset_example("mouse.time.design"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
+    asv_list = rdataset_example("final.asv.list"),
+    phylo_list = rdataset_example("final.tx.list"),
+    sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+    sequence_tree = rdataset_example("final.phylip.tre"),
+    dataset_name = "miseq_sop"
+  )
 
+  expect_equal(dataset$get_dataset_name(), "miseq_sop")
+  expect_equal(dataset$get_num_sequences(TRUE), 2425)
+  expect_equal(dataset$get_num_sequences(), 113963)
+  expect_equal(dataset$get_num_treatments(), 2)
+  expect_equal(dataset$get_num_samples(), 19)
+  expect_equal(dataset$get_num_bins("otu"), 531)
+  expect_equal(dataset$get_num_bins("asv"), 2425)
+  expect_equal(dataset$get_num_bins("phylotype"), 63)
+
+  tree <- dataset$get_sample_tree()
+
+  expect_equal(sort(dataset$get_samples()), sort(tree$tip.label))
+  expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
+
+  tree <- dataset$get_sequence_tree()
+
+  expect_equal(sort(dataset$get_sequence_names()), sort(tree$tip.label))
 })
 
 # test_that("test rdataset_example", {

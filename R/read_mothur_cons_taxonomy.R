@@ -1,8 +1,12 @@
 #' @title read_mothur_cons_taxonomy
 #' @description
 #' Read a mothur formatted
-#' \href{https://mothur.org/wiki/constaxonomy_file/}{constaxonomy file}
-#' @param taxonomy file name (required)
+#' \href{https://mothur.org/wiki/constaxonomy_file/}{cons_taxonomy file}
+#' @param taxonomy file name, a mothur
+#' \href{https://mothur.org/wiki/constaxonomy_file/}{consensus taxonomy file}.
+#'  The cons_taxonomy file is created by
+#' \href{https://mothur.org/wiki/classify.otu/}{classify.otu}.
+#'
 #' @examples
 #'
 #' # You can add the otu assignments and bin taxonomies to the your data set

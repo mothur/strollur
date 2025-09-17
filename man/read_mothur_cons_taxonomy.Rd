@@ -7,7 +7,10 @@
 read_mothur_cons_taxonomy(taxonomy)
 }
 \arguments{
-\item{taxonomy}{file name (required)}
+\item{taxonomy}{file name, a mothur
+\href{https://mothur.org/wiki/constaxonomy_file/}{consensus taxonomy file}.
+ The cons_taxonomy file is created by
+\href{https://mothur.org/wiki/classify.otu/}{classify.otu}.}
 }
 \value{
 A data.frame containing the bin names, bin abundances and bin
@@ -15,7 +18,7 @@ taxonomies.
 }
 \description{
 Read a mothur formatted
-\href{https://mothur.org/wiki/constaxonomy_file/}{constaxonomy file}
+\href{https://mothur.org/wiki/constaxonomy_file/}{cons_taxonomy file}
 }
 \examples{
 
@@ -23,7 +26,8 @@ Read a mothur formatted
 # using the following:
 
 otu_data <- read_mothur_cons_taxonomy(rdataset_example(
-                        "final.cons.taxonomy"))
+  "final.cons.taxonomy"
+))
 
 dataset <- sequence_data$new()
 dataset$assign_bins(otu_data)

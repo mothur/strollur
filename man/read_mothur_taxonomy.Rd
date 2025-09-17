@@ -7,7 +7,9 @@
 read_mothur_taxonomy(taxonomy)
 }
 \arguments{
-\item{taxonomy}{file name (required)}
+\item{taxonomy}{file name. a mothur
+\href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}, created by
+\href{https://mothur.org/wiki/classify.seqs/}{classify.seqs}}
 }
 \value{
 A data.frame containing the sequences names and sequences taxonomies.
@@ -22,7 +24,8 @@ Read a mothur formatted
 # using the following:
 
 classification_data <- read_mothur_taxonomy(rdataset_example(
-                        "final.taxonomy"))
+  "final.taxonomy"
+))
 
 dataset <- sequence_data$new()
 dataset$assign_sequence_taxonomy(classification_data)

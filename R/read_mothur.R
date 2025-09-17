@@ -14,16 +14,22 @@
 #' @param design filename, a mothur
 #' \href{https://mothur.org/wiki/design_file/}{design file}
 #' @param taxonomy filename, a mothur
-#' \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}
+#' \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}, created by
+#' \href{https://mothur.org/wiki/classify.seqs/}{classify.seqs}
 #' @param otu_list filename, a mothur
 #' \href{https://mothur.org/wiki/list_file/}{list file} containing otu bin
-#'  assignments.
+#'  assignments. The otu_list file is created by
+#' \href{https://mothur.org/wiki/cluster/}{cluster},
+#' \href{https://mothur.org/wiki/cluster.split/}{cluster.split}, and
+#' \href{https://mothur.org/wiki/cluster.fit/}{cluster.fit}
 #' @param asv_list filename, a mothur
 #' \href{https://mothur.org/wiki/list_file/}{list file} containing asv bin
-#'  assignments.
+#'  assignments. The asv_list file is created by
+#' \href{https://mothur.org/wiki/cluster/}{cluster} using the 'unique' method.
 #' @param phylo_list filename, a mothur
 #' \href{https://mothur.org/wiki/list_file/}{list file} containing phylotype bin
-#'  assignments.
+#'  assignments. The phylo_list file is created by
+#' \href{https://mothur.org/wiki/phylotype/}{phylotype}.
 #' @param otu_shared filename, a mothur
 #' \href{https://mothur.org/wiki/shared_file/}{shared file} containing otu bin
 #' sample abundance assignments.
@@ -34,8 +40,20 @@
 #' \href{https://mothur.org/wiki/shared_file/}{shared file} containing phylotype
 #'  bin sample abundance assignments.
 #' @param cons_taxonomy filename, a mothur consensus taxonomy file
-#' \href{https://mothur.org/wiki/constaxonomy_file/}{constaxonomy file}
-
+#' \href{https://mothur.org/wiki/constaxonomy_file/}{constaxonomy file}. The
+#' cons_taxonomy file is created by
+#' \href{https://mothur.org/wiki/classify.otu/}{classify.otu}.
+#' @param sample_tree filename, a tree that relates samples.
+#' The sample tree is created by
+#' \href{https://mothur.org/wiki/tree.shared/}{tree.shared}. We recommend
+#'  running tree.shared with subsample = true, and using the 'ave.tre' output
+#'  for best results.
+#' @param sequence_tree filename, a tree that relates sequences.
+#' The sequence tree is created by
+#' \href{https://mothur.org/wiki/clearcut/}{clearcut}. We DO NOT recommend
+#'  using sequence trees. With the ever growing size of modern datasets,
+#'  sequence tree can be difficult / impossible to build without hitting a
+#'  memory limitation.
 #' @note
 #' \itemize{
 #' \item \emph{consensus taxonomy}, The 'sequence_data' object will generate
@@ -58,6 +76,7 @@
 #'   otu_list = rdataset_example("final.opti_mcc.list"),
 #'   asv_list = rdataset_example("final.asv.list"),
 #'   phylo_list = rdataset_example("final.tx.list"),
+#'   sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
 #'   dataset_name = "miseq_sop"
 #' )
 #'
@@ -69,6 +88,7 @@
 #'     "final.cons.taxonomy"
 #'   ),
 #'   design = rdataset_example("mouse.time.design"),
+#'   sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
 #'   dataset_name = "miseq_sop"
 #' )
 #'
@@ -78,7 +98,8 @@ read_mothur <- function(fasta = NULL, count = NULL,
                         taxonomy = NULL, otu_list = NULL, asv_list = NULL,
                         phylo_list = NULL, design = NULL, cons_taxonomy = NULL,
                         otu_shared = NULL, asv_shared = NULL,
-                        phylo_shared = NULL, dataset_name = "") {
+                        phylo_shared = NULL, sample_tree = NULL,
+                        sequence_tree = NULL, dataset_name = "") {
   # create new blank dataset
   dataset <- sequence_data$new(name = dataset_name)
 
@@ -163,6 +184,16 @@ read_mothur <- function(fasta = NULL, count = NULL,
   if (!is.null(cons_taxonomy)) {
     df <- read_mothur_cons_taxonomy(cons_taxonomy)
     dataset$assign_bin_taxonomy(df)
+  }
+
+  if (!is.null(sample_tree)) {
+    tree <- ape::read.tree(sample_tree)
+    dataset$add_sample_tree(tree)
+  }
+
+  if (!is.null(sequence_tree)) {
+    tree <- ape::read.tree(sequence_tree)
+    dataset$add_sequence_tree(tree)
   }
 
   dataset
