@@ -13,7 +13,7 @@ abort_nonexistant_file <- function(filename) {
 #' @param obj R object of wrong type
 abort_incorrect_type <- function(type_expected, obj) {
   cli::cli_abort("[ERROR]: Expected a {.var {type_expected}}
-          but received " + class(obj) + ".")
+          but received {.cls { class(obj)} }.")
 }
 
 #' @title abort_provide_at_least_one
@@ -31,7 +31,7 @@ abort_provide_at_least_one <- function(parameters) {
 
 #' @title abort_missing_column
 #' @description
-#' Data.frame is missing necassary columns
+#' Data.frame is missing necessary columns
 #' @param parameter name of missing required column
 abort_missing_column <- function(parameter) {
   message <- paste("[ERROR]: Expected a data.frame column named ",
@@ -39,4 +39,28 @@ abort_missing_column <- function(parameter) {
     collapse = ""
   )
   cli::cli_abort(message)
+}
+
+#' @title added_message
+#' @description
+#' Report dataset additions
+#' @param num integer containing the number of items added.
+#' @param tag string containing item added. Default = 'sequences'.
+added_message <- function(num, tag = "sequences") {
+    message <- paste0("Added ", as.character(num), " ", tag, ".",
+                     collapse = ""
+    )
+    cli::cli_alert_info(message)
+}
+
+#' @title assigned_message
+#' @description
+#' Report dataset assignments
+#' @param num integer containing the number of items assigned
+#' @param tag string containing item assigned Default = 'sequences'.
+assigned_message <- function(num, tag = "sequences") {
+    message <- paste0("Assigned ", as.character(num), tag,
+                     collapse = ""
+    )
+    cli::cli_alert_info(message)
 }

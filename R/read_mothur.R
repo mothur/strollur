@@ -85,7 +85,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
   # add sequence nucleotide strings
   if (!is.null(fasta)) {
     fasta_data <- read_fasta(fasta)
-    dataset$add_sequences(fasta_data)
+    dataset$add_sequences(fasta_data, sequence_names = "names")
   }
 
   # add sequence abundance data
@@ -120,7 +120,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
       file = taxonomy, col_names = FALSE,
       show_col_types = FALSE
     )
-    dataset$assign_sequence_taxonomy(df[[1]], df[[2]])
+    dataset$assign_sequence_taxonomy(data = NULL, df[[1]], df[[2]])
   }
 
   # add sequence otu assignments

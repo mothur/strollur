@@ -74,8 +74,9 @@ copy_dataset <- function(dataset) {
 #'  add_sequences(dataset, sequences$names, sequences$sequences, "")
 #'
 #' @seealso [sequence_data$add_sequences()]
+#' @return double containing the number of sequences added
 add_sequences <- function(data, sequence_names, sequences, comments) {
-    invisible(.Call(`_rdataset_add_sequences`, data, sequence_names, sequences, comments))
+    .Call(`_rdataset_add_sequences`, data, sequence_names, sequences, comments)
 }
 
 #' @title assign_bins
@@ -152,8 +153,9 @@ add_sequences <- function(data, sequence_names, sequences, comments) {
 #'   # (rabund)   716              85          65
 #'
 #' @seealso [sequence_data$assign_bins()]
+#' @return double containing the number of bins assigned
 assign_bins <- function(data, bin_names, abundances, samples, sequence_names, type = "otu") {
-    invisible(.Call(`_rdataset_assign_bins`, data, bin_names, abundances, samples, sequence_names, type))
+    .Call(`_rdataset_assign_bins`, data, bin_names, abundances, samples, sequence_names, type)
 }
 
 #' @title assign_bin_taxonomy
@@ -182,8 +184,9 @@ assign_bins <- function(data, bin_names, abundances, samples, sequence_names, ty
 #' assign_bin_taxonomy(dataset, bin_names, taxonomies)
 #'
 #' @seealso [sequence_data$assign_bin_taxonomy()]
+#' @return double containing the number of bins assigned
 assign_bin_taxonomy <- function(data, bin_names, taxonomies, type = "otu") {
-    invisible(.Call(`_rdataset_assign_bin_taxonomy`, data, bin_names, taxonomies, type))
+    .Call(`_rdataset_assign_bin_taxonomy`, data, bin_names, taxonomies, type)
 }
 
 #' @title assign_sequence_abundance
@@ -210,8 +213,9 @@ assign_bin_taxonomy <- function(data, bin_names, taxonomies, type = "otu") {
 #' assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
 #'
 #' @seealso [sequence_data$assign_sequence_abundance()]
+#' @return double containing the number of sequences assigned
 assign_sequence_abundance <- function(data, sequence_names, abundances, samples, treatments) {
-    invisible(.Call(`_rdataset_assign_sequence_abundance`, data, sequence_names, abundances, samples, treatments))
+    .Call(`_rdataset_assign_sequence_abundance`, data, sequence_names, abundances, samples, treatments)
 }
 
 #' @title assign_sequence_taxonomy
@@ -237,8 +241,9 @@ assign_sequence_abundance <- function(data, sequence_names, abundances, samples,
 #' assign_sequence_taxonomy(dataset, sequence_names, taxonomies)
 #'
 #' @seealso [sequence_data$assign_sequence_taxonomy()]
+#' @return double containing the number of sequences assigned
 assign_sequence_taxonomy <- function(data, sequence_names, taxonomies) {
-    invisible(.Call(`_rdataset_assign_sequence_taxonomy`, data, sequence_names, taxonomies))
+    .Call(`_rdataset_assign_sequence_taxonomy`, data, sequence_names, taxonomies)
 }
 
 #' @title assign_treatments
@@ -267,8 +272,9 @@ assign_sequence_taxonomy <- function(data, sequence_names, taxonomies) {
 #' assign_treatments(dataset, unique(samples), treatments)
 #'
 #' @seealso [sequence_data$assign_treatments()]
+#' @return double containing the number of bins assigned
 assign_treatments <- function(data, samples, treatments) {
-    invisible(.Call(`_rdataset_assign_treatments`, data, samples, treatments))
+    .Call(`_rdataset_assign_treatments`, data, samples, treatments)
 }
 
 #' @title clear

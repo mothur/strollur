@@ -96,9 +96,11 @@ void BinTable::clone(const BinTable& binTable) {
     binCount.clone(binTable.binCount);
 }
 /******************************************************************************/
-void BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
-         vector<string> samples, vector<int> seqIds, AbundTable& count,
-         bool update){
+double BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
+                                 vector<string> samples, vector<int> seqIds, AbundTable& count,
+                                 bool update){
+
+    double otusAssigned = 0;
 
     if (update) {
         // seqs have been assigned to bins, we are using count to update
@@ -109,7 +111,7 @@ void BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
         // we need to calculate the bin abunds by sample
         vector<string> allSamples = count.getSamples();
 
-                // does the sequence abundance include samples
+        // does the sequence abundance include samples
         bool hasSamples = false;
         if (!allSamples.empty()) {
             hasSamples = true;
@@ -123,88 +125,99 @@ void BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
             updateBinAbunds(binAbunds, count, it->second, it->first, allSamples);
         }
 
-        updateBins(binAbunds, count, hasSamples);
+        otusAssigned = updateBins(binAbunds, count, hasSamples);
         runClassify = true;
 
     }else{
-    // just abundances
-    if (seqIds.empty()) {
-        for (int i = 0; i < binIds.size(); i++) {
+        // just abundances
+        if (seqIds.empty()) {
+            for (int i = 0; i < binIds.size(); i++) {
 
-            string binName = binIds[i];
+                string binName = binIds[i];
 
-            auto it = binIndex.find(binName);
+                auto it = binIndex.find(binName);
 
-            // new bin
-            if (it == binIndex.end()) {
-                binIndex[binName] = numBins;
-                numBins++;
-                // all bins are initially assumed "good"
-                tableBins.push_back(true);
-                binNames.push_back(binName);
-                trashCodes.push_back("");
-            }
-        }
-
-        binCount.assignAbundance(getIndexes(binIds), abundance, samples);
-
-    }else {
-        // we need to calculate the bin abunds by sample
-        vector<string> allSamples = count.getSamples();
-
-        // does the sequence abundance include samples
-        bool hasSamples = false;
-        if (!allSamples.empty()) {
-            hasSamples = true;
-        }
-
-        // binName -> (sampleName -> abundance)
-        map<int, map<string, int>> binAbunds;
-
-        for (int i = 0; i < seqIds.size(); i++) {
-
-            auto itIndex = binIndex.find(binIds[i]);
-            int index = numBins;
-            int seqIndex = seqIds[i];
-
-            // new bin
-            if (itIndex == binIndex.end()) {
-                binIndex[binIds[i]] = numBins;
-                numBins++;
-                // all bins are initially assumed "good"
-                tableBins.push_back(true);
-                binNames.push_back(binIds[i]);
-                set<int> temp;
-                binList.push_back(temp);
-                trashCodes.push_back("");
-            }else{
-                index = itIndex->second;
+                // new bin
+                if (it == binIndex.end()) {
+                    binIndex[binName] = numBins;
+                    numBins++;
+                    // all bins are initially assumed "good"
+                    tableBins.push_back(true);
+                    binNames.push_back(binName);
+                    trashCodes.push_back("");
+                }
             }
 
-            auto itSeq = seqBins.find(seqIndex);
-            bool firstTimeSeq = false;
+            otusAssigned = binCount.assignAbundance(getIndexes(binIds),
+                                                    abundance, samples);
 
-            // first time we are seeing this seqName, add seq to bin
-            if (itSeq == seqBins.end()) {
-                firstTimeSeq = true;
-                seqBins[seqIndex] = index;
-                binList[index].insert(seqIndex);
+        }else {
+
+            // we are assigning seqIds to bins, so remove all old bin data
+            // to avoid inconsistencies
+            string oldLabel = label;
+            clear();
+            label = oldLabel;
+
+            // we need to calculate the bin abunds by sample
+            vector<string> allSamples = count.getSamples();
+
+            // does the sequence abundance include samples
+            bool hasSamples = false;
+            if (!allSamples.empty()) {
+                hasSamples = true;
             }
 
-            updateBinAbunds(binAbunds, count, index, seqIndex, allSamples,
-                      firstTimeSeq);
+            // binName -> (sampleName -> abundance)
+            map<int, map<string, int>> binAbunds;
+
+            for (int i = 0; i < seqIds.size(); i++) {
+
+                auto itIndex = binIndex.find(binIds[i]);
+                int index = numBins;
+                int seqIndex = seqIds[i];
+
+                // new bin
+                if (itIndex == binIndex.end()) {
+                    binIndex[binIds[i]] = numBins;
+                    numBins++;
+                    // all bins are initially assumed "good"
+                    tableBins.push_back(true);
+                    binNames.push_back(binIds[i]);
+                    trashCodes.push_back("");
+                    set<int> temp;
+                    binList.push_back(temp);
+                }else{
+                    index = itIndex->second;
+                }
+
+                auto itSeq = seqBins.find(seqIndex);
+                bool firstTimeSeq = false;
+
+                // first time we are seeing this seqName, add seq to bin
+                if (itSeq == seqBins.end()) {
+                    firstTimeSeq = true;
+                    seqBins[seqIndex] = index;
+                    binList[index].insert(seqIndex);
+                }
+
+                updateBinAbunds(binAbunds, count, index, seqIndex, allSamples,
+                                firstTimeSeq);
+            }
+
+            binIds.clear();
+            otusAssigned = updateBins(binAbunds, count, hasSamples);
+
+            hasListAssignments = true;
+            runClassify = true;
         }
-
-        binIds.clear();
-        updateBins(binAbunds, count, hasSamples);
-
-        hasListAssignments = true;
-        runClassify = true;
     }
-    }
+    return otusAssigned;
 }
 /******************************************************************************/
-void BinTable::assignTaxonomy(vector<string> binIds, vector<string> taxs){
+double BinTable::assignTaxonomy(vector<string> binIds, vector<string> taxs){
+
+    double numBinsAssigned = 0;
 
     // make space for assignments
     taxonomies.resize(binNames.size(), "");
@@ -217,16 +230,18 @@ void BinTable::assignTaxonomy(vector<string> binIds, vector<string> taxs){
 
         // valid bin
         if (it != binIndex.end()) {
+            numBinsAssigned++;
             taxonomies[it->second] = taxs[i];
         }
     }
     runClassify = false;
     hasBinTaxonomy = true;
+    return numBinsAssigned;
 }
 /******************************************************************************/
-void BinTable::assignTreatments(vector<string> samples,
+double BinTable::assignTreatments(vector<string> samples,
                       vector<string> treatments) {
-    binCount.assignTreatments(samples, treatments);
+    return binCount.assignTreatments(samples, treatments);
 }
 /******************************************************************************/
 void BinTable::classify(vector<string>& taxs, AbundTable& count) {
@@ -930,8 +945,11 @@ void BinTable::updateBinAbunds(map<int, map<string, int>>& binAbunds,
     }
 }
 /******************************************************************************/
-void BinTable::updateBins(map<int, map<string, int>>& binAbunds,
+double BinTable::updateBins(map<int, map<string, int>>& binAbunds,
                           AbundTable& count, bool hasSamples) {
+
+    double numBinsUpdated = 0;
+
     if (hasSamples) {
 
         vector<int> ids, abundance;
@@ -947,7 +965,7 @@ void BinTable::updateBins(map<int, map<string, int>>& binAbunds,
             }
         }
 
-        binCount.assignAbundance(ids, abundance, samples);
+        numBinsUpdated = binCount.assignAbundance(ids, abundance, samples);
 
         // if there are treatments add them to bin
         if (count.getNumTreatments() != 0) {
@@ -974,8 +992,9 @@ void BinTable::updateBins(map<int, map<string, int>>& binAbunds,
             abundance.push_back(it->second["total"]);
         }
 
-        binCount.assignAbundance(ids, abundance);
+        numBinsUpdated = binCount.assignAbundance(ids, abundance);
     }
+    return numBinsUpdated;
 }
 /******************************************************************************/
 void BinTable::updateTotals() {

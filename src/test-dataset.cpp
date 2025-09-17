@@ -1831,4 +1831,70 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getBin("otu4") == "");
         expect_true(data.getBinAbundance("otu4") == 0);
     }
+
+    test_that("Tests assignSequenceTaxonomy forces reclassify") {
+        Dataset data("mydata", 1);
+
+        vector<string> otuNames = {"otu1", "otu2", "otu3", "otu3"};
+        vector<string> seqNames = {"seq1", "seq2", "seq3", "seq4"};
+
+        vector<string> seqTax = {"Bacteria(90);",
+                                 "Bacteria(100);",
+                                 "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);",
+                                 "Bacteria(100);Bacteroidetes(93);"
+                                 };
+
+        vector<string> seqTax2 = {"Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);",
+                                 "Bacteria(100);Firmicutes(99);Bacilli(90);",
+                                 "Bacteria(100);Proteobacteria(90);",
+                                 "Bacteria(100);Bacteroidetes(93);"
+                                };
+
+        data.assignSequenceTaxonomy(seqNames, seqTax);
+        data.assignBins(otuNames, nullIntVector, nullVector, seqNames);
+
+        Rcpp::DataFrame otuReport = data.getBinTaxonomyReport();
+        vector<string> taxons = Rcpp::as<vector<string>>(otuReport[2]);
+
+        expect_true(toString(taxons, ',') == "Bacteria,Bacteria_unclassified,Bacteria_unclassified,Bacteria,Bacteria_unclassified,Bacteria_unclassified,Bacteria,Bacteroidetes,Bacteroidia");
+
+        data.assignSequenceTaxonomy(seqNames, seqTax2);
+
+        otuReport = data.getBinTaxonomyReport();
+        taxons = Rcpp::as<vector<string>>(otuReport[2]);
+
+        expect_true(toString(taxons, ',') == "Bacteria,Proteobacteria,Betaproteobacteria,Bacteria,Firmicutes,Bacilli,Bacteria,Bacteroidetes,Bacteroidetes_unclassified");
+
+        data.clear();
+
+        // try otus with abundance,
+        // then assign bin tax,
+        // then assign seq tax,
+        // then assign seqs to bins
+
+        // expected behavior is that bin abunds and bin taxonomies will be overwritten
+
+        vector<string> otuNames2 = {"otu1", "otu2", "otu3"};
+        vector<int> otuAbunds = {10, 500, 50};
+
+        vector<string> otuTax = {"Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);",
+                                  "Bacteria(100);Firmicutes(99);Bacilli(90);",
+                                  "Bacteria(100);Proteobacteria(90);" };
+
+        data.assignBins(otuNames2, otuAbunds, nullVector, nullVector);
+        data.assignBinTaxonomy(otuNames2, otuTax);
+
+        otuReport = data.getBinTaxonomyReport();
+        taxons = Rcpp::as<vector<string>>(otuReport[2]);
+
+        expect_true(toString(taxons, ',') == "Bacteria,Proteobacteria,Betaproteobacteria,Bacteria,Firmicutes,Bacilli,Bacteria,Proteobacteria,Proteobacteria_unclassified");
+
+        data.assignBins(otuNames, nullIntVector, nullVector, seqNames);
+        data.assignSequenceTaxonomy(seqNames, seqTax);
+
+        otuReport = data.getBinTaxonomyReport();
+        taxons = Rcpp::as<vector<string>>(otuReport[2]);
+
+        expect_true(toString(taxons, ',') == "Bacteria,Bacteria_unclassified,Bacteria_unclassified,Bacteria,Bacteria_unclassified,Bacteria_unclassified,Bacteria,Bacteroidetes,Bacteroidia");
+    }
 }

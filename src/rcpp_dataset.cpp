@@ -82,11 +82,14 @@ Rcpp::XPtr<Dataset> copy_dataset(Rcpp::XPtr<Dataset> dataset) {
 //'  add_sequences(dataset, sequences$names, sequences$sequences, "")
 //'
 //' @seealso [sequence_data$add_sequences()]
+//' @return double containing the number of sequences added
 //[[Rcpp::export]]
-void add_sequences(Rcpp::XPtr<Dataset> data,
+double add_sequences(Rcpp::XPtr<Dataset> data,
                    const vector<string> sequence_names,
                    vector<string> sequences,
                    vector<string> comments) {
+
+    double numSeqsAdded = 0;
 
     // all three parameters are given
     if ((sequence_names.size() == sequences.size()) &&
@@ -103,8 +106,11 @@ void add_sequences(Rcpp::XPtr<Dataset> data,
                 sequences = nullVector;
             }
         }
-        data.get()->addSequences(sequence_names, sequences, comments);
+        numSeqsAdded = data.get()->addSequences(sequence_names,
+                                sequences, comments);
     }
+
+    return numSeqsAdded;
 }
 /******************************************************************************/
 //' @title assign_bins
@@ -181,10 +187,13 @@ void add_sequences(Rcpp::XPtr<Dataset> data,
 //'   # (rabund)   716              85          65
 //'
 //' @seealso [sequence_data$assign_bins()]
+//' @return double containing the number of bins assigned
 //[[Rcpp::export]]
-void assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
+double assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
                    vector<int> abundances, vector<string> samples,
                    vector<string> sequence_names, string type = "otu") {
+
+    double numBinsAssigned = 0;
 
     set<int> lengths;
     lengths.insert(bin_names.size());
@@ -234,9 +243,10 @@ void assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
         RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }else{
-        data.get()->assignBins(bin_names, abundances, samples,
+        numBinsAssigned = data.get()->assignBins(bin_names, abundances, samples,
                  sequence_names, type);
     }
+    return numBinsAssigned;
 }
 /******************************************************************************/
 //' @title assign_bin_taxonomy
@@ -265,8 +275,9 @@ void assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
 //' assign_bin_taxonomy(dataset, bin_names, taxonomies)
 //'
 //' @seealso [sequence_data$assign_bin_taxonomy()]
+//' @return double containing the number of bins assigned
 //[[Rcpp::export]]
-void assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names,
+double assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names,
                          vector<string>& taxonomies, string type = "otu") {
 
     if (data.get()->getNumBins(type) == 0) {
@@ -277,7 +288,7 @@ void assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names,
         throw Rcpp::exception(message.c_str());
     }
 
-    data.get()->assignBinTaxonomy(bin_names, taxonomies, type);
+    return data.get()->assignBinTaxonomy(bin_names, taxonomies, type);
 }
 /******************************************************************************/
 //' @title assign_sequence_abundance
@@ -304,8 +315,9 @@ void assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names,
 //' assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
 //'
 //' @seealso [sequence_data$assign_sequence_abundance()]
+//' @return double containing the number of sequences assigned
 //[[Rcpp::export]]
-void assign_sequence_abundance(Rcpp::XPtr<Dataset> data,
+double assign_sequence_abundance(Rcpp::XPtr<Dataset> data,
                                vector<string>& sequence_names,
                                vector<int>& abundances,
                                vector<string>& samples,
@@ -346,7 +358,7 @@ void assign_sequence_abundance(Rcpp::XPtr<Dataset> data,
         }
     }
 
-    data.get()->assignSequenceAbundance(sequence_names, abundances,
+    return data.get()->assignSequenceAbundance(sequence_names, abundances,
              samples, treatments);
 }
 /******************************************************************************/
@@ -373,8 +385,9 @@ void assign_sequence_abundance(Rcpp::XPtr<Dataset> data,
 //' assign_sequence_taxonomy(dataset, sequence_names, taxonomies)
 //'
 //' @seealso [sequence_data$assign_sequence_taxonomy()]
+//' @return double containing the number of sequences assigned
 //[[Rcpp::export]]
-void assign_sequence_taxonomy(Rcpp::XPtr<Dataset> data,
+double assign_sequence_taxonomy(Rcpp::XPtr<Dataset> data,
                               vector<string>& sequence_names,
                               vector<string>& taxonomies) {
 
@@ -386,7 +399,7 @@ void assign_sequence_taxonomy(Rcpp::XPtr<Dataset> data,
         throw Rcpp::exception(message.c_str());
     }
 
-    data.get()->assignSequenceTaxonomy(sequence_names, taxonomies);
+    return data.get()->assignSequenceTaxonomy(sequence_names, taxonomies);
 }
 /******************************************************************************/
 //' @title assign_treatments
@@ -415,8 +428,9 @@ void assign_sequence_taxonomy(Rcpp::XPtr<Dataset> data,
 //' assign_treatments(dataset, unique(samples), treatments)
 //'
 //' @seealso [sequence_data$assign_treatments()]
+//' @return double containing the number of bins assigned
 //[[Rcpp::export]]
-void assign_treatments(Rcpp::XPtr<Dataset> data, vector<string>& samples,
+double assign_treatments(Rcpp::XPtr<Dataset> data, vector<string>& samples,
                        vector<string>& treatments) {
 
     // check to make sure samples and treatments are same length
@@ -442,7 +456,7 @@ void assign_treatments(Rcpp::XPtr<Dataset> data, vector<string>& samples,
         throw Rcpp::exception(message.c_str());
     }
 
-    data.get()->assignTreatments(samples, treatments);
+    return data.get()->assignTreatments(samples, treatments);
 }
 /******************************************************************************/
 //' @title clear

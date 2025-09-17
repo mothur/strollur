@@ -528,9 +528,10 @@ sequence_data <- R6Class("sequence_data",
     #'
     #' @param data a data.frame containing names, sequences(optional) and
     #' comments(optional).
+    #'
     #' @param sequence_names a vector of sequence names or if using the 'data'
     #' parameter a string containing the name of the column in 'data' that
-    #' contains the sequence names. Default column name is 'names'.
+    #' contains the sequence names. Default column name is 'sequence_names'.
     #' @param sequences a vector of sequence nucleotide strings or if using the
     #' 'data' parameter a string containing the name of the column in 'data'
     #' that contains the sequence nucleotide strings. Default column name is
@@ -554,7 +555,7 @@ sequence_data <- R6Class("sequence_data",
     #'
     #'   dataset <- sequence_data$new("my_dataset")
     #'   fasta_data <- read_fasta(rdataset_example("final.fasta"))
-    #'   dataset$add_sequences(fasta_data)
+    #'   dataset$add_sequences(fasta_data, sequence_names = "names")
     #'
     #' # With the additional parameters to add information about the reference
     #' # You can also add references using the 'add_references' function.
@@ -579,10 +580,14 @@ sequence_data <- R6Class("sequence_data",
       }
 
       if (!is.null(data)) {
+          if (!is.data.frame(data)) {
+              abort_incorrect_type("data.frame", data)
+          }
+
         # required
         sequence_names <- private$fill_required_param(
           sequence_names, data,
-          "names"
+          "sequence_names"
         )
 
         # optional
@@ -599,7 +604,8 @@ sequence_data <- R6Class("sequence_data",
         }
       }
 
-      add_sequences(self$data, sequence_names, sequences, comments)
+      num_added <- add_sequences(self$data, sequence_names,
+                                 sequences, comments)
 
       # if a reference is given, save it
       if (!is.null(reference_name)) {
@@ -610,6 +616,8 @@ sequence_data <- R6Class("sequence_data",
           url = reference_url
         )
       }
+
+      added_message(num_added)
 
       invisible(self)
     },
@@ -702,6 +710,11 @@ sequence_data <- R6Class("sequence_data",
       }
 
       if (!is.null(data)) {
+
+          if (!is.data.frame(data)) {
+              abort_incorrect_type("data.frame", data)
+          }
+
         # required
         bin_names <- private$fill_required_param(
           bin_names, data,
@@ -746,11 +759,13 @@ sequence_data <- R6Class("sequence_data",
         }
       }
 
-      assign_bins(
+        num_assigned <- assign_bins(
         self$data,
         bin_names, abundances,
         samples, sequence_names, type
       )
+
+      assigned_message(num_assigned, paste0(" ", type, " bins."))
 
       invisible(self)
     },
@@ -820,6 +835,11 @@ sequence_data <- R6Class("sequence_data",
       }
 
       if (!is.null(data)) {
+
+          if (!is.data.frame(data)) {
+              abort_incorrect_type("data.frame", data)
+          }
+
         # required
         bin_names <- private$fill_required_param(
           bin_names, data,
@@ -833,7 +853,8 @@ sequence_data <- R6Class("sequence_data",
         )
       }
 
-      assign_bin_taxonomy(self$data, bin_names, taxonomies, type)
+      num_assigned <- assign_bin_taxonomy(self$data, bin_names,
+                                          taxonomies, type)
 
       # if a reference is given, save it
       if (!is.null(reference_name)) {
@@ -845,6 +866,9 @@ sequence_data <- R6Class("sequence_data",
           url = reference_url
         )
       }
+
+      assigned_message(num_assigned,
+                       paste0(type, " bin taxonomies."))
 
       invisible(self)
     },
@@ -888,6 +912,11 @@ sequence_data <- R6Class("sequence_data",
       }
 
       if (!is.null(data)) {
+
+          if (!is.data.frame(data)) {
+              abort_incorrect_type("data.frame", data)
+          }
+
         # required
         sequence_names <- private$fill_required_param(
           sequence_names, data,
@@ -926,17 +955,28 @@ sequence_data <- R6Class("sequence_data",
         }
       }
 
-      assign_sequence_abundance(
+      abundances_assigned <- assign_sequence_abundance(
         self$data, sequence_names, abundances,
         samples, treatments
       )
+
+      assigned_message(abundances_assigned, " sequence abundances.")
+
       invisible(self)
     },
 
     #' @description
     #' Assign sequence classification
-    #' @param names a vector of sequence names
+    #'
+    #' @param data a data.frame containing sequence_names, abundances,
+    #' samples(optional), treatments(optional). Either 'data' or
+    #'  'sequence_names' and 'abundances' is required.
+    #'
+    #' @param sequence_names a vector of sequence names or if using the 'data'
+    #' parameter a string containing the name of the column in 'data' that
+    #' contains the sequence names. Default column name is 'sequence_names'.
     #' @param taxonomies a vector of sequence classifications
+    #'
     #' @param reference_name a string containing the name of the reference used
     #' in the classification of the sequences. For example:
     #' 'trainset9_032012.pds.zip' Default = NULL.
@@ -957,7 +997,8 @@ sequence_data <- R6Class("sequence_data",
     #'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
     #'
     #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_sequence_taxonomy(names, taxonomies)
+    #' dataset$assign_sequence_taxonomy(sequence_names = names,
+    #'                                  taxonomies = taxonomies)
     #'
     #' # With the additional parameters to add information about the reference
     #' # You can also add references using the 'add_references' function.
@@ -970,12 +1011,40 @@ sequence_data <- R6Class("sequence_data",
     #' reference_note = "classification by mothur2 v1.0 using default options",
     #' reference_version = "9_032012", reference_url = url)
     #'
-    assign_sequence_taxonomy = function(names, taxonomies,
+    assign_sequence_taxonomy = function(data = NULL,
+                                        sequence_names = NULL,
+                                        taxonomies = NULL,
                                         reference_name = NULL,
                                         reference_version = NULL,
                                         reference_note = NULL,
                                         reference_url = NULL) {
-      assign_sequence_taxonomy(self$data, names, taxonomies)
+
+        if (is.null(data) && (is.null(sequence_names))) {
+            abort_provide_at_least_one(c("data", "sequence_names"))
+        }
+
+        if (!is.null(data)) {
+
+            if (!is.data.frame(data)) {
+                abort_incorrect_type("data.frame", data)
+            }
+
+            # required
+            sequence_names <- private$fill_required_param(
+                sequence_names, data,
+                "bin_names"
+            )
+
+            # required
+            taxonomies <- private$fill_required_param(
+                taxonomies, data,
+                "taxonomies"
+            )
+        }
+
+      taxonomies_assigned <- assign_sequence_taxonomy(self$data,
+                                                      sequence_names,
+                                                      taxonomies)
 
       # if a reference is given, save it
       if (!is.null(reference_name)) {
@@ -988,6 +1057,8 @@ sequence_data <- R6Class("sequence_data",
         )
       }
 
+      assigned_message(taxonomies_assigned,
+                       " sequence taxonomies.")
       invisible(self)
     },
 
@@ -1015,7 +1086,9 @@ sequence_data <- R6Class("sequence_data",
     #' dataset$assign_treatments(unique(samples), treatments)
     #'
     assign_treatments = function(samples, treatments) {
-      assign_treatments(self$data, samples, treatments)
+      treatments_assigned <- assign_treatments(self$data, samples, treatments)
+      assigned_message(treatments_assigned,
+                       " samples to treatments.")
       invisible(self)
     },
 

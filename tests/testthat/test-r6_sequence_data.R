@@ -157,8 +157,10 @@ test_that("sequence_data - addSeqs, assign samples", {
 
   fasta_data <- data.frame(names = names, seqs = seqs, comments = comments)
 
-  expect_error(data$add_sequences(fasta_data, sequences = "sequences"))
-  data$add_sequences(fasta_data, sequences = "seqs")
+  expect_error(data$add_sequences(fasta_data, sequence_names = "names",
+                                  sequences = "sequences"))
+  data$add_sequences(fasta_data, sequence_names = "names",
+                     sequences = "seqs")
 
   expect_equal(data$get_num_sequences(), 4)
   expect_equal(data$get_sequences(), seqs)
@@ -168,13 +170,15 @@ test_that("sequence_data - addSeqs, assign samples", {
     sequences = "seqs",
     comments = "comments23"
   ))
-  data$add_sequences(fasta_data, sequences = "seqs", comments = "comments")
+  data$add_sequences(fasta_data, sequence_names = "names",
+                     sequences = "seqs", comments = "comments")
 
   expect_equal(data$get_num_sequences(), 4)
   expect_equal(data$get_sequences(), seqs)
 
   data$clear()
-  data$add_sequences(fasta_data, comments = "comments")
+  data$add_sequences(fasta_data, sequence_names = "names",
+                     comments = "comments")
   expect_equal(data$get_num_sequences(), 4)
   expect_equal(data$get_sequences(), rep("", 4))
   data$clear()
@@ -302,7 +306,7 @@ test_that("sequence_data - assign_sequence_abundance, remove_sequences", {
 
   sequence_abundance <- readr::read_tsv(rdataset_example(
     "mothur2_count_table.tsv"
-  ))
+  ), show_col_types = FALSE)
   data$assign_sequence_abundance(sequence_abundance)
 
   expect_equal(data$get_num_sequences(TRUE), 2425)
@@ -552,7 +556,7 @@ test_that("sequence_data - get_list get_rabund, get_bin_assignments", {
 
   bin_table <- readr::read_tsv(rdataset_example(
     "mothur2_bin_assignments_shared.tsv"
-  ))
+  ), show_col_types = FALSE)
 
   expect_error(dataset$assign_bins(
     data = bin_table,
@@ -571,7 +575,7 @@ test_that("sequence_data - get_list get_rabund, get_bin_assignments", {
 
   bin_table <- readr::read_tsv(rdataset_example(
     "mothur2_bin_assignments_list.tsv"
-  ))
+  ), show_col_types = FALSE)
 
   dataset$assign_bins(bin_table,
     bin_names = "otu_id",
@@ -602,7 +606,7 @@ test_that("sequence_data - ", {
 
   # assign taxonomy with reference
   dataset$assign_sequence_taxonomy(
-    names = names, taxonomies = taxonomies,
+    sequence_names = names, taxonomies = taxonomies,
     reference_name = "trainset9_032012.pds.zip",
     reference_note = "classification by mothur2 v1.0 using default options",
     reference_version = "9_032012", reference_url = url
@@ -642,7 +646,7 @@ test_that("sequence_data - ", {
   taxonomies <- c(tax1, tax2, tax3, tax4)
 
   dataset <- sequence_data$new("my_dataset")
-  dataset$assign_sequence_taxonomy(names, taxonomies)
+  dataset$assign_sequence_taxonomy(data = NULL, names, taxonomies)
   report <- dataset$get_sequence_taxonomy_report()
 
   expect_equal(report$id, ids)
@@ -660,7 +664,7 @@ test_that("sequence_data - ", {
   taxonomies <- c(tax1, tax2, tax3, tax4)
 
   dataset <- sequence_data$new("my_dataset")
-  dataset$assign_sequence_taxonomy(names, taxonomies)
+  dataset$assign_sequence_taxonomy(data = NULL, names, taxonomies)
   report <- dataset$get_sequence_taxonomy_report()
 
   ids <- c(
@@ -699,7 +703,7 @@ test_that("sequence_data - ", {
   taxonomies <- c(tax1, tax2, tax3, tax4)
 
   dataset <- sequence_data$new("my_dataset")
-  dataset$assign_sequence_taxonomy(names, taxonomies)
+  dataset$assign_sequence_taxonomy(data = NULL, names, taxonomies)
   report <- dataset$get_sequence_taxonomy_report()
 
   ids <- c(
@@ -852,10 +856,11 @@ test_that("sequence_data - ", {
 
   expect_error(dataset$assign_bin_taxonomy())
 
-  table <- readr::read_tsv(rdataset_example("final.cons.taxonomy"))
+  table <- readr::read_tsv(rdataset_example("final.cons.taxonomy"),
+                           show_col_types = FALSE)
   bin_table <- readr::read_tsv(rdataset_example(
     "mothur2_bin_assignments_list.tsv"
-  ))
+  ), show_col_types = FALSE)
 
   dataset$assign_bins(bin_table,
     bin_names = "otu_id",

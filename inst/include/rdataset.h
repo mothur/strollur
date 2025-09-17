@@ -138,13 +138,13 @@ public:
                                               bool includeTreatments = true);
 
     // names, sets abundance to 1
-    void add(vector<int>& names);
+    double add(vector<int>& names);
 
-    void assignTreatments(vector<string> samples,
+    double assignTreatments(vector<string> samples,
                           vector<string> treatments);
 
     // names, abundances, samples (optional), treatments (optional)
-    void assignAbundance(vector<int> names,
+    double assignAbundance(vector<int> names,
                          vector<int> abunds,
                          vector<string> samples = nullVector,
                          vector<string> treatments = nullVector);
@@ -252,16 +252,16 @@ public:
 
     int numBins;
     string label;
-    bool hasListAssignments, hasBinTaxonomy;
+    bool hasListAssignments, hasBinTaxonomy, runClassify;
 
     // ids, abundances, samples(optional)
-    void assignAbundance(vector<string> ids, vector<int> abundance,
+    double assignAbundance(vector<string> ids, vector<int> abundance,
              vector<string> samples, vector<int> seqIds, AbundTable& count,
              bool update = false);
 
-    void assignTaxonomy(vector<string> ids, vector<string> taxonomies);
+    double assignTaxonomy(vector<string> ids, vector<string> taxonomies);
 
-    void assignTreatments(vector<string> samples,
+    double assignTreatments(vector<string> samples,
                           vector<string> treatments);
 
     void clear(string tag = "");
@@ -328,7 +328,6 @@ private:
     // filter for "good" bins
     vector<bool> tableBins;
     vector<string> binNames, trashCodes, taxonomies;
-    bool runClassify;
 
     // binList[binIndex] -> vector of sequence indexes
     // binList[1] (aka "bin1") -> 1,3,5
@@ -357,7 +356,7 @@ private:
     void updateBinAbunds(map<int, map<string, int>>& binAbunds,
                          AbundTable& count, int bIndex, int seqIndex,
                          vector<string>& allSamples, bool firstTimeSeq = true);
-    void updateBins(map<int, map<string, int>>& binAbunds, AbundTable& count,
+    double updateBins(map<int, map<string, int>>& binAbunds, AbundTable& count,
                     bool hasSamples);
 
     friend class cereal::access; // Grants Cereal access
@@ -397,26 +396,26 @@ public:
     Rcpp::List exportDataset();
 
     // add seqs
-    void addSequences(vector<string> n, vector<string> s = nullVector,
+    double addSequences(vector<string> n, vector<string> s = nullVector,
                  vector<string> c = nullVector);
 
     // names, abundances, samples(optional), treatments(optional)
-    void assignSequenceAbundance(vector<string> names,
+    double assignSequenceAbundance(vector<string> names,
                                vector<int> abunds,
                                vector<string> samples = nullVector,
                                vector<string> treatments = nullVector);
     // binIds, abundances, samples(optional), seqIDs(optional), label (optional)
-    void assignBins(vector<string> binIds,
+    double assignBins(vector<string> binIds,
                                  vector<int> abunds = nullIntVector,
                                  vector<string> samples = nullVector,
                                  vector<string> seqIDs = nullVector,
                                  string type = "otu");
 
-    void assignSequenceTaxonomy(vector<string> names, vector<string> taxonomies);
-    void assignBinTaxonomy(vector<string> binIds, vector<string> taxonomies,
+    double assignSequenceTaxonomy(vector<string> names, vector<string> taxonomies);
+    double assignBinTaxonomy(vector<string> binIds, vector<string> taxonomies,
                            string type = "otu");
 
-    void assignTreatments(vector<string> samples,
+    double assignTreatments(vector<string> samples,
                           vector<string> treatments);
 
     int getAbundance(string name);

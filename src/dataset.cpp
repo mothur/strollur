@@ -167,7 +167,7 @@ Rcpp::List Dataset::exportDataset(){
     return result;
 }
 /******************************************************************************/
-void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c) {
+double Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c) {
 
     // must provide the same number of names and seqs
     if (s.size() == 0) {
@@ -222,15 +222,17 @@ void Dataset::addSequences(vector<string> n, vector<string> s, vector<string> c)
     numUnique += names.size();
 
     hasSequenceData = true;
+
+    return names.size();
 }
 /******************************************************************************/
-void Dataset::assignBins(vector<string> binIds,
+double Dataset::assignBins(vector<string> binIds,
                         vector<int> abunds,
                         vector<string> samples,
                         vector<string> seqIds, string type) {
 
 
-
+    double numBinsAdded = 0;
     bool useSeqIds = false;
     if (!seqIds.empty()) { useSeqIds = true;  }
 
@@ -273,17 +275,21 @@ void Dataset::assignBins(vector<string> binIds,
         abunds.clear();
         samples.clear();
 
-        binTables[binTableIndex].assignAbundance(binIds, abunds, samples,
-                                  getIndexes(seqIds), count);
+        numBinsAdded = binTables[binTableIndex].assignAbundance(binIds,
+                                  abunds, samples, getIndexes(seqIds), count);
     }else{
         // add bins - shared
-        binTables[binTableIndex].assignAbundance(binIds, abunds, samples,
-                                  nullIntVector, count);
+        numBinsAdded = binTables[binTableIndex].assignAbundance(binIds, abunds,
+                               samples, nullIntVector, count);
     }
+
+    return numBinsAdded;
 }
 /******************************************************************************/
-void Dataset::assignBinTaxonomy(vector<string> binIds, vector<string> taxs,
+double Dataset::assignBinTaxonomy(vector<string> binIds, vector<string> taxs,
                                 string type) {
+
+    double numBinTaxonomiesAdded = 0;
 
     if (hasBinTable(type)) {
         if (binIds.size() != taxs.size()) {
@@ -292,25 +298,34 @@ void Dataset::assignBinTaxonomy(vector<string> binIds, vector<string> taxs,
             throw Rcpp::exception(message.c_str());
         }
 
-        binTables[getBinTableIndex(type)].assignTaxonomy(binIds, taxs);
+        numBinTaxonomiesAdded = binTables[getBinTableIndex(type)].assignTaxonomy(binIds, taxs);
     }
+
+    return numBinTaxonomiesAdded;
 }
 /******************************************************************************/
-void Dataset::assignTreatments(vector<string> samples, vector<string> treatments) {
-    count.assignTreatments(samples, treatments);
+double Dataset::assignTreatments(vector<string> samples, vector<string> treatments) {
+
+    double numTreatmentsAssigned = 0;
+
+    numTreatmentsAssigned = count.assignTreatments(samples, treatments);
 
     // for each type of binTable, pass new sample assignments
     for (int i = 0; i < binTables.size(); i++) {
-        binTables[i].assignTreatments(samples, treatments);
+        numTreatmentsAssigned = binTables[i].assignTreatments(samples,
+                                                              treatments);
     }
+    return numTreatmentsAssigned;
 }
 /******************************************************************************/
 // names, abundances, samples(optional), treatments(optional)
 // assumes same size
-void Dataset::assignSequenceAbundance(vector<string> ids,
+double Dataset::assignSequenceAbundance(vector<string> ids,
                            vector<int> abunds,
                            vector<string> samples,
                            vector<string> treatments) {
+
+    double numSeqsAssigned = 0;
 
     vector<string> uniqueNames = unique(ids);
 
@@ -325,19 +340,25 @@ void Dataset::assignSequenceAbundance(vector<string> ids,
 
     vector<int> idIndexes = getIndexes(ids);
 
-    count.assignAbundance(idIndexes, abunds, samples, treatments);
+    numSeqsAssigned = count.assignAbundance(idIndexes, abunds,
+                                            samples, treatments);
 
     // update list assignments if they include sequence ids
     for (int i = 0; i < binTables.size(); i++) {
         if (binTables[i].hasListAssignments) {
-            binTables[i].assignAbundance(nullVector, nullIntVector,
+            numSeqsAssigned = binTables[i].assignAbundance(nullVector,
+                                                           nullIntVector,
                                          nullVector, nullIntVector,
                                          count, true);
         }
     }
+
+    return numSeqsAssigned;
 }
 /******************************************************************************/
-void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
+double Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
+
+    double numSeqsTaxonomyAssigned = 0;
 
     if (n.size() != t.size()) {
         string message = "[ERROR]: Size mismatch. ids and taxonomies must be";
@@ -362,6 +383,7 @@ void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
         if (it != seqIndex.end()) {
 
             int index = it->second;
+            numSeqsTaxonomyAssigned++;
 
             // update taxonomy
             taxonomies[index] = t[i];
@@ -373,6 +395,15 @@ void Dataset::assignSequenceTaxonomy(vector<string> n, vector<string> t){
     }
 
     hasSequenceTaxonomy = true;
+
+    for (int i = 0; i < binTables.size(); i++) {
+        // if you have sequences associated with the bins,
+        // set flag to find new consensus taxonomies
+        if (binTables[i].hasListAssignments) {
+            binTables[i].runClassify = true;
+        }
+    }
+    return numSeqsTaxonomyAssigned;
 }
 /******************************************************************************/
 /*

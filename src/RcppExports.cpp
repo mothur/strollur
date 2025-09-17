@@ -36,22 +36,24 @@ BEGIN_RCPP
 END_RCPP
 }
 // add_sequences
-void add_sequences(Rcpp::XPtr<Dataset> data, const vector<string> sequence_names, vector<string> sequences, vector<string> comments);
+double add_sequences(Rcpp::XPtr<Dataset> data, const vector<string> sequence_names, vector<string> sequences, vector<string> comments);
 RcppExport SEXP _rdataset_add_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequencesSEXP, SEXP commentsSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const vector<string> >::type sequence_names(sequence_namesSEXP);
     Rcpp::traits::input_parameter< vector<string> >::type sequences(sequencesSEXP);
     Rcpp::traits::input_parameter< vector<string> >::type comments(commentsSEXP);
-    add_sequences(data, sequence_names, sequences, comments);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(add_sequences(data, sequence_names, sequences, comments));
+    return rcpp_result_gen;
 END_RCPP
 }
 // assign_bins
-void assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names, vector<int> abundances, vector<string> samples, vector<string> sequence_names, string type);
+double assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names, vector<int> abundances, vector<string> samples, vector<string> sequence_names, string type);
 RcppExport SEXP _rdataset_assign_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP samplesSEXP, SEXP sequence_namesSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const vector<string> >::type bin_names(bin_namesSEXP);
@@ -59,59 +61,63 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< vector<string> >::type samples(samplesSEXP);
     Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    assign_bins(data, bin_names, abundances, samples, sequence_names, type);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(assign_bins(data, bin_names, abundances, samples, sequence_names, type));
+    return rcpp_result_gen;
 END_RCPP
 }
 // assign_bin_taxonomy
-void assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names, vector<string>& taxonomies, string type);
+double assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names, vector<string>& taxonomies, string type);
 RcppExport SEXP _rdataset_assign_bin_taxonomy(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP taxonomiesSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< vector<string>& >::type bin_names(bin_namesSEXP);
     Rcpp::traits::input_parameter< vector<string>& >::type taxonomies(taxonomiesSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    assign_bin_taxonomy(data, bin_names, taxonomies, type);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(assign_bin_taxonomy(data, bin_names, taxonomies, type));
+    return rcpp_result_gen;
 END_RCPP
 }
 // assign_sequence_abundance
-void assign_sequence_abundance(Rcpp::XPtr<Dataset> data, vector<string>& sequence_names, vector<int>& abundances, vector<string>& samples, vector<string>& treatments);
+double assign_sequence_abundance(Rcpp::XPtr<Dataset> data, vector<string>& sequence_names, vector<int>& abundances, vector<string>& samples, vector<string>& treatments);
 RcppExport SEXP _rdataset_assign_sequence_abundance(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP abundancesSEXP, SEXP samplesSEXP, SEXP treatmentsSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< vector<string>& >::type sequence_names(sequence_namesSEXP);
     Rcpp::traits::input_parameter< vector<int>& >::type abundances(abundancesSEXP);
     Rcpp::traits::input_parameter< vector<string>& >::type samples(samplesSEXP);
     Rcpp::traits::input_parameter< vector<string>& >::type treatments(treatmentsSEXP);
-    assign_sequence_abundance(data, sequence_names, abundances, samples, treatments);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(assign_sequence_abundance(data, sequence_names, abundances, samples, treatments));
+    return rcpp_result_gen;
 END_RCPP
 }
 // assign_sequence_taxonomy
-void assign_sequence_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& sequence_names, vector<string>& taxonomies);
+double assign_sequence_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& sequence_names, vector<string>& taxonomies);
 RcppExport SEXP _rdataset_assign_sequence_taxonomy(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP taxonomiesSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< vector<string>& >::type sequence_names(sequence_namesSEXP);
     Rcpp::traits::input_parameter< vector<string>& >::type taxonomies(taxonomiesSEXP);
-    assign_sequence_taxonomy(data, sequence_names, taxonomies);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(assign_sequence_taxonomy(data, sequence_names, taxonomies));
+    return rcpp_result_gen;
 END_RCPP
 }
 // assign_treatments
-void assign_treatments(Rcpp::XPtr<Dataset> data, vector<string>& samples, vector<string>& treatments);
+double assign_treatments(Rcpp::XPtr<Dataset> data, vector<string>& samples, vector<string>& treatments);
 RcppExport SEXP _rdataset_assign_treatments(SEXP dataSEXP, SEXP samplesSEXP, SEXP treatmentsSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< vector<string>& >::type samples(samplesSEXP);
     Rcpp::traits::input_parameter< vector<string>& >::type treatments(treatmentsSEXP);
-    assign_treatments(data, samples, treatments);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(assign_treatments(data, samples, treatments));
+    return rcpp_result_gen;
 END_RCPP
 }
 // clear

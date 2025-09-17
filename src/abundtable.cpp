@@ -74,26 +74,26 @@ void AbundTable::clone(const AbundTable& abundTable) {
 }
 /******************************************************************************/
 // the names are the indexes in dataset
-void AbundTable::add(vector<int>& names) {
+double AbundTable::add(vector<int>& names) {
 
-        counts.resize(counts.size()+names.size());
+    counts.resize(counts.size()+names.size());
 
-        for (int i = 0; i < names.size(); i++) {
-            sampleAbunds thisSeq(0, 1);
-            counts[names[i]] = thisSeq;
-        }
+    for (int i = 0; i < names.size(); i++) {
+        sampleAbunds thisSeq(0, 1);
+        counts[names[i]] = thisSeq;
+    }
 
-        // make space for total abundance
-        tableSamples.clear();
-        tableSamples.push_back(true);
-        numSamples = 1;
+    // make space for total abundance
+    tableSamples.clear();
+    tableSamples.push_back(true);
+    numSamples = 1;
 
-        tableTreatments.clear();
-        tableTreatments.push_back(true);
-        numTreatments = 1;
+    tableTreatments.clear();
+    tableTreatments.push_back(true);
+    numTreatments = 1;
 
-        total += names.size();
-
+    total += names.size();
+    return names.size();
 }
 /******************************************************************************/
 // private function
@@ -130,7 +130,7 @@ void AbundTable::addTreatments(vector<string> treatments) {
 }
 /******************************************************************************/
 // names, abundances, samples (optional), treatment (optional)
-void AbundTable::assignAbundance(vector<int> names,
+double AbundTable::assignAbundance(vector<int> names,
                            vector<int> abunds,
                            vector<string> samples,
                            vector<string> treatments) {
@@ -200,10 +200,14 @@ void AbundTable::assignAbundance(vector<int> names,
             treatmentTotals[tindex] += sampleTotals[it->second];
         }
     }
+
+    return counts.size();
 }
 /******************************************************************************/
-void AbundTable::assignTreatments(vector<string> s,
+double AbundTable::assignTreatments(vector<string> s,
                                   vector<string> t) {
+
+    double numTreatmentsAssigned = 0;
 
    if (hasSampleData) {
        if (hasTreatments) {
@@ -232,6 +236,7 @@ void AbundTable::assignTreatments(vector<string> s,
            // valid sample
            if (itSample != sampleIndex.end()) {
                sampleTreatment[itSample->second] = t[i];
+               numTreatmentsAssigned++;
            }else {
                string message = "[WARNING]: The dataset does not contain sample ,";
                message += s[i] + "'. Ignoring '" + s[i] + "'.";
@@ -255,8 +260,9 @@ void AbundTable::assignTreatments(vector<string> s,
                numTreatments--;
            }
        }
-
    }
+
+   return numTreatmentsAssigned;
 }
 /******************************************************************************/
 // total abundance for sequence.
