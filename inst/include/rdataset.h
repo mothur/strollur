@@ -122,7 +122,6 @@ class AbundTable {
 public:
 
     AbundTable();
-    AbundTable(const AbundTable& abundTable);
     ~AbundTable();
 
     void clear();
@@ -133,9 +132,10 @@ public:
     //                                   treatment (optional -
     //                                   added when table includes treatment data),
     // used to export AbundTable
-    Rcpp::DataFrame getAbundanceTable(vector<string> outputNames,
-                                              vector<int> names,
-                                              string tag = "sequence");
+    Rcpp::DataFrame getAbundanceTable(const vector<string>& outputNames,
+                                      const vector<int>& names,
+                                      const string tag = "sequence",
+                                      const bool useNames = true);
 
     // names, sets abundance to 1
     double add(vector<int>& names);
@@ -267,6 +267,9 @@ public:
     void clear(string tag = "");
     void clone(const BinTable& binTable);
 
+    // id, bin_name, seq_id, abundance, sample, treatment, taxonomy, trashCode
+    Rcpp::List exportBinTable();
+
     // string containing seqs in bin, comma separated
     string get(string binName, vector<string>& seqNames);
     // total abundance for a given binId, optional sample
@@ -384,14 +387,11 @@ public:
     Dataset(const Dataset& dataset);
     ~Dataset();
 
-    // public fields exposed through RCPP_MODULE
     string datasetName;
-    int alignmentLength; // -1 if unaligned
+    int processors, alignmentLength; // -1 if unaligned
     bool isAligned, hasSequenceData, hasSequenceTaxonomy;
     long long numUnique;
-    int processors;
 
-    // ********** public functions exposed through RCPP_MODULE ********** //
     void clear(vector<string> tags = nullVector);
     Rcpp::List exportDataset();
 

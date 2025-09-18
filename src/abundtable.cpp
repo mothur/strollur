@@ -10,27 +10,6 @@ AbundTable::AbundTable() {
     numTreatments = 0;
 }
 /******************************************************************************/
-AbundTable::AbundTable(const AbundTable& abundTable) {
-    counts = abundTable.counts;
-
-    total = abundTable.total;
-    numSamples = abundTable.numSamples;
-    numTreatments = abundTable.numTreatments;
-
-    sampleIndex = abundTable.sampleIndex;
-    sampleNames = abundTable.sampleNames;
-    sampleTotals = abundTable.sampleTotals;
-    tableSamples = abundTable.tableSamples;
-
-    treatmentIndex = abundTable.treatmentIndex;
-    treatmentTotals = abundTable.treatmentTotals;
-    tableTreatments = abundTable.tableTreatments;
-    sampleTreatment = abundTable.sampleTreatment;
-
-    hasSampleData = abundTable.hasSampleData;
-    hasTreatments = abundTable.hasTreatments;
-}
-/******************************************************************************/
 AbundTable::~AbundTable() {}
 /******************************************************************************/
 void AbundTable::clear() {
@@ -402,13 +381,15 @@ vector<int> AbundTable::getTotalAbundances(vector<int> names) {
     return abunds;
 }
 /******************************************************************************/
-Rcpp::DataFrame AbundTable::getAbundanceTable(vector<string> outputNames,
-                                          vector<int> names,
-                                          string tag) {
+Rcpp::DataFrame AbundTable::getAbundanceTable(const vector<string>& outputNames,
+                                          const vector<int>& names,
+                                          const string tag, const bool useNames) {
 
 
     if (hasSampleData) {
+
         vector<string> ids;
+        vector<int> ids_index;
         vector<int> abunds;
         vector<string> samples;
         vector<string> treaments;
@@ -424,7 +405,19 @@ Rcpp::DataFrame AbundTable::getAbundanceTable(vector<string> outputNames,
                 //allAbunds[data.sampleIndex[i]] = data.abunds[i];
                 // if this sample "good"
                 if (tableSamples[data.sampleIndex[j]]) {
-                    ids.push_back(name);
+                    if (useNames) {
+                        ids.push_back(name);
+                    }else{
+                        ids_index.push_back(names[i]);
+                    }
+                    abunds.push_back(data.abunds[j]);
+                    samples.push_back(sampleNames[data.sampleIndex[j]]);
+
+                    if (hasTreatments) {
+                        treaments.push_back(sampleTreatment[data.sampleIndex[j]]);
+                    }
+                }else if (!useNames) { // want eliminated groups too for export
+                    ids_index.push_back(names[i]);
                     abunds.push_back(data.abunds[j]);
                     samples.push_back(sampleNames[data.sampleIndex[j]]);
 
@@ -435,26 +428,52 @@ Rcpp::DataFrame AbundTable::getAbundanceTable(vector<string> outputNames,
             }
         }
 
-        if (hasTreatments) {
+        if (useNames) {
+            if (hasTreatments) {
+                Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                    Rcpp::Named(tag+"_names") = ids,
+                    Rcpp::_["abundances"] = abunds,
+                    Rcpp::_["samples"] = samples,
+                    Rcpp::_["treatments"] = treaments);
+                return df;
+            }else{
+                Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                    Rcpp::Named(tag+"_names") = ids,
+                    Rcpp::_["abundances"] = abunds,
+                    Rcpp::_["samples"] = samples);
+                return df;
+            }
+        }else {
+            if (hasTreatments) {
+                Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                    Rcpp::Named(tag+"_ids") = ids_index,
+                    Rcpp::_["abundances"] = abunds,
+                    Rcpp::_["samples"] = samples,
+                    Rcpp::_["treatments"] = treaments);
+                return df;
+            }else{
+                Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                    Rcpp::Named(tag+"_ids") = ids_index,
+                    Rcpp::_["abundances"] = abunds,
+                    Rcpp::_["samples"] = samples);
+                return df;
+            }
+        }
+    }else{
+
+        if (useNames) {
+            // no sample information
             Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                Rcpp::Named(tag+"_names") = ids,
-                Rcpp::_["abundances"] = abunds,
-                Rcpp::_["samples"] = samples,
-                Rcpp::_["treatments"] = treaments);
+                Rcpp::Named(tag+"_names") = outputNames,
+                Rcpp::_["abundances"] = getTotalAbundances(names));
             return df;
         }else{
             Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                Rcpp::Named(tag+"_names") = ids,
-                Rcpp::_["abundances"] = abunds,
-                Rcpp::_["samples"] = samples);
+                Rcpp::Named(tag+"_ids") = names,
+                Rcpp::_["abundances"] = getTotalAbundances(names));
             return df;
         }
-    }else{
-        // no sample information
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("id") = outputNames,
-            Rcpp::_["abundance"] = getTotalAbundances(names));
-        return df;
+
     }
 
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();

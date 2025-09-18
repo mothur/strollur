@@ -206,6 +206,10 @@ context("Dataset class C++ unit tests") {
 
         data.addSequences(names, seqs, comments);
 
+        Dataset data2(data);
+
+        expect_true(data2.getTotal() == 4);
+
         // mothur count file
         // Representative_Sequence     total   sample2	sample3	sample4
         // seq1	1150	250	400	500

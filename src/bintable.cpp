@@ -127,8 +127,7 @@ double BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
 
         otusAssigned = updateBins(binAbunds, count, hasSamples);
         runClassify = true;
-
-    }else{
+   }else{
         // just abundances
         if (seqIds.empty()) {
             for (int i = 0; i < binIds.size(); i++) {
@@ -212,6 +211,7 @@ double BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
             runClassify = true;
         }
     }
+
     return otusAssigned;
 }
 /******************************************************************************/
@@ -309,6 +309,60 @@ string BinTable::classifyBin(int binId, vector<string>& tax, AbundTable& count){
     if (binTax == "") {  binTax = "unknown;";  }
 
     return binTax;
+}
+/******************************************************************************/
+Rcpp::List BinTable::exportBinTable() {
+    Rcpp::List results = Rcpp::List::create();
+    vector<string> resultLabels;
+
+    Rcpp::DataFrame binData = Rcpp::DataFrame::create();
+    vector<string> binDataLabels;
+
+    vector<int> binIndexes = getIndexes(binNames);
+
+    // ids, bin_names, bin_abundance, bin_taxonomy, trash_codes, binTable
+    binData.push_back(binIndexes);
+    binDataLabels.push_back("bin_ids");
+    binData.push_back(binNames);
+    binDataLabels.push_back("bin_names");
+    binData.push_back(binCount.getTotalAbundances(binIndexes));
+    binDataLabels.push_back("abundances");
+
+    if (!allBlank(taxonomies)) {
+        binData.push_back(taxonomies);
+        binDataLabels.push_back("taxonomies");
+    }
+
+    if (!allBlank(trashCodes)) {
+        binData.push_back(trashCodes);
+        binDataLabels.push_back("trash_codes");
+    }
+
+    binData.push_back(tableBins);
+    binDataLabels.push_back("include_bin");
+    binData.attr("names") = binDataLabels;
+
+    results.push_back(binData);
+    resultLabels.push_back(label+"_bin_data");
+
+    // bin_id, seq_id
+    if (hasListAssignments) {
+        Rcpp::DataFrame binSeqAssignments = Rcpp::DataFrame::create(
+            Rcpp::Named("bin_ids") = getValues(seqBins),
+            Rcpp::_["sequence_ids"] = getKeys(seqBins));
+        results.push_back(binSeqAssignments);
+        resultLabels.push_back(label+"_sequence_bin_assignments");
+    }else{
+        // bin_id, abund, sample, treatment
+        results.push_back(binCount.getAbundanceTable(binNames,
+                                                     binIndexes,
+                                                  "bin", false));
+        resultLabels.push_back("bin_abundance_table");
+    }
+
+    results.attr("names") = resultLabels;
+
+    return results;
 }
 /******************************************************************************/
 vector<int> BinTable::getGoodIndexes() {
@@ -495,7 +549,6 @@ vector<int> BinTable::getIndexes(vector<string>& binIDS) {
 
     while (!done) {
         it = binIndex.find(binIDS[firstGoodIndex]);
-        firstGoodIndex++;
 
         // done if we find bin
         if (it != binIndex.end()) {
@@ -503,6 +556,8 @@ vector<int> BinTable::getIndexes(vector<string>& binIDS) {
         }else if (firstGoodIndex >= binIDS.size()){
             // done if out of bins to check
             done = true;
+        }else{
+            firstGoodIndex++;
         }
     }
 
@@ -510,8 +565,6 @@ vector<int> BinTable::getIndexes(vector<string>& binIDS) {
 
     // you have a valid binId
     if (it != binIndex.end()) {
-        indexes.push_back(it->second);
-        validOtuIds.push_back(binIDS[firstGoodIndex]);
 
         for (int i = firstGoodIndex; i < binIDS.size(); i++) {
             it = binIndex.find(binIDS[i]);

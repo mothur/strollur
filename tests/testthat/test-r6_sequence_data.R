@@ -1307,15 +1307,7 @@ test_that("sequence_data - assign_sequence_taxonomy,", {
     dataset_name = "miseq_sop"
   )
 
-  tax_table <- readr::read_tsv(
-    rdataset_example(
-      "final.taxonomy"
-    ),
-    show_col_types = FALSE,
-    col_names = FALSE
-  )
-
-  names(tax_table) <- c("sequence_names", "taxonomies")
+  tax_table <- read_mothur_taxonomy(rdataset_example("final.taxonomy"))
 
   # no taxonomies yet
   expect_equal(dataset$get_sequence_taxonomy_report(), data.frame())
@@ -1358,4 +1350,95 @@ test_that("sequence_data - assign_sequence_taxonomy,", {
   report <- dataset$get_sequence_taxonomy_report()
 
   expect_equal(nrow(dataset$get_sequence_taxonomy_report()), 14550)
+})
+
+test_that("sequence_data - export,", {
+  miseq <- miseq_sop_example()
+
+  miseq_table <- miseq$export()
+
+  table_names <- c(
+    "sequence_data", "sequence_report",
+    "sequence_abundance_table", "otu_bin_data",
+    "otu_sequence_bin_assignments", "asv_bin_data",
+    "asv_sequence_bin_assignments", "phylotype_bin_data",
+    "phylotype_sequence_bin_assignments", "metadata",
+    "references", "sequence_tree", "sample_tree"
+  )
+
+  sequence_data_names <- c(
+    "sequence_ids", "sequence_names",
+    "sequences", "taxonomies", "include_sequence"
+  )
+
+  sequence_report_names <- c(
+    "sequence_ids", "starts", "ends", "lengths",
+    "ambigs", "longest_homopolymers", "num_ns"
+  )
+
+  sequence_at_names <- c(
+    "sequence_ids", "abundances",
+    "samples", "treatments"
+  )
+
+  bin_data_names <- c(
+    "bin_ids", "bin_names", "abundances",
+    "taxonomies", "include_bin"
+  )
+
+  bin_assignment_names <- c("bin_ids", "sequence_ids")
+
+  metadata_names <- c("sample", "days_post_wean")
+
+  references_names <- c(
+    "reference_name", "usage", "url", "version", "note",
+    "creation_date"
+  )
+
+  expect_equal(names(miseq_table), table_names)
+  expect_equal(nrow(miseq_table$sequence_data), 2425)
+  expect_equal(nrow(miseq_table$sequence_report), 2425)
+  expect_equal(nrow(miseq_table$sequence_abundance_table), 5539)
+
+  expect_equal(nrow(miseq_table$otu_bin_data), 531)
+  expect_equal(nrow(miseq_table$otu_sequence_bin_assignments), 2425)
+  expect_equal(nrow(miseq_table$asv_bin_data), 2425)
+  expect_equal(nrow(miseq_table$asv_sequence_bin_assignments), 2425)
+  expect_equal(nrow(miseq_table$phylotype_bin_data), 63)
+  expect_equal(nrow(miseq_table$phylotype_sequence_bin_assignments), 2425)
+  expect_equal(nrow(miseq_table$metadata), 19)
+  expect_equal(nrow(miseq_table$references), 2)
+
+  expect_equal(names(miseq_table$sequence_data), sequence_data_names)
+  expect_equal(names(miseq_table$sequence_report), sequence_report_names)
+  expect_equal(names(miseq_table$sequence_abundance_table), sequence_at_names)
+
+  expect_equal(names(miseq_table$otu_bin_data), bin_data_names)
+  expect_equal(names(miseq_table$asv_bin_data), bin_data_names)
+  expect_equal(names(miseq_table$phylotype_bin_data), bin_data_names)
+
+  expect_equal(
+    names(miseq_table$otu_sequence_bin_assignments),
+    bin_assignment_names
+  )
+  expect_equal(
+    names(miseq_table$asv_sequence_bin_assignments),
+    bin_assignment_names
+  )
+  expect_equal(
+    names(miseq_table$phylotype_sequence_bin_assignments),
+    bin_assignment_names
+  )
+
+  expect_equal(names(miseq_table$metadata), metadata_names)
+  expect_equal(names(miseq_table$references), references_names)
+
+  expect_equal(
+    miseq_table$sequence_data$sequence_names,
+    miseq$get_sequence_names()
+  )
+  expect_equal(
+    miseq_table$sequence_data$sequences,
+    miseq$get_sequences()
+  )
 })

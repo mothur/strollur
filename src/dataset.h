@@ -62,8 +62,8 @@ set<T> toSet(const vector<T>& x) {
     return results;
 }
 /**********************************************************************/
-template<typename T>
-vector<T> getValues(const map<string, T>& x) {
+template<typename T, typename T2>
+vector<T> getValues(const map<T2, T>& x) {
     vector<T> results(x.size());
 
     if (x.size() == 0) { return results; }
@@ -73,7 +73,6 @@ vector<T> getValues(const map<string, T>& x) {
         results[index] = (it->second);
         index++;
     }
-
 
     return results;
 }
@@ -126,6 +125,16 @@ bool allIdentical(const vector<T>& x, T& value) {
 
     }
     return true;
+}
+/**********************************************************************/
+static inline bool allBlank(const vector<string>& x) {
+    string value = "";
+    if (allIdentical(x, value)) {
+        if (value == "") {
+            return true;
+        }
+    }
+    return false;
 }
 /**********************************************************************/
 template<typename T>

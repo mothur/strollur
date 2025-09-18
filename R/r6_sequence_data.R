@@ -860,7 +860,7 @@ sequence_data <- R6Class("sequence_data",
 
       assigned_message(
         num_assigned,
-        paste0(type, " bin taxonomies.")
+        paste0(" ", type, " bin taxonomies.")
       )
 
       invisible(self)
@@ -1162,7 +1162,32 @@ sequence_data <- R6Class("sequence_data",
     #' Get List containing dataset
     #' @return List
     export = function() {
-      export(self$data)
+      results <- export_dataset(self$data)
+
+      if (nrow(private$metadata) != 0) {
+        results$metadata <- private$metadata
+      }
+      if (nrow(private$references) != 0) {
+        results$references <- private$references
+      }
+      if (nrow(private$alignment_data) != 0) {
+        results$alignment_report <- private$alignment_data
+      }
+      if (nrow(private$contigs_data) != 0) {
+          results$contigs_assembly_report <- private$contigs_data
+      }
+      if (!is.null(private$sequence_tree)) {
+        results$sequence_tree <- private$sequence_tree
+      }
+      if (!is.null(private$sample_tree)) {
+        results$sample_tree <- private$sample_tree
+      }
+
+      attr(results, "rdataset_version") <- "1.0.0"
+      attr(results, "dataset_name") <- get_dataset_name(self$data)
+      attr(results, "dataset_version") <- private$version
+
+      results
     },
 
     #' @description
@@ -1747,6 +1772,7 @@ sequence_data <- R6Class("sequence_data",
     sequence_tree = NULL,
     sample_tree = NULL,
     processors = 1,
+    version = "1.0.0",
     finalize = function() {},
 
     # summarize numeric columns in a dataframe
