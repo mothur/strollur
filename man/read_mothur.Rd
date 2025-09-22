@@ -16,6 +16,8 @@ read_mothur(
   otu_shared = NULL,
   asv_shared = NULL,
   phylo_shared = NULL,
+  sample_tree = NULL,
+  sequence_tree = NULL,
   dataset_name = ""
 )
 }
@@ -67,6 +69,19 @@ sample abundance assignments.}
 \href{https://mothur.org/wiki/shared_file/}{shared file} containing phylotype
  bin sample abundance assignments.}
 
+\item{sample_tree}{filename, a tree that relates samples.
+The sample tree is created by
+\href{https://mothur.org/wiki/tree.shared/}{tree.shared}. We recommend
+ running tree.shared with subsample = true, and using the 'ave.tre' output
+ for best results.}
+
+\item{sequence_tree}{filename, a tree that relates sequences.
+The sequence tree is created by
+\href{https://mothur.org/wiki/clearcut/}{clearcut}. We DO NOT recommend
+ using sequence trees. With the ever growing size of modern datasets,
+ sequence tree can be difficult / impossible to build without hitting a
+ memory limitation.}
+
 \item{dataset_name}{A string containing a name for your dataset.}
 }
 \value{
@@ -103,6 +118,7 @@ dataset <- read_mothur(
   otu_list = rdataset_example("final.opti_mcc.list"),
   asv_list = rdataset_example("final.asv.list"),
   phylo_list = rdataset_example("final.tx.list"),
+  sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
   dataset_name = "miseq_sop"
 )
 
@@ -114,6 +130,7 @@ dataset <- read_mothur(
     "final.cons.taxonomy"
   ),
   design = rdataset_example("mouse.time.design"),
+  sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
   dataset_name = "miseq_sop"
 )
 

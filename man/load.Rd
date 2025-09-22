@@ -7,13 +7,13 @@
 load(file)
 }
 \arguments{
-\item{file}{a string containing the file name.}
+\item{file}{a string containing the .rds file name.}
 }
 \value{
 A 'sequence_data' object
 }
 \description{
-The load function will create a 'sequence_data' object from a file.
+The load function will create a 'sequence_data' object from an RDS file.
 }
 \examples{
 

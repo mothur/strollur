@@ -7,7 +7,7 @@ context("BinTable class C++ unit tests") {
         BinTable otuTable("0.03");
 
         expect_true(otuTable.label == "0.03");
-        expect_true(otuTable.numBins == 0);
+        expect_true(otuTable.getNumBins() == 0);
     }
 
     test_that("Tests add, get, getAbundance, getAbundances") {
@@ -31,7 +31,7 @@ context("BinTable class C++ unit tests") {
                                  nullVector, nullIntVector, ab);
 
         expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numBins == 10);
+        expect_true(otuTable.getNumBins() == 10);
 
         // no sequence data was given
         expect_true(otuTable.getAbundance("otu1") == 10);
@@ -65,7 +65,7 @@ context("BinTable class C++ unit tests") {
                                  nullIntVector, ab);
 
         expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numBins == 4);
+        expect_true(otuTable.getNumBins() == 4);
         expect_true(otuTable.getNumSamples() == 6);
 
         expect_true(otuTable.getAbundance("otu1") == 30);
@@ -113,7 +113,7 @@ context("BinTable class C++ unit tests") {
                                  nullVector, nullIntVector, ab);
 
         expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numBins == 10);
+        expect_true(otuTable.getNumBins() == 10);
         expect_true(otuTable.getAbundance("otu1") == 10);
         vector<int> temp(1, 10);
         expect_true(otuTable.getAbundances("otu1") == temp);
@@ -166,7 +166,7 @@ context("BinTable class C++ unit tests") {
                                  nullIntVector, ab);
 
         expect_true(otuTable.getTotal() == 100);
-        expect_true(otuTable.numBins == 4);
+        expect_true(otuTable.getNumBins() == 4);
         expect_true(otuTable.getNumSamples() == 6);
 
         vector<int> otuRabundVector(4, 0);

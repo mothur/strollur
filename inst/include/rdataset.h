@@ -250,7 +250,6 @@ public:
     BinTable(const BinTable& binTable);
     ~BinTable();
 
-    int numBins;
     string label;
     bool hasListAssignments, hasBinTaxonomy, runClassify;
 
@@ -281,6 +280,7 @@ public:
     Rcpp::DataFrame getList(vector<string>& seqNames);
     // names of bins
     vector<string> getIds();
+    int getNumBins();
     // 2 column dataframe - bin_id, abundance
     Rcpp::DataFrame getRAbund();
     // vector of total abundances for each binId
@@ -366,7 +366,7 @@ private:
 
     template<class Archive>
     void serialize(Archive& ar) {
-        ar(numBins, label, hasListAssignments, hasBinTaxonomy,
+        ar(label, hasListAssignments, hasBinTaxonomy,
            binIndex, tableBins, binNames, trashCodes, taxonomies,
            runClassify, binList, seqBins, badAccnos, uniqueBad, binCount);
     }

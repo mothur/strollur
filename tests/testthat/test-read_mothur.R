@@ -117,19 +117,3 @@ test_that("test read taxonomy files", {
 
   expect_equal(sort(dataset$get_sequence_names()), sort(tree$tip.label))
 })
-
-# test_that("test rdataset_example", {
-#   # path only
-#   example_file_location <- rdataset_example()
-#
-#   file_path <- file.path("rdataset", "inst", "extdata")
-#
-#   expect_true(grepl(file_path, example_file_location))
-#
-#   # path and file
-#   example_file_location <- rdataset_example("final.fasta")
-#
-#   file_path <- file.path("rdataset", "inst", "extdata", "final.fasta")
-#
-#   expect_true(grepl(file_path, example_file_location))
-# })

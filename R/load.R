@@ -1,7 +1,7 @@
 #' @title load
 #' @description
-#' The load function will create a 'sequence_data' object from a file.
-#' @param file a string containing the file name.
+#' The load function will create a 'sequence_data' object from an RDS file.
+#' @param file a string containing the .rds file name.
 #' @examples
 #'
 #' dataset <- load(rdataset_example("miseq_sop.rds"))

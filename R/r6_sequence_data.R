@@ -1174,7 +1174,7 @@ sequence_data <- R6Class("sequence_data",
         results$alignment_report <- private$alignment_data
       }
       if (nrow(private$contigs_data) != 0) {
-          results$contigs_assembly_report <- private$contigs_data
+        results$contigs_assembly_report <- private$contigs_data
       }
       if (!is.null(private$sequence_tree)) {
         results$sequence_tree <- private$sequence_tree

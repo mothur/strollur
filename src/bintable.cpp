@@ -4,7 +4,6 @@
 
 /******************************************************************************/
 BinTable::BinTable() {
-    numBins = 0;
     uniqueBad = 0;
     label = "";
     hasListAssignments = false;
@@ -13,7 +12,6 @@ BinTable::BinTable() {
 }
 /******************************************************************************/
 BinTable::BinTable(string l) {
-    numBins = 0;
     uniqueBad = 0;
     label = l;
     hasListAssignments = false;
@@ -22,7 +20,6 @@ BinTable::BinTable(string l) {
 }
 /******************************************************************************/
 BinTable::BinTable(const BinTable& binTable) {
-    numBins = binTable.numBins;
     label = binTable.label;
     hasListAssignments = binTable.hasListAssignments;
     hasBinTaxonomy = binTable.hasBinTaxonomy;
@@ -49,7 +46,6 @@ void BinTable::clear(string tag) {
 
     // clear all
     if (tag == "") {
-        numBins = 0;
         uniqueBad = 0;
         label = "";
         hasListAssignments = false;
@@ -75,7 +71,6 @@ void BinTable::clear(string tag) {
 }
 /******************************************************************************/
 void BinTable::clone(const BinTable& binTable) {
-    numBins = binTable.numBins;
     label = binTable.label;
     hasListAssignments = binTable.hasListAssignments;
     hasBinTaxonomy = binTable.hasBinTaxonomy;
@@ -128,8 +123,13 @@ double BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
         otusAssigned = updateBins(binAbunds, count, hasSamples);
         runClassify = true;
    }else{
+
         // just abundances
         if (seqIds.empty()) {
+
+            int numBins = tableBins.size()-1;
+            if (numBins == -1) { numBins = 0; }
+
             for (int i = 0; i < binIds.size(); i++) {
 
                 string binName = binIds[i];
@@ -156,6 +156,7 @@ double BinTable::assignAbundance(vector<string> binIds, vector<int> abundance,
             // to avoid inconsistencies
             string oldLabel = label;
             clear();
+            int numBins = 0;
             label = oldLabel;
 
             // we need to calculate the bin abunds by sample
@@ -357,7 +358,7 @@ Rcpp::List BinTable::exportBinTable() {
         results.push_back(binCount.getAbundanceTable(binNames,
                                                      binIndexes,
                                                   "bin", false));
-        resultLabels.push_back("bin_abundance_table");
+        resultLabels.push_back(label+"_bin_abundance_table");
     }
 
     results.attr("names") = resultLabels;
@@ -464,7 +465,7 @@ vector<string> BinTable::getTaxonomies(vector<string>& tax, AbundTable& count) {
 }
 /******************************************************************************/
 Rcpp::DataFrame BinTable::getRAbund() {
-    if (numBins != 0) {
+    if (getNumBins()!= 0) {
         string tag = label + "_id";
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named(tag) = select(binNames, tableBins),
@@ -483,7 +484,7 @@ vector<int> BinTable::getRAbundVector(){
 }
 /******************************************************************************/
 Rcpp::DataFrame BinTable::getShared() {
-    if ((numBins != 0) && (getNumSamples() != 0)) {
+    if ((getNumBins() != 0) && (getNumSamples() != 0)) {
 
         vector<string> ids = getIds();
         vector<int> indexes(ids.size(), -1);
@@ -538,6 +539,10 @@ vector<int> BinTable::getAbundances(string binId){
     }
 
     return nullIntVector;
+}
+/******************************************************************************/
+int BinTable::getNumBins() {
+    return accumulate(tableBins.begin(), tableBins.end(), 0);
 }
 /******************************************************************************/
 vector<int> BinTable::getIndexes(vector<string>& binIDS) {
@@ -746,8 +751,6 @@ void BinTable::remove(int seqId, AbundTable& count,
                 tableBins[index] = false;
                 trashCodes[index] += reason;
 
-                numBins--;
-
                 // remove from counts
                 int abund = 1;
                 if (update) {
@@ -835,8 +838,6 @@ vector<int> BinTable::remove(string binID, string reason, bool update){
     // remove from tableBins and add trashCode
     tableBins[index] = false;
     trashCodes[index] += reason;
-
-    numBins--;
 
     // remove from counts
     int abund = 1;
