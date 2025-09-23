@@ -8,6 +8,7 @@ exportPattern("^[[:alpha:]]+")
 # general
 import(cli)
 import(Rcereal)
+importFrom("stats", "na.omit")
 
 # tree data
 import(ape)

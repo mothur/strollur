@@ -393,7 +393,7 @@ public:
     long long numUnique;
 
     void clear(vector<string> tags = nullVector);
-    Rcpp::List exportDataset();
+    Rcpp::List exportDataset(vector<string> tags = nullVector);
 
     // add seqs
     double addSequences(vector<string> n, vector<string> s = nullVector,

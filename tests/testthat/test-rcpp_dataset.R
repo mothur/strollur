@@ -35,7 +35,7 @@ test_that("rcpp_dataset - add_sequences", {
     c("not_enough_comments", "comment")
   ))
 
-  clear(dataset)
+  clear(dataset, "")
 
   # add with 2 parameters
   add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
@@ -55,14 +55,14 @@ test_that("rcpp_dataset - add_sequences", {
   expect_equal((seq_report[[7]][10:12]), c(0, 0, 0))
   expect_equal((seq_report[[2]][10:12]), c(1, 1, 1))
 
-  clear(dataset)
+  clear(dataset, "")
 
   # add with only names
   add_sequences(dataset, sequences$sequence_names, "", "")
   expect_equal(get_num_sequences(dataset), 2425)
   expect_false(has_sequence_strings(dataset))
 
-  clear(dataset)
+  clear(dataset, "")
 
   expect_error(add_sequences(dataset))
 
@@ -92,7 +92,7 @@ test_that("rcpp_dataset - assign_bins", {
   expect_error(assign_bins(dataset, unique(bin_ids), 0, samples, ""))
   expect_error(assign_bins(dataset, unique(bin_ids), abundances, "", ""))
 
-  clear(dataset)
+  clear(dataset, "")
 
   # bin labels and bin abundances (rabund)
   assign_bins(dataset, unique(bin_ids), abundances, "", "")
@@ -100,7 +100,7 @@ test_that("rcpp_dataset - assign_bins", {
   expect_equal(get_num_sequences(dataset), 715)
   expect_equal(get_num_bins(dataset), 3)
 
-  clear(dataset)
+  clear(dataset, "")
 
   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   samples <- c(
@@ -121,7 +121,7 @@ test_that("rcpp_dataset - assign_bins", {
   expect_equal(get_bin(dataset, "bin1"), "")
   expect_equal(get_bin_abundances(dataset, "bin1"), c(10, 100, 0, 1))
 
-  clear(dataset)
+  clear(dataset, "")
 
   bin_ids <- c(
     "bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
@@ -148,7 +148,7 @@ test_that("rcpp_dataset - assign_bins", {
   expect_equal(get_num_bins(dataset), 3)
   expect_equal(get_num_samples(dataset), 6)
 
-  clear(dataset)
+  clear(dataset, "")
 
   # assign sequence abundances then bins
   names <- c(
@@ -224,7 +224,7 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
   expect_true(grepl("non_existant_sequence", message))
   expect_error(set_abundance(dataset, c("seq1"), c(0)))
 
-  clear(dataset)
+  clear(dataset, "")
 
   names <- c("seq1", "seq2")
   abundances <- c(100, 50)
@@ -464,7 +464,7 @@ test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
     c("bin1"), list(c(100, 20))
   ))
 
-  clear(dataset)
+  clear(dataset, "")
 
   # test with samples bins
   assign_bins(

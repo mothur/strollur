@@ -4,17 +4,21 @@
 \alias{clear}
 \title{clear}
 \usage{
-clear(data)
+clear(data, tags)
 }
 \arguments{
 \item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
 'Dataset' c++ class.}
+
+\item{tags}{a vector of strings containing the items you wish to clear.
+Options are 'sequence_data' and 'bin_data'. By default, everything is
+cleared.}
 }
 \description{
 Clear all data from an instance of the 'Dataset' class.
 }
 \examples{
-dataset <- new_dataset("my_dataset", 4)
-clear(dataset)
+dataset <- miseq_sop_example()
+clear(dataset$data, "")
 
 }

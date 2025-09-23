@@ -442,13 +442,24 @@ double assign_treatments(Rcpp::XPtr<Dataset> data, vector<string>& samples,
 //' Clear all data from an instance of the 'Dataset' class.
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
+//' @param tags a vector of strings containing the items you wish to clear.
+//' Options are 'sequence_data' and 'bin_data'. By default, everything is
+//' cleared.
+//'
 //' @examples
-//' dataset <- new_dataset("my_dataset", 4)
-//' clear(dataset)
+//' dataset <- miseq_sop_example()
+//' clear(dataset$data, "")
 //'
 //[[Rcpp::export]]
-void clear(Rcpp::XPtr<Dataset> data) {
-    return data.get()->clear();
+void clear(Rcpp::XPtr<Dataset> data, vector<string> tags) {
+
+    if (tags.size() == 1) {
+        if (tags[0] == "") {
+            tags = nullVector;
+        }
+    }
+
+    return data.get()->clear(tags);
 }
 /******************************************************************************/
 //' @title export_dataset
@@ -456,15 +467,26 @@ void clear(Rcpp::XPtr<Dataset> data) {
 //' Export all data from an instance of the 'Dataset' class.
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
+//' @param tags a vector of strings containing the items you wish to export.
+//' Options are 'sequence_data' and 'bin_data'. By default, everything is
+//'  exported.
+//'
 //' @examples
 //'
-//' dataset <- new_dataset("my_dataset", 4)
-//' export_dataset(dataset)
+//' dataset <- new_dataset("my_dataset", 2)
+//' export_dataset(dataset, "")
 //'
 //' @return Rcpp::List, containing the data in the 'Dataset
 //[[Rcpp::export]]
-Rcpp::List export_dataset(Rcpp::XPtr<Dataset> data) {
-     return data.get()->exportDataset();
+Rcpp::List export_dataset(Rcpp::XPtr<Dataset> data, vector<string> tags) {
+
+    if (tags.size() == 1) {
+        if (tags[0] == "") {
+            tags = nullVector;
+        }
+    }
+
+     return data.get()->exportDataset(tags);
 }
 /******************************************************************************/
 //' @title get_bin

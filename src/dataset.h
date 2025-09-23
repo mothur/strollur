@@ -25,6 +25,10 @@ static inline bool isacgt(char c) {
 static bool inline isgap(char c) {
     return c == '-' || c == '.';
 }
+
+static bool inline setContains(const set<string>& t, string tag) {
+    return (t.find(tag) != t.end());
+}
 /**********************************************************************/
 struct pieceOfWork {
     double start;

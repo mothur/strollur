@@ -115,100 +115,155 @@ void Dataset::clear(vector<string> tags) {
         count.clear();
         binTables.clear();
     }else {
-
         for (string tag : tags) {
-            if (tag == "sequence_taxonomy") {
+            if (tag == "sequence_data") {
+                isAligned = false;
+                hasSequenceData = false;
                 hasSequenceTaxonomy = false;
+                numUnique = 0;
+                uniqueBad = 0;
+                alignmentLength = 0;
+
+                // sequence data
+                names.clear();
+                seqs.clear();
+                comments.clear();
+                trashCodes.clear();
+
+                // sequence summary data
+                starts.clear();
+                ends.clear();
+                lengths.clear();
+                ambigs.clear();
+                polymers.clear();
+                numns.clear();
+
+                // sequence taxonomy assignments
                 taxonomies.clear();
-            }else if (tag == "bin_taxonomy") {
-                for (int i = 0; i < binTables.size(); i++) {
-                    binTables[i].clear("taxonomy");
-                }
-            }else if (tag == "bin_assignment") {
+
+                // maps sequence name to index in vectors
+                seqIndex.clear();
+                tableSeqs.clear();
+
+                badAccnos.clear();
+                count.clear();
+            }else if (tag == "bin_data") {
                 binTables.clear();
             }
         }
     }
 }
 /******************************************************************************/
-Rcpp::List Dataset::exportDataset(){
+Rcpp::List Dataset::exportDataset(vector<string> tags){
 
     Rcpp::List results = Rcpp::List::create();
     vector<string> resultsLabels;
 
-    if (hasSequenceData) {
+    set<string> t;
+    bool hasTags = false;
+    if (tags.size() != 0) {
+        t = toSet(tags);
+        hasTags = true;
 
-        // sequence data.frame
-        // ids, names, seqs, comments(optional),
-        // trashCodes, taxonomies(optional), tableSeqs
-        Rcpp::DataFrame sequenceData = Rcpp::DataFrame::create();
-        vector<string> sequenceDataLabels;
+        // check for tags for data you dont have and warn
+        if (!hasSequenceData) {
 
-        sequenceData.push_back(getIndexes(names));
-        sequenceDataLabels.push_back("sequence_ids");
-        sequenceData.push_back(names);
-        sequenceDataLabels.push_back("sequence_names");
-
-        if (!allBlank(seqs)) {
-            sequenceData.push_back(seqs);
-            sequenceDataLabels.push_back("sequences");
-        }
-        if (!allBlank(comments)) {
-            sequenceData.push_back(comments);
-            sequenceDataLabels.push_back("comments");
-        }
-        if (!allBlank(taxonomies)) {
-            sequenceData.push_back(taxonomies);
-            sequenceDataLabels.push_back("taxonomies");
-        }
-        if (!allBlank(trashCodes)) {
-            sequenceData.push_back(trashCodes);
-            sequenceDataLabels.push_back("trash_codes");
-        }
-        sequenceData.push_back(tableSeqs);
-        sequenceDataLabels.push_back("include_sequence");
-
-        sequenceData.attr("names") = sequenceDataLabels;
-
-        results.push_back(sequenceData);
-        resultsLabels.push_back("sequence_data");
-
-        // only create sequence report if its not blank
-        if (!allBlank(seqs)) {
-            // sequence report data.frame
-            // starts, ends, lengths, ambigs, polymers, numns
-            Rcpp::DataFrame sequenceReport = Rcpp::DataFrame::create(
-                Rcpp::Named("sequence_ids") = getIndexes(names),
-                Rcpp::_["starts"] = starts,
-                Rcpp::_["ends"] = ends,
-                Rcpp::_["lengths"] = lengths,
-                Rcpp::_["ambigs"] = ambigs,
-                Rcpp::_["longest_homopolymers"] = polymers,
-                Rcpp::_["num_ns"] = numns);
-
-            results.push_back(sequenceReport);
-            resultsLabels.push_back("sequence_report");
+            if (setContains(t, "sequence_data")) {
+                string message = "[WARNING]: The dataset does not include ";
+                message += " sequence data, ignoring 'sequence_data' tag.";
+                RcppThread::Rcout << endl << message << endl;
+            }
         }
 
-        // count_data(id, abundance, sample, treatment)
-        results.push_back(count.getAbundanceTable(names,
-                                                  getIndexes(names),
-                                                  "sequence", false));
-        resultsLabels.push_back("sequence_abundance_table");
+        if (binTables.empty()) {
+
+            if (setContains(t, "bin_data")) {
+                string message = "[WARNING]: The dataset does not include ";
+                message += " bin data, ignoring 'bin_data' tag.";
+                RcppThread::Rcout << endl << message << endl;
+            }
+        }
     }
 
-    // sequence bin table
-    for (int i = 0; i < binTables.size(); i++) {
-        // create bin taxonomy if needed
-        fillTaxReport(binTables[i].label);
+    if (hasSequenceData) {
 
-        Rcpp::List binList = binTables[i].exportBinTable();
-        vector<string> binListNames = binList.attr("names");
+        if (!hasTags || setContains(t, "sequence_data")) {
 
-        resultsLabels.insert(resultsLabels.end(), binListNames.begin(),
-                             binListNames.end());
-        results.push_back(binList[0]);
-        results.push_back(binList[1]);
+            // sequence data.frame
+            // ids, names, seqs, comments(optional),
+            // trashCodes, taxonomies(optional), tableSeqs
+            Rcpp::DataFrame sequenceData = Rcpp::DataFrame::create();
+            vector<string> sequenceDataLabels;
+
+            sequenceData.push_back(getIndexes(names));
+            sequenceDataLabels.push_back("sequence_ids");
+            sequenceData.push_back(names);
+            sequenceDataLabels.push_back("sequence_names");
+
+            if (!allBlank(seqs)) {
+                sequenceData.push_back(seqs);
+                sequenceDataLabels.push_back("sequences");
+            }
+            if (!allBlank(comments)) {
+                sequenceData.push_back(comments);
+                sequenceDataLabels.push_back("comments");
+            }
+            if (!allBlank(taxonomies)) {
+                sequenceData.push_back(taxonomies);
+                sequenceDataLabels.push_back("taxonomies");
+            }
+            if (!allBlank(trashCodes)) {
+                sequenceData.push_back(trashCodes);
+                sequenceDataLabels.push_back("trash_codes");
+            }
+            sequenceData.push_back(tableSeqs);
+            sequenceDataLabels.push_back("include_sequence");
+
+            sequenceData.attr("names") = sequenceDataLabels;
+
+            results.push_back(sequenceData);
+            resultsLabels.push_back("sequence_data");
+
+            // only create sequence report if its not blank
+            if (!allBlank(seqs)) {
+
+                // sequence report data.frame
+                // starts, ends, lengths, ambigs, polymers, numns
+                Rcpp::DataFrame sequenceReport = Rcpp::DataFrame::create(
+                    Rcpp::Named("sequence_ids") = getIndexes(names),
+                    Rcpp::_["starts"] = starts,
+                    Rcpp::_["ends"] = ends,
+                    Rcpp::_["lengths"] = lengths,
+                    Rcpp::_["ambigs"] = ambigs,
+                    Rcpp::_["longest_homopolymers"] = polymers,
+                    Rcpp::_["num_ns"] = numns);
+
+                results.push_back(sequenceReport);
+                resultsLabels.push_back("sequence_report");
+            }
+
+            // count_data(id, abundance, sample, treatment)
+            results.push_back(count.getAbundanceTable(names,
+                                                      getIndexes(names),
+                                                      "sequence", false));
+            resultsLabels.push_back("sequence_abundance_table");
+        }
+    }
+
+    if (!hasTags || setContains(t, "bin_data")) {
+        // sequence bin table
+        for (int i = 0; i < binTables.size(); i++) {
+            // create bin taxonomy if needed
+            fillTaxReport(binTables[i].label);
+
+            Rcpp::List binList = binTables[i].exportBinTable();
+            vector<string> binListNames = binList.attr("names");
+
+            for (int j = 0; j < binList.size(); j++) {
+                results.push_back(binList[j]);
+                resultsLabels.push_back(binTables[i].label+"_"+binListNames[j]);
+            }
+        }
     }
 
     results.attr("names") = resultsLabels;

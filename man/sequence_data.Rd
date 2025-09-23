@@ -250,6 +250,14 @@ dataset$assign_treatments(data = NULL, unique(samples), treatments)
 
 
 ## ------------------------------------------------
+## Method `sequence_data$export`
+## ------------------------------------------------
+
+    miseq <- miseq_sop_example()
+    table <- miseq$export()
+
+
+## ------------------------------------------------
 ## Method `sequence_data$get_alignment_report`
 ## ------------------------------------------------
 
@@ -1265,15 +1273,16 @@ dataset$assign_treatments(data = NULL, unique(samples), treatments)
 Remove 'all', 'metadata', 'references', 'alignment_report' or
 'contigs_assembly_report' data from your dataset.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$clear(type = "all")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$clear(tags = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{type}}{a string indicating the type of data you want to remove.
-Options include: "all", "metadata", "references", "alignment_report" or
-"contigs_assembly_report". Default = "all".}
+\item{\code{tags}}{a vector of strings containing the items you wish to clear.
+Options are 'sequence_data', 'bin_data', 'metadata',
+'references', 'sequence_tree', 'sample_tree', 'alignment_report',
+'contigs_assembly_report'. By default, everything is cleared.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1282,14 +1291,36 @@ Options include: "all", "metadata", "references", "alignment_report" or
 \if{html}{\out{<a id="method-sequence_data-export"></a>}}
 \if{latex}{\out{\hypertarget{method-sequence_data-export}{}}}
 \subsection{Method \code{export()}}{
-Get List containing dataset
+export will create a list containing the data in the dataset.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{sequence_data$export()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$export(tags = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tags}}{a vector of strings containing the items you wish to export.
+Options are 'sequence_data', 'sequence_report',
+'sequence_abundance_table','sequence_bin_assignments', 'bin_data',
+'bin_abundance_table', 'metadata', 'references', 'sequence_tree',
+'sample_tree', 'alignment_report', 'contigs_assembly_report'.
+ By default, everything is exported.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 List
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{    miseq <- miseq_sop_example()
+    table <- miseq$export()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-sequence_data-get_alignment_report"></a>}}

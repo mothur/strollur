@@ -344,7 +344,7 @@ Rcpp::List BinTable::exportBinTable() {
     binData.attr("names") = binDataLabels;
 
     results.push_back(binData);
-    resultLabels.push_back(label+"_bin_data");
+    resultLabels.push_back("bin_data");
 
     // bin_id, seq_id
     if (hasListAssignments) {
@@ -352,13 +352,13 @@ Rcpp::List BinTable::exportBinTable() {
             Rcpp::Named("bin_ids") = getValues(seqBins),
             Rcpp::_["sequence_ids"] = getKeys(seqBins));
         results.push_back(binSeqAssignments);
-        resultLabels.push_back(label+"_sequence_bin_assignments");
+        resultLabels.push_back("sequence_bin_assignments");
     }else{
         // bin_id, abund, sample, treatment
         results.push_back(binCount.getAbundanceTable(binNames,
                                                      binIndexes,
                                                   "bin", false));
-        resultLabels.push_back(label+"_bin_abundance_table");
+        resultLabels.push_back("bin_abundance_table");
     }
 
     results.attr("names") = resultLabels;

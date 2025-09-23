@@ -4,11 +4,16 @@
 \alias{import}
 \title{import}
 \usage{
-import(table)
+import(table, tags = NULL)
 }
 \arguments{
 \item{table}{a table containing the data from a 'sequence_data' object. You
-can create the table using 'sequence_data$export()'.}
+can create the table using 'export(dataset)'.}
+
+\item{tags}{a vector of strings containing the items you wish to export.
+Options are 'sequence_data', 'bin_data', 'metadata',
+'references', 'sequence_tree', 'sample_tree', 'alignment_report',
+'contigs_assembly_report'. By default, everything is imported.}
 }
 \value{
 A 'sequence_data' object
@@ -20,7 +25,7 @@ table of a 'sequence_data' object.
 \examples{
 
 miseq <- miseq_sop_example()
-dataset <- import(miseq$export())
+dataset <- import(export(miseq))
 dataset
 
 }

@@ -121,23 +121,25 @@ BEGIN_RCPP
 END_RCPP
 }
 // clear
-void clear(Rcpp::XPtr<Dataset> data);
-RcppExport SEXP _rdataset_clear(SEXP dataSEXP) {
+void clear(Rcpp::XPtr<Dataset> data, vector<string> tags);
+RcppExport SEXP _rdataset_clear(SEXP dataSEXP, SEXP tagsSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
-    clear(data);
+    Rcpp::traits::input_parameter< vector<string> >::type tags(tagsSEXP);
+    clear(data, tags);
     return R_NilValue;
 END_RCPP
 }
 // export_dataset
-Rcpp::List export_dataset(Rcpp::XPtr<Dataset> data);
-RcppExport SEXP _rdataset_export_dataset(SEXP dataSEXP) {
+Rcpp::List export_dataset(Rcpp::XPtr<Dataset> data, vector<string> tags);
+RcppExport SEXP _rdataset_export_dataset(SEXP dataSEXP, SEXP tagsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(export_dataset(data));
+    Rcpp::traits::input_parameter< vector<string> >::type tags(tagsSEXP);
+    rcpp_result_gen = Rcpp::wrap(export_dataset(data, tags));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -746,8 +748,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_assign_sequence_abundance", (DL_FUNC) &_rdataset_assign_sequence_abundance, 5},
     {"_rdataset_assign_sequence_taxonomy", (DL_FUNC) &_rdataset_assign_sequence_taxonomy, 3},
     {"_rdataset_assign_treatments", (DL_FUNC) &_rdataset_assign_treatments, 3},
-    {"_rdataset_clear", (DL_FUNC) &_rdataset_clear, 1},
-    {"_rdataset_export_dataset", (DL_FUNC) &_rdataset_export_dataset, 1},
+    {"_rdataset_clear", (DL_FUNC) &_rdataset_clear, 2},
+    {"_rdataset_export_dataset", (DL_FUNC) &_rdataset_export_dataset, 2},
     {"_rdataset_get_bin", (DL_FUNC) &_rdataset_get_bin, 3},
     {"_rdataset_get_bin_abundance", (DL_FUNC) &_rdataset_get_bin_abundance, 3},
     {"_rdataset_get_bin_abundances", (DL_FUNC) &_rdataset_get_bin_abundances, 3},

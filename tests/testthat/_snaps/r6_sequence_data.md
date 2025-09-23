@@ -39,7 +39,6 @@
       F3D8	4253 
       F3D9	5735 
       
-      
       Treatment   Total:
       Early	55634 
       Late	58329 
@@ -85,7 +84,6 @@
       F3D7	4055 
       F3D8	4253 
       F3D9	5735 
-      
       
       Treatment   Total:
       Early	55634 

@@ -1130,39 +1130,82 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Remove 'all', 'metadata', 'references', 'alignment_report' or
     #' 'contigs_assembly_report' data from your dataset.
-    #' @param type a string indicating the type of data you want to remove.
-    #' Options include: "all", "metadata", "references", "alignment_report" or
-    #' "contigs_assembly_report". Default = "all".
-    clear = function(type = "all") {
-      if (type == "all") {
-        clear(self$data)
+    #' @param tags a vector of strings containing the items you wish to clear.
+    #' Options are 'sequence_data', 'bin_data', 'metadata',
+    #' 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
+    #' 'contigs_assembly_report'. By default, everything is cleared.
+    clear = function(tags = NULL) {
+      if (is.null(tags)) {
+        tags <- ""
+      }
+
+      if (tags == "") {
+        clear(self$data, tags)
         private$metadata <- data.frame()
         private$references <- data.frame()
         private$alignment_data <- data.frame()
         private$contigs_data <- data.frame()
         private$sequence_tree <- NULL
         private$sample_tree <- NULL
-        self$raw <- NULL
-      } else if (type == "metadata") {
-        private$metadata <- data.frame()
-      } else if (type == "references") {
-        private$references <- data.frame()
-      } else if (type == "alignment_report") {
-        private$alignment_data <- data.frame()
-      } else if (type == "contigs_assembly_report") {
-        private$contigs_data <- data.frame()
-      } else {
-        cli_alert("{.var {type}} is not a valid type to clear, ignoring.")
+      } else if (("sequence_data" %in% tags) || ("bin_data" %in% tags)) {
+        clear(self$data, tags)
       }
+
+      valid_tags <- c(
+        "sequence_data", "bin_data", "metadata", "references",
+        "sequence_tree", "sample_tree", "alignment_report",
+        "contigs_assembly_report"
+      )
+      for (tag in tags) {
+        if (!(tag %in% valid_tags)) {
+          cli_alert("{.var {tag}} is not a valid item to clear, ignoring.")
+        }
+      }
+
+      if ("metadata" %in% tags) {
+        private$metadata <- data.frame()
+      }
+      if ("references" %in% tags) {
+        private$references <- data.frame()
+      }
+      if ("alignment_report" %in% tags) {
+        private$alignment_data <- data.frame()
+      }
+      if ("contigs_assembly_report" %in% tags) {
+        private$contigs_data <- data.frame()
+      }
+
+      if ("sequence_tree" %in% tags) {
+        private$sequence_tree <- NULL
+      }
+
+      if ("sample_tree" %in% tags) {
+        private$sample_tree <- NULL
+      }
+
+      self$raw <- NULL
 
       invisible(self)
     },
 
     #' @description
-    #' Get List containing dataset
+    #' export will create a list containing the data in the dataset.
+    #' @param tags a vector of strings containing the items you wish to export.
+    #' Options are 'sequence_data', 'sequence_report',
+    #' 'sequence_abundance_table','sequence_bin_assignments', 'bin_data',
+    #' 'bin_abundance_table', 'metadata', 'references', 'sequence_tree',
+    #' 'sample_tree', 'alignment_report', 'contigs_assembly_report'.
+    #'  By default, everything is exported.
+    #' @examples
+    #'     miseq <- miseq_sop_example()
+    #'     table <- miseq$export()
+    #'
     #' @return List
-    export = function() {
-      results <- export_dataset(self$data)
+    export = function(tags = NULL) {
+      if (is.null(tags)) {
+        tags <- ""
+      }
+      results <- export_dataset(self$data, tags)
 
       if (nrow(private$metadata) != 0) {
         results$metadata <- private$metadata
@@ -1461,7 +1504,7 @@ sequence_data <- R6Class("sequence_data",
           if (self$get_num_treatments() != 0) {
             treatment_names <- self$get_treatments()
             treatment_totals <- get_treatment_totals(self$data)
-            cat("\n\n")
+            cat("\n")
             cat("Treatment   Total:\n")
             for (i in seq_along(treatment_names)) {
               cat(

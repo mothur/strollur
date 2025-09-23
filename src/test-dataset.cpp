@@ -1642,7 +1642,7 @@ context("Dataset class C++ unit tests") {
         expect_true(otuReport.size() == 4);
         expect_true(report.size() == 4);
 
-        vector<string> clearTags(1, "sequence_taxonomy");
+        vector<string> clearTags(1, "sequence_data");
         data.clear(clearTags);
 
         otuReport = data.getBinTaxonomyReport();
@@ -1680,14 +1680,14 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 100);
         expect_true(data.getNumBins() == 1);
 
-        clearTags[0] = "bin_taxonomy";
+        clearTags[0] = "bin_data";
         data.clear(clearTags);
 
         otuReport = data.getBinTaxonomyReport();
 
         // still has bins just no classifications
-        expect_true(data.getTotal() == 100);
-        expect_true(data.getNumBins() == 1);
+        expect_true(data.getTotal() == 0);
+        expect_true(data.getNumBins() == 0);
         expect_true(otuReport.size() == 0);
     }
 
@@ -1826,7 +1826,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
         expect_true(data.getBinAbundance("otu4") == 44);
 
-        vector<string> clearTags(1, "bin_assignment");
+        vector<string> clearTags(1, "bin_data");
         data.clear(clearTags);
 
         expect_true(data.getTotal() == 100);
