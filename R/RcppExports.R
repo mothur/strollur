@@ -85,7 +85,7 @@ add_sequences <- function(data, sequence_names, sequences, comments) {
 #' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 #'  'Dataset' c++ class.
 #' @param bin_names a vector strings containing of bin labels
-#' @param abundances a vector of integers containing abundances. Note: You must
+#' @param abundances a vector containing bin abundances. Note: You must
 #'  provide either abundances or seq_ids.
 #' @param samples a vector of strings containing sample assignments
 #' @param sequence_names a vector of strings containing sequence names.
@@ -174,7 +174,7 @@ assign_bin_taxonomy <- function(data, bin_names, taxonomies, type = "otu") {
 #' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 #'  'Dataset' c++ class.
 #' @param sequence_names a vector of strings containing sequence names
-#' @param abundances a vector of integers containing sequence abundances
+#' @param abundances a vector containing sequence abundances
 #' @param samples a vector of strings containing sample assignments
 #' @param treatments a vector of strings containing treatment assignments
 #' @examples
@@ -368,8 +368,7 @@ get_bin_abundance <- function(data, bin_name, type = "otu") {
 #'   assign_bins(dataset, bin_ids, abundances, samples, seq_ids)
 #'   get_bin_abundances(dataset, "bin1")
 #'
-#' @return vector of integers, containing the abundance of a given bin parsed
-#' by sample
+#' @return vector containing the abundance of a given bin parsed by sample
 get_bin_abundances <- function(data, bin_name, type = "otu") {
     .Call(`_rdataset_get_bin_abundances`, data, bin_name, type)
 }
@@ -580,7 +579,7 @@ get_rabund <- function(data, type = "otu") {
 
 #' @title get_rabund_vector
 #' @description
-#' Get vector of integers containing bin abundance data
+#' Get vector containing bin abundance data
 #' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 #'  'Dataset' c++ class.
 #' @param type a string indicating the type of bin assignments. Default "otu".
@@ -598,7 +597,7 @@ get_rabund <- function(data, type = "otu") {
 #'
 #'   get_rabund_vector(dataset)
 #'
-#' @return vector of integers containing each bins abundance
+#' @return vector containing each bins abundance
 get_rabund_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_rabund_vector`, data, type)
 }
@@ -638,7 +637,7 @@ get_samples <- function(data) {
 #' assign_bins(dataset, bin_ids, sample_abundances, samples, "")
 #' get_sample_totals(dataset)
 #'
-#' @return vector of integers containing the number of sequences in each
+#' @return vector containing the number of sequences in each
 #' sample in an instance of the 'Dataset' class.
 get_sample_totals <- function(data) {
     .Call(`_rdataset_get_sample_totals`, data)
@@ -698,7 +697,7 @@ get_scrap_report <- function(data, type = "sequence") {
 #' assign_sequence_abundance(dataset, names, abundances, samples, "")
 #' get_sequence_abundances(dataset)
 #'
-#' @return vector of integers containing the total abundance for each sequence
+#' @return vector containing the total abundance for each sequence
 #'  in the 'Dataset' class.
 get_sequence_abundances <- function(data) {
     .Call(`_rdataset_get_sequence_abundances`, data)
@@ -727,7 +726,7 @@ get_sequence_abundances <- function(data) {
 #' assign_sequence_abundance(dataset, names, abundances, samples, "")
 #' get_sequence_abundances_by_sample(dataset)
 #'
-#' @return 2D vector of integers ([num_seqs][num_samples]) containing the
+#' @return 2D vector ([num_seqs][num_samples]) containing the
 #' abundances of each sequence in an instance of the 'Dataset' class parsed by
 #' sample.
 get_sequence_abundances_by_sample <- function(data) {
@@ -959,7 +958,7 @@ get_bin_assignments <- function(data, type = "otu") {
 
 #' @title get_shared_vector
 #' @description
-#' Get 2D vector of integers containing bin abundance data by sample
+#' Get 2D vector containing bin abundance data by sample
 #' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 #'  'Dataset' c++ class.
 #' @param type a string indicating the type of bin assignments. Default "otu".
@@ -981,7 +980,7 @@ get_bin_assignments <- function(data, type = "otu") {
 #'
 #'   get_shared_vector(dataset)
 #'
-#' @return 2D vector of integers ([num_bins][num_samples]) containing
+#' @return 2D vector ([num_bins][num_samples]) containing
 #' the abundances of each bin parsed by sample.
 get_shared_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_shared_vector`, data, type)
@@ -1024,7 +1023,7 @@ get_treatments <- function(data) {
 #' assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
 #' get_treatment_totals(dataset)
 #'
-#' @return vector of integers containing the number of sequences in each
+#' @return vector containing the number of sequences in each
 #' treatment in an instance of the 'Dataset' class.
 get_treatment_totals <- function(data) {
     .Call(`_rdataset_get_treatment_totals`, data)
@@ -1232,7 +1231,7 @@ remove_sequences <- function(data, names, trash_tags) {
 #' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 #'  'Dataset' c++ class.
 #' @param sequence_names a vector of strings containing sequence names
-#' @param sequence_abundances vector of integers containing the abundances of
+#' @param sequence_abundances vector containing the abundances of
 #' each sequence.
 #' @param reason a string containing the trash tag to be applied to any sequences
 #'  set to 0 abundance. Default = "update".
@@ -1262,7 +1261,7 @@ set_abundance <- function(data, sequence_names, sequence_abundances, reason = "u
 #' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 #'  'Dataset' c++ class.
 #' @param sequence_names a vector of strings containing sequence names
-#' @param abundances 2D vector of integers ([num_seqs][num_samples]) containing
+#' @param abundances 2D vector ([num_seqs][num_samples]) containing
 #' the abundances of each sequence parsed by sample.
 #' @param reason a string containing the trash tag to be applied to any sequences
 #'  set to 0 abundance. Default = "update".
@@ -1293,7 +1292,7 @@ set_abundances <- function(data, sequence_names, abundances, reason = "update") 
 #'  'Dataset' c++ class.
 #' @param bin_names a vector strings containing of bin names to set the
 #' abundances for.
-#' @param abunds vector of integers containing the abundances of each bin.
+#' @param abunds vector containing the abundances of each bin.
 #' @param reason a string containing the trash tag to be applied to any bins
 #'  set to 0 abundance. Default = "update".
 #' @param type a string indicating the type of clusters. Default = "otu".
@@ -1321,7 +1320,7 @@ set_bin_abundance <- function(data, bin_names, abunds, reason = "update", type =
 #'  'Dataset' c++ class.
 #' @param bin_names a vector strings containing of bin names to set the
 #' abundances for.
-#' @param abunds 2D vector of integers ([num_seqs][num_samples]) containing the
+#' @param abunds 2D vector ([num_seqs][num_samples]) containing the
 #' abundances of each bin parsed by sample.
 #' @param reason a string containing the trash tag to be applied to any bins
 #'  set to 0 abundance. Default = "update".

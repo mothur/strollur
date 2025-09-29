@@ -13,10 +13,10 @@ get_rabund_vector(data, type = "otu")
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
 \value{
-vector of integers containing each bins abundance
+vector containing each bins abundance
 }
 \description{
-Get vector of integers containing bin abundance data
+Get vector containing bin abundance data
 }
 \examples{
 

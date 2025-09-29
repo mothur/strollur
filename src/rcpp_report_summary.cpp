@@ -25,14 +25,14 @@
 //' @return DataFrame with summary values
 //[[Rcpp::export]]
 Rcpp::DataFrame  summarize_reports(Rcpp::DataFrame& report,
-                                    Rcpp::IntegerVector& count,
+                                    Rcpp::NumericVector& count,
                                     int processors) {
      // create Summary object
      Summary* summary = new Summary(processors);
 
      Rcpp::CharacterVector colNames = report.attr("names");
      vector<string> names = Rcpp::as<vector<string>>(colNames);
-     vector<int> c = Rcpp::as<vector<int>>(count);
+     vector<float> c = Rcpp::as<vector<float>>(count);
 
      Rcpp::DataFrame results = summary->summarize(report, c, names);
 

@@ -13,11 +13,11 @@ get_shared_vector(data, type = "otu")
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
 \value{
-2D vector of integers ([num_bins][num_samples]) containing
+2D vector ([num_bins][num_samples]) containing
 the abundances of each bin parsed by sample.
 }
 \description{
-Get 2D vector of integers containing bin abundance data by sample
+Get 2D vector containing bin abundance data by sample
 }
 \examples{
 

@@ -42,7 +42,7 @@ import <- function(table, tags = NULL) {
   # extract bin assignment types, ie 'otu', 'asv'
   bin_data_names <- names[grepl("_bin_data", names)]
 
-  # its in the table and  you requested it to be imported
+  # its in the table and you requested it to be imported
   if (("sequence_data" %in% names) && (!ht || ("sequence_data" %in% tags))) {
     has_sequence_data <- TRUE
 
@@ -60,8 +60,9 @@ import <- function(table, tags = NULL) {
     table$sequence_abundance_table$sequence_ids <- table$sequence_data$
       sequence_ids[matched_indices]
     table$sequence_abundance_table <- na.omit(table$sequence_abundance_table)
+  } else if (("sequence_data" %in% tags) && !("sequence_data" %in% names)) {
+    abort_missing_tag_alert("sequence_data")
   }
-
 
   if (length(bin_data_names) != 0) {
     if (!ht || ("bin_data" %in% tags)) {
@@ -98,17 +99,21 @@ import <- function(table, tags = NULL) {
         } else {
           b <- paste0(type, "_bin_abundance_table")
 
-          matched_indices <- match(
-            table[[b]]$bin_ids,
-            table[[bt]]$bin_ids
-          )
+          if (b %in% names) {
+            matched_indices <- match(
+              table[[b]]$bin_ids,
+              table[[bt]]$bin_ids
+            )
 
-          # filter bins from _bin_abundance_table
-          table[[b]]$bin_ids <- table[[bt]]$bin_ids[matched_indices]
-          table[[b]] <- na.omit(table[[b]])
+            # filter bins from _bin_abundance_table
+            table[[b]]$bin_ids <- table[[bt]]$bin_ids[matched_indices]
+            table[[b]] <- na.omit(table[[b]])
+          }
         }
       }
     }
+  } else if ("bin_data" %in% tags) {
+    abort_missing_tag_alert("bin_data")
   }
 
   # look at sequence_data
@@ -237,11 +242,15 @@ import <- function(table, tags = NULL) {
   # add metadata
   if (("metadata" %in% names) && (!ht || ("metadata" %in% tags))) {
     dataset$add_metadata(table$metadata)
+  } else if (("metadata" %in% tags) && !("metadata" %in% names)) {
+    abort_missing_tag_alert("metadata")
   }
 
   # add references
   if (("references" %in% names) && (!ht || ("references" %in% tags))) {
     dataset$add_references(table$references)
+  } else if (("references" %in% tags) && !("references" %in% names)) {
+    abort_missing_tag_alert("references")
   }
 
   # add alignment report
@@ -251,6 +260,8 @@ import <- function(table, tags = NULL) {
       table$alignment_report,
       attributes(table$alignment_report)$sequence_name_column
     )
+  } else if ((report %in% tags) && !(report %in% names)) {
+    abort_missing_tag_alert("alignment_report")
   }
 
   # add contigs report
@@ -260,16 +271,22 @@ import <- function(table, tags = NULL) {
       table$contigs_assembly_report,
       attributes(table$contigs_assembly_report)$sequence_name_column
     )
+  } else if ((report %in% tags) && !(report %in% names)) {
+    abort_missing_tag_alert("contigs_assembly_report")
   }
 
   # add sequence_tree
   if (("sequence_tree" %in% names) && (!ht || ("sequence_tree" %in% tags))) {
     dataset$add_sequence_tree(table$sequence_tree)
+  } else if (("sequence_tree" %in% tags) && !("sequence_tree" %in% names)) {
+    abort_missing_tag_alert("sequence_tree")
   }
 
   # add sample_tree
   if (("sample_tree" %in% names) && (!ht || ("sample_tree" %in% tags))) {
     dataset$add_sample_tree(table$sample_tree)
+  } else if (("sample_tree" %in% tags) && !("sample_tree" %in% names)) {
+    abort_missing_tag_alert("sample_tree")
   }
 
   dataset

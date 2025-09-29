@@ -13,7 +13,7 @@ set_bin_abundance(data, bin_names, abunds, reason = "update", type = "otu")
 \item{bin_names}{a vector strings containing of bin names to set the
 abundances for.}
 
-\item{abunds}{vector of integers containing the abundances of each bin.}
+\item{abunds}{vector containing the abundances of each bin.}
 
 \item{reason}{a string containing the trash tag to be applied to any bins
 set to 0 abundance. Default = "update".}

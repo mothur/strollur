@@ -11,7 +11,7 @@ get_sequence_abundances_by_sample(data)
 'Dataset' c++ class.}
 }
 \value{
-2D vector of integers ([num_seqs][num_samples]) containing the
+2D vector ([num_seqs][num_samples]) containing the
 abundances of each sequence in an instance of the 'Dataset' class parsed by
 sample.
 }

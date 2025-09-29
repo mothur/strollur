@@ -119,7 +119,7 @@ double add_sequences(Rcpp::XPtr<Dataset> data,
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
 //' @param bin_names a vector strings containing of bin labels
-//' @param abundances a vector of integers containing abundances. Note: You must
+//' @param abundances a vector containing bin abundances. Note: You must
 //'  provide either abundances or seq_ids.
 //' @param samples a vector of strings containing sample assignments
 //' @param sequence_names a vector of strings containing sequence names.
@@ -172,7 +172,7 @@ double add_sequences(Rcpp::XPtr<Dataset> data,
 //' @return double containing the number of bins assigned
 //[[Rcpp::export]]
 double assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
-                   vector<int> abundances, vector<string> samples,
+                   vector<float> abundances, vector<string> samples,
                    vector<string> sequence_names, string type = "otu") {
 
     double numBinsAssigned = 0;
@@ -192,7 +192,7 @@ double assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
         }
         // no abundances
         if (abundances.size() == 1) {
-            abundances = nullIntVector;
+            abundances = nullFloatVector;
         }
     }
 
@@ -217,7 +217,7 @@ double assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
     }
 
     // if you have list assignments, don't allow setting bin abundances
-    if (data.get()->hasListAssignments(type) && ((abundances != nullIntVector) ||
+    if (data.get()->hasListAssignments(type) && ((abundances != nullFloatVector) ||
         (samples != nullVector))) {
         string message = "[ERROR]: You cannot assign abundance and sample data";
         message += " to bins that have sequence assignments. This could cause ";
@@ -276,7 +276,7 @@ double assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names,
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
 //' @param sequence_names a vector of strings containing sequence names
-//' @param abundances a vector of integers containing sequence abundances
+//' @param abundances a vector containing sequence abundances
 //' @param samples a vector of strings containing sample assignments
 //' @param treatments a vector of strings containing treatment assignments
 //' @examples
@@ -297,7 +297,7 @@ double assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names,
 //[[Rcpp::export]]
 double assign_sequence_abundance(Rcpp::XPtr<Dataset> data,
                                vector<string>& sequence_names,
-                               vector<int>& abundances,
+                               vector<float>& abundances,
                                vector<string>& samples,
                                vector<string>& treatments) {
 
@@ -569,10 +569,9 @@ int get_bin_abundance(Rcpp::XPtr<Dataset> data,
 //'   assign_bins(dataset, bin_ids, abundances, samples, seq_ids)
 //'   get_bin_abundances(dataset, "bin1")
 //'
-//' @return vector of integers, containing the abundance of a given bin parsed
-//' by sample
+//' @return vector containing the abundance of a given bin parsed by sample
 //[[Rcpp::export]]
-vector<int> get_bin_abundances(Rcpp::XPtr<Dataset> data,
+vector<float> get_bin_abundances(Rcpp::XPtr<Dataset> data,
                        string bin_name, string type = "otu") {
     return data.get()->getBinAbundances(bin_name, type);
 }
@@ -800,7 +799,7 @@ Rcpp::DataFrame get_rabund(Rcpp::XPtr<Dataset> data, string type = "otu") {
 /******************************************************************************/
 //' @title get_rabund_vector
 //' @description
-//' Get vector of integers containing bin abundance data
+//' Get vector containing bin abundance data
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
 //' @param type a string indicating the type of bin assignments. Default "otu".
@@ -818,9 +817,9 @@ Rcpp::DataFrame get_rabund(Rcpp::XPtr<Dataset> data, string type = "otu") {
 //'
 //'   get_rabund_vector(dataset)
 //'
-//' @return vector of integers containing each bins abundance
+//' @return vector containing each bins abundance
 //[[Rcpp::export]]
-vector<int> get_rabund_vector(Rcpp::XPtr<Dataset> data, string type = "otu") {
+vector<float> get_rabund_vector(Rcpp::XPtr<Dataset> data, string type = "otu") {
     return data.get()->getRAbundVector(type);
 }
 /******************************************************************************/
@@ -860,10 +859,10 @@ vector<string> get_samples(Rcpp::XPtr<Dataset> data) {
 //' assign_bins(dataset, bin_ids, sample_abundances, samples, "")
 //' get_sample_totals(dataset)
 //'
-//' @return vector of integers containing the number of sequences in each
+//' @return vector containing the number of sequences in each
 //' sample in an instance of the 'Dataset' class.
 //[[Rcpp::export]]
-vector<int> get_sample_totals(Rcpp::XPtr<Dataset> data) {
+vector<double> get_sample_totals(Rcpp::XPtr<Dataset> data) {
    return data.get()->getSampleTotals();
 }
 /******************************************************************************/
@@ -924,10 +923,10 @@ Rcpp::DataFrame get_scrap_report(Rcpp::XPtr<Dataset> data,
 //' assign_sequence_abundance(dataset, names, abundances, samples, "")
 //' get_sequence_abundances(dataset)
 //'
-//' @return vector of integers containing the total abundance for each sequence
+//' @return vector containing the total abundance for each sequence
 //'  in the 'Dataset' class.
 //[[Rcpp::export]]
-vector<int> get_sequence_abundances(Rcpp::XPtr<Dataset> data) {
+vector<float> get_sequence_abundances(Rcpp::XPtr<Dataset> data) {
      return data.get()->getSequenceAbundances();
 }
 /******************************************************************************/
@@ -954,11 +953,11 @@ vector<int> get_sequence_abundances(Rcpp::XPtr<Dataset> data) {
 //' assign_sequence_abundance(dataset, names, abundances, samples, "")
 //' get_sequence_abundances_by_sample(dataset)
 //'
-//' @return 2D vector of integers ([num_seqs][num_samples]) containing the
+//' @return 2D vector ([num_seqs][num_samples]) containing the
 //' abundances of each sequence in an instance of the 'Dataset' class parsed by
 //' sample.
 //[[Rcpp::export]]
-vector<vector<int> > get_sequence_abundances_by_sample(Rcpp::XPtr<Dataset> data) {
+vector<vector<float> > get_sequence_abundances_by_sample(Rcpp::XPtr<Dataset> data) {
      return data.get()->getSeqsAbundsBySample();
 }
 /******************************************************************************/
@@ -1212,7 +1211,7 @@ Rcpp::DataFrame get_bin_assignments(Rcpp::XPtr<Dataset> data, string type = "otu
 /******************************************************************************/
 //' @title get_shared_vector
 //' @description
-//' Get 2D vector of integers containing bin abundance data by sample
+//' Get 2D vector containing bin abundance data by sample
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
 //' @param type a string indicating the type of bin assignments. Default "otu".
@@ -1234,10 +1233,10 @@ Rcpp::DataFrame get_bin_assignments(Rcpp::XPtr<Dataset> data, string type = "otu
 //'
 //'   get_shared_vector(dataset)
 //'
-//' @return 2D vector of integers ([num_bins][num_samples]) containing
+//' @return 2D vector ([num_bins][num_samples]) containing
 //' the abundances of each bin parsed by sample.
 //[[Rcpp::export]]
-vector<vector<int> > get_shared_vector(Rcpp::XPtr<Dataset> data, string type = "otu") {
+vector<vector<float> > get_shared_vector(Rcpp::XPtr<Dataset> data, string type = "otu") {
      return data.get()->getSharedVector(type);
 }
 /******************************************************************************/
@@ -1279,10 +1278,10 @@ vector<string> get_treatments(Rcpp::XPtr<Dataset> data) {
 //' assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
 //' get_treatment_totals(dataset)
 //'
-//' @return vector of integers containing the number of sequences in each
+//' @return vector containing the number of sequences in each
 //' treatment in an instance of the 'Dataset' class.
 //[[Rcpp::export]]
-vector<int> get_treatment_totals(Rcpp::XPtr<Dataset> data) {
+vector<double> get_treatment_totals(Rcpp::XPtr<Dataset> data) {
      return data.get()->getTreatmentTotals();
 }
 /******************************************************************************/
@@ -1501,7 +1500,7 @@ void remove_sequences(Rcpp::XPtr<Dataset> data,
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
 //' @param sequence_names a vector of strings containing sequence names
-//' @param sequence_abundances vector of integers containing the abundances of
+//' @param sequence_abundances vector containing the abundances of
 //' each sequence.
 //' @param reason a string containing the trash tag to be applied to any sequences
 //'  set to 0 abundance. Default = "update".
@@ -1522,7 +1521,7 @@ void remove_sequences(Rcpp::XPtr<Dataset> data,
 //'
 //[[Rcpp::export]]
 void set_abundance(Rcpp::XPtr<Dataset> data,
-                   vector<string> sequence_names, vector<int> sequence_abundances,
+                   vector<string> sequence_names, vector<float> sequence_abundances,
                    string reason = "update") {
 
     if (get_num_samples(data) == 0) {
@@ -1544,7 +1543,7 @@ void set_abundance(Rcpp::XPtr<Dataset> data,
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
 //' @param sequence_names a vector of strings containing sequence names
-//' @param abundances 2D vector of integers ([num_seqs][num_samples]) containing
+//' @param abundances 2D vector ([num_seqs][num_samples]) containing
 //' the abundances of each sequence parsed by sample.
 //' @param reason a string containing the trash tag to be applied to any sequences
 //'  set to 0 abundance. Default = "update".
@@ -1566,7 +1565,7 @@ void set_abundance(Rcpp::XPtr<Dataset> data,
 //'
 //[[Rcpp::export]]
 void set_abundances(Rcpp::XPtr<Dataset> data,
-                   vector<string> sequence_names, vector<vector<int>> abundances,
+                   vector<string> sequence_names, vector<vector<float>> abundances,
                    string reason = "update") {
     if (get_num_samples(data) != 0) {
         data.get()->setAbundances(sequence_names, abundances, reason);
@@ -1586,7 +1585,7 @@ void set_abundances(Rcpp::XPtr<Dataset> data,
 //'  'Dataset' c++ class.
 //' @param bin_names a vector strings containing of bin names to set the
 //' abundances for.
-//' @param abunds vector of integers containing the abundances of each bin.
+//' @param abunds vector containing the abundances of each bin.
 //' @param reason a string containing the trash tag to be applied to any bins
 //'  set to 0 abundance. Default = "update".
 //' @param type a string indicating the type of clusters. Default = "otu".
@@ -1605,7 +1604,7 @@ void set_abundances(Rcpp::XPtr<Dataset> data,
 //'
 //[[Rcpp::export]]
 void set_bin_abundance(Rcpp::XPtr<Dataset> data,
-                    vector<string> bin_names, vector<int> abunds,
+                    vector<string> bin_names, vector<float> abunds,
                     string reason = "update", string type = "otu") {
 
     if (data.get()->hasListAssignments(type)) {
@@ -1632,7 +1631,7 @@ void set_bin_abundance(Rcpp::XPtr<Dataset> data,
 //'  'Dataset' c++ class.
 //' @param bin_names a vector strings containing of bin names to set the
 //' abundances for.
-//' @param abunds 2D vector of integers ([num_seqs][num_samples]) containing the
+//' @param abunds 2D vector ([num_seqs][num_samples]) containing the
 //' abundances of each bin parsed by sample.
 //' @param reason a string containing the trash tag to be applied to any bins
 //'  set to 0 abundance. Default = "update".
@@ -1657,7 +1656,7 @@ void set_bin_abundance(Rcpp::XPtr<Dataset> data,
 //'
 //[[Rcpp::export]]
 void set_bin_abundances(Rcpp::XPtr<Dataset> data,
-                     vector<string> bin_names, vector<vector<int>> abunds,
+                     vector<string> bin_names, vector<vector<float>> abunds,
                      string reason = "update", string type = "otu") {
 
     if (data.get()->hasListAssignments(type)) {

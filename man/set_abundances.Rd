@@ -12,7 +12,7 @@ set_abundances(data, sequence_names, abundances, reason = "update")
 
 \item{sequence_names}{a vector of strings containing sequence names}
 
-\item{abundances}{2D vector of integers ([num_seqs][num_samples]) containing
+\item{abundances}{2D vector ([num_seqs][num_samples]) containing
 the abundances of each sequence parsed by sample.}
 
 \item{reason}{a string containing the trash tag to be applied to any sequences

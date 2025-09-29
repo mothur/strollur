@@ -17,6 +17,8 @@
 
 using namespace std;
 
+const float EPSILON = 0.00001f;
+
 /**********************************************************************/
 static inline bool isacgt(char c) {
     return c == 'A' || c == 'C' || c == 'G' || c == 'T';
@@ -28,6 +30,14 @@ static bool inline isgap(char c) {
 
 static bool inline setContains(const set<string>& t, string tag) {
     return (t.find(tag) != t.end());
+}
+
+static bool inline isZero(const float& t) {
+    return ((fabs(t - 0.0f)) < EPSILON);
+}
+
+static bool inline isEqual(const float& t, const float value) {
+    return (isZero(t-value));
 }
 /**********************************************************************/
 struct pieceOfWork {

@@ -39,12 +39,12 @@ public:
 	PhyloTree();
 	~PhyloTree() = default;
 
-	int addSeqToTree(string, int);
+	int addSeqToTree(string, float);
 	TaxNode get(int seqIndex);
 
 	TaxNode getRoot()       {   return tree[0];     }
 	int getMaxLevel()		{	return maxLevel;	}
-	int getNumSeqs()		{	return numSeqs;		}
+	float getNumSeqs()		{	return numSeqs;		}
 	int getNumNodes()		{	return (int)tree.size();	}
 
 private:
@@ -53,7 +53,7 @@ private:
 	vector<TaxNode> tree;
 
  	int numNodes;
-	int numSeqs;
+	float numSeqs;
 	int maxLevel;
 };
 

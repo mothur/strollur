@@ -12,7 +12,7 @@ assign_bins(data, bin_names, abundances, samples, sequence_names, type = "otu")
 
 \item{bin_names}{a vector strings containing of bin labels}
 
-\item{abundances}{a vector of integers containing abundances. Note: You must
+\item{abundances}{a vector containing bin abundances. Note: You must
 provide either abundances or seq_ids.}
 
 \item{samples}{a vector of strings containing sample assignments}

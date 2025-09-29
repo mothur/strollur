@@ -16,17 +16,17 @@ Summary::Summary(int p) {
     numUniques = 0;
 }
 //**************************************************************************
-vector<long long> Summary::getDefaults() {
-        vector<long long> locations;
+vector<double> Summary::getDefaults() {
+        vector<double> locations;
 
         //number of sequences at 2.5%
-        long long ptile0_25	= 1+(long long)(total * 0.025);
+        double ptile0_25	= 1+(total * 0.025);
         //number of sequences at 25%
-        long long ptile25		= 1+(long long)(total * 0.250);
-        long long ptile50		= 1+(long long)(total * 0.500);
-        long long ptile75		= 1+(long long)(total * 0.750);
-        long long ptile97_5	= 1+(long long)(total * 0.975);
-        long long ptile100	= (long long)(total);
+        double ptile25		= 1+(total * 0.250);
+        double ptile50		= 1+(total * 0.500);
+        double ptile75		= 1+(total * 0.750);
+        double ptile97_5	    = 1+(total * 0.975);
+        double ptile100	    = (total);
 
         locations.push_back(1);
         locations.push_back(ptile0_25);
@@ -39,11 +39,11 @@ vector<long long> Summary::getDefaults() {
         return locations;
 }
 //**************************************************************************
-vector<double> Summary::getValues(map<double, long long>& positions) {
-        vector<long long> defaults = getDefaults();
+vector<double> Summary::getValues(map<double, double>& positions) {
+        vector<double> defaults = getDefaults();
         vector<double> results; results.resize(7,0);
-        long long meanPosition; meanPosition = 0;
-        long long totalSoFar = 0;
+        double meanPosition; meanPosition = 0;
+        double totalSoFar = 0;
         double lastValue = 0;
 
         //minimum
@@ -57,7 +57,7 @@ vector<double> Summary::getValues(map<double, long long>& positions) {
 
         for (auto it = positions.begin(); it != positions.end(); it++) {
 
-            float value = it->first; if (value == -1) { value = 0; }
+            float value = it->first; if (isEqual(value, -1)) { value = 0; }
             meanPosition += (value*it->second);
             totalSoFar += it->second;
 
@@ -100,9 +100,9 @@ vector<double> Summary::getValues(map<double, long long>& positions) {
 struct seqSumData {
     // "starts" -> (position -> number of seqs with that start position)
     // "ends" -> (position -> number of seqs with that end position)
-    map<string, map<double, long long> > results;
+    map<string, map<double, double> > results;
 
-    vector<int> counts; // abundances for each read, all ones if no count info
+    vector<float> counts; // abundances for each read, all ones if no count info
     vector<vector<double>> report;
     vector<vector<int>> fastaReport;
     vector<string> columnNames;
@@ -115,7 +115,7 @@ struct seqSumData {
         end = 0;
     }
     // fasta summary constructor
-    seqSumData(vector<vector<int>>& f, double st, double en, vector<int> nam,
+    seqSumData(vector<vector<int>>& f, double st, double en, vector<float> nam,
                vector<string> cn) {
         fastaReport = f;
         start = st;
@@ -126,7 +126,7 @@ struct seqSumData {
 
     // contigs and align summary constructor
     seqSumData(vector<vector<double>>& f, double st, double en,
-               vector<int> nam, vector<string> cn) {
+               vector<float> nam, vector<string> cn) {
         report = f;
         start = st;
         end = en;
@@ -136,24 +136,19 @@ struct seqSumData {
 };
 //**************************************************************************
 Rcpp::DataFrame Summary::summarizeFasta(vector<vector<int>> report,
-                                  vector<int> counts) {
+                                  vector<float> counts) {
         numUniques = counts.size();
         total = numUniques;
         if (counts.size() != 0) {
-            int initial_sum = 0;
+            float initial_sum = 0;
             total = accumulate(counts.begin(), counts.end(), initial_sum);
         }else {
             counts.resize(numUniques, 1);
         }
 
         createThreadsFasta(report, counts);
-
-         // can't pass long long, convert to string
-         vector<long long> numSeqs = getDefaults();
-         vector<string> wrappedNumSeqs(numSeqs.size()+1, "");
-         for (int i = 0; i < numSeqs.size(); i++) {
-             wrappedNumSeqs[i] = toString(numSeqs[i]);
-         }
+        vector<double> nseqs = getDefaults();
+        nseqs.push_back(0);
 
          Rcpp::DataFrame df = Rcpp::DataFrame::create(
              Rcpp::Named("starts") = getValues(results["starts"]),
@@ -162,7 +157,7 @@ Rcpp::DataFrame Summary::summarizeFasta(vector<vector<int>> report,
              Rcpp::_["ambigs"] = getValues(results["ambigs"]),
              Rcpp::_["polymers"] = getValues(results["polymers"]),
              Rcpp::_["numns"] = getValues(results["numns"]),
-             Rcpp::_["numseqs"] = wrappedNumSeqs);
+             Rcpp::_["numseqs"] = nseqs);
 
          vector<string> rowNames(8, "");
          rowNames[0] = "Minimum:";
@@ -190,7 +185,7 @@ void driverSummarize(seqSumData* params) {
         // for this processes section of the column
         for (int i = params->start; i < params->end; i++) {
 
-            int num = params->counts[i];
+            float num = params->counts[i];
 
             int thisValue = params->fastaReport[j][i];
             auto it = params->results[col].find(thisValue);
@@ -202,7 +197,7 @@ void driverSummarize(seqSumData* params) {
 }
 //**************************************************************************
 void Summary::createThreadsFasta(vector<vector<int>>& summary,
-                                 vector<int>& counts) {
+                                 vector<float>& counts) {
          //divide reads between processors
          Utils util;
         vector<pieceOfWork> startEndIndexes = util.divideWork(counts.size(),
@@ -257,11 +252,11 @@ void Summary::createThreadsFasta(vector<vector<int>>& summary,
         }
 }
 //**************************************************************************
-Rcpp::DataFrame Summary::summarize(Rcpp::DataFrame df, vector<int> counts,
+Rcpp::DataFrame Summary::summarize(Rcpp::DataFrame df, vector<float> counts,
                                    vector<string> dfNames) {
 
         numUniques = counts.size();
-        int initial_sum = 0;
+        float initial_sum = 0;
         total = accumulate(counts.begin(), counts.end(), initial_sum);
 
         // columns by rows
@@ -271,13 +266,6 @@ Rcpp::DataFrame Summary::summarize(Rcpp::DataFrame df, vector<int> counts,
         }
 
         createThreadsReport(report, counts, dfNames);
-
-        // can't pass long long, convert to string
-        vector<long long> numSeqs = getDefaults();
-        vector<string> wrappedNumSeqs(numSeqs.size()+1, "");
-        for (int i = 0; i < numSeqs.size(); i++) {
-            wrappedNumSeqs[i] = toString(numSeqs[i]);
-        }
 
         Rcpp::DataFrame summaryResult = Rcpp::DataFrame::create();
 
@@ -312,7 +300,7 @@ void driverReports(seqSumData* params) {
         // for this processes section of the column
         for (int i = params->start; i < params->end; i++) {
 
-            int num = params->counts[i];
+            float num = params->counts[i];
 
             double thisValue = params->report[j][i];
             auto it = params->results[col].find(thisValue);
@@ -324,7 +312,7 @@ void driverReports(seqSumData* params) {
 }
 //**************************************************************************
 void Summary::createThreadsReport(vector<vector<double>>& report,
-                                   vector<int>& counts, vector<string>& names) {
+                                   vector<float>& counts, vector<string>& names) {
          //divide reads between processors
          Utils util;
         vector<pieceOfWork> startEndIndexes = util.divideWork(counts.size(),

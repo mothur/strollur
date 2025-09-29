@@ -11,7 +11,7 @@ get_sequence_abundances(data)
 'Dataset' c++ class.}
 }
 \value{
-vector of integers containing the total abundance for each sequence
+vector containing the total abundance for each sequence
  in the 'Dataset' class.
 }
 \description{

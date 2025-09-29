@@ -1,8 +1,10 @@
 // Unit tests for Summary class
 
 #include <testthat.h>
+#include <cmath>
 #include "summary.h"
 #include "utils.h"
+#include "dataset.h"
 
 context("Summary class C++ unit tests") {
 
@@ -23,7 +25,7 @@ context("Summary class C++ unit tests") {
         report.push_back(dpolymers);
         report.push_back(dnumns);
 
-        vector<int> counts(6, 0);
+        vector<float> counts(6, 0);
         counts[0] = 1;
         counts[1] = 10;
         counts[2] = 15;
@@ -40,7 +42,7 @@ context("Summary class C++ unit tests") {
         Rcpp::NumericVector ambigs = results["ambigs"];
         Rcpp::NumericVector nbases = results["nbases"];
         Rcpp::NumericVector polymers = results["polymers"];
-        Rcpp::StringVector numseqs = results["numseqs"];
+        Rcpp::NumericVector numseqs = results["numseqs"];
 
         // minimum
         expect_true(starts[0] == 1);
@@ -68,16 +70,16 @@ context("Summary class C++ unit tests") {
         expect_true(polymers[4] == 3);
 
         // Median
-        expect_true(numseqs[3] == 25);
+        expect_true(floor(numseqs[3]) == 25);
         // 97.5%
-        expect_true(numseqs[5] == 47);
+        expect_true(floor(numseqs[5]) == 47);
         // maximum
-        expect_true(numseqs[6] == 48);
+        expect_true(floor(numseqs[6]) == 48);
 
         delete summary;
 
         // multi thread
-        summary = new Summary(10);
+        summary = new Summary(2);
 
         results = summary->summarizeFasta(report, counts);
         starts = results["starts"];
@@ -108,11 +110,11 @@ context("Summary class C++ unit tests") {
         expect_true(polymers[4] == 3);
 
         // Median
-        expect_true(numseqs[3] == 25);
+        expect_true(floor(numseqs[3]) == 25);
         // 97.5%
-        expect_true(numseqs[5] == 47);
+        expect_true(floor(numseqs[5]) == 47);
         // maximum
-        expect_true(numseqs[6] == 48);
+        expect_true(floor(numseqs[6]) == 48);
 
         delete summary;
     }

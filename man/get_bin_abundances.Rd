@@ -15,8 +15,7 @@ get_bin_abundances(data, bin_name, type = "otu")
 \item{type, }{string indicating the type of clusters. Default = "otu".}
 }
 \value{
-vector of integers, containing the abundance of a given bin parsed
-by sample
+vector containing the abundance of a given bin parsed by sample
 }
 \description{
 Get the abundance of a given bin parsed by sample in an instance of the

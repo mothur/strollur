@@ -22,7 +22,7 @@ test_that("sequence_data - intialize from read_mothur / print", {
   expect_equal(dataset$get_num_bins("asv"), 2425)
 
   seqs_summary <- dataset$get_sequence_summary()[["sequence_summary"]]
-
+  print(dataset$get_sequence_summary())
   expect_equal(seqs_summary$starts[1], 1)
   expect_equal(seqs_summary$ends[1], 375)
   expect_equal(seqs_summary$ambigs[2], 0)
@@ -1088,13 +1088,13 @@ test_that("sequence_data - get_sequence_summary,", {
 
   summary <- dataset$get_sequence_summary()
 
-  expect_equal(summary$contigs_summary$MisMatches, c(0, 0, 0, 1, 2, 7, 7, 2))
+  expect_equal(summary$contigs_summary$MisMatches, c(0, 0, 1, 2, 7, 7, 7, 2))
   expect_equal(summary$contigs_summary$Overlap_End, rep(251, 8))
   expect_equal(summary$contigs_summary$Length[1], 252)
   expect_equal(summary$contigs_summary$Length[7], 253)
 
   expect_equal(summary$alignment_summary$QueryLength, c(
-    252, 252, 252, 253,
+    252, 252, 253, 253,
     253, 253, 253, 252.6
   ))
   expect_equal(summary$alignment_summary$GapsInQuery, rep(0, 8))

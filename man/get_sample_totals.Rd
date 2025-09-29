@@ -11,7 +11,7 @@ get_sample_totals(data)
 'Dataset' c++ class.}
 }
 \value{
-vector of integers containing the number of sequences in each
+vector containing the number of sequences in each
 sample in an instance of the 'Dataset' class.
 }
 \description{

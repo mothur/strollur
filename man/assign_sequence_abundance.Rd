@@ -18,7 +18,7 @@ assign_sequence_abundance(
 
 \item{sequence_names}{a vector of strings containing sequence names}
 
-\item{abundances}{a vector of integers containing sequence abundances}
+\item{abundances}{a vector containing sequence abundances}
 
 \item{samples}{a vector of strings containing sample assignments}
 

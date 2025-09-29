@@ -11,7 +11,7 @@ PhyloTree::PhyloTree(){
 	addSeqToTree("unknown;", 1);
 }
 /******************************************************************************/
-int PhyloTree::addSeqToTree(string seqTaxonomy, int numReps){
+int PhyloTree::addSeqToTree(string seqTaxonomy, float numReps){
 
     numSeqs += numReps;
 
