@@ -25,8 +25,7 @@ import <- function(table, tags = NULL) {
     message <- paste0(
       "[ERROR]: Unable to create 'sequence_data' object. ",
       "The table was created with rdataset version ",
-      attributes(table)$rdataset_version,
-      " and you are running rdataset version ",
+      table_version, " and you are running rdataset version ",
       utils::packageVersion("rdataset"), "."
     )
     cli::cli_abort(message)
@@ -163,73 +162,73 @@ import <- function(table, tags = NULL) {
         # with sequence assignments         or  without sequence assignments
         # label+"_sequence_bin_assignments" or label+"_bin_abundance_table"
 
-        if (has_sequence_data) {
-          sequence_bin_assignments <- paste0(
-            type,
-            "_sequence_bin_assignments"
-          )
+        sequence_bin_assignments <- paste0(type, "_sequence_bin_assignments")
+        otu_bin_abund_table <- paste0(type, "_bin_abundance_table")
 
-          # create bin_names from bin_ids
-          m_indices <- match(
-            table[[sequence_bin_assignments]]$bin_ids,
-            table[[bin_type]]$bin_ids
-          )
-
-          bin_names <- table[[bin_type]]$bin_names[m_indices]
-
-          # create sequence_names from sequence_ids
-          m_indices <- match(
-            table[[sequence_bin_assignments]]$sequence_ids,
-            table$sequence_data$sequence_ids
-          )
-
-          sequence_names <- table$sequence_data$sequence_names[m_indices]
-
-          dataset$assign_bins(
-            bin_names = bin_names,
-            sequence_names = sequence_names,
-            type = type
-          )
-        } else {
-          otu_bin_abund_table <- paste0(type, "_bin_abundance_table")
-
-          if (otu_bin_abund_table %in% names) {
+        # only abundance data
+        if (otu_bin_abund_table %in% names) {
             otu_bin_abund_names <- names(table[[otu_bin_abund_table]])
 
             # create bin_names from bin_ids
             m_indices <- match(
-              table[[otu_bin_abund_table]]$bin_ids,
-              table[[bin_type]]$bin_ids
+                table[[otu_bin_abund_table]]$bin_ids,
+                table[[bin_type]]$bin_ids
             )
 
             bin_names <- table[[bin_type]]$bin_names[m_indices]
 
             # bin_id, abund, sample(optional), treatment(optional)
             if ("samples" %in% otu_bin_abund_names) {
-              dataset$assign_bins(
-                bin_names = bin_names,
-                abundances = table[[otu_bin_abund_table]]$abundances,
-                samples = table[[otu_bin_abund_table]]$samples,
-                type = type
-              )
+                dataset$assign_bins(
+                    bin_names = bin_names,
+                    abundances = table[[otu_bin_abund_table]]$abundances,
+                    samples = table[[otu_bin_abund_table]]$samples,
+                    type = type
+                )
             } else {
-              dataset$assign_bins(
-                bin_names = bin_names,
-                abundances = table[[otu_bin_abund_table]]$abundances,
-                type = type
-              )
+                dataset$assign_bins(
+                    bin_names = bin_names,
+                    abundances = table[[otu_bin_abund_table]]$abundances,
+                    type = type
+                )
             }
 
             if ("treatments" %in% otu_bin_abund_names) {
-              dataset$assign_treatments(table[[otu_bin_abund_table]])
+                dataset$assign_treatments(table[[otu_bin_abund_table]])
             }
-          } else {
-            dataset$assign_bins(
-              bin_names = table[[bin_type]]$bin_names,
-              abundances = table[[bin_type]]$abundances,
-              type = type
+        }
+        # requested sequence_data and has sequence_data
+        else if ((sequence_bin_assignments %in% names) && has_sequence_data) {
+            # create bin_names from bin_ids
+            m_indices <- match(
+                table[[sequence_bin_assignments]]$bin_ids,
+                table[[bin_type]]$bin_ids
             )
-          }
+
+            bin_names <- table[[bin_type]]$bin_names[m_indices]
+
+            # create sequence_names from sequence_ids
+            m_indices <- match(
+                table[[sequence_bin_assignments]]$sequence_ids,
+                table$sequence_data$sequence_ids
+            )
+
+            sequence_names <- table$sequence_data$sequence_names[m_indices]
+
+            dataset$assign_bins(
+                bin_names = bin_names,
+                sequence_names = sequence_names,
+                type = type
+            )
+        }
+        # does not want sequence data,
+        # just bins and abundances
+        else {
+            dataset$assign_bins(
+                bin_names = table[[bin_type]]$bin_names,
+                abundances = table[[bin_type]]$abundances,
+                type = type
+            )
         }
 
         if ("taxonomies" %in% bin_data_names) {
