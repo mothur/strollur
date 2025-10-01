@@ -61,12 +61,16 @@ test_that("import - miseq_sop_example", {
   abunds <- c(1, 10, 100)
   bins <- c("otu1", "otu2", "otu3")
   dataset$add_alignment_report(
-      readr::read_tsv(rdataset_example("alignment_data.tsv"),
-                      col_names = TRUE, show_col_types = FALSE),
-                               "QueryName")
+    readr::read_tsv(rdataset_example("alignment_data.tsv"),
+      col_names = TRUE, show_col_types = FALSE
+    ),
+    "QueryName"
+  )
   dataset$add_contigs_assembly_report(
-      readr::read_tsv(rdataset_example("contigs_data.tsv"),
-                      col_names = TRUE, show_col_types = FALSE), "Name")
+    readr::read_tsv(rdataset_example("contigs_data.tsv"),
+      col_names = TRUE, show_col_types = FALSE
+    ), "Name"
+  )
   dataset$assign_bins(bin_names = bins, abundances = abunds)
 
   expect_equal(dataset$get_num_bins(), 3)
@@ -83,7 +87,6 @@ test_that("import - miseq_sop_example", {
   expect_equal(dataset2$get_num_sequences(), 111)
   expect_equal(dataset2$get_num_samples(), 0)
   expect_equal(dataset2$get_num_treatments(), 0)
-
 })
 
 test_that("import - no sequence data", {
@@ -122,41 +125,40 @@ test_that("import - no sequence data", {
 
   attr(table, "rdataset_version") <- "0.2.1"
   expect_error(import(table))
-
 })
 
 test_that("import - no bin data", {
-    # just shared and constax dataset
-    just_seqs <- read_mothur(
-        fasta = rdataset_example("final.fasta"),
-        count = rdataset_example("final.count_table"),
-        taxonomy = rdataset_example("final.taxonomy"),
-        design = rdataset_example("mouse.time.design"),
-        sequence_tree = rdataset_example("final.phylip.tre"),
-        dataset_name = "just_seqs"
-    )
+  # just shared and constax dataset
+  just_seqs <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    taxonomy = rdataset_example("final.taxonomy"),
+    design = rdataset_example("mouse.time.design"),
+    sequence_tree = rdataset_example("final.phylip.tre"),
+    dataset_name = "just_seqs"
+  )
 
-    expect_equal(just_seqs$get_num_bins("otu"), 0)
-    expect_equal(just_seqs$get_num_sequences(), 113963)
-    expect_equal(just_seqs$get_num_sequences(TRUE), 2425)
+  expect_equal(just_seqs$get_num_bins("otu"), 0)
+  expect_equal(just_seqs$get_num_sequences(), 113963)
+  expect_equal(just_seqs$get_num_sequences(TRUE), 2425)
 
-    table <- just_seqs$export()
+  table <- just_seqs$export()
 
-    dataset <- import(table)
+  dataset <- import(table)
 
-    expect_equal(dataset$get_num_bins("otu"), 0)
-    expect_equal(dataset$get_num_sequences(), 113963)
-    expect_equal(just_seqs$get_num_sequences(TRUE), 2425)
+  expect_equal(dataset$get_num_bins("otu"), 0)
+  expect_equal(dataset$get_num_sequences(), 113963)
+  expect_equal(just_seqs$get_num_sequences(TRUE), 2425)
 
-    expect_equal(dataset$get_dataset_name(), just_seqs$get_dataset_name())
+  expect_equal(dataset$get_dataset_name(), just_seqs$get_dataset_name())
 
-    expect_equal(dataset$get_num_sequences(), just_seqs$get_num_sequences())
-    expect_equal(dataset$get_num_treatments(), just_seqs$get_num_treatments())
-    expect_equal(dataset$get_num_samples(), just_seqs$get_num_samples())
-    expect_equal(length(dataset$get_sequence_names()), 2425)
+  expect_equal(dataset$get_num_sequences(), just_seqs$get_num_sequences())
+  expect_equal(dataset$get_num_treatments(), just_seqs$get_num_treatments())
+  expect_equal(dataset$get_num_samples(), just_seqs$get_num_samples())
+  expect_equal(length(dataset$get_sequence_names()), 2425)
 
-    expect_error(import(table, c("bin_data")))
-    expect_error(import(table, c("sample_tree")))
+  expect_error(import(table, c("bin_data")))
+  expect_error(import(table, c("sample_tree")))
 })
 
 test_that("import - errors and warnings", {

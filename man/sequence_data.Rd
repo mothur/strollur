@@ -33,6 +33,20 @@ dataset <- sequence_data$new("soil")
 
 
 ## ------------------------------------------------
+## Method `sequence_data$add_chimera_report`
+## ------------------------------------------------
+
+
+  dataset <- sequence_data$new("my_dataset")
+
+  chimera_report <- readr::read_tsv(
+  rdataset_example("chimera_report.tsv"),
+  col_names = TRUE, show_col_types = FALSE)
+
+  dataset$add_chimera_report(chimera_report, "Query")
+
+
+## ------------------------------------------------
 ## Method `sequence_data$add_contigs_assembly_report`
 ## ------------------------------------------------
 
@@ -270,6 +284,21 @@ dataset$assign_treatments(data = NULL, unique(samples), treatments)
 
 
 ## ------------------------------------------------
+## Method `sequence_data$get_chimera_report`
+## ------------------------------------------------
+
+
+  dataset <- sequence_data$new("my_dataset")
+
+  chimera_report <- readr::read_tsv(
+  rdataset_example("chimera.report.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+
+  dataset$add_chimera_report(chimera_report, "Query")
+  dataset$get_chimera_report()
+
+
+## ------------------------------------------------
 ## Method `sequence_data$get_bin_assignments`
 ## ------------------------------------------------
 
@@ -498,6 +527,7 @@ the class.}
 \item \href{#method-sequence_data-new}{\code{sequence_data$new()}}
 \item \href{#method-sequence_data-print}{\code{sequence_data$print()}}
 \item \href{#method-sequence_data-add_alignment_report}{\code{sequence_data$add_alignment_report()}}
+\item \href{#method-sequence_data-add_chimera_report}{\code{sequence_data$add_chimera_report()}}
 \item \href{#method-sequence_data-add_contigs_assembly_report}{\code{sequence_data$add_contigs_assembly_report()}}
 \item \href{#method-sequence_data-add_metadata}{\code{sequence_data$add_metadata()}}
 \item \href{#method-sequence_data-add_references}{\code{sequence_data$add_references()}}
@@ -512,6 +542,7 @@ the class.}
 \item \href{#method-sequence_data-clear}{\code{sequence_data$clear()}}
 \item \href{#method-sequence_data-export}{\code{sequence_data$export()}}
 \item \href{#method-sequence_data-get_alignment_report}{\code{sequence_data$get_alignment_report()}}
+\item \href{#method-sequence_data-get_chimera_report}{\code{sequence_data$get_chimera_report()}}
 \item \href{#method-sequence_data-get_bin_assignments}{\code{sequence_data$get_bin_assignments()}}
 \item \href{#method-sequence_data-get_bin_taxonomy_report}{\code{sequence_data$get_bin_taxonomy_report()}}
 \item \href{#method-sequence_data-get_contigs_assembly_report}{\code{sequence_data$get_contigs_assembly_report()}}
@@ -621,6 +652,43 @@ containing the sequence names.}
   align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
    col_names = TRUE, show_col_types = FALSE)
   dataset$add_alignment_report(align_report, "QueryName")
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-add_chimera_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-add_chimera_report}{}}}
+\subsection{Method \code{add_chimera_report()}}{
+Add chimera report for your dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$add_chimera_report(report, sequence_name_column)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{report}}{a data.frame containing chimeric sequence data about your
+dataset}
+
+\item{\code{sequence_name_column}}{a string containing the name of the column
+containing the sequence names.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+  dataset <- sequence_data$new("my_dataset")
+
+  chimera_report <- readr::read_tsv(
+  rdataset_example("chimera_report.tsv"),
+  col_names = TRUE, show_col_types = FALSE)
+
+  dataset$add_chimera_report(chimera_report, "Query")
 
 }
 \if{html}{\out{</div>}}
@@ -1282,7 +1350,8 @@ Remove 'all', 'metadata', 'references', 'alignment_report' or
 \item{\code{tags}}{a vector of strings containing the items you wish to clear.
 Options are 'sequence_data', 'bin_data', 'metadata',
 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
-'contigs_assembly_report'. By default, everything is cleared.}
+'contigs_assembly_report' and '"'chimera_report'. By default, everything
+ is cleared.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1303,8 +1372,8 @@ export will create a list containing the data in the dataset.
 Options are 'sequence_data', 'sequence_report',
 'sequence_abundance_table','sequence_bin_assignments', 'bin_data',
 'bin_abundance_table', 'metadata', 'references', 'sequence_tree',
-'sample_tree', 'alignment_report', 'contigs_assembly_report'.
- By default, everything is exported.}
+'sample_tree', 'alignment_report', 'contigs_assembly_report' and
+'chimera_report'. By default, everything is exported.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1342,6 +1411,36 @@ data.frame
    col_names = TRUE, show_col_types = FALSE)
   dataset$add_alignment_report(align_report, "QueryName")
   dataset$get_alignment_report()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sequence_data-get_chimera_report"></a>}}
+\if{latex}{\out{\hypertarget{method-sequence_data-get_chimera_report}{}}}
+\subsection{Method \code{get_chimera_report()}}{
+Get data.frame containing the chimera report data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sequence_data$get_chimera_report()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+  dataset <- sequence_data$new("my_dataset")
+
+  chimera_report <- readr::read_tsv(
+  rdataset_example("chimera.report.tsv"),
+   col_names = TRUE, show_col_types = FALSE)
+
+  dataset$add_chimera_report(chimera_report, "Query")
+  dataset$get_chimera_report()
 
 }
 \if{html}{\out{</div>}}

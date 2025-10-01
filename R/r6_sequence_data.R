@@ -47,6 +47,7 @@ sequence_data <- R6Class("sequence_data",
         private$references <- data.frame()
         private$metadata <- data.frame()
         private$alignment_data <- data.frame()
+        private$chimera_data <- data.frame()
         private$contigs_data <- data.frame()
         private$sequence_tree <- NULL
         private$processors <- processors
@@ -64,6 +65,7 @@ sequence_data <- R6Class("sequence_data",
         private$metadata <- dataset$get_metadata()
         private$references <- dataset$get_references()
         private$alignment_data <- dataset$get_alignment_report()
+        private$chimera_data <- dataset$get_chimera_report()
         private$contigs_data <- dataset$get_contigs_assembly_report()
         private$processors <- processors
         private$sequence_tree <- dataset$get_sequence_tree()
@@ -179,10 +181,87 @@ sequence_data <- R6Class("sequence_data",
               "sequence_name_column"
             ) <- sequence_name_column
           } else {
-            message <- paste("[WARNING]: Your alignment report does no",
+            message <- paste0("[WARNING]: Your alignment report does no",
               "t contain an entry for every sequence in",
               " your dataset, ignoring alignment report",
               ". Missing alignment report entries for: ",
+              paste(missing_seqs, collapse = ", "),
+              ".",
+              collapse = ""
+            )
+            cli_alert(message)
+          }
+        }
+      }
+
+      invisible(self)
+    },
+
+    #' @description
+    #' Add chimera report for your dataset
+    #' @param report a data.frame containing chimeric sequence data about your
+    #' dataset
+    #' @param sequence_name_column a string containing the name of the column
+    #' containing the sequence names.
+    #' @examples
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'
+    #'   chimera_report <- readr::read_tsv(
+    #'   rdataset_example("chimera_report.tsv"),
+    #'   col_names = TRUE, show_col_types = FALSE)
+    #'
+    #'   dataset$add_chimera_report(chimera_report, "Query")
+    #'
+    add_chimera_report = function(report, sequence_name_column) {
+      if (!is.data.frame(report)) {
+        abort_incorrect_type("data.frame", report)
+      }
+
+      if (!(sequence_name_column %in% names(report))) {
+        message <- paste0("[ERROR]: The chimera report must ",
+          "include a column containing sequence names. ",
+          sequence_name_column,
+          " is not a named column in your chimera report.",
+          collapse = ""
+        )
+        cli::cli_abort(message)
+      } else {
+        # no sequence data yet, add the sequences
+        if (self$get_num_sequences() == 0) {
+          self$add_sequences(sequence_names = report[[sequence_name_column]])
+          private$chimera_data <- report
+          # save name column
+          attr(
+            private$chimera_data,
+            "sequence_name_column"
+          ) <- sequence_name_column
+        } else {
+          # seqs in dataset and not in report
+          missing_seqs <- setdiff(
+            self$get_sequence_names(),
+            report[[sequence_name_column]]
+          )
+
+          # make sure there is a report entry for each sequence in dataset
+          if (length(missing_seqs) == 0) {
+            # preserve order of dataset
+            private$chimera_data <- report[order(
+              match(
+                report[[sequence_name_column]],
+                self$get_sequence_names()
+              )
+            ), ]
+            # save name column
+            attr(
+              private$chimera_data,
+              "sequence_name_column"
+            ) <- sequence_name_column
+          } else {
+            message <- paste0("[WARNING]: Your chimera report ",
+              "does not contain an entry for every ",
+              "sequence in your dataset, ignoring. ",
+              "Missing chimera report entries for: ",
               paste(missing_seqs, collapse = ", "),
               ".",
               collapse = ""
@@ -214,7 +293,7 @@ sequence_data <- R6Class("sequence_data",
       }
 
       if (!(sequence_name_column %in% names(report))) {
-        message <- paste("[ERROR]: The contigs assembly report must ",
+        message <- paste0("[ERROR]: The contigs assembly report must ",
           "include a column containing sequence names. ",
           sequence_name_column,
           " is not a named column in your contigs_report.",
@@ -253,7 +332,7 @@ sequence_data <- R6Class("sequence_data",
               "sequence_name_column"
             ) <- sequence_name_column
           } else {
-            message <- paste("[WARNING]: Your contigs assembly report ",
+            message <- paste0("[WARNING]: Your contigs assembly report ",
               "does not contain an entry for every ",
               "sequence in your dataset, ignoring. ",
               "Missing contigs",
@@ -1133,7 +1212,8 @@ sequence_data <- R6Class("sequence_data",
     #' @param tags a vector of strings containing the items you wish to clear.
     #' Options are 'sequence_data', 'bin_data', 'metadata',
     #' 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
-    #' 'contigs_assembly_report'. By default, everything is cleared.
+    #' 'contigs_assembly_report' and '"'chimera_report'. By default, everything
+    #'  is cleared.
     clear = function(tags = NULL) {
       if (is.null(tags)) {
         tags <- ""
@@ -1144,6 +1224,7 @@ sequence_data <- R6Class("sequence_data",
         private$metadata <- data.frame()
         private$references <- data.frame()
         private$alignment_data <- data.frame()
+        private$chimera_data <- data.frame()
         private$contigs_data <- data.frame()
         private$sequence_tree <- NULL
         private$sample_tree <- NULL
@@ -1154,7 +1235,7 @@ sequence_data <- R6Class("sequence_data",
       valid_tags <- c(
         "sequence_data", "bin_data", "metadata", "references",
         "sequence_tree", "sample_tree", "alignment_report",
-        "contigs_assembly_report"
+        "contigs_assembly_report", "chimera_report"
       )
       for (tag in tags) {
         if (!(tag %in% valid_tags)) {
@@ -1170,6 +1251,9 @@ sequence_data <- R6Class("sequence_data",
       }
       if ("alignment_report" %in% tags) {
         private$alignment_data <- data.frame()
+      }
+      if ("chimera_report" %in% tags) {
+        private$chimera_data <- data.frame()
       }
       if ("contigs_assembly_report" %in% tags) {
         private$contigs_data <- data.frame()
@@ -1194,8 +1278,8 @@ sequence_data <- R6Class("sequence_data",
     #' Options are 'sequence_data', 'sequence_report',
     #' 'sequence_abundance_table','sequence_bin_assignments', 'bin_data',
     #' 'bin_abundance_table', 'metadata', 'references', 'sequence_tree',
-    #' 'sample_tree', 'alignment_report', 'contigs_assembly_report'.
-    #'  By default, everything is exported.
+    #' 'sample_tree', 'alignment_report', 'contigs_assembly_report' and
+    #' 'chimera_report'. By default, everything is exported.
     #' @examples
     #'     miseq <- miseq_sop_example()
     #'     table <- miseq$export()
@@ -1215,6 +1299,9 @@ sequence_data <- R6Class("sequence_data",
       }
       if (nrow(private$alignment_data) != 0) {
         results$alignment_report <- private$alignment_data
+      }
+      if (nrow(private$chimera_data) != 0) {
+        results$chimera_report <- private$chimera_data
       }
       if (nrow(private$contigs_data) != 0) {
         results$contigs_assembly_report <- private$contigs_data
@@ -1252,6 +1339,39 @@ sequence_data <- R6Class("sequence_data",
         # select alignment data for the "good" sequences
         df <- private$alignment_data[
           private$alignment_data[[name_col]] %in%
+            self$get_sequence_names(),
+        ]
+        # match order to sequences
+        return(as.data.frame(df[order(match(
+          df[[name_col]],
+          self$get_sequence_names()
+        )), ]))
+      }
+      data.frame()
+    },
+
+    #' @description
+    #' Get data.frame containing the chimera report data
+    #' @examples
+    #'
+    #'   dataset <- sequence_data$new("my_dataset")
+    #'
+    #'   chimera_report <- readr::read_tsv(
+    #'   rdataset_example("chimera.report.tsv"),
+    #'    col_names = TRUE, show_col_types = FALSE)
+    #'
+    #'   dataset$add_chimera_report(chimera_report, "Query")
+    #'   dataset$get_chimera_report()
+    #'
+    #' @return data.frame
+    get_chimera_report = function() {
+      # if there is alignment data
+      if (nrow(private$chimera_data) != 0) {
+        name_col <- attr(private$chimera_data, "sequence_name_column")
+
+        # select chimera data for the "good" sequences
+        df <- private$chimera_data[
+          private$chimera_data[[name_col]] %in%
             self$get_sequence_names(),
         ]
         # match order to sequences
@@ -1655,6 +1775,20 @@ sequence_data <- R6Class("sequence_data",
         }
       }
 
+      # if you have chimera data, then print
+      if (nrow(private$chimera_data) != 0) {
+        results[["chimera_summary"]] <- private$summarize(
+          self$get_chimera_report()
+        )
+
+        # if you have summary results to print
+        if (!silent) {
+          print(results[["chimera_summary"]])
+          cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
+          cat("Total seqs:\t", self$get_num_sequences(), "\n")
+        }
+      }
+
       # if you have summary results to print
       if (!all(self$get_sequences() == "") && (!silent)) {
         # if you have summary results to print
@@ -1811,6 +1945,7 @@ sequence_data <- R6Class("sequence_data",
     metadata = data.frame(),
     references = data.frame(),
     alignment_data = data.frame(),
+    chimera_data = data.frame(),
     contigs_data = data.frame(),
     sequence_tree = NULL,
     sample_tree = NULL,
@@ -1820,10 +1955,15 @@ sequence_data <- R6Class("sequence_data",
 
     # summarize numeric columns in a dataframe
     summarize = function(report) {
+      # remove any columns that are not numeric and any rows with NA values
+      name_col <- attr(report, "sequence_name_column")
+      report <- na.omit(report)
+      indexes <- which(report[[name_col]] %in% self$get_sequence_names())
+
       # rcpp function - calls summary.cpp
       report_summary <- summarize_reports(
         report[sapply(report, is.numeric)],
-        get_sequence_abundances(self$data),
+        get_sequence_abundances(self$data)[indexes],
         private$processors
       )
     },

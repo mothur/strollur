@@ -463,6 +463,10 @@ test_that("sequence_data - get_list get_rabund, get_bin_assignments", {
 
   expect_error(dataset$assign_bins(data = NULL))
   expect_error(dataset$assign_bins(data = NULL, bin_names = bin_ids))
+  expect_error(dataset$assign_bins(
+    data = NULL, bin_names = bin_ids,
+    sequence_names = c("not enough seqs")
+  ))
 
   dataset$assign_bins(
     bin_names = bin_ids,
@@ -1071,6 +1075,50 @@ test_that("sequence_data - add / get _contigs_assembly_report,", {
   dataset$add_sequences(sequence_names = c("seq6"))
   dataset$add_contigs_assembly_report(report, "Name")
   expect_equal(nrow(dataset$get_contigs_assembly_report()), 0)
+})
+
+test_that("sequence_data - add / get _chimera_report,", {
+  dataset <- sequence_data$new("my_dataset")
+
+  expect_equal(dataset$get_chimera_report(), data.frame())
+  expect_error(dataset$add_chimera_report(report = c("bad_type")))
+  expect_error(dataset$add_chimera_report(data.frame()))
+
+  report <- readr::read_tsv(rdataset_example("chimera_report.tsv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+  expect_error(dataset$add_chimera_report(report, "badName"))
+
+  dataset$add_chimera_report(report, "Query")
+
+  report <- dataset$get_chimera_report()
+
+  # random spot checks
+  expect_equal(nrow(report), 71)
+  expect_equal(report[, 2], dataset$get_sequence_names())
+  expect_equal(report[[8, 5]], 82.7)
+  expect_equal(report[[8, 17]], "N")
+  expect_equal(report[[67, 17]], "Y")
+
+  dataset$clear("chimera_report")
+  expect_equal(nrow(dataset$get_chimera_report()), 0)
+  expect_equal(dataset$get_num_sequences(), 71)
+  dataset$add_chimera_report(report, "Query")
+
+  report <- dataset$get_chimera_report()
+
+  expect_equal(nrow(report), 71)
+  expect_equal(report[, 2], dataset$get_sequence_names())
+
+  chimera_summary <- dataset$get_sequence_summary()
+
+  expect_equal(ncol(chimera_summary$chimera_summary), 13)
+
+  # no report added because of missing entries
+  dataset$clear("chimera_report")
+  dataset$add_sequences(sequence_names = c("seq6"))
+  dataset$add_chimera_report(report, "Query")
+  expect_equal(nrow(dataset$get_chimera_report()), 0)
 })
 
 test_that("sequence_data - get_sequence_summary,", {
