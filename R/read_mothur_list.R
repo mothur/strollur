@@ -15,8 +15,8 @@
 #'
 #' otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 #'
-#' dataset <- sequence_data$new()
-#' dataset$assign_bins(otu_data)
+#' data <- dataset$new()
+#' data$assign_bins(otu_data)
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export

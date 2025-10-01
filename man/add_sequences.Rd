@@ -30,5 +30,5 @@ Add sequence data to an instance of the 'Dataset' class
 
 }
 \seealso{
-[sequence_data$add_sequences()]
+[dataset$add_sequences()]
 }

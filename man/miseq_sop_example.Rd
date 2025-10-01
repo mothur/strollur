@@ -7,10 +7,10 @@
 miseq_sop_example()
 }
 \value{
-A 'sequence_data' object
+A 'dataset' object
 }
 \description{
-The miseq_sop_example function will create 'sequence_data' object using the
+The miseq_sop_example function will create 'dataset' object using the
 analysis files from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
 example.
 }

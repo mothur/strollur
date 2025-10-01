@@ -7,15 +7,15 @@
 save(dataset, file)
 }
 \arguments{
-\item{dataset}{a 'sequence_data' object}
+\item{dataset}{a 'dataset' object}
 
 \item{file}{a string containing the file name.}
 }
 \value{
-A file containing the 'sequence_data' object
+A file containing the 'dataset' object
 }
 \description{
-The save function will save the 'sequence_data' object to file.
+The save function will save the 'dataset' object to file.
 }
 \examples{
 

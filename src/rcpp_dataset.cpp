@@ -2,14 +2,12 @@
 #include "../inst/include/rdataset.h"
 #include "dataset.h"
 
-
-
 /******************************************************************************/
 //' @title new_dataset
 //' @description
 //' Create a pointer to an instance of the 'Dataset' c++ class.
 //'
-//' The 'Dataset' class is the c++ implementation of the R6 'sequence_data'
+//' The 'Dataset' class is the c++ implementation of the R6 'dataset'
 //' object. This class allows package developers access to additional
 //' functionality. 'Dataset' stores nucleotide sequences, abundance, sample and
 //' treatment assignments, taxonomic classifications, asv / otu clusters. It
@@ -27,7 +25,7 @@
 //'
 //' @returns Rcpp::XPtr<Dataset> pointer to an instance of the 'Dataset' c++
 //'  class.
-//' @seealso [sequence_data$new()]
+//' @seealso [dataset$new()]
 //[[Rcpp::export]]
 Rcpp::XPtr<Dataset> new_dataset(string dataset_name, int processors) {
     Dataset* data = new Dataset(dataset_name, processors);
@@ -38,7 +36,7 @@ Rcpp::XPtr<Dataset> new_dataset(string dataset_name, int processors) {
 //' @description
 //' Create a pointer to an instance of the 'Dataset' c++ class.
 //'
-//' The 'Dataset' class is the c++ implementation of the R6 'sequence_data'
+//' The 'Dataset' class is the c++ implementation of the R6 'dataset'
 //' object. This class allows package developers access to additional
 //' functionality. 'Dataset' stores nucleotide sequences, abundance, sample and
 //' treatment assignments, taxonomic classifications, asv / otu clusters. It
@@ -60,7 +58,7 @@ Rcpp::XPtr<Dataset> new_dataset(string dataset_name, int processors) {
 //'
 //' @returns Rcpp::XPtr<Dataset> pointer to an instance of the 'Dataset' c++
 //'  class.
-//' @seealso [sequence_data$new()]
+//' @seealso [dataset$new()]
 //[[Rcpp::export]]
 Rcpp::XPtr<Dataset> copy_dataset(Rcpp::XPtr<Dataset> dataset) {
     Dataset* data = new Dataset(*(dataset.get()));
@@ -81,7 +79,7 @@ Rcpp::XPtr<Dataset> copy_dataset(Rcpp::XPtr<Dataset> dataset) {
 //'  sequences <- read_fasta(rdataset_example("final.fasta"))
 //'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
 //'
-//' @seealso [sequence_data$add_sequences()]
+//' @seealso [dataset$add_sequences()]
 //' @return double containing the number of sequences added
 //[[Rcpp::export]]
 double add_sequences(Rcpp::XPtr<Dataset> data,
@@ -168,7 +166,7 @@ double add_sequences(Rcpp::XPtr<Dataset> data,
 //'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
 //'   assign_bins(dataset, bin_ids, abundances, samples, seq_ids, "otu")
 //'
-//' @seealso [sequence_data$assign_bins()]
+//' @seealso [dataset$assign_bins()]
 //' @return double containing the number of bins assigned
 //[[Rcpp::export]]
 double assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
@@ -252,7 +250,7 @@ double assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
 //' assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
 //' assign_bin_taxonomy(dataset, otu_data$bin_names, otu_data$taxonomies)
 //'
-//' @seealso [sequence_data$assign_bin_taxonomy()]
+//' @seealso [dataset$assign_bin_taxonomy()]
 //' @return double containing the number of bins assigned
 //[[Rcpp::export]]
 double assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names,
@@ -292,7 +290,7 @@ double assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names,
 //' dataset <- new_dataset("my_dataset", 4)
 //' assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
 //'
-//' @seealso [sequence_data$assign_sequence_abundance()]
+//' @seealso [dataset$assign_sequence_abundance()]
 //' @return double containing the number of sequences assigned
 //[[Rcpp::export]]
 double assign_sequence_abundance(Rcpp::XPtr<Dataset> data,
@@ -362,7 +360,7 @@ double assign_sequence_abundance(Rcpp::XPtr<Dataset> data,
 //' dataset <- new_dataset("my_dataset", 4)
 //' assign_sequence_taxonomy(dataset, sequence_names, taxonomies)
 //'
-//' @seealso [sequence_data$assign_sequence_taxonomy()]
+//' @seealso [dataset$assign_sequence_taxonomy()]
 //' @return double containing the number of sequences assigned
 //[[Rcpp::export]]
 double assign_sequence_taxonomy(Rcpp::XPtr<Dataset> data,
@@ -405,7 +403,7 @@ double assign_sequence_taxonomy(Rcpp::XPtr<Dataset> data,
 //' assign_sequence_abundance(dataset, names, abundances, samples, "")
 //' assign_treatments(dataset, unique(samples), treatments)
 //'
-//' @seealso [sequence_data$assign_treatments()]
+//' @seealso [dataset$assign_treatments()]
 //' @return double containing the number of bins assigned
 //[[Rcpp::export]]
 double assign_treatments(Rcpp::XPtr<Dataset> data, vector<string>& samples,

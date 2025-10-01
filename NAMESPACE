@@ -1,6 +1,6 @@
 
 # exports
-export(sequence_data)
+export(dataset)
 
 useDynLib(rdataset, .registration=TRUE)
 exportPattern("^[[:alpha:]]+")

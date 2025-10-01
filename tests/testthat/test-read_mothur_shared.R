@@ -7,7 +7,7 @@ test_that("test read_mothur_shared - errors", {
 test_that("test read_mothur_shared", {
   shared_data <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 
-  dataset <- sequence_data$new()
+  dataset <- dataset$new()
   dataset$assign_bins(shared_data)
 
   expect_equal(dataset$get_num_sequences(), 113963)

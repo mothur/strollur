@@ -1,7 +1,7 @@
-# sequence_data - intialize from read_mothur / print
+# dataset - intialize from read_mothur / print
 
     Code
-      waldo::compare(dataset$print(), dataset$print())
+      waldo::compare(dataset_t$print(), dataset_t$print())
     Output
       miseq_sop:
       

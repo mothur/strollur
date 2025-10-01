@@ -46,5 +46,5 @@ assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
 
 }
 \seealso{
-[sequence_data$assign_sequence_abundance()]
+[dataset$assign_sequence_abundance()]
 }

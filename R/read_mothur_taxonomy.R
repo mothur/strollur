@@ -14,8 +14,8 @@
 #'   "final.taxonomy"
 #' ))
 #'
-#' dataset <- sequence_data$new()
-#' dataset$assign_sequence_taxonomy(classification_data)
+#' data <- dataset$new()
+#' data$assign_sequence_taxonomy(classification_data)
 #'
 #' @return A data.frame containing the sequences names and sequences taxonomies.
 #' @export

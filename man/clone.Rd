@@ -4,23 +4,23 @@
 \alias{clone}
 \title{clone}
 \usage{
-clone(dataset)
+clone(data)
 }
 \arguments{
-\item{dataset}{a 'sequence_data' object}
+\item{data}{a 'dataset' object}
 }
 \value{
-A 'sequence_data' object
+A 'dataset' object
 }
 \description{
-The clone function will create a deep copy of 'sequence_data' object. Note:
-'sequence_data' is an R6 class with reference semantics and requires a deep
+The clone function will create a deep copy of 'dataset' object. Note:
+'dataset' is an R6 class with reference semantics and requires a deep
 copy.
 }
 \examples{
 # For dataset's including sequence data:
 
-dataset <- read_mothur(
+data <- read_mothur(
   fasta = rdataset_example("final.fasta"),
   count = rdataset_example("final.count_table"),
   taxonomy = rdataset_example("final.taxonomy"),
@@ -29,7 +29,7 @@ dataset <- read_mothur(
   dataset_name = "miseq_sop"
 )
 
-copy_dataset <- clone(dataset)
+copy_dataset <- clone(data)
 copy_dataset
 
 }

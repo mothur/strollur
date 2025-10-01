@@ -1,13 +1,13 @@
 #' @title clone
 #' @description
-#' The clone function will create a deep copy of 'sequence_data' object. Note:
-#' 'sequence_data' is an R6 class with reference semantics and requires a deep
+#' The clone function will create a deep copy of 'dataset' object. Note:
+#' 'dataset' is an R6 class with reference semantics and requires a deep
 #' copy.
-#' @param dataset a 'sequence_data' object
+#' @param data a 'dataset' object
 #' @examples
 #' # For dataset's including sequence data:
 #'
-#' dataset <- read_mothur(
+#' data <- read_mothur(
 #'   fasta = rdataset_example("final.fasta"),
 #'   count = rdataset_example("final.count_table"),
 #'   taxonomy = rdataset_example("final.taxonomy"),
@@ -16,11 +16,11 @@
 #'   dataset_name = "miseq_sop"
 #' )
 #'
-#' copy_dataset <- clone(dataset)
+#' copy_dataset <- clone(data)
 #' copy_dataset
 #'
-#' @return A 'sequence_data' object
+#' @return A 'dataset' object
 #' @export
-clone <- function(dataset) {
-  sequence_data$new(dataset = dataset)
+clone <- function(data) {
+  dataset$new(dataset = data)
 }

@@ -1,6 +1,6 @@
-# tests save of sequence_data object
+# tests save of dataset object
 
-test_that("clone - deep copy of sequence_data object", {
+test_that("clone - deep copy of dataset object", {
   temp <- read_mothur(
     fasta = rdataset_example("final.fasta"),
     count = rdataset_example("final.count_table"),

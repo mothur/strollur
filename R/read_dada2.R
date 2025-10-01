@@ -1,6 +1,6 @@
 #' @title read_dada2
 #' @description
-#' This function will read a dada2 sequence table and create a 'sequence_data'
+#' This function will read a dada2 sequence table and create a 'dataset'
 #' object. The dada2 sequence table is a 2D matrix containing the abundance
 #' counts by sample for each ASV. The sample names are stored as row names and
 #' the sequence nucleotide strings are stored as column names.
@@ -16,9 +16,9 @@
 #' # dim(seqtab)
 #' # [1]  20 293
 #'
-#' # dataset <- read_dada2(seqtab, "dada2")
+#' # data <- read_dada2(seqtab, "dada2")
 #' }
-#' @return A 'sequence_data' object
+#' @return A 'dataset' object
 #' @export
 read_dada2 <- function(sequence_table, dataset_name = "") {
   # generate sequence names
@@ -26,9 +26,9 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
   seq_names <- c(1:num_seqs)
   seq_names <- paste("seq_", seq_names, sep = "")
 
-  # create new sequence_data object
-  dataset <- sequence_data$new(dataset_name)
-  dataset$add_sequences(
+  # create new dataset object
+  data <- dataset$new(dataset_name)
+  data$add_sequences(
     sequence_names = seq_names,
     sequences = colnames(sequence_table),
     comments = rep("dada2", num_seqs)
@@ -51,6 +51,6 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
     index <- index + 1
   }
 
-  dataset$assign_sequence_abundance(data = NULL, names, abundances, samples)
-  dataset
+  data$assign_sequence_abundance(data = NULL, names, abundances, samples)
+  data
 }

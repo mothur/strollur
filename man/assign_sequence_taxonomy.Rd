@@ -36,5 +36,5 @@ assign_sequence_taxonomy(dataset, sequence_names, taxonomies)
 
 }
 \seealso{
-[sequence_data$assign_sequence_taxonomy()]
+[dataset$assign_sequence_taxonomy()]
 }

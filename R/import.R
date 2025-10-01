@@ -1,8 +1,8 @@
 #' @title import
 #' @description
-#' The import function will create a 'sequence_data' object from the exported
-#' table of a 'sequence_data' object.
-#' @param table a table containing the data from a 'sequence_data' object. You
+#' The import function will create a 'dataset' object from the exported
+#' table of a 'dataset' object.
+#' @param table a table containing the data from a 'dataset' object. You
 #' can create the table using 'export(dataset)'.
 #' @param tags a vector of strings containing the items you wish to export.
 #' Options are 'sequence_data', 'bin_data', 'metadata',
@@ -12,11 +12,11 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' dataset <- import(export(miseq))
-#' dataset
+#' data <- import(export(miseq))
+#' data
 #'
-#' @return A 'sequence_data' object
-#' @seealso [sequence_data$export()]
+#' @return A 'dataset' object
+#' @seealso [dataset$export()]
 #' @export
 import <- function(table, tags = NULL) {
   table_version <- attributes(table)$rdataset_version
@@ -24,7 +24,7 @@ import <- function(table, tags = NULL) {
   # check attributes for valid version
   if (utils::packageVersion("rdataset") != table_version) {
     message <- paste0(
-      "[ERROR]: Unable to create 'sequence_data' object. ",
+      "[ERROR]: Unable to create 'dataset' object. ",
       "The table was created with rdataset version ",
       table_version, " and you are running rdataset version ",
       utils::packageVersion("rdataset"), "."
@@ -34,7 +34,7 @@ import <- function(table, tags = NULL) {
 
   ht <- !(is.null(tags))
 
-  dataset <- sequence_data$new(name = attributes(table)$dataset_name)
+  data <- dataset$new(name = attributes(table)$dataset_name)
 
   names <- names(table)
   has_sequence_data <- FALSE
@@ -121,11 +121,11 @@ import <- function(table, tags = NULL) {
     sequence_data_names <- names(table$sequence_data)
 
     # "sequence_names", "sequences", "comments"
-    dataset$add_sequences(table$sequence_data)
+    data$add_sequences(table$sequence_data)
 
     # "sequence_names", "taxonomies"
     if ("taxonomies" %in% sequence_data_names) {
-      dataset$assign_sequence_taxonomy(table$sequence_data)
+      data$assign_sequence_taxonomy(table$sequence_data)
     }
 
     # look at sequence_abundance_table
@@ -139,7 +139,7 @@ import <- function(table, tags = NULL) {
       sequence_names <- table$sequence_data$sequence_names[matched_indices]
 
       # "sequence_names", "abundances", "samples", "treatments"
-      dataset$assign_sequence_abundance(
+      data$assign_sequence_abundance(
         data = NULL, sequence_names,
         table$sequence_abundance_table$abundances,
         table$sequence_abundance_table$samples,
@@ -180,14 +180,14 @@ import <- function(table, tags = NULL) {
 
           # bin_id, abund, sample(optional), treatment(optional)
           if ("samples" %in% otu_bin_abund_names) {
-            dataset$assign_bins(
+            data$assign_bins(
               bin_names = bin_names,
               abundances = table[[otu_bin_abund_table]]$abundances,
               samples = table[[otu_bin_abund_table]]$samples,
               type = type
             )
           } else {
-            dataset$assign_bins(
+            data$assign_bins(
               bin_names = bin_names,
               abundances = table[[otu_bin_abund_table]]$abundances,
               type = type
@@ -195,7 +195,7 @@ import <- function(table, tags = NULL) {
           }
 
           if ("treatments" %in% otu_bin_abund_names) {
-            dataset$assign_treatments(table[[otu_bin_abund_table]])
+            data$assign_treatments(table[[otu_bin_abund_table]])
           }
         } else if ((sequence_bin_assignments %in% names) && has_sequence_data) {
           # requested sequence_data and has sequence_data
@@ -216,7 +216,7 @@ import <- function(table, tags = NULL) {
 
           sequence_names <- table$sequence_data$sequence_names[m_indices]
 
-          dataset$assign_bins(
+          data$assign_bins(
             bin_names = bin_names,
             sequence_names = sequence_names,
             type = type
@@ -225,7 +225,7 @@ import <- function(table, tags = NULL) {
           # does not want sequence data,
           # just bins and abundances
 
-          dataset$assign_bins(
+          data$assign_bins(
             bin_names = table[[bin_type]]$bin_names,
             abundances = table[[bin_type]]$abundances,
             type = type
@@ -233,7 +233,7 @@ import <- function(table, tags = NULL) {
         }
 
         if ("taxonomies" %in% bin_data_names) {
-          dataset$assign_bin_taxonomy(table[[bin_type]], type = type)
+          data$assign_bin_taxonomy(table[[bin_type]], type = type)
         }
       }
     }
@@ -241,14 +241,14 @@ import <- function(table, tags = NULL) {
 
   # add metadata
   if (("metadata" %in% names) && (!ht || ("metadata" %in% tags))) {
-    dataset$add_metadata(table$metadata)
+    data$add_metadata(table$metadata)
   } else if (("metadata" %in% tags) && !("metadata" %in% names)) {
     abort_missing_tag_alert("metadata")
   }
 
   # add references
   if (("references" %in% names) && (!ht || ("references" %in% tags))) {
-    dataset$add_references(table$references)
+    data$add_references(table$references)
   } else if (("references" %in% tags) && !("references" %in% names)) {
     abort_missing_tag_alert("references")
   }
@@ -256,7 +256,7 @@ import <- function(table, tags = NULL) {
   # add alignment report
   report <- "alignment_report"
   if ((report %in% names) && (!ht || (report %in% tags))) {
-    dataset$add_alignment_report(
+    data$add_alignment_report(
       table$alignment_report,
       attributes(table$alignment_report)$sequence_name_column
     )
@@ -267,7 +267,7 @@ import <- function(table, tags = NULL) {
   # add chimera report
   report <- "chimera_report"
   if ((report %in% names) && (!ht || (report %in% tags))) {
-    dataset$add_chimera_report(
+    data$add_chimera_report(
       table$chimera_report,
       attributes(table$chimera_report)$sequence_name_column
     )
@@ -278,7 +278,7 @@ import <- function(table, tags = NULL) {
   # add contigs report
   report <- "contigs_assembly_report"
   if ((report %in% names) && (!ht || (report %in% tags))) {
-    dataset$add_contigs_assembly_report(
+    data$add_contigs_assembly_report(
       table$contigs_assembly_report,
       attributes(table$contigs_assembly_report)$sequence_name_column
     )
@@ -288,17 +288,17 @@ import <- function(table, tags = NULL) {
 
   # add sequence_tree
   if (("sequence_tree" %in% names) && (!ht || ("sequence_tree" %in% tags))) {
-    dataset$add_sequence_tree(table$sequence_tree)
+    data$add_sequence_tree(table$sequence_tree)
   } else if (("sequence_tree" %in% tags) && !("sequence_tree" %in% names)) {
     abort_missing_tag_alert("sequence_tree")
   }
 
   # add sample_tree
   if (("sample_tree" %in% names) && (!ht || ("sample_tree" %in% tags))) {
-    dataset$add_sample_tree(table$sample_tree)
+    data$add_sample_tree(table$sample_tree)
   } else if (("sample_tree" %in% tags) && !("sample_tree" %in% names)) {
     abort_missing_tag_alert("sample_tree")
   }
 
-  dataset
+  data
 }

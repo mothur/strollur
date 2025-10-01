@@ -7,7 +7,7 @@
 import(table, tags = NULL)
 }
 \arguments{
-\item{table}{a table containing the data from a 'sequence_data' object. You
+\item{table}{a table containing the data from a 'dataset' object. You
 can create the table using 'export(dataset)'.}
 
 \item{tags}{a vector of strings containing the items you wish to export.
@@ -17,19 +17,19 @@ Options are 'sequence_data', 'bin_data', 'metadata',
  imported.}
 }
 \value{
-A 'sequence_data' object
+A 'dataset' object
 }
 \description{
-The import function will create a 'sequence_data' object from the exported
-table of a 'sequence_data' object.
+The import function will create a 'dataset' object from the exported
+table of a 'dataset' object.
 }
 \examples{
 
 miseq <- miseq_sop_example()
-dataset <- import(export(miseq))
-dataset
+data <- import(export(miseq))
+data
 
 }
 \seealso{
-[sequence_data$export()]
+[dataset$export()]
 }

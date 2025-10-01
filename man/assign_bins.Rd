@@ -73,5 +73,5 @@ Add bin assignments to an instance of the 'Dataset' class.
 
 }
 \seealso{
-[sequence_data$assign_bins()]
+[dataset$assign_bins()]
 }

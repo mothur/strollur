@@ -29,8 +29,8 @@ otu_data <- read_mothur_cons_taxonomy(rdataset_example(
   "final.cons.taxonomy"
 ))
 
-dataset <- sequence_data$new()
-dataset$assign_bins(otu_data)
-dataset$assign_bin_taxonomy(otu_data)
+data <- dataset$new()
+data$assign_bins(otu_data)
+data$assign_bin_taxonomy(otu_data)
 
 }

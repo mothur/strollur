@@ -40,5 +40,5 @@ assign_treatments(dataset, unique(samples), treatments)
 
 }
 \seealso{
-[sequence_data$assign_treatments()]
+[dataset$assign_treatments()]
 }

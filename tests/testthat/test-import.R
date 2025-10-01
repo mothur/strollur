@@ -1,4 +1,4 @@
-# tests import of sequence_data object
+# tests import of dataset object
 
 test_that("import - miseq_sop_example", {
   # full dataset
@@ -24,62 +24,62 @@ test_that("import - miseq_sop_example", {
 
   expect_equal(sum(exported_miseq$sequence_data$include_sequence), 825)
 
-  dataset <- import(exported_miseq)
+  dataset_t <- import(exported_miseq)
 
-  expect_equal(dataset$get_dataset_name(), miseq$get_dataset_name())
-  expect_equal(dataset$get_num_sequences(TRUE), miseq$get_num_sequences(TRUE))
-  expect_equal(dataset$get_num_sequences(), miseq$get_num_sequences())
-  expect_equal(dataset$get_num_treatments(), miseq$get_num_treatments())
-  expect_equal(dataset$get_num_samples(), miseq$get_num_samples())
-  expect_equal(dataset$get_num_bins("otu"), miseq$get_num_bins("otu"))
+  expect_equal(dataset_t$get_dataset_name(), miseq$get_dataset_name())
+  expect_equal(dataset_t$get_num_sequences(TRUE), miseq$get_num_sequences(TRUE))
+  expect_equal(dataset_t$get_num_sequences(), miseq$get_num_sequences())
+  expect_equal(dataset_t$get_num_treatments(), miseq$get_num_treatments())
+  expect_equal(dataset_t$get_num_samples(), miseq$get_num_samples())
+  expect_equal(dataset_t$get_num_bins("otu"), miseq$get_num_bins("otu"))
   expect_equal(
-    dataset$get_num_bins("phylotype"),
+      dataset_t$get_num_bins("phylotype"),
     miseq$get_num_bins("phylotype")
   )
-  expect_equal(dataset$get_num_bins("asv"), miseq$get_num_bins("asv"))
+  expect_equal(dataset_t$get_num_bins("asv"), miseq$get_num_bins("asv"))
   expect_equal(
-    get_sample_totals(dataset$data),
+    get_sample_totals(dataset_t$data),
     get_sample_totals(miseq$data)
   )
   expect_equal(
-    get_treatment_totals(dataset$data),
+    get_treatment_totals(dataset_t$data),
     get_treatment_totals(miseq$data)
   )
 
   # only import bin data no sequences
-  dataset <- import(exported_miseq, c("bin_data"))
+  dataset_t <- import(exported_miseq, c("bin_data"))
 
   # abundances reflect the total abundance of the sequence in bin
-  expect_equal(dataset$get_rabund("asv")$abundance[1:3], c(7436, 6285, 5207))
+  expect_equal(dataset_t$get_rabund("asv")$abundance[1:3], c(7436, 6285, 5207))
   # no list, since no sequences
-  expect_equal(dataset$get_list("asv"), data.frame())
-  expect_equal(dataset$get_sequence_taxonomy_report(), data.frame())
+  expect_equal(dataset_t$get_list("asv"), data.frame())
+  expect_equal(dataset_t$get_sequence_taxonomy_report(), data.frame())
   # 303 bins x 6 tax levels
-  expect_equal(nrow(dataset$get_bin_taxonomy_report()), 1818)
+  expect_equal(nrow(dataset_t$get_bin_taxonomy_report()), 1818)
 
-  dataset <- sequence_data$new()
+  data <- dataset$new()
   abunds <- c(1, 10, 100)
   bins <- c("otu1", "otu2", "otu3")
-  dataset$add_alignment_report(
+  data$add_alignment_report(
     readr::read_tsv(rdataset_example("alignment_data.tsv"),
       col_names = TRUE, show_col_types = FALSE
     ),
     "QueryName"
   )
-  dataset$add_contigs_assembly_report(
+  data$add_contigs_assembly_report(
     readr::read_tsv(rdataset_example("contigs_data.tsv"),
       col_names = TRUE, show_col_types = FALSE
     ), "Name"
   )
-  dataset$assign_bins(bin_names = bins, abundances = abunds)
+  data$assign_bins(bin_names = bins, abundances = abunds)
 
-  expect_equal(dataset$get_num_bins(), 3)
-  expect_equal(dataset$get_num_sequences(TRUE), 5)
-  expect_equal(dataset$get_num_sequences(), 111)
-  expect_equal(dataset$get_num_samples(), 0)
-  expect_equal(dataset$get_num_treatments(), 0)
+  expect_equal(data$get_num_bins(), 3)
+  expect_equal(data$get_num_sequences(TRUE), 5)
+  expect_equal(data$get_num_sequences(), 111)
+  expect_equal(data$get_num_samples(), 0)
+  expect_equal(data$get_num_treatments(), 0)
 
-  table <- export(dataset)
+  table <- export(data)
   dataset2 <- import(table)
 
   expect_equal(dataset2$get_num_bins(), 3)

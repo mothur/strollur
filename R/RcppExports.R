@@ -5,7 +5,7 @@
 #' @description
 #' Create a pointer to an instance of the 'Dataset' c++ class.
 #'
-#' The 'Dataset' class is the c++ implementation of the R6 'sequence_data'
+#' The 'Dataset' class is the c++ implementation of the R6 'dataset'
 #' object. This class allows package developers access to additional
 #' functionality. 'Dataset' stores nucleotide sequences, abundance, sample and
 #' treatment assignments, taxonomic classifications, asv / otu clusters. It
@@ -23,7 +23,7 @@
 #'
 #' @returns Rcpp::XPtr<Dataset> pointer to an instance of the 'Dataset' c++
 #'  class.
-#' @seealso [sequence_data$new()]
+#' @seealso [dataset$new()]
 new_dataset <- function(dataset_name, processors) {
     .Call(`_rdataset_new_dataset`, dataset_name, processors)
 }
@@ -32,7 +32,7 @@ new_dataset <- function(dataset_name, processors) {
 #' @description
 #' Create a pointer to an instance of the 'Dataset' c++ class.
 #'
-#' The 'Dataset' class is the c++ implementation of the R6 'sequence_data'
+#' The 'Dataset' class is the c++ implementation of the R6 'dataset'
 #' object. This class allows package developers access to additional
 #' functionality. 'Dataset' stores nucleotide sequences, abundance, sample and
 #' treatment assignments, taxonomic classifications, asv / otu clusters. It
@@ -54,7 +54,7 @@ new_dataset <- function(dataset_name, processors) {
 #'
 #' @returns Rcpp::XPtr<Dataset> pointer to an instance of the 'Dataset' c++
 #'  class.
-#' @seealso [sequence_data$new()]
+#' @seealso [dataset$new()]
 copy_dataset <- function(dataset) {
     .Call(`_rdataset_copy_dataset`, dataset)
 }
@@ -73,7 +73,7 @@ copy_dataset <- function(dataset) {
 #'  sequences <- read_fasta(rdataset_example("final.fasta"))
 #'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
 #'
-#' @seealso [sequence_data$add_sequences()]
+#' @seealso [dataset$add_sequences()]
 #' @return double containing the number of sequences added
 add_sequences <- function(data, sequence_names, sequences, comments) {
     .Call(`_rdataset_add_sequences`, data, sequence_names, sequences, comments)
@@ -134,7 +134,7 @@ add_sequences <- function(data, sequence_names, sequences, comments) {
 #'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
 #'   assign_bins(dataset, bin_ids, abundances, samples, seq_ids, "otu")
 #'
-#' @seealso [sequence_data$assign_bins()]
+#' @seealso [dataset$assign_bins()]
 #' @return double containing the number of bins assigned
 assign_bins <- function(data, bin_names, abundances, samples, sequence_names, type = "otu") {
     .Call(`_rdataset_assign_bins`, data, bin_names, abundances, samples, sequence_names, type)
@@ -161,7 +161,7 @@ assign_bins <- function(data, bin_names, abundances, samples, sequence_names, ty
 #' assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
 #' assign_bin_taxonomy(dataset, otu_data$bin_names, otu_data$taxonomies)
 #'
-#' @seealso [sequence_data$assign_bin_taxonomy()]
+#' @seealso [dataset$assign_bin_taxonomy()]
 #' @return double containing the number of bins assigned
 assign_bin_taxonomy <- function(data, bin_names, taxonomies, type = "otu") {
     .Call(`_rdataset_assign_bin_taxonomy`, data, bin_names, taxonomies, type)
@@ -190,7 +190,7 @@ assign_bin_taxonomy <- function(data, bin_names, taxonomies, type = "otu") {
 #' dataset <- new_dataset("my_dataset", 4)
 #' assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
 #'
-#' @seealso [sequence_data$assign_sequence_abundance()]
+#' @seealso [dataset$assign_sequence_abundance()]
 #' @return double containing the number of sequences assigned
 assign_sequence_abundance <- function(data, sequence_names, abundances, samples, treatments) {
     .Call(`_rdataset_assign_sequence_abundance`, data, sequence_names, abundances, samples, treatments)
@@ -218,7 +218,7 @@ assign_sequence_abundance <- function(data, sequence_names, abundances, samples,
 #' dataset <- new_dataset("my_dataset", 4)
 #' assign_sequence_taxonomy(dataset, sequence_names, taxonomies)
 #'
-#' @seealso [sequence_data$assign_sequence_taxonomy()]
+#' @seealso [dataset$assign_sequence_taxonomy()]
 #' @return double containing the number of sequences assigned
 assign_sequence_taxonomy <- function(data, sequence_names, taxonomies) {
     .Call(`_rdataset_assign_sequence_taxonomy`, data, sequence_names, taxonomies)
@@ -249,7 +249,7 @@ assign_sequence_taxonomy <- function(data, sequence_names, taxonomies) {
 #' assign_sequence_abundance(dataset, names, abundances, samples, "")
 #' assign_treatments(dataset, unique(samples), treatments)
 #'
-#' @seealso [sequence_data$assign_treatments()]
+#' @seealso [dataset$assign_treatments()]
 #' @return double containing the number of bins assigned
 assign_treatments <- function(data, samples, treatments) {
     .Call(`_rdataset_assign_treatments`, data, samples, treatments)

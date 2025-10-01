@@ -16,9 +16,9 @@
 #'   "final.cons.taxonomy"
 #' ))
 #'
-#' dataset <- sequence_data$new()
-#' dataset$assign_bins(otu_data)
-#' dataset$assign_bin_taxonomy(otu_data)
+#' data <- dataset$new()
+#' data$assign_bins(otu_data)
+#' data$assign_bin_taxonomy(otu_data)
 #'
 #' @return A data.frame containing the bin names, bin abundances and bin
 #' taxonomies.

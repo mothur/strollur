@@ -17,7 +17,7 @@ Rcpp::XPtr<Dataset> pointer to an instance of the 'Dataset' c++
 \description{
 Create a pointer to an instance of the 'Dataset' c++ class.
 
-The 'Dataset' class is the c++ implementation of the R6 'sequence_data'
+The 'Dataset' class is the c++ implementation of the R6 'dataset'
 object. This class allows package developers access to additional
 functionality. 'Dataset' stores nucleotide sequences, abundance, sample and
 treatment assignments, taxonomic classifications, asv / otu clusters. It
@@ -37,5 +37,5 @@ dataset2 <- copy_dataset(dataset1)
 
 }
 \seealso{
-[sequence_data$new()]
+[dataset$new()]
 }

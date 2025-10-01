@@ -36,5 +36,5 @@ assign_bin_taxonomy(dataset, otu_data$bin_names, otu_data$taxonomies)
 
 }
 \seealso{
-[sequence_data$assign_bin_taxonomy()]
+[dataset$assign_bin_taxonomy()]
 }

@@ -1,6 +1,6 @@
 #' @title miseq_sop_example
 #' @description
-#' The miseq_sop_example function will create 'sequence_data' object using the
+#' The miseq_sop_example function will create 'dataset' object using the
 #' analysis files from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
 #' example.
 #'
@@ -8,10 +8,10 @@
 #'
 #' miseq_dataset <- miseq_sop_example()
 #'
-#' @return A 'sequence_data' object
+#' @return A 'dataset' object
 #' @export
 miseq_sop_example <- function() {
-  dataset <- read_mothur(
+  data <- read_mothur(
     fasta = rdataset_example("final.fasta"),
     count = rdataset_example("final.count_table"),
     taxonomy = rdataset_example("final.taxonomy"),
@@ -28,12 +28,12 @@ miseq_sop_example <- function() {
   metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
     col_names = TRUE, show_col_types = FALSE
   )
-  dataset$add_metadata(metadata)
+  data$add_metadata(metadata)
 
   reference <- readr::read_csv(rdataset_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  dataset$add_references(reference = reference)
+  data$add_references(reference = reference)
 
-  dataset
+  data
 }

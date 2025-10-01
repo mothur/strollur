@@ -1,6 +1,6 @@
-# tests clone of sequence_data object
+# tests clone of dataset object
 
-test_that("clone - deep copy of sequence_data object", {
+test_that("clone - deep copy of dataset object", {
   temp <- read_mothur(
     fasta = rdataset_example("final.fasta"),
     count = rdataset_example("final.count_table"),
@@ -12,14 +12,14 @@ test_that("clone - deep copy of sequence_data object", {
     dataset_name = "miseq_sop"
   )
 
-  dataset <- clone(temp)
+  data <- clone(temp)
 
-  expect_equal(dataset$get_dataset_name(), "miseq_sop")
-  expect_equal(dataset$get_num_sequences(TRUE), 2425)
-  expect_equal(dataset$get_num_sequences(), 113963)
-  expect_equal(dataset$get_num_treatments(), 2)
-  expect_equal(dataset$get_num_samples(), 19)
-  expect_equal(dataset$get_num_bins("otu"), 531)
-  expect_equal(dataset$get_num_bins("phylotype"), 63)
-  expect_equal(dataset$get_num_bins("asv"), 2425)
+  expect_equal(data$get_dataset_name(), "miseq_sop")
+  expect_equal(data$get_num_sequences(TRUE), 2425)
+  expect_equal(data$get_num_sequences(), 113963)
+  expect_equal(data$get_num_treatments(), 2)
+  expect_equal(data$get_num_samples(), 19)
+  expect_equal(data$get_num_bins("otu"), 531)
+  expect_equal(data$get_num_bins("phylotype"), 63)
+  expect_equal(data$get_num_bins("asv"), 2425)
 })

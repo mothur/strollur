@@ -7,7 +7,7 @@
 export(dataset, tags = NULL)
 }
 \arguments{
-\item{dataset}{a 'sequence_data' object}
+\item{dataset}{a 'dataset' object}
 
 \item{tags}{a vector of strings containing the items you wish to export.
 Options are 'sequence_data', 'bin_data', 'metadata',
@@ -28,5 +28,5 @@ table <- export(miseq)
 
 }
 \seealso{
-[sequence_data$export()]
+[dataset$export()]
 }

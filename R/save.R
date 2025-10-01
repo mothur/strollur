@@ -1,7 +1,7 @@
 #' @title save
 #' @description
-#' The save function will save the 'sequence_data' object to file.
-#' @param dataset a 'sequence_data' object
+#' The save function will save the 'dataset' object to file.
+#' @param dataset a 'dataset' object
 #' @param file a string containing the file name.
 #' @examples
 #'
@@ -16,11 +16,11 @@
 #'
 #' save(dataset, "miseq_sop.rds")
 #'
-#' @return A file containing the 'sequence_data' object
+#' @return A file containing the 'dataset' object
 #' @export
 save <- function(dataset, file) {
-  if (class(dataset)[1] != "sequence_data") {
-    abort_incorrect_type("sequence_data", dataset)
+  if (class(dataset)[1] != "dataset") {
+    abort_incorrect_type("dataset", dataset)
   }
 
   dataset$raw <- serialize(dataset$data)

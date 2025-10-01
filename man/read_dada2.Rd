@@ -12,10 +12,10 @@ read_dada2(sequence_table, dataset_name = "")
 \item{dataset_name}{A string containing a name for your dataset.}
 }
 \value{
-A 'sequence_data' object
+A 'dataset' object
 }
 \description{
-This function will read a dada2 sequence table and create a 'sequence_data'
+This function will read a dada2 sequence table and create a 'dataset'
 object. The dada2 sequence table is a 2D matrix containing the abundance
 counts by sample for each ASV. The sample names are stored as row names and
 the sequence nucleotide strings are stored as column names.
@@ -30,6 +30,6 @@ To generate the dada2 sequence table you can follow
 # dim(seqtab)
 # [1]  20 293
 
-# dataset <- read_dada2(seqtab, "dada2")
+# data <- read_dada2(seqtab, "dada2")
 }
 }

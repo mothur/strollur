@@ -9,8 +9,8 @@
 #'
 #' otu_data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
 #'
-#' dataset <- sequence_data$new()
-#' dataset$assign_bins(otu_data)
+#' data <- dataset$new()
+#' data$assign_bins(otu_data)
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export

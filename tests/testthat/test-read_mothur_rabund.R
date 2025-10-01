@@ -7,7 +7,7 @@ test_that("test read_mothur_rabund - errors", {
 test_that("test read_mothur_rabund", {
   data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
 
-  dataset <- sequence_data$new()
+  dataset <- dataset$new()
   dataset$assign_bins(data)
 
   expect_equal(dataset$get_num_sequences(), 2425)

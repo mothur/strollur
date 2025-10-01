@@ -1,9 +1,8 @@
-#' @title sequence_data
-#' @description 'sequence_data' is an R6 class that stores nucleotide sequences,
+#' @title dataset
+#' @description 'dataset' is an R6 class that stores nucleotide sequences,
 #' abundance, sample and treatment assignments, taxonomic classifications,
 #' asv / otu clusters and various reports. It is designed to facilitate data
 #' analysis across multiple R packages.
-#'
 #'
 #' @author Sarah Westcott, \email{swestcot@@umich.edu}
 #'
@@ -13,7 +12,7 @@
 #' @importFrom waldo compare
 #' @import cli
 #' @export
-sequence_data <- R6Class("sequence_data",
+dataset <- R6Class("dataset",
   public = list(
 
     #' @field data Rcpp::XPtr<Dataset> pointer to 'Dataset' c++ class. This
@@ -27,18 +26,18 @@ sequence_data <- R6Class("sequence_data",
     raw = NULL,
 
     #' @description
-    #' Create a new sequence dataset
+    #' Create a new dataset
     #' @param name String, name of dataset (optional)
     #' @param processors Integer, number of cores to use.
     #'  Default = all available
-    #' @param dataset a `sequence_data` object.
+    #' @param dataset a `dataset` object.
     #' @examples
     #'
     #' # to create an empty dataset, run the following:
     #'
-    #' dataset <- sequence_data$new("soil")
+    #' data <- dataset$new("soil")
     #'
-    #' @return A new `sequence_data` object.
+    #' @return A new `dataset` object.
     initialize = function(name = "",
                           processors = parallelly::availableCores(),
                           dataset = NULL) {
@@ -131,10 +130,10 @@ sequence_data <- R6Class("sequence_data",
     #' containing the sequence names.
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
-    #'   dataset$add_alignment_report(align_report, "QueryName")
+    #'   data$add_alignment_report(align_report, "QueryName")
     #'
     add_alignment_report = function(report, sequence_name_column) {
       if (!is.data.frame(report)) {
@@ -205,13 +204,13 @@ sequence_data <- R6Class("sequence_data",
     #' containing the sequence names.
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'
     #'   chimera_report <- readr::read_tsv(
     #'   rdataset_example("chimera_report.tsv"),
     #'   col_names = TRUE, show_col_types = FALSE)
     #'
-    #'   dataset$add_chimera_report(chimera_report, "Query")
+    #'   data$add_chimera_report(chimera_report, "Query")
     #'
     add_chimera_report = function(report, sequence_name_column) {
       if (!is.data.frame(report)) {
@@ -282,10 +281,10 @@ sequence_data <- R6Class("sequence_data",
     #' containing the sequence names.
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
-    #'   dataset$add_contigs_assembly_report(contigs_report, "Name")
+    #'   data$add_contigs_assembly_report(contigs_report, "Name")
     #'
     add_contigs_assembly_report = function(report, sequence_name_column) {
       if (!is.data.frame(report)) {
@@ -354,10 +353,10 @@ sequence_data <- R6Class("sequence_data",
     #' @param metadata a data.frame containing metadata about your dataset
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
-    #'   dataset$add_metadata(metadata)
+    #'   data$add_metadata(metadata)
     #'
     add_metadata = function(metadata) {
       if (!is.data.frame(metadata)) {
@@ -391,8 +390,8 @@ sequence_data <- R6Class("sequence_data",
     #' @examples
     #'
     #' # To add a single reference:
-    #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$add_references(reference_name = "silva.v4.fasta",
+    #' data <- dataset$new("my_dataset")
+    #' data$add_references(reference_name = "silva.v4.fasta",
     #' version = "1.38.1", usage = "alignment", note = "custom reference
     #'  created by trimming silva.bacteria.fasta to the V4 region",
     #'  url = "https://mothur.org/wiki/silva_reference_files/")
@@ -400,7 +399,7 @@ sequence_data <- R6Class("sequence_data",
     #' # To add multiple references:
     #' reference <- readr::read_csv(rdataset_example("references.csv"),
     #'                              col_names = TRUE, show_col_types = FALSE)
-    #' dataset$add_references(reference = reference)
+    #' data$add_references(reference = reference)
     #'
     add_references = function(reference = NULL, reference_name = NULL,
                               version = NULL, usage = NULL, note = NULL,
@@ -480,15 +479,15 @@ sequence_data <- R6Class("sequence_data",
     #' @param tree a phylo tree object created by ape::read.tree.
     #' @examples
     #'
-    #'  dataset <- sequence_data$new("my_dataset")
+    #'  data <- dataset$new("my_dataset")
     #'
     #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
-    #'  dataset$assign_bins(df)
+    #'  data$assign_bins(df)
     #'
     #'  tree <- ape::read.tree(rdataset_example(
     #'  "final.opti_mcc.jclass.ave.tre"))
     #'
-    #'  dataset$add_sample_tree(tree)
+    #'  data$add_sample_tree(tree)
     #'
     add_sample_tree = function(tree) {
       if (!inherits(tree, "phylo")) {
@@ -549,9 +548,9 @@ sequence_data <- R6Class("sequence_data",
     #' @param tree a phylo tree object created by ape::read.tree.
     #' @examples
     #'
-    #'  dataset <- sequence_data$new("my_dataset")
+    #'  data <- dataset$new("my_dataset")
     #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
-    #'  dataset$add_sequence_tree(tree)
+    #'  data$add_sequence_tree(tree)
     #'
     add_sequence_tree = function(tree) {
       if (!inherits(tree, "phylo")) {
@@ -636,17 +635,17 @@ sequence_data <- R6Class("sequence_data",
     #' reference may be downloaded. Default = NULL. (optional)
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   fasta_data <- read_fasta(rdataset_example("final.fasta"))
-    #'   dataset$add_sequences(fasta_data)
+    #'   data$add_sequences(fasta_data)
     #'
     #' # With the additional parameters to add information about the reference
     #' # You can also add references using the 'add_references' function.
     #'
     #' url <- "https://mothur.org/wiki/silva_reference_files/"
     #'
-    #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$add_sequences(fasta_data,
+    #' data <- dataset$new("my_dataset")
+    #' data$add_sequences(fasta_data,
     #' reference_name = "silva.bacteria.fasta",
     #' reference_note = "alignment by mothur2 v1.0 using default options",
     #' reference_version = "1.38.1", reference_url = url)
@@ -736,31 +735,31 @@ sequence_data <- R6Class("sequence_data",
     #'
     #'   # To assign sequences to bins:
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'
     #'   otu_data <- read_mothur_list(rdataset_example(
     #'                             "final.opti_mcc.list"))
-    #'   dataset$assign_bins(otu_data)
+    #'   data$assign_bins(otu_data)
     #'
     #'   # To add abundance only bin assignments:
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'
     #'   otu_data <- read_mothur_rabund(rdataset_example(
     #'                             "final.opti_mcc.rabund"))
-    #'   dataset$assign_bins(otu_data)
+    #'   data$assign_bins(otu_data)
     #'
     #'   # To add abundance bin assignments parsed by sample:
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   bin_table <- readr::read_tsv(rdataset_example(
     #'                                "mothur2_bin_assignments_shared.tsv"),
     #'                                show_col_types = FALSE)
-    #'   dataset$assign_bins(bin_table)
+    #'   data$assign_bins(bin_table)
     #'
     #'   # To assign sequences to bins with their abundances parsed by sample:
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
     #'                "bin2", "bin2", "bin2",
     #'                "bin3", "bin3")
@@ -773,7 +772,7 @@ sequence_data <- R6Class("sequence_data",
     #'                "sample1", "sample6")
     #'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
     #'
-    #'   dataset$assign_bins(NULL,
+    #'   data$assign_bins(NULL,
     #'    bin_names = bin_ids, abundances, samples, seq_ids)
     #'
     assign_bins = function(data = NULL, bin_names = NULL, abundances = NULL,
@@ -846,7 +845,7 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Assign bin classification.
     #'
-    #' Note, if you assign sequence taxonomies and assign bins, 'sequence_data'
+    #' Note, if you assign sequence taxonomies and assign bins, 'dataset'
     #' will find the consensus taxonomy for each bin for you.
     #'
     #' @param data a data.frame containing bin_names and taxonomies for your
@@ -877,9 +876,9 @@ sequence_data <- R6Class("sequence_data",
     #' otu_data <- read_mothur_cons_taxonomy(rdataset_example(
     #'                         "final.cons.taxonomy"))
     #'
-    #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_bins(otu_data)
-    #' dataset$assign_bin_taxonomy(otu_data)
+    #' data <- dataset$new("my_dataset")
+    #' data$assign_bins(otu_data)
+    #' data$assign_bin_taxonomy(otu_data)
     #'
     #' # With the additional parameters to add information about the reference
     #' # You can also add references using the 'add_references' function.
@@ -887,7 +886,7 @@ sequence_data <- R6Class("sequence_data",
     #' url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
     #'          "9_032012.pds.zip", collapse = "")
     #'
-    #' dataset$assign_bin_taxonomy(otu_data,
+    #' data$assign_bin_taxonomy(otu_data,
     #' reference_name = "trainset9_032012.pds.zip",
     #' reference_note = "classification by mothur2 v1.0 using default options",
     #' reference_version = "9_032012", reference_url = url)
@@ -971,11 +970,11 @@ sequence_data <- R6Class("sequence_data",
     #'
     #' @examples
     #'
-    #' dataset <- sequence_data$new("miseq_sop")
+    #' data <- dataset$new("miseq_sop")
     #' sequence_abundance <- readr::read_tsv(rdataset_example(
     #'                                       "mothur2_count_table.tsv"),
     #'                                       show_col_types = FALSE)
-    #' dataset$assign_sequence_abundance(sequence_abundance)
+    #' data$assign_sequence_abundance(sequence_abundance)
     #'
     assign_sequence_abundance = function(data = NULL, sequence_names = NULL,
                                          abundances = NULL, samples = NULL,
@@ -1068,8 +1067,8 @@ sequence_data <- R6Class("sequence_data",
     #' sequence_classifications <- read_mothur_taxonomy(rdataset_example(
     #'                         "final.taxonomy"))
     #'
-    #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_sequence_taxonomy(sequence_classifications)
+    #' data <- dataset$new("my_dataset")
+    #' data$assign_sequence_taxonomy(sequence_classifications)
     #'
     #' # With the additional parameters to add information about the reference
     #' # You can also add references using the 'add_references' function.
@@ -1077,7 +1076,7 @@ sequence_data <- R6Class("sequence_data",
     #' url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
     #'          "9_032012.pds.zip", collapse = "")
     #'
-    #' dataset$assign_sequence_taxonomy(sequence_classifications,
+    #' data$assign_sequence_taxonomy(sequence_classifications,
     #' reference_name = "trainset9_032012.pds.zip",
     #' reference_note = "classification by mothur2 v1.0 using default options",
     #' reference_version = "9_032012", reference_url = url)
@@ -1166,10 +1165,10 @@ sequence_data <- R6Class("sequence_data",
     #'                4)
     #' treatments <- c("early", "early", "late")
     #'
-    #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_sequence_abundance(data = NULL,
+    #' data <- dataset$new("my_dataset")
+    #' data$assign_sequence_abundance(data = NULL,
     #'                                   names, abundances, samples)
-    #' dataset$assign_treatments(data = NULL, unique(samples), treatments)
+    #' data$assign_treatments(data = NULL, unique(samples), treatments)
     #'
     assign_treatments = function(data = NULL,
                                  samples = NULL, treatments = NULL) {
@@ -1324,11 +1323,11 @@ sequence_data <- R6Class("sequence_data",
     #' Get data.frame containing the alignment report data
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
-    #'   dataset$add_alignment_report(align_report, "QueryName")
-    #'   dataset$get_alignment_report()
+    #'   data$add_alignment_report(align_report, "QueryName")
+    #'   data$get_alignment_report()
     #'
     #' @return data.frame
     get_alignment_report = function() {
@@ -1354,14 +1353,14 @@ sequence_data <- R6Class("sequence_data",
     #' Get data.frame containing the chimera report data
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'
     #'   chimera_report <- readr::read_tsv(
-    #'   rdataset_example("chimera.report.tsv"),
+    #'   rdataset_example("chimera_report.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
     #'
-    #'   dataset$add_chimera_report(chimera_report, "Query")
-    #'   dataset$get_chimera_report()
+    #'   data$add_chimera_report(chimera_report, "Query")
+    #'   data$get_chimera_report()
     #'
     #' @return data.frame
     get_chimera_report = function() {
@@ -1388,15 +1387,15 @@ sequence_data <- R6Class("sequence_data",
     #' @param type a string indicating the type of clusters. Options
     #' include: "otu", "asv", or "phylotype". Default = "otu".
     #' @examples
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'
     #'   bin_table <- readr::read_tsv(rdataset_example(
     #'                                "mothur2_bin_assignments_shared.tsv"),
     #'                                show_col_types = FALSE)
     #'
-    #'   dataset$assign_bins(bin_table)
+    #'   data$assign_bins(bin_table)
     #'
-    #'   shared <- dataset$get_bin_assignments()
+    #'   shared <- data$get_bin_assignments()
     #'
     #' @return data.frame
     get_bin_assignments = function(type = "otu") {
@@ -1413,11 +1412,11 @@ sequence_data <- R6Class("sequence_data",
     #' otu_data <- read_mothur_cons_taxonomy(rdataset_example(
     #'                         "final.cons.taxonomy"))
     #'
-    #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_bins(otu_data)
-    #' dataset$assign_bin_taxonomy(otu_data)
+    #' data <- dataset$new("my_dataset")
+    #' data$assign_bins(otu_data)
+    #' data$assign_bin_taxonomy(otu_data)
     #'
-    #' dataset$get_bin_taxonomy_report()
+    #' data$get_bin_taxonomy_report()
     #'
     #' @return data.frame
     get_bin_taxonomy_report = function(type = "otu") {
@@ -1428,11 +1427,11 @@ sequence_data <- R6Class("sequence_data",
     #' Get data.frame containing contigs report
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
-    #'   dataset$add_contigs_assembly_report(contigs_report, "Name")
-    #'   dataset$get_contigs_assembly_report()
+    #'   data$add_contigs_assembly_report(contigs_report, "Name")
+    #'   data$get_contigs_assembly_report()
     #'
     #' @return data.frame
     get_contigs_assembly_report = function() {
@@ -1479,10 +1478,10 @@ sequence_data <- R6Class("sequence_data",
     #'   otu_data <- read_mothur_list(rdataset_example(
     #'                             "final.opti_mcc.list"))
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
-    #'   dataset$assign_bins(otu_data)
+    #'   data <- dataset$new("my_dataset")
+    #'   data$assign_bins(otu_data)
     #'
-    #'   dataset$get_list()
+    #'   data$get_list()
     #'
     #' @return data.frame
     get_list = function(type = "otu") {
@@ -1492,11 +1491,11 @@ sequence_data <- R6Class("sequence_data",
     #' @description
     #' Get data.frame containing metadata for the dataset
     #' @examples
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
-    #'   dataset$add_metadata(metadata)
-    #'   dataset$get_metadata()
+    #'   data$add_metadata(metadata)
+    #'   data$get_metadata()
     #'
     #' @return data.frame()
     get_metadata = function() {
@@ -1511,9 +1510,9 @@ sequence_data <- R6Class("sequence_data",
     #'   otu_data <- read_mothur_list(rdataset_example(
     #'                             "final.opti_mcc.list"))
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
-    #'   dataset$assign_bins(otu_data)
-    #'   dataset$get_num_bins()
+    #'   data <- dataset$new("my_dataset")
+    #'   data$assign_bins(otu_data)
+    #'   data$get_num_bins()
     #'
     #' @return An integer
     get_num_bins = function(type = "otu") {
@@ -1524,13 +1523,13 @@ sequence_data <- R6Class("sequence_data",
     #' Get number of samples in the dataset
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   bin_table <- readr::read_tsv(rdataset_example(
     #'                                "mothur2_bin_assignments_shared.tsv"),
     #'                                show_col_types = FALSE)
-    #'   dataset$assign_bins(bin_table)
+    #'   data$assign_bins(bin_table)
     #'
-    #'   dataset$get_num_samples()
+    #'   data$get_num_samples()
     #'
     #' @return An integer
     get_num_samples = function() {
@@ -1573,12 +1572,12 @@ sequence_data <- R6Class("sequence_data",
     #' include: "otu", "asv", or "phylotype". Default = "otu".
     #' @examples
     #'
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'
     #'   otu_data <- read_mothur_rabund(rdataset_example(
     #'                             "final.opti_mcc.rabund"))
-    #'   dataset$assign_bins(otu_data)
-    #'   rabund <- dataset$get_rabund()
+    #'   data$assign_bins(otu_data)
+    #'   rabund <- data$get_rabund()
     #'
     #' @return data.frame
     get_rabund = function(type = "otu") {
@@ -1589,10 +1588,10 @@ sequence_data <- R6Class("sequence_data",
     #' Get data.frame containing information about the references used in the
     #' analysis of the dataset
     #' @examples
-    #'   dataset <- sequence_data$new("my_dataset")
+    #'   data <- dataset$new("my_dataset")
     #'   reference <- readr::read_csv(rdataset_example("references.csv"))
-    #'   dataset$add_references(reference = reference)
-    #'   dataset$get_references()
+    #'   data$add_references(reference = reference)
+    #'   data$get_references()
     #'
     #' @return data.frame()
     get_references = function() {
@@ -1660,10 +1659,10 @@ sequence_data <- R6Class("sequence_data",
     #'
     #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
     #'
-    #'  dataset <- sequence_data$new("my_dataset")
-    #'  dataset$assign_bins(df)
-    #'  dataset$add_sample_tree(tree)
-    #'  dataset$get_sample_tree()
+    #'  data <- dataset$new("my_dataset")
+    #'  data$assign_bins(df)
+    #'  data$add_sample_tree(tree)
+    #'  data$get_sample_tree()
     #'
     get_sample_tree = function() {
       if (!is.null(private$sample_tree)) {
@@ -1716,12 +1715,12 @@ sequence_data <- R6Class("sequence_data",
     #' the dataset.
     #' @examples
     #'
-    #' dataset <- sequence_data$new("miseq_sop")
+    #' data <- dataset$new("miseq_sop")
     #' sequence_abundance <- readr::read_tsv(rdataset_example(
     #'                                       "mothur2_count_table.tsv"),
     #'                                       show_col_types = FALSE)
-    #' dataset$assign_sequence_abundance(sequence_abundance)
-    #' dataset$get_sequence_names()
+    #' data$assign_sequence_abundance(sequence_abundance)
+    #' data$get_sequence_names()
     #'
     #' @return vector of sequence names
     get_sequence_names = function(sample = NULL) {
@@ -1824,9 +1823,9 @@ sequence_data <- R6Class("sequence_data",
     #' sequence_classifications <- read_mothur_taxonomy(rdataset_example(
     #'                         "final.taxonomy"))
     #'
-    #' dataset <- sequence_data$new("my_dataset")
-    #' dataset$assign_sequence_taxonomy(sequence_classifications)
-    #' dataset$get_sequence_taxonomy_report()
+    #' data <- dataset$new("my_dataset")
+    #' data$assign_sequence_taxonomy(sequence_classifications)
+    #' data$get_sequence_taxonomy_report()
     #'
     #' @return data.frame
     get_sequence_taxonomy_report = function() {
@@ -1837,10 +1836,10 @@ sequence_data <- R6Class("sequence_data",
     #' Get phylo tree relating the sequences in your dataset.
     #' @examples
     #'
-    #'  dataset <- sequence_data$new("my_dataset")
+    #'  data <- dataset$new("my_dataset")
     #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
-    #'  dataset$add_sequence_tree(tree)
-    #'  dataset$get_sequence_tree()
+    #'  data$add_sequence_tree(tree)
+    #'  data$get_sequence_tree()
     #'
     get_sequence_tree = function() {
       if (!is.null(private$sequence_tree)) {
@@ -1909,7 +1908,7 @@ sequence_data <- R6Class("sequence_data",
     #' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
     #'  "Eukaryota")
     #'
-    #' dataset$remove_lineages(contaminants)
+    #' data$remove_lineages(contaminants)
     #'
     remove_lineages = function(contaminants) {
       remove_lineages(self$data, contaminants, "contaminant")
@@ -1928,13 +1927,13 @@ sequence_data <- R6Class("sequence_data",
     #'                       otu_list = rdataset_example("final.opti_mcc.list"),
     #'                       dataset_name = "miseq_sop")
     #'
-    #' dataset$get_num_samples()
+    #' data$get_num_samples()
     #'
     #' # To remove samples 'F3D0' and 'F3D1'
     #'
-    #' dataset$remove_samples(c("F3D0", "F3D1"))
+    #' data$remove_samples(c("F3D0", "F3D1"))
     #'
-    #' dataset$get_num_samples()
+    #' data$get_num_samples()
     #'
     remove_samples = function(samples) {
       remove_samples(self$data, samples)
@@ -1967,6 +1966,7 @@ sequence_data <- R6Class("sequence_data",
         private$processors
       )
     },
+
     fill_required_param = function(param, data, default_value) {
       data_names <- names(data)
 
@@ -1985,6 +1985,7 @@ sequence_data <- R6Class("sequence_data",
 
       param
     },
+
     fill_optional_param = function(param, data, default_value) {
       data_names <- names(data)
 
