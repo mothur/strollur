@@ -1029,7 +1029,6 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
   expect_equal(nrow(dataset_t$get_alignment_report()), 0)
 
   # no report added because of missing entries
-  dataset_t$clear("alignment_report")
   dataset_t$add_sequences(sequence_names = c("seq6"))
   dataset_t$add_alignment_report(align_report, "QueryName")
   expect_equal(nrow(dataset_t$get_alignment_report()), 0)
