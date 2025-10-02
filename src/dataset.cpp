@@ -276,7 +276,7 @@ double Dataset::addSequences(const vector<string>& n,
 
     // must provide the same number of names and seqs
     if (s.size() == 0) {
-        s.resize(names.size(), "");
+        s.resize(n.size(), "");
     }
 
     // add to seqIndex
@@ -295,10 +295,6 @@ double Dataset::addSequences(const vector<string>& n,
     // add to names
     names.insert(names.end(), n.begin(), n.end());
 
-    if (s.size() == 0) {
-        s.resize(names.size(), "");
-    }
-
     // add to seqs
     seqs.insert(seqs.end(), s.begin(), s.end());
 
@@ -307,13 +303,13 @@ double Dataset::addSequences(const vector<string>& n,
     tableSeqs.insert(tableSeqs.end(), ts.begin(), ts.end());
 
     if (c.size() == 0) {
-        c.resize(names.size(), "");
+        c.resize(n.size(), "");
     }
     // add to comments
     comments.insert(comments.end(), c.begin(), c.end());
 
     // blank trash code because we assume seqs are "good"
-    vector<string> t(names.size(), "");
+    vector<string> t(n.size(), "");
     trashCodes.insert(trashCodes.end(), t.begin(), t.end());
 
    // add calcs for starts, ends, lengths, ambigs, polymers, numns
@@ -324,7 +320,7 @@ double Dataset::addSequences(const vector<string>& n,
     getAlignedLength();
 
     // add to "good" sequence count - giving preference to binTable
-    numUnique += names.size();
+    numUnique += n.size();
 
     hasSequenceData = true;
 
