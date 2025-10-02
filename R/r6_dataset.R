@@ -1966,7 +1966,6 @@ dataset <- R6Class("dataset",
         private$processors
       )
     },
-
     fill_required_param = function(param, data, default_value) {
       data_names <- names(data)
 
@@ -1985,7 +1984,6 @@ dataset <- R6Class("dataset",
 
       param
     },
-
     fill_optional_param = function(param, data, default_value) {
       data_names <- names(data)
 

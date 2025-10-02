@@ -33,7 +33,7 @@ test_that("import - miseq_sop_example", {
   expect_equal(dataset_t$get_num_samples(), miseq$get_num_samples())
   expect_equal(dataset_t$get_num_bins("otu"), miseq$get_num_bins("otu"))
   expect_equal(
-      dataset_t$get_num_bins("phylotype"),
+    dataset_t$get_num_bins("phylotype"),
     miseq$get_num_bins("phylotype")
   )
   expect_equal(dataset_t$get_num_bins("asv"), miseq$get_num_bins("asv"))

@@ -558,7 +558,8 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     1, 2, 3, 4
   )
 
-  dataset_t$assign_bins(data = NULL, bin_ids, sample_abundances, samples, seq_ids)
+  dataset_t$assign_bins(data = NULL, bin_ids, sample_abundances, samples,
+                        seq_ids)
 
   expect_equal(dataset_t$get_num_bins(), 3)
   expect_equal(dataset_t$get_num_samples(), 6)
