@@ -79,7 +79,7 @@ int SeqReport::getStart(string seq) {
 /******************************************************************************/
 int SeqReport::getEnd(string seq) {
     int endPos = 1;
-    
+
     if (seq == "") { return endPos; }
 
     for(int i = seq.length()-1; i >= 0; i--){
@@ -111,19 +111,23 @@ int SeqReport::getLongestHomopolymer(string seq) {
         unaligned = degapSeq(seq);
     }
 
-    for(int j = 1; j < unaligned.length(); j++){
-        if(unaligned[j] == unaligned[j-1]){
-            homoPolymer++;
-        }else{
-            if(homoPolymer > longHomoPolymer){
-                longHomoPolymer = homoPolymer;
+    if (unaligned != "") {
+        for(int j = 1; j < unaligned.length(); j++){
+            if(unaligned[j] == unaligned[j-1]){
+                homoPolymer++;
+            }else{
+                if(homoPolymer > longHomoPolymer){
+                    longHomoPolymer = homoPolymer;
+                }
+                homoPolymer = 1;
             }
-            homoPolymer = 1;
         }
-    }
 
-    if(homoPolymer > longHomoPolymer){
-        longHomoPolymer = homoPolymer;
+        if(homoPolymer > longHomoPolymer){
+            longHomoPolymer = homoPolymer;
+        }
+    }else {
+        longHomoPolymer = 0;
     }
 
     return longHomoPolymer;
