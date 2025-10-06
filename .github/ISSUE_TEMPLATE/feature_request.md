@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: Let us know how we can improve rdataset
 title: ''
 labels: ''
 assignees: ''
