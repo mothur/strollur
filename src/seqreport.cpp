@@ -26,6 +26,7 @@ vector<vector<int>> SeqReport::getReport(vector<string>& seqs) {
     vector<vector<int>> results(6, vector<int>(seqs.size()));
 
     for (int i = 0; i < seqs.size(); i++) {
+
         vector<int> thisSeqsResults = getReport(seqs[i]);
         results[0][i] = thisSeqsResults[0];
         results[1][i] = thisSeqsResults[1];
@@ -45,8 +46,8 @@ void SeqReport::addReports(vector<string>& seqs, vector<int>& starts,
                            vector<int>& ambigs, vector<int>& polymers,
                            vector<int>& numns){
 
-    int originalSize = starts.size();
-    int numSeqs = seqs.size();
+    size_t originalSize = starts.size();
+    size_t numSeqs = seqs.size();
 
     starts.resize(originalSize+numSeqs);
     ends.resize(originalSize+numSeqs);
@@ -55,8 +56,8 @@ void SeqReport::addReports(vector<string>& seqs, vector<int>& starts,
     polymers.resize(originalSize+numSeqs);
     numns.resize(originalSize+numSeqs);
 
-    for (int i = originalSize; i < originalSize+numSeqs; i++) {
-        vector<int> thisSeqsResults = getReport(seqs[i]);
+    for (size_t i = originalSize; i < originalSize+numSeqs; i++) {
+        vector<int> thisSeqsResults = getReport(seqs[i-originalSize]);
         starts[i] = thisSeqsResults[0];
         ends[i] = thisSeqsResults[1];
         numbases[i] = thisSeqsResults[2];
@@ -67,6 +68,9 @@ void SeqReport::addReports(vector<string>& seqs, vector<int>& starts,
 }
 /******************************************************************************/
 int SeqReport::getStart(string seq) {
+
+    if (seq == "") { return 0; }
+
     int startPos = 1;
     for(int i = 0; i < seq.length(); i++) {
         if(!isgap(seq[i])){
@@ -78,6 +82,8 @@ int SeqReport::getStart(string seq) {
 }
 /******************************************************************************/
 int SeqReport::getEnd(string seq) {
+    if (seq == "") { return 0; }
+
     int endPos = 1;
 
     if (seq == "") { return endPos; }
@@ -112,20 +118,20 @@ int SeqReport::getLongestHomopolymer(string seq) {
     }
 
     if (unaligned != "") {
-        for(int j = 1; j < unaligned.length(); j++){
-            if(unaligned[j] == unaligned[j-1]){
-                homoPolymer++;
-            }else{
-                if(homoPolymer > longHomoPolymer){
-                    longHomoPolymer = homoPolymer;
-                }
-                homoPolymer = 1;
+    for(int j = 1; j < unaligned.length(); j++){
+        if(unaligned[j] == unaligned[j-1]){
+            homoPolymer++;
+        }else{
+            if(homoPolymer > longHomoPolymer){
+                longHomoPolymer = homoPolymer;
             }
+            homoPolymer = 1;
         }
+    }
 
-        if(homoPolymer > longHomoPolymer){
-            longHomoPolymer = homoPolymer;
-        }
+    if(homoPolymer > longHomoPolymer){
+        longHomoPolymer = homoPolymer;
+    }
     }else {
         longHomoPolymer = 0;
     }
