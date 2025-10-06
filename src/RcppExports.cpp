@@ -182,6 +182,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_bin_names
+vector<string> get_bin_names(Rcpp::XPtr<Dataset> data, string type);
+RcppExport SEXP _rdataset_get_bin_names(SEXP dataSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_bin_names(data, type));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_bin_taxonomy_report
 Rcpp::DataFrame get_bin_taxonomy_report(Rcpp::XPtr<Dataset> data, string type);
 RcppExport SEXP _rdataset_get_bin_taxonomy_report(SEXP dataSEXP, SEXP typeSEXP) {
@@ -191,6 +203,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
     rcpp_result_gen = Rcpp::wrap(get_bin_taxonomy_report(data, type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_bin_types
+vector<string> get_bin_types(Rcpp::XPtr<Dataset> data);
+RcppExport SEXP _rdataset_get_bin_types(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_bin_types(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -753,7 +776,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_bin", (DL_FUNC) &_rdataset_get_bin, 3},
     {"_rdataset_get_bin_abundance", (DL_FUNC) &_rdataset_get_bin_abundance, 3},
     {"_rdataset_get_bin_abundances", (DL_FUNC) &_rdataset_get_bin_abundances, 3},
+    {"_rdataset_get_bin_names", (DL_FUNC) &_rdataset_get_bin_names, 2},
     {"_rdataset_get_bin_taxonomy_report", (DL_FUNC) &_rdataset_get_bin_taxonomy_report, 2},
+    {"_rdataset_get_bin_types", (DL_FUNC) &_rdataset_get_bin_types, 1},
     {"_rdataset_get_dataset_name", (DL_FUNC) &_rdataset_get_dataset_name, 1},
     {"_rdataset_get_list", (DL_FUNC) &_rdataset_get_list, 2},
     {"_rdataset_get_list_vector", (DL_FUNC) &_rdataset_get_list_vector, 2},

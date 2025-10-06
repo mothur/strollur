@@ -373,6 +373,22 @@ get_bin_abundances <- function(data, bin_name, type = "otu") {
     .Call(`_rdataset_get_bin_abundances`, data, bin_name, type)
 }
 
+#' @title get_bin_abundances
+#' @description
+#' Get the names of the bins in an instance of the  'Dataset' class.
+#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+#'  'Dataset' c++ class.
+#' @param type, string indicating the type of clusters. Default = "otu".
+#' @examples
+#'
+#'   miseq <- miseq_sop_example()
+#'   get_bin_names(miseq$data, "phylotype")
+#'
+#' @return vector containing the names of bins
+get_bin_names <- function(data, type = "otu") {
+    .Call(`_rdataset_get_bin_names`, data, type)
+}
+
 #' @title get_bin_taxonomy_report
 #' @description
 #' Get the bin classifications of an instance of the 'Dataset' class.
@@ -396,6 +412,21 @@ get_bin_abundances <- function(data, bin_name, type = "otu") {
 #' @return data.frame
 get_bin_taxonomy_report <- function(data, type = "otu") {
     .Call(`_rdataset_get_bin_taxonomy_report`, data, type)
+}
+
+#' @title get_bin_types
+#' @description
+#' Get bin table types of an instance of the 'Dataset' class.
+#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+#'  'Dataset' c++ class.
+#' @examples
+#'
+#' data <- miseq_sop_example()
+#' get_bin_types(data$data)
+#'
+#' @return vector of strings
+get_bin_types <- function(data) {
+    .Call(`_rdataset_get_bin_types`, data)
 }
 
 #' @title get_dataset_name

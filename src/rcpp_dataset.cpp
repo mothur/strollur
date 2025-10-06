@@ -574,6 +574,23 @@ vector<float> get_bin_abundances(Rcpp::XPtr<Dataset> data,
     return data.get()->getBinAbundances(bin_name, type);
 }
 /******************************************************************************/
+//' @title get_bin_abundances
+//' @description
+//' Get the names of the bins in an instance of the  'Dataset' class.
+//' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+//'  'Dataset' c++ class.
+//' @param type, string indicating the type of clusters. Default = "otu".
+//' @examples
+//'
+//'   miseq <- miseq_sop_example()
+//'   get_bin_names(miseq$data, "phylotype")
+//'
+//' @return vector containing the names of bins
+//[[Rcpp::export]]
+vector<string> get_bin_names(Rcpp::XPtr<Dataset> data, string type = "otu") {
+    return data.get()->getBinIds(type);
+}
+/******************************************************************************/
 //' @title get_bin_taxonomy_report
 //' @description
 //' Get the bin classifications of an instance of the 'Dataset' class.
@@ -599,6 +616,22 @@ vector<float> get_bin_abundances(Rcpp::XPtr<Dataset> data,
 Rcpp::DataFrame get_bin_taxonomy_report(Rcpp::XPtr<Dataset> data,
                                         string type = "otu") {
     return data.get()->getBinTaxonomyReport(type);
+}
+/******************************************************************************/
+//' @title get_bin_types
+//' @description
+//' Get bin table types of an instance of the 'Dataset' class.
+//' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+//'  'Dataset' c++ class.
+//' @examples
+//'
+//' data <- miseq_sop_example()
+//' get_bin_types(data$data)
+//'
+//' @return vector of strings
+//[[Rcpp::export]]
+vector<string> get_bin_types(Rcpp::XPtr<Dataset> data) {
+     return data.get()->getBinTypes();
 }
 /******************************************************************************/
 //' @title get_dataset_name

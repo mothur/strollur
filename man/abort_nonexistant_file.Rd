@@ -7,8 +7,8 @@
 abort_nonexistant_file(filename)
 }
 \arguments{
-\item{filename}{String, containing name of the missing file}
+\item{filename}{String, containing name of the missing file or directory}
 }
 \description{
-Report file does not exist
+Report directory / file does not exist
 }

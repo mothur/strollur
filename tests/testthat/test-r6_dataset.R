@@ -12,6 +12,7 @@ test_that("dataset - intialize from read_mothur / print", {
     dataset_name = "miseq_sop"
   )
 
+  expect_equal(dataset_t$get_bin_types(), c("otu", "asv", "phylotype"))
   expect_equal(dataset_t$get_dataset_name(), "miseq_sop")
   expect_equal(dataset_t$get_num_sequences(TRUE), 2425)
   expect_equal(dataset_t$get_num_sequences(), 113963)

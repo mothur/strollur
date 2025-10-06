@@ -457,6 +457,7 @@ public:
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getBinTaxonomyReport(string type = "otu");
     // 2 column dataframe - bin_id, seq_id
+    const vector<string> getBinTypes();
     const Rcpp::DataFrame getList(string type = "otu");
     const vector<string> getListVector(string type = "otu");
     const int getNumBins(string type = "otu");

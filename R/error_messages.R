@@ -1,9 +1,30 @@
 #' @title abort_nonexistant_file
 #' @description
-#' Report file does not exist
-#' @param filename String, containing name of the missing file
+#' Report directory / file does not exist
+#' @param filename String, containing name of the missing file or directory
 abort_nonexistant_file <- function(filename) {
   cli::cli_abort("[ERROR]: {.var {filename}} does not exist.")
+}
+
+#' @title abort_no_name
+#' @description
+#' Report dataset has no name
+abort_no_name <- function() {
+  message <- paste0(
+    "[ERROR]: You did not set an output file name, and your ",
+    "dataset not not have a name associated with it. Please ",
+    "provide an output file name."
+  )
+  cli::cli_abort(message)
+}
+
+#' @title abort_not_writable
+#' @description
+#' Report directory / file is not writable
+#' @param filename String, containing name of the file without write
+#' permissions
+abort_not_writable <- function(filename) {
+  cli::cli_abort("[ERROR]: {.var {filename}} is not writable.")
 }
 
 #' @title abort_incorrect_type

@@ -813,6 +813,15 @@ Rcpp::DataFrame Dataset::getBinTaxonomyReport(string type) {
     return (fillTaxReport(type));
 }
 /******************************************************************************/
+const vector<string> Dataset::getBinTypes() {
+    vector<string> types;
+
+    for (size_t i = 0; i < binTables.size(); i++) {
+        types.push_back(binTables[i].label);
+    }
+    return types;
+}
+/******************************************************************************/
 const Rcpp::DataFrame Dataset::getRAbund(string type) {
     if (hasBinTable(type)) {
         return binTables[getBinTableIndex(type)].getRAbund();

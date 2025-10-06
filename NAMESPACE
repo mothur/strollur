@@ -8,10 +8,15 @@ exportPattern("^[[:alpha:]]+")
 # general
 import(cli)
 import(Rcereal)
+import(dplyr)
 importFrom("stats", "na.omit")
 
 # tree data
-import(ape)
+importFrom(ape, read.tree)
+importFrom(ape, drop.tip)
+importFrom(ape, nj)
+importFrom(ape, dist.dna)
+importFrom(ape, as.DNAbin)
 
 # c++ code
 import(RcppThread)

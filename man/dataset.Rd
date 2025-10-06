@@ -314,6 +314,14 @@ data$assign_treatments(data = NULL, unique(samples), treatments)
 
 
 ## ------------------------------------------------
+## Method `dataset$get_bin_names`
+## ------------------------------------------------
+
+  data <- miseq_sop_example()
+  data$get_bin_names("otu")
+
+
+## ------------------------------------------------
 ## Method `dataset$get_bin_taxonomy_report`
 ## ------------------------------------------------
 
@@ -326,6 +334,15 @@ data$assign_bins(otu_data)
 data$assign_bin_taxonomy(otu_data)
 
 data$get_bin_taxonomy_report()
+
+
+## ------------------------------------------------
+## Method `dataset$get_bin_types`
+## ------------------------------------------------
+
+
+data <- miseq_sop_example()
+data$get_bin_types()
 
 
 ## ------------------------------------------------
@@ -544,7 +561,9 @@ the class.}
 \item \href{#method-dataset-get_alignment_report}{\code{dataset$get_alignment_report()}}
 \item \href{#method-dataset-get_chimera_report}{\code{dataset$get_chimera_report()}}
 \item \href{#method-dataset-get_bin_assignments}{\code{dataset$get_bin_assignments()}}
+\item \href{#method-dataset-get_bin_names}{\code{dataset$get_bin_names()}}
 \item \href{#method-dataset-get_bin_taxonomy_report}{\code{dataset$get_bin_taxonomy_report()}}
+\item \href{#method-dataset-get_bin_types}{\code{dataset$get_bin_types()}}
 \item \href{#method-dataset-get_contigs_assembly_report}{\code{dataset$get_contigs_assembly_report()}}
 \item \href{#method-dataset-get_count_table}{\code{dataset$get_count_table()}}
 \item \href{#method-dataset-get_dataset_name}{\code{dataset$get_dataset_name()}}
@@ -1487,6 +1506,37 @@ data.frame
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dataset-get_bin_names"></a>}}
+\if{latex}{\out{\hypertarget{method-dataset-get_bin_names}{}}}
+\subsection{Method \code{get_bin_names()}}{
+Get the names of the bins in your dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{dataset$get_bin_names(type = "otu")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{a string indicating the type of clusters. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+vector of strings containing the bin names
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{  data <- miseq_sop_example()
+  data$get_bin_names("otu")
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_bin_taxonomy_report"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-get_bin_taxonomy_report}{}}}
 \subsection{Method \code{get_bin_taxonomy_report()}}{
@@ -1518,6 +1568,30 @@ data$assign_bins(otu_data)
 data$assign_bin_taxonomy(otu_data)
 
 data$get_bin_taxonomy_report()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dataset-get_bin_types"></a>}}
+\if{latex}{\out{\hypertarget{method-dataset-get_bin_types}{}}}
+\subsection{Method \code{get_bin_types()}}{
+Get bin table types
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{dataset$get_bin_types()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+vector of strings
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+data <- miseq_sop_example()
+data$get_bin_types()
 
 }
 \if{html}{\out{</div>}}

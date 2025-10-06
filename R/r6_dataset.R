@@ -1403,6 +1403,19 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
+    #' Get the names of the bins in your dataset
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
+    #' @examples
+    #'   data <- miseq_sop_example()
+    #'   data$get_bin_names("otu")
+    #'
+    #' @return vector of strings containing the bin names
+    get_bin_names = function(type = "otu") {
+      get_bin_names(self$data, type)
+    },
+
+    #' @description
     #' Get report containing the bin taxonomy table -
     #' ids, taxonomy by levels
     #' @param type a string indicating the type of bin clusters.
@@ -1421,6 +1434,18 @@ dataset <- R6Class("dataset",
     #' @return data.frame
     get_bin_taxonomy_report = function(type = "otu") {
       get_bin_taxonomy_report(self$data, type)
+    },
+
+    #' @description
+    #' Get bin table types
+    #' @examples
+    #'
+    #' data <- miseq_sop_example()
+    #' data$get_bin_types()
+    #'
+    #' @return vector of strings
+    get_bin_types = function() {
+      get_bin_types(self$data)
     },
 
     #' @description
