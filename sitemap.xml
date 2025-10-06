@@ -6,7 +6,9 @@
 <url><loc>/reference/abort_incorrect_type.html</loc></url>
 <url><loc>/reference/abort_missing_column.html</loc></url>
 <url><loc>/reference/abort_missing_tag_alert.html</loc></url>
+<url><loc>/reference/abort_no_name.html</loc></url>
 <url><loc>/reference/abort_nonexistant_file.html</loc></url>
+<url><loc>/reference/abort_not_writable.html</loc></url>
 <url><loc>/reference/abort_provide_at_least_one.html</loc></url>
 <url><loc>/reference/add_sequences.html</loc></url>
 <url><loc>/reference/added_message.html</loc></url>
@@ -26,7 +28,9 @@
 <url><loc>/reference/get_bin_abundance.html</loc></url>
 <url><loc>/reference/get_bin_abundances.html</loc></url>
 <url><loc>/reference/get_bin_assignments.html</loc></url>
+<url><loc>/reference/get_bin_names.html</loc></url>
 <url><loc>/reference/get_bin_taxonomy_report.html</loc></url>
+<url><loc>/reference/get_bin_types.html</loc></url>
 <url><loc>/reference/get_dataset_name.html</loc></url>
 <url><loc>/reference/get_list.html</loc></url>
 <url><loc>/reference/get_list_vector.html</loc></url>
@@ -93,5 +97,7 @@
 <url><loc>/reference/split_at_char.html</loc></url>
 <url><loc>/reference/split_white_space.html</loc></url>
 <url><loc>/reference/summarize_reports.html</loc></url>
+<url><loc>/reference/write_mothur.html</loc></url>
+<url><loc>/reference/write_mothur_cons_taxonomy.html</loc></url>
 </urlset>
 
