@@ -13,7 +13,7 @@ create_dummy_file <- function(filename, lines = c("test")) {
 # only used in testing
 get_full_name <- function(filename) {
   paste0(
-    normalizePath(test_path()),
+    normalizePath(testthat::test_path()),
     .Platform$file.sep,
     filename
   )

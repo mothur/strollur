@@ -20,7 +20,7 @@ read_mothur_rabund <- function(rabund) {
   }
 
   df <- readr::read_table(
-    file = rabund, col_names = FALSE,
+    file = rabund, col_names = TRUE,
     show_col_types = FALSE
   )
   num_otus <- df[[2]]

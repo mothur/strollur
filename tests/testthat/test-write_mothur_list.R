@@ -1,4 +1,4 @@
-# test "write_mothur_cons_taxonomy"
+# test "write_mothur_list"
 
 test_that("write_mothur_list - errors", {
   expect_error(write_mothur_list("Bad_type"))

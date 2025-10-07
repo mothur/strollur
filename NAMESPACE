@@ -9,6 +9,7 @@ exportPattern("^[[:alpha:]]+")
 import(cli)
 import(Rcereal)
 import(dplyr)
+import(tidyr)
 importFrom("stats", "na.omit")
 
 # tree data
