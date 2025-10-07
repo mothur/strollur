@@ -10,14 +10,14 @@
 coverage](https://codecov.io/gh/SchlossLab/rdataset/graph/badge.svg)](https://app.codecov.io/gh/SchlossLab/rdataset)
 <!-- badges: end -->
 
-The ‘rdataset’ package will store the data associated with your
-microbial DNA anaylsis. This includes nucleotide sequences, abundance,
-sample and treatment assignments, taxonomic classifications, asv, otu
-and phylotype clusters, metadata, trees and various reports. It is
-designed to facilitate data analysis across multiple R packages with
-utility functions to read and write from [mothur](https://mothur.org),
-mothur2, [qiime2](https://qiime2.org),
-[dada2](https://benjjneb.github.io/dada2/) and
+The ‘rdataset’ package stores the data associated with your microbial
+DNA anaylsis. This includes nucleotide sequences, abundance, sample and
+treatment assignments, taxonomic classifications, sequence bin
+assignments, metadata, trees and various reports. It is designed to
+facilitate data analysis across multiple R packages with utility
+functions to read and write from [mothur](https://mothur.org), mothur2,
+[qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/)
+and
 [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 
 ## Installation

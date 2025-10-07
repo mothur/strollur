@@ -4,13 +4,14 @@
 \alias{write_mothur_cons_taxonomy}
 \title{write_mothur_cons_taxonomy}
 \usage{
-write_mothur_cons_taxonomy(data, filename = NULL)
+write_mothur_cons_taxonomy(data, file_root = NULL)
 }
 \arguments{
 \item{data}{A 'dataset' object}
 
-\item{filename}{a string containing the name of the output file. Default =
-'dataset_name'.'bin_type'.cons.taxonomy}
+\item{file_root}{a string containing the root name of the output file.
+Default = 'dataset_name'. Resulting in output files
+'dataset_name'.bin_type'.cons.taxonomy.}
 }
 \value{
 vector containing the names of the files created

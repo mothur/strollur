@@ -12,7 +12,16 @@ test_that("write_mothur_cons_taxonomy", {
   miseq <- miseq_sop_example()
   bin_types <- miseq$get_bin_types()
 
-  outputs <- write_mothur_cons_taxonomy(miseq)
+  file_root <- get_full_name("test-miseq")
+
+  outputs <- c(
+    "test-miseq.otu.cons.taxonomy",
+    "test-miseq.asv.cons.taxonomy",
+    "test-miseq.phylotype.cons.taxonomy"
+  )
+  outputs <- paste0(normalizePath(test_path()), .Platform$file.sep, outputs)
+
+  expect_equal(outputs, write_mothur_cons_taxonomy(miseq, file_root))
 
   df <- read_mothur_cons_taxonomy(outputs[1])
 

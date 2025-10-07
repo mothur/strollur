@@ -12,9 +12,14 @@ test_that("clone - deep copy of dataset object", {
     dataset_name = "miseq_sop"
   )
 
-  save(temp, "test.rds")
-  dataset <- load("test.rds")
-  remove_file("test.rds")
+  file_name <- paste0(
+    normalizePath(test_path()), .Platform$file.sep,
+    "test.rds"
+  )
+
+  save(temp, file_name)
+  dataset <- load(file_name)
+  remove_file(file_name)
 
   expect_equal(dataset$get_dataset_name(), temp$get_dataset_name())
   expect_equal(dataset$get_num_sequences(TRUE), temp$get_num_sequences(TRUE))

@@ -9,7 +9,7 @@ test_that("write_fasta - errors", {
 test_that("write_fasta", {
   miseq <- miseq_sop_example()
 
-  output <- write_fasta(miseq)
+  output <- write_fasta(miseq, get_full_name("miseq"))
 
   df <- read_fasta(output)
 

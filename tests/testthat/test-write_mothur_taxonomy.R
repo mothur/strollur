@@ -9,7 +9,7 @@ test_that("write_mothur_taxonomy - errors", {
 test_that("write_mothur_taxonomy", {
   miseq <- miseq_sop_example()
 
-  output <- write_mothur_taxonomy(miseq)
+  output <- write_mothur_taxonomy(miseq, get_full_name("miseq.taxonomy"))
 
   df <- read_mothur_taxonomy(output)
 

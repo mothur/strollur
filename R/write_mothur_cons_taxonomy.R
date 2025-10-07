@@ -4,8 +4,9 @@
 #' \href{https://mothur.org/wiki/constaxonomy_file/}{cons_taxonomy file}
 #'
 #' @param data A 'dataset' object
-#' @param filename a string containing the name of the output file. Default =
-#' 'dataset_name'.'bin_type'.cons.taxonomy
+#' @param file_root a string containing the root name of the output file.
+#' Default = 'dataset_name'. Resulting in output files
+#' 'dataset_name'.bin_type'.cons.taxonomy.
 #'
 #' @examples
 #'
@@ -14,15 +15,15 @@
 #'
 #' @return vector containing the names of the files created
 #' @export
-write_mothur_cons_taxonomy <- function(data, filename = NULL) {
+write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
   # check type
   if (class(data)[1] != "dataset") {
     abort_incorrect_type("dataset", data)
   }
 
-  if (is.null(filename)) {
-    filename <- data$get_dataset_name()
-    if (filename == "") {
+  if (is.null(file_root)) {
+    file_root <- data$get_dataset_name()
+    if (file_root == "") {
       abort_no_name()
     }
   }
@@ -49,7 +50,7 @@ write_mothur_cons_taxonomy <- function(data, filename = NULL) {
         )
       )
 
-      output_file <- paste0(filename, ".", type, ".cons.taxonomy")
+      output_file <- paste0(file_root, ".", type, ".cons.taxonomy")
       outputs <- c(outputs, output_file)
 
       readr::write_tsv(df, output_file, escape = "none")
