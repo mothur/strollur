@@ -13,7 +13,8 @@ read_fasta(fasta)
 A data.frame containing the FASTA sequence data
 }
 \description{
-Read a FASTA formatted sequence file
+Read a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}
+formatted sequence file
 }
 \examples{
 

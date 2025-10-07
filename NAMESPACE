@@ -29,12 +29,13 @@ importFrom(methods, new)
 importFrom(waldo, compare)
 
 # read fastq files
-importFrom(microseq, readFastq)
+#importFrom(microseq, readFastq)
 
 importFrom(readr, read_table)
 
 # read FASTA files
 importFrom(microseq, readFasta)
+importFrom(microseq, writeFasta)
 
 # paralellized code
 importFrom(parallelly, availableCores)
