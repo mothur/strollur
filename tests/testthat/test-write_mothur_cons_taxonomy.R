@@ -6,12 +6,6 @@ test_that("write_mothur_cons_taxonomy - errors", {
   # no file name with nameless dataset
   data <- dataset$new()
   expect_error(write_mothur_cons_taxonomy(data))
-
-  # no bin classifications
-  data <- read_mothur(
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    dataset_name = "temp"
-  )
 })
 
 test_that("write_mothur_cons_taxonomy", {
