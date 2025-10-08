@@ -1,6 +1,8 @@
 #' @title read_mothur_count
 #' @description
-#' Read a mothur formatted count file
+#' Read a mothur formatted
+#' \href{https://mothur.org/wiki/count_file/}{count file}
+#'
 #' @param filename count file name (required)
 #' @examples
 #'

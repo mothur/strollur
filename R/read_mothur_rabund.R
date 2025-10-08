@@ -23,14 +23,11 @@ read_mothur_rabund <- function(rabund) {
     file = rabund, col_names = TRUE,
     show_col_types = FALSE
   )
-  num_otus <- df[[2]]
+
   df <- df[, -c(1, 2)]
 
-  otu_assignments <- paste0("otu", c(1:num_otus))
-  abundance <- t(df)
-
   data.frame(
-    bin_names = otu_assignments,
-    abundances = abundance
+    bin_names = names(df),
+    abundances = t(df)
   )
 }

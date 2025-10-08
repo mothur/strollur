@@ -13,7 +13,8 @@ read_mothur_count(filename)
 data.frame
 }
 \description{
-Read a mothur formatted count file
+Read a mothur formatted
+\href{https://mothur.org/wiki/count_file/}{count file}
 }
 \examples{
 
