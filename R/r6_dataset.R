@@ -1676,6 +1676,18 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
+    #' Get treatment assignments for samples in dataset
+    #' @return data.frame
+    get_sample_treatment_assignments = function() {
+      if (get_num_samples(self$data) != 0) {
+        return(get_sample_treatment_assignments(self$data))
+      } else {
+        cli::cli_alert("Your dataset does not include sample data, ignoring.")
+      }
+      data.frame()
+    },
+
+    #' @description
     #' Get phylo tree relating the samples in your dataset.
     #' @examples
     #'

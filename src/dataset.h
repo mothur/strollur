@@ -91,8 +91,8 @@ vector<T> getValues(const map<T2, T>& x) {
     return results;
 }
 /**********************************************************************/
-template<typename T>
-vector<T> getKeys(const map<T, int>& x) {
+template<typename T, typename T2>
+vector<T> getKeys(const map<T, T2>& x) {
     vector<T> results(x.size());
 
     if (x.size() == 0) { return results; }

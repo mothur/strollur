@@ -1,7 +1,0 @@
-#Compressed Format: groupIndex,abundance. For example 1,6 would mean the read has an abundance of 6 for group sample1.
-#1,sample1	2,sample2	3,sample3	4,sample4
-Representative_Sequence	total	sample1	sample2	sample3	sample4
-seq1	100	3,100
-seq2	25	1,15 2,10
-seq3	150	2,50 3,75 4,25
-seq4	45	1,45

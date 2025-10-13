@@ -853,6 +853,25 @@ const vector<double> Dataset::getSampleTotals(){
     return count.getSampleTotals();
 }
 /******************************************************************************/
+const Rcpp::DataFrame Dataset::getSampleTreatmentAssignments() {
+    map<string, string> sampleToTreatment;
+    if (binTables.size() != 0) {
+       sampleToTreatment = binTables[0].getSampleTreatmentAssignments();
+    }else{
+       sampleToTreatment = count.getSampleTreatmentAssignments();
+    }
+
+    if (sampleToTreatment.size() != 0) {
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("samples") = getKeys(sampleToTreatment),
+            Rcpp::_["treatments"] = getValues(sampleToTreatment));
+        return df;
+    }
+
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+}
+/******************************************************************************/
 // id, trashCode
 const Rcpp::DataFrame Dataset::getScrapReport(string mode) {
 

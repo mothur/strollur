@@ -1,6 +1,6 @@
-#' @title write_mothur_taxonomy
+#' @title write_taxonomy
 #' @description
-#' Write a mothur formatted
+#' Write a 2 column
 #' \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}
 #'
 #' @param data A 'dataset' object
@@ -10,11 +10,11 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' write_mothur_taxonomy(miseq)
+#' write_taxonomy(miseq)
 #'
 #' @return name of taxonomy file
 #' @export
-write_mothur_taxonomy <- function(data, filename = NULL) {
+write_taxonomy <- function(data, filename = NULL) {
   # check type
   if (class(data)[1] != "dataset") {
     abort_incorrect_type("dataset", data)

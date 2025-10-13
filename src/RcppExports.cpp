@@ -345,6 +345,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_sample_treatment_assignments
+Rcpp::DataFrame get_sample_treatment_assignments(Rcpp::XPtr<Dataset> data);
+RcppExport SEXP _rdataset_get_sample_treatment_assignments(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_sample_treatment_assignments(data));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_sample_totals
 vector<double> get_sample_totals(Rcpp::XPtr<Dataset> data);
 RcppExport SEXP _rdataset_get_sample_totals(SEXP dataSEXP) {
@@ -790,6 +801,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_rabund", (DL_FUNC) &_rdataset_get_rabund, 2},
     {"_rdataset_get_rabund_vector", (DL_FUNC) &_rdataset_get_rabund_vector, 2},
     {"_rdataset_get_samples", (DL_FUNC) &_rdataset_get_samples, 1},
+    {"_rdataset_get_sample_treatment_assignments", (DL_FUNC) &_rdataset_get_sample_treatment_assignments, 1},
     {"_rdataset_get_sample_totals", (DL_FUNC) &_rdataset_get_sample_totals, 1},
     {"_rdataset_get_scrap_report", (DL_FUNC) &_rdataset_get_scrap_report, 2},
     {"_rdataset_get_sequence_abundances", (DL_FUNC) &_rdataset_get_sequence_abundances, 1},

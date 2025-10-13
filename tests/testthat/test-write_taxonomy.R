@@ -1,15 +1,15 @@
-test_that("write_mothur_taxonomy - errors", {
-  expect_error(write_mothur_taxonomy("Bad_type"))
+test_that("write_taxonomy - errors", {
+  expect_error(write_taxonomy("Bad_type"))
 
   # no file name with nameless dataset
   data <- dataset$new()
-  expect_error(write_mothur_taxonomy(data))
+  expect_error(write_taxonomy(data))
 })
 
-test_that("write_mothur_taxonomy", {
+test_that("write_taxonomy", {
   miseq <- miseq_sop_example()
 
-  output <- write_mothur_taxonomy(miseq, get_full_name("miseq.taxonomy"))
+  output <- write_taxonomy(miseq, get_full_name("miseq.taxonomy"))
 
   df <- read_mothur_taxonomy(output)
 
@@ -41,5 +41,5 @@ test_that("write_mothur_taxonomy", {
     dataset_name = "data"
   )
 
-  expect_equal(write_mothur_taxonomy(data), "no_sequence_taxonomy")
+  expect_equal(write_taxonomy(data), "no_sequence_taxonomy")
 })

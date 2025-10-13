@@ -610,6 +610,10 @@ const vector<double> BinTable::getSampleTotals(){
     return binCount.getSampleTotals();
 }
 /******************************************************************************/
+const map<string, string> BinTable::getSampleTreatmentAssignments() {
+    return binCount.getSampleTreatmentAssignments();
+}
+/******************************************************************************/
 // id, trashCode
 const Rcpp::DataFrame BinTable::getScrapReport() {
 

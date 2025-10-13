@@ -308,6 +308,7 @@ public:
     const int getNumTreatments();
     const vector<string> getSamples();
     const vector<double> getSampleTotals();
+    const map<string, string> getSampleTreatmentAssignments();
     const Rcpp::DataFrame getScrapReport();
     // trashCode, binCount, abundanceCount
     const Rcpp::DataFrame getScrapSummary();
@@ -469,6 +470,7 @@ public:
     const vector<float> getRAbundVector(string type = "otu");
     const vector<string> getSamples();
     const vector<double> getSampleTotals();
+    const Rcpp::DataFrame getSampleTreatmentAssignments();
     const Rcpp::DataFrame getScrapReport(string mode = "sequence");
     // trashCode, uniqueCount, totalCount
     const Rcpp::List getScrapSummary();

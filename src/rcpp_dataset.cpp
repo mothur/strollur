@@ -875,6 +875,29 @@ vector<string> get_samples(Rcpp::XPtr<Dataset> data) {
      return data.get()->getSamples();
 }
 /******************************************************************************/
+//' @title get_sample_treatment_assignments
+//' @description
+//' Get treatment assignments for samples in an instance of the 'Dataset' class.
+//' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+//'  'Dataset' c++ class.
+//' @examples
+//'
+//' dataset <- new_dataset("my_dataset", 4)
+//' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+//' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
+//'              "sample1")
+//' treatments <- c("Early", "Early", "Late", "Early", "Late", "Early")
+//' sample_abundances <- c(10, 100, 1, 500, 25, 80)
+//' assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
+//' get_sample_treatment_assignments(dataset)
+//'
+//' @return 2 column data.frame containing the sample treatment assignments in
+//'  an instance of the 'Dataset' class.
+//[[Rcpp::export]]
+Rcpp::DataFrame get_sample_treatment_assignments(Rcpp::XPtr<Dataset> data) {
+     return data.get()->getSampleTreatmentAssignments();
+}
+/******************************************************************************/
 //' @title get_sample_totals
 //' @description
 //' Get the number of sequences in each sample in an instance of the 'Dataset'
