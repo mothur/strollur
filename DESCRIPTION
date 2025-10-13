@@ -10,7 +10,7 @@ Description: The 'rdataset' package will store the data associated with your mic
 URL: https://github.com/SchlossLab/rdataset, 
 BugReports: https://github.com/SchlossLab/rdataset/issues
 License: GPL (>= 3)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports: Rcpp (>= 1.1.0),
     RcppThread,
     cli,

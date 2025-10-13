@@ -227,7 +227,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   if (compress) {
     # compress the files
     filename <- paste0(dir_path, ".zip", collapse = "")
-    zip(zipfile = filename, files = dir_path)
+    utils::zip(zipfile = filename, files = dir_path)
     unlink(dir_path, recursive = TRUE)
   }
 

@@ -11,6 +11,7 @@ import(Rcereal)
 import(dplyr)
 import(tidyr)
 importFrom("stats", "na.omit")
+importFrom("utils", "zip")
 
 # tree data
 importFrom(ape, read.tree)

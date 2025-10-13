@@ -3,3 +3,4 @@
 .vscode
 ^README\.Rmd$
 ^\.github$
+.lintr

@@ -578,6 +578,7 @@ the class.}
 \item \href{#method-dataset-get_references}{\code{dataset$get_references()}}
 \item \href{#method-dataset-get_samples}{\code{dataset$get_samples()}}
 \item \href{#method-dataset-get_sample_summary}{\code{dataset$get_sample_summary()}}
+\item \href{#method-dataset-get_sample_treatment_assignments}{\code{dataset$get_sample_treatment_assignments()}}
 \item \href{#method-dataset-get_sample_tree}{\code{dataset$get_sample_tree()}}
 \item \href{#method-dataset-get_scrap_report}{\code{dataset$get_scrap_report()}}
 \item \href{#method-dataset-get_sequence_names}{\code{dataset$get_sequence_names()}}
@@ -1925,6 +1926,19 @@ Get a summary of the samples and treatments in the dataset
 }
 \subsection{Returns}{
 list
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dataset-get_sample_treatment_assignments"></a>}}
+\if{latex}{\out{\hypertarget{method-dataset-get_sample_treatment_assignments}{}}}
+\subsection{Method \code{get_sample_treatment_assignments()}}{
+Get treatment assignments for samples in dataset
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{dataset$get_sample_treatment_assignments()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+data.frame
 }
 }
 \if{html}{\out{<hr>}}

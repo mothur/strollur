@@ -4,7 +4,7 @@
 \alias{write_mothur}
 \title{write_mothur}
 \usage{
-write_mothur(data, dir_path = NULL, tags = NULL)
+write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 }
 \arguments{
 \item{data}{A 'dataset' object}
@@ -12,11 +12,13 @@ write_mothur(data, dir_path = NULL, tags = NULL)
 \item{dir_path}{a string containing the name of directory where the files
 should be written. Default = current working directory.}
 
+\item{compress}{boolean, Default = TRUE.}
+
 \item{tags}{a vector of strings containing the items you wish to write
 Options are 'sequence_data', 'bin_data', 'metadata',
 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
 'contigs_assembly_report' and 'chimera_report'. By default, everything is
- written to file.}
+ written to files.}
 }
 \value{
 a vector of file names
