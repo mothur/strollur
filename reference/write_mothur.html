@@ -54,7 +54,7 @@ mothur.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">write_mothur</span><span class="op">(</span><span class="va">data</span>, dir_path <span class="op">=</span> <span class="cn">NULL</span>, tags <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">write_mothur</span><span class="op">(</span><span class="va">data</span>, dir_path <span class="op">=</span> <span class="cn">NULL</span>, compress <span class="op">=</span> <span class="cn">TRUE</span>, tags <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,12 +70,16 @@ mothur.</p>
 should be written. Default = current working directory.</p></dd>
 
 
+<dt id="arg-compress">compress<a class="anchor" aria-label="anchor" href="#arg-compress"></a></dt>
+<dd><p>boolean, Default = TRUE.</p></dd>
+
+
 <dt id="arg-tags">tags<a class="anchor" aria-label="anchor" href="#arg-tags"></a></dt>
 <dd><p>a vector of strings containing the items you wish to write
 Options are 'sequence_data', 'bin_data', 'metadata',
 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
 'contigs_assembly_report' and 'chimera_report'. By default, everything is
- written to file.</p></dd>
+ written to files.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -42,6 +42,7 @@
 <url><loc>/reference/get_rabund.html</loc></url>
 <url><loc>/reference/get_rabund_vector.html</loc></url>
 <url><loc>/reference/get_sample_totals.html</loc></url>
+<url><loc>/reference/get_sample_treatment_assignments.html</loc></url>
 <url><loc>/reference/get_samples.html</loc></url>
 <url><loc>/reference/get_scrap_report.html</loc></url>
 <url><loc>/reference/get_sequence_abundance_table.html</loc></url>
@@ -101,9 +102,10 @@
 <url><loc>/reference/write_mothur.html</loc></url>
 <url><loc>/reference/write_mothur_cons_taxonomy.html</loc></url>
 <url><loc>/reference/write_mothur_count.html</loc></url>
+<url><loc>/reference/write_mothur_design.html</loc></url>
 <url><loc>/reference/write_mothur_list.html</loc></url>
 <url><loc>/reference/write_mothur_rabund.html</loc></url>
 <url><loc>/reference/write_mothur_shared.html</loc></url>
-<url><loc>/reference/write_mothur_taxonomy.html</loc></url>
+<url><loc>/reference/write_taxonomy.html</loc></url>
 </urlset>
 
