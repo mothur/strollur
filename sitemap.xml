@@ -12,6 +12,7 @@
 <url><loc>/reference/abort_provide_at_least_one.html</loc></url>
 <url><loc>/reference/add_sequences.html</loc></url>
 <url><loc>/reference/added_message.html</loc></url>
+<url><loc>/reference/assign_bin_representative_sequences.html</loc></url>
 <url><loc>/reference/assign_bin_taxonomy.html</loc></url>
 <url><loc>/reference/assign_bins.html</loc></url>
 <url><loc>/reference/assign_sequence_abundance.html</loc></url>
@@ -29,6 +30,7 @@
 <url><loc>/reference/get_bin_abundances.html</loc></url>
 <url><loc>/reference/get_bin_assignments.html</loc></url>
 <url><loc>/reference/get_bin_names.html</loc></url>
+<url><loc>/reference/get_bin_representative_sequences.html</loc></url>
 <url><loc>/reference/get_bin_taxonomy_report.html</loc></url>
 <url><loc>/reference/get_bin_types.html</loc></url>
 <url><loc>/reference/get_dataset_name.html</loc></url>
