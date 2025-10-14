@@ -1295,7 +1295,7 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
   expect_equal(sort(dataset_t$get_samples()), sort(tree$tip.label))
 })
 
-test_that("dataset - assign_treatments,", {
+test_that("dataset - assign_treatments", {
   # create dataset without treatment assignments
   dataset_t <- read_mothur(
     fasta = rdataset_example("final.fasta"),
@@ -1350,7 +1350,7 @@ test_that("dataset - assign_treatments,", {
   expect_equal(dataset_t$get_num_treatments(), 2)
 })
 
-test_that("dataset - assign_sequence_taxonomy,", {
+test_that("dataset - assign_sequence_taxonomy", {
   # create dataset without taxonomy assignments
   dataset_t <- read_mothur(
     fasta = rdataset_example("final.fasta"),
@@ -1493,4 +1493,31 @@ test_that("dataset - export,", {
     miseq_table$sequence_data$sequences,
     miseq$get_sequences()
   )
+})
+
+test_that("dataset - assign_bin_representative_sequences", {
+  # create dataset sequences and shared data
+  dataset_t <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    otu_shared = rdataset_example("final.opti_mcc.shared"),
+    dataset_name = "miseq_sop"
+  )
+
+  # select first 531 seqs to be the representatives
+  num_bins <- dataset_t$get_num_bins()
+  rep_names <- dataset_t$get_sequence_names()[1:num_bins]
+  bin_names <- dataset_t$get_bin_names()
+
+  dataset_t$assign_bin_representative_sequences(
+    data = NULL,
+    bin_names = bin_names,
+    sequence_names = rep_names
+  )
+
+  df <- dataset_t$get_bin_representative_sequences()
+
+  expect_equal(df[[1]], bin_names)
+  expect_equal(df[[2]], rep_names)
+  expect_equal(df[[3]], dataset_t$get_sequences()[1:num_bins])
 })

@@ -182,6 +182,23 @@ reference_version = "1.38.1", reference_url = url)
 
 
 ## ------------------------------------------------
+## Method `dataset$assign_bin_representative_sequences`
+## ------------------------------------------------
+
+  miseq <- miseq_sop_example()
+
+  # For examples sake, select first 531 sequences to be the
+  # representatives
+  num_bins <- miseq$get_num_bins("otu")
+  rep_names <- miseq$get_sequence_names()[1:num_bins]
+  bin_names <- miseq$get_bin_names()
+
+  miseq$assign_bin_representative_sequences(bin_names = bin_names,
+                                            sequence_names = rep_names,
+                                            type = "otu")
+
+
+## ------------------------------------------------
 ## Method `dataset$assign_bin_taxonomy`
 ## ------------------------------------------------
 
@@ -319,6 +336,25 @@ data$assign_treatments(data = NULL, unique(samples), treatments)
 
   data <- miseq_sop_example()
   data$get_bin_names("otu")
+
+
+## ------------------------------------------------
+## Method `dataset$get_bin_representative_sequences`
+## ------------------------------------------------
+
+  miseq <- miseq_sop_example()
+
+  # For examples sake, select first 531 sequences to be the
+  # representatives
+  num_bins <- miseq$get_num_bins("otu")
+  rep_names <- miseq$get_sequence_names()[1:num_bins]
+  bin_names <- miseq$get_bin_names()
+
+  miseq$assign_bin_representative_sequences(bin_names = bin_names,
+                                            sequence_names = rep_names,
+                                            type = "otu")
+
+ miseq$get_bin_representative_sequences(type = "otu")
 
 
 ## ------------------------------------------------
@@ -552,6 +588,7 @@ the class.}
 \item \href{#method-dataset-add_sequence_tree}{\code{dataset$add_sequence_tree()}}
 \item \href{#method-dataset-add_sequences}{\code{dataset$add_sequences()}}
 \item \href{#method-dataset-assign_bins}{\code{dataset$assign_bins()}}
+\item \href{#method-dataset-assign_bin_representative_sequences}{\code{dataset$assign_bin_representative_sequences()}}
 \item \href{#method-dataset-assign_bin_taxonomy}{\code{dataset$assign_bin_taxonomy()}}
 \item \href{#method-dataset-assign_sequence_abundance}{\code{dataset$assign_sequence_abundance()}}
 \item \href{#method-dataset-assign_sequence_taxonomy}{\code{dataset$assign_sequence_taxonomy()}}
@@ -562,6 +599,7 @@ the class.}
 \item \href{#method-dataset-get_chimera_report}{\code{dataset$get_chimera_report()}}
 \item \href{#method-dataset-get_bin_assignments}{\code{dataset$get_bin_assignments()}}
 \item \href{#method-dataset-get_bin_names}{\code{dataset$get_bin_names()}}
+\item \href{#method-dataset-get_bin_representative_sequences}{\code{dataset$get_bin_representative_sequences()}}
 \item \href{#method-dataset-get_bin_taxonomy_report}{\code{dataset$get_bin_taxonomy_report()}}
 \item \href{#method-dataset-get_bin_types}{\code{dataset$get_bin_types()}}
 \item \href{#method-dataset-get_contigs_assembly_report}{\code{dataset$get_contigs_assembly_report()}}
@@ -1087,6 +1125,80 @@ Default = "otu".}
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dataset-assign_bin_representative_sequences"></a>}}
+\if{latex}{\out{\hypertarget{method-dataset-assign_bin_representative_sequences}{}}}
+\subsection{Method \code{assign_bin_representative_sequences()}}{
+Assign representative sequences to bins.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{dataset$assign_bin_representative_sequences(
+  data = NULL,
+  bin_names = NULL,
+  sequence_names = NULL,
+  type = "otu",
+  reference_name = NULL,
+  reference_version = NULL,
+  reference_note = NULL,
+  reference_url = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{a data.frame containing bin_names and representative
+sequences for your data.}
+
+\item{\code{bin_names}}{a vector strings containing bin names or if using the
+'data' parameter a string containing the name of the column in 'data'
+that contains the bin names. Default column name is 'bin_names'.}
+
+\item{\code{sequence_names}}{a vector of strings containing bin representative
+sequences or if using the 'data' parameter a string containing the name
+of the column in 'data' that contains the bin names. Default column name
+is 'sequence_names'.}
+
+\item{\code{type}}{a string indicating the type of bin assignments.
+Default = "otu".}
+
+\item{\code{reference_name}}{a string containing the name of the reference used
+in the designation of the representative sequences. For example:
+'qiime2' Default = NULL.}
+
+\item{\code{reference_version}}{a string containing the version of the reference
+used in the designation of the representative sequences.
+For example: '2.4'. Default = NULL.}
+
+\item{\code{reference_note}}{a string containing the any additional notes about
+the reference. For example: 'tool'.
+Default = NULL.}
+
+\item{\code{reference_url}}{a string containing a web address where the
+reference may be downloaded. For example: 'https://qiime2.org'.
+ Default = NULL.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{  miseq <- miseq_sop_example()
+
+  # For examples sake, select first 531 sequences to be the
+  # representatives
+  num_bins <- miseq$get_num_bins("otu")
+  rep_names <- miseq$get_sequence_names()[1:num_bins]
+  bin_names <- miseq$get_bin_names()
+
+  miseq$assign_bin_representative_sequences(bin_names = bin_names,
+                                            sequence_names = rep_names,
+                                            type = "otu")
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-assign_bin_taxonomy"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-assign_bin_taxonomy}{}}}
 \subsection{Method \code{assign_bin_taxonomy()}}{
@@ -1530,6 +1642,48 @@ vector of strings containing the bin names
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{  data <- miseq_sop_example()
   data$get_bin_names("otu")
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-dataset-get_bin_representative_sequences"></a>}}
+\if{latex}{\out{\hypertarget{method-dataset-get_bin_representative_sequences}{}}}
+\subsection{Method \code{get_bin_representative_sequences()}}{
+Get the representative bin sequences
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{dataset$get_bin_representative_sequences(type = "otu")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{a string indicating the type of clusters. Options
+include: "otu", "asv", or "phylotype". Default = "otu".}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+data.frame
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{  miseq <- miseq_sop_example()
+
+  # For examples sake, select first 531 sequences to be the
+  # representatives
+  num_bins <- miseq$get_num_bins("otu")
+  rep_names <- miseq$get_sequence_names()[1:num_bins]
+  bin_names <- miseq$get_bin_names()
+
+  miseq$assign_bin_representative_sequences(bin_names = bin_names,
+                                            sequence_names = rep_names,
+                                            type = "otu")
+
+ miseq$get_bin_representative_sequences(type = "otu")
 
 }
 \if{html}{\out{</div>}}

@@ -65,6 +65,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// assign_bin_representative_sequences
+double assign_bin_representative_sequences(Rcpp::XPtr<Dataset> data, const vector<string> bin_names, const vector<string> sequence_names, string type);
+RcppExport SEXP _rdataset_assign_bin_representative_sequences(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP sequence_namesSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const vector<string> >::type bin_names(bin_namesSEXP);
+    Rcpp::traits::input_parameter< const vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(assign_bin_representative_sequences(data, bin_names, sequence_names, type));
+    return rcpp_result_gen;
+END_RCPP
+}
 // assign_bin_taxonomy
 double assign_bin_taxonomy(Rcpp::XPtr<Dataset> data, vector<string>& bin_names, vector<string>& taxonomies, string type);
 RcppExport SEXP _rdataset_assign_bin_taxonomy(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP taxonomiesSEXP, SEXP typeSEXP) {
@@ -191,6 +205,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
     rcpp_result_gen = Rcpp::wrap(get_bin_names(data, type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_bin_representative_sequences
+Rcpp::DataFrame get_bin_representative_sequences(Rcpp::XPtr<Dataset> data, string type);
+RcppExport SEXP _rdataset_get_bin_representative_sequences(SEXP dataSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Dataset> >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_bin_representative_sequences(data, type));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -778,6 +804,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_copy_dataset", (DL_FUNC) &_rdataset_copy_dataset, 1},
     {"_rdataset_add_sequences", (DL_FUNC) &_rdataset_add_sequences, 4},
     {"_rdataset_assign_bins", (DL_FUNC) &_rdataset_assign_bins, 6},
+    {"_rdataset_assign_bin_representative_sequences", (DL_FUNC) &_rdataset_assign_bin_representative_sequences, 4},
     {"_rdataset_assign_bin_taxonomy", (DL_FUNC) &_rdataset_assign_bin_taxonomy, 4},
     {"_rdataset_assign_sequence_abundance", (DL_FUNC) &_rdataset_assign_sequence_abundance, 5},
     {"_rdataset_assign_sequence_taxonomy", (DL_FUNC) &_rdataset_assign_sequence_taxonomy, 3},
@@ -788,6 +815,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_bin_abundance", (DL_FUNC) &_rdataset_get_bin_abundance, 3},
     {"_rdataset_get_bin_abundances", (DL_FUNC) &_rdataset_get_bin_abundances, 3},
     {"_rdataset_get_bin_names", (DL_FUNC) &_rdataset_get_bin_names, 2},
+    {"_rdataset_get_bin_representative_sequences", (DL_FUNC) &_rdataset_get_bin_representative_sequences, 2},
     {"_rdataset_get_bin_taxonomy_report", (DL_FUNC) &_rdataset_get_bin_taxonomy_report, 2},
     {"_rdataset_get_bin_types", (DL_FUNC) &_rdataset_get_bin_types, 1},
     {"_rdataset_get_dataset_name", (DL_FUNC) &_rdataset_get_dataset_name, 1},

@@ -387,6 +387,29 @@ double Dataset::assignBins(const vector<string>& binIds,
     return numBinsAdded;
 }
 /******************************************************************************/
+double Dataset::assignBinRepresentativeSequences(const vector<string>& binNames,
+                                                 const vector<string>& repNames,
+                                                 const string type){
+    double repAssigned = 0;
+
+    if (hasBinTable(type)) {
+
+        if (!hasSequenceData) {
+            addSequences(repNames);
+        }
+
+        if (binNames.size() != repNames.size()) {
+            string message = "[ERROR]: Size mismatch. bin_names and ";
+            message += "sequence_names must be the same size.";
+            throw Rcpp::exception(message.c_str());
+        }
+
+        repAssigned = binTables[getBinTableIndex(type)].assignRepresentativeSequences(binNames, getIndexes(repNames));
+    }
+
+    return repAssigned;
+}
+/******************************************************************************/
 double Dataset::assignBinTaxonomy(const vector<string>& binIds,
                                   const vector<string>& taxs,
                                   const string type) {
@@ -807,6 +830,14 @@ const vector<string> Dataset::getBinIds(string type) {
         return binTables[getBinTableIndex(type)].getIds();
     }
     return nullVector;
+}
+/******************************************************************************/
+const Rcpp::DataFrame Dataset::getBinRepresentativeSequences(string type) {
+    if (hasBinTable(type)) {
+        return binTables[getBinTableIndex(type)].getRepresentativeSequences(names, seqs);
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getBinTaxonomyReport(string type) {

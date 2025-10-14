@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{get_bin_names}
 \alias{get_bin_names}
-\title{get_bin_abundances}
+\title{get_bin_names}
 \usage{
 get_bin_names(data, type = "otu")
 }

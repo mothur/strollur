@@ -8,6 +8,7 @@ BinTable::BinTable() {
     label = "";
     hasListAssignments = false;
     hasBinTaxonomy = false;
+    hasBinReps = false;
     runClassify = false;
 }
 /******************************************************************************/
@@ -16,6 +17,7 @@ BinTable::BinTable(string l) {
     label = l;
     hasListAssignments = false;
     hasBinTaxonomy = false;
+    hasBinReps = false;
     runClassify = false;
 }
 /******************************************************************************/
@@ -23,12 +25,14 @@ BinTable::BinTable(const BinTable& binTable) {
     label = binTable.label;
     hasListAssignments = binTable.hasListAssignments;
     hasBinTaxonomy = binTable.hasBinTaxonomy;
+    hasBinReps = binTable.hasBinReps;
 
     binIndex = binTable.binIndex;
     tableBins = binTable.tableBins;
     binNames = binTable.binNames;
     trashCodes = binTable.trashCodes;
     taxonomies = binTable.taxonomies;
+    repSequences = binTable.repSequences;
     runClassify = binTable.runClassify;
 
     binList = binTable.binList;
@@ -50,6 +54,7 @@ void BinTable::clear(string tag) {
         label = "";
         hasListAssignments = false;
         hasBinTaxonomy = false;
+        hasBinReps = false;
         runClassify = false;
 
         binIndex.clear();
@@ -61,6 +66,7 @@ void BinTable::clear(string tag) {
         binList.clear();
         taxonomies.clear();
         binCount.clear();
+        repSequences.clear();
 
     }else if (tag == "taxonomy") {
         hasBinTaxonomy = false;
@@ -74,12 +80,14 @@ void BinTable::clone(const BinTable& binTable) {
     label = binTable.label;
     hasListAssignments = binTable.hasListAssignments;
     hasBinTaxonomy = binTable.hasBinTaxonomy;
+    hasBinReps = binTable.hasBinReps;
 
     binIndex = binTable.binIndex;
     tableBins = binTable.tableBins;
     binNames = binTable.binNames;
     trashCodes = binTable.trashCodes;
     taxonomies = binTable.taxonomies;
+    repSequences = binTable.repSequences;
     runClassify = binTable.runClassify;
 
     binList = binTable.binList;
@@ -216,6 +224,30 @@ double BinTable::assignAbundance(vector<string> binIds,
     }
 
     return otusAssigned;
+}
+/******************************************************************************/
+double BinTable::assignRepresentativeSequences(const vector<string>& binNames,
+                                                 const vector<int>& repNames){
+    double repAssigned = 0;
+
+    // set as unassigned
+    repSequences.resize(tableBins.size(), -1);
+
+    for (int i = 0; i < binNames.size(); i++) {
+
+        string binName = binNames[i];
+
+        auto it = binIndex.find(binName);
+
+        // valid bin
+        if (it != binIndex.end()) {
+            repAssigned++;
+            repSequences[it->second] = repNames[i];
+        }
+    }
+    hasBinReps = true;
+
+    return repAssigned;
 }
 /******************************************************************************/
 double BinTable::assignTaxonomy(const vector<string>& binIds,
@@ -458,6 +490,38 @@ const Rcpp::DataFrame BinTable::getList(const vector<string>& seqNames){
 const vector<string> BinTable::getIds(){
     return select(binNames, tableBins);
 }
+/******************************************************************************/
+// 3 column dataframe - bin_id, abundance, sample
+const Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>& seqNames,
+                                                 const vector<string>& seqs) {
+
+    if (hasBinReps) {
+
+        vector<string> ids, seqids, seqDNA;
+        for (int i = 0; i < binNames.size(); i++) {
+
+            // if this is a "good" bin
+            if (tableBins[i]) {
+                int repSeq = repSequences[i];
+
+                ids.push_back(binNames[i]);
+                seqids.push_back(seqNames[repSeq]);
+                seqDNA.push_back(seqs[repSeq]);
+            }
+        }
+
+        string tag = label + "_names";
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named(tag.c_str()) = ids,
+            Rcpp::_["representative_names"] = seqids,
+            Rcpp::_["representative_sequences"] = seqDNA);
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
+
+}
+
 /******************************************************************************/
 vector<string> BinTable::getTaxonomies(const vector<string>& tax,
                                        AbundTable& count) {

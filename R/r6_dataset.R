@@ -842,6 +842,106 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
+    #' Assign representative sequences to bins.
+    #'
+    #' @param data a data.frame containing bin_names and representative
+    #' sequences for your data.
+    #'
+    #' @param bin_names a vector strings containing bin names or if using the
+    #' 'data' parameter a string containing the name of the column in 'data'
+    #' that contains the bin names. Default column name is 'bin_names'.
+    #' @param sequence_names a vector of strings containing bin representative
+    #' sequences or if using the 'data' parameter a string containing the name
+    #' of the column in 'data' that contains the bin names. Default column name
+    #' is 'sequence_names'.
+    #' @param type a string indicating the type of bin assignments.
+    #' Default = "otu".
+    #'
+    #' @param reference_name a string containing the name of the reference used
+    #' in the designation of the representative sequences. For example:
+    #' 'qiime2' Default = NULL.
+    #' @param reference_version a string containing the version of the reference
+    #' used in the designation of the representative sequences.
+    #' For example: '2.4'. Default = NULL.
+    #' @param reference_note a string containing the any additional notes about
+    #' the reference. For example: 'tool'.
+    #' Default = NULL.
+    #' @param reference_url a string containing a web address where the
+    #' reference may be downloaded. For example: 'https://qiime2.org'.
+    #'  Default = NULL.
+    #' @examples
+    #'   miseq <- miseq_sop_example()
+    #'
+    #'   # For examples sake, select first 531 sequences to be the
+    #'   # representatives
+    #'   num_bins <- miseq$get_num_bins("otu")
+    #'   rep_names <- miseq$get_sequence_names()[1:num_bins]
+    #'   bin_names <- miseq$get_bin_names()
+    #'
+    #'   miseq$assign_bin_representative_sequences(bin_names = bin_names,
+    #'                                             sequence_names = rep_names,
+    #'                                             type = "otu")
+    #'
+    assign_bin_representative_sequences = function(data = NULL,
+                                                   bin_names = NULL,
+                                                   sequence_names = NULL,
+                                                   type = "otu",
+                                                   reference_name = NULL,
+                                                   reference_version = NULL,
+                                                   reference_note = NULL,
+                                                   reference_url = NULL) {
+      if (is.null(data) && (is.null(bin_names))) {
+        abort_provide_at_least_one(c("data", "bin_names"))
+      }
+
+      if (!is.null(data)) {
+        if (!is.data.frame(data)) {
+          abort_incorrect_type("data.frame", data)
+        }
+
+        # required
+        bin_names <- private$fill_required_param(
+          bin_names, data,
+          "bin_names"
+        )
+
+        # required
+        sequence_names <- private$fill_required_param(
+          sequence_names, data,
+          "sequence_names"
+        )
+      } else {
+        if (is.null(bin_names) && is.null(sequence_names)) {
+          cli::cli_abort("[ERROR]: You must provide data or
+                                bin_names and sequence_names")
+        }
+      }
+
+      num_assigned <- assign_bin_representative_sequences(
+        self$data,
+        bin_names, sequence_names, type
+      )
+
+      # if a reference is given, save it
+      if (!is.null(reference_name)) {
+        self$add_references(
+          reference_name = reference_name,
+          version = reference_version,
+          usage = "bin_representative_sequences",
+          note = reference_note,
+          url = reference_url
+        )
+      }
+
+      assigned_message(
+        num_assigned,
+        paste0(" ", type, " bin representative sequences.")
+      )
+
+      invisible(self)
+    },
+
+    #' @description
     #' Assign bin classification.
     #'
     #' Note, if you assign sequence taxonomies and assign bins, 'dataset'
@@ -1412,6 +1512,30 @@ dataset <- R6Class("dataset",
     #' @return vector of strings containing the bin names
     get_bin_names = function(type = "otu") {
       get_bin_names(self$data, type)
+    },
+
+    #' @description
+    #' Get the representative bin sequences
+    #' @param type a string indicating the type of clusters. Options
+    #' include: "otu", "asv", or "phylotype". Default = "otu".
+    #' @examples
+    #'   miseq <- miseq_sop_example()
+    #'
+    #'   # For examples sake, select first 531 sequences to be the
+    #'   # representatives
+    #'   num_bins <- miseq$get_num_bins("otu")
+    #'   rep_names <- miseq$get_sequence_names()[1:num_bins]
+    #'   bin_names <- miseq$get_bin_names()
+    #'
+    #'   miseq$assign_bin_representative_sequences(bin_names = bin_names,
+    #'                                             sequence_names = rep_names,
+    #'                                             type = "otu")
+    #'
+    #'  miseq$get_bin_representative_sequences(type = "otu")
+    #'
+    #' @return data.frame
+    get_bin_representative_sequences = function(type = "otu") {
+      get_bin_representative_sequences(self$data, type)
     },
 
     #' @description

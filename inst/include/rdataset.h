@@ -258,7 +258,7 @@ public:
     ~BinTable();
 
     string label;
-    bool hasListAssignments, hasBinTaxonomy, runClassify;
+    bool hasListAssignments, hasBinTaxonomy, runClassify, hasBinReps;
 
     // ids, abundances, samples(optional)
     double assignAbundance(vector<string> ids,
@@ -266,6 +266,8 @@ public:
                            const vector<string>& samples,
                            const vector<int>& seqIds,
                            AbundTable& count, bool update = false);
+    double assignRepresentativeSequences(const vector<string>& binNames,
+                                            const vector<int>& repNames);
 
     double assignTaxonomy(const vector<string>& ids,
                           const vector<string>& taxonomies);
@@ -296,6 +298,8 @@ public:
     // vector of total abundances for each binId
     const vector<float> getRAbundVector();
     // 3 column dataframe - bin_id, abundance, sample
+    const Rcpp::DataFrame getRepresentativeSequences(const vector<string>& seqNames,
+                                                     const vector<string>& seqs);
     const Rcpp::DataFrame getShared();
     // abundances for each bin broken down by sample
     const vector<vector<float> > getSharedVector();
@@ -353,6 +357,8 @@ private:
     // binList[1] (aka "bin1") -> 1,3,5
     // "bin1" -> "seq1,seq3,seq5"
     vector<set<int> > binList;
+    vector<int> repSequences;
+
     // seqIndex -> binIndex
     // 2 -> 1
     // "seq2" -> "bin1"
@@ -389,7 +395,7 @@ private:
 
     template<class Archive>
     void serialize(Archive& ar) {
-        ar(label, hasListAssignments, hasBinTaxonomy,
+        ar(label, hasListAssignments, hasBinTaxonomy, repSequences, hasBinReps,
            binIndex, tableBins, binNames, trashCodes, taxonomies,
            runClassify, binList, seqBins, badAccnos, uniqueBad, binCount);
     }
@@ -437,6 +443,9 @@ public:
 
     double assignSequenceTaxonomy(const vector<string>& names,
                                   const vector<string>& taxonomies);
+    double assignBinRepresentativeSequences(const vector<string>& binNames,
+                                  const vector<string>& repNames,
+                                  const string type = "otu");
     double assignBinTaxonomy(const vector<string>& binIds,
                              const vector<string>& taxonomies,
                              const string type = "otu");
@@ -457,6 +466,8 @@ public:
     const vector<string> getBinIds(string type = "otu");
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getBinTaxonomyReport(string type = "otu");
+    // 3 columns: bin_names, representative_names, representative_sequences
+    const Rcpp::DataFrame getBinRepresentativeSequences(string type = "otu");
     // 2 column dataframe - bin_id, seq_id
     const vector<string> getBinTypes();
     const Rcpp::DataFrame getList(string type = "otu");

@@ -229,6 +229,46 @@ double assign_bins(Rcpp::XPtr<Dataset> data, const vector<string> bin_names,
     return numBinsAssigned;
 }
 /******************************************************************************/
+//' @title assign_bin_representative_sequences
+//' @description
+//' Assign representative sequences to bins.
+//'
+//' @param data a data.frame containing bin_names and representative
+//' sequences for your data.
+//'
+//' @param bin_names a vector strings containing bin names or if using the
+//' 'data' parameter a string containing the name of the column in 'data'
+//' that contains the bin names. Default column name is 'bin_names'.
+//' @param sequence_names a vector of strings containing bin representative
+//' sequences or if using the 'data' parameter a string containing the name
+//' of the column in 'data' that contains the bin names. Default column name
+//' is 'sequence_names'.
+//' @param type a string indicating the type of bin assignments. Default "otu".
+//'
+//' @examples
+//'
+//'   miseq <- miseq_sop_example()
+//'
+//'   # For examples sake, select first 531 sequences to be the representatives
+//'   num_bins <- miseq$get_num_bins("otu")
+//'   rep_names <- miseq$get_sequence_names()[1:num_bins]
+//'   bin_names <- miseq$get_bin_names()
+//'
+//'   assign_bin_representative_sequences(miseq$data,
+//'                                       bin_names, rep_names, "otu")
+//'
+//' @seealso [dataset$assign_bin_representative_sequences()]
+//' @return double containing the number of representative sequences assigned
+//[[Rcpp::export]]
+double assign_bin_representative_sequences(Rcpp::XPtr<Dataset> data,
+                                           const vector<string> bin_names,
+                                           const vector<string> sequence_names,
+                                           string type = "otu") {
+
+    return data.get()->assignBinRepresentativeSequences(bin_names,
+                    sequence_names, type);
+}
+/******************************************************************************/
 //' @title assign_bin_taxonomy
 //' @description
 //' Assign bin classifications to an instance of the 'Dataset' class.
@@ -574,7 +614,7 @@ vector<float> get_bin_abundances(Rcpp::XPtr<Dataset> data,
     return data.get()->getBinAbundances(bin_name, type);
 }
 /******************************************************************************/
-//' @title get_bin_abundances
+//' @title get_bin_names
 //' @description
 //' Get the names of the bins in an instance of the  'Dataset' class.
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
@@ -589,6 +629,37 @@ vector<float> get_bin_abundances(Rcpp::XPtr<Dataset> data,
 //[[Rcpp::export]]
 vector<string> get_bin_names(Rcpp::XPtr<Dataset> data, string type = "otu") {
     return data.get()->getBinIds(type);
+}
+/******************************************************************************/
+//' @title get_bin_representative_sequences
+//' @description
+//' Get the representative sequences of the bins in an instance of the
+//'  'Dataset' class.
+//' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
+//'  'Dataset' c++ class.
+//' @param type, string indicating the type of clusters. Default = "otu".
+//' @examples
+//'
+//'   miseq <- miseq_sop_example()
+//'
+//'   # For examples sake, select first 531 sequences to be the representatives
+//'   num_bins <- miseq$get_num_bins("otu")
+//'   rep_names <- miseq$get_sequence_names()[1:num_bins]
+//'   bin_names <- miseq$get_bin_names()
+//'
+//'   assign_bin_representative_sequences(miseq$data,
+//'                                       bin_names, rep_names, "otu")
+//'
+//'
+//'
+//'   get_bin_representative_sequences(miseq$data, "otu")
+//'
+//' @seealso [dataset$get_bin_representative_sequences()]
+//' @return data.frame
+//[[Rcpp::export]]
+Rcpp::DataFrame get_bin_representative_sequences(Rcpp::XPtr<Dataset> data,
+                                                 string type = "otu") {
+    return data.get()->getBinRepresentativeSequences(type);
 }
 /******************************************************************************/
 //' @title get_bin_taxonomy_report

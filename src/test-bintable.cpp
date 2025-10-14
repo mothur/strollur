@@ -89,6 +89,42 @@ context("BinTable class C++ unit tests") {
         expect_true(otuTable.getSampleTotals() == sampleTotals);
     }
 
+    test_that("Tests add, assignRepresentativeSequences, getRepresentativeSequences") {
+        BinTable otuTable("otu");
+
+        AbundTable ab;
+        // add otuNames abundances, samples (shared)
+        const vector<string> otus = {"otu1", "otu1", "otu1", "otu1",
+                                         "otu2", "otu2", "otu2",
+                                         "otu3", "otu3", "otu3", "otu3",
+                                         "otu4", "otu4", "otu4", "otu4"};
+        const vector<float> abundances = {10, 10, 5, 5, 5, 5, 10,
+                                        1, 2, 3, 4, 20, 10, 5, 5};
+        const vector<string> samples = {"sample1", "sample2", "sample4", "sample5",
+                                        "sample1", "sample2", "sample4",
+                                        "sample1", "sample3", "sample5", "sample6",
+                                        "sample1", "sample2", "sample4", "sample5"};
+
+        const vector<string> otuRepNames = {"seq1", "seq2", "seq3", "seq4"};
+        const vector<string> otuRepSeqs = {"ATGC", "ATGC", "ATGC", "ATGC"};
+        const vector<string> otuNames = {"otu1", "otu2", "otu3", "otu4"};
+        const vector<int> otuRepIndexes = {0, 1, 2, 3};
+
+
+        // add shared data
+        otuTable.assignAbundance(otus, abundances, samples,
+                                 nullIntVector, ab);
+
+        otuTable.assignRepresentativeSequences(otuNames, otuRepIndexes);
+
+        Rcpp::DataFrame results = otuTable.getRepresentativeSequences(otuRepNames, otuRepSeqs);
+
+        expect_true(otuNames == Rcpp::as<vector<string>>(results[0]));
+        expect_true(otuRepNames == Rcpp::as<vector<string>>(results[1]));
+        expect_true(otuRepSeqs == Rcpp::as<vector<string>>(results[2]));
+    }
+
+
     test_that("Tests getScrapReport, getRAbundVector, getRAbund, getSharedVector, hasSample") {
         BinTable otuTable("0.03");
 
