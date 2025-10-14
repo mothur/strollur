@@ -80,6 +80,7 @@
 <url><loc>/reference/read_mothur_rabund.html</loc></url>
 <url><loc>/reference/read_mothur_shared.html</loc></url>
 <url><loc>/reference/read_mothur_taxonomy.html</loc></url>
+<url><loc>/reference/read_qiime2.html</loc></url>
 <url><loc>/reference/remove_bins.html</loc></url>
 <url><loc>/reference/remove_file.html</loc></url>
 <url><loc>/reference/remove_lineages.html</loc></url>
@@ -98,6 +99,7 @@
 <url><loc>/reference/split_at_char.html</loc></url>
 <url><loc>/reference/split_white_space.html</loc></url>
 <url><loc>/reference/summarize_reports.html</loc></url>
+<url><loc>/reference/unpack_qiime2_artifact.html</loc></url>
 <url><loc>/reference/write_fasta.html</loc></url>
 <url><loc>/reference/write_mothur.html</loc></url>
 <url><loc>/reference/write_mothur_cons_taxonomy.html</loc></url>
