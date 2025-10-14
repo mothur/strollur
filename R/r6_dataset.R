@@ -14,7 +14,6 @@
 #' @export
 dataset <- R6Class("dataset",
   public = list(
-
     #' @field data Rcpp::XPtr<Dataset> pointer to 'Dataset' c++ class. This
     #' allows package developers an easy access point to the underlying C++ code
     #' with additional functionality.

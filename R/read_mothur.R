@@ -1,10 +1,10 @@
 #' @title read_mothur
 #' @description
-#' The read_mothur function will read various
+#' The read_mothur function reads various
 #' \href{https://mothur.org/wiki/tags/#file_types}{file types} created by
-#' mothur, and create a 'dataset' object.
+#' mothur, and creates a 'dataset' object.
 #'
-#' To generate the various output files you can follow Pat's
+#' To generate the various input files you can follow Pat's
 #' \href{https://mothur.org/wiki/miseq_sop/}{Miseq example analysis}.
 #' @param dataset_name A string containing a name for your dataset.
 #' @param fasta filename, a FASTA formatted file containing sequence strings.

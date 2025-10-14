@@ -12,6 +12,7 @@ import(dplyr)
 import(tidyr)
 importFrom("stats", "na.omit")
 importFrom("utils", "zip")
+importFrom("utils", "unzip")
 
 # tree data
 importFrom(ape, read.tree)
@@ -30,14 +31,12 @@ importFrom(R6, R6Class)
 importFrom(methods, new)
 importFrom(waldo, compare)
 
-# read fastq files
-#importFrom(microseq, readFastq)
-
+# reads
 importFrom(readr, read_table)
-
-# read FASTA files
 importFrom(microseq, readFasta)
 importFrom(microseq, writeFasta)
+importFrom(yaml, read_yaml)
+importFrom(rbiom, read_biom)
 
 # paralellized code
 importFrom(parallelly, availableCores)

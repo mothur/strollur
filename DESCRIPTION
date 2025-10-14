@@ -23,7 +23,9 @@ Imports: Rcpp (>= 1.1.0),
     ape,
     Rcereal,
     dplyr,
-    tidyr
+    tidyr,
+    yaml,
+    rbiom
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
 Depends: R (>= 3.5.0)
 Suggests: 
