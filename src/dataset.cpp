@@ -868,9 +868,7 @@ const vector<float> Dataset::getRAbundVector(string type) {
     return nullFloatVector;
 }
 /******************************************************************************/
-// sample functions
 const vector<string> Dataset::getSamples(){
-    // maybe we just provided an binTable with no seqIds
     if (binTables.size() != 0) {
         return binTables[0].getSamples();
     }
@@ -1534,6 +1532,7 @@ void Dataset::setAbundances(const vector<string>& n,
             int index = it->second;
 
             if (sum(abunds[i]) == 0) {
+        cout << index << '\t' << sum(abunds[i]) << endl;
                 removeSequence(index, reason, true, true);
             }else{
                 count.setAbundance(index, abunds[i]);
@@ -1554,6 +1553,7 @@ void Dataset::setAbundances(const vector<string>& n,
             binTables[i].assignAbundance(nullVector, nullFloatVector,
                                          nullVector, nullIntVector,
                                          count, true);
+            binTables[i].updateTotals();
         }
     }
 }
@@ -1564,30 +1564,9 @@ void Dataset::setBinAbundance(const vector<string>& binIDS,
                                 string reason, string type) {
     if (hasBinTable(type)) {
 
-        if (binTables[getBinTableIndex(type)].hasListAssignments) {
-            string message = "[WARNING]: cannot assign bin abundance for bins ";
-            message += " with sequences assigned to them. Doing so could cause ";
-            message += "inconsistencies, ignoring bin assignments.";
-            RcppThread::Rcout << endl << message << endl;
-            return;
-        }
-
-        vector<int> seqsToRemove = binTables[getBinTableIndex(type)].setAbundance(binIDS, abunds,
-                                                             reason);
-        // remove any sequences from removed bin from dataset
-        for (int seq : seqsToRemove) {
-            removeSequence(seq, reason, true, false);
-        }
-
-        // remove from other lists
-        for (int i = 0; i < binTables.size(); i++) {
-            if (binTables[i].hasListAssignments && (binTables[i].label != type)) {
-                for (int seq : seqsToRemove) {
-                    binTables[i].remove(seq, count, reason, true);
-                }
-            }
-            binTables[i].updateTotals();
-        }
+        // no need to look at seqs_removed returned because you can't
+        // setBinAbundance for bins with sequence assignments
+        binTables[getBinTableIndex(type)].setAbundance(binIDS, abunds, reason);
     }
 }
 /******************************************************************************/
@@ -1597,31 +1576,9 @@ void Dataset::setBinAbundances(const vector<string>& binIDS,
                                string reason, string type) {
     if (hasBinTable(type)) {
 
-        if (binTables[getBinTableIndex(type)].hasListAssignments) {
-            string message = "[WARNING]: cannot assign bin abundance for bins ";
-            message += " with sequences assigned to them. Doing so could cause ";
-            message += "inconsistencies, ignoring bin assignments.";
-            RcppThread::Rcout << endl << message << endl;
-            return;
-        }
-
-        vector<int> seqsToRemove = binTables[getBinTableIndex(type)].
-        setAbundances(binIDS, abunds, reason);
-
-        // remove any sequences from removed bin
-        for (int seq : seqsToRemove) {
-            removeSequence(seq, reason, true, false);
-        }
-
-        // remove from other lists
-        for (int i = 0; i < binTables.size(); i++) {
-            if (binTables[i].hasListAssignments && (binTables[i].label != type)) {
-                for (int seq : seqsToRemove) {
-                    binTables[i].remove(seq, count, reason, true);
-                }
-            }
-            binTables[i].updateTotals();
-        }
+        // no need to look at seqs_removed returned because you can't
+        // setBinAbundance for bins with sequence assignments
+        binTables[getBinTableIndex(type)].setAbundances(binIDS, abunds, reason);
     }
 }
 /******************************************************************************/

@@ -354,7 +354,7 @@ data$assign_treatments(data = NULL, unique(samples), treatments)
                                             sequence_names = rep_names,
                                             type = "otu")
 
- miseq$get_bin_representative_sequences(type = "otu")
+  miseq$get_bin_representative_sequences(type = "otu")
 
 
 ## ------------------------------------------------
@@ -1501,10 +1501,9 @@ export will create a list containing the data in the dataset.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{tags}}{a vector of strings containing the items you wish to export.
-Options are 'sequence_data', 'sequence_report',
-'sequence_abundance_table','sequence_bin_assignments', 'bin_data',
-'bin_abundance_table', 'metadata', 'references', 'sequence_tree',
-'sample_tree', 'alignment_report', 'contigs_assembly_report' and
+Options are 'sequence_data', 'bin_data', 'metadata', 'references',
+ 'sequence_tree', 'sample_tree', 'alignment_report',
+  'contigs_assembly_report' and
 'chimera_report'. By default, everything is exported.}
 }
 \if{html}{\out{</div>}}
@@ -1683,7 +1682,7 @@ data.frame
                                             sequence_names = rep_names,
                                             type = "otu")
 
- miseq$get_bin_representative_sequences(type = "otu")
+  miseq$get_bin_representative_sequences(type = "otu")
 
 }
 \if{html}{\out{</div>}}

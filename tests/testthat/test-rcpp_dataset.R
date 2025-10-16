@@ -501,6 +501,17 @@ test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
   expect_equal(get_num_sequences(dataset), 70)
 
   expect_error(remove_bins(dataset, c("bin1"), c("trash_tag", "extra_one")))
+
+  clear(dataset, "")
+
+  # test with samples bins
+  assign_bins(
+      dataset, c("bin1", "bin1", "bin2", "bin3", "bin3"),
+      0, "", c("seq1", "seq2", "seq3", "seq4", "seq5")
+  )
+
+  expect_error(set_bin_abundance(dataset, c("bin1"), c(11)))
+  expect_error(set_bin_abundances(dataset, c("bin1"), list(c(11))))
 })
 
 test_that("rcpp_dataset - misc ", {
@@ -516,4 +527,32 @@ test_that("rcpp_dataset - misc ", {
 
   # no bin taxonomies
   expect_equal(get_bin_taxonomy_report(dataset), data.frame())
+})
+
+test_that("dataset - set_abundances, set_sequences", {
+  # create dataset sequences and shared data
+  dataset_t <- read_mothur(
+    fasta = rdataset_example("final.fasta"),
+    count = rdataset_example("final.count_table"),
+    otu_shared = rdataset_example("final.opti_mcc.shared"),
+    dataset_name = "miseq_sop"
+  )
+
+  expect_equal(get_num_sequences(dataset_t$data), 113963)
+
+  expect_error(set_sequences(
+    dataset_t$data,
+    rep("seq1", 5),
+    rep("ATGC", 5),
+    c("not", "enough", "sequence", "comments")
+  ))
+
+  # abund = 191
+  seqs_to_update <- c("M00967_43_000000000-A3JHG_1_1108_14299_17220")
+  new_abunds <- list(rep(0, 19))
+
+  # this will remove the sequence
+  set_abundances(dataset_t$data, seqs_to_update, new_abunds)
+  #expect_equal(get_num_sequences(dataset_t$data), 113772)
+
 })

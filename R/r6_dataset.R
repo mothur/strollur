@@ -1373,10 +1373,9 @@ dataset <- R6Class("dataset",
     #' @description
     #' export will create a list containing the data in the dataset.
     #' @param tags a vector of strings containing the items you wish to export.
-    #' Options are 'sequence_data', 'sequence_report',
-    #' 'sequence_abundance_table','sequence_bin_assignments', 'bin_data',
-    #' 'bin_abundance_table', 'metadata', 'references', 'sequence_tree',
-    #' 'sample_tree', 'alignment_report', 'contigs_assembly_report' and
+    #' Options are 'sequence_data', 'bin_data', 'metadata', 'references',
+    #'  'sequence_tree', 'sample_tree', 'alignment_report',
+    #'   'contigs_assembly_report' and
     #' 'chimera_report'. By default, everything is exported.
     #' @examples
     #'     miseq <- miseq_sop_example()
@@ -1390,25 +1389,39 @@ dataset <- R6Class("dataset",
       results <- export_dataset(self$data, tags)
 
       if (nrow(private$metadata) != 0) {
-        results$metadata <- private$metadata
+        if ((tags == "") || ("metadata" %in% tags)) {
+          results$metadata <- private$metadata
+        }
       }
       if (nrow(private$references) != 0) {
-        results$references <- private$references
+        if ((tags == "") || ("references" %in% tags)) {
+          results$references <- private$references
+        }
       }
       if (nrow(private$alignment_data) != 0) {
-        results$alignment_report <- private$alignment_data
+        if ((tags == "") || ("alignment_report" %in% tags)) {
+          results$alignment_report <- private$alignment_data
+        }
       }
       if (nrow(private$chimera_data) != 0) {
-        results$chimera_report <- private$chimera_data
+        if ((tags == "") || ("chimera_report" %in% tags)) {
+          results$chimera_report <- private$chimera_data
+        }
       }
       if (nrow(private$contigs_data) != 0) {
-        results$contigs_assembly_report <- private$contigs_data
+        if ((tags == "") || ("contigs_assembly_report" %in% tags)) {
+          results$contigs_assembly_report <- private$contigs_data
+        }
       }
       if (!is.null(private$sequence_tree)) {
-        results$sequence_tree <- private$sequence_tree
+        if ((tags == "") || ("sequence_tree" %in% tags)) {
+          results$sequence_tree <- private$sequence_tree
+        }
       }
       if (!is.null(private$sample_tree)) {
-        results$sample_tree <- private$sample_tree
+        if ((tags == "") || ("sample_tree" %in% tags)) {
+          results$sample_tree <- private$sample_tree
+        }
       }
 
       attr(results, "rdataset_version") <- "1.0.0"
@@ -1531,7 +1544,7 @@ dataset <- R6Class("dataset",
     #'                                             sequence_names = rep_names,
     #'                                             type = "otu")
     #'
-    #'  miseq$get_bin_representative_sequences(type = "otu")
+    #'   miseq$get_bin_representative_sequences(type = "otu")
     #'
     #' @return data.frame
     get_bin_representative_sequences = function(type = "otu") {

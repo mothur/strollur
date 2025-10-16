@@ -399,6 +399,13 @@ Rcpp::List BinTable::exportBinTable() {
         resultLabels.push_back("bin_abundance_table");
     }
 
+    if (hasBinReps) {
+        Rcpp::DataFrame binSeqReps = Rcpp::DataFrame::create(
+            Rcpp::Named("bin_ids") = binIndexes,
+            Rcpp::_["sequence_ids"] = repSequences);
+        results.push_back(binSeqReps);
+        resultLabels.push_back("bin_representative_sequences");
+    }
     results.attr("names") = resultLabels;
 
     return results;
@@ -505,8 +512,13 @@ const Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>&
                 int repSeq = repSequences[i];
 
                 ids.push_back(binNames[i]);
-                seqids.push_back(seqNames[repSeq]);
-                seqDNA.push_back(seqs[repSeq]);
+                if (repSeq != -1) {
+                    seqids.push_back(seqNames[repSeq]);
+                    seqDNA.push_back(seqs[repSeq]);
+                }else{
+                    seqids.push_back("NA");
+                    seqDNA.push_back("NA");
+                }
             }
         }
 
@@ -880,6 +892,13 @@ void BinTable::remove(const int seqId, AbundTable& count,
             seqBins.erase(seqId);
         }
     }
+
+    if (hasBinReps) {
+        auto it = std::find(repSequences.begin(), repSequences.end(), seqId);
+        if (it != repSequences.end()) {
+            *it = -1;
+        }
+    }
 }
 /******************************************************************************/
 void BinTable::removeSamples(const vector<string>& samples) {
@@ -937,6 +956,10 @@ vector<int> BinTable::remove(string binID, string reason, bool update){
 
     // update uniqueBad
     uniqueBad++;
+
+    if (hasBinReps) {
+        repSequences[index] = -1;
+    }
 
     if (hasListAssignments) {
         return toVector(binList[index]);

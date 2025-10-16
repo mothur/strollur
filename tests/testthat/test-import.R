@@ -46,6 +46,16 @@ test_that("import - miseq_sop_example", {
     get_treatment_totals(miseq$data)
   )
 
+  dfd <- get_bin_representative_sequences(dataset_t$data)
+  dfm <- get_bin_representative_sequences(miseq$data)
+
+  for (otu in dfm[[1]]) {
+    expect_equal(
+      dfd %>% filter(otu_names == otu),
+      dfm %>% filter(otu_names == otu)
+    )
+  }
+
   # only import bin data no sequences
   dataset_t <- import(exported_miseq, c("bin_data"))
 
@@ -175,15 +185,44 @@ test_that("import - errors and warnings", {
 
   table <- just_bins$export()
 
-  dataset <- import(table)
+  data <- import(table)
 
-  expect_equal(dataset$get_num_bins("otu"), 531)
-  expect_equal(dataset$get_num_sequences(), 113963)
+  expect_equal(data$get_num_bins("otu"), 531)
+  expect_equal(data$get_num_sequences(), 113963)
 
-  expect_equal(dataset$get_dataset_name(), just_bins$get_dataset_name())
+  expect_equal(data$get_dataset_name(), just_bins$get_dataset_name())
 
-  expect_equal(dataset$get_num_sequences(), just_bins$get_num_sequences())
-  expect_equal(dataset$get_num_treatments(), just_bins$get_num_treatments())
-  expect_equal(dataset$get_num_samples(), just_bins$get_num_samples())
-  expect_equal(length(dataset$get_sequence_names()), 0)
+  expect_equal(data$get_num_sequences(), just_bins$get_num_sequences())
+  expect_equal(data$get_num_treatments(), just_bins$get_num_treatments())
+  expect_equal(data$get_num_samples(), just_bins$get_num_samples())
+  expect_equal(length(data$get_sequence_names()), 0)
+
+  data <- dataset$new()
+
+  table <- data$export(c("sequence_data", "bin_data"))
+  expect_equal(length(table), 0)
+})
+
+test_that("import - with tags", {
+  miseq <- miseq_sop_example()
+
+  expect_equal(miseq$get_num_bins("otu"), 531)
+  expect_equal(miseq$get_num_sequences(), 113963)
+  expect_equal(miseq$get_num_sequences(TRUE), 2425)
+  expect_equal(nrow(miseq$get_bin_representative_sequences()), 531)
+
+  # just export bin data, no sequence data
+  table <- miseq$export()
+
+  just_bins <- import(table, c("bin_data"))
+
+  expect_equal(just_bins$get_num_bins("otu"), 531)
+  expect_equal(just_bins$get_num_sequences(), 113963)
+  expect_equal(just_bins$get_num_sequences(TRUE), 0)
+
+  expect_equal(just_bins$get_dataset_name(), miseq$get_dataset_name())
+  expect_equal(just_bins$get_num_treatments(), 0)
+  expect_equal(just_bins$get_num_samples(), 0)
+  expect_equal(length(just_bins$get_sequence_names()), 0)
+  expect_equal(nrow(just_bins$get_bin_representative_sequences()), 0)
 })

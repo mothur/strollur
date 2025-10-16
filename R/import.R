@@ -96,6 +96,28 @@ import <- function(table, tags = NULL) {
 
           table[[b]]$bin_ids <- table[[bt]]$bin_ids[matched_indices]
           table[[b]] <- na.omit(table[[b]])
+
+          obrs <- paste0(type, "_bin_representative_sequences")
+          if (obrs %in% names) {
+            # filter seqs from _bin_representative_sequences
+            matched_indices <- match(
+              table[[obrs]]$sequence_ids,
+              table$sequence_data$sequence_ids
+            )
+
+            table[[obrs]]$sequence_ids <- table$sequence_data$sequence_ids[
+              matched_indices
+            ]
+
+            # filter bins from _bin_representative_sequences
+            matched_indices <- match(
+              table[[obrs]]$bin_ids,
+              table[[bt]]$bin_ids
+            )
+
+            table[[obrs]]$bin_ids <- table[[bt]]$bin_ids[matched_indices]
+            table[[obrs]] <- na.omit(table[[obrs]])
+          }
         } else {
           b <- paste0(type, "_bin_abundance_table")
 
@@ -228,6 +250,31 @@ import <- function(table, tags = NULL) {
           data$assign_bins(
             bin_names = table[[bin_type]]$bin_names,
             abundances = table[[bin_type]]$abundances,
+            type = type
+          )
+        }
+
+        otu_bin_rep_table <- paste0(type, "_bin_representative_sequences")
+        if ((otu_bin_rep_table %in% names) && has_sequence_data) {
+          # create bin_names from bin_ids
+          m_indices <- match(
+            table[[otu_bin_rep_table]]$bin_ids,
+            table[[bin_type]]$bin_ids
+          )
+
+          bin_names <- table[[bin_type]]$bin_names[m_indices]
+
+          # create sequence_names from sequence_ids
+          m_indices <- match(
+            table[[otu_bin_rep_table]]$sequence_ids,
+            table$sequence_data$sequence_ids
+          )
+
+          sequence_names <- table$sequence_data$sequence_names[m_indices]
+
+          data$assign_bin_representative_sequences(
+            bin_names = bin_names,
+            sequence_names = sequence_names,
             type = type
           )
         }

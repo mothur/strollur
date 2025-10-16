@@ -35,5 +35,11 @@ miseq_sop_example <- function() {
   )
   data$add_references(reference = reference)
 
+  representative_seqs <- readr::read_tsv(
+    rdataset_example("otu_representative_sequences.tsv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+  data$assign_bin_representative_sequences(representative_seqs)
+
   data
 }

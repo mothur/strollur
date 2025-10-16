@@ -1412,7 +1412,8 @@ test_that("dataset - export,", {
   table_names <- c(
     "sequence_data", "sequence_report",
     "sequence_abundance_table", "otu_bin_data",
-    "otu_sequence_bin_assignments", "asv_bin_data",
+    "otu_sequence_bin_assignments", "otu_bin_representative_sequences",
+    "asv_bin_data",
     "asv_sequence_bin_assignments", "phylotype_bin_data",
     "phylotype_sequence_bin_assignments", "metadata",
     "references", "sequence_tree", "sample_tree"
@@ -1520,4 +1521,37 @@ test_that("dataset - assign_bin_representative_sequences", {
   expect_equal(df[[1]], bin_names)
   expect_equal(df[[2]], rep_names)
   expect_equal(df[[3]], dataset_t$get_sequences()[1:num_bins])
+
+  # create dataset only shared data, this forces assign_bin_reps to add seqs
+  dataset_t <- read_mothur(
+    otu_shared = rdataset_example("final.opti_mcc.shared"),
+    dataset_name = "miseq_sop"
+  )
+
+  dataset_t$assign_bin_representative_sequences(
+    data = NULL,
+    bin_names = bin_names,
+    sequence_names = rep_names
+  )
+
+  df <- dataset_t$get_bin_representative_sequences()
+  expect_equal(df[[1]], bin_names)
+  expect_equal(df[[2]], rep_names)
+  expect_equal(df[, 3], rep("", num_bins))
+
+  expect_error(dataset_t$assign_bin_representative_sequences(
+    data = NULL,
+    bin_names = bin_names,
+    sequence_names = c("not", "enough", "sequence", "names")
+  ))
+
+  d <- dataset$new()
+  expect_equal(d$get_bin_representative_sequences(), data.frame())
+  expect_equal(d$get_sample_treatment_assignments(), data.frame())
+
+  dataset_t <- read_mothur(
+    count = rdataset_example("final.count_table"),
+    dataset_name = "miseq_sop"
+  )
+  expect_equal(dataset_t$get_sample_treatment_assignments(), data.frame())
 })
