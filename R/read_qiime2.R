@@ -7,15 +7,7 @@
 #' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime moving-pictures}.
 # nolint end
 #'
-#' @param biom filename, a .qza file containing a feature table in biom
-#' format. This will be used to assign bin abundance and sample data.
-#' @param fasta filename, a .qza file containing DNA sequence strings.
-#' @param cons_fasta filename, a .qza file containing DNA sequence strings of
-#' representative sequences for each bin.
-#' @param taxonomy filename, a .qza file containing classifications.
-#' @param cons_taxonomy filename, a .qza file containing conscensus
-#' classifications for each bin.
-#' @param tree filename, a .qza file containing a tree.
+#' @param qza vector of filenames, .qza files containing your data from qiime2.
 #' @param metadata filename, a .tsv file containing metadata
 #' @param dataset_name A string containing a name for your dataset.
 #' @param dir_path a string containing the name of directory where the artifacts
@@ -27,20 +19,20 @@
 #'
 #' # Using the example files from moving-pictures
 #'
-#' # dataset <- read_qiime2(
-#' #   cons_fasta = rdataset_example("rep_seqs.qza"),
-#' #   biom = rdataset_example("table.qza"),
-#' #   cons_taxonomy = rdataset_example("taxonomy.qza"),
-#' #   tree = rdataset_example("rooted-tree.qza"),
+#' qza_files <- c(rdataset_example("rep_seqs.qza"),
+#'                rdataset_example("table.qza"),
+#'                rdataset_example("taxonomy.qza"),
+#'                rdataset_example("rooted-tree.qza") )
+#'
+#' # data <- read_qiime2(
+#' #   qza = qza_files,
 #' #   metadata = rdataset_example("sample_metadata.tsv"),
 #' #   dataset_name = "qiime_moving_pictures"
 #' # )
 #'
 #' @return A 'dataset' object
 #' @export
-read_qiime2 <- function(fasta = NULL, taxonomy = NULL,
-                        biom = NULL, cons_fasta = NULL, cons_taxonomy = NULL,
-                        tree = NULL, metadata = NULL,
+read_qiime2 <- function(qza, metadata = NULL,
                         dataset_name = "", dir_path = NULL,
                         remove_unpacked_artifacts = TRUE) {
   # if no dir_path given, set to current working directory
@@ -48,98 +40,82 @@ read_qiime2 <- function(fasta = NULL, taxonomy = NULL,
     dir_path <- getwd()
   }
 
+  data_found <- list()
+
+  # extract data from the qza
+  for (qza_file in qza) {
+      artifact_name <- sub("\\.[^.]+$", "", basename(qza_file))
+      tmp_path <- file.path(dir_path, artifact_name)
+
+      # unpack artifact - creates the artifact directory
+      artifact <- unpack_qiime2_artifact(qza_file, tmp_path)
+
+      data_dir <- paste0(
+          tmp_path, .Platform$file.sep,
+          artifact$uuid, .Platform$file.sep,
+          "data"
+      )
+
+      if(grepl("BIOMV", artifact$format)){
+          # feature table in biom format - shared bin data
+          if (artifact$type == "FeatureTable[Frequency]") {
+
+              # read biom file
+              hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
+
+              # create data.frame from sparse otu data
+              data_found[["otu_shared"]] <- data.frame(
+                  bin_names = hdata$otus[hdata$counts$i],
+                  abundances = hdata$counts$v,
+                  samples = hdata$samples[hdata$counts$j]
+              )
+          }
+      }
+      else if ((artifact$format == "DNASequencesDirectoryFormat") ||
+          (artifact$format == "AlignedDNASequencesDirectoryFormat")) {
+
+          fasta_file <- "dna-sequences.fasta"
+          if (artifact$format == "AlignedDNASequencesDirectoryFormat") {
+              fasta_file <- "aligned-dna-sequences.fasta"
+          }
+
+          # bin representative sequences
+          if ((artifact$type == "FeatureData[Sequence]") ||
+              (artifact$type == "FeatureData[AlignedSequence]")) {
+              # read fasta file
+              df <- read_fasta(file.path(data_dir, fasta_file))
+              names(df) <- c("bin_names", "sequences")
+
+              data_found[["bin_representatives"]] <- df
+          }
+
+      }
+      else if (artifact$format=="TSVTaxonomyDirectoryFormat"){
+
+          # bin taxonomy
+          if (artifact$type == "FeatureData[Taxonomy]") {
+              # read taxonomy table
+              df <- read.table(file.path(data_dir, "taxonomy.tsv"),
+                               sep = "\t", header = TRUE, quote = "")
+              df <- df[,-c(3)]
+              names(df) <- c("bin_names", "taxonomies")
+              data_found[["bin_taxonomy"]] <- df
+          }
+      }
+      else if (artifact$format=="NewickDirectoryFormat"){
+        data_found[["sample_tree"]] <- ape::read.tree(file.path(data_dir,
+                                                                "tree.nwk"))
+      }
+
+      if (remove_unpacked_artifacts) {
+        unlink(tmp_path, recursive = TRUE)
+      }
+  }
+
   # create new blank dataset
   data <- dataset$new(name = dataset_name)
 
-  artifact_directories_to_remove <- c()
-
-  # add bin assignments - shared data
-  if (!is.null(biom)) {
-    artifact_name <- sub("\\.[^.]+$", "", basename(biom))
-    tmp_path <- file.path(dir_path, artifact_name)
-
-    # unpack artifact - creates the artifact directory
-    artifact <- unpack_qiime2_artifact(biom, tmp_path)
-
-    artifact_directories_to_remove <- c(
-      artifact_directories_to_remove,
-      tmp_path
-    )
-
-    feature_table_dir <- paste0(
-      tmp_path, .Platform$file.sep,
-      artifact$uuid, .Platform$file.sep,
-      "data"
-    )
-
-    # read biom file, bin assignments by sample
-    hdata <- read_biom(file.path(
-      feature_table_dir,
-      "feature-table.biom"
-    ))
-
-    # create data.frame from sparse otu data
-    df <- data.frame(
-      bin_names = hdata$otus[hdata$counts$i],
-      abundances = hdata$counts$v,
-      samples = hdata$samples[hdata$counts$j]
-    )
-
-    # add bin assignments to dataset
-    data$assign_bins(df)
-  }
-
-  # add bin representative assignments
-  if (!is.null(cons_fasta)) {
-    artifact_name <- sub("\\.[^.]+$", "", basename(cons_fasta))
-    tmp_path <- file.path(dir_path, artifact_name)
-
-    # unpack artifact - creates the artifact directory
-    artifact <- unpack_qiime2_artifact(cons_fasta, tmp_path)
-
-    artifact_directories_to_remove <- c(
-      artifact_directories_to_remove,
-      tmp_path
-    )
-
-    # confirm these are DNA sequences
-    if (
-      (artifact$format != "DNASequencesDirectoryFormat") &&
-        (artifact$format != "AlignedDNASequencesDirectoryFormat")
-    ) {
-      message <- paste0(
-        "[ERROR]: ", fasta, " artifact format is ",
-        artifact$format, ", expected formats are ",
-        "'AlignedDNASequencesDirectoryFormat' and ",
-        "'DNASequencesDirectoryFormat'."
-      )
-      cli::cli_abort(message)
-    }
-
-    fasta_dir <- paste0(
-      tmp_path, .Platform$file.sep,
-      artifact$uuid, .Platform$file.sep,
-      "data"
-    )
-
-    fasta_file <- "dna-sequences.fasta"
-    if (artifact$format == "AlignedDNASequencesDirectoryFormat") {
-      fasta_file <- "aligned-dna-sequences.fasta"
-    }
-
-    # read fasta file
-    df <- read_fasta(file.path(fasta_dir, fasta_file))
-    names(df) <- c("bin_names", "sequences")
-
-    # add sequences to dataset
-    data$assign_bin_representative_sequences(df)
-  }
-
-  if (remove_unpacked_artifacts) {
-    for (artifact_dir in artifact_directories_to_remove) {
-      unlink(artifact_dir, recursive = TRUE)
-    }
-  }
+  # add data_found to dataset in order that does not cause errors
 
   data
 }

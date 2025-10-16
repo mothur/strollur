@@ -13,6 +13,7 @@ import(tidyr)
 importFrom("stats", "na.omit")
 importFrom("utils", "zip")
 importFrom("utils", "unzip")
+importFrom("utils", "read.table")
 
 # tree data
 importFrom(ape, read.tree)
