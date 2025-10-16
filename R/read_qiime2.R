@@ -19,10 +19,12 @@
 #'
 #' # Using the example files from moving-pictures
 #'
-#' qza_files <- c(rdataset_example("rep_seqs.qza"),
-#'                rdataset_example("table.qza"),
-#'                rdataset_example("taxonomy.qza"),
-#'                rdataset_example("rooted-tree.qza") )
+#' qza_files <- c(
+#'   rdataset_example("rep_seqs.qza"),
+#'   rdataset_example("table.qza"),
+#'   rdataset_example("taxonomy.qza"),
+#'   rdataset_example("rooted-tree.qza")
+#' )
 #'
 #' # data <- read_qiime2(
 #' #   qza = qza_files,
@@ -44,72 +46,72 @@ read_qiime2 <- function(qza, metadata = NULL,
 
   # extract data from the qza
   for (qza_file in qza) {
-      artifact_name <- sub("\\.[^.]+$", "", basename(qza_file))
-      tmp_path <- file.path(dir_path, artifact_name)
+    artifact_name <- sub("\\.[^.]+$", "", basename(qza_file))
+    tmp_path <- file.path(dir_path, artifact_name)
 
-      # unpack artifact - creates the artifact directory
-      artifact <- unpack_qiime2_artifact(qza_file, tmp_path)
+    # unpack artifact - creates the artifact directory
+    artifact <- unpack_qiime2_artifact(qza_file, tmp_path)
 
-      data_dir <- paste0(
-          tmp_path, .Platform$file.sep,
-          artifact$uuid, .Platform$file.sep,
-          "data"
-      )
+    data_dir <- paste0(
+      tmp_path, .Platform$file.sep,
+      artifact$uuid, .Platform$file.sep,
+      "data"
+    )
 
-      if(grepl("BIOMV", artifact$format)){
-          # feature table in biom format - shared bin data
-          if (artifact$type == "FeatureTable[Frequency]") {
+    if (grepl("BIOMV", artifact$format)) {
+      # feature table in biom format - shared bin data
+      if (artifact$type == "FeatureTable[Frequency]") {
+        # read biom file
+        hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
 
-              # read biom file
-              hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
-
-              # create data.frame from sparse otu data
-              data_found[["otu_shared"]] <- data.frame(
-                  bin_names = hdata$otus[hdata$counts$i],
-                  abundances = hdata$counts$v,
-                  samples = hdata$samples[hdata$counts$j]
-              )
-          }
+        # create data.frame from sparse otu data
+        data_found[["otu_shared"]] <- data.frame(
+          bin_names = hdata$otus[hdata$counts$i],
+          abundances = hdata$counts$v,
+          samples = hdata$samples[hdata$counts$j]
+        )
       }
-      else if ((artifact$format == "DNASequencesDirectoryFormat") ||
-          (artifact$format == "AlignedDNASequencesDirectoryFormat")) {
-
-          fasta_file <- "dna-sequences.fasta"
-          if (artifact$format == "AlignedDNASequencesDirectoryFormat") {
-              fasta_file <- "aligned-dna-sequences.fasta"
-          }
-
-          # bin representative sequences
-          if ((artifact$type == "FeatureData[Sequence]") ||
-              (artifact$type == "FeatureData[AlignedSequence]")) {
-              # read fasta file
-              df <- read_fasta(file.path(data_dir, fasta_file))
-              names(df) <- c("bin_names", "sequences")
-
-              data_found[["bin_representatives"]] <- df
-          }
-
-      }
-      else if (artifact$format=="TSVTaxonomyDirectoryFormat"){
-
-          # bin taxonomy
-          if (artifact$type == "FeatureData[Taxonomy]") {
-              # read taxonomy table
-              df <- read.table(file.path(data_dir, "taxonomy.tsv"),
-                               sep = "\t", header = TRUE, quote = "")
-              df <- df[,-c(3)]
-              names(df) <- c("bin_names", "taxonomies")
-              data_found[["bin_taxonomy"]] <- df
-          }
-      }
-      else if (artifact$format=="NewickDirectoryFormat"){
-        data_found[["sample_tree"]] <- ape::read.tree(file.path(data_dir,
-                                                                "tree.nwk"))
+    } else if (
+      (artifact$format == "DNASequencesDirectoryFormat") ||
+        (artifact$format == "AlignedDNASequencesDirectoryFormat")
+    ) {
+      fasta_file <- "dna-sequences.fasta"
+      if (artifact$format == "AlignedDNASequencesDirectoryFormat") {
+        fasta_file <- "aligned-dna-sequences.fasta"
       }
 
-      if (remove_unpacked_artifacts) {
-        unlink(tmp_path, recursive = TRUE)
+      # bin representative sequences
+      if (
+        (artifact$type == "FeatureData[Sequence]") ||
+          (artifact$type == "FeatureData[AlignedSequence]")
+      ) {
+        # read fasta file
+        df <- read_fasta(file.path(data_dir, fasta_file))
+        names(df) <- c("bin_names", "sequences")
+
+        data_found[["bin_representatives"]] <- df
       }
+    } else if (artifact$format == "TSVTaxonomyDirectoryFormat") {
+      # bin taxonomy
+      if (artifact$type == "FeatureData[Taxonomy]") {
+        # read taxonomy table
+        df <- read.table(file.path(data_dir, "taxonomy.tsv"),
+          sep = "\t", header = TRUE, quote = ""
+        )
+        df <- df[, -c(3)]
+        names(df) <- c("bin_names", "taxonomies")
+        data_found[["bin_taxonomy"]] <- df
+      }
+    } else if (artifact$format == "NewickDirectoryFormat") {
+      data_found[["sample_tree"]] <- ape::read.tree(file.path(
+        data_dir,
+        "tree.nwk"
+      ))
+    }
+
+    if (remove_unpacked_artifacts) {
+      unlink(tmp_path, recursive = TRUE)
+    }
   }
 
   # create new blank dataset

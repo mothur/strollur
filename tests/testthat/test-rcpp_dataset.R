@@ -506,8 +506,8 @@ test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
 
   # test with samples bins
   assign_bins(
-      dataset, c("bin1", "bin1", "bin2", "bin3", "bin3"),
-      0, "", c("seq1", "seq2", "seq3", "seq4", "seq5")
+    dataset, c("bin1", "bin1", "bin2", "bin3", "bin3"),
+    0, "", c("seq1", "seq2", "seq3", "seq4", "seq5")
   )
 
   expect_error(set_bin_abundance(dataset, c("bin1"), c(11)))
@@ -553,6 +553,5 @@ test_that("dataset - set_abundances, set_sequences", {
 
   # this will remove the sequence
   set_abundances(dataset_t$data, seqs_to_update, new_abunds)
-  #expect_equal(get_num_sequences(dataset_t$data), 113772)
-
+  # expect_equal(get_num_sequences(dataset_t$data), 113772)
 })
