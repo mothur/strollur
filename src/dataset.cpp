@@ -1532,7 +1532,6 @@ void Dataset::setAbundances(const vector<string>& n,
             int index = it->second;
 
             if (sum(abunds[i]) == 0) {
-        cout << index << '\t' << sum(abunds[i]) << endl;
                 removeSequence(index, reason, true, true);
             }else{
                 count.setAbundance(index, abunds[i]);

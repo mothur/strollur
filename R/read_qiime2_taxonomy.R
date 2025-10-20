@@ -58,7 +58,7 @@ read_qiime2_taxonomy <- function(qza, dir_path = NULL,
       names(artifact[["data"]]) <- c("bin_names", "taxonomies", "confidence")
 
       if (remove_unpacked_artifacts) {
-          unlink(tmp_path, recursive = TRUE)
+        unlink(tmp_path, recursive = TRUE)
       }
 
       return(artifact)

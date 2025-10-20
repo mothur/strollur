@@ -64,12 +64,14 @@ unpack_qiime2_artifact <- function(qza, dir_path = NULL) {
   artifact$version <- readr::read_table(version_file, show_col_types = FALSE)
 
   prov_names <- grep("..+provenance/..+action.yaml",
-                     file_list$Name, value = TRUE)
+    file_list$Name,
+    value = TRUE
+  )
   # add provenance
   artifact$provenance <- lapply(paste0(
     dir_path,
     .Platform$file.sep,
-    grep(paste0("..+provenance", .Platform$file.sep ,"..+action.yaml"),
+    grep(paste0("..+provenance", .Platform$file.sep, "..+action.yaml"),
       file_list$Name,
       value = TRUE
     )

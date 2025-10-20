@@ -25,7 +25,8 @@ Imports: Rcpp (>= 1.1.0),
     dplyr,
     tidyr,
     yaml,
-    rbiom
+    rbiom,
+    rhdf5
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
 Depends: R (>= 3.5.0)
 Suggests: 
