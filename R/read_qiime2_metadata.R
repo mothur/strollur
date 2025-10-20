@@ -14,13 +14,10 @@
 #' @return A data.frame containing metadata
 #' @export
 read_qiime2_metadata <- function(metadata) {
+  if (!file.exists(metadata)) {
+    abort_nonexistant_file(metadata)
+  }
 
-    if (!file.exists(metadata)) {
-        abort_nonexistant_file(metadata)
-    }
 
-    # suppressWarnings(
-    #     if(grepl("^#q2:types", readLines(file)[2])){return(TRUE)}else{return(FALSE)}
-    # )
-    data.frame()
+  data.frame()
 }
