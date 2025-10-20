@@ -11,6 +11,7 @@ import(Rcereal)
 import(dplyr)
 import(tidyr)
 import(RcppThread)
+import(rhdf5)
 
 importFrom("stats", "na.omit")
 importFrom("utils", "zip")
