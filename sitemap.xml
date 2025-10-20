@@ -85,6 +85,7 @@
 <url><loc>/reference/read_mothur_taxonomy.html</loc></url>
 <url><loc>/reference/read_qiime2.html</loc></url>
 <url><loc>/reference/read_qiime2_feature_table.html</loc></url>
+<url><loc>/reference/read_qiime2_metadata.html</loc></url>
 <url><loc>/reference/read_qiime2_taxonomy.html</loc></url>
 <url><loc>/reference/remove_bins.html</loc></url>
 <url><loc>/reference/remove_file.html</loc></url>
