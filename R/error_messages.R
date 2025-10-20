@@ -37,6 +37,16 @@ abort_incorrect_type <- function(type_expected, obj) {
           but received {.cls { class(obj)} }.")
 }
 
+#' @title abort_incorrect_format
+#' @description
+#' Report incorrect artifact format provided
+#' @param type_expected String, containing name of the type expected
+#' @param type_received String, containing name of the type received
+abort_incorrect_format <- function(type_expected, type_received) {
+  cli::cli_abort("[ERROR]: Expected a {.var {type_expected}}
+          but received {.var {type_received}}.")
+}
+
 #' @title abort_provide_at_least_one
 #' @description
 #' Report missing parameter

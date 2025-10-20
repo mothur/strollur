@@ -1,7 +1,7 @@
 #' @title unpack_qiime2_artifact
 #' @description
 #' The unpack_qiime2_artifact function reads .qza files created by
-#' \href{https://qiime2.org}{qiime2}, and returns the decompressed artifact.
+#' \href{https://qiime2.org}{qiime2}, and returns the artifact.
 #'
 # nolint start
 #' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime moving-pictures}.
@@ -22,7 +22,10 @@
 #' @return A unpacked qza artifact
 #' @export
 unpack_qiime2_artifact <- function(qza, dir_path = NULL) {
-  # error checks TODO
+  # error checks
+  if (!file.exists(qza)) {
+    abort_nonexistant_file(qza)
+  }
 
   # if no dir given, set to current working directory
   if (is.null(dir_path)) {
@@ -59,6 +62,20 @@ unpack_qiime2_artifact <- function(qza, dir_path = NULL) {
     "VERSION"
   )
   artifact$version <- readr::read_table(version_file, show_col_types = FALSE)
+
+  prov_names <- grep("..+provenance/..+action.yaml",
+                     file_list$Name, value = TRUE)
+  # add provenance
+  artifact$provenance <- lapply(paste0(
+    dir_path,
+    .Platform$file.sep,
+    grep(paste0("..+provenance", .Platform$file.sep ,"..+action.yaml"),
+      file_list$Name,
+      value = TRUE
+    )
+  ), read_yaml)
+
+  names(artifact$provenance) <- prov_names
 
   artifact
 }

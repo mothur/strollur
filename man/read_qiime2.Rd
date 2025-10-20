@@ -5,12 +5,7 @@
 \title{read_qiime2}
 \usage{
 read_qiime2(
-  fasta = NULL,
-  taxonomy = NULL,
-  biom = NULL,
-  cons_fasta = NULL,
-  cons_taxonomy = NULL,
-  tree = NULL,
+  qza,
   metadata = NULL,
   dataset_name = "",
   dir_path = NULL,
@@ -18,20 +13,7 @@ read_qiime2(
 )
 }
 \arguments{
-\item{fasta}{filename, a .qza file containing DNA sequence strings.}
-
-\item{taxonomy}{filename, a .qza file containing classifications.}
-
-\item{biom}{filename, a .qza file containing a feature table in biom
-format. This will be used to assign bin abundance and sample data.}
-
-\item{cons_fasta}{filename, a .qza file containing DNA sequence strings of
-representative sequences for each bin.}
-
-\item{cons_taxonomy}{filename, a .qza file containing conscensus
-classifications for each bin.}
-
-\item{tree}{filename, a .qza file containing a tree.}
+\item{qza}{vector of filenames, .qza files containing your data from qiime2.}
 
 \item{metadata}{filename, a .tsv file containing metadata}
 
@@ -54,13 +36,19 @@ To generate the various input files you can follow \href{https://amplicon-docs.q
 }
 \examples{
 
-# Using the example files from moving-pictures
+# Using the example files from moving-pictures, we can assign bins, assign
+# bin taxonomy and representative bin sequences, include a sample tree and
+# metadata.
 
-# dataset <- read_qiime2(
-#   cons_fasta = rdataset_example("rep_seqs.qza"),
-#   biom = rdataset_example("table.qza"),
-#   cons_taxonomy = rdataset_example("taxonomy.qza"),
-#   tree = rdataset_example("rooted-tree.qza"),
+qza_files <- c(
+  rdataset_example("rep_seqs.qza"),
+  rdataset_example("table.qza"),
+  rdataset_example("taxonomy.qza"),
+  rdataset_example("rooted-tree.qza")
+)
+
+# data <- read_qiime2(
+#   qza = qza_files,
 #   metadata = rdataset_example("sample_metadata.tsv"),
 #   dataset_name = "qiime_moving_pictures"
 # )
