@@ -3,6 +3,7 @@
 <url><loc>/LICENSE.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
+<url><loc>/reference/abort_incorrect_format.html</loc></url>
 <url><loc>/reference/abort_incorrect_type.html</loc></url>
 <url><loc>/reference/abort_missing_column.html</loc></url>
 <url><loc>/reference/abort_missing_tag_alert.html</loc></url>
@@ -83,6 +84,8 @@
 <url><loc>/reference/read_mothur_shared.html</loc></url>
 <url><loc>/reference/read_mothur_taxonomy.html</loc></url>
 <url><loc>/reference/read_qiime2.html</loc></url>
+<url><loc>/reference/read_qiime2_feature_table.html</loc></url>
+<url><loc>/reference/read_qiime2_taxonomy.html</loc></url>
 <url><loc>/reference/remove_bins.html</loc></url>
 <url><loc>/reference/remove_file.html</loc></url>
 <url><loc>/reference/remove_lineages.html</loc></url>

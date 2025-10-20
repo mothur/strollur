@@ -55,12 +55,7 @@ To generate the various input files you can follow qiime moving-pictures."><!-- 
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_qiime2</span><span class="op">(</span></span>
-<span>  fasta <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  taxonomy <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  biom <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cons_fasta <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cons_taxonomy <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  tree <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">qza</span>,</span>
 <span>  metadata <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dataset_name <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  dir_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -72,31 +67,8 @@ To generate the various input files you can follow qiime moving-pictures."><!-- 
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-fasta">fasta<a class="anchor" aria-label="anchor" href="#arg-fasta"></a></dt>
-<dd><p>filename, a .qza file containing DNA sequence strings.</p></dd>
-
-
-<dt id="arg-taxonomy">taxonomy<a class="anchor" aria-label="anchor" href="#arg-taxonomy"></a></dt>
-<dd><p>filename, a .qza file containing classifications.</p></dd>
-
-
-<dt id="arg-biom">biom<a class="anchor" aria-label="anchor" href="#arg-biom"></a></dt>
-<dd><p>filename, a .qza file containing a feature table in biom
-format. This will be used to assign bin abundance and sample data.</p></dd>
-
-
-<dt id="arg-cons-fasta">cons_fasta<a class="anchor" aria-label="anchor" href="#arg-cons-fasta"></a></dt>
-<dd><p>filename, a .qza file containing DNA sequence strings of
-representative sequences for each bin.</p></dd>
-
-
-<dt id="arg-cons-taxonomy">cons_taxonomy<a class="anchor" aria-label="anchor" href="#arg-cons-taxonomy"></a></dt>
-<dd><p>filename, a .qza file containing conscensus
-classifications for each bin.</p></dd>
-
-
-<dt id="arg-tree">tree<a class="anchor" aria-label="anchor" href="#arg-tree"></a></dt>
-<dd><p>filename, a .qza file containing a tree.</p></dd>
+<dl><dt id="arg-qza">qza<a class="anchor" aria-label="anchor" href="#arg-qza"></a></dt>
+<dd><p>vector of filenames, .qza files containing your data from qiime2.</p></dd>
 
 
 <dt id="arg-metadata">metadata<a class="anchor" aria-label="anchor" href="#arg-metadata"></a></dt>
@@ -125,13 +97,19 @@ and temporary directories will be removed. Default = TRUE.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Using the example files from moving-pictures</span></span></span>
+<span class="r-in"><span><span class="co"># Using the example files from moving-pictures, we can assign bins, assign</span></span></span>
+<span class="r-in"><span><span class="co"># bin taxonomy and representative bin sequences, include a sample tree and</span></span></span>
+<span class="r-in"><span><span class="co"># metadata.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># dataset &lt;- read_qiime2(</span></span></span>
-<span class="r-in"><span><span class="co">#   cons_fasta = rdataset_example("rep_seqs.qza"),</span></span></span>
-<span class="r-in"><span><span class="co">#   biom = rdataset_example("table.qza"),</span></span></span>
-<span class="r-in"><span><span class="co">#   cons_taxonomy = rdataset_example("taxonomy.qza"),</span></span></span>
-<span class="r-in"><span><span class="co">#   tree = rdataset_example("rooted-tree.qza"),</span></span></span>
+<span class="r-in"><span><span class="va">qza_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"rep_seqs.qza"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"table.qza"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"taxonomy.qza"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"rooted-tree.qza"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># data &lt;- read_qiime2(</span></span></span>
+<span class="r-in"><span><span class="co">#   qza = qza_files,</span></span></span>
 <span class="r-in"><span><span class="co">#   metadata = rdataset_example("sample_metadata.tsv"),</span></span></span>
 <span class="r-in"><span><span class="co">#   dataset_name = "qiime_moving_pictures"</span></span></span>
 <span class="r-in"><span><span class="co"># )</span></span></span>
