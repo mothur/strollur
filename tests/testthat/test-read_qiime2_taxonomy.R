@@ -21,6 +21,5 @@ test_that("test read_qiime2_taxonomy", {
   )
   expect_equal(tax_data$data[264, 2], tax)
   expect_equal(tax_data$data[264, 1], "3ef461f213bfc675ddf0b1bfeef2dc52")
-  expect_equal(round(tax_data$data[264, 3]*100), 97)
-
+  expect_equal(round(tax_data$data[264, 3] * 100), 97)
 })

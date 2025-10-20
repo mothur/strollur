@@ -10,6 +10,8 @@ import(cli)
 import(Rcereal)
 import(dplyr)
 import(tidyr)
+import(RcppThread)
+
 importFrom("stats", "na.omit")
 importFrom("utils", "zip")
 importFrom("utils", "unzip")
@@ -23,9 +25,8 @@ importFrom(ape, dist.dna)
 importFrom(ape, as.DNAbin)
 
 # c++ code
-import(RcppThread)
 importFrom(Rcpp, evalCpp)
-importFrom(Rcpp, loadModule)
+#importFrom(Rcpp, loadModule)
 
 # R6 classes
 importFrom(R6, R6Class)

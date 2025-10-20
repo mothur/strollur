@@ -123,7 +123,7 @@ read_qiime2 <- function(qza, metadata = NULL,
 
   # read metadata
   if (!is.null(metadata)) {
-      data_found[["metadata"]] <- read_qiime2_metadata(metadata)
+    data_found[["metadata"]] <- read_qiime2_metadata(metadata)
   }
 
   # create new blank dataset
@@ -131,49 +131,53 @@ read_qiime2 <- function(qza, metadata = NULL,
 
   # add data_found to dataset in order that does not cause errors
   if (length(data_found) != 0) {
+    data_names <- names(data_found)
 
-      data_names <- names(data_found)
+    # if data includes shared data and representative sequences, assign
+    # sample frequency to representative sequence and assign representative
+    # sequence to bin
+    if (all(c(
+      "bin_shared_assignments",
+      "bin_representatives"
+    ) %in% data_names) &&
+      !(c("sequence_data") %in% data_names)) {
+      data$add_sequences(data_found[["bin_representatives"]],
+        sequence_names = "bin_names"
+      )
+      data$assign_sequence_abundance(data_found[["bin_shared_assignments"]],
+        sequence_names = "bin_names"
+      )
+      data$assign_bins(
+        bin_names = data_found[["bin_shared_assignments"]][, 1],
+        sequence_names = data_found[["bin_shared_assignments"]][, 1]
+      )
+      data$assign_bin_representative_sequences(
+        bin_names = data_found[["bin_shared_assignments"]][, 1],
+        sequence_names = data_found[["bin_shared_assignments"]][, 1]
+      )
+    }
 
-      # if data includes shared data and representative sequences, assign
-      # sample frequency to representative sequence and assign representative
-      # sequence to bin
-      if (all(c("bin_shared_assignments",
-                "bin_representatives") %in% data_names) &&
-          !(c("sequence_data") %in% data_names)) {
+    # add sequence data
 
-          data$add_sequences(data_found[["bin_representatives"]],
-                                         sequence_names = "bin_names")
-          data$assign_sequence_abundance(data_found[["bin_shared_assignments"]],
-                                         sequence_names = "bin_names")
-          data$assign_bins(bin_names = data_found[["bin_shared_assignments"]][,1],
-                           sequence_names = data_found[["bin_shared_assignments"]][,1])
-          data$assign_bin_representative_sequences(bin_names = data_found[["bin_shared_assignments"]][,1],
-                           sequence_names = data_found[["bin_shared_assignments"]][,1])
+    # add sequence abundance
 
-      }
+    # add sequence taxonomy
 
-      # add sequence data
+    # add sequence tree
 
-      # add sequence abundance
+    # add bin data
 
-      # add sequence taxonomy
+    # add bin taxonomy
+    if ("bin_taxonomy" %in% data_names) {
+      data$assign_bin_taxonomy(data_found[["bin_taxonomy"]])
+    }
 
-      # add sequence tree
+    # add sample tree
+    if ("sample_tree" %in% data_names) {
+      data$add_sample_tree(data_found[["sample_tree"]])
+    }
 
-      # add bin data
-
-      # add bin taxonomy
-      if ("bin_taxonomy" %in% data_names) {
-          data$assign_bin_taxonomy(data_found[["bin_taxonomy"]])
-      }
-
-      # add sample tree
-      if ("sample_tree" %in% data_names) {
-          data$add_sample_tree(data_found[["sample_tree"]])
-      }
-
-      # add metadata
-
+    # add metadata
   }
 
   data
