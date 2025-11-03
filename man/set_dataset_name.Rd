@@ -7,16 +7,16 @@
 set_dataset_name(data, dataset_name)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{dataset_name, }{a string containing the desired name}
 }
 \description{
-Set the name of an instance of the 'Dataset' class.
+Set the name of a \link{dataset} object.
 }
 \examples{
-dataset <- new_dataset("my_dataset", 4)
-set_dataset_name(dataset, "new_dataset_name")
+
+data <- new_dataset("my_dataset", 2)
+set_dataset_name(data, "new_dataset_name")
 
 }

@@ -7,8 +7,7 @@
 get_bin_taxonomy_report(data, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{type, }{string indicating the type of bin clusters. Default = "otu".}
 }
@@ -16,20 +15,11 @@ get_bin_taxonomy_report(data, type = "otu")
 data.frame
 }
 \description{
-Get the bin classifications of an instance of the 'Dataset' class.
+Get the bin classifications of a \link{dataset} object
 }
 \examples{
 
-bin_ids <- c("bin1", "bin2", "bin3", "bin4")
-abunds <- c(200, 40, 100, 5)
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
-
-dataset <- new_dataset("my_dataset", 4)
-assign_bins(dataset, bin_ids, abunds, "", "")
-assign_bin_taxonomy(dataset, bin_ids, taxonomies)
-get_bin_taxonomy_report(dataset)
+data <- miseq_sop_example()
+get_bin_taxonomy_report(data, "otu")
 
 }

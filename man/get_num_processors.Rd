@@ -7,18 +7,16 @@
 get_num_processors(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
 Integer, containing number of processors
 }
 \description{
-Get the number of processors used to summarize an instance of the
- 'Dataset' class.
+Get the number of processors used to summarize a \link{dataset} object
 }
 \examples{
-dataset <- new_dataset("my_dataset", 4)
-get_num_processors(dataset)
+data <- new_dataset("my_dataset", 2)
+get_num_processors(data)
 
 }

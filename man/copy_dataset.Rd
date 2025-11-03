@@ -4,38 +4,26 @@
 \alias{copy_dataset}
 \title{copy_dataset}
 \usage{
-copy_dataset(dataset)
+copy_dataset(data)
 }
 \arguments{
-\item{dataset}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
-Rcpp::XPtr<Dataset> pointer to an instance of the 'Dataset' c++
- class.
+a \link{dataset} object
 }
 \description{
-Create a pointer to an instance of the 'Dataset' c++ class.
-
-The 'Dataset' class is the c++ implementation of the R6 'dataset'
-object. This class allows package developers access to additional
-functionality. 'Dataset' stores nucleotide sequences, abundance, sample and
-treatment assignments, taxonomic classifications, asv / otu clusters. It
-creates various reports and summaries. It is designed to facilitate data
-transfer and access across multiple R packages.
+Create a new \link{dataset} object from an existing dataset.
 }
 \examples{
 
-# to create a new dataset and allow for 4 processors during summary,
-# run the following:
+miseq <- miseq_sop_example()
 
-dataset1 <- new_dataset("soil", 4)
+# to create a new dataset that is a copy of miseq
 
-# to create a new dataset that is a copy of dataset1
-
-dataset2 <- copy_dataset(dataset1)
+data <- copy_dataset(miseq)
 
 }
 \seealso{
-[dataset$new()]
+The 'new' method in the \link{dataset} class
 }

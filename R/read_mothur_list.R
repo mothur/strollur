@@ -15,14 +15,14 @@
 #'
 #' otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 #'
-#' data <- dataset$new()
-#' data$assign_bins(otu_data)
+#' data <- new_dataset()
+#' assign_bins(data, otu_data)
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export
 read_mothur_list <- function(list) {
   if (!file.exists(list)) {
-    abort_nonexistant_file(list)
+    .abort_nonexistant_file(list)
   }
 
   df <- readr::read_table(
@@ -34,7 +34,7 @@ read_mothur_list <- function(list) {
   df <- df[, -c(1, 2)]
   otu_names <- names(df)
 
-  df <- apply(df, 2, split_at_char)
+  df <- apply(df, 2, .split_at_char)
 
   otu_assignments <- c()
   sequence_names <- c()

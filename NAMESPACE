@@ -1,4 +1,3 @@
-
 # exports
 export(dataset)
 
@@ -13,10 +12,10 @@ import(tidyr)
 import(RcppThread)
 import(rhdf5)
 
-importFrom("stats", "na.omit")
-importFrom("utils", "zip")
-importFrom("utils", "unzip")
-importFrom("utils", "read.table")
+importFrom(stats, na.omit)
+importFrom(utils, zip)
+importFrom(utils, unzip)
+importFrom(utils, read.table)
 
 # tree data
 importFrom(ape, read.tree)
@@ -43,5 +42,3 @@ importFrom(rbiom, read_biom)
 
 # paralellized code
 importFrom(parallelly, availableCores)
-
-

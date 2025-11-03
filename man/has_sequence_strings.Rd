@@ -7,24 +7,18 @@
 has_sequence_strings(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object.}
 }
 \value{
 boolean indicating whether the dataset has sequence nucleotide
 strings.
 }
 \description{
-Determine if an instance of the 'Dataset' class contains sequence
-nucleotide strings.
+Determine if a \link{dataset} object contains sequence nucleotide strings.
 }
 \examples{
 
-seq_names <- c("seq1", "seq2", "seq3", "seq4")
-sequences <- c("ATTGC", "ACTGC", "AGTGC", "TTTGC")
-
-dataset <- new_dataset("my_dataset", 4)
-add_sequences(dataset, seq_names, sequences, "")
-has_sequence_strings(dataset)
+data <- miseq_sop_example()
+has_sequence_strings(data)
 
 }

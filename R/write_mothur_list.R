@@ -17,13 +17,13 @@
 write_mothur_list <- function(data, file_root = NULL) {
   # check type
   if (class(data)[1] != "dataset") {
-    abort_incorrect_type("dataset", data)
+    .abort_incorrect_type("dataset", data)
   }
 
   if (is.null(file_root)) {
     file_root <- data$get_dataset_name()
     if (file_root == "") {
-      abort_no_name()
+      .abort_no_name()
     }
   }
 
@@ -31,7 +31,7 @@ write_mothur_list <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- data$get_list(type)
+    df <- get_list(data, type)
 
     if (nrow(df) != 0) {
       output_file <- paste0(file_root, ".", type, ".list")

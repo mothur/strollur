@@ -6,25 +6,27 @@
 \usage{
 assign_bin_representative_sequences(
   data,
-  bin_names,
-  sequence_names,
-  type = "otu"
+  table,
+  type = "otu",
+  reference = NULL,
+  bin_name = "bin_names",
+  sequence_name = "sequence_names"
 )
 }
 \arguments{
-\item{data}{a data.frame containing bin_names and representative
-sequences for your data.}
+\item{data, }{a \link{dataset} object}
 
-\item{bin_names}{a vector strings containing bin names or if using the
-'data' parameter a string containing the name of the column in 'data'
-that contains the bin names. Default column name is 'bin_names'.}
-
-\item{sequence_names}{a vector of strings containing bin representative
-sequences or if using the 'data' parameter a string containing the name
-of the column in 'data' that contains the bin names. Default column name
-is 'sequence_names'.}
+\item{table, }{a data.frame containing bin representative assignments}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
+
+\item{reference, }{a list created by the function [new_reference]. Optional.}
+
+\item{bin_name, }{a string containing the name of the column in 'table' that
+contains the bin names. Default column name is 'bin_names'.}
+
+\item{sequence_name}{a string containing the name of the column in 'table' that
+contains the bin names. Default column name is 'sequence_names'.}
 }
 \value{
 double containing the number of representative sequences assigned
@@ -36,15 +38,13 @@ Assign representative sequences to bins.
 
   miseq <- miseq_sop_example()
 
+  num_bins <- get_num_bins(miseq, "otu")
+
   # For examples sake, select first 531 sequences to be the representatives
-  num_bins <- miseq$get_num_bins("otu")
-  rep_names <- miseq$get_sequence_names()[1:num_bins]
-  bin_names <- miseq$get_bin_names()
+  table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
+                      sequence_names = get_sequence_names(miseq)[1:num_bins]
+                      )
 
-  assign_bin_representative_sequences(miseq$data,
-                                      bin_names, rep_names, "otu")
+  assign_bin_representative_sequences(miseq, table, "otu")
 
-}
-\seealso{
-[dataset$assign_bin_representative_sequences()]
 }

@@ -16,6 +16,6 @@ example.
 }
 \examples{
 
-miseq_dataset <- miseq_sop_example()
+miseq <- miseq_sop_example()
 
 }

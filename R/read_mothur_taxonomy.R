@@ -15,13 +15,13 @@
 #' ))
 #'
 #' data <- dataset$new()
-#' data$assign_sequence_taxonomy(classification_data)
+#' assign_sequence_taxonomy(data, classification_data)
 #'
 #' @return A data.frame containing the sequences names and sequences taxonomies.
 #' @export
 read_mothur_taxonomy <- function(taxonomy) {
   if (!file.exists(taxonomy)) {
-    abort_nonexistant_file(taxonomy)
+    .abort_nonexistant_file(taxonomy)
   }
 
   df <- readr::read_table(

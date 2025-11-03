@@ -25,7 +25,7 @@ test_that("write_mothur_rabund", {
 
   df <- read_mothur_rabund(outputs[1])
 
-  expected <- miseq$get_rabund(bin_types[1])
+  expected <- get_rabund(miseq, bin_types[1])
   names(expected) <- c("bin_names", "abundances")
 
   expect_equal(ncol(df), ncol(expected))

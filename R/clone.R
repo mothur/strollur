@@ -22,5 +22,5 @@
 #' @return A 'dataset' object
 #' @export
 clone <- function(data) {
-  dataset$new(dataset = data)
+  copy_dataset(data)
 }

@@ -15,7 +15,7 @@
 #' @export
 read_qiime2_metadata <- function(metadata) {
   if (!file.exists(metadata)) {
-    abort_nonexistant_file(metadata)
+    .abort_nonexistant_file(metadata)
   }
 
 

@@ -7,29 +7,19 @@
 get_list(data, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
 \value{
-data.frame
+2 column data.frame sequences assigned to bins
 }
 \description{
-Get data frame containing sequence bin assignments
+Get data frame containing sequence bin assignments of a \link{dataset} object
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
-
-  # (list) bins would look like:
-  # bin1             bin2        bin3
-  # seq1,seq2,seq4   seq3,seq6   seq5
-
-  get_list(dataset)
+data <- miseq_sop_example()
+get_list(data)
 
 }

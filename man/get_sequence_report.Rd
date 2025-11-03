@@ -7,8 +7,7 @@
 get_sequence_report(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
 data.frame
@@ -19,9 +18,7 @@ homopolymers and numns.
 }
 \examples{
 
- dataset <- new_dataset("miseq_sop", 4)
- sequences <- read_fasta(rdataset_example("final.fasta"))
- add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
- get_sequence_report(dataset)
+ data <- miseq_sop_example()
+ get_sequence_report(data)
 
 }

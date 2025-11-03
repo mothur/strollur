@@ -7,28 +7,24 @@
 remove_samples(data, samples)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object.}
 
-\item{samples}{vector of strings containing the names of the samples to}
+\item{samples, }{vector of strings containing the names of the samples to
+remove.}
 }
 \description{
-Remove samples from an instance of the 'Dataset' class.
+Remove samples from a \link{dataset} object
 }
 \examples{
-dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-                       count = rdataset_example("final.count_table"),
-                       taxonomy = rdataset_example("final.taxonomy"),
-                       design = rdataset_example("mouse.time.design"),
-                       otu_list = rdataset_example("final.opti_mcc.list"),
-                       dataset_name = "miseq_sop")
 
-get_num_samples(dataset$data)
+data <- miseq_sop_example()
+
+get_num_samples(data)
 
 # To remove samples 'F3D0' and 'F3D1'
 
-remove_samples(dataset$data, c("F3D0", "F3D1"))
+remove_samples(data, c("F3D0", "F3D1"))
 
-get_num_samples(dataset$data)
+get_num_samples(data)
 
 }

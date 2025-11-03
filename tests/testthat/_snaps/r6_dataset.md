@@ -17,7 +17,6 @@
       Unique seqs:	 2425 
       Total seqs:	 113963 
       
-      
       Sample   Total:
       F3D0	6191 
       F3D1	4652 
@@ -62,7 +61,6 @@
       Mean:            1  375 252.4472      0 4.368699     0      0.000
       Unique seqs:	 2425 
       Total seqs:	 113963 
-      
       
       Sample   Total:
       F3D0	6191 

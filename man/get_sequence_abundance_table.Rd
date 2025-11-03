@@ -7,25 +7,18 @@
 get_sequence_abundance_table(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
-data.frame
+data.frame containing sequence abundance data in a \link{dataset}
+object
 }
 \description{
-Get the abundances of each sequence in an instance of the 'Dataset' class
-parsed by sample.
+Get the abundances of each sequence in a \link{dataset} object
 }
 \examples{
 
-dataset <- new_dataset("my_dataset", 4)
-bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-treatments <- c("early", "early", "late", "early", "late", "early")
-sample_abundances <- c(10, 100, 1, 500, 25, 80)
-assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
-
-get_sequence_abundance_table(dataset)
+data <- miseq_sop_example()
+get_sequence_abundance_table(data)
 
 }

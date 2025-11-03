@@ -7,8 +7,7 @@
 get_bin_abundances(data, bin_name, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{bin_name, }{string containing the bin name}
 
@@ -18,25 +17,11 @@ get_bin_abundances(data, bin_name, type = "otu")
 vector containing the abundance of a given bin parsed by sample
 }
 \description{
-Get the abundance of a given bin parsed by sample in an instance of the
-'Dataset' class.
+Get the abundance of a given bin parsed by sample in a \link{dataset} object
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-               "bin2", "bin2", "bin2",
-               "bin3", "bin3")
-  seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-               "seq3", "seq3", "seq6",
-               "seq5", "seq5")
-  samples <- c("sample1", "sample2", "sample5",
-               "sample1", "sample3", "sample4",
-               "sample2", "sample3", "sample1",
-               "sample1", "sample6")
-  abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-
-  assign_bins(dataset, bin_ids, abundances, samples, seq_ids)
-  get_bin_abundances(dataset, "bin1")
+data <- miseq_sop_example()
+get_bin_abundances(data, "Otu005", "otu")
 
 }

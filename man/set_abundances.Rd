@@ -7,22 +7,24 @@
 set_abundances(data, sequence_names, abundances, reason = "update")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{sequence_names}{a vector of strings containing sequence names}
+\item{sequence_names, }{a vector of strings containing sequence names}
 
-\item{abundances}{2D vector ([num_seqs][num_samples]) containing
+\item{abundances, }{2D vector ([num_seqs][num_samples]) containing
 the abundances of each sequence parsed by sample.}
 
-\item{reason}{a string containing the trash tag to be applied to any sequences
-set to 0 abundance. Default = "update".}
+\item{reason, }{a string containing the trash tag to be applied to any
+sequences set to 0 abundance. Default = "update".}
 }
 \description{
-Set sequence abundances for an instance of the 'Dataset' class with
-sample data
+Designed with package integration in mind, the set abundances function
+allows you to change the abundances of sequences in a \link{dataset} object
+with samples.
 }
 \examples{
+
+data <- new_dataset("my_dataset", 2)
 
 sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2", "seq2", "seq3",
                     "seq3", "seq4")
@@ -30,12 +32,13 @@ samples <- c("sample2", "sample3", "sample4", "sample2", "sample3",
              "sample4", "sample2", "sample3", "sample4")
 abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
-dataset <- new_dataset("my_dataset", 4)
-assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
+assign_sequence_abundance(data, data.frame(sequence_names = sequence_names,
+                                           abundances = abundances,
+                                           samples = samples))
 
 seqs_to_update <- c("seq4")
 new_abunds <- list(c(20, 10, 4))
 
-set_abundances(dataset, seqs_to_update, new_abunds)
+set_abundances(data, seqs_to_update, new_abunds)
 
 }

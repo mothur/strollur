@@ -27,7 +27,7 @@ Read a mothur formatted \href{https://mothur.org/wiki/list_file/}{list file}
 
 otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 
-data <- dataset$new()
-data$assign_bins(otu_data)
+data <- new_dataset()
+assign_bins(data, otu_data)
 
 }

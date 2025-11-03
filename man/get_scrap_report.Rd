@@ -7,35 +7,25 @@
 get_scrap_report(data, type = "sequence")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{type}{a string indicating the type of scrap report you would like.
 Default = 'sequence'.}
 }
 \value{
-data.frame
+data.frame containing sequences or otus removed from the
+\link{dataset} object during analysis
 }
 \description{
-Get a scrap report containing sequences and bins eliminated from an instance
- of the 'Dataset' class.
+Get a scrap report containing sequences and bins eliminated from a
+\link{dataset} object
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-               "bin2", "bin2", "bin2", "bin3", "bin3")
-  seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-               "seq3", "seq3", "seq6", "seq5", "seq5")
-  samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
-               "sample4", "sample2", "sample3", "sample1", "sample1",
-               "sample6")
-  abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-  assign_bins(dataset, bin_ids, abundances, samples, seq_ids, "otu")
+  data <- miseq_sop_example()
+  remove_bins(data, c("Otu005"), c("bad_bin"))
 
-  remove_bins(dataset, c("bin1"), c("bad_bin"))
-
-  sequence_scrap_report <- get_scrap_report(dataset, "sequence")
-  otu_scrap_report <- get_scrap_report(dataset, "otu")
+  sequence_scrap_report <- get_scrap_report(data, "sequence")
+  otu_scrap_report <- get_scrap_report(data, "otu")
 
 }

@@ -4,38 +4,24 @@
 \alias{get_sequences_by_sample}
 \title{get_sequences_by_sample}
 \usage{
-get_sequences_by_sample(data, samples)
+get_sequences_by_sample(data, samples = as.character(c()))
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{samples}{a vector of strings containing the names of the samples you
-would like sequence names for. For all samples in dataset, samples = "".}
+would like sequence names for. By default all samples are included.}
 }
 \value{
 2D vector of strings ([num_seqs][num_samples]) containing the
-nucleotide strings for each sequence in an instance of the 'Dataset' class
-parsed by sample.
+nucleotide strings for each sequence a \link{dataset} object parsed by sample.
 }
 \description{
-Get the nucleotide strings for each sequence in an instance of the 'Dataset'
-class parsed by sample.
+Get the nucleotide strings for each sequence in a \link{dataset} object
 }
 \examples{
 
-seq_names <- c("seq1", "seq2", "seq3", "seq4")
-sequences <- c("ATTGC", "ACTGC", "AGTGC", "TTTGC")
-
-names <- c("seq1", "seq1", "seq2", "seq2",
-            "seq3", "seq4", "seq4")
-abundances <- c(200, 50, 400, 10, 25, 100,  425)
-samples <- c("sample1", "sample2", "sample1", "sample2",
-             "sample1", "sample1", "sample2")
-
-dataset <- new_dataset("my_dataset", 4)
-add_sequences(dataset, seq_names, sequences, "")
-assign_sequence_abundance(dataset, names, abundances, samples, "")
-get_sequences_by_sample(dataset, "")
+data <- miseq_sop_example()
+get_sequences_by_sample(data)
 
 }

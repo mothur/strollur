@@ -16,16 +16,16 @@
 #'   "final.cons.taxonomy"
 #' ))
 #'
-#' data <- dataset$new()
-#' data$assign_bins(otu_data)
-#' data$assign_bin_taxonomy(otu_data)
+#' data <- new_dataset()
+#' assign_bins(data, otu_data)
+#' assign_bin_taxonomy(data, otu_data)
 #'
 #' @return A data.frame containing the bin names, bin abundances and bin
 #' taxonomies.
 #' @export
 read_mothur_cons_taxonomy <- function(taxonomy) {
   if (!file.exists(taxonomy)) {
-    abort_nonexistant_file(taxonomy)
+    .abort_nonexistant_file(taxonomy)
   }
 
   df <- readr::read_table(

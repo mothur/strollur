@@ -7,20 +7,20 @@
 remove_lineages(data, contaminants, trash_tag = "contaminant")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object.}
 
-\item{contaminants}{vector of strings containing the taxonomies you would
+\item{contaminants, }{vector of strings containing the taxonomies you would
 like to remove}
 
-\item{trash_tag}{a string containing reason you are removing the lineages.
+\item{trash_tag, }{a string containing reason you are removing the lineages.
 Default = "contaminant".}
 }
 \description{
-Remove contaminants from an instance of the 'Dataset' class.
+Designed with package integration in mind, the remove lineages function
+allows you to remove contaminents from a \link{dataset}
 }
 \examples{
-dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+data <- read_mothur(fasta = rdataset_example("final.fasta"),
                        count = rdataset_example("final.count_table"),
                        taxonomy = rdataset_example("final.taxonomy"),
                        design = rdataset_example("mouse.time.design"),
@@ -30,6 +30,6 @@ dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
 contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
  "Eukaryota")
 
-remove_lineages(dataset$data, contaminants)
+remove_lineages(data, contaminants)
 
 }

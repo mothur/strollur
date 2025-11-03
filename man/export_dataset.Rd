@@ -4,7 +4,7 @@
 \alias{export_dataset}
 \title{export_dataset}
 \usage{
-export_dataset(data, tags)
+export_dataset(data, tags = as.character(c()))
 }
 \arguments{
 \item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
@@ -23,6 +23,6 @@ Export all data from an instance of the 'Dataset' class.
 \examples{
 
 dataset <- new_dataset("my_dataset", 2)
-export_dataset(dataset, "")
+export_dataset(dataset, c(""))
 
 }

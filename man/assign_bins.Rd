@@ -4,74 +4,69 @@
 \alias{assign_bins}
 \title{assign_bins}
 \usage{
-assign_bins(data, bin_names, abundances, samples, sequence_names, type = "otu")
+assign_bins(
+  data,
+  table,
+  type = "otu",
+  reference = NULL,
+  bin_name = "bin_names",
+  abundance = "abundances",
+  sample = "samples",
+  sequence_name = "sequence_names"
+)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{bin_names}{a vector strings containing of bin labels}
-
-\item{abundances}{a vector containing bin abundances. Note: You must
-provide either abundances or seq_ids.}
-
-\item{samples}{a vector of strings containing sample assignments}
-
-\item{sequence_names}{a vector of strings containing sequence names.
-Note: You must provide either abundances or seq_ids.}
+\item{table, }{a data.frame containing bin_data assignments}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
+
+\item{reference, }{a list created by the function [new_reference]. Optional.}
+
+\item{bin_name, }{a string containing the name of the column in 'table' that
+contains the bin names. Default column name is 'bin_names'.}
+
+\item{abundance, }{a string containing the name of the column in 'table'
+that contains the bin abundances. Default column name is 'abundances'. Note:
+ You must provide either abundances or sequence_names in the table.}
+
+\item{sample, }{a string containing the name of the column in 'table' that
+contains the sample names for datasets where the abundances are broken down
+by sample. Default column name is 'samples'.}
+
+\item{sequence_name, }{a string containing the name of the column in 'table'
+that contains the sequence names. Default column name is 'sequence_names'.
+Note: You must provide either abundances or sequence_names in the table.}
 }
 \value{
 double containing the number of bins assigned
 }
 \description{
-Add bin assignments to an instance of the 'Dataset' class.
+Add bin assignments to a \link{dataset} object
 }
 \examples{
 
   # To assign sequences to bins:
 
-  dataset <- new_dataset("miseq_sop", 4)
+  data <- new_dataset("miseq_sop", 2)
+  otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 
-  otu_data <- read_mothur_list(rdataset_example(
-                            "final.opti_mcc.list"))
-  assign_bins(dataset, otu_data$bin_names, 0, "", otu_data$sequence_names)
+  assign_bins(data, otu_data)
 
   # To add abundance only bin assignments:
 
-  dataset <- new_dataset("miseq_sop", 4)
+  data <- new_dataset("miseq_sop", 2)
+  otu_data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
 
-  otu_data <- read_mothur_rabund(rdataset_example(
-                            "final.opti_mcc.rabund"))
-  assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
+  assign_bins(data, otu_data)
 
   # To add abundance bin assignments parsed by sample:
 
-  dataset <- new_dataset("miseq_sop", 4)
-  bin_table <- readr::read_tsv(rdataset_example(
-                               "mothur2_bin_assignments_shared.tsv"))
+  data <- new_dataset("miseq_sop", 2)
+  otu_data <- readr::read_tsv(rdataset_example(
+                                "mothur2_bin_assignments_shared.tsv"))
 
-  assign_bins(dataset, bin_table$bin_names, bin_table$abundances,
-                 bin_table$samples, "")
+  assign_bins(data, otu_data)
 
-  # To assign sequences to bins with their abundances parsed by sample:
-
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-               "bin2", "bin2", "bin2",
-               "bin3", "bin3")
-  seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-               "seq3", "seq3", "seq6",
-               "seq5", "seq5")
-  samples <- c("sample1", "sample2", "sample5",
-               "sample1", "sample3", "sample4",
-               "sample2", "sample3", "sample1",
-               "sample1", "sample6")
-  abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-  assign_bins(dataset, bin_ids, abundances, samples, seq_ids, "otu")
-
-}
-\seealso{
-[dataset$assign_bins()]
 }

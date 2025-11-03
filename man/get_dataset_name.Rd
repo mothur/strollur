@@ -7,17 +7,16 @@
 get_dataset_name(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
 String, containing the name of the dataset
 }
 \description{
-Get the name of an instance of the 'Dataset' class.
+Get the name of a \link{dataset} object
 }
 \examples{
-dataset <- new_dataset("my_dataset", 4)
-get_dataset_name(dataset)
+data <- new_dataset("my_dataset", 2)
+get_dataset_name(data)
 
 }

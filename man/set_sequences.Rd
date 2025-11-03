@@ -4,29 +4,32 @@
 \alias{set_sequences}
 \title{set_sequences}
 \usage{
-set_sequences(data, sequence_names, sequences, comments)
+set_sequences(data, sequence_names, sequences, comments = as.character(c()))
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{sequence_names}{a vector of strings containing sequence names}
+\item{sequence_names, }{a vector of strings containing sequence names}
 
-\item{sequences}{a vector of strings containing sequence nucleotide strings}
+\item{sequences, }{a vector of strings containing sequence nucleotide strings}
 
-\item{comments}{a vector of strings containing sequence comments}
+\item{comments, }{a vector of strings containing sequence comments.
+(Optional)}
 }
 \description{
-Set sequence nucleotide strings for an instance of the 'Dataset' class
+Designed with package integration in mind, the set sequences function
+allows you to change the nucleotide strings of sequences in a \link{dataset}
+object. For example, set_sequences may be used after alignment to overwrite
+the unaligned sequences with aligned sequences.
 }
 \examples{
 
-sequence_names <- c("seq1", "seq2", "seq3", "seq4")
-sequences <- c("ATTGC", "ACTGC", "AGTGC", "TTTGC")
+data <- new_dataset("my_dataset", 2)
 
-dataset <- new_dataset("my_dataset", 4)
+add_sequences(data, data.frame(sequence_names = c("seq1", "seq2",
+                                                  "seq3", "seq4")))
 
-add_sequences(dataset, sequence_names, "", "")
-set_sequences(dataset, sequence_names, sequences, "")
+set_sequences(data, c("seq1", "seq2","seq3", "seq4"),
+                    c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 
 }

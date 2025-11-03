@@ -7,8 +7,7 @@
 has_sample(data, sample)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object.}
 
 \item{sample}{a string containing the name of a sample.}
 }
@@ -16,17 +15,12 @@ has_sample(data, sample)
 boolean indicating whether the dataset has a given sample
 }
 \description{
-Determine if a given sample is in an instance of the 'Dataset'
- class.
+Determine if a given sample is in a \link{dataset} object
 }
 \examples{
 
-dataset <- new_dataset("my_dataset", 4)
-bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-sample_abundances <- c(10, 100, 1, 500, 25, 80)
-treatments <- c("early", "early", "late", "early", "late", "early")
-assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
-has_sample(dataset, "sample2")
+data <- miseq_sop_example()
+has_sample(data, "F3D0")
+has_sample(data, "not a valid sample")
 
 }

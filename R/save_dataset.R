@@ -1,7 +1,7 @@
-#' @title save
+#' @title save_dataset
 #' @description
-#' The save function will save the 'dataset' object to file.
-#' @param dataset a 'dataset' object
+#' The save_dataset function will save the \link{dataset} object to file.
+#' @param dataset a \link{dataset} object
 #' @param file a string containing the file name.
 #' @examples
 #'
@@ -14,15 +14,16 @@
 #'   dataset_name = "miseq_sop"
 #' )
 #'
-#' save(dataset, "miseq_sop.rds")
+#' save_dataset(dataset, "miseq_sop.rds")
 #'
 #' @return A file containing the 'dataset' object
 #' @export
-save <- function(dataset, file) {
+save_dataset <- function(dataset, file) {
   if (class(dataset)[1] != "dataset") {
-    abort_incorrect_type("dataset", dataset)
+    .abort_incorrect_type("dataset", dataset)
   }
 
-  dataset$raw <- serialize(dataset$data)
+  serialize_dobject(dataset)
   saveRDS(dataset, file = file)
+  file
 }

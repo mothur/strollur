@@ -4,36 +4,49 @@
 \alias{set_bin_abundance}
 \title{set_bin_abundance}
 \usage{
-set_bin_abundance(data, bin_names, abunds, reason = "update", type = "otu")
+set_bin_abundance(data, bin_names, abundances, type = "otu", reason = "update")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{bin_names}{a vector strings containing of bin names to set the
+\item{bin_names, }{a vector strings containing of bin names to set the
 abundances for.}
 
-\item{abunds}{vector containing the abundances of each bin.}
+\item{abundances, }{vector containing the abundances of each bin.}
 
-\item{reason}{a string containing the trash tag to be applied to any bins
+\item{type, }{a string indicating the type of clusters. Default = "otu".}
+
+\item{reason, }{a string containing the trash tag to be applied to any bins
 set to 0 abundance. Default = "update".}
-
-\item{type}{a string indicating the type of clusters. Default = "otu".}
 }
 \description{
-Set bin abundances for an instance of the 'Dataset' class without sample data
+Designed with package integration in mind, the set bin abundance function
+allows you to change the abundances of bins in a \link{dataset} object
+without sample data.
 }
 \examples{
+  # For example sake, let's create a dataset with 3 bins:
 
-  dataset <- new_dataset("my_dataset", 4)
+  data <- new_dataset("my_dataset", 2)
+
   bin_ids <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
-  assign_bins(dataset, bin_ids, abundances, "", "")
+
+  assign_bins(data, data.frame(bin_names = bin_ids,
+                               abundances = abundances))
+
+  get_bin_abundance(data, "bin1")
+  get_bin_abundance(data, "bin2")
+
+  # Now we can use set_bin_abundance to change the abundances of bin1 and
+  # bin2
 
   bins <- c("bin1", "bin2")
   new_abunds <- c(300, 250)
 
-  set_bin_abundance(dataset, bins, new_abunds)
-  get_bin_abundance(dataset, "bin1")
+  set_bin_abundance(data, bins, new_abunds)
+
+  get_bin_abundance(data, "bin1")
+  get_bin_abundance(data, "bin2")
 
 }

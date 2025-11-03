@@ -7,25 +7,22 @@
 get_num_bins(data, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{type}{a string indicating the type of clusters. Default = "otu".}
 }
 \value{
-Integer, the number of bins of a specific type in an instance of
-the 'Dataset' class.
+Integer, the number of bins of a specific type in a \link{dataset}
+ object
 }
 \description{
-Get the number of bins of a specific type in an instance of the 'Dataset'
- class.
+Get the number of bins of a specific type in a \link{dataset} object
 }
 \examples{
 
-dataset <- new_dataset("my_dataset", 4)
-bin_ids <- c("bin1", "bin2", "bin3")
-abundances <- c(110, 525, 80)
-assign_bins(dataset, bin_ids, abundances, "", "")
-get_num_bins(dataset)
+data <- miseq_sop_example()
+get_num_bins(data, "otu")
+get_num_bins(data, "asv")
+get_num_bins(data, "phylotype")
 
 }

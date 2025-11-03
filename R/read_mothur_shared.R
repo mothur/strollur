@@ -10,13 +10,13 @@
 #' otu_data <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 #'
 #' data <- dataset$new()
-#' data$assign_bins(otu_data)
+#' assign_bins(data, otu_data)
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export
 read_mothur_shared <- function(shared) {
   if (!file.exists(shared)) {
-    abort_nonexistant_file(shared)
+    .abort_nonexistant_file(shared)
   }
 
   df <- readr::read_table(

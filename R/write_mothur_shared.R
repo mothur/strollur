@@ -18,13 +18,13 @@
 write_mothur_shared <- function(data, file_root = NULL) {
   # check type
   if (class(data)[1] != "dataset") {
-    abort_incorrect_type("dataset", data)
+    .abort_incorrect_type("dataset", data)
   }
 
   if (is.null(file_root)) {
     file_root <- data$get_dataset_name()
     if (file_root == "") {
-      abort_no_name()
+      .abort_no_name()
     }
   }
 

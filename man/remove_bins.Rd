@@ -7,28 +7,37 @@
 remove_bins(data, bin_names, trash_tags, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object.}
 
-\item{bin_names}{a vector of strings containing the names of the bins you
+\item{bin_names, }{a vector of strings containing the names of the bins you
 would like removed.}
 
-\item{trash_tags}{a vector of strings containing the reasons you are
+\item{trash_tags, }{a vector of strings containing the reasons you are
 removing each bin}
 
 \item{type}{a string indicating the type of clusters.}
 }
 \description{
-Remove bins from an instance of the 'Dataset' class.
+Designed with package integration in mind, the remove bins function allows
+you to remove bins from a \link{dataset} object
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin2", "bin3")
+  data <- new_dataset("my_dataset", 2)
+
+  bin_names <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
-  assign_bins(dataset, bin_ids, abundances, "", "")
+
+  assign_bins(data, data.frame(bin_names = bin_names,
+                               abundances = abundances))
+
+  get_num_bins(data)
+
   bins_to_remove <- c("bin1")
   trash_tag <- c("bad_bin")
-  remove_bins(dataset, bins_to_remove, trash_tag)
+
+  remove_bins(data, bins_to_remove, trash_tag)
+
+  get_num_bins(data)
 
 }

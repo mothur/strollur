@@ -7,33 +7,20 @@
 get_bin_assignments(data, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
 \value{
-data.frame
+data.frame containing 2, 3 or 4 columns: bin_names, abundances,
+samples (if assigned), and treatments (if assigned)
 }
 \description{
-Get data.frame containing bin abundance data
+Get data.frame containing bin abundance data of a \link{dataset} object
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  samples <- c("sample1", "sample2", "sample5",
-   "sample1", "sample3", "sample1")
-  sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  assign_bins(dataset, bin_ids, sample_abundances, samples, "")
-
-  # (shared) bins would look like:
-  # sample   bin1   bin2   bin3
-  # sample1  10     500    80
-  # sample2  100    0      0
-  # sample3  0      25     0
-  # sample5  1      0      0
-
-  get_bin_assignments(dataset)
+  data <- miseq_sop_example()
+  get_bin_assignments(data, "otu")
 
 }

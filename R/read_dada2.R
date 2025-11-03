@@ -27,12 +27,12 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
   seq_names <- paste("seq_", seq_names, sep = "")
 
   # create new dataset object
-  data <- dataset$new(dataset_name)
-  data$add_sequences(
+  data <- new_dataset(dataset_name)
+  add_sequences(data, data.frame(
     sequence_names = seq_names,
     sequences = colnames(sequence_table),
     comments = rep("dada2", num_seqs)
-  )
+  ))
 
   sample_names <- rownames(sequence_table)
   names <- c()
@@ -51,6 +51,10 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
     index <- index + 1
   }
 
-  data$assign_sequence_abundance(data = NULL, names, abundances, samples)
+  assign_sequence_abundance(data, data.frame(
+    sequence_names = names,
+    abundances = abundances,
+    samples = samples
+  ))
   data
 }

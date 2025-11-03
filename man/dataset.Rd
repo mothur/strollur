@@ -18,7 +18,7 @@ analysis across multiple R packages.
 
 # to create an empty dataset, run the following:
 
-data <- dataset$new("soil")
+data <- new_dataset("soil")
 
 
 ## ------------------------------------------------
@@ -69,24 +69,6 @@ data <- dataset$new("soil")
 
 
 ## ------------------------------------------------
-## Method `dataset$add_references`
-## ------------------------------------------------
-
-
-# To add a single reference:
-data <- dataset$new("my_dataset")
-data$add_references(reference_name = "silva.v4.fasta",
-version = "1.38.1", usage = "alignment", note = "custom reference
- created by trimming silva.bacteria.fasta to the V4 region",
- url = "https://mothur.org/wiki/silva_reference_files/")
-
-# To add multiple references:
-reference <- readr::read_csv(rdataset_example("references.csv"),
-                             col_names = TRUE, show_col_types = FALSE)
-data$add_references(reference = reference)
-
-
-## ------------------------------------------------
 ## Method `dataset$add_sample_tree`
 ## ------------------------------------------------
 
@@ -94,7 +76,7 @@ data$add_references(reference = reference)
  data <- dataset$new("my_dataset")
 
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
- data$assign_bins(df)
+ assign_bins(data, df)
 
  tree <- ape::read.tree(rdataset_example(
  "final.opti_mcc.jclass.ave.tre"))
@@ -110,182 +92,6 @@ data$add_references(reference = reference)
  data <- dataset$new("my_dataset")
  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
  data$add_sequence_tree(tree)
-
-
-## ------------------------------------------------
-## Method `dataset$add_sequences`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-  fasta_data <- read_fasta(rdataset_example("final.fasta"))
-  data$add_sequences(fasta_data)
-
-# With the additional parameters to add information about the reference
-# You can also add references using the 'add_references' function.
-
-url <- "https://mothur.org/wiki/silva_reference_files/"
-
-data <- dataset$new("my_dataset")
-data$add_sequences(fasta_data,
-reference_name = "silva.bacteria.fasta",
-reference_note = "alignment by mothur2 v1.0 using default options",
-reference_version = "1.38.1", reference_url = url)
-
-
-## ------------------------------------------------
-## Method `dataset$assign_bins`
-## ------------------------------------------------
-
-
-  # To assign sequences to bins:
-
-  data <- dataset$new("my_dataset")
-
-  otu_data <- read_mothur_list(rdataset_example(
-                            "final.opti_mcc.list"))
-  data$assign_bins(otu_data)
-
-  # To add abundance only bin assignments:
-
-  data <- dataset$new("my_dataset")
-
-  otu_data <- read_mothur_rabund(rdataset_example(
-                            "final.opti_mcc.rabund"))
-  data$assign_bins(otu_data)
-
-  # To add abundance bin assignments parsed by sample:
-
-  data <- dataset$new("my_dataset")
-  bin_table <- readr::read_tsv(rdataset_example(
-                               "mothur2_bin_assignments_shared.tsv"),
-                               show_col_types = FALSE)
-  data$assign_bins(bin_table)
-
-  # To assign sequences to bins with their abundances parsed by sample:
-
-  data <- dataset$new("my_dataset")
-  bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-               "bin2", "bin2", "bin2",
-               "bin3", "bin3")
-  seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-               "seq3", "seq3", "seq6",
-               "seq5", "seq5")
-  samples <- c("sample1", "sample2", "sample5",
-               "sample1", "sample3", "sample4",
-               "sample2", "sample3", "sample1",
-               "sample1", "sample6")
-  abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-
-  data$assign_bins(NULL,
-   bin_names = bin_ids, abundances, samples, seq_ids)
-
-
-## ------------------------------------------------
-## Method `dataset$assign_bin_representative_sequences`
-## ------------------------------------------------
-
-  miseq <- miseq_sop_example()
-
-  # For examples sake, select first 531 sequences to be the
-  # representatives
-  num_bins <- miseq$get_num_bins("otu")
-  rep_names <- miseq$get_sequence_names()[1:num_bins]
-  bin_names <- miseq$get_bin_names()
-
-  miseq$assign_bin_representative_sequences(bin_names = bin_names,
-                                            sequence_names = rep_names,
-                                            type = "otu")
-
-
-## ------------------------------------------------
-## Method `dataset$assign_bin_taxonomy`
-## ------------------------------------------------
-
-
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
-                        "final.cons.taxonomy"))
-
-data <- dataset$new("my_dataset")
-data$assign_bins(otu_data)
-data$assign_bin_taxonomy(otu_data)
-
-# With the additional parameters to add information about the reference
-# You can also add references using the 'add_references' function.
-
-url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
-         "9_032012.pds.zip", collapse = "")
-
-data$assign_bin_taxonomy(otu_data,
-reference_name = "trainset9_032012.pds.zip",
-reference_note = "classification by mothur2 v1.0 using default options",
-reference_version = "9_032012", reference_url = url)
-
-
-## ------------------------------------------------
-## Method `dataset$assign_sequence_abundance`
-## ------------------------------------------------
-
-
-data <- dataset$new("miseq_sop")
-sequence_abundance <- readr::read_tsv(rdataset_example(
-                                      "mothur2_count_table.tsv"),
-                                      show_col_types = FALSE)
-data$assign_sequence_abundance(sequence_abundance)
-
-
-## ------------------------------------------------
-## Method `dataset$assign_sequence_taxonomy`
-## ------------------------------------------------
-
-
-sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-                        "final.taxonomy"))
-
-data <- dataset$new("my_dataset")
-data$assign_sequence_taxonomy(sequence_classifications)
-
-# With the additional parameters to add information about the reference
-# You can also add references using the 'add_references' function.
-
-url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
-         "9_032012.pds.zip", collapse = "")
-
-data$assign_sequence_taxonomy(sequence_classifications,
-reference_name = "trainset9_032012.pds.zip",
-reference_note = "classification by mothur2 v1.0 using default options",
-reference_version = "9_032012", reference_url = url)
-
-
-## ------------------------------------------------
-## Method `dataset$assign_treatments`
-## ------------------------------------------------
-
-
-names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-             "seq2", "seq3", "seq3", "seq4")
-samples <- c("sample2", "sample3", "sample4",
-            "sample2", "sample3", "sample4",
-           "sample2", "sample3",
-           "sample4")
-abundances <- c(250, 400, 500,
-               25, 40, 50,
-               25, 25,
-               4)
-treatments <- c("early", "early", "late")
-
-data <- dataset$new("my_dataset")
-data$assign_sequence_abundance(data = NULL,
-                                  names, abundances, samples)
-data$assign_treatments(data = NULL, unique(samples), treatments)
-
-
-## ------------------------------------------------
-## Method `dataset$export`
-## ------------------------------------------------
-
-    miseq <- miseq_sop_example()
-    table <- miseq$export()
 
 
 ## ------------------------------------------------
@@ -325,7 +131,7 @@ data$assign_treatments(data = NULL, unique(samples), treatments)
                                "mothur2_bin_assignments_shared.tsv"),
                                show_col_types = FALSE)
 
-  data$assign_bins(bin_table)
+  assign_bins(data, bin_table)
 
   shared <- data$get_bin_assignments()
 
@@ -336,40 +142,6 @@ data$assign_treatments(data = NULL, unique(samples), treatments)
 
   data <- miseq_sop_example()
   data$get_bin_names("otu")
-
-
-## ------------------------------------------------
-## Method `dataset$get_bin_representative_sequences`
-## ------------------------------------------------
-
-  miseq <- miseq_sop_example()
-
-  # For examples sake, select first 531 sequences to be the
-  # representatives
-  num_bins <- miseq$get_num_bins("otu")
-  rep_names <- miseq$get_sequence_names()[1:num_bins]
-  bin_names <- miseq$get_bin_names()
-
-  miseq$assign_bin_representative_sequences(bin_names = bin_names,
-                                            sequence_names = rep_names,
-                                            type = "otu")
-
-  miseq$get_bin_representative_sequences(type = "otu")
-
-
-## ------------------------------------------------
-## Method `dataset$get_bin_taxonomy_report`
-## ------------------------------------------------
-
-
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
-                        "final.cons.taxonomy"))
-
-data <- dataset$new("my_dataset")
-data$assign_bins(otu_data)
-data$assign_bin_taxonomy(otu_data)
-
-data$get_bin_taxonomy_report()
 
 
 ## ------------------------------------------------
@@ -394,20 +166,6 @@ data$get_bin_types()
 
 
 ## ------------------------------------------------
-## Method `dataset$get_list`
-## ------------------------------------------------
-
-
-  otu_data <- read_mothur_list(rdataset_example(
-                            "final.opti_mcc.list"))
-
-  data <- dataset$new("my_dataset")
-  data$assign_bins(otu_data)
-
-  data$get_list()
-
-
-## ------------------------------------------------
 ## Method `dataset$get_metadata`
 ## ------------------------------------------------
 
@@ -427,45 +185,8 @@ data$get_bin_types()
                             "final.opti_mcc.list"))
 
   data <- dataset$new("my_dataset")
-  data$assign_bins(otu_data)
+  assign_bins(data, otu_data)
   data$get_num_bins()
-
-
-## ------------------------------------------------
-## Method `dataset$get_num_samples`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-  bin_table <- readr::read_tsv(rdataset_example(
-                               "mothur2_bin_assignments_shared.tsv"),
-                               show_col_types = FALSE)
-  data$assign_bins(bin_table)
-
-  data$get_num_samples()
-
-
-## ------------------------------------------------
-## Method `dataset$get_rabund`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-
-  otu_data <- read_mothur_rabund(rdataset_example(
-                            "final.opti_mcc.rabund"))
-  data$assign_bins(otu_data)
-  rabund <- data$get_rabund()
-
-
-## ------------------------------------------------
-## Method `dataset$get_references`
-## ------------------------------------------------
-
-  data <- dataset$new("my_dataset")
-  reference <- readr::read_csv(rdataset_example("references.csv"))
-  data$add_references(reference = reference)
-  data$get_references()
 
 
 ## ------------------------------------------------
@@ -479,35 +200,9 @@ data$get_bin_types()
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 
  data <- dataset$new("my_dataset")
- data$assign_bins(df)
+ assign_bins(data, df)
  data$add_sample_tree(tree)
  data$get_sample_tree()
-
-
-## ------------------------------------------------
-## Method `dataset$get_sequence_names`
-## ------------------------------------------------
-
-
-data <- dataset$new("miseq_sop")
-sequence_abundance <- readr::read_tsv(rdataset_example(
-                                      "mothur2_count_table.tsv"),
-                                      show_col_types = FALSE)
-data$assign_sequence_abundance(sequence_abundance)
-data$get_sequence_names()
-
-
-## ------------------------------------------------
-## Method `dataset$get_sequence_taxonomy_report`
-## ------------------------------------------------
-
-
-sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-                        "final.taxonomy"))
-
-data <- dataset$new("my_dataset")
-data$assign_sequence_taxonomy(sequence_classifications)
-data$get_sequence_taxonomy_report()
 
 
 ## ------------------------------------------------
@@ -519,43 +214,6 @@ data$get_sequence_taxonomy_report()
  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
  data$add_sequence_tree(tree)
  data$get_sequence_tree()
-
-
-## ------------------------------------------------
-## Method `dataset$remove_lineages`
-## ------------------------------------------------
-
-dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-                      count = rdataset_example("final.count_table"),
-                      taxonomy = rdataset_example("final.taxonomy"),
-                      design = rdataset_example("mouse.time.design"),
-                      otu_list = rdataset_example("final.opti_mcc.list"),
-                      dataset_name = "miseq_sop")
-
-contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
- "Eukaryota")
-
-data$remove_lineages(contaminants)
-
-
-## ------------------------------------------------
-## Method `dataset$remove_samples`
-## ------------------------------------------------
-
-dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-                      count = rdataset_example("final.count_table"),
-                      taxonomy = rdataset_example("final.taxonomy"),
-                      design = rdataset_example("mouse.time.design"),
-                      otu_list = rdataset_example("final.opti_mcc.list"),
-                      dataset_name = "miseq_sop")
-
-data$get_num_samples()
-
-# To remove samples 'F3D0' and 'F3D1'
-
-data$remove_samples(c("F3D0", "F3D1"))
-
-data$get_num_samples()
 
 }
 \author{
@@ -583,53 +241,29 @@ the class.}
 \item \href{#method-dataset-add_chimera_report}{\code{dataset$add_chimera_report()}}
 \item \href{#method-dataset-add_contigs_assembly_report}{\code{dataset$add_contigs_assembly_report()}}
 \item \href{#method-dataset-add_metadata}{\code{dataset$add_metadata()}}
-\item \href{#method-dataset-add_references}{\code{dataset$add_references()}}
 \item \href{#method-dataset-add_sample_tree}{\code{dataset$add_sample_tree()}}
 \item \href{#method-dataset-add_sequence_tree}{\code{dataset$add_sequence_tree()}}
-\item \href{#method-dataset-add_sequences}{\code{dataset$add_sequences()}}
-\item \href{#method-dataset-assign_bins}{\code{dataset$assign_bins()}}
-\item \href{#method-dataset-assign_bin_representative_sequences}{\code{dataset$assign_bin_representative_sequences()}}
-\item \href{#method-dataset-assign_bin_taxonomy}{\code{dataset$assign_bin_taxonomy()}}
-\item \href{#method-dataset-assign_sequence_abundance}{\code{dataset$assign_sequence_abundance()}}
-\item \href{#method-dataset-assign_sequence_taxonomy}{\code{dataset$assign_sequence_taxonomy()}}
-\item \href{#method-dataset-assign_treatments}{\code{dataset$assign_treatments()}}
 \item \href{#method-dataset-clear}{\code{dataset$clear()}}
-\item \href{#method-dataset-export}{\code{dataset$export()}}
 \item \href{#method-dataset-get_alignment_report}{\code{dataset$get_alignment_report()}}
 \item \href{#method-dataset-get_chimera_report}{\code{dataset$get_chimera_report()}}
 \item \href{#method-dataset-get_bin_assignments}{\code{dataset$get_bin_assignments()}}
 \item \href{#method-dataset-get_bin_names}{\code{dataset$get_bin_names()}}
-\item \href{#method-dataset-get_bin_representative_sequences}{\code{dataset$get_bin_representative_sequences()}}
-\item \href{#method-dataset-get_bin_taxonomy_report}{\code{dataset$get_bin_taxonomy_report()}}
 \item \href{#method-dataset-get_bin_types}{\code{dataset$get_bin_types()}}
 \item \href{#method-dataset-get_contigs_assembly_report}{\code{dataset$get_contigs_assembly_report()}}
-\item \href{#method-dataset-get_count_table}{\code{dataset$get_count_table()}}
 \item \href{#method-dataset-get_dataset_name}{\code{dataset$get_dataset_name()}}
-\item \href{#method-dataset-get_list}{\code{dataset$get_list()}}
 \item \href{#method-dataset-get_metadata}{\code{dataset$get_metadata()}}
 \item \href{#method-dataset-get_num_bins}{\code{dataset$get_num_bins()}}
-\item \href{#method-dataset-get_num_samples}{\code{dataset$get_num_samples()}}
 \item \href{#method-dataset-get_num_sequences}{\code{dataset$get_num_sequences()}}
 \item \href{#method-dataset-get_num_treatments}{\code{dataset$get_num_treatments()}}
-\item \href{#method-dataset-get_oligos}{\code{dataset$get_oligos()}}
-\item \href{#method-dataset-get_rabund}{\code{dataset$get_rabund()}}
-\item \href{#method-dataset-get_references}{\code{dataset$get_references()}}
+\item \href{#method-dataset-get_num_samples}{\code{dataset$get_num_samples()}}
 \item \href{#method-dataset-get_samples}{\code{dataset$get_samples()}}
-\item \href{#method-dataset-get_sample_summary}{\code{dataset$get_sample_summary()}}
-\item \href{#method-dataset-get_sample_treatment_assignments}{\code{dataset$get_sample_treatment_assignments()}}
 \item \href{#method-dataset-get_sample_tree}{\code{dataset$get_sample_tree()}}
 \item \href{#method-dataset-get_scrap_report}{\code{dataset$get_scrap_report()}}
-\item \href{#method-dataset-get_sequence_names}{\code{dataset$get_sequence_names()}}
 \item \href{#method-dataset-get_sequence_report}{\code{dataset$get_sequence_report()}}
-\item \href{#method-dataset-get_sequence_summary}{\code{dataset$get_sequence_summary()}}
-\item \href{#method-dataset-get_sequence_taxonomy_report}{\code{dataset$get_sequence_taxonomy_report()}}
+\item \href{#method-dataset-get_summary}{\code{dataset$get_summary()}}
 \item \href{#method-dataset-get_sequence_tree}{\code{dataset$get_sequence_tree()}}
-\item \href{#method-dataset-get_sequences}{\code{dataset$get_sequences()}}
 \item \href{#method-dataset-get_treatments}{\code{dataset$get_treatments()}}
 \item \href{#method-dataset-has_sample}{\code{dataset$has_sample()}}
-\item \href{#method-dataset-is_aligned}{\code{dataset$is_aligned()}}
-\item \href{#method-dataset-remove_lineages}{\code{dataset$remove_lineages()}}
-\item \href{#method-dataset-remove_samples}{\code{dataset$remove_samples()}}
 \item \href{#method-dataset-clone}{\code{dataset$clone()}}
 }
 }
@@ -666,7 +300,7 @@ A new `dataset` object.
 \preformatted{
 # to create an empty dataset, run the following:
 
-data <- dataset$new("soil")
+data <- new_dataset("soil")
 
 }
 \if{html}{\out{</div>}}
@@ -819,71 +453,6 @@ Add metadata about your dataset
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-add_references"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-add_references}{}}}
-\subsection{Method \code{add_references()}}{
-Add information about the references used to analyze your dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$add_references(
-  reference = NULL,
-  reference_name = NULL,
-  version = NULL,
-  usage = NULL,
-  note = NULL,
-  url = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{reference}}{a data.frame containing multiple references. The only
-required column is reference_name. Optional columns can include: version,
-usage, note and url. Default = NULL. Either the reference or
-reference_name parameter is required.}
-
-\item{\code{reference_name}}{a string containing the name of the reference. For
-example: 'silva.bacteria.fasta' Default = NULL. Either the reference
-or reference_name parameter is required.}
-
-\item{\code{version}}{a string containing the version of the reference. For
-eaxmple: '138.2' Default = NULL.}
-
-\item{\code{usage}}{a string containing the usage of the reference in
-your analysis. For example: 'alignment using mothur2' Default = NULL.}
-
-\item{\code{note}}{a string containing the any additional notes about the
-reference. For example: 'custom reference using silva version 1.38.2 with
-additional sequences tailored for this analysis'. Default = NULL.}
-
-\item{\code{url}}{a string containing a web address where the reference may be
-downloaded. For example: 'https://mothur.org/wiki/silva_reference_files/'
-. Default = NULL.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-# To add a single reference:
-data <- dataset$new("my_dataset")
-data$add_references(reference_name = "silva.v4.fasta",
-version = "1.38.1", usage = "alignment", note = "custom reference
- created by trimming silva.bacteria.fasta to the V4 region",
- url = "https://mothur.org/wiki/silva_reference_files/")
-
-# To add multiple references:
-reference <- readr::read_csv(rdataset_example("references.csv"),
-                             col_names = TRUE, show_col_types = FALSE)
-data$add_references(reference = reference)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-add_sample_tree"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-add_sample_tree}{}}}
 \subsection{Method \code{add_sample_tree()}}{
@@ -905,7 +474,7 @@ Add phylo tree relating the samples in your dataset
  data <- dataset$new("my_dataset")
 
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
- data$assign_bins(df)
+ assign_bins(data, df)
 
  tree <- ape::read.tree(rdataset_example(
  "final.opti_mcc.jclass.ave.tre"))
@@ -948,530 +517,12 @@ Add phylo tree relating the sequences in your dataset
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-add_sequences"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-add_sequences}{}}}
-\subsection{Method \code{add_sequences()}}{
-Add new sequence data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$add_sequences(
-  data = NULL,
-  sequence_names = NULL,
-  sequences = NULL,
-  comments = NULL,
-  reference_name = NULL,
-  reference_version = NULL,
-  reference_note = NULL,
-  reference_url = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{a data.frame containing names, sequences(optional) and
-comments(optional).}
-
-\item{\code{sequence_names}}{a vector of sequence names or if using the 'data'
-parameter a string containing the name of the column in 'data' that
-contains the sequence names. Default column name is 'sequence_names'.}
-
-\item{\code{sequences}}{a vector of sequence nucleotide strings or if using the
-'data' parameter a string containing the name of the column in 'data'
-that contains the sequence nucleotide strings. Default column name is
- 'sequences'.}
-
-\item{\code{comments}}{a vector of sequence comments or if using the
-'data' parameter a string containing the name of the column in 'data'
-that contains the sequence comments. Default column name is 'comments'.}
-
-\item{\code{reference_name}}{a string containing the name of the reference used
-in the classification of the sequences. For example:
-'silva.bacteria.fasta' Default = NULL. (optional)}
-
-\item{\code{reference_version}}{a string containing the version of the reference
-used in the preparing of the sequences. For example: '1.38.1'.
-Default = NULL. (optional)}
-
-\item{\code{reference_note}}{a string containing the any additional notes about
-the reference. For example: 'used for alignment using mothur2 v1.0'.
-Default = NULL. (optional)}
-
-\item{\code{reference_url}}{a string containing a web address where the
-reference may be downloaded. Default = NULL. (optional)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-  fasta_data <- read_fasta(rdataset_example("final.fasta"))
-  data$add_sequences(fasta_data)
-
-# With the additional parameters to add information about the reference
-# You can also add references using the 'add_references' function.
-
-url <- "https://mothur.org/wiki/silva_reference_files/"
-
-data <- dataset$new("my_dataset")
-data$add_sequences(fasta_data,
-reference_name = "silva.bacteria.fasta",
-reference_note = "alignment by mothur2 v1.0 using default options",
-reference_version = "1.38.1", reference_url = url)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-assign_bins"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-assign_bins}{}}}
-\subsection{Method \code{assign_bins()}}{
-Add bin assignments
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$assign_bins(
-  data = NULL,
-  bin_names = NULL,
-  abundances = NULL,
-  samples = NULL,
-  sequence_names = NULL,
-  type = "otu"
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{a data.frame containing bin_names, abundances(optional) and
-samples(optional), sequence_names(optional). You must provide either
-abundances or sequence_names.}
-
-\item{\code{bin_names}}{a vector strings containing bin labels or if using the
-'data' parameter a string containing the name of the column in 'data'
-that contains the bin names. Default column name is 'bin_names'.
-(required)}
-
-\item{\code{abundances}}{a vector of abundances or if using the 'data' parameter
-a string containing the name of the column in 'data' that contains
-the abundances. Default column name is 'abundances'. You must provide
-either 'abundances' or 'sequence_names'.}
-
-\item{\code{samples}}{a vector of strings containing sample assignments or if
-using the 'data' parameter a string containing the name of the column
-in 'data' that contains the samples. Default column name is 'samples'.}
-
-\item{\code{sequence_names}}{a vector of strings containing sequence names or if
-using the 'data' parameter a string containing the name of the column in
-'data' that contains the sequence names. Default column name is
-'sequence_names'. You must provide either 'abundances' or
-'sequence_names'.}
-
-\item{\code{type}}{a string indicating the type of bin assignments.
-Default = "otu".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  # To assign sequences to bins:
-
-  data <- dataset$new("my_dataset")
-
-  otu_data <- read_mothur_list(rdataset_example(
-                            "final.opti_mcc.list"))
-  data$assign_bins(otu_data)
-
-  # To add abundance only bin assignments:
-
-  data <- dataset$new("my_dataset")
-
-  otu_data <- read_mothur_rabund(rdataset_example(
-                            "final.opti_mcc.rabund"))
-  data$assign_bins(otu_data)
-
-  # To add abundance bin assignments parsed by sample:
-
-  data <- dataset$new("my_dataset")
-  bin_table <- readr::read_tsv(rdataset_example(
-                               "mothur2_bin_assignments_shared.tsv"),
-                               show_col_types = FALSE)
-  data$assign_bins(bin_table)
-
-  # To assign sequences to bins with their abundances parsed by sample:
-
-  data <- dataset$new("my_dataset")
-  bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-               "bin2", "bin2", "bin2",
-               "bin3", "bin3")
-  seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-               "seq3", "seq3", "seq6",
-               "seq5", "seq5")
-  samples <- c("sample1", "sample2", "sample5",
-               "sample1", "sample3", "sample4",
-               "sample2", "sample3", "sample1",
-               "sample1", "sample6")
-  abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-
-  data$assign_bins(NULL,
-   bin_names = bin_ids, abundances, samples, seq_ids)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-assign_bin_representative_sequences"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-assign_bin_representative_sequences}{}}}
-\subsection{Method \code{assign_bin_representative_sequences()}}{
-Assign representative sequences to bins.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$assign_bin_representative_sequences(
-  data = NULL,
-  bin_names = NULL,
-  sequence_names = NULL,
-  type = "otu",
-  reference_name = NULL,
-  reference_version = NULL,
-  reference_note = NULL,
-  reference_url = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{a data.frame containing bin_names and representative
-sequences for your data.}
-
-\item{\code{bin_names}}{a vector strings containing bin names or if using the
-'data' parameter a string containing the name of the column in 'data'
-that contains the bin names. Default column name is 'bin_names'.}
-
-\item{\code{sequence_names}}{a vector of strings containing bin representative
-sequences or if using the 'data' parameter a string containing the name
-of the column in 'data' that contains the bin names. Default column name
-is 'sequence_names'.}
-
-\item{\code{type}}{a string indicating the type of bin assignments.
-Default = "otu".}
-
-\item{\code{reference_name}}{a string containing the name of the reference used
-in the designation of the representative sequences. For example:
-'qiime2' Default = NULL.}
-
-\item{\code{reference_version}}{a string containing the version of the reference
-used in the designation of the representative sequences.
-For example: '2.4'. Default = NULL.}
-
-\item{\code{reference_note}}{a string containing the any additional notes about
-the reference. For example: 'tool'.
-Default = NULL.}
-
-\item{\code{reference_url}}{a string containing a web address where the
-reference may be downloaded. For example: 'https://qiime2.org'.
- Default = NULL.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{  miseq <- miseq_sop_example()
-
-  # For examples sake, select first 531 sequences to be the
-  # representatives
-  num_bins <- miseq$get_num_bins("otu")
-  rep_names <- miseq$get_sequence_names()[1:num_bins]
-  bin_names <- miseq$get_bin_names()
-
-  miseq$assign_bin_representative_sequences(bin_names = bin_names,
-                                            sequence_names = rep_names,
-                                            type = "otu")
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-assign_bin_taxonomy"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-assign_bin_taxonomy}{}}}
-\subsection{Method \code{assign_bin_taxonomy()}}{
-Assign bin classification.
-
-Note, if you assign sequence taxonomies and assign bins, 'dataset'
-will find the consensus taxonomy for each bin for you.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$assign_bin_taxonomy(
-  data = NULL,
-  bin_names = NULL,
-  taxonomies = NULL,
-  type = "otu",
-  reference_name = NULL,
-  reference_version = NULL,
-  reference_note = NULL,
-  reference_url = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{a data.frame containing bin_names and taxonomies for your
-data.}
-
-\item{\code{bin_names}}{a vector strings containing bin names or if using the
-'data' parameter a string containing the name of the column in 'data'
-that contains the bin names. Default column name is 'bin_names'.}
-
-\item{\code{taxonomies}}{a vector of strings containing bin classifications or
-if using the 'data' parameter a string containing the name of the column
-in 'data' that contains the bin names. Default column name is
- 'taxonomies'.}
-
-\item{\code{type}}{a string indicating the type of clusters. Default = "otu".}
-
-\item{\code{reference_name}}{a string containing the name of the reference used
-in the classification of the bins. For example:
-'trainset9_032012.pds.zip' Default = NULL.}
-
-\item{\code{reference_version}}{a string containing the version of the reference
-used in the classification of the bins For example: '9_032012'.
-Default = NULL.}
-
-\item{\code{reference_note}}{a string containing the any additional notes about
-the reference. For example: 'custom reference based on RDP'.
-Default = NULL.}
-
-\item{\code{reference_url}}{a string containing a web address where the
-reference may be downloaded. Default = NULL.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
-                        "final.cons.taxonomy"))
-
-data <- dataset$new("my_dataset")
-data$assign_bins(otu_data)
-data$assign_bin_taxonomy(otu_data)
-
-# With the additional parameters to add information about the reference
-# You can also add references using the 'add_references' function.
-
-url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
-         "9_032012.pds.zip", collapse = "")
-
-data$assign_bin_taxonomy(otu_data,
-reference_name = "trainset9_032012.pds.zip",
-reference_note = "classification by mothur2 v1.0 using default options",
-reference_version = "9_032012", reference_url = url)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-assign_sequence_abundance"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-assign_sequence_abundance}{}}}
-\subsection{Method \code{assign_sequence_abundance()}}{
-Add sequence abundance data with optional sample / treatment assignments
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$assign_sequence_abundance(
-  data = NULL,
-  sequence_names = NULL,
-  abundances = NULL,
-  samples = NULL,
-  treatments = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{a data.frame containing sequence_names, abundances,
-samples(optional), treatments(optional). Either 'data' or
- 'sequence_names' and 'abundances' is required.}
-
-\item{\code{sequence_names}}{a vector of sequence names or if using the 'data'
-parameter a string containing the name of the column in 'data' that
-contains the sequence names. Default column name is 'names'. Either
-'data' or 'sequence_names' and 'abundances' is required.}
-
-\item{\code{abundances}}{a vector of sequence abundances or if using the 'data'
-parameter a string containing the name of the column in 'data' that
-contains the sequence abundances. Default column name is 'abundances'.
-Either 'data' or 'sequence_names' and 'abundances' is required.}
-
-\item{\code{samples}}{a vector of sample names or if using the 'data'
-parameter a string containing the name of the column in 'data' that
-contains the sample names. Default column name is 'samples'.
-(optional)}
-
-\item{\code{treatments}}{a vector of treatment assignments or if using the
-'data' parameter a string containing the name of the column in 'data'
-that contains the treatments names. Default column name is 'treatments'.
-(optional)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-data <- dataset$new("miseq_sop")
-sequence_abundance <- readr::read_tsv(rdataset_example(
-                                      "mothur2_count_table.tsv"),
-                                      show_col_types = FALSE)
-data$assign_sequence_abundance(sequence_abundance)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-assign_sequence_taxonomy"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-assign_sequence_taxonomy}{}}}
-\subsection{Method \code{assign_sequence_taxonomy()}}{
-Assign sequence classification
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$assign_sequence_taxonomy(
-  data = NULL,
-  sequence_names = NULL,
-  taxonomies = NULL,
-  reference_name = NULL,
-  reference_version = NULL,
-  reference_note = NULL,
-  reference_url = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{a data.frame containing sequence_names, abundances,
-samples(optional), treatments(optional). Either 'data' or
- 'sequence_names' and 'abundances' is required.}
-
-\item{\code{sequence_names}}{a vector of sequence names or if using the 'data'
-parameter a string containing the name of the column in 'data' that
-contains the sequence names. Default column name is 'sequence_names'.}
-
-\item{\code{taxonomies}}{a vector of sequence classifications or if using the
-'data' parameter a string containing the name of the column in 'data'
- that contains the sequence classifications. Default column name is
- taxonomies'.}
-
-\item{\code{reference_name}}{a string containing the name of the reference used
-in the classification of the sequences. For example:
-'trainset9_032012.pds.zip' Default = NULL.}
-
-\item{\code{reference_version}}{a string containing the version of the reference
-used in the classification of the sequences. For example: '9_032012'.
-Default = NULL.}
-
-\item{\code{reference_note}}{a string containing the any additional notes about
-the reference. For example: 'custom reference based on RDP'.
-Default = NULL.}
-
-\item{\code{reference_url}}{a string containing a web address where the
-reference may be downloaded. Default = NULL.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-                        "final.taxonomy"))
-
-data <- dataset$new("my_dataset")
-data$assign_sequence_taxonomy(sequence_classifications)
-
-# With the additional parameters to add information about the reference
-# You can also add references using the 'add_references' function.
-
-url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
-         "9_032012.pds.zip", collapse = "")
-
-data$assign_sequence_taxonomy(sequence_classifications,
-reference_name = "trainset9_032012.pds.zip",
-reference_note = "classification by mothur2 v1.0 using default options",
-reference_version = "9_032012", reference_url = url)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-assign_treatments"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-assign_treatments}{}}}
-\subsection{Method \code{assign_treatments()}}{
-Assign samples to treatments
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$assign_treatments(data = NULL, samples = NULL, treatments = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{a data.frame containing samples and treatments. Either 'data'
-or 'samples' and 'treatments' is required.}
-
-\item{\code{samples}}{a vector of sample names or if using the 'data'
-parameter a string containing the name of the column in 'data' that
-contains the sample names. Default column name is 'samples'.}
-
-\item{\code{treatments}}{a vector of treatment names or if using the 'data'
-parameter a string containing the name of the column in 'data' that
-contains the treatment names. Default column name is 'treatments'.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-             "seq2", "seq3", "seq3", "seq4")
-samples <- c("sample2", "sample3", "sample4",
-            "sample2", "sample3", "sample4",
-           "sample2", "sample3",
-           "sample4")
-abundances <- c(250, 400, 500,
-               25, 40, 50,
-               25, 25,
-               4)
-treatments <- c("early", "early", "late")
-
-data <- dataset$new("my_dataset")
-data$assign_sequence_abundance(data = NULL,
-                                  names, abundances, samples)
-data$assign_treatments(data = NULL, unique(samples), treatments)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-clear"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-clear}{}}}
 \subsection{Method \code{clear()}}{
-Remove 'all', 'metadata', 'references', 'alignment_report' or
-'contigs_assembly_report' data from your dataset.
+Remove 'metadata', 'references', 'alignment_report',
+'contigs_assembly_report', 'sample_tree', or 'sequence_tree' data from
+your dataset.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataset$clear(tags = NULL)}\if{html}{\out{</div>}}
 }
@@ -1480,47 +531,12 @@ Remove 'all', 'metadata', 'references', 'alignment_report' or
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{tags}}{a vector of strings containing the items you wish to clear.
-Options are 'sequence_data', 'bin_data', 'metadata',
-'references', 'sequence_tree', 'sample_tree', 'alignment_report',
-'contigs_assembly_report' and '"'chimera_report'. By default, everything
- is cleared.}
+Options are 'metadata', 'references', 'sequence_tree', 'sample_tree',
+'alignment_report', 'contigs_assembly_report' and '"'chimera_report'.
+By default, everything is cleared.}
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-export"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-export}{}}}
-\subsection{Method \code{export()}}{
-export will create a list containing the data in the dataset.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$export(tags = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{tags}}{a vector of strings containing the items you wish to export.
-Options are 'sequence_data', 'bin_data', 'metadata', 'references',
- 'sequence_tree', 'sample_tree', 'alignment_report',
-  'contigs_assembly_report' and
-'chimera_report'. By default, everything is exported.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{    miseq <- miseq_sop_example()
-    table <- miseq$export()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_alignment_report"></a>}}
@@ -1607,7 +623,7 @@ data.frame
                                "mothur2_bin_assignments_shared.tsv"),
                                show_col_types = FALSE)
 
-  data$assign_bins(bin_table)
+  assign_bins(data, bin_table)
 
   shared <- data$get_bin_assignments()
 
@@ -1641,87 +657,6 @@ vector of strings containing the bin names
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{  data <- miseq_sop_example()
   data$get_bin_names("otu")
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_bin_representative_sequences"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_bin_representative_sequences}{}}}
-\subsection{Method \code{get_bin_representative_sequences()}}{
-Get the representative bin sequences
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_bin_representative_sequences(type = "otu")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{a string indicating the type of clusters. Options
-include: "otu", "asv", or "phylotype". Default = "otu".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{  miseq <- miseq_sop_example()
-
-  # For examples sake, select first 531 sequences to be the
-  # representatives
-  num_bins <- miseq$get_num_bins("otu")
-  rep_names <- miseq$get_sequence_names()[1:num_bins]
-  bin_names <- miseq$get_bin_names()
-
-  miseq$assign_bin_representative_sequences(bin_names = bin_names,
-                                            sequence_names = rep_names,
-                                            type = "otu")
-
-  miseq$get_bin_representative_sequences(type = "otu")
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_bin_taxonomy_report"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_bin_taxonomy_report}{}}}
-\subsection{Method \code{get_bin_taxonomy_report()}}{
-Get report containing the bin taxonomy table -
-ids, taxonomy by levels
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_bin_taxonomy_report(type = "otu")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{a string indicating the type of bin clusters.
-Default = "otu".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
-                        "final.cons.taxonomy"))
-
-data <- dataset$new("my_dataset")
-data$assign_bins(otu_data)
-data$assign_bin_taxonomy(otu_data)
-
-data$get_bin_taxonomy_report()
 
 }
 \if{html}{\out{</div>}}
@@ -1781,21 +716,6 @@ data.frame
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_count_table"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_count_table}{}}}
-\subsection{Method \code{get_count_table()}}{
-Get count table returns data.frame containing:
-ids, abundances, sample(optional), treatment(optional)
-This table represents mothur's count and design files.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_count_table()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.frame
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_dataset_name"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-get_dataset_name}{}}}
 \subsection{Method \code{get_dataset_name()}}{
@@ -1807,43 +727,6 @@ Get dataset name
 \subsection{Returns}{
 String
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_list"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_list}{}}}
-\subsection{Method \code{get_list()}}{
-Get data frame containing sequence bin assignments
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_list(type = "otu")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{a string indicating the type of clusters. Options
-include: "otu", "asv", or "phylotype". Default = "otu".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  otu_data <- read_mothur_list(rdataset_example(
-                            "final.opti_mcc.list"))
-
-  data <- dataset$new("my_dataset")
-  data$assign_bins(otu_data)
-
-  data$get_list()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_metadata"></a>}}
@@ -1897,37 +780,8 @@ An integer
                             "final.opti_mcc.list"))
 
   data <- dataset$new("my_dataset")
-  data$assign_bins(otu_data)
+  assign_bins(data, otu_data)
   data$get_num_bins()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_num_samples"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_num_samples}{}}}
-\subsection{Method \code{get_num_samples()}}{
-Get number of samples in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_num_samples()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-An integer
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-  bin_table <- readr::read_tsv(rdataset_example(
-                               "mothur2_bin_assignments_shared.tsv"),
-                               show_col_types = FALSE)
-  data$assign_bins(bin_table)
-
-  data$get_num_samples()
 
 }
 \if{html}{\out{</div>}}
@@ -1973,80 +827,17 @@ An integer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_oligos"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_oligos}{}}}
-\subsection{Method \code{get_oligos()}}{
-Get data.frame containing the oligo data
-tag, oligo, diffs, oligo(optional), diffs(optional), sample(optional)
+\if{html}{\out{<a id="method-dataset-get_num_samples"></a>}}
+\if{latex}{\out{\hypertarget{method-dataset-get_num_samples}{}}}
+\subsection{Method \code{get_num_samples()}}{
+Get the number of samples in the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_oligos()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{dataset$get_num_samples()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-data.frame
+A character vector
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_rabund"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_rabund}{}}}
-\subsection{Method \code{get_rabund()}}{
-Get data frame containing sequence bin assignments
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_rabund(type = "otu")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{a string indicating the type of clusters. Options
-include: "otu", "asv", or "phylotype". Default = "otu".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-
-  otu_data <- read_mothur_rabund(rdataset_example(
-                            "final.opti_mcc.rabund"))
-  data$assign_bins(otu_data)
-  rabund <- data$get_rabund()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_references"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_references}{}}}
-\subsection{Method \code{get_references()}}{
-Get data.frame containing information about the references used in the
-analysis of the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_references()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.frame()
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{  data <- dataset$new("my_dataset")
-  reference <- readr::read_csv(rdataset_example("references.csv"))
-  data$add_references(reference = reference)
-  data$get_references()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_samples"></a>}}
@@ -2059,39 +850,6 @@ Get names of samples in the dataset
 
 \subsection{Returns}{
 A character vector
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_sample_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_sample_summary}{}}}
-\subsection{Method \code{get_sample_summary()}}{
-Get a summary of the samples and treatments in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_sample_summary(silent = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{silent}}{Default = FALSE, meaning print sample summary}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-list
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_sample_treatment_assignments"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_sample_treatment_assignments}{}}}
-\subsection{Method \code{get_sample_treatment_assignments()}}{
-Get treatment assignments for samples in dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_sample_treatment_assignments()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.frame
 }
 }
 \if{html}{\out{<hr>}}
@@ -2112,7 +870,7 @@ Get phylo tree relating the samples in your dataset.
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 
  data <- dataset$new("my_dataset")
- data$assign_bins(df)
+ assign_bins(data, df)
  data$add_sample_tree(tree)
  data$get_sample_tree()
 
@@ -2137,43 +895,6 @@ list of data.frames
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_sequence_names"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_sequence_names}{}}}
-\subsection{Method \code{get_sequence_names()}}{
-Get the names of the sequences in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_sequence_names(sample = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{sample}}{a string containing the name of the sample you
-would like sequence names for. Default = NULL, meaning all samples in
-the dataset.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-vector of sequence names
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-data <- dataset$new("miseq_sop")
-sequence_abundance <- readr::read_tsv(rdataset_example(
-                                      "mothur2_count_table.tsv"),
-                                      show_col_types = FALSE)
-data$assign_sequence_abundance(sequence_abundance)
-data$get_sequence_names()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_sequence_report"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-get_sequence_report}{}}}
 \subsection{Method \code{get_sequence_report()}}{
@@ -2189,12 +910,12 @@ data.frame
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_sequence_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_sequence_summary}{}}}
-\subsection{Method \code{get_sequence_summary()}}{
+\if{html}{\out{<a id="method-dataset-get_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-dataset-get_summary}{}}}
+\subsection{Method \code{get_summary()}}{
 Get summary of the sequence reports
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_sequence_summary(silent = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{dataset$get_summary(silent = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -2207,35 +928,6 @@ Get summary of the sequence reports
 \subsection{Returns}{
 list of data.frames
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_sequence_taxonomy_report"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_sequence_taxonomy_report}{}}}
-\subsection{Method \code{get_sequence_taxonomy_report()}}{
-Get report containing the sequence taxonomy table -
-ids, taxonomy by levels
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_sequence_taxonomy_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.frame
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-                        "final.taxonomy"))
-
-data <- dataset$new("my_dataset")
-data$assign_sequence_taxonomy(sequence_classifications)
-data$get_sequence_taxonomy_report()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_sequence_tree"></a>}}
@@ -2259,23 +951,6 @@ Get phylo tree relating the sequences in your dataset.
 
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_sequences"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_sequences}{}}}
-\subsection{Method \code{get_sequences()}}{
-Get vector containing sequence nucleotide strings
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_sequences(sample = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{sample}}{String, name of sample}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_treatments"></a>}}
@@ -2309,95 +984,6 @@ Determine if a sample is present in the dataset
 \subsection{Returns}{
 Boolean
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-is_aligned"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-is_aligned}{}}}
-\subsection{Method \code{is_aligned()}}{
-Determine if the dataset is aligned
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$is_aligned()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-bool
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-remove_lineages"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-remove_lineages}{}}}
-\subsection{Method \code{remove_lineages()}}{
-Remove contaminants from the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$remove_lineages(contaminants)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{contaminants}}{vector of strings containing the taxonomies you would
-like to remove}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-                      count = rdataset_example("final.count_table"),
-                      taxonomy = rdataset_example("final.taxonomy"),
-                      design = rdataset_example("mouse.time.design"),
-                      otu_list = rdataset_example("final.opti_mcc.list"),
-                      dataset_name = "miseq_sop")
-
-contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
- "Eukaryota")
-
-data$remove_lineages(contaminants)
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-remove_samples"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-remove_samples}{}}}
-\subsection{Method \code{remove_samples()}}{
-Remove samples from the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$remove_samples(samples)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{samples}}{vector of strings containing the names of the samples to}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-                      count = rdataset_example("final.count_table"),
-                      taxonomy = rdataset_example("final.taxonomy"),
-                      design = rdataset_example("mouse.time.design"),
-                      otu_list = rdataset_example("final.opti_mcc.list"),
-                      dataset_name = "miseq_sop")
-
-data$get_num_samples()
-
-# To remove samples 'F3D0' and 'F3D1'
-
-data$remove_samples(c("F3D0", "F3D1"))
-
-data$get_num_samples()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-clone"></a>}}

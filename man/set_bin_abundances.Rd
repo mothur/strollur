@@ -4,42 +4,58 @@
 \alias{set_bin_abundances}
 \title{set_bin_abundances}
 \usage{
-set_bin_abundances(data, bin_names, abunds, reason = "update", type = "otu")
+set_bin_abundances(
+  data,
+  bin_names,
+  abundances,
+  type = "otu",
+  reason = "update"
+)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{bin_names}{a vector strings containing of bin names to set the
+\item{bin_names, }{a vector strings containing of bin names to set the
 abundances for.}
 
-\item{abunds}{2D vector ([num_seqs][num_samples]) containing the
+\item{abundances, }{2D vector ([num_seqs][num_samples]) containing the
 abundances of each bin parsed by sample.}
 
-\item{reason}{a string containing the trash tag to be applied to any bins
-set to 0 abundance. Default = "update".}
-
 \item{type}{a string indicating the type of clusters. Default = "otu".}
+
+\item{reason, }{a string containing the trash tag to be applied to any bins
+set to 0 abundance. Default = "update".}
 }
 \description{
-Set bin abundances for an instance of the 'Dataset' class with sample data
+Designed with package integration in mind, the set bin abundances function
+allows you to change the abundances of bins in a \link{dataset} object
+with sample data.
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  samples <- c("sample1", "sample2", "sample5",
-   "sample1", "sample3", "sample1")
-  sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  assign_bins(dataset, bin_ids, sample_abundances, samples, "")
+  # For example sake, let's create a dataset with 3 bins:
 
-  # bin1's abundances parsed by sample: c(10,100,0,1)
-  old_bin1_abunds <- get_bin_abundances(dataset, "bin1")
+  data <- new_dataset("my_dataset", 2)
+
+  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+  samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
+               "sample1")
+  sample_abundances <- c(10, 100, 1, 500, 25, 80)
+
+  assign_bins(data, data.frame(bin_names = bin_ids,
+                               abundances = sample_abundances,
+                               samples = samples))
+
+  # You can see bin1's abundances parsed by sample using get_bin_abundances:
+  get_bin_abundances(data, "bin1")
+
+  # You can change bin1's abundances as follows:
 
   new_bin1_abunds <- list(c(10,50,0,0))
   bins <- c("bin1")
 
-  set_bin_abundances(dataset, bins, new_bin1_abunds)
-  get_bin_abundances(dataset, "bin1")
+  set_bin_abundances(data, bins, new_bin1_abunds)
+
+  get_bin_abundances(data, "bin1")
 
 }

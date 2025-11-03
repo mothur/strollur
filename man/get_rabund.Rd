@@ -7,29 +7,19 @@
 get_rabund(data, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
 \value{
-data.frame
+a 2 column data.frame containing bin names and bin abundances
 }
 \description{
-Get data.frame containing bin abundance data
+Get data.frame containing bin abundance data in a \link{dataset} object
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
-
-  # (rabund) bins would look like:
-  # bin1  bin2  bin3
-  # 111   525   80
-
-  get_rabund(dataset)
+  data <- miseq_sop_example()
+  get_rabund(data)
 
 }

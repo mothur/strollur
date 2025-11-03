@@ -1,0 +1,21 @@
+#' @title load_dataset
+#' @description
+#' The load_dataset function will create a \link{dataset} object from an RDS
+#' file.
+#' @param file a string containing the .rds file name.
+#' @examples
+#'
+#' dataset <- load_dataset(rdataset_example("miseq_sop.rds"))
+#' dataset
+#'
+#' @return a \link{dataset} object
+#' @export
+load_dataset <- function(file) {
+  if (!file.exists(file)) {
+    .abort_nonexistant_file(file)
+  }
+
+  dataset <- readRDS(file)
+  deserialize_dobject(dataset)
+  dataset
+}
