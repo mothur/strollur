@@ -7,17 +7,17 @@
 is_aligned(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
 Boolean
 }
 \description{
-Determine if the instance of the 'Dataset' class contains aligned sequences.
+Determine if a \link{dataset} object contains aligned sequences.
 }
 \examples{
-dataset <- new_dataset("my_dataset", 4)
+
+dataset <- miseq_sop_example()
 is_aligned(dataset)
 
 }

@@ -114,6 +114,7 @@ void Dataset::clear(vector<string> tags) {
         badAccnos.clear();
         count.clear();
         binTables.clear();
+        references.clear();
     }else {
         for (string tag : tags) {
             if (tag == "sequence_data") {
@@ -149,6 +150,8 @@ void Dataset::clear(vector<string> tags) {
                 count.clear();
             }else if (tag == "bin_data") {
                 binTables.clear();
+            }else if (tag == "references") {
+                references.clear();
             }
         }
     }
@@ -180,6 +183,15 @@ Rcpp::List Dataset::exportDataset(vector<string> tags){
             if (setContains(t, "bin_data")) {
                 string message = "[WARNING]: The dataset does not include ";
                 message += " bin data, ignoring 'bin_data' tag.";
+                RcppThread::Rcout << endl << message << endl;
+            }
+        }
+
+        if (references.empty()) {
+
+            if (setContains(t, "references")) {
+                string message = "[WARNING]: The dataset does not include ";
+                message += " references, ignoring 'references' tag.";
                 RcppThread::Rcout << endl << message << endl;
             }
         }
@@ -266,13 +278,26 @@ Rcpp::List Dataset::exportDataset(vector<string> tags){
         }
     }
 
+    if (!hasTags || setContains(t, "references")) {
+        if (!references.empty()) {
+            results.push_back(getReferences());
+            resultsLabels.push_back("references");
+        }
+    }
+
     results.attr("names") = resultsLabels;
     return results;
 }
 /******************************************************************************/
+double Dataset::addReferences(const vector<Reference>& refs) {
+    references.insert(references.end(), refs.begin(), refs.end());
+    return refs.size();
+}
+/******************************************************************************/
 double Dataset::addSequences(const vector<string>& n,
                              vector<string> s,
-                             vector<string> c) {
+                             vector<string> c,
+                             Reference reference) {
 
     // must provide the same number of names and seqs
     if (s.size() == 0) {
@@ -323,6 +348,10 @@ double Dataset::addSequences(const vector<string>& n,
     numUnique += n.size();
 
     hasSequenceData = true;
+
+    if (reference.name != "") {
+        references.push_back(reference);
+    }
 
     return names.size();
 }
@@ -866,6 +895,47 @@ const vector<float> Dataset::getRAbundVector(string type) {
         return binTables[getBinTableIndex(type)].getRAbundVector();
     }
     return nullFloatVector;
+}
+/******************************************************************************/
+const Rcpp::DataFrame Dataset::getReferences() {
+
+    if (!references.empty()) {
+
+        vector<string> refNames(references.size(), "NA");
+        vector<string> refNotes(references.size(), "NA");
+        vector<string> refUrls(references.size(), "NA");
+        vector<string> refUsages(references.size(), "NA");
+        vector<string> refVersions(references.size(), "NA");
+
+        for (size_t i = 0; i < references.size(); i++) {
+            if (references[i].name != "") {
+                refNames[i] = references[i].name;
+            }
+            if (references[i].version != "") {
+                refVersions[i] = references[i].version;
+            }
+            if (references[i].note != "") {
+                refNotes[i] = references[i].note;
+            }
+            if (references[i].url != "") {
+                refUrls[i] = references[i].url;
+            }
+            if (references[i].usage != "") {
+                refUsages[i] = references[i].usage;
+            }
+        }
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("reference_names") = refNames,
+            Rcpp::_["reference_versions"] = refVersions,
+            Rcpp::_["reference_usages"] = refUsages,
+            Rcpp::_["reference_notes"] = refNotes,
+            Rcpp::_["reference_urls"] = refUrls);
+
+        return df;
+    }
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 const vector<string> Dataset::getSamples(){

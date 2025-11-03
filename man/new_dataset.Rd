@@ -4,35 +4,36 @@
 \alias{new_dataset}
 \title{new_dataset}
 \usage{
-new_dataset(dataset_name, processors)
+new_dataset(dataset_name = "", processors = 2L)
 }
 \arguments{
-\item{dataset_name}{string, a string containing the dataset name}
+\item{dataset_name}{string, a string containing the dataset name.
+Default = ""}
 
-\item{processors}{integer, number of cores to use during summary functions.}
+\item{processors}{integer, number of cores to use during summary functions.
+Default = 2}
 }
 \value{
-Rcpp::XPtr<Dataset> pointer to an instance of the 'Dataset' c++
- class.
+a \link{dataset} object
 }
 \description{
-Create a pointer to an instance of the 'Dataset' c++ class.
-
-The 'Dataset' class is the c++ implementation of the R6 'dataset'
-object. This class allows package developers access to additional
-functionality. 'Dataset' stores nucleotide sequences, abundance, sample and
-treatment assignments, taxonomic classifications, asv / otu clusters. It
-creates various reports and summaries. It is designed to facilitate data
-transfer and access across multiple R packages.
+Create a new \link{dataset} object
 }
 \examples{
 
-# to create a new dataset and allow for 4 processors during summary,
-# run the following:
+data <- new_dataset()
 
-dataset <- new_dataset("soil", 4)
+# to create a new dataset named "soil" and allow for 2 processors during
+# summary functions, run the following:
+
+data <- new_dataset("soil", 2)
+
+# to create a new dataset named "soil" and allow for all available
+# processors during summary functions, run the following:
+
+data <- new_dataset("soil", get_available_processors())
 
 }
 \seealso{
-[dataset$new()]
+The 'new' method in the \link{dataset} class
 }

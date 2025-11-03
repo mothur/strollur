@@ -1,8 +1,8 @@
-#' @title import
+#' @title import_dataset
 #' @description
-#' The import function will create a 'dataset' object from the exported
-#' table of a 'dataset' object.
-#' @param table a table containing the data from a 'dataset' object. You
+#' The import_dataset function will create a \link{dataset} object from the
+#' exported table of a \link{dataset} object.
+#' @param table a table containing the data from a \link{dataset} object. You
 #' can create the table using 'export(dataset)'.
 #' @param tags a vector of strings containing the items you wish to export.
 #' Options are 'sequence_data', 'bin_data', 'metadata',
@@ -12,13 +12,13 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' data <- import(export(miseq))
+#' data <- import_dataset(export_dataset(miseq))
 #' data
 #'
-#' @return A 'dataset' object
+#' @return a \link{dataset} object
 #' @seealso [dataset$export()]
 #' @export
-import <- function(table, tags = NULL) {
+import_dataset <- function(table, tags = NULL) {
   table_version <- attributes(table)$rdataset_version
 
   # check attributes for valid version
@@ -34,7 +34,7 @@ import <- function(table, tags = NULL) {
 
   ht <- !(is.null(tags))
 
-  data <- dataset$new(name = attributes(table)$dataset_name)
+  data <- new_dataset(attributes(table)$dataset_name)
 
   names <- names(table)
   has_sequence_data <- FALSE
@@ -61,7 +61,7 @@ import <- function(table, tags = NULL) {
       sequence_ids[matched_indices]
     table$sequence_abundance_table <- na.omit(table$sequence_abundance_table)
   } else if (("sequence_data" %in% tags) && !("sequence_data" %in% names)) {
-    abort_missing_tag_alert("sequence_data")
+    .abort_missing_tag_alert("sequence_data")
   }
 
   if (length(bin_data_names) != 0) {
@@ -135,7 +135,7 @@ import <- function(table, tags = NULL) {
       }
     }
   } else if ("bin_data" %in% tags) {
-    abort_missing_tag_alert("bin_data")
+    .abort_missing_tag_alert("bin_data")
   }
 
   # look at sequence_data
@@ -143,11 +143,11 @@ import <- function(table, tags = NULL) {
     sequence_data_names <- names(table$sequence_data)
 
     # "sequence_names", "sequences", "comments"
-    data$add_sequences(table$sequence_data)
+    add_sequences(data, table$sequence_data)
 
     # "sequence_names", "taxonomies"
     if ("taxonomies" %in% sequence_data_names) {
-      data$assign_sequence_taxonomy(table$sequence_data)
+      assign_sequence_taxonomy(data, table$sequence_data)
     }
 
     # look at sequence_abundance_table
@@ -158,15 +158,12 @@ import <- function(table, tags = NULL) {
         table$sequence_data$sequence_ids
       )
 
-      sequence_names <- table$sequence_data$sequence_names[matched_indices]
+      table$sequence_abundance_table$sequence_names <-
+        table$sequence_data$sequence_names[matched_indices]
+
 
       # "sequence_names", "abundances", "samples", "treatments"
-      data$assign_sequence_abundance(
-        data = NULL, sequence_names,
-        table$sequence_abundance_table$abundances,
-        table$sequence_abundance_table$samples,
-        table$sequence_abundance_table$treatments
-      )
+      assign_sequence_abundance(data, table$sequence_abundance_table)
     }
   }
 
@@ -198,26 +195,14 @@ import <- function(table, tags = NULL) {
             table[[bin_type]]$bin_ids
           )
 
-          bin_names <- table[[bin_type]]$bin_names[m_indices]
+          table[[otu_bin_abund_table]]$bin_names <-
+            table[[bin_type]]$bin_names[m_indices]
 
           # bin_id, abund, sample(optional), treatment(optional)
-          if ("samples" %in% otu_bin_abund_names) {
-            data$assign_bins(
-              bin_names = bin_names,
-              abundances = table[[otu_bin_abund_table]]$abundances,
-              samples = table[[otu_bin_abund_table]]$samples,
-              type = type
-            )
-          } else {
-            data$assign_bins(
-              bin_names = bin_names,
-              abundances = table[[otu_bin_abund_table]]$abundances,
-              type = type
-            )
-          }
+          assign_bins(data, table[[otu_bin_abund_table]], type = type)
 
           if ("treatments" %in% otu_bin_abund_names) {
-            data$assign_treatments(table[[otu_bin_abund_table]])
+            assign_treatments(data, table[[otu_bin_abund_table]])
           }
         } else if ((sequence_bin_assignments %in% names) && has_sequence_data) {
           # requested sequence_data and has sequence_data
@@ -228,7 +213,8 @@ import <- function(table, tags = NULL) {
             table[[bin_type]]$bin_ids
           )
 
-          bin_names <- table[[bin_type]]$bin_names[m_indices]
+          table[[sequence_bin_assignments]]$bin_names <-
+            table[[bin_type]]$bin_names[m_indices]
 
           # create sequence_names from sequence_ids
           m_indices <- match(
@@ -236,22 +222,13 @@ import <- function(table, tags = NULL) {
             table$sequence_data$sequence_ids
           )
 
-          sequence_names <- table$sequence_data$sequence_names[m_indices]
+          table[[sequence_bin_assignments]]$sequence_names <-
+            table$sequence_data$sequence_names[m_indices]
 
-          data$assign_bins(
-            bin_names = bin_names,
-            sequence_names = sequence_names,
-            type = type
-          )
+          assign_bins(data, table[[sequence_bin_assignments]], type = type)
         } else {
-          # does not want sequence data,
-          # just bins and abundances
-
-          data$assign_bins(
-            bin_names = table[[bin_type]]$bin_names,
-            abundances = table[[bin_type]]$abundances,
-            type = type
-          )
+          # does not want sequence data, just bins and abundances
+          assign_bins(data, table[[bin_type]], type = type)
         }
 
         otu_bin_rep_table <- paste0(type, "_bin_representative_sequences")
@@ -262,7 +239,8 @@ import <- function(table, tags = NULL) {
             table[[bin_type]]$bin_ids
           )
 
-          bin_names <- table[[bin_type]]$bin_names[m_indices]
+          table[[otu_bin_rep_table]]$bin_names <-
+            table[[bin_type]]$bin_names[m_indices]
 
           # create sequence_names from sequence_ids
           m_indices <- match(
@@ -270,17 +248,18 @@ import <- function(table, tags = NULL) {
             table$sequence_data$sequence_ids
           )
 
-          sequence_names <- table$sequence_data$sequence_names[m_indices]
+          table[[otu_bin_rep_table]]$sequence_names <-
+            table$sequence_data$sequence_names[m_indices]
 
-          data$assign_bin_representative_sequences(
-            bin_names = bin_names,
-            sequence_names = sequence_names,
+          assign_bin_representative_sequences(
+            data,
+            table[[otu_bin_rep_table]],
             type = type
           )
         }
 
         if ("taxonomies" %in% bin_data_names) {
-          data$assign_bin_taxonomy(table[[bin_type]], type = type)
+          assign_bin_taxonomy(data, table[[bin_type]], type)
         }
       }
     }
@@ -290,14 +269,14 @@ import <- function(table, tags = NULL) {
   if (("metadata" %in% names) && (!ht || ("metadata" %in% tags))) {
     data$add_metadata(table$metadata)
   } else if (("metadata" %in% tags) && !("metadata" %in% names)) {
-    abort_missing_tag_alert("metadata")
+    .abort_missing_tag_alert("metadata")
   }
 
   # add references
   if (("references" %in% names) && (!ht || ("references" %in% tags))) {
-    data$add_references(table$references)
+    add_references(data, table$references)
   } else if (("references" %in% tags) && !("references" %in% names)) {
-    abort_missing_tag_alert("references")
+    .abort_missing_tag_alert("references")
   }
 
   # add alignment report
@@ -308,7 +287,7 @@ import <- function(table, tags = NULL) {
       attributes(table$alignment_report)$sequence_name_column
     )
   } else if ((report %in% tags) && !(report %in% names)) {
-    abort_missing_tag_alert("alignment_report")
+    .abort_missing_tag_alert("alignment_report")
   }
 
   # add chimera report
@@ -319,7 +298,7 @@ import <- function(table, tags = NULL) {
       attributes(table$chimera_report)$sequence_name_column
     )
   } else if ((report %in% tags) && !(report %in% names)) {
-    abort_missing_tag_alert("chimera_report")
+    .abort_missing_tag_alert("chimera_report")
   }
 
   # add contigs report
@@ -330,21 +309,21 @@ import <- function(table, tags = NULL) {
       attributes(table$contigs_assembly_report)$sequence_name_column
     )
   } else if ((report %in% tags) && !(report %in% names)) {
-    abort_missing_tag_alert("contigs_assembly_report")
+    .abort_missing_tag_alert("contigs_assembly_report")
   }
 
   # add sequence_tree
   if (("sequence_tree" %in% names) && (!ht || ("sequence_tree" %in% tags))) {
     data$add_sequence_tree(table$sequence_tree)
   } else if (("sequence_tree" %in% tags) && !("sequence_tree" %in% names)) {
-    abort_missing_tag_alert("sequence_tree")
+    .abort_missing_tag_alert("sequence_tree")
   }
 
   # add sample_tree
   if (("sample_tree" %in% names) && (!ht || ("sample_tree" %in% tags))) {
     data$add_sample_tree(table$sample_tree)
   } else if (("sample_tree" %in% tags) && !("sample_tree" %in% names)) {
-    abort_missing_tag_alert("sample_tree")
+    .abort_missing_tag_alert("sample_tree")
   }
 
   data

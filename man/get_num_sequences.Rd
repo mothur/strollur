@@ -7,18 +7,26 @@
 get_num_sequences(data, distinct = FALSE, sample = "")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{distinct}{Boolean. When distinct is TRUE the number of unique
-sequence is returned.}
+sequence is returned. Default = FALSE.}
 
 \item{sample, }{string containing the name of the sample you want number of
 sequences for.}
 }
 \value{
-An integer
+double, the number of sequences in a \link{dataset} object
 }
 \description{
-Get the number of sequences in an instance of the 'Dataset' class.
+Get the number of sequences in a \link{dataset} object
+}
+\examples{
+
+data <- miseq_sop_example()
+get_num_sequences(data)
+get_num_sequences(data, TRUE)
+get_num_sequences(data, FALSE, "F3D0")
+get_num_sequences(data, TRUE, "F3D0")
+
 }

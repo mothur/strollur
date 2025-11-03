@@ -25,7 +25,7 @@
 #' # to create a 'dataset' object with your data
 #'
 #' data <- dataset$new("my_data")
-#' data$assign_bins(artifact$data)
+#' assign_bins(data, artifact$data)
 #' data
 #'
 #' @return A list containing artifact
@@ -77,7 +77,7 @@ read_qiime2_feature_table <- function(qza, dir_path = NULL,
     if (remove_unpacked_artifacts) {
       unlink(tmp_path, recursive = TRUE)
     }
-    abort_incorrect_format("BIOMV210DirFmt", artifact$format)
+    .abort_incorrect_format("BIOMV210DirFmt", artifact$format)
   }
 
   # only get here if it's a "BIOMV210DirFmt" but not

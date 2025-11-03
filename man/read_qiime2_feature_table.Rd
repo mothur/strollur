@@ -42,7 +42,7 @@ artifact$data
 # to create a 'dataset' object with your data
 
 data <- dataset$new("my_data")
-data$assign_bins(artifact$data)
+assign_bins(data, artifact$data)
 data
 
 }

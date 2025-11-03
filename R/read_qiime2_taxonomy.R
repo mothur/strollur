@@ -67,7 +67,7 @@ read_qiime2_taxonomy <- function(qza, dir_path = NULL,
     if (remove_unpacked_artifacts) {
       unlink(tmp_path, recursive = TRUE)
     }
-    abort_incorrect_format("TSVTaxonomyDirectoryFormat", artifact$format)
+    .abort_incorrect_format("TSVTaxonomyDirectoryFormat", artifact$format)
   }
 
   # only get here if it's a "TSVTaxonomyDirectoryFormat" but not

@@ -7,11 +7,11 @@
 get_sequence_summary(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
-data.frame
+list of data.frames containing the 'sequence_summary' table and
+'scrap_summary' table if sequences have been removed
 }
 \description{
 Get a summary of the sequence report data, as well as reports of containing
@@ -19,9 +19,15 @@ scrapped data.
 }
 \examples{
 
- dataset <- new_dataset("miseq_sop", 4)
- sequences <- read_fasta(rdataset_example("final.fasta"))
- add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
- get_sequence_summary(dataset)
+ data <- miseq_sop_example()
+
+ # Sequence summary, nothing has been scrapped
+
+ get_sequence_summary(data)
+
+ # Sequence summary, after removing sample 'F3D0'
+
+ remove_samples(data, c("F3D0"))
+ get_sequence_summary(data)
 
 }

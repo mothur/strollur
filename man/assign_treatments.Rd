@@ -4,41 +4,37 @@
 \alias{assign_treatments}
 \title{assign_treatments}
 \usage{
-assign_treatments(data, samples, treatments)
+assign_treatments(data, table, sample = "samples", treatment = "treatments")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{samples}{a vector of strings containing sample names}
+\item{table, }{a data.frame containing sample treatment assignments}
 
-\item{treatments}{a vector of strings containing treatment names}
+\item{sample, }{a string containing the name of the column in 'table'
+that contains the samples. Default column name is 'samples'.}
+
+\item{treatment, }{a string containing the name of the column in 'table'
+that contains the treatments. Default column name is 'treatments'.}
 }
 \value{
-double containing the number of bins assigned
+double containing the number of samples assigned to treatments
 }
 \description{
-Assign samples to treatments in an instance of the 'Dataset' class.
+Assign samples to treatments in a \link{dataset} object
 }
 \examples{
 
-names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-             "seq2", "seq3", "seq3", "seq4")
-samples <- c("sample2", "sample3", "sample4",
-            "sample2", "sample3", "sample4",
-           "sample2", "sample3",
-           "sample4")
-abundances <- c(250, 400, 500,
-               25, 40, 50,
-               25, 25,
-               4)
-treatments <- c("early", "early", "late")
+data <- new_dataset("my_dataset", 2)
+sequence_abundance <- readr::read_tsv(rdataset_example(
+                                      "mothur2_count_table.tsv"),
+                                      show_col_types = FALSE)
 
-dataset <- new_dataset("my_dataset", 4)
-assign_sequence_abundance(dataset, names, abundances, samples, "")
-assign_treatments(dataset, unique(samples), treatments)
+assign_sequence_abundance(data, sequence_abundance, "names")
 
-}
-\seealso{
-[dataset$assign_treatments()]
+sample_assignments <- readr::read_table(file = rdataset_example("mouse.time.design"),
+                             col_names = TRUE, show_col_types = FALSE)
+
+assign_treatments(data, sample_assignments)
+
 }

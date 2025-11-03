@@ -7,25 +7,17 @@
 get_sequence_taxonomy_report(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
 data.frame
 }
 \description{
-Get the sequence classifications of an instance of the 'Dataset' class.
+Get the sequence classifications of a \link{dataset} object
 }
 \examples{
 
-seq_ids <- c("seq1", "seq2", "seq3", "seq4")
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
-
-dataset <- new_dataset("my_dataset", 4)
-assign_sequence_taxonomy(dataset, seq_ids, taxonomies)
-get_sequence_taxonomy_report(dataset)
+data <- miseq_sop_example()
+get_sequence_taxonomy_report(data)
 
 }

@@ -7,10 +7,9 @@
 merge_sequences(data, sequence_names, reason = "merged")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object.}
 
-\item{sequence_names}{a vector of strings containing the names of the sequences you
+\item{sequence_names, }{a vector of strings containing the names of the
 sequences you would like merge. The resulting merged sequence will be stored
 in the first sequence name in the vector.}
 
@@ -18,21 +17,32 @@ in the first sequence name in the vector.}
 Default = "merged"}
 }
 \description{
-Merge sequences in an instance of the 'Dataset' class.
+Designed with package integration in mind, the merge sequences function
+allows you to merge sequences in a \link{dataset} object.
 }
 \examples{
 
-sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-             "seq2", "seq3", "seq3", "seq4")
-samples <- c("sample2", "sample3", "sample4",
-            "sample2", "sample3", "sample4",
-           "sample2", "sample3", "sample4")
-abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
+data <- miseq_sop_example()
 
-dataset <- new_dataset("my_dataset", 4)
-assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
+get_num_sequences(data)
 
-seqs_to_merge <- c("seq1", "seq4")
-merge_sequences(dataset, seqs_to_merge, "identical")
+# For the sake of example let's merge the first 3 sequences from
+# miseq_sop_example:
+
+seqs_to_merge <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
+                   "M00967_43_000000000-A3JHG_1_1113_12711_3318",
+                   "M00967_43_000000000-A3JHG_1_2108_14707_9807")
+
+merge_sequences(data, seqs_to_merge)
+
+# If you look at the scrap report, you will see the second two sequence
+# names, listed with the trash code set to "merged".
+
+get_scrap_report(data)
+
+# You can see from the get_num_sequences function that the merged sequence's
+# abundances are added to the first sequence.
+
+get_num_sequences(data)
 
 }

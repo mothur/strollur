@@ -18,22 +18,22 @@
 write_fasta <- function(data, filename = NULL) {
   # check type
   if (class(data)[1] != "dataset") {
-    abort_incorrect_type("dataset", data)
+    .abort_incorrect_type("dataset", data)
   }
 
   if (is.null(filename)) {
-    filename <- data$get_dataset_name()
+    filename <- get_dataset_name(data)
     if (filename == "") {
-      abort_no_name()
+      .abort_no_name()
     }
     filename <- paste0(filename, ".fasta")
   }
 
-  sequence_names <- data$get_sequence_names()
+  sequence_names <- get_sequence_names(data)
 
   # data contains sequences
   if (length(sequence_names) != 0) {
-    sequences <- data$get_sequences()
+    sequences <- get_sequences(data)
 
     # make sure they aren't blank
     if (!any(sequences == "")) {

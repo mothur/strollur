@@ -31,13 +31,8 @@
 #'
 #' # You can add your sequence abundance data to your dataset as follows:
 #'
-#' data <- dataset$new()
-#' data$assign_sequence_abundance(
-#'   data = NULL,
-#'   sample_table$id,
-#'   sample_table$abundance,
-#'   sample_table$sample
-#' )
+#' data <- new_dataset()
+#' assign_sequence_abundance(data, sample_table)
 #' data
 #'
 #' @return data.frame
@@ -67,13 +62,13 @@ read_mothur_count <- function(filename) {
       # remove first '#'
       pieces <- strsplit(file_data[2], "#")[[1]]
       file_data[2] <- pieces[nzchar(pieces)]
-      words <- split_white_space(file_data[2])
+      words <- .split_white_space(file_data[2])
       num_seqs <- length(file_data) - 3
 
       samples <- c()
       for (i in seq_along(words)) {
         # parse sample name
-        file_index <- split_at_char(words[i], ",")
+        file_index <- .split_at_char(words[i], ",")
 
         # save sample names
         samples <- c(samples, file_index[2])
@@ -81,7 +76,7 @@ read_mothur_count <- function(filename) {
 
       # read compressed data lines
       for (i in 4:length(file_data)) {
-        seq_line <- split_white_space(file_data[i])
+        seq_line <- .split_white_space(file_data[i])
 
         # add copy of name for each abund
         table_names <- c(table_names, rep(
@@ -91,7 +86,7 @@ read_mothur_count <- function(filename) {
         # skip name and total
         for (j in 3:length(seq_line)) {
           # looks like 2,3 -> meaning sample 2 has abundance 3
-          data <- split_at_char(seq_line[j], ",")
+          data <- .split_at_char(seq_line[j], ",")
 
           # add sample name to table_samples
           table_samples <- c(table_samples, samples[as.integer(data[1])])
@@ -102,7 +97,7 @@ read_mothur_count <- function(filename) {
     } else {
       # uncompressed format
       # Representative_Sequence  total  sample2	sample3	sample4
-      words <- split_white_space(file_data[1])
+      words <- .split_white_space(file_data[1])
 
       num_seqs <- length(file_data) - 1
       has_sample_data <- TRUE
@@ -121,7 +116,7 @@ read_mothur_count <- function(filename) {
 
       # read uncompressed data
       for (i in 2:length(file_data)) {
-        seq_line <- split_white_space(file_data[i])
+        seq_line <- .split_white_space(file_data[i])
 
         if (length(seq_line) >= 2) {
           name <- seq_line[1]
@@ -144,16 +139,16 @@ read_mothur_count <- function(filename) {
 
       if (!has_sample_data) {
         return(data.frame(
-          id = table_names,
-          abundance = table_abunds
+          sequence_names = table_names,
+          abundances = table_abunds
         ))
       }
     }
   }
 
   data.frame(
-    id = table_names,
-    sample = table_samples,
-    abundance = table_abunds
+    sequence_names = table_names,
+    samples = table_samples,
+    abundances = table_abunds
   )
 }

@@ -7,17 +7,16 @@
 set_num_processors(data, processors)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{processors, }{a integer containing the desired number of processors}
 }
 \description{
-Set the number of processors used to summarize an instance of the
- 'Dataset' class.
+Set the number of processors used to summarize a \link{dataset} object
 }
 \examples{
-dataset <- new_dataset("my_dataset", 4)
-set_num_processors(dataset, 8)
+
+data <- new_dataset("my_dataset", 2)
+set_num_processors(data, 1)
 
 }

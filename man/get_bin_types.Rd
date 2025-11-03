@@ -7,18 +7,17 @@
 get_bin_types(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
 vector of strings
 }
 \description{
-Get bin table types of an instance of the 'Dataset' class.
+Get bin table types of a \link{dataset} object
 }
 \examples{
 
 data <- miseq_sop_example()
-get_bin_types(data$data)
+get_bin_types(data)
 
 }

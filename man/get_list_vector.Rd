@@ -7,30 +7,20 @@
 get_list_vector(data, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
 \value{
-vector of strings containing the sequences in each bin separated
-by commas
+vector of strings containing the names of the sequences in each bin
+separated by commas
 }
 \description{
 Get vector of strings containing the sequences bin data
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-  sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
-
-  # (list) bins would look like:
-  # bin1             bin2        bin3
-  # seq1,seq2,seq4   seq3,seq6   seq5
-
-  get_list_vector(dataset)
+data <- miseq_sop_example()
+get_list_vector(data)
 
 }

@@ -26,7 +26,7 @@ test_that("write_mothur - miseq", {
     dataset_name = "miseq_sop"
   )
 
-  data$add_references(readr::read_tsv(outputs[15],
+  add_references(data, readr::read_tsv(outputs[15],
     col_names = TRUE,
     show_col_types = FALSE
   ))
@@ -51,7 +51,7 @@ test_that("write_mothur - miseq", {
   expect_equal(data$get_num_bins("asv"), 2425)
   expect_equal(data$get_num_bins("phylotype"), 63)
   expect_equal(data$get_metadata(), miseq$get_metadata())
-  expect_equal(data$get_references(), miseq$get_references())
+  expect_equal(get_references(data), get_references(miseq))
 })
 
 test_that("write_mothur - bin_data only", {

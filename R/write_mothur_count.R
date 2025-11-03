@@ -17,18 +17,18 @@
 write_mothur_count <- function(data, filename = NULL) {
   # check type
   if (class(data)[1] != "dataset") {
-    abort_incorrect_type("dataset", data)
+    .abort_incorrect_type("dataset", data)
   }
 
   if (is.null(filename)) {
-    filename <- data$get_dataset_name()
+    filename <- get_dataset_name(data)
     if (filename == "") {
-      abort_no_name()
+      .abort_no_name()
     }
     filename <- paste0(filename, ".count_table")
   }
 
-  df <- data$get_count_table()
+  df <- get_sequence_abundance_table(data)
 
   if (nrow(df) != 0) {
     # treatment assignments, remove treatment column

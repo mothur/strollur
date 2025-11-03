@@ -4,23 +4,35 @@
 \alias{assign_bin_taxonomy}
 \title{assign_bin_taxonomy}
 \usage{
-assign_bin_taxonomy(data, bin_names, taxonomies, type = "otu")
+assign_bin_taxonomy(
+  data,
+  table,
+  type = "otu",
+  reference = NULL,
+  bin_name = "bin_names",
+  taxonomy = "taxonomies"
+)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{bin_names}{a vector of strings containing bin names}
+\item{table, }{a data.frame containing bin taxonomy assignments}
 
-\item{taxonomies}{a vector of strings containing bin classifications}
+\item{type}{a string indicating the type of bin assignments. Default "otu".}
 
-\item{type}{a string indicating the type of clusters. Default = "otu"}
+\item{reference, }{a list created by the function [new_reference]. Optional.}
+
+\item{bin_name, }{a string containing the name of the column in 'table' that
+contains the bin names. Default column name is 'bin_names'.}
+
+\item{taxonomy, }{a string containing the name of the column in 'table' that
+contains the bin taxonomies. Default column name is 'taxonomies'.}
 }
 \value{
 double containing the number of bins assigned
 }
 \description{
-Assign bin classifications to an instance of the 'Dataset' class.
+Assign bin classifications to a \link{dataset} object
 
 Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
  the concensus taxonomy for each bin for you.
@@ -30,11 +42,8 @@ Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 otu_data <- read_mothur_cons_taxonomy(rdataset_example(
                         "final.cons.taxonomy"))
 
-dataset <- new_dataset("my_dataset", 4)
-assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
-assign_bin_taxonomy(dataset, otu_data$bin_names, otu_data$taxonomies)
+data <- new_dataset("my_dataset", 2)
+assign_bins(data, otu_data)
+assign_bin_taxonomy(data, otu_data)
 
-}
-\seealso{
-[dataset$assign_bin_taxonomy()]
 }

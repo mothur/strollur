@@ -7,8 +7,7 @@
 get_sequence_abundances_by_sample(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
 2D vector ([num_seqs][num_samples]) containing the
@@ -16,24 +15,11 @@ abundances of each sequence in an instance of the 'Dataset' class parsed by
 sample.
 }
 \description{
-Get the abundances of each sequence in an instance of the 'Dataset' class
-parsed by sample.
+Get the abundances of each sequence in a \link{dataset} object
 }
 \examples{
 
-names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-             "seq2", "seq3", "seq3", "seq4")
-samples <- c("sample2", "sample3", "sample4",
-            "sample2", "sample3", "sample4",
-           "sample2", "sample3",
-           "sample4")
-abundances <- c(250, 400, 500,
-               25, 40, 50,
-               25, 25,
-               4)
-
-dataset <- new_dataset("my_dataset", 4)
-assign_sequence_abundance(dataset, names, abundances, samples, "")
-get_sequence_abundances_by_sample(dataset)
+data <- miseq_sop_example()
+get_sequence_abundances_by_sample(data)
 
 }

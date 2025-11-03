@@ -29,11 +29,11 @@ install.packages("rdataset")
 ```
 
 You can install the development version of rdataset from
-[GitHub](https://github.com/rdataset) with:
+[GitHub](https://github.com/SchlossLab/rdataset) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("rdataset")
+devtools::install_github("SchlossLab/rdataset")
 ```
 
 ## Data Tranfer Functions
@@ -52,10 +52,11 @@ See the [Getting Started](TODO) page to get started.
 ## Getting help
 
 If you encounter an issue, please file an issue on
-[GitHub](https://github.com/rdataset/issues). Please include a minimal
-reproducible example with your issue.
+[GitHub](https://github.com/SchlossLab/rdataset/issues). Please include
+a minimal reproducible example with your issue.
 
 ## Contributing
 
 Is there a feature you’d like to see included, please let us know! Pull
-requests are welcome on [GitHub](https://github.com/rdataset/pulls).
+requests are welcome on
+[GitHub](https://github.com/SchlossLab/rdataset/pulls).

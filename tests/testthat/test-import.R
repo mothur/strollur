@@ -12,7 +12,7 @@ test_that("import - miseq_sop_example", {
 
   # remove some bins to allow for filtering
   remove_bins(
-    miseq$data, phylo_bins_to_remove,
+    miseq, phylo_bins_to_remove,
     reasons_to_remove, "phylotype"
   )
 
@@ -20,11 +20,11 @@ test_that("import - miseq_sop_example", {
   expect_equal(miseq$get_num_sequences(TRUE), 825)
   expect_equal(miseq$get_num_sequences(), 39177)
 
-  exported_miseq <- miseq$export()
+  exported_miseq <- export_dataset(miseq)
 
   expect_equal(sum(exported_miseq$sequence_data$include_sequence), 825)
 
-  dataset_t <- import(exported_miseq)
+  dataset_t <- import_dataset(exported_miseq)
 
   expect_equal(dataset_t$get_dataset_name(), miseq$get_dataset_name())
   expect_equal(dataset_t$get_num_sequences(TRUE), miseq$get_num_sequences(TRUE))
@@ -38,16 +38,16 @@ test_that("import - miseq_sop_example", {
   )
   expect_equal(dataset_t$get_num_bins("asv"), miseq$get_num_bins("asv"))
   expect_equal(
-    get_sample_totals(dataset_t$data),
-    get_sample_totals(miseq$data)
+    get_sample_totals(dataset_t),
+    get_sample_totals(miseq)
   )
   expect_equal(
-    get_treatment_totals(dataset_t$data),
-    get_treatment_totals(miseq$data)
+    get_treatment_totals(dataset_t),
+    get_treatment_totals(miseq)
   )
 
-  dfd <- get_bin_representative_sequences(dataset_t$data)
-  dfm <- get_bin_representative_sequences(miseq$data)
+  dfd <- get_bin_representative_sequences(dataset_t)
+  dfm <- get_bin_representative_sequences(miseq)
 
   for (otu in dfm[[1]]) {
     expect_equal(
@@ -57,15 +57,15 @@ test_that("import - miseq_sop_example", {
   }
 
   # only import bin data no sequences
-  dataset_t <- import(exported_miseq, c("bin_data"))
+  dataset_t <- import_dataset(exported_miseq, c("bin_data"))
 
   # abundances reflect the total abundance of the sequence in bin
-  expect_equal(dataset_t$get_rabund("asv")$abundance[1:3], c(7436, 6285, 5207))
+  expect_equal(get_rabund(dataset_t, "asv")$abundance[1:3], c(7436, 6285, 5207))
   # no list, since no sequences
-  expect_equal(dataset_t$get_list("asv"), data.frame())
-  expect_equal(dataset_t$get_sequence_taxonomy_report(), data.frame())
+  expect_equal(get_list(dataset_t, "asv"), data.frame())
+  expect_equal(get_sequence_taxonomy_report(dataset_t), data.frame())
   # 303 bins x 6 tax levels
-  expect_equal(nrow(dataset_t$get_bin_taxonomy_report()), 1818)
+  expect_equal(nrow(get_bin_taxonomy_report(dataset_t)), 1818)
 
   data <- dataset$new()
   abunds <- c(1, 10, 100)
@@ -81,7 +81,7 @@ test_that("import - miseq_sop_example", {
       col_names = TRUE, show_col_types = FALSE
     ), "Name"
   )
-  data$assign_bins(bin_names = bins, abundances = abunds)
+  assign_bins(data, data.frame(bin_names = bins, abundances = abunds))
 
   expect_equal(data$get_num_bins(), 3)
   expect_equal(data$get_num_sequences(TRUE), 5)
@@ -89,8 +89,8 @@ test_that("import - miseq_sop_example", {
   expect_equal(data$get_num_samples(), 0)
   expect_equal(data$get_num_treatments(), 0)
 
-  table <- export(data)
-  dataset2 <- import(table)
+  table <- export_dataset(data)
+  dataset2 <- import_dataset(table)
 
   expect_equal(dataset2$get_num_bins(), 3)
   expect_equal(dataset2$get_num_sequences(TRUE), 5)
@@ -112,9 +112,9 @@ test_that("import - no sequence data", {
   expect_equal(just_bins$get_num_bins("otu"), 531)
   expect_equal(just_bins$get_num_sequences(), 113963)
 
-  table <- just_bins$export()
+  table <- export_dataset(just_bins)
 
-  dataset <- import(table)
+  dataset <- import_dataset(table)
 
   expect_equal(dataset$get_num_bins("otu"), 531)
   expect_equal(dataset$get_num_sequences(), 113963)
@@ -124,17 +124,17 @@ test_that("import - no sequence data", {
   expect_equal(dataset$get_num_sequences(), just_bins$get_num_sequences())
   expect_equal(dataset$get_num_treatments(), just_bins$get_num_treatments())
   expect_equal(dataset$get_num_samples(), just_bins$get_num_samples())
-  expect_equal(length(dataset$get_sequence_names()), 0)
+  expect_equal(length(get_sequence_names(dataset)), 0)
 
-  expect_error(import(table, c("sequence_data")))
-  expect_error(import(table, c("metadata")))
-  expect_error(import(table, c("references")))
-  expect_error(import(table, c("alignment_report")))
-  expect_error(import(table, c("contigs_assembly_report")))
-  expect_error(import(table, c("sequence_tree")))
+  expect_error(import_dataset(table, c("sequence_data")))
+  expect_error(import_dataset(table, c("metadata")))
+  expect_error(import_dataset(table, c("references")))
+  expect_error(import_dataset(table, c("alignment_report")))
+  expect_error(import_dataset(table, c("contigs_assembly_report")))
+  expect_error(import_dataset(table, c("sequence_tree")))
 
   attr(table, "rdataset_version") <- "0.2.1"
-  expect_error(import(table))
+  expect_error(import_dataset(table))
 })
 
 test_that("import - no bin data", {
@@ -152,9 +152,9 @@ test_that("import - no bin data", {
   expect_equal(just_seqs$get_num_sequences(), 113963)
   expect_equal(just_seqs$get_num_sequences(TRUE), 2425)
 
-  table <- just_seqs$export()
+  table <- export_dataset(just_seqs)
 
-  dataset <- import(table)
+  dataset <- import_dataset(table)
 
   expect_equal(dataset$get_num_bins("otu"), 0)
   expect_equal(dataset$get_num_sequences(), 113963)
@@ -165,10 +165,10 @@ test_that("import - no bin data", {
   expect_equal(dataset$get_num_sequences(), just_seqs$get_num_sequences())
   expect_equal(dataset$get_num_treatments(), just_seqs$get_num_treatments())
   expect_equal(dataset$get_num_samples(), just_seqs$get_num_samples())
-  expect_equal(length(dataset$get_sequence_names()), 2425)
+  expect_equal(length(get_sequence_names(dataset)), 2425)
 
-  expect_error(import(table, c("bin_data")))
-  expect_error(import(table, c("sample_tree")))
+  expect_error(import_dataset(table, c("bin_data")))
+  expect_error(import_dataset(table, c("sample_tree")))
 })
 
 test_that("import - errors and warnings", {
@@ -183,9 +183,9 @@ test_that("import - errors and warnings", {
   expect_equal(just_bins$get_num_bins("otu"), 531)
   expect_equal(just_bins$get_num_sequences(), 113963)
 
-  table <- just_bins$export()
+  table <- export_dataset(just_bins)
 
-  data <- import(table)
+  data <- import_dataset(table)
 
   expect_equal(data$get_num_bins("otu"), 531)
   expect_equal(data$get_num_sequences(), 113963)
@@ -195,11 +195,11 @@ test_that("import - errors and warnings", {
   expect_equal(data$get_num_sequences(), just_bins$get_num_sequences())
   expect_equal(data$get_num_treatments(), just_bins$get_num_treatments())
   expect_equal(data$get_num_samples(), just_bins$get_num_samples())
-  expect_equal(length(data$get_sequence_names()), 0)
+  expect_equal(length(get_sequence_names(data)), 0)
 
   data <- dataset$new()
 
-  table <- data$export(c("sequence_data", "bin_data"))
+  table <- export_dataset(data, c("sequence_data", "bin_data"))
   expect_equal(length(table), 0)
 })
 
@@ -209,20 +209,20 @@ test_that("import - with tags", {
   expect_equal(miseq$get_num_bins("otu"), 531)
   expect_equal(miseq$get_num_sequences(), 113963)
   expect_equal(miseq$get_num_sequences(TRUE), 2425)
-  expect_equal(nrow(miseq$get_bin_representative_sequences()), 531)
+  expect_equal(nrow(get_bin_representative_sequences(miseq)), 531)
 
   # just export bin data, no sequence data
-  table <- miseq$export()
+  table <- export_dataset(miseq)
 
-  just_bins <- import(table, c("bin_data"))
+  just_bins <- import_dataset(table, c("bin_data"))
 
   expect_equal(just_bins$get_num_bins("otu"), 531)
   expect_equal(just_bins$get_num_sequences(), 113963)
   expect_equal(just_bins$get_num_sequences(TRUE), 0)
 
-  expect_equal(just_bins$get_dataset_name(), miseq$get_dataset_name())
+  expect_equal(get_dataset_name(just_bins), get_dataset_name(miseq))
   expect_equal(just_bins$get_num_treatments(), 0)
   expect_equal(just_bins$get_num_samples(), 0)
-  expect_equal(length(just_bins$get_sequence_names()), 0)
-  expect_equal(nrow(just_bins$get_bin_representative_sequences()), 0)
+  expect_equal(length(get_sequence_names(just_bins)), 0)
+  expect_equal(nrow(get_bin_representative_sequences(just_bins)), 0)
 })

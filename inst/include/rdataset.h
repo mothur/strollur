@@ -40,6 +40,30 @@ const vector<double> nullDoubleVector;  // used to pass blank double
 const vector< vector<double> > null2DDoubleVector;  // used to pass blank vector
 
 /******************************************************************************/
+struct Reference {
+    string name, version, note, url, usage;
+
+    Reference() : name(""), version(""), note(""), url(""), usage("") {}
+    ~Reference() {}
+
+    Reference(string n, string v = "", string u = "",
+              string no = "", string ur = "") {
+        name = n;
+        version = v;
+        note = no;
+        url = ur;
+        usage = u;
+    }
+
+    // This method lets Cereal know how to serialize.
+    template<class Archive>
+    void serialize(Archive & archive) {
+        archive(name, version, usage, note, url);
+    }
+};
+
+const Reference nullReference;
+/******************************************************************************/
 /*
  * The 'sampleAbunds' struct will store abundance data for samples
  *    in sparse form.
@@ -427,7 +451,9 @@ public:
     // add seqs
     double addSequences(const vector<string>& n,
                         vector<string> s = nullVector,
-                        vector<string> c = nullVector);
+                        vector<string> c = nullVector,
+                        Reference reference = nullReference);
+    double addReferences(const vector<Reference>& refs);
 
     // names, abundances, samples(optional), treatments(optional)
     double assignSequenceAbundance(vector<string>& names,
@@ -479,6 +505,7 @@ public:
     const Rcpp::DataFrame getRAbund(string type = "otu");
     // vector of total abundances for each bin
     const vector<float> getRAbundVector(string type = "otu");
+    const Rcpp::DataFrame getReferences();
     const vector<string> getSamples();
     const vector<double> getSampleTotals();
     const Rcpp::DataFrame getSampleTreatmentAssignments();
@@ -562,6 +589,8 @@ private:
     // sequence taxonomy assignments
     vector<string> taxonomies;
 
+    vector<Reference> references;
+
     // boolean indicating if sequences is "good"
     vector<bool> tableSeqs;
 
@@ -598,7 +627,7 @@ private:
 
     template<class Archive>
     void serialize(Archive& ar) {
-        ar(names, seqs, comments, trashCodes,
+        ar(names, seqs, comments, trashCodes, references,
            starts, ends, lengths, ambigs, polymers, numns, taxonomies,
            tableSeqs, seqIndex, badAccnos, uniqueBad, count, binTables,
            datasetName, alignmentLength, isAligned,

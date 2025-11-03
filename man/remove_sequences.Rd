@@ -4,30 +4,45 @@
 \alias{remove_sequences}
 \title{remove_sequences}
 \usage{
-remove_sequences(data, names, trash_tags)
+remove_sequences(data, sequence_names, trash_tags)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object.}
 
-\item{names}{vector of strings containing the names of the sequences to remove}
+\item{sequence_names, }{vector of strings containing the names of the
+sequences to remove}
 
 \item{trash_tags}{vector of strings containing the reasons for the sequences
 removals}
 }
 \description{
-Remove sequences from an instance of the 'Dataset' class.
+Designed with package integration in mind, the remove sequences function
+allows you to remove sequences from a \link{dataset} object
 }
 \examples{
 
-seq_names <- c("seq1", "seq2", "seq3", "seq4")
+data <- miseq_sop_example()
 
-dataset <- new_dataset("my_dataset", 4)
-add_sequences(dataset, seq_names, "", "")
+get_num_sequences(data)
 
-names_to_remove <- c("seq1", "seq3")
-trash_tags <- c("screen_seqs-too_short", "screen_seqs-contains_ns")
+# For the sake of example let's remove the first 3 sequences from
+# miseq_sop_example:
 
-remove_sequences(dataset, names_to_remove, trash_tags)
+seqs_to_remove <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
+                   "M00967_43_000000000-A3JHG_1_1113_12711_3318",
+                   "M00967_43_000000000-A3JHG_1_2108_14707_9807")
+trash_codes <- c("example", "removing", "sequences")
+
+remove_sequences(data, seqs_to_remove, trash_codes)
+
+# If you look at the scrap report, you the sequences names, listed with the
+# trash codes set to "example", "removing", "sequences".
+
+get_scrap_report(data)
+
+# You can see from the get_num_sequences function that the removed
+# sequence's abundances are removed from the dataset.
+
+get_num_sequences(data)
 
 }

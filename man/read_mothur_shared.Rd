@@ -23,6 +23,6 @@ Read a mothur formatted
 otu_data <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 
 data <- dataset$new()
-data$assign_bins(otu_data)
+assign_bins(data, otu_data)
 
 }

@@ -28,6 +28,6 @@ classification_data <- read_mothur_taxonomy(rdataset_example(
 ))
 
 data <- dataset$new()
-data$assign_sequence_taxonomy(classification_data)
+assign_sequence_taxonomy(data, classification_data)
 
 }

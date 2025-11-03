@@ -7,8 +7,7 @@
 get_bin(data, bin_name, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{bin_name, }{string containing the bin name}
 
@@ -18,16 +17,11 @@ get_bin(data, bin_name, type = "otu")
 String, containing names of the sequences in a given bin
 }
 \description{
-Get the names of the sequences in a given bin in an instance of the
-'Dataset' class.
+Get the names of the sequences in a given bin in a \link{dataset} object
 }
 \examples{
 
-dataset <- new_dataset("my_dataset", 4)
-bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-dataset <- new_dataset("my_dataset", 4)
-assign_bins(dataset, bin_ids, 0, "", seq_ids)
-get_bin(dataset, "bin1")
+data <- miseq_sop_example()
+get_bin(data, "Otu005", "otu")
 
 }

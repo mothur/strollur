@@ -110,7 +110,7 @@ not providing the list and count files.
 \examples{
 # For dataset's including sequence data:
 
-dataset <- read_mothur(
+data <- read_mothur(
   fasta = rdataset_example("final.fasta"),
   count = rdataset_example("final.count_table"),
   taxonomy = rdataset_example("final.taxonomy"),

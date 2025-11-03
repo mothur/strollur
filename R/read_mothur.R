@@ -68,7 +68,7 @@
 #' @examples
 #' # For dataset's including sequence data:
 #'
-#' dataset <- read_mothur(
+#' data <- read_mothur(
 #'   fasta = rdataset_example("final.fasta"),
 #'   count = rdataset_example("final.count_table"),
 #'   taxonomy = rdataset_example("final.taxonomy"),
@@ -101,12 +101,12 @@ read_mothur <- function(fasta = NULL, count = NULL,
                         phylo_shared = NULL, sample_tree = NULL,
                         sequence_tree = NULL, dataset_name = "") {
   # create new blank dataset
-  data <- dataset$new(name = dataset_name)
+  data <- dataset$new(dataset_name)
 
   # add sequence nucleotide strings
   if (!is.null(fasta)) {
     fasta_data <- read_fasta(fasta)
-    data$add_sequences(fasta_data)
+    add_sequences(data, fasta_data)
   }
 
   # add sequence abundance data
@@ -115,22 +115,22 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
     # you did not add fasta seqs
     if (is.null(fasta)) {
-      data$add_sequences(sequence_names = unique(count_table$id))
+      add_sequences(data, data.frame(
+        sequence_names =
+          unique(count_table$sequence_names)
+      ))
     }
 
     # if the count file include samples, add them
     if ("sample" %in% names(count_table)) {
-      data$assign_sequence_abundance(
-        data = NULL,
-        count_table$id,
-        count_table$abundance,
-        count_table$sample
+      assign_sequence_abundance(
+        data,
+        count_table
       )
     } else {
-      data$assign_sequence_abundance(
-        data = NULL,
-        count_table$id,
-        count_table$abundance
+      assign_sequence_abundance(
+        data,
+        count_table
       )
     }
   }
@@ -138,38 +138,38 @@ read_mothur <- function(fasta = NULL, count = NULL,
   # add taxonomy data
   if (!is.null(taxonomy)) {
     df <- read_mothur_taxonomy(taxonomy)
-    data$assign_sequence_taxonomy(df)
+    assign_sequence_taxonomy(data, df)
   }
 
   # add sequence otu assignments
   if (!is.null(otu_list)) {
     df <- read_mothur_list(otu_list)
-    data$assign_bins(df, type = "otu")
+    assign_bins(data, df, "otu")
   }
 
   if (!is.null(otu_shared)) {
     df <- read_mothur_shared(otu_shared)
-    data$assign_bins(df, type = "otu")
+    assign_bins(data, df, "otu")
   }
 
   if (!is.null(asv_list)) {
     df <- read_mothur_list(asv_list)
-    data$assign_bins(df, type = "asv")
+    assign_bins(data, df, "asv")
   }
 
   if (!is.null(asv_shared)) {
     df <- read_mothur_shared(asv_shared)
-    data$assign_bins(df, type = "asv")
+    assign_bins(data, df, "asv")
   }
 
   if (!is.null(phylo_list)) {
     df <- read_mothur_list(phylo_list)
-    data$assign_bins(df, type = "phylotype")
+    assign_bins(data, df, "phylotype")
   }
 
   if (!is.null(phylo_shared)) {
     df <- read_mothur_shared(phylo_shared)
-    data$assign_bins(df, type = "phylotype")
+    assign_bins(data, df, "phylotype")
   }
 
   # add sample / treatment assignments
@@ -178,12 +178,12 @@ read_mothur <- function(fasta = NULL, count = NULL,
       file = design, col_names = TRUE,
       show_col_types = FALSE
     )
-    data$assign_treatments(data = NULL, df[[1]], df[[2]])
+    assign_treatments(data, df)
   }
 
   if (!is.null(cons_taxonomy)) {
     df <- read_mothur_cons_taxonomy(cons_taxonomy)
-    data$assign_bin_taxonomy(df)
+    assign_bin_taxonomy(data, df, "otu")
   }
 
   if (!is.null(sample_tree)) {

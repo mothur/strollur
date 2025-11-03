@@ -4,37 +4,53 @@
 \alias{assign_sequence_taxonomy}
 \title{assign_sequence_taxonomy}
 \usage{
-assign_sequence_taxonomy(data, sequence_names, taxonomies)
+assign_sequence_taxonomy(
+  data,
+  table,
+  reference = NULL,
+  sequence_name = "sequence_names",
+  taxonomy = "taxonomies"
+)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{sequence_names}{a vector of strings containing sequence names}
+\item{table, }{a data.frame containing sequence taxonomy assignments}
 
-\item{taxonomies}{a vector of strings containing sequence classifications}
+\item{reference, }{a list created by the function [new_reference]. Optional.}
+
+\item{sequence_name, }{a string containing the name of the column in 'table'
+that contains the sequence names. Default column name is 'sequence_names'.}
+
+\item{taxonomy, }{a string containing the name of the column in 'table' that
+contains the sequence taxonomies. Default column name is 'taxonomies'.}
 }
 \value{
-double containing the number of sequences assigned
+double containing the number of sequence assigned
 }
 \description{
-Assign sequence classifications to an instance of the 'Dataset' class.
+Assign sequence classifications to a \link{dataset} object
 
 Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
  the concensus taxonomy for each bin for you.
 }
 \examples{
 
-sequence_names <- c("seq1", "seq2", "seq3", "seq4")
-taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-              "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-               "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-           "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+                        "final.taxonomy"))
 
-dataset <- new_dataset("my_dataset", 4)
-assign_sequence_taxonomy(dataset, sequence_names, taxonomies)
+data <- new_dataset("my_dataset", 2)
 
-}
-\seealso{
-[dataset$assign_sequence_taxonomy()]
+assign_sequence_taxonomy(data, sequence_classifications)
+
+# With the reference parameter you can add information about the reference
+# you used to classify your sequences. You can also add references using the
+# 'add_references' function.
+
+reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+              "classification by mothur2 v1.0 using default options", "",
+"https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
+
+assign_sequence_taxonomy(data, sequence_classifications, reference)
+
 }

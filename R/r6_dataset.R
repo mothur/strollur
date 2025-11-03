@@ -34,15 +34,14 @@ dataset <- R6Class("dataset",
     #'
     #' # to create an empty dataset, run the following:
     #'
-    #' data <- dataset$new("soil")
+    #' data <- new_dataset("soil")
     #'
     #' @return A new `dataset` object.
     initialize = function(name = "",
                           processors = parallelly::availableCores(),
                           dataset = NULL) {
       if (is.null(dataset)) {
-        self$data <- new_dataset(name, processors)
-        private$references <- data.frame()
+        self$data <- new_pointer(name, processors)
         private$metadata <- data.frame()
         private$alignment_data <- data.frame()
         private$chimera_data <- data.frame()
@@ -52,16 +51,15 @@ dataset <- R6Class("dataset",
         private$sample_tree <- NULL
       } else {
         # copy of dataset backend
-        self$data <- copy_dataset(dataset$data)
-        set_num_processors(self$data, processors)
+        self$data <- copy_pointer(dataset)
+        set_num_processors(self, processors)
         # assign new name
         if (name != "") {
-          set_dataset_name(self$data, name)
+          set_dataset_name(self, name)
         }
 
         # copy metadata
         private$metadata <- dataset$get_metadata()
-        private$references <- dataset$get_references()
         private$alignment_data <- dataset$get_alignment_report()
         private$chimera_data <- dataset$get_chimera_report()
         private$contigs_data <- dataset$get_contigs_assembly_report()
@@ -76,45 +74,43 @@ dataset <- R6Class("dataset",
     #' @description
     #' Get summary of sequence data
     print = function() {
-      if (get_dataset_name(self$data) != "") {
-        cat(get_dataset_name(self$data))
+      if (get_dataset_name(self) != "") {
+        cat(get_dataset_name(self))
         cat(":\n\n")
       }
-      self$get_sequence_summary()
-      cat("\n\n")
-      self$get_sample_summary()
-      if (self$get_num_sequences(TRUE) != 0) {
+      self$get_summary()
+      if (get_num_sequences(self, TRUE) != 0) {
         cat(
-          paste("\nNumber of unique seqs:", self$get_num_sequences(TRUE)),
+          paste("\nNumber of unique seqs:", get_num_sequences(self, TRUE)),
           "\n"
         )
       } else {
         cat("\n")
       }
       cat(
-        paste("Total number of seqs:", self$get_num_sequences()),
+        paste("Total number of seqs:", get_num_sequences(self)),
         "\n"
       )
 
-      if (self$get_num_bins("otu") != 0) {
+      if (get_num_bins(self, "otu") != 0) {
         cat(
-          paste("Total number of otus:", self$get_num_bins("otu")),
+          paste("Total number of otus:", get_num_bins(self, "otu")),
           "\n"
         )
       }
-      if (self$get_num_bins("asv") != 0) {
+      if (get_num_bins(self, "asv") != 0) {
         cat(
           paste(
-            "Total number of asvs:", self$get_num_bins("asv"),
+            "Total number of asvs:", get_num_bins(self, "asv"),
             "\n"
           )
         )
       }
-      if (self$get_num_bins("phylotype") != 0) {
+      if (get_num_bins(self, "phylotype") != 0) {
         cat(
           paste(
             "Total number of phylotype bins:",
-            self$get_num_bins("phylotype"),
+            get_num_bins(self, "phylotype"),
             "\n"
           )
         )
@@ -136,7 +132,7 @@ dataset <- R6Class("dataset",
     #'
     add_alignment_report = function(report, sequence_name_column) {
       if (!is.data.frame(report)) {
-        abort_incorrect_type("data.frame", report)
+        .abort_incorrect_type("data.frame", report)
       }
 
       if (!(sequence_name_column %in% names(report))) {
@@ -150,7 +146,7 @@ dataset <- R6Class("dataset",
       } else {
         # no sequence data yet, add the sequences
         if (self$get_num_sequences() == 0) {
-          self$add_sequences(sequence_names = report[[sequence_name_column]])
+          add_sequences(self, report, NULL, sequence_name_column)
           private$alignment_data <- report
           # save name column
           attr(
@@ -160,7 +156,7 @@ dataset <- R6Class("dataset",
         } else {
           # seqs in dataset and not in report
           missing_seqs <- setdiff(
-            self$get_sequence_names(),
+            get_sequence_names(self),
             report[[sequence_name_column]]
           )
 
@@ -170,7 +166,7 @@ dataset <- R6Class("dataset",
             private$alignment_data <- report[order(
               match(
                 report[[sequence_name_column]],
-                self$get_sequence_names()
+                get_sequence_names(self)
               )
             ), ]
             # save name column
@@ -213,7 +209,7 @@ dataset <- R6Class("dataset",
     #'
     add_chimera_report = function(report, sequence_name_column) {
       if (!is.data.frame(report)) {
-        abort_incorrect_type("data.frame", report)
+        .abort_incorrect_type("data.frame", report)
       }
 
       if (!(sequence_name_column %in% names(report))) {
@@ -227,7 +223,13 @@ dataset <- R6Class("dataset",
       } else {
         # no sequence data yet, add the sequences
         if (self$get_num_sequences() == 0) {
-          self$add_sequences(sequence_names = report[[sequence_name_column]])
+          add_sequences(
+            self,
+            data.frame(
+              sequence_names =
+                report[[sequence_name_column]]
+            )
+          )
           private$chimera_data <- report
           # save name column
           attr(
@@ -237,7 +239,7 @@ dataset <- R6Class("dataset",
         } else {
           # seqs in dataset and not in report
           missing_seqs <- setdiff(
-            self$get_sequence_names(),
+            get_sequence_names(self),
             report[[sequence_name_column]]
           )
 
@@ -247,7 +249,7 @@ dataset <- R6Class("dataset",
             private$chimera_data <- report[order(
               match(
                 report[[sequence_name_column]],
-                self$get_sequence_names()
+                get_sequence_names(self)
               )
             ), ]
             # save name column
@@ -287,7 +289,7 @@ dataset <- R6Class("dataset",
     #'
     add_contigs_assembly_report = function(report, sequence_name_column) {
       if (!is.data.frame(report)) {
-        abort_incorrect_type("data.frame", report)
+        .abort_incorrect_type("data.frame", report)
       }
 
       if (!(sequence_name_column %in% names(report))) {
@@ -301,7 +303,13 @@ dataset <- R6Class("dataset",
       } else {
         # no sequence data yet, add the sequences
         if (self$get_num_sequences() == 0) {
-          self$add_sequences(sequence_names = report[[sequence_name_column]])
+          add_sequences(
+            self,
+            data.frame(
+              sequence_names =
+                report[[sequence_name_column]]
+            )
+          )
           private$contigs_data <- report
           # save name column
           attr(
@@ -311,7 +319,7 @@ dataset <- R6Class("dataset",
         } else {
           # seqs in dataset and not in report
           missing_seqs <- setdiff(
-            self$get_sequence_names(),
+            get_sequence_names(self),
             report[[sequence_name_column]]
           )
 
@@ -321,7 +329,7 @@ dataset <- R6Class("dataset",
             private$contigs_data <- report[order(
               match(
                 report[[sequence_name_column]],
-                self$get_sequence_names()
+                get_sequence_names(self)
               )
             ), ]
             # save name column
@@ -359,115 +367,10 @@ dataset <- R6Class("dataset",
     #'
     add_metadata = function(metadata) {
       if (!is.data.frame(metadata)) {
-        abort_incorrect_type("data.frame", metadata)
+        .abort_incorrect_type("data.frame", metadata)
       }
 
       private$metadata <- metadata
-
-      invisible(self)
-    },
-
-    #' @description
-    #' Add information about the references used to analyze your dataset
-    #' @param reference a data.frame containing multiple references. The only
-    #' required column is reference_name. Optional columns can include: version,
-    #' usage, note and url. Default = NULL. Either the reference or
-    #' reference_name parameter is required.
-    #' @param reference_name a string containing the name of the reference. For
-    #' example: 'silva.bacteria.fasta' Default = NULL. Either the reference
-    #' or reference_name parameter is required.
-    #' @param version a string containing the version of the reference. For
-    #' eaxmple: '138.2' Default = NULL.
-    #' @param usage a string containing the usage of the reference in
-    #' your analysis. For example: 'alignment using mothur2' Default = NULL.
-    #' @param note a string containing the any additional notes about the
-    #' reference. For example: 'custom reference using silva version 1.38.2 with
-    #' additional sequences tailored for this analysis'. Default = NULL.
-    #' @param url a string containing a web address where the reference may be
-    #' downloaded. For example: 'https://mothur.org/wiki/silva_reference_files/'
-    #' . Default = NULL.
-    #' @examples
-    #'
-    #' # To add a single reference:
-    #' data <- dataset$new("my_dataset")
-    #' data$add_references(reference_name = "silva.v4.fasta",
-    #' version = "1.38.1", usage = "alignment", note = "custom reference
-    #'  created by trimming silva.bacteria.fasta to the V4 region",
-    #'  url = "https://mothur.org/wiki/silva_reference_files/")
-    #'
-    #' # To add multiple references:
-    #' reference <- readr::read_csv(rdataset_example("references.csv"),
-    #'                              col_names = TRUE, show_col_types = FALSE)
-    #' data$add_references(reference = reference)
-    #'
-    add_references = function(reference = NULL, reference_name = NULL,
-                              version = NULL, usage = NULL, note = NULL,
-                              url = NULL) {
-      # make sure at least one reference is given
-      if (is.null(reference) && is.null(reference_name)) {
-        parameters <- list("reference", "reference_name")
-        abort_provide_at_least_one(parameters)
-      }
-
-      # add multiple references
-      if (!is.null(reference)) {
-        if (!is.data.frame(reference)) {
-          abort_incorrect_type("data.frame", reference)
-        }
-
-        if (!("reference_name" %in% names(reference))) {
-          cli::cli_abort("[ERROR]: The reference data.frame must include
-                               a 'reference_name' column.")
-        } else {
-          rows <- nrow(private$references)
-          if (rows == 0) {
-            private$references <- reference
-          } else {
-            # find missing columns
-            missing_columns <- setdiff(
-              names(reference),
-              names(private$references)
-            )
-
-            # add missing columns to existing references
-            for (col in missing_columns) {
-              private$references[rows, col] <- NA
-            }
-
-            private$references <- rbind(private$references, reference)
-          }
-        }
-      }
-
-      # add single reference if provided
-      if (!is.null(reference_name)) {
-        rows <- nrow(private$references) + 1
-
-        # new blank row with all columns in the reference
-        private$references[rows, ] <- NA
-
-        if (is.null(version)) {
-          version <- NA
-        }
-
-        if (is.null(usage)) {
-          usage <- NA
-        }
-
-        if (is.null(note)) {
-          note <- NA
-        }
-
-        if (is.null(url)) {
-          url <- NA
-        }
-
-        private$references[rows, "reference_name"] <- reference_name
-        private$references[rows, "version"] <- version
-        private$references[rows, "usage"] <- usage
-        private$references[rows, "note"] <- note
-        private$references[rows, "url"] <- url
-      }
 
       invisible(self)
     },
@@ -481,7 +384,7 @@ dataset <- R6Class("dataset",
     #'  data <- dataset$new("my_dataset")
     #'
     #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
-    #'  data$assign_bins(df)
+    #'  assign_bins(data, df)
     #'
     #'  tree <- ape::read.tree(rdataset_example(
     #'  "final.opti_mcc.jclass.ave.tre"))
@@ -490,7 +393,7 @@ dataset <- R6Class("dataset",
     #'
     add_sample_tree = function(tree) {
       if (!inherits(tree, "phylo")) {
-        abort_incorrect_type("phylo", tree)
+        .abort_incorrect_type("phylo", tree)
       }
 
       # if no samples, add sequences in tree to dataset
@@ -553,12 +456,12 @@ dataset <- R6Class("dataset",
     #'
     add_sequence_tree = function(tree) {
       if (!inherits(tree, "phylo")) {
-        abort_incorrect_type("phylo", tree)
+        .abort_incorrect_type("phylo", tree)
       }
 
       # if no seqs yet, add sequences in tree to dataset
       if (self$get_num_sequences() == 0) {
-        self$add_sequences(sequence_names = tree$tip.label)
+        add_sequences(self, data.frame(sequence_names = tree$tip.label))
 
         # save tree
         private$sequence_tree <- tree
@@ -566,14 +469,14 @@ dataset <- R6Class("dataset",
         # make sure the tree includes all "good" sequences
         if (identical(
           sort(tree$tip.label),
-          sort(self$get_sequence_names())
+          sort(get_sequence_names(self))
         )) {
           # save tree
           private$sequence_tree <- tree
         } else {
           # seqs in dataset and not in tree
           missing_seqs <- setdiff(
-            self$get_sequence_names(),
+            get_sequence_names(self),
             tree$tip.label
           )
 
@@ -592,7 +495,7 @@ dataset <- R6Class("dataset",
             # seqs in tree and not in dataset
             extra_seqs <- setdiff(
               tree$tip.label,
-              self$get_sequence_names()
+              get_sequence_names(self)
             )
 
             # if tree contains "extra" names, prune the tree
@@ -605,734 +508,29 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
-    #' Add new sequence data
-    #'
-    #' @param data a data.frame containing names, sequences(optional) and
-    #' comments(optional).
-    #'
-    #' @param sequence_names a vector of sequence names or if using the 'data'
-    #' parameter a string containing the name of the column in 'data' that
-    #' contains the sequence names. Default column name is 'sequence_names'.
-    #' @param sequences a vector of sequence nucleotide strings or if using the
-    #' 'data' parameter a string containing the name of the column in 'data'
-    #' that contains the sequence nucleotide strings. Default column name is
-    #'  'sequences'.
-    #' @param comments a vector of sequence comments or if using the
-    #' 'data' parameter a string containing the name of the column in 'data'
-    #' that contains the sequence comments. Default column name is 'comments'.
-    #'
-    #' @param reference_name a string containing the name of the reference used
-    #' in the classification of the sequences. For example:
-    #' 'silva.bacteria.fasta' Default = NULL. (optional)
-    #' @param reference_version a string containing the version of the reference
-    #' used in the preparing of the sequences. For example: '1.38.1'.
-    #' Default = NULL. (optional)
-    #' @param reference_note a string containing the any additional notes about
-    #' the reference. For example: 'used for alignment using mothur2 v1.0'.
-    #' Default = NULL. (optional)
-    #' @param reference_url a string containing a web address where the
-    #' reference may be downloaded. Default = NULL. (optional)
-    #' @examples
-    #'
-    #'   data <- dataset$new("my_dataset")
-    #'   fasta_data <- read_fasta(rdataset_example("final.fasta"))
-    #'   data$add_sequences(fasta_data)
-    #'
-    #' # With the additional parameters to add information about the reference
-    #' # You can also add references using the 'add_references' function.
-    #'
-    #' url <- "https://mothur.org/wiki/silva_reference_files/"
-    #'
-    #' data <- dataset$new("my_dataset")
-    #' data$add_sequences(fasta_data,
-    #' reference_name = "silva.bacteria.fasta",
-    #' reference_note = "alignment by mothur2 v1.0 using default options",
-    #' reference_version = "1.38.1", reference_url = url)
-    #'
-    add_sequences = function(data = NULL,
-                             sequence_names = NULL, sequences = NULL,
-                             comments = NULL,
-                             reference_name = NULL,
-                             reference_version = NULL,
-                             reference_note = NULL,
-                             reference_url = NULL) {
-      if (is.null(data) && (is.null(sequence_names))) {
-        abort_provide_at_least_one(c("data", "sequence_names"))
-      }
-
-      if (!is.null(data)) {
-        if (!is.data.frame(data)) {
-          abort_incorrect_type("data.frame", data)
-        }
-
-        # required
-        sequence_names <- private$fill_required_param(
-          sequence_names, data,
-          "sequence_names"
-        )
-
-        # optional
-        sequences <- private$fill_optional_param(sequences, data, "sequences")
-
-        # optional
-        comments <- private$fill_optional_param(comments, data, "comments")
-      } else {
-        if (is.null(comments)) {
-          comments <- c("")
-        }
-        if (is.null(sequences)) {
-          sequences <- c("")
-        }
-      }
-
-      num_added <- add_sequences(
-        self$data, sequence_names,
-        sequences, comments
-      )
-
-      # if a reference is given, save it
-      if (!is.null(reference_name)) {
-        self$add_references(
-          reference_name = reference_name,
-          version = reference_version,
-          note = reference_note,
-          url = reference_url
-        )
-      }
-
-      added_message(num_added)
-
-      invisible(self)
-    },
-
-    #' @description
-    #' Add bin assignments
-    #'
-    #' @param data a data.frame containing bin_names, abundances(optional) and
-    #' samples(optional), sequence_names(optional). You must provide either
-    #' abundances or sequence_names.
-    #'
-    #' @param bin_names a vector strings containing bin labels or if using the
-    #' 'data' parameter a string containing the name of the column in 'data'
-    #' that contains the bin names. Default column name is 'bin_names'.
-    #' (required)
-    #' @param abundances a vector of abundances or if using the 'data' parameter
-    #'  a string containing the name of the column in 'data' that contains
-    #'  the abundances. Default column name is 'abundances'. You must provide
-    #'  either 'abundances' or 'sequence_names'.
-    #' @param samples a vector of strings containing sample assignments or if
-    #'  using the 'data' parameter a string containing the name of the column
-    #'  in 'data' that contains the samples. Default column name is 'samples'.
-    #' @param sequence_names a vector of strings containing sequence names or if
-    #' using the 'data' parameter a string containing the name of the column in
-    #' 'data' that contains the sequence names. Default column name is
-    #' 'sequence_names'. You must provide either 'abundances' or
-    #' 'sequence_names'.
-    #' @param type a string indicating the type of bin assignments.
-    #' Default = "otu".
-    #' @examples
-    #'
-    #'   # To assign sequences to bins:
-    #'
-    #'   data <- dataset$new("my_dataset")
-    #'
-    #'   otu_data <- read_mothur_list(rdataset_example(
-    #'                             "final.opti_mcc.list"))
-    #'   data$assign_bins(otu_data)
-    #'
-    #'   # To add abundance only bin assignments:
-    #'
-    #'   data <- dataset$new("my_dataset")
-    #'
-    #'   otu_data <- read_mothur_rabund(rdataset_example(
-    #'                             "final.opti_mcc.rabund"))
-    #'   data$assign_bins(otu_data)
-    #'
-    #'   # To add abundance bin assignments parsed by sample:
-    #'
-    #'   data <- dataset$new("my_dataset")
-    #'   bin_table <- readr::read_tsv(rdataset_example(
-    #'                                "mothur2_bin_assignments_shared.tsv"),
-    #'                                show_col_types = FALSE)
-    #'   data$assign_bins(bin_table)
-    #'
-    #'   # To assign sequences to bins with their abundances parsed by sample:
-    #'
-    #'   data <- dataset$new("my_dataset")
-    #'   bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-    #'                "bin2", "bin2", "bin2",
-    #'                "bin3", "bin3")
-    #'   seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-    #'                "seq3", "seq3", "seq6",
-    #'                "seq5", "seq5")
-    #'   samples <- c("sample1", "sample2", "sample5",
-    #'                "sample1", "sample3", "sample4",
-    #'                "sample2", "sample3", "sample1",
-    #'                "sample1", "sample6")
-    #'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-    #'
-    #'   data$assign_bins(NULL,
-    #'    bin_names = bin_ids, abundances, samples, seq_ids)
-    #'
-    assign_bins = function(data = NULL, bin_names = NULL, abundances = NULL,
-                           samples = NULL, sequence_names = NULL,
-                           type = "otu") {
-      if (is.null(data) && (is.null(bin_names))) {
-        abort_provide_at_least_one(c("data", "bin_names"))
-      }
-
-      if (!is.null(data)) {
-        if (!is.data.frame(data)) {
-          abort_incorrect_type("data.frame", data)
-        }
-
-        # required
-        bin_names <- private$fill_required_param(
-          bin_names, data,
-          "bin_names"
-        )
-        # optional
-        abundances <- private$fill_optional_param(
-          abundances, data,
-          "abundances"
-        )
-        # optional
-        samples <- private$fill_optional_param(samples, data, "samples")
-
-        # optional
-        sequence_names <- private$fill_optional_param(
-          sequence_names, data,
-          "sequence_names"
-        )
-
-        # neither abundances or sequence_names were provided or found
-        lbn <- length(bin_names)
-        if ((lbn != length(abundances)) && (lbn != length(sequence_names))) {
-          cli::cli_abort("[ERROR]: You must provide either
-                                abundances or sequence_names")
-        } else if (lbn != length(abundances)) {
-          abundances <- 0
-        }
-      } else {
-        if (is.null(abundances) && is.null(sequence_names)) {
-          cli::cli_abort("[ERROR]: You must provide either
-                                abundances or sequence_names")
-        }
-
-        if (is.null(samples)) {
-          samples <- ""
-        }
-        if (is.null(abundances)) {
-          abundances <- 0
-        }
-        if (is.null(sequence_names)) {
-          sequence_names <- ""
-        }
-      }
-
-      num_assigned <- assign_bins(
-        self$data,
-        bin_names, abundances,
-        samples, sequence_names, type
-      )
-
-      assigned_message(num_assigned, paste0(" ", type, " bins."))
-
-      invisible(self)
-    },
-
-    #' @description
-    #' Assign representative sequences to bins.
-    #'
-    #' @param data a data.frame containing bin_names and representative
-    #' sequences for your data.
-    #'
-    #' @param bin_names a vector strings containing bin names or if using the
-    #' 'data' parameter a string containing the name of the column in 'data'
-    #' that contains the bin names. Default column name is 'bin_names'.
-    #' @param sequence_names a vector of strings containing bin representative
-    #' sequences or if using the 'data' parameter a string containing the name
-    #' of the column in 'data' that contains the bin names. Default column name
-    #' is 'sequence_names'.
-    #' @param type a string indicating the type of bin assignments.
-    #' Default = "otu".
-    #'
-    #' @param reference_name a string containing the name of the reference used
-    #' in the designation of the representative sequences. For example:
-    #' 'qiime2' Default = NULL.
-    #' @param reference_version a string containing the version of the reference
-    #' used in the designation of the representative sequences.
-    #' For example: '2.4'. Default = NULL.
-    #' @param reference_note a string containing the any additional notes about
-    #' the reference. For example: 'tool'.
-    #' Default = NULL.
-    #' @param reference_url a string containing a web address where the
-    #' reference may be downloaded. For example: 'https://qiime2.org'.
-    #'  Default = NULL.
-    #' @examples
-    #'   miseq <- miseq_sop_example()
-    #'
-    #'   # For examples sake, select first 531 sequences to be the
-    #'   # representatives
-    #'   num_bins <- miseq$get_num_bins("otu")
-    #'   rep_names <- miseq$get_sequence_names()[1:num_bins]
-    #'   bin_names <- miseq$get_bin_names()
-    #'
-    #'   miseq$assign_bin_representative_sequences(bin_names = bin_names,
-    #'                                             sequence_names = rep_names,
-    #'                                             type = "otu")
-    #'
-    assign_bin_representative_sequences = function(data = NULL,
-                                                   bin_names = NULL,
-                                                   sequence_names = NULL,
-                                                   type = "otu",
-                                                   reference_name = NULL,
-                                                   reference_version = NULL,
-                                                   reference_note = NULL,
-                                                   reference_url = NULL) {
-      if (is.null(data) && (is.null(bin_names))) {
-        abort_provide_at_least_one(c("data", "bin_names"))
-      }
-
-      if (!is.null(data)) {
-        if (!is.data.frame(data)) {
-          abort_incorrect_type("data.frame", data)
-        }
-
-        # required
-        bin_names <- private$fill_required_param(
-          bin_names, data,
-          "bin_names"
-        )
-
-        # required
-        sequence_names <- private$fill_required_param(
-          sequence_names, data,
-          "sequence_names"
-        )
-      } else {
-        if (is.null(bin_names) && is.null(sequence_names)) {
-          cli::cli_abort("[ERROR]: You must provide data or
-                                bin_names and sequence_names")
-        }
-      }
-
-      num_assigned <- assign_bin_representative_sequences(
-        self$data,
-        bin_names, sequence_names, type
-      )
-
-      # if a reference is given, save it
-      if (!is.null(reference_name)) {
-        self$add_references(
-          reference_name = reference_name,
-          version = reference_version,
-          usage = "bin_representative_sequences",
-          note = reference_note,
-          url = reference_url
-        )
-      }
-
-      assigned_message(
-        num_assigned,
-        paste0(" ", type, " bin representative sequences.")
-      )
-
-      invisible(self)
-    },
-
-    #' @description
-    #' Assign bin classification.
-    #'
-    #' Note, if you assign sequence taxonomies and assign bins, 'dataset'
-    #' will find the consensus taxonomy for each bin for you.
-    #'
-    #' @param data a data.frame containing bin_names and taxonomies for your
-    #' data.
-    #'
-    #' @param bin_names a vector strings containing bin names or if using the
-    #' 'data' parameter a string containing the name of the column in 'data'
-    #' that contains the bin names. Default column name is 'bin_names'.
-    #' @param taxonomies a vector of strings containing bin classifications or
-    #' if using the 'data' parameter a string containing the name of the column
-    #' in 'data' that contains the bin names. Default column name is
-    #'  'taxonomies'.
-    #' @param type a string indicating the type of clusters. Default = "otu".
-    #'
-    #' @param reference_name a string containing the name of the reference used
-    #' in the classification of the bins. For example:
-    #' 'trainset9_032012.pds.zip' Default = NULL.
-    #' @param reference_version a string containing the version of the reference
-    #' used in the classification of the bins For example: '9_032012'.
-    #' Default = NULL.
-    #' @param reference_note a string containing the any additional notes about
-    #' the reference. For example: 'custom reference based on RDP'.
-    #' Default = NULL.
-    #' @param reference_url a string containing a web address where the
-    #' reference may be downloaded. Default = NULL.
-    #' @examples
-    #'
-    #' otu_data <- read_mothur_cons_taxonomy(rdataset_example(
-    #'                         "final.cons.taxonomy"))
-    #'
-    #' data <- dataset$new("my_dataset")
-    #' data$assign_bins(otu_data)
-    #' data$assign_bin_taxonomy(otu_data)
-    #'
-    #' # With the additional parameters to add information about the reference
-    #' # You can also add references using the 'add_references' function.
-    #'
-    #' url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
-    #'          "9_032012.pds.zip", collapse = "")
-    #'
-    #' data$assign_bin_taxonomy(otu_data,
-    #' reference_name = "trainset9_032012.pds.zip",
-    #' reference_note = "classification by mothur2 v1.0 using default options",
-    #' reference_version = "9_032012", reference_url = url)
-    #'
-    assign_bin_taxonomy = function(data = NULL, bin_names = NULL,
-                                   taxonomies = NULL,
-                                   type = "otu",
-                                   reference_name = NULL,
-                                   reference_version = NULL,
-                                   reference_note = NULL,
-                                   reference_url = NULL) {
-      if (is.null(data) && (is.null(bin_names))) {
-        abort_provide_at_least_one(c("data", "bin_names"))
-      }
-
-      if (!is.null(data)) {
-        if (!is.data.frame(data)) {
-          abort_incorrect_type("data.frame", data)
-        }
-
-        # required
-        bin_names <- private$fill_required_param(
-          bin_names, data,
-          "bin_names"
-        )
-
-        # required
-        taxonomies <- private$fill_required_param(
-          taxonomies, data,
-          "taxonomies"
-        )
-      }
-
-      num_assigned <- assign_bin_taxonomy(
-        self$data, bin_names,
-        taxonomies, type
-      )
-
-      # if a reference is given, save it
-      if (!is.null(reference_name)) {
-        self$add_references(
-          reference_name = reference_name,
-          version = reference_version,
-          usage = "bin_classification",
-          note = reference_note,
-          url = reference_url
-        )
-      }
-
-      assigned_message(
-        num_assigned,
-        paste0(" ", type, " bin taxonomies.")
-      )
-
-      invisible(self)
-    },
-
-    #' @description
-    #' Add sequence abundance data with optional sample / treatment assignments
-    #'
-    #' @param data a data.frame containing sequence_names, abundances,
-    #' samples(optional), treatments(optional). Either 'data' or
-    #'  'sequence_names' and 'abundances' is required.
-    #'
-    #' @param sequence_names a vector of sequence names or if using the 'data'
-    #' parameter a string containing the name of the column in 'data' that
-    #' contains the sequence names. Default column name is 'names'. Either
-    #' 'data' or 'sequence_names' and 'abundances' is required.
-    #' @param abundances a vector of sequence abundances or if using the 'data'
-    #' parameter a string containing the name of the column in 'data' that
-    #' contains the sequence abundances. Default column name is 'abundances'.
-    #' Either 'data' or 'sequence_names' and 'abundances' is required.
-    #' @param samples a vector of sample names or if using the 'data'
-    #' parameter a string containing the name of the column in 'data' that
-    #' contains the sample names. Default column name is 'samples'.
-    #' (optional)
-    #' @param treatments a vector of treatment assignments or if using the
-    #' 'data' parameter a string containing the name of the column in 'data'
-    #' that contains the treatments names. Default column name is 'treatments'.
-    #' (optional)
-    #'
-    #' @examples
-    #'
-    #' data <- dataset$new("miseq_sop")
-    #' sequence_abundance <- readr::read_tsv(rdataset_example(
-    #'                                       "mothur2_count_table.tsv"),
-    #'                                       show_col_types = FALSE)
-    #' data$assign_sequence_abundance(sequence_abundance)
-    #'
-    assign_sequence_abundance = function(data = NULL, sequence_names = NULL,
-                                         abundances = NULL, samples = NULL,
-                                         treatments = NULL) {
-      if (is.null(data) && (is.null(sequence_names))) {
-        abort_provide_at_least_one(c("data", "sequence_names"))
-      }
-
-      if (!is.null(data)) {
-        if (!is.data.frame(data)) {
-          abort_incorrect_type("data.frame", data)
-        }
-
-        # required
-        sequence_names <- private$fill_required_param(
-          sequence_names, data,
-          "names"
-        )
-        # required
-        abundances <- private$fill_required_param(
-          abundances, data,
-          "abundances"
-        )
-        # optional
-        samples <- private$fill_optional_param(samples, data, "samples")
-
-        # optional
-        treatments <- private$fill_optional_param(
-          treatments, data,
-          "treatments"
-        )
-      } else {
-        if (is.null(sequence_names) || (is.null(abundances))) {
-          cli::cli_abort("[ERROR]: Unless using the data parameter,
-                         'sequence_names' and 'abundances' are required.")
-        }
-
-        if (length(sequence_names) != length(abundances)) {
-          cli::cli_abort("[ERROR]: sequence_names and abundances must be the
-                         same length.")
-        }
-
-        if (is.null(samples)) {
-          samples <- ""
-        }
-
-        if (is.null(treatments)) {
-          treatments <- ""
-        }
-      }
-
-      abundances_assigned <- assign_sequence_abundance(
-        self$data, sequence_names, abundances,
-        samples, treatments
-      )
-
-      assigned_message(abundances_assigned, " sequence abundances.")
-
-      invisible(self)
-    },
-
-    #' @description
-    #' Assign sequence classification
-    #'
-    #' @param data a data.frame containing sequence_names, abundances,
-    #' samples(optional), treatments(optional). Either 'data' or
-    #'  'sequence_names' and 'abundances' is required.
-    #'
-    #' @param sequence_names a vector of sequence names or if using the 'data'
-    #' parameter a string containing the name of the column in 'data' that
-    #' contains the sequence names. Default column name is 'sequence_names'.
-    #' @param taxonomies a vector of sequence classifications or if using the
-    #' 'data' parameter a string containing the name of the column in 'data'
-    #'  that contains the sequence classifications. Default column name is
-    #'  taxonomies'.
-    #'
-    #' @param reference_name a string containing the name of the reference used
-    #' in the classification of the sequences. For example:
-    #' 'trainset9_032012.pds.zip' Default = NULL.
-    #' @param reference_version a string containing the version of the reference
-    #' used in the classification of the sequences. For example: '9_032012'.
-    #' Default = NULL.
-    #' @param reference_note a string containing the any additional notes about
-    #' the reference. For example: 'custom reference based on RDP'.
-    #' Default = NULL.
-    #' @param reference_url a string containing a web address where the
-    #' reference may be downloaded. Default = NULL.
-    #' @examples
-    #'
-    #' sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-    #'                         "final.taxonomy"))
-    #'
-    #' data <- dataset$new("my_dataset")
-    #' data$assign_sequence_taxonomy(sequence_classifications)
-    #'
-    #' # With the additional parameters to add information about the reference
-    #' # You can also add references using the 'add_references' function.
-    #'
-    #' url <- paste("https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
-    #'          "9_032012.pds.zip", collapse = "")
-    #'
-    #' data$assign_sequence_taxonomy(sequence_classifications,
-    #' reference_name = "trainset9_032012.pds.zip",
-    #' reference_note = "classification by mothur2 v1.0 using default options",
-    #' reference_version = "9_032012", reference_url = url)
-    #'
-    assign_sequence_taxonomy = function(data = NULL,
-                                        sequence_names = NULL,
-                                        taxonomies = NULL,
-                                        reference_name = NULL,
-                                        reference_version = NULL,
-                                        reference_note = NULL,
-                                        reference_url = NULL) {
-      if (is.null(data) && (is.null(sequence_names))) {
-        abort_provide_at_least_one(c("data", "sequence_names"))
-      }
-
-      if (!is.null(data)) {
-        if (!is.data.frame(data)) {
-          abort_incorrect_type("data.frame", data)
-        }
-
-        # required
-        sequence_names <- private$fill_required_param(
-          sequence_names, data,
-          "sequence_names"
-        )
-
-        # required
-        taxonomies <- private$fill_required_param(
-          taxonomies, data,
-          "taxonomies"
-        )
-      } else {
-        if (is.null(sequence_names) || (is.null(taxonomies))) {
-          cli::cli_abort("[ERROR]: Unless using the data parameter,
-                         'sequence_names' and 'taxonomies' are required.")
-        }
-      }
-
-      taxonomies_assigned <- assign_sequence_taxonomy(
-        self$data,
-        sequence_names,
-        taxonomies
-      )
-
-      # if a reference is given, save it
-      if (!is.null(reference_name)) {
-        self$add_references(
-          reference_name = reference_name,
-          version = reference_version,
-          usage = "sequence_classification",
-          note = reference_note,
-          url = reference_url
-        )
-      }
-
-      assigned_message(
-        taxonomies_assigned,
-        " sequence taxonomies."
-      )
-      invisible(self)
-    },
-
-    #' @description
-    #' Assign samples to treatments
-    #'
-    #' @param data a data.frame containing samples and treatments. Either 'data'
-    #'  or 'samples' and 'treatments' is required.
-    #'
-    #' @param samples a vector of sample names or if using the 'data'
-    #' parameter a string containing the name of the column in 'data' that
-    #' contains the sample names. Default column name is 'samples'.
-    #' @param treatments a vector of treatment names or if using the 'data'
-    #' parameter a string containing the name of the column in 'data' that
-    #' contains the treatment names. Default column name is 'treatments'.
-    #' @examples
-    #'
-    #' names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-    #'              "seq2", "seq3", "seq3", "seq4")
-    #' samples <- c("sample2", "sample3", "sample4",
-    #'             "sample2", "sample3", "sample4",
-    #'            "sample2", "sample3",
-    #'            "sample4")
-    #' abundances <- c(250, 400, 500,
-    #'                25, 40, 50,
-    #'                25, 25,
-    #'                4)
-    #' treatments <- c("early", "early", "late")
-    #'
-    #' data <- dataset$new("my_dataset")
-    #' data$assign_sequence_abundance(data = NULL,
-    #'                                   names, abundances, samples)
-    #' data$assign_treatments(data = NULL, unique(samples), treatments)
-    #'
-    assign_treatments = function(data = NULL,
-                                 samples = NULL, treatments = NULL) {
-      if (is.null(data) && (is.null(samples))) {
-        abort_provide_at_least_one(c("data", "samples"))
-      }
-
-      if (!is.null(data)) {
-        if (!is.data.frame(data)) {
-          abort_incorrect_type("data.frame", data)
-        }
-
-        # required
-        samples <- private$fill_required_param(
-          samples, data, "samples"
-        )
-
-        # required
-        treatments <- private$fill_required_param(
-          treatments, data, "treatments"
-        )
-      } else {
-        if (is.null(samples) || (is.null(treatments))) {
-          cli::cli_abort("[ERROR]: Unless using the data parameter,
-                         'samples' and 'treatments' are required.")
-        }
-      }
-
-      treatments_assigned <- assign_treatments(self$data, samples, treatments)
-      assigned_message(
-        treatments_assigned,
-        " samples to treatments."
-      )
-      invisible(self)
-    },
-
-    #' @description
-    #' Remove 'all', 'metadata', 'references', 'alignment_report' or
-    #' 'contigs_assembly_report' data from your dataset.
+    #' Remove 'metadata', 'references', 'alignment_report',
+    #' 'contigs_assembly_report', 'sample_tree', or 'sequence_tree' data from
+    #' your dataset.
     #' @param tags a vector of strings containing the items you wish to clear.
-    #' Options are 'sequence_data', 'bin_data', 'metadata',
-    #' 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
-    #' 'contigs_assembly_report' and '"'chimera_report'. By default, everything
-    #'  is cleared.
+    #' Options are 'metadata', 'references', 'sequence_tree', 'sample_tree',
+    #' 'alignment_report', 'contigs_assembly_report' and '"'chimera_report'.
+    #' By default, everything is cleared.
     clear = function(tags = NULL) {
       if (is.null(tags)) {
         tags <- ""
       }
 
       if (tags == "") {
-        clear(self$data, tags)
         private$metadata <- data.frame()
-        private$references <- data.frame()
         private$alignment_data <- data.frame()
         private$chimera_data <- data.frame()
         private$contigs_data <- data.frame()
         private$sequence_tree <- NULL
         private$sample_tree <- NULL
-      } else if (("sequence_data" %in% tags) || ("bin_data" %in% tags)) {
-        clear(self$data, tags)
       }
 
       valid_tags <- c(
-        "sequence_data", "bin_data", "metadata", "references",
-        "sequence_tree", "sample_tree", "alignment_report",
+        "metadata", "sequence_tree", "sample_tree", "alignment_report",
         "contigs_assembly_report", "chimera_report"
       )
       for (tag in tags) {
@@ -1344,9 +542,6 @@ dataset <- R6Class("dataset",
       if ("metadata" %in% tags) {
         private$metadata <- data.frame()
       }
-      if ("references" %in% tags) {
-        private$references <- data.frame()
-      }
       if ("alignment_report" %in% tags) {
         private$alignment_data <- data.frame()
       }
@@ -1356,79 +551,14 @@ dataset <- R6Class("dataset",
       if ("contigs_assembly_report" %in% tags) {
         private$contigs_data <- data.frame()
       }
-
       if ("sequence_tree" %in% tags) {
         private$sequence_tree <- NULL
       }
-
       if ("sample_tree" %in% tags) {
         private$sample_tree <- NULL
       }
 
-      self$raw <- NULL
-
       invisible(self)
-    },
-
-    #' @description
-    #' export will create a list containing the data in the dataset.
-    #' @param tags a vector of strings containing the items you wish to export.
-    #' Options are 'sequence_data', 'bin_data', 'metadata', 'references',
-    #'  'sequence_tree', 'sample_tree', 'alignment_report',
-    #'   'contigs_assembly_report' and
-    #' 'chimera_report'. By default, everything is exported.
-    #' @examples
-    #'     miseq <- miseq_sop_example()
-    #'     table <- miseq$export()
-    #'
-    #' @return List
-    export = function(tags = NULL) {
-      if (is.null(tags)) {
-        tags <- ""
-      }
-      results <- export_dataset(self$data, tags)
-
-      if (nrow(private$metadata) != 0) {
-        if ((tags == "") || ("metadata" %in% tags)) {
-          results$metadata <- private$metadata
-        }
-      }
-      if (nrow(private$references) != 0) {
-        if ((tags == "") || ("references" %in% tags)) {
-          results$references <- private$references
-        }
-      }
-      if (nrow(private$alignment_data) != 0) {
-        if ((tags == "") || ("alignment_report" %in% tags)) {
-          results$alignment_report <- private$alignment_data
-        }
-      }
-      if (nrow(private$chimera_data) != 0) {
-        if ((tags == "") || ("chimera_report" %in% tags)) {
-          results$chimera_report <- private$chimera_data
-        }
-      }
-      if (nrow(private$contigs_data) != 0) {
-        if ((tags == "") || ("contigs_assembly_report" %in% tags)) {
-          results$contigs_assembly_report <- private$contigs_data
-        }
-      }
-      if (!is.null(private$sequence_tree)) {
-        if ((tags == "") || ("sequence_tree" %in% tags)) {
-          results$sequence_tree <- private$sequence_tree
-        }
-      }
-      if (!is.null(private$sample_tree)) {
-        if ((tags == "") || ("sample_tree" %in% tags)) {
-          results$sample_tree <- private$sample_tree
-        }
-      }
-
-      attr(results, "rdataset_version") <- "1.0.0"
-      attr(results, "dataset_name") <- get_dataset_name(self$data)
-      attr(results, "dataset_version") <- private$version
-
-      results
     },
 
     #' @description
@@ -1450,12 +580,12 @@ dataset <- R6Class("dataset",
         # select alignment data for the "good" sequences
         df <- private$alignment_data[
           private$alignment_data[[name_col]] %in%
-            self$get_sequence_names(),
+            get_sequence_names(self),
         ]
         # match order to sequences
         return(as.data.frame(df[order(match(
           df[[name_col]],
-          self$get_sequence_names()
+          get_sequence_names(self)
         )), ]))
       }
       data.frame()
@@ -1483,12 +613,12 @@ dataset <- R6Class("dataset",
         # select chimera data for the "good" sequences
         df <- private$chimera_data[
           private$chimera_data[[name_col]] %in%
-            self$get_sequence_names(),
+            get_sequence_names(self),
         ]
         # match order to sequences
         return(as.data.frame(df[order(match(
           df[[name_col]],
-          self$get_sequence_names()
+          get_sequence_names(self)
         )), ]))
       }
       data.frame()
@@ -1505,13 +635,13 @@ dataset <- R6Class("dataset",
     #'                                "mothur2_bin_assignments_shared.tsv"),
     #'                                show_col_types = FALSE)
     #'
-    #'   data$assign_bins(bin_table)
+    #'   assign_bins(data, bin_table)
     #'
     #'   shared <- data$get_bin_assignments()
     #'
     #' @return data.frame
     get_bin_assignments = function(type = "otu") {
-      get_bin_assignments(self$data, type)
+      get_bin_assignments(self, type)
     },
 
     #' @description
@@ -1524,52 +654,7 @@ dataset <- R6Class("dataset",
     #'
     #' @return vector of strings containing the bin names
     get_bin_names = function(type = "otu") {
-      get_bin_names(self$data, type)
-    },
-
-    #' @description
-    #' Get the representative bin sequences
-    #' @param type a string indicating the type of clusters. Options
-    #' include: "otu", "asv", or "phylotype". Default = "otu".
-    #' @examples
-    #'   miseq <- miseq_sop_example()
-    #'
-    #'   # For examples sake, select first 531 sequences to be the
-    #'   # representatives
-    #'   num_bins <- miseq$get_num_bins("otu")
-    #'   rep_names <- miseq$get_sequence_names()[1:num_bins]
-    #'   bin_names <- miseq$get_bin_names()
-    #'
-    #'   miseq$assign_bin_representative_sequences(bin_names = bin_names,
-    #'                                             sequence_names = rep_names,
-    #'                                             type = "otu")
-    #'
-    #'   miseq$get_bin_representative_sequences(type = "otu")
-    #'
-    #' @return data.frame
-    get_bin_representative_sequences = function(type = "otu") {
-      get_bin_representative_sequences(self$data, type)
-    },
-
-    #' @description
-    #' Get report containing the bin taxonomy table -
-    #' ids, taxonomy by levels
-    #' @param type a string indicating the type of bin clusters.
-    #' Default = "otu".
-    #' @examples
-    #'
-    #' otu_data <- read_mothur_cons_taxonomy(rdataset_example(
-    #'                         "final.cons.taxonomy"))
-    #'
-    #' data <- dataset$new("my_dataset")
-    #' data$assign_bins(otu_data)
-    #' data$assign_bin_taxonomy(otu_data)
-    #'
-    #' data$get_bin_taxonomy_report()
-    #'
-    #' @return data.frame
-    get_bin_taxonomy_report = function(type = "otu") {
-      get_bin_taxonomy_report(self$data, type)
+      get_bin_names(self, type)
     },
 
     #' @description
@@ -1581,7 +666,7 @@ dataset <- R6Class("dataset",
     #'
     #' @return vector of strings
     get_bin_types = function() {
-      get_bin_types(self$data)
+      get_bin_types(self)
     },
 
     #' @description
@@ -1603,50 +688,22 @@ dataset <- R6Class("dataset",
         # select alignment data for the "good" sequences
         df <- private$contigs_data[
           private$contigs_data[[name_col]] %in%
-            self$get_sequence_names(),
+            get_sequence_names(self),
         ]
         # match order to sequences
         return(as.data.frame(df[order(match(
           df[[name_col]],
-          self$get_sequence_names()
+          get_sequence_names(self)
         )), ]))
       }
       data.frame()
     },
 
     #' @description
-    #' Get count table returns data.frame containing:
-    #' ids, abundances, sample(optional), treatment(optional)
-    #' This table represents mothur's count and design files.
-    #' @return data.frame
-    get_count_table = function() {
-      get_sequence_abundance_table(self$data)
-    },
-
-    #' @description
     #' Get dataset name
     #' @return String
     get_dataset_name = function() {
-      get_dataset_name(self$data)
-    },
-
-    #' @description
-    #' Get data frame containing sequence bin assignments
-    #' @param type a string indicating the type of clusters. Options
-    #' include: "otu", "asv", or "phylotype". Default = "otu".
-    #' @examples
-    #'
-    #'   otu_data <- read_mothur_list(rdataset_example(
-    #'                             "final.opti_mcc.list"))
-    #'
-    #'   data <- dataset$new("my_dataset")
-    #'   data$assign_bins(otu_data)
-    #'
-    #'   data$get_list()
-    #'
-    #' @return data.frame
-    get_list = function(type = "otu") {
-      get_list(self$data, type)
+      get_dataset_name(self)
     },
 
     #' @description
@@ -1672,29 +729,12 @@ dataset <- R6Class("dataset",
     #'                             "final.opti_mcc.list"))
     #'
     #'   data <- dataset$new("my_dataset")
-    #'   data$assign_bins(otu_data)
+    #'   assign_bins(data, otu_data)
     #'   data$get_num_bins()
     #'
     #' @return An integer
     get_num_bins = function(type = "otu") {
-      get_num_bins(self$data, type)
-    },
-
-    #' @description
-    #' Get number of samples in the dataset
-    #' @examples
-    #'
-    #'   data <- dataset$new("my_dataset")
-    #'   bin_table <- readr::read_tsv(rdataset_example(
-    #'                                "mothur2_bin_assignments_shared.tsv"),
-    #'                                show_col_types = FALSE)
-    #'   data$assign_bins(bin_table)
-    #'
-    #'   data$get_num_samples()
-    #'
-    #' @return An integer
-    get_num_samples = function() {
-      get_num_samples(self$data)
+      get_num_bins(self, type)
     },
 
     #' @description
@@ -1709,118 +749,28 @@ dataset <- R6Class("dataset",
         sample <- ""
       }
 
-      get_num_sequences(self$data, distinct, sample)
+      get_num_sequences(self, distinct, sample)
     },
 
     #' @description
     #' Get the number of treatments in the dataset
     #' @return An integer
     get_num_treatments = function() {
-      get_num_treatments(self$data)
+      get_num_treatments(self)
     },
 
     #' @description
-    #' Get data.frame containing the oligo data
-    #' tag, oligo, diffs, oligo(optional), diffs(optional), sample(optional)
-    #' @return data.frame
-    get_oligos = function() {
-      # TODO
-    },
-
-    #' @description
-    #' Get data frame containing sequence bin assignments
-    #' @param type a string indicating the type of clusters. Options
-    #' include: "otu", "asv", or "phylotype". Default = "otu".
-    #' @examples
-    #'
-    #'   data <- dataset$new("my_dataset")
-    #'
-    #'   otu_data <- read_mothur_rabund(rdataset_example(
-    #'                             "final.opti_mcc.rabund"))
-    #'   data$assign_bins(otu_data)
-    #'   rabund <- data$get_rabund()
-    #'
-    #' @return data.frame
-    get_rabund = function(type = "otu") {
-      get_rabund(self$data, type)
-    },
-
-    #' @description
-    #' Get data.frame containing information about the references used in the
-    #' analysis of the dataset
-    #' @examples
-    #'   data <- dataset$new("my_dataset")
-    #'   reference <- readr::read_csv(rdataset_example("references.csv"))
-    #'   data$add_references(reference = reference)
-    #'   data$get_references()
-    #'
-    #' @return data.frame()
-    get_references = function() {
-      private$references
+    #' Get the number of samples in the dataset
+    #' @return A character vector
+    get_num_samples = function() {
+      get_num_samples(self)
     },
 
     #' @description
     #' Get names of samples in the dataset
     #' @return A character vector
     get_samples = function() {
-      get_samples(self$data)
-    },
-
-    #' @description
-    #' Get a summary of the samples and treatments in the dataset
-    #' @param silent Default = FALSE, meaning print sample summary
-    #' @return list
-    get_sample_summary = function(silent = FALSE) {
-      if (get_num_samples(self$data) != 0) {
-        sample_totals <- get_sample_totals(self$data)
-        sample_names <- self$get_samples()
-
-        if (!silent) {
-          cat("Sample   Total:\n")
-          for (i in seq_along(sample_names)) {
-            cat(paste(sample_names[i], sample_totals[i], sep = "\t"), "\n")
-          }
-
-          if (self$get_num_treatments() != 0) {
-            treatment_names <- self$get_treatments()
-            treatment_totals <- get_treatment_totals(self$data)
-            cat("\n")
-            cat("Treatment   Total:\n")
-            for (i in seq_along(treatment_names)) {
-              cat(
-                paste(treatment_names[i], treatment_totals[i], sep = "\t"),
-                "\n"
-              )
-            }
-          }
-        }
-
-        if (self$get_num_treatments() != 0) {
-          treatment_names <- self$get_treatments()
-          treatment_totals <- get_treatment_totals(self$data)
-          return(list(
-            data.frame(sample = sample_names, total = sample_totals),
-            data.frame(treatment = treatment_names, total = treatment_totals)
-          ))
-        } else {
-          return(list(data.frame(sample = sample_names, total = sample_totals)))
-        }
-      } else {
-        cli::cli_alert("Your dataset does not include sample data, ignoring.")
-      }
-      list()
-    },
-
-    #' @description
-    #' Get treatment assignments for samples in dataset
-    #' @return data.frame
-    get_sample_treatment_assignments = function() {
-      if (get_num_samples(self$data) != 0) {
-        return(get_sample_treatment_assignments(self$data))
-      } else {
-        cli::cli_alert("Your dataset does not include sample data, ignoring.")
-      }
-      data.frame()
+      get_samples(self)
     },
 
     #' @description
@@ -1833,7 +783,7 @@ dataset <- R6Class("dataset",
     #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
     #'
     #'  data <- dataset$new("my_dataset")
-    #'  data$assign_bins(df)
+    #'  assign_bins(data, df)
     #'  data$add_sample_tree(tree)
     #'  data$get_sample_tree()
     #'
@@ -1863,45 +813,22 @@ dataset <- R6Class("dataset",
     get_scrap_report = function() {
       results <- list()
       list_names <- c("sequence_scrap_report")
-      scrap_sequence_report <- get_scrap_report(self$data, "sequence")
+      scrap_sequence_report <- get_scrap_report(self, "sequence")
       results[[1]] <- scrap_sequence_report
-      if (get_num_bins(self$data, "otu") != 0) {
-        results[[2]] <- get_scrap_report(self$data, "otu")
+      if (get_num_bins(self, "otu") != 0) {
+        results[[2]] <- get_scrap_report(self, "otu")
         list_names <- c(list_names, "otu_scrap_report")
       }
-      if (get_num_bins(self$data, "asv") != 0) {
-        results[[3]] <- get_scrap_report(self$data, "asv")
+      if (get_num_bins(self, "asv") != 0) {
+        results[[3]] <- get_scrap_report(self, "asv")
         list_names <- c(list_names, "asv_scrap_report")
       }
-      if (get_num_bins(self$data, "phylotype") != 0) {
-        results[[4]] <- get_scrap_report(self$data, "phylotype")
+      if (get_num_bins(self, "phylotype") != 0) {
+        results[[4]] <- get_scrap_report(self, "phylotype")
         list_names <- c(list_names, "phylotype_scrap_report")
       }
       names(results) <- list_names
       results
-    },
-
-    #' @description
-    #' Get the names of the sequences in the dataset
-    #' @param sample a string containing the name of the sample you
-    #' would like sequence names for. Default = NULL, meaning all samples in
-    #' the dataset.
-    #' @examples
-    #'
-    #' data <- dataset$new("miseq_sop")
-    #' sequence_abundance <- readr::read_tsv(rdataset_example(
-    #'                                       "mothur2_count_table.tsv"),
-    #'                                       show_col_types = FALSE)
-    #' data$assign_sequence_abundance(sequence_abundance)
-    #' data$get_sequence_names()
-    #'
-    #' @return vector of sequence names
-    get_sequence_names = function(sample = NULL) {
-      if (is.null(sample)) {
-        sample <- ""
-      }
-
-      get_sequence_names(self$data, sample)
     },
 
     #' @description
@@ -1910,15 +837,15 @@ dataset <- R6Class("dataset",
     #' length of longest homopolymer, and the number of N's.
     #' @return data.frame
     get_sequence_report = function() {
-      get_sequence_report(self$data)
+      get_sequence_report(self)
     },
 
     #' @description
     #' Get summary of the sequence reports
     #' @param silent Default = FALSE, meaning print summaries
     #' @return list of data.frames
-    get_sequence_summary = function(silent = FALSE) {
-      results <- get_sequence_summary(self$data)
+    get_summary = function(silent = FALSE) {
+      results <- get_sequence_summary(self)
 
       if (nrow(private$contigs_data) != 0) {
         results[["contigs_summary"]] <- private$summarize(
@@ -1962,7 +889,7 @@ dataset <- R6Class("dataset",
       }
 
       # if you have summary results to print
-      if (!all(self$get_sequences() == "") && (!silent)) {
+      if (!all(get_sequences(self) == "") && (!silent)) {
         # if you have summary results to print
         if (!silent) {
           print(results[[1]])
@@ -1985,24 +912,50 @@ dataset <- R6Class("dataset",
         }
       }
 
-      return(results)
-    },
+      if (get_num_samples(self) != 0) {
+        sample_totals <- get_sample_totals(self)
+        sample_names <- get_samples(self)
 
-    #' @description
-    #' Get report containing the sequence taxonomy table -
-    #' ids, taxonomy by levels
-    #' @examples
-    #'
-    #' sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-    #'                         "final.taxonomy"))
-    #'
-    #' data <- dataset$new("my_dataset")
-    #' data$assign_sequence_taxonomy(sequence_classifications)
-    #' data$get_sequence_taxonomy_report()
-    #'
-    #' @return data.frame
-    get_sequence_taxonomy_report = function() {
-      get_sequence_taxonomy_report(self$data)
+        if (!silent) {
+          cat("\nSample   Total:\n")
+          for (i in seq_along(sample_names)) {
+            cat(paste(sample_names[i], sample_totals[i], sep = "\t"), "\n")
+          }
+
+          if (self$get_num_treatments() != 0) {
+            treatment_names <- self$get_treatments()
+            treatment_totals <- get_treatment_totals(self)
+            cat("\n")
+            cat("Treatment   Total:\n")
+            for (i in seq_along(treatment_names)) {
+              cat(
+                paste(treatment_names[i], treatment_totals[i], sep = "\t"),
+                "\n"
+              )
+            }
+          }
+        }
+
+        results[["sample_summary"]] <- data.frame(
+          sample = sample_names,
+          total = sample_totals
+        )
+        if (self$get_num_treatments() != 0) {
+          treatment_names <- self$get_treatments()
+          treatment_totals <- get_treatment_totals(self)
+
+          results[["treatment_summary"]] <- data.frame(
+            treatment = treatment_names,
+            total = treatment_totals
+          )
+        }
+      } else {
+        if (!silent) {
+          cli::cli_alert("Your dataset does not include sample data, ignoring.")
+        }
+      }
+
+      return(results)
     },
 
     #' @description
@@ -2020,7 +973,7 @@ dataset <- R6Class("dataset",
         # seqs in tree and not in dataset
         extra_seqs <- setdiff(
           private$sequence_tree$tip.label,
-          self$get_sequence_names()
+          get_sequence_names(self)
         )
 
         if (length(extra_seqs) != 0) {
@@ -2034,21 +987,10 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
-    #' Get vector containing sequence nucleotide strings
-    #' @param sample String, name of sample
-    get_sequences = function(sample = NULL) {
-      if (is.null(sample)) {
-        sample <- ""
-      }
-
-      get_sequences(self$data, sample)
-    },
-
-    #' @description
     #' Get names of treatments in the dataset
     #' @return A character vector
     get_treatments = function() {
-      get_treatments(self$data)
+      get_treatments(self)
     },
 
     #' @description
@@ -2056,66 +998,11 @@ dataset <- R6Class("dataset",
     #' @param sample String, Name of sample
     #' @return Boolean
     has_sample = function(sample) {
-      has_sample(self$data, sample)
-    },
-
-    #' @description
-    #' Determine if the dataset is aligned
-    #' @return bool
-    is_aligned = function() {
-      is_aligned(self$data)
-    },
-
-    #' @description
-    #' Remove contaminants from the dataset
-    #' @param contaminants vector of strings containing the taxonomies you would
-    #' like to remove
-    #' @examples
-    #' dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-    #'                       count = rdataset_example("final.count_table"),
-    #'                       taxonomy = rdataset_example("final.taxonomy"),
-    #'                       design = rdataset_example("mouse.time.design"),
-    #'                       otu_list = rdataset_example("final.opti_mcc.list"),
-    #'                       dataset_name = "miseq_sop")
-    #'
-    #' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
-    #'  "Eukaryota")
-    #'
-    #' data$remove_lineages(contaminants)
-    #'
-    remove_lineages = function(contaminants) {
-      remove_lineages(self$data, contaminants, "contaminant")
-      invisible(self)
-    },
-
-
-    #' @description
-    #' Remove samples from the dataset
-    #' @param samples vector of strings containing the names of the samples to
-    #' @examples
-    #' dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-    #'                       count = rdataset_example("final.count_table"),
-    #'                       taxonomy = rdataset_example("final.taxonomy"),
-    #'                       design = rdataset_example("mouse.time.design"),
-    #'                       otu_list = rdataset_example("final.opti_mcc.list"),
-    #'                       dataset_name = "miseq_sop")
-    #'
-    #' data$get_num_samples()
-    #'
-    #' # To remove samples 'F3D0' and 'F3D1'
-    #'
-    #' data$remove_samples(c("F3D0", "F3D1"))
-    #'
-    #' data$get_num_samples()
-    #'
-    remove_samples = function(samples) {
-      remove_samples(self$data, samples)
-      invisible(self)
+      has_sample(self, sample)
     }
   ),
   private = list(
     metadata = data.frame(),
-    references = data.frame(),
     alignment_data = data.frame(),
     chimera_data = data.frame(),
     contigs_data = data.frame(),
@@ -2130,12 +1017,12 @@ dataset <- R6Class("dataset",
       # remove any columns that are not numeric and any rows with NA values
       name_col <- attr(report, "sequence_name_column")
       report <- na.omit(report)
-      indexes <- which(report[[name_col]] %in% self$get_sequence_names())
+      indexes <- which(report[[name_col]] %in% get_sequence_names(self))
 
       # rcpp function - calls summary.cpp
       report_summary <- summarize_reports(
         report[sapply(report, is.numeric)],
-        get_sequence_abundances(self$data)[indexes],
+        get_sequence_abundances(self)[indexes],
         private$processors
       )
     },

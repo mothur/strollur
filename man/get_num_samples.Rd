@@ -7,22 +7,21 @@
 get_num_samples(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
-Integer, the number of samples in an instance of the 'Dataset' class.
+Integer, the number of samples in a \link{dataset} object
 }
 \description{
-Get the number of samples in an instance of the 'Dataset' class.
+Get the number of samples in a \link{dataset} object
 }
 \examples{
 
-dataset <- new_dataset("my_dataset", 4)
-bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-sample_abundances <- c(10, 100, 1, 500, 25, 80)
-assign_bins(dataset, bin_ids, sample_abundances, samples, "")
-get_num_samples(dataset)
+data <- new_dataset()
+bin_table <- readr::read_tsv(rdataset_example(
+                              "mothur2_bin_assignments_shared.tsv"),
+                              show_col_types = FALSE)
+assign_bins(data, bin_table)
+get_num_samples(data)
 
 }

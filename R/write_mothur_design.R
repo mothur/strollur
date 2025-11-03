@@ -17,18 +17,18 @@
 write_mothur_design <- function(data, filename = NULL) {
   # check type
   if (class(data)[1] != "dataset") {
-    abort_incorrect_type("dataset", data)
+    .abort_incorrect_type("dataset", data)
   }
 
   if (is.null(filename)) {
-    filename <- data$get_dataset_name()
+    filename <- get_dataset_name(data)
     if (filename == "") {
-      abort_no_name()
+      .abort_no_name()
     }
     filename <- paste0(filename, ".design")
   }
 
-  df <- data$get_sample_treatment_assignments()
+  df <- get_sample_treatment_assignments(data)
 
   if (nrow(df) != 0) {
     # write table

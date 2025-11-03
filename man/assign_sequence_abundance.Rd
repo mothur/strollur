@@ -6,45 +6,45 @@
 \usage{
 assign_sequence_abundance(
   data,
-  sequence_names,
-  abundances,
-  samples,
-  treatments
+  table,
+  sequence_name = "sequence_names",
+  abundance = "abundances",
+  sample = "samples",
+  treatment = "treatments"
 )
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{sequence_names}{a vector of strings containing sequence names}
+\item{table, }{a data.frame containing sequence abundance assignments}
 
-\item{abundances}{a vector containing sequence abundances}
+\item{sequence_name, }{a string containing the name of the column in 'table'
+that contains the sequence names. Default column name is 'sequence_names'.}
 
-\item{samples}{a vector of strings containing sample assignments}
+\item{abundance, }{a string containing the name of the column in 'table'
+that contains the sequence abundances. Default column name is 'abundances'.}
 
-\item{treatments}{a vector of strings containing treatment assignments}
+\item{sample, }{a string containing the name of the column in 'table'
+that contains the sequence samples. Default column name is 'samples'.
+(Optional)}
+
+\item{treatment, }{a string containing the name of the column in 'table'
+that contains the sequence treatments. Default column name is 'treatments'.}
 }
 \value{
 double containing the number of sequences assigned
 }
 \description{
-Set sequence abundance and optionally assign sample and treatment data to
- an instance of the 'Dataset' class.
+Set sequence abundance and optionally assign sample and treatment data to a
+ \link{dataset} object
 }
 \examples{
 
-sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-             "seq2", "seq3", "seq3", "seq4")
-samples <- c("sample2", "sample3", "sample4",
-            "sample2", "sample3", "sample4",
-           "sample2", "sample3",
-           "sample4")
-abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
+data <- new_dataset("my_dataset", 2)
+sequence_abundance <- readr::read_tsv(rdataset_example(
+                                      "mothur2_count_table.tsv"),
+                                      show_col_types = FALSE)
 
-dataset <- new_dataset("my_dataset", 4)
-assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
+assign_sequence_abundance(data, sequence_abundance, "names")
 
-}
-\seealso{
-[dataset$assign_sequence_abundance()]
 }

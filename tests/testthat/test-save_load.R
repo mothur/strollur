@@ -17,11 +17,11 @@ test_that("clone - deep copy of dataset object", {
     "test.rds"
   )
 
-  save(temp, file_name)
-  dataset <- load(file_name)
+  save_dataset(temp, file_name)
+  dataset <- load_dataset(file_name)
   remove_file(file_name)
 
-  expect_equal(dataset$get_dataset_name(), temp$get_dataset_name())
+  expect_equal(dataset$get_dataset_name(), get_dataset_name(temp))
   expect_equal(dataset$get_num_sequences(TRUE), temp$get_num_sequences(TRUE))
   expect_equal(dataset$get_num_sequences(), temp$get_num_sequences())
   expect_equal(dataset$get_num_treatments(), temp$get_num_treatments())
@@ -33,14 +33,14 @@ test_that("clone - deep copy of dataset object", {
   )
   expect_equal(dataset$get_num_bins("asv"), temp$get_num_bins("asv"))
   expect_equal(
-    get_sample_totals(dataset$data),
-    get_sample_totals(temp$data)
+    get_sample_totals(dataset),
+    get_sample_totals(temp)
   )
   expect_equal(
-    get_treatment_totals(dataset$data),
-    get_treatment_totals(temp$data)
+    get_treatment_totals(dataset),
+    get_treatment_totals(temp)
   )
 
-  expect_error(load("non_existant_file.rds"))
-  expect_error(save(data.frame(), "test.rds"))
+  expect_error(load_dataset("non_existant_file.rds"))
+  expect_error(save_dataset(data.frame(), "test.rds"))
 })

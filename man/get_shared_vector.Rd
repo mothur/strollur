@@ -7,34 +7,20 @@
 get_shared_vector(data, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object.}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
 \value{
-2D vector ([num_bins][num_samples]) containing
-the abundances of each bin parsed by sample.
+2D vector ([num_bins][num_samples]) containing the abundances of
+each bin parsed by sample.
 }
 \description{
-Get 2D vector containing bin abundance data by sample
+Get 2D vector containing bin abundance data by sample in a \link{dataset} object
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  samples <- c("sample1", "sample2", "sample5",
-   "sample1", "sample3", "sample1")
-  sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  assign_bins(dataset, bin_ids, sample_abundances, samples, "")
-
-  # (shared) bins would look like:
-  # sample   bin1   bin2   bin3
-  # sample1  10     500    80
-  # sample2  100    0      0
-  # sample3  0      25     0
-  # sample5  1      0      0
-
-  get_shared_vector(dataset)
+ data <- miseq_sop_example()
+ get_shared_vector(data)
 
 }

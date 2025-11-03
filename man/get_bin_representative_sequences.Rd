@@ -7,35 +7,31 @@
 get_bin_representative_sequences(data, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{type, }{string indicating the type of clusters. Default = "otu".}
 }
 \value{
-data.frame
+data.frame containing 2 columns representative_names and
+ representative_sequences
 }
 \description{
-Get the representative sequences of the bins in an instance of the
- 'Dataset' class.
+Get the representative sequences of the bins in a \link{dataset} object
 }
 \examples{
 
   miseq <- miseq_sop_example()
 
+  num_bins <- get_num_bins(miseq, "otu")
+
   # For examples sake, select first 531 sequences to be the representatives
-  num_bins <- miseq$get_num_bins("otu")
-  rep_names <- miseq$get_sequence_names()[1:num_bins]
-  bin_names <- miseq$get_bin_names()
+  table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
+                      sequence_names = get_sequence_names(miseq)[1:num_bins]
+                      )
 
-  assign_bin_representative_sequences(miseq$data,
-                                      bin_names, rep_names, "otu")
-
+  assign_bin_representative_sequences(miseq, table, "otu")
 
 
-  get_bin_representative_sequences(miseq$data, "otu")
+  get_bin_representative_sequences(miseq, "otu")
 
-}
-\seealso{
-[dataset$get_bin_representative_sequences()]
 }

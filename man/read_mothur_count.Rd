@@ -43,13 +43,8 @@ sample_table <- read_mothur_count(rdataset_example("final.count_table"))
 
 # You can add your sequence abundance data to your dataset as follows:
 
-data <- dataset$new()
-data$assign_sequence_abundance(
-  data = NULL,
-  sample_table$id,
-  sample_table$abundance,
-  sample_table$sample
-)
+data <- new_dataset()
+assign_sequence_abundance(data, sample_table)
 data
 
 }

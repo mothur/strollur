@@ -7,25 +7,21 @@
 get_sequences(data, sample = "")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{sample}{a string containing the name of the sample you
+\item{sample, }{a string containing the name of the sample you
 would like sequence names for. For all samples in dataset, sample = "".}
 }
 \value{
 vector of string containing nucleotide strings of the sequences in
-the 'Dataset' class.
+a \link{dataset} object
 }
 \description{
-Get the nucleotide strings for each sequence in an instance of the 'Dataset'
- class.
+Get the nucleotide strings for each sequence in a \link{dataset} object
 }
 \examples{
 
- dataset <- new_dataset("miseq_sop", 4)
- sequences <- read_fasta(rdataset_example("final.fasta"))
- add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
- get_sequences(dataset)
+ data <- miseq_sop_example()
+ get_sequences(data)
 
 }

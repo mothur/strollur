@@ -6,7 +6,7 @@
 #'
 #' @examples
 #'
-#' miseq_dataset <- miseq_sop_example()
+#' miseq <- miseq_sop_example()
 #'
 #' @return A 'dataset' object
 #' @export
@@ -33,13 +33,13 @@ miseq_sop_example <- function() {
   reference <- readr::read_csv(rdataset_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  data$add_references(reference = reference)
+  add_references(data, reference)
 
   representative_seqs <- readr::read_tsv(
     rdataset_example("otu_representative_sequences.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  data$assign_bin_representative_sequences(representative_seqs)
+  assign_bin_representative_sequences(data, representative_seqs)
 
   data
 }

@@ -7,27 +7,34 @@
 merge_bins(data, bin_names, reason = "merged", type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object.}
 
-\item{bin_names}{a vector of strings containing the names of the bins you
+\item{bin_names, }{a vector of strings containing the names of the bins you
 would like merge. The resulting merged bin will be stored in the first
 bin_id in the vector.}
 
-\item{reason}{a string indicating why you are merging bins}
+\item{reason, }{a string indicating why you are merging bins. Default =
+"merged".}
 
-\item{type}{a string indicating the type of bin clusters. Default = "otu"}
+\item{type, }{a string indicating the type of bin clusters. Default = "otu"}
 }
 \description{
-Merge bins in an instance of the 'Dataset' class.
+Designed with package integration in mind, the merge bins function allows
+you to merge bins in a \link{dataset} object
 }
 \examples{
 
-  dataset <- new_dataset("my_dataset", 4)
-  bin_ids <- c("bin1", "bin2", "bin3")
-  abundances <- c(110, 525, 80)
-  assign_bins(dataset, bin_ids, abundances, "", "", "otu")
-  bins_to_merge <- c("bin1", "bin3")
-  merge_bins(dataset, bins_to_merge)
+ data <- miseq_sop_example()
+
+ # to merge otu5 and otu6
+
+ bins_to_merge <- c("Otu005", "Otu006")
+
+ merge_bins(data, bins_to_merge)
+
+ # If you look at the scrap report, you will see Otu006 with the trash code
+ # set to "merged".
+
+ get_scrap_report(data, "bin")
 
 }

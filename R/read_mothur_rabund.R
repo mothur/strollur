@@ -10,13 +10,13 @@
 #' otu_data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
 #'
 #' data <- dataset$new()
-#' data$assign_bins(otu_data)
+#' assign_bins(data, otu_data)
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export
 read_mothur_rabund <- function(rabund) {
   if (!file.exists(rabund)) {
-    abort_nonexistant_file(rabund)
+    .abort_nonexistant_file(rabund)
   }
 
   df <- readr::read_table(

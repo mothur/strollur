@@ -7,34 +7,29 @@
 get_sequence_names(data, sample = "")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{sample}{a string containing the name of the sample you
 would like sequence names for. For all samples in dataset, sample = "".}
 }
 \value{
-vector of string containing the names of the sequences in the
- 'Dataset' class.
+vector of string containing the names of the sequences a
+\link{dataset} object
 }
 \description{
-Get the names of the sequences in an instance of the 'Dataset' class.
+Get the names of the sequences in a \link{dataset} object
 }
 \examples{
 
-sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-             "seq2", "seq3", "seq3", "seq4")
-samples <- c("sample2", "sample3", "sample4",
-            "sample2", "sample3", "sample4",
-           "sample2", "sample3",
-           "sample4")
-abundances <- c(250, 400, 500,
-               25, 40, 50,
-               25, 25,
-               4)
 
-dataset <- new_dataset("my_dataset", 4)
-assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
-get_sequence_names(dataset)
+data <- miseq_sop_example()
+
+# to get the names of all the sequences in the dataset
+
+get_sequence_names(data)
+
+# to get the names of the sequences in sample 'F3D0' from the dataset
+
+get_sequence_names(data, "F3D0")
 
 }

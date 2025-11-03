@@ -24,7 +24,7 @@
 write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   # check type
   if (class(data)[1] != "dataset") {
-    abort_incorrect_type("dataset", data)
+    .abort_incorrect_type("dataset", data)
   }
 
   dataset_name <- data$get_dataset_name()
@@ -49,7 +49,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
 
   # Interpret the result
   if (file.access(dir_path, mode = 2) != 0) {
-    abort_not_writable(dir_path)
+    .abort_not_writable(dir_path)
   }
 
   outputs <- c()
@@ -182,7 +182,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("references" %in% tags)) {
-    references <- data$get_references()
+    references <- get_references(data)
 
     if (nrow(references) != 0) {
       filename <- file.path(

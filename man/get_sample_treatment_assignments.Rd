@@ -7,25 +7,18 @@
 get_sample_treatment_assignments(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
-2 column data.frame containing the sample treatment assignments in
- an instance of the 'Dataset' class.
+2 column data.frame containing the sample treatment assignments in a
+ \link{dataset} object
 }
 \description{
-Get treatment assignments for samples in an instance of the 'Dataset' class.
+Get treatment assignments for samples in a \link{dataset} object
 }
 \examples{
 
-dataset <- new_dataset("my_dataset", 4)
-bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
-             "sample1")
-treatments <- c("Early", "Early", "Late", "Early", "Late", "Early")
-sample_abundances <- c(10, 100, 1, 500, 25, 80)
-assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
-get_sample_treatment_assignments(dataset)
+data <- miseq_sop_example()
+get_sample_treatment_assignments(data)
 
 }

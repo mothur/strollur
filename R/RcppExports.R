@@ -3,306 +3,405 @@
 
 #' @title new_dataset
 #' @description
-#' Create a pointer to an instance of the 'Dataset' c++ class.
+#' Create a new \link{dataset} object
 #'
-#' The 'Dataset' class is the c++ implementation of the R6 'dataset'
-#' object. This class allows package developers access to additional
-#' functionality. 'Dataset' stores nucleotide sequences, abundance, sample and
-#' treatment assignments, taxonomic classifications, asv / otu clusters. It
-#' creates various reports and summaries. It is designed to facilitate data
-#' transfer and access across multiple R packages.
-#'
-#' @param dataset_name string, a string containing the dataset name
+#' @param dataset_name string, a string containing the dataset name.
+#' Default = ""
 #' @param processors integer, number of cores to use during summary functions.
+#' Default = 2
 #' @examples
 #'
-#' # to create a new dataset and allow for 4 processors during summary,
-#' # run the following:
+#' data <- new_dataset()
 #'
-#' dataset <- new_dataset("soil", 4)
+#' # to create a new dataset named "soil" and allow for 2 processors during
+#' # summary functions, run the following:
 #'
-#' @returns Rcpp::XPtr<Dataset> pointer to an instance of the 'Dataset' c++
-#'  class.
-#' @seealso [dataset$new()]
-new_dataset <- function(dataset_name, processors) {
+#' data <- new_dataset("soil", 2)
+#'
+#' # to create a new dataset named "soil" and allow for all available
+#' # processors during summary functions, run the following:
+#'
+#' data <- new_dataset("soil", get_available_processors())
+#'
+#' @returns a \link{dataset} object
+#' @seealso The 'new' method in the \link{dataset} class
+new_dataset <- function(dataset_name = "", processors = 2L) {
     .Call(`_rdataset_new_dataset`, dataset_name, processors)
+}
+
+#' @title new_reference
+#' @description
+#' Create a reference you can add to your dataset
+#'
+#' @param reference_name, a string containing the name of the reference used
+#' in the preparing of the sequences. For example: 'silva.bacteria.fasta'.
+#'
+#' @param reference_version, a string containing the version of the reference
+#' used in the preparing of the sequences. For example: '1.38.1'. Default = "".
+#'
+#' @param reference_usage, a string containing the usage of the reference in
+#' your analysis. For example: 'alignment using mothur2' Default = NULL.
+#'
+#' @param reference_note, a string containing the any additional notes about
+#' the reference. Default = "".
+#'
+#' @param reference_url, a string containing a web address where the
+#' reference may be downloaded. Default = "".
+#' @examples
+#'
+#' reference <- new_reference("silva.bacteria.fasta",
+#'                            "1.38.1",
+#'                            "alignment by mothur2 v1.0 using default options",
+#'                            "",
+#'                            "https://mothur.org/wiki/silva_reference_files/")
+#'
+#' @returns a list
+#' @seealso [add_references()]
+new_reference <- function(reference_name, reference_version = "", reference_usage = "", reference_note = "", reference_url = "") {
+    .Call(`_rdataset_new_reference`, reference_name, reference_version, reference_usage, reference_note, reference_url)
 }
 
 #' @title copy_dataset
 #' @description
-#' Create a pointer to an instance of the 'Dataset' c++ class.
+#' Create a new \link{dataset} object from an existing dataset.
 #'
-#' The 'Dataset' class is the c++ implementation of the R6 'dataset'
-#' object. This class allows package developers access to additional
-#' functionality. 'Dataset' stores nucleotide sequences, abundance, sample and
-#' treatment assignments, taxonomic classifications, asv / otu clusters. It
-#' creates various reports and summaries. It is designed to facilitate data
-#' transfer and access across multiple R packages.
-#'
-#' @param dataset an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' @param data, a \link{dataset} object
 #' @examples
 #'
-#' # to create a new dataset and allow for 4 processors during summary,
-#' # run the following:
+#' miseq <- miseq_sop_example()
 #'
-#' dataset1 <- new_dataset("soil", 4)
+#' # to create a new dataset that is a copy of miseq
 #'
-#' # to create a new dataset that is a copy of dataset1
+#' data <- copy_dataset(miseq)
 #'
-#' dataset2 <- copy_dataset(dataset1)
+#' @returns a \link{dataset} object
+#' @seealso The 'new' method in the \link{dataset} class
+copy_dataset <- function(data) {
+    .Call(`_rdataset_copy_dataset`, data)
+}
+
+#' @title add_references
+#' @description
+#' Add resource references to a \link{dataset} object
 #'
-#' @returns Rcpp::XPtr<Dataset> pointer to an instance of the 'Dataset' c++
-#'  class.
-#' @seealso [dataset$new()]
-copy_dataset <- function(dataset) {
-    .Call(`_rdataset_copy_dataset`, dataset)
+#' @param data, a \link{dataset} object
+#'
+#' @param table, a data.frame containing reference_names, reference_versions
+#' (optional), reference_usages (optional), reference_notes (optional), and
+#' reference_urls (optional).
+#'
+#' @param reference_name, a string containing the name of the column in 'table'
+#' that contains the reference names. Default column name is 'reference_names'.
+#' @param reference_version, a string containing the name of the column in
+#' 'table' that contains the reference versions. Default column name is
+#' 'reference_versions'.
+#' @param reference_usage, a string containing the name of the column in
+#' 'table' that contains the reference usages. Default column name is
+#'  reference_usages'.
+#' @param reference_note, a string containing the name of the column in
+#' 'table' that contains the reference notes. Default column name is
+#'  reference_notes'.
+#' @param reference_url, a string containing the name of the column in
+#' 'table' that contains the reference urls. Default column name is
+#'  reference_urls'.
+#' @examples
+#'
+#' data <- new_dataset("just for fun", 2)
+#' reference_table <- readr::read_csv(rdataset_example("references.csv"),
+#'                              col_names = TRUE, show_col_types = FALSE)
+#' add_references(data, reference_table)
+#'
+#' @return double containing the number of references added
+add_references <- function(data, table, reference_name = "reference_names", reference_version = "reference_versions", reference_usage = "reference_usages", reference_note = "reference_notes", reference_url = "reference_urls") {
+    .Call(`_rdataset_add_references`, data, table, reference_name, reference_version, reference_usage, reference_note, reference_url)
 }
 
 #' @title add_sequences
 #' @description
-#' Add sequence data to an instance of the 'Dataset' class
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param sequence_names a vector of strings containing sequence names
-#' @param sequences a vector of strings containing sequence nucleotide strings
-#' @param comments a vector of strings containing sequence comments
+#' Add sequence data to a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param table, a data.frame containing names, sequences(optional) and
+#' comments(optional).
+#'
+#' @param reference, a list created by the function [new_reference]. Optional.
+#' @param sequence_name, a string containing the name of the column in 'table'
+#' that contains the sequence names. Default column name is 'sequence_names'.
+#' @param sequence, a string containing the name of the column in 'table' that
+#' contains the sequence nucleotide strings. Default column name is
+#' 'sequences'.
+#' @param comment, a string containing the name of the column in
+#' 'table' that contains the sequence comments. Default column name is
+#' 'comments'.
+#'
 #' @examples
 #'
-#'  dataset <- new_dataset("miseq_sop", 4)
-#'  sequences <- read_fasta(rdataset_example("final.fasta"))
-#'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
+#'  data <- new_dataset("miseq_sop", 2)
+#'  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+#'  add_sequences(data, fasta_data)
 #'
-#' @seealso [dataset$add_sequences()]
+#' # With the additional parameters to add information about the reference
+#'
+#'  data <- new_dataset("miseq_sop", 2)
+#'  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+#'
+#'  add_sequences(data, fasta_data,
+#'                new_reference("silva.bacteria.fasta",
+#'                "1.38.1",
+#'                "alignment by mothur2 v1.0 using default options",
+#'                "https://mothur.org/wiki/silva_reference_files/"))
+#'
+#' # You can also add references using the 'add_references' function.
+#'
 #' @return double containing the number of sequences added
-add_sequences <- function(data, sequence_names, sequences, comments) {
-    .Call(`_rdataset_add_sequences`, data, sequence_names, sequences, comments)
+add_sequences <- function(data, table, reference = NULL, sequence_name = "sequence_names", sequence = "sequences", comment = "comments") {
+    .Call(`_rdataset_add_sequences`, data, table, reference, sequence_name, sequence, comment)
 }
 
 #' @title assign_bins
 #' @description
-#' Add bin assignments to an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param bin_names a vector strings containing of bin labels
-#' @param abundances a vector containing bin abundances. Note: You must
-#'  provide either abundances or seq_ids.
-#' @param samples a vector of strings containing sample assignments
-#' @param sequence_names a vector of strings containing sequence names.
-#' Note: You must provide either abundances or seq_ids.
+#' Add bin assignments to a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param table, a data.frame containing bin_data assignments
 #' @param type a string indicating the type of bin assignments. Default "otu".
+#'
+#' @param reference, a list created by the function [new_reference]. Optional.
+#'
+#' @param bin_name, a string containing the name of the column in 'table' that
+#' contains the bin names. Default column name is 'bin_names'.
+#' @param abundance, a string containing the name of the column in 'table'
+#' that contains the bin abundances. Default column name is 'abundances'. Note:
+#'  You must provide either abundances or sequence_names in the table.
+#' @param sample, a string containing the name of the column in 'table' that
+#' contains the sample names for datasets where the abundances are broken down
+#' by sample. Default column name is 'samples'.
+#' @param sequence_name, a string containing the name of the column in 'table'
+#' that contains the sequence names. Default column name is 'sequence_names'.
+#' Note: You must provide either abundances or sequence_names in the table.
+#'
 #' @examples
 #'
 #'   # To assign sequences to bins:
 #'
-#'   dataset <- new_dataset("miseq_sop", 4)
+#'   data <- new_dataset("miseq_sop", 2)
+#'   otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 #'
-#'   otu_data <- read_mothur_list(rdataset_example(
-#'                             "final.opti_mcc.list"))
-#'   assign_bins(dataset, otu_data$bin_names, 0, "", otu_data$sequence_names)
+#'   assign_bins(data, otu_data)
 #'
 #'   # To add abundance only bin assignments:
 #'
-#'   dataset <- new_dataset("miseq_sop", 4)
+#'   data <- new_dataset("miseq_sop", 2)
+#'   otu_data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
 #'
-#'   otu_data <- read_mothur_rabund(rdataset_example(
-#'                             "final.opti_mcc.rabund"))
-#'   assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
+#'   assign_bins(data, otu_data)
 #'
 #'   # To add abundance bin assignments parsed by sample:
 #'
-#'   dataset <- new_dataset("miseq_sop", 4)
-#'   bin_table <- readr::read_tsv(rdataset_example(
-#'                                "mothur2_bin_assignments_shared.tsv"))
+#'   data <- new_dataset("miseq_sop", 2)
+#'   otu_data <- readr::read_tsv(rdataset_example(
+#'                                 "mothur2_bin_assignments_shared.tsv"))
 #'
-#'   assign_bins(dataset, bin_table$bin_names, bin_table$abundances,
-#'                  bin_table$samples, "")
+#'   assign_bins(data, otu_data)
 #'
-#'   # To assign sequences to bins with their abundances parsed by sample:
-#'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-#'                "bin2", "bin2", "bin2",
-#'                "bin3", "bin3")
-#'   seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-#'                "seq3", "seq3", "seq6",
-#'                "seq5", "seq5")
-#'   samples <- c("sample1", "sample2", "sample5",
-#'                "sample1", "sample3", "sample4",
-#'                "sample2", "sample3", "sample1",
-#'                "sample1", "sample6")
-#'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-#'   assign_bins(dataset, bin_ids, abundances, samples, seq_ids, "otu")
-#'
-#' @seealso [dataset$assign_bins()]
 #' @return double containing the number of bins assigned
-assign_bins <- function(data, bin_names, abundances, samples, sequence_names, type = "otu") {
-    .Call(`_rdataset_assign_bins`, data, bin_names, abundances, samples, sequence_names, type)
+assign_bins <- function(data, table, type = "otu", reference = NULL, bin_name = "bin_names", abundance = "abundances", sample = "samples", sequence_name = "sequence_names") {
+    .Call(`_rdataset_assign_bins`, data, table, type, reference, bin_name, abundance, sample, sequence_name)
 }
 
 #' @title assign_bin_representative_sequences
 #' @description
 #' Assign representative sequences to bins.
 #'
-#' @param data a data.frame containing bin_names and representative
-#' sequences for your data.
+#' @param data, a \link{dataset} object
 #'
-#' @param bin_names a vector strings containing bin names or if using the
-#' 'data' parameter a string containing the name of the column in 'data'
-#' that contains the bin names. Default column name is 'bin_names'.
-#' @param sequence_names a vector of strings containing bin representative
-#' sequences or if using the 'data' parameter a string containing the name
-#' of the column in 'data' that contains the bin names. Default column name
-#' is 'sequence_names'.
+#' @param table, a data.frame containing bin representative assignments
 #' @param type a string indicating the type of bin assignments. Default "otu".
+#'
+#' @param reference, a list created by the function [new_reference]. Optional.
+#'
+#' @param bin_name, a string containing the name of the column in 'table' that
+#' contains the bin names. Default column name is 'bin_names'.
+#' @param sequence_name a string containing the name of the column in 'table' that
+#' contains the bin names. Default column name is 'sequence_names'.
 #'
 #' @examples
 #'
 #'   miseq <- miseq_sop_example()
 #'
+#'   num_bins <- get_num_bins(miseq, "otu")
+#'
 #'   # For examples sake, select first 531 sequences to be the representatives
-#'   num_bins <- miseq$get_num_bins("otu")
-#'   rep_names <- miseq$get_sequence_names()[1:num_bins]
-#'   bin_names <- miseq$get_bin_names()
+#'   table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
+#'                       sequence_names = get_sequence_names(miseq)[1:num_bins]
+#'                       )
 #'
-#'   assign_bin_representative_sequences(miseq$data,
-#'                                       bin_names, rep_names, "otu")
+#'   assign_bin_representative_sequences(miseq, table, "otu")
 #'
-#' @seealso [dataset$assign_bin_representative_sequences()]
 #' @return double containing the number of representative sequences assigned
-assign_bin_representative_sequences <- function(data, bin_names, sequence_names, type = "otu") {
-    .Call(`_rdataset_assign_bin_representative_sequences`, data, bin_names, sequence_names, type)
+assign_bin_representative_sequences <- function(data, table, type = "otu", reference = NULL, bin_name = "bin_names", sequence_name = "sequence_names") {
+    .Call(`_rdataset_assign_bin_representative_sequences`, data, table, type, reference, bin_name, sequence_name)
 }
 
 #' @title assign_bin_taxonomy
 #' @description
-#' Assign bin classifications to an instance of the 'Dataset' class.
+#' Assign bin classifications to a \link{dataset} object
 #'
 #' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 #'  the concensus taxonomy for each bin for you.
 #'
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param bin_names a vector of strings containing bin names
-#' @param taxonomies a vector of strings containing bin classifications
-#' @param type a string indicating the type of clusters. Default = "otu"
+#' @param data, a \link{dataset} object
+#'
+#' @param table, a data.frame containing bin taxonomy assignments
+#' @param type a string indicating the type of bin assignments. Default "otu".
+#'
+#' @param reference, a list created by the function [new_reference]. Optional.
+#'
+#' @param bin_name, a string containing the name of the column in 'table' that
+#' contains the bin names. Default column name is 'bin_names'.
+#' @param taxonomy, a string containing the name of the column in 'table' that
+#' contains the bin taxonomies. Default column name is 'taxonomies'.
+#'
 #' @examples
 #'
 #' otu_data <- read_mothur_cons_taxonomy(rdataset_example(
 #'                         "final.cons.taxonomy"))
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_bins(dataset, otu_data$bin_names, otu_data$abundances, "", "")
-#' assign_bin_taxonomy(dataset, otu_data$bin_names, otu_data$taxonomies)
+#' data <- new_dataset("my_dataset", 2)
+#' assign_bins(data, otu_data)
+#' assign_bin_taxonomy(data, otu_data)
 #'
-#' @seealso [dataset$assign_bin_taxonomy()]
 #' @return double containing the number of bins assigned
-assign_bin_taxonomy <- function(data, bin_names, taxonomies, type = "otu") {
-    .Call(`_rdataset_assign_bin_taxonomy`, data, bin_names, taxonomies, type)
+assign_bin_taxonomy <- function(data, table, type = "otu", reference = NULL, bin_name = "bin_names", taxonomy = "taxonomies") {
+    .Call(`_rdataset_assign_bin_taxonomy`, data, table, type, reference, bin_name, taxonomy)
 }
 
 #' @title assign_sequence_abundance
 #' @description
-#' Set sequence abundance and optionally assign sample and treatment data to
-#'  an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param sequence_names a vector of strings containing sequence names
-#' @param abundances a vector containing sequence abundances
-#' @param samples a vector of strings containing sample assignments
-#' @param treatments a vector of strings containing treatment assignments
+#' Set sequence abundance and optionally assign sample and treatment data to a
+#'  \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param table, a data.frame containing sequence abundance assignments
+#'
+#' @param sequence_name, a string containing the name of the column in 'table'
+#'  that contains the sequence names. Default column name is 'sequence_names'.
+#' @param abundance, a string containing the name of the column in 'table'
+#'  that contains the sequence abundances. Default column name is 'abundances'.
+#' @param sample, a string containing the name of the column in 'table'
+#' that contains the sequence samples. Default column name is 'samples'.
+#' (Optional)
+#' @param treatment, a string containing the name of the column in 'table'
+#' that contains the sequence treatments. Default column name is 'treatments'.
+#'
 #' @examples
 #'
-#' sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-#'              "seq2", "seq3", "seq3", "seq4")
-#' samples <- c("sample2", "sample3", "sample4",
-#'             "sample2", "sample3", "sample4",
-#'            "sample2", "sample3",
-#'            "sample4")
-#' abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
+#' data <- new_dataset("my_dataset", 2)
+#' sequence_abundance <- readr::read_tsv(rdataset_example(
+#'                                       "mothur2_count_table.tsv"),
+#'                                       show_col_types = FALSE)
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
+#' assign_sequence_abundance(data, sequence_abundance, "names")
 #'
-#' @seealso [dataset$assign_sequence_abundance()]
 #' @return double containing the number of sequences assigned
-assign_sequence_abundance <- function(data, sequence_names, abundances, samples, treatments) {
-    .Call(`_rdataset_assign_sequence_abundance`, data, sequence_names, abundances, samples, treatments)
+assign_sequence_abundance <- function(data, table, sequence_name = "sequence_names", abundance = "abundances", sample = "samples", treatment = "treatments") {
+    .Call(`_rdataset_assign_sequence_abundance`, data, table, sequence_name, abundance, sample, treatment)
 }
 
 #' @title assign_sequence_taxonomy
 #' @description
-#' Assign sequence classifications to an instance of the 'Dataset' class.
+#' Assign sequence classifications to a \link{dataset} object
 #'
 #' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 #'  the concensus taxonomy for each bin for you.
 #'
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param sequence_names a vector of strings containing sequence names
-#' @param taxonomies a vector of strings containing sequence classifications
+#' @param data, a \link{dataset} object
+#'
+#' @param table, a data.frame containing sequence taxonomy assignments
+#'
+#' @param reference, a list created by the function [new_reference]. Optional.
+#'
+#' @param sequence_name, a string containing the name of the column in 'table'
+#' that contains the sequence names. Default column name is 'sequence_names'.
+#' @param taxonomy, a string containing the name of the column in 'table' that
+#' contains the sequence taxonomies. Default column name is 'taxonomies'.
+#'
 #' @examples
 #'
-#' sequence_names <- c("seq1", "seq2", "seq3", "seq4")
-#' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-#'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-#'                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-#'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
+#' sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+#'                         "final.taxonomy"))
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_taxonomy(dataset, sequence_names, taxonomies)
+#' data <- new_dataset("my_dataset", 2)
 #'
-#' @seealso [dataset$assign_sequence_taxonomy()]
-#' @return double containing the number of sequences assigned
-assign_sequence_taxonomy <- function(data, sequence_names, taxonomies) {
-    .Call(`_rdataset_assign_sequence_taxonomy`, data, sequence_names, taxonomies)
+#' assign_sequence_taxonomy(data, sequence_classifications)
+#'
+#' # With the reference parameter you can add information about the reference
+#' # you used to classify your sequences. You can also add references using the
+#' # 'add_references' function.
+#'
+#' reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+#'               "classification by mothur2 v1.0 using default options", "",
+#' "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
+#'
+#' assign_sequence_taxonomy(data, sequence_classifications, reference)
+#'
+#' @return double containing the number of sequence assigned
+assign_sequence_taxonomy <- function(data, table, reference = NULL, sequence_name = "sequence_names", taxonomy = "taxonomies") {
+    .Call(`_rdataset_assign_sequence_taxonomy`, data, table, reference, sequence_name, taxonomy)
 }
 
 #' @title assign_treatments
 #' @description
-#' Assign samples to treatments in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param samples a vector of strings containing sample names
-#' @param treatments a vector of strings containing treatment names
+#' Assign samples to treatments in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param table, a data.frame containing sample treatment assignments
+#'
+#' @param sample, a string containing the name of the column in 'table'
+#' that contains the samples. Default column name is 'samples'.
+#' @param treatment, a string containing the name of the column in 'table'
+#' that contains the treatments. Default column name is 'treatments'.
+#'
 #' @examples
 #'
-#' names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-#'              "seq2", "seq3", "seq3", "seq4")
-#' samples <- c("sample2", "sample3", "sample4",
-#'             "sample2", "sample3", "sample4",
-#'            "sample2", "sample3",
-#'            "sample4")
-#' abundances <- c(250, 400, 500,
-#'                25, 40, 50,
-#'                25, 25,
-#'                4)
-#' treatments <- c("early", "early", "late")
+#' data <- new_dataset("my_dataset", 2)
+#' sequence_abundance <- readr::read_tsv(rdataset_example(
+#'                                       "mothur2_count_table.tsv"),
+#'                                       show_col_types = FALSE)
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_abundance(dataset, names, abundances, samples, "")
-#' assign_treatments(dataset, unique(samples), treatments)
+#' assign_sequence_abundance(data, sequence_abundance, "names")
 #'
-#' @seealso [dataset$assign_treatments()]
-#' @return double containing the number of bins assigned
-assign_treatments <- function(data, samples, treatments) {
-    .Call(`_rdataset_assign_treatments`, data, samples, treatments)
+#' sample_assignments <- readr::read_table(file = rdataset_example("mouse.time.design"),
+#'                              col_names = TRUE, show_col_types = FALSE)
+#'
+#' assign_treatments(data, sample_assignments)
+#'
+#' @return double containing the number of samples assigned to treatments
+assign_treatments <- function(data, table, sample = "samples", treatment = "treatments") {
+    .Call(`_rdataset_assign_treatments`, data, table, sample, treatment)
 }
 
 #' @title clear
 #' @description
-#' Clear all data from an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Clear data from a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @param tags a vector of strings containing the items you wish to clear.
-#' Options are 'sequence_data' and 'bin_data'. By default, everything is
-#' cleared.
+#' Options are 'sequence_data', 'bin_data', 'metadata',
+#' 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
+#' 'contigs_assembly_report' and 'chimera_report'. By default, everything
+#'  is cleared.
 #'
 #' @examples
-#' dataset <- miseq_sop_example()
-#' clear(dataset$data, "")
 #'
-clear <- function(data, tags) {
+#' data <- miseq_sop_example()
+#' clear(data)
+#'
+clear <- function(data, tags = as.character( c())) {
     invisible(.Call(`_rdataset_clear`, data, tags))
 }
 
@@ -318,29 +417,25 @@ clear <- function(data, tags) {
 #' @examples
 #'
 #' dataset <- new_dataset("my_dataset", 2)
-#' export_dataset(dataset, "")
+#' export_dataset(dataset, c(""))
 #'
 #' @return Rcpp::List, containing the data in the 'Dataset
-export_dataset <- function(data, tags) {
+export_dataset <- function(data, tags = as.character( c())) {
     .Call(`_rdataset_export_dataset`, data, tags)
 }
 
 #' @title get_bin
 #' @description
-#' Get the names of the sequences in a given bin in an instance of the
-#' 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the names of the sequences in a given bin in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param bin_name, string containing the bin name
 #' @param type a string indicating the type of clusters. Default = "otu".
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_bins(dataset, bin_ids, 0, "", seq_ids)
-#' get_bin(dataset, "bin1")
+#' data <- miseq_sop_example()
+#' get_bin(data, "Otu005", "otu")
 #'
 #' @return String, containing names of the sequences in a given bin
 get_bin <- function(data, bin_name, type = "otu") {
@@ -349,58 +444,34 @@ get_bin <- function(data, bin_name, type = "otu") {
 
 #' @title get_bin_abundance
 #' @description
-#' Get the abundance of a given bin in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the abundance of a given bin in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param bin_name, string containing the bin name
 #' @param type a string indicating the type of clusters. Default = "otu".
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-#'                "bin2", "bin2", "bin2",
-#'                "bin3", "bin3")
-#'   seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-#'                "seq3", "seq3", "seq6",
-#'                "seq5", "seq5")
-#'   samples <- c("sample1", "sample2", "sample5",
-#'                "sample1", "sample3", "sample4",
-#'                "sample2", "sample3", "sample1",
-#'                "sample1", "sample6")
-#'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-#'   assign_bins(dataset, bin_ids, abundances, samples, seq_ids)
-#'   get_bin_abundance(dataset, "bin1")
+#' data <- miseq_sop_example()
+#' get_bin_abundance(data, "Otu005", "otu")
 #'
-#' @return Integer, containing the abundance of a given bin
+#' @return double, containing the abundance of a given bin
 get_bin_abundance <- function(data, bin_name, type = "otu") {
     .Call(`_rdataset_get_bin_abundance`, data, bin_name, type)
 }
 
 #' @title get_bin_abundances
 #' @description
-#' Get the abundance of a given bin parsed by sample in an instance of the
-#' 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the abundance of a given bin parsed by sample in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param bin_name, string containing the bin name
 #' @param type, string indicating the type of clusters. Default = "otu".
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-#'                "bin2", "bin2", "bin2",
-#'                "bin3", "bin3")
-#'   seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-#'                "seq3", "seq3", "seq6",
-#'                "seq5", "seq5")
-#'   samples <- c("sample1", "sample2", "sample5",
-#'                "sample1", "sample3", "sample4",
-#'                "sample2", "sample3", "sample1",
-#'                "sample1", "sample6")
-#'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-#'
-#'   assign_bins(dataset, bin_ids, abundances, samples, seq_ids)
-#'   get_bin_abundances(dataset, "bin1")
+#' data <- miseq_sop_example()
+#' get_bin_abundances(data, "Otu005", "otu")
 #'
 #' @return vector containing the abundance of a given bin parsed by sample
 get_bin_abundances <- function(data, bin_name, type = "otu") {
@@ -409,14 +480,14 @@ get_bin_abundances <- function(data, bin_name, type = "otu") {
 
 #' @title get_bin_names
 #' @description
-#' Get the names of the bins in an instance of the  'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the names of the bins in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @param type, string indicating the type of clusters. Default = "otu".
 #' @examples
 #'
 #'   miseq <- miseq_sop_example()
-#'   get_bin_names(miseq$data, "phylotype")
+#'   get_bin_names(miseq, "phylotype")
 #'
 #' @return vector containing the names of bins
 get_bin_names <- function(data, type = "otu") {
@@ -425,52 +496,42 @@ get_bin_names <- function(data, type = "otu") {
 
 #' @title get_bin_representative_sequences
 #' @description
-#' Get the representative sequences of the bins in an instance of the
-#'  'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the representative sequences of the bins in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @param type, string indicating the type of clusters. Default = "otu".
 #' @examples
 #'
 #'   miseq <- miseq_sop_example()
 #'
+#'   num_bins <- get_num_bins(miseq, "otu")
+#'
 #'   # For examples sake, select first 531 sequences to be the representatives
-#'   num_bins <- miseq$get_num_bins("otu")
-#'   rep_names <- miseq$get_sequence_names()[1:num_bins]
-#'   bin_names <- miseq$get_bin_names()
+#'   table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
+#'                       sequence_names = get_sequence_names(miseq)[1:num_bins]
+#'                       )
 #'
-#'   assign_bin_representative_sequences(miseq$data,
-#'                                       bin_names, rep_names, "otu")
-#'
+#'   assign_bin_representative_sequences(miseq, table, "otu")
 #'
 #'
-#'   get_bin_representative_sequences(miseq$data, "otu")
+#'   get_bin_representative_sequences(miseq, "otu")
 #'
-#' @seealso [dataset$get_bin_representative_sequences()]
-#' @return data.frame
+#' @return data.frame containing 2 columns representative_names and
+#'  representative_sequences
 get_bin_representative_sequences <- function(data, type = "otu") {
     .Call(`_rdataset_get_bin_representative_sequences`, data, type)
 }
 
 #' @title get_bin_taxonomy_report
 #' @description
-#' Get the bin classifications of an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the bin classifications of a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @param type, string indicating the type of bin clusters. Default = "otu".
 #' @examples
 #'
-#' bin_ids <- c("bin1", "bin2", "bin3", "bin4")
-#' abunds <- c(200, 40, 100, 5)
-#' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-#'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-#'                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-#'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
-#'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_bins(dataset, bin_ids, abunds, "", "")
-#' assign_bin_taxonomy(dataset, bin_ids, taxonomies)
-#' get_bin_taxonomy_report(dataset)
+#' data <- miseq_sop_example()
+#' get_bin_taxonomy_report(data, "otu")
 #'
 #' @return data.frame
 get_bin_taxonomy_report <- function(data, type = "otu") {
@@ -479,13 +540,13 @@ get_bin_taxonomy_report <- function(data, type = "otu") {
 
 #' @title get_bin_types
 #' @description
-#' Get bin table types of an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get bin table types of a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @examples
 #'
 #' data <- miseq_sop_example()
-#' get_bin_types(data$data)
+#' get_bin_types(data)
 #'
 #' @return vector of strings
 get_bin_types <- function(data) {
@@ -494,12 +555,13 @@ get_bin_types <- function(data) {
 
 #' @title get_dataset_name
 #' @description
-#' Get the name of an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the name of a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @examples
-#' dataset <- new_dataset("my_dataset", 4)
-#' get_dataset_name(dataset)
+#' data <- new_dataset("my_dataset", 2)
+#' get_dataset_name(data)
 #'
 #' @return String, containing the name of the dataset
 get_dataset_name <- function(data) {
@@ -508,25 +570,17 @@ get_dataset_name <- function(data) {
 
 #' @title get_list
 #' @description
-#' Get data frame containing sequence bin assignments
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get data frame containing sequence bin assignments of a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param type a string indicating the type of bin assignments. Default "otu".
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-#'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
+#' data <- miseq_sop_example()
+#' get_list(data)
 #'
-#'   # (list) bins would look like:
-#'   # bin1             bin2        bin3
-#'   # seq1,seq2,seq4   seq3,seq6   seq5
-#'
-#'   get_list(dataset)
-#'
-#' @return data.frame
+#' @return 2 column data.frame sequences assigned to bins
 get_list <- function(data, type = "otu") {
     .Call(`_rdataset_get_list`, data, type)
 }
@@ -534,38 +588,29 @@ get_list <- function(data, type = "otu") {
 #' @title get_list_vector
 #' @description
 #' Get vector of strings containing the sequences bin data
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param type a string indicating the type of bin assignments. Default "otu".
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-#'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
+#' data <- miseq_sop_example()
+#' get_list_vector(data)
 #'
-#'   # (list) bins would look like:
-#'   # bin1             bin2        bin3
-#'   # seq1,seq2,seq4   seq3,seq6   seq5
-#'
-#'   get_list_vector(dataset)
-#'
-#' @return vector of strings containing the sequences in each bin separated
-#' by commas
+#' @return vector of strings containing the names of the sequences in each bin
+#' separated by commas
 get_list_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_list_vector`, data, type)
 }
 
 #' @title get_num_processors
 #' @description
-#' Get the number of processors used to summarize an instance of the
-#'  'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the number of processors used to summarize a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @examples
-#' dataset <- new_dataset("my_dataset", 4)
-#' get_num_processors(dataset)
+#' data <- new_dataset("my_dataset", 2)
+#' get_num_processors(data)
 #'
 #' @return Integer, containing number of processors
 get_num_processors <- function(data) {
@@ -574,273 +619,227 @@ get_num_processors <- function(data) {
 
 #' @title get_num_bins
 #' @description
-#' Get the number of bins of a specific type in an instance of the 'Dataset'
-#'  class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the number of bins of a specific type in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @param type a string indicating the type of clusters. Default = "otu".
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin2", "bin3")
-#' abundances <- c(110, 525, 80)
-#' assign_bins(dataset, bin_ids, abundances, "", "")
-#' get_num_bins(dataset)
+#' data <- miseq_sop_example()
+#' get_num_bins(data, "otu")
+#' get_num_bins(data, "asv")
+#' get_num_bins(data, "phylotype")
 #'
-#' @return Integer, the number of bins of a specific type in an instance of
-#' the 'Dataset' class.
+#' @return Integer, the number of bins of a specific type in a \link{dataset}
+#'  object
 get_num_bins <- function(data, type = "otu") {
     .Call(`_rdataset_get_num_bins`, data, type)
 }
 
 #' @title get_num_samples
 #' @description
-#' Get the number of samples in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the number of samples in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-#' sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#' assign_bins(dataset, bin_ids, sample_abundances, samples, "")
-#' get_num_samples(dataset)
+#' data <- new_dataset()
+#' bin_table <- readr::read_tsv(rdataset_example(
+#'                               "mothur2_bin_assignments_shared.tsv"),
+#'                               show_col_types = FALSE)
+#' assign_bins(data, bin_table)
+#' get_num_samples(data)
 #'
-#' @return Integer, the number of samples in an instance of the 'Dataset' class.
+#' @return Integer, the number of samples in a \link{dataset} object
 get_num_samples <- function(data) {
     .Call(`_rdataset_get_num_samples`, data)
 }
 
 #' @title get_num_sequences
 #' @description
-#' Get the number of sequences in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the number of sequences in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param distinct Boolean. When distinct is TRUE the number of unique
-#' sequence is returned.
+#' sequence is returned. Default = FALSE.
 #' @param sample, string containing the name of the sample you want number of
 #'  sequences for.
-#' @return An integer
+#'
+#' @examples
+#'
+#' data <- miseq_sop_example()
+#' get_num_sequences(data)
+#' get_num_sequences(data, TRUE)
+#' get_num_sequences(data, FALSE, "F3D0")
+#' get_num_sequences(data, TRUE, "F3D0")
+#'
+#' @return double, the number of sequences in a \link{dataset} object
 get_num_sequences <- function(data, distinct = FALSE, sample = "") {
     .Call(`_rdataset_get_num_sequences`, data, distinct, sample)
 }
 
 #' @title get_num_treatments
 #' @description
-#' Get the number of treatments in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the number of treatments in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-#' treatments <- c("early", "early", "late", "early", "late", "early")
-#' sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#' assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
-#' get_num_treatments(dataset)
+#' data <- miseq_sop_example()
+#' get_num_treatments(data)
 #'
-#' @return Integer, the number of treatments in an instance of the 'Dataset' class.
+#' @return Integer, the number of treatments in a \link{dataset} object
 get_num_treatments <- function(data) {
     .Call(`_rdataset_get_num_treatments`, data)
 }
 
 #' @title get_rabund
 #' @description
-#' Get data.frame containing bin abundance data
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get data.frame containing bin abundance data in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param type a string indicating the type of bin assignments. Default "otu".
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-#'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
+#'   data <- miseq_sop_example()
+#'   get_rabund(data)
 #'
-#'   # (rabund) bins would look like:
-#'   # bin1  bin2  bin3
-#'   # 111   525   80
-#'
-#'   get_rabund(dataset)
-#'
-#' @return data.frame
+#' @return a 2 column data.frame containing bin names and bin abundances
 get_rabund <- function(data, type = "otu") {
     .Call(`_rdataset_get_rabund`, data, type)
 }
 
 #' @title get_rabund_vector
 #' @description
-#' Get vector containing bin abundance data
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get vector containing bin abundance data in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param type a string indicating the type of bin assignments. Default "otu".
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
-#'   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   assign_bins(dataset, bin_ids, sequence_abundances, "", seq_ids)
-#'
-#'   # (rabund) bins would look like:
-#'   # bin1  bin2  bin3
-#'   # 111   525   80
-#'
-#'   get_rabund_vector(dataset)
+#'   data <- miseq_sop_example()
+#'   get_rabund_vector(data)
 #'
 #' @return vector containing each bins abundance
 get_rabund_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_rabund_vector`, data, type)
 }
 
+#' @title get_references
+#' @description
+#' Get a table containing resource references in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#' @return data.frame
+get_references <- function(data) {
+    .Call(`_rdataset_get_references`, data)
+}
+
 #' @title get_samples
 #' @description
-#' Get the samples in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the samples in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-#' sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#' assign_bins(dataset, bin_ids, sample_abundances, samples, "")
-#' get_samples(dataset)
+#' data <- miseq_sop_example()
+#' get_samples(data)
 #'
-#' @return vector of strings containing the names of the samples in an instance
-#'  of the 'Dataset' class.
+#' @return vector of strings containing the names of the samples in a
+#' \link{dataset} object
 get_samples <- function(data) {
     .Call(`_rdataset_get_samples`, data)
 }
 
 #' @title get_sample_treatment_assignments
 #' @description
-#' Get treatment assignments for samples in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get treatment assignments for samples in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
-#'              "sample1")
-#' treatments <- c("Early", "Early", "Late", "Early", "Late", "Early")
-#' sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#' assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
-#' get_sample_treatment_assignments(dataset)
+#' data <- miseq_sop_example()
+#' get_sample_treatment_assignments(data)
 #'
-#' @return 2 column data.frame containing the sample treatment assignments in
-#'  an instance of the 'Dataset' class.
+#' @return 2 column data.frame containing the sample treatment assignments in a
+#'  \link{dataset} object
 get_sample_treatment_assignments <- function(data) {
     .Call(`_rdataset_get_sample_treatment_assignments`, data)
 }
 
 #' @title get_sample_totals
 #' @description
-#' Get the number of sequences in each sample in an instance of the 'Dataset'
-#'  class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the number of sequences in each sample in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-#' sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#' assign_bins(dataset, bin_ids, sample_abundances, samples, "")
-#' get_sample_totals(dataset)
+#' data <- miseq_sop_example()
+#' get_sample_totals(data)
 #'
-#' @return vector containing the number of sequences in each
-#' sample in an instance of the 'Dataset' class.
+#' @return vector containing the number of sequences in each sample in a
+#' \link{dataset} object
 get_sample_totals <- function(data) {
     .Call(`_rdataset_get_sample_totals`, data)
 }
 
 #' @title get_scrap_report
 #' @description
-#' Get a scrap report containing sequences and bins eliminated from an instance
-#'  of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get a scrap report containing sequences and bins eliminated from a
+#' \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param type a string indicating the type of scrap report you would like.
 #'  Default = 'sequence'.
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin1", "bin1", "bin1",
-#'                "bin2", "bin2", "bin2", "bin3", "bin3")
-#'   seq_ids <- c("seq1", "seq1", "seq1", "seq2", "seq4", "seq4",
-#'                "seq3", "seq3", "seq6", "seq5", "seq5")
-#'   samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
-#'                "sample4", "sample2", "sample3", "sample1", "sample1",
-#'                "sample6")
-#'   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
-#'   assign_bins(dataset, bin_ids, abundances, samples, seq_ids, "otu")
+#'   data <- miseq_sop_example()
+#'   remove_bins(data, c("Otu005"), c("bad_bin"))
 #'
-#'   remove_bins(dataset, c("bin1"), c("bad_bin"))
+#'   sequence_scrap_report <- get_scrap_report(data, "sequence")
+#'   otu_scrap_report <- get_scrap_report(data, "otu")
 #'
-#'   sequence_scrap_report <- get_scrap_report(dataset, "sequence")
-#'   otu_scrap_report <- get_scrap_report(dataset, "otu")
-#'
-#' @return data.frame
+#' @return data.frame containing sequences or otus removed from the
+#' \link{dataset} object during analysis
 get_scrap_report <- function(data, type = "sequence") {
     .Call(`_rdataset_get_scrap_report`, data, type)
 }
 
 #' @title get_sequence_abundances
 #' @description
-#' Get the total abundance for each sequence in an instance of the 'Dataset'
-#'  class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the total abundance for each sequence in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @examples
 #'
-#' names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-#'              "seq2", "seq3", "seq3", "seq4")
-#' samples <- c("sample2", "sample3", "sample4",
-#'             "sample2", "sample3", "sample4",
-#'            "sample2", "sample3",
-#'            "sample4")
-#' abundances <- c(250, 400, 500,
-#'                25, 40, 50,
-#'                25, 25,
-#'                4)
+#' data <- miseq_sop_example()
+#' get_sequence_abundances(data)
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_abundance(dataset, names, abundances, samples, "")
-#' get_sequence_abundances(dataset)
-#'
-#' @return vector containing the total abundance for each sequence
-#'  in the 'Dataset' class.
+#' @return vector containing the total abundance for each sequence a
+#' \link{dataset} object
 get_sequence_abundances <- function(data) {
     .Call(`_rdataset_get_sequence_abundances`, data)
 }
 
 #' @title get_sequence_abundances_by_sample
 #' @description
-#' Get the abundances of each sequence in an instance of the 'Dataset' class
-#' parsed by sample.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the abundances of each sequence in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @examples
 #'
-#' names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-#'              "seq2", "seq3", "seq3", "seq4")
-#' samples <- c("sample2", "sample3", "sample4",
-#'             "sample2", "sample3", "sample4",
-#'            "sample2", "sample3",
-#'            "sample4")
-#' abundances <- c(250, 400, 500,
-#'                25, 40, 50,
-#'                25, 25,
-#'                4)
-#'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_abundance(dataset, names, abundances, samples, "")
-#' get_sequence_abundances_by_sample(dataset)
+#' data <- miseq_sop_example()
+#' get_sequence_abundances_by_sample(data)
 #'
 #' @return 2D vector ([num_seqs][num_samples]) containing the
 #' abundances of each sequence in an instance of the 'Dataset' class parsed by
@@ -851,137 +850,103 @@ get_sequence_abundances_by_sample <- function(data) {
 
 #' @title get_sequence_abundance_table
 #' @description
-#' Get the abundances of each sequence in an instance of the 'Dataset' class
-#' parsed by sample.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the abundances of each sequence in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-#' treatments <- c("early", "early", "late", "early", "late", "early")
-#' sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#' assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
+#' data <- miseq_sop_example()
+#' get_sequence_abundance_table(data)
 #'
-#' get_sequence_abundance_table(dataset)
-#'
-#' @return data.frame
+#' @return data.frame containing sequence abundance data in a \link{dataset}
+#' object
 get_sequence_abundance_table <- function(data) {
     .Call(`_rdataset_get_sequence_abundance_table`, data)
 }
 
 #' @title get_sequence_names
 #' @description
-#' Get the names of the sequences in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the names of the sequences in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param sample a string containing the name of the sample you
 #' would like sequence names for. For all samples in dataset, sample = "".
+#'
 #' @examples
 #'
-#' sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-#'              "seq2", "seq3", "seq3", "seq4")
-#' samples <- c("sample2", "sample3", "sample4",
-#'             "sample2", "sample3", "sample4",
-#'            "sample2", "sample3",
-#'            "sample4")
-#' abundances <- c(250, 400, 500,
-#'                25, 40, 50,
-#'                25, 25,
-#'                4)
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
-#' get_sequence_names(dataset)
+#' data <- miseq_sop_example()
 #'
-#' @return vector of string containing the names of the sequences in the
-#'  'Dataset' class.
+#' # to get the names of all the sequences in the dataset
+#'
+#' get_sequence_names(data)
+#'
+#' # to get the names of the sequences in sample 'F3D0' from the dataset
+#'
+#' get_sequence_names(data, "F3D0")
+#'
+#' @return vector of string containing the names of the sequences a
+#' \link{dataset} object
 get_sequence_names <- function(data, sample = "") {
     .Call(`_rdataset_get_sequence_names`, data, sample)
 }
 
 #' @title get_sequence_names_by_sample
 #' @description
-#' Get the names of the sequences in an instance of the 'Dataset' class parsed
-#' by sample.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the names of the sequences in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @param samples a vector of strings containing the names of the samples you
-#' would like sequence names for. For all samples in dataset, samples = "".
+#' would like sequence names for. By default all samples are included.
 #' @examples
 #'
-#' names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-#'              "seq2", "seq3", "seq3", "seq4")
-#' samples <- c("sample2", "sample3", "sample4",
-#'             "sample2", "sample3", "sample4",
-#'            "sample2", "sample3",
-#'            "sample4")
-#' abundances <- c(250, 400, 500,
-#'                25, 40, 50,
-#'                25, 25,
-#'                4)
+#' data <- miseq_sop_example()
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_abundance(dataset, names, abundances, samples, "")
-#' get_sequence_names_by_sample(dataset, "")
+#' get_sequence_names_by_sample(data)
 #'
 #' @return 2D vector of strings ([num_seqs][num_samples]) containing the
-#' names of each sequence in an instance of the 'Dataset' class parsed by
-#' sample.
-get_sequence_names_by_sample <- function(data, samples) {
+#' names of each sequence a \link{dataset} object parsed by sample.
+get_sequence_names_by_sample <- function(data, samples = as.character( c())) {
     .Call(`_rdataset_get_sequence_names_by_sample`, data, samples)
 }
 
 #' @title get_sequences
 #' @description
-#' Get the nucleotide strings for each sequence in an instance of the 'Dataset'
-#'  class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param sample a string containing the name of the sample you
+#' Get the nucleotide strings for each sequence in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param sample, a string containing the name of the sample you
 #' would like sequence names for. For all samples in dataset, sample = "".
 #' @examples
 #'
-#'  dataset <- new_dataset("miseq_sop", 4)
-#'  sequences <- read_fasta(rdataset_example("final.fasta"))
-#'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
-#'  get_sequences(dataset)
+#'  data <- miseq_sop_example()
+#'  get_sequences(data)
 #'
 #' @return vector of string containing nucleotide strings of the sequences in
-#' the 'Dataset' class.
+#' a \link{dataset} object
 get_sequences <- function(data, sample = "") {
     .Call(`_rdataset_get_sequences`, data, sample)
 }
 
 #' @title get_sequences_by_sample
 #' @description
-#' Get the nucleotide strings for each sequence in an instance of the 'Dataset'
-#' class parsed by sample.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the nucleotide strings for each sequence in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param samples a vector of strings containing the names of the samples you
-#' would like sequence names for. For all samples in dataset, samples = "".
+#' would like sequence names for. By default all samples are included.
 #' @examples
 #'
-#' seq_names <- c("seq1", "seq2", "seq3", "seq4")
-#' sequences <- c("ATTGC", "ACTGC", "AGTGC", "TTTGC")
-#'
-#' names <- c("seq1", "seq1", "seq2", "seq2",
-#'             "seq3", "seq4", "seq4")
-#' abundances <- c(200, 50, 400, 10, 25, 100,  425)
-#' samples <- c("sample1", "sample2", "sample1", "sample2",
-#'              "sample1", "sample1", "sample2")
-#'
-#' dataset <- new_dataset("my_dataset", 4)
-#' add_sequences(dataset, seq_names, sequences, "")
-#' assign_sequence_abundance(dataset, names, abundances, samples, "")
-#' get_sequences_by_sample(dataset, "")
+#' data <- miseq_sop_example()
+#' get_sequences_by_sample(data)
 #'
 #' @return 2D vector of strings ([num_seqs][num_samples]) containing the
-#' nucleotide strings for each sequence in an instance of the 'Dataset' class
-#' parsed by sample.
-get_sequences_by_sample <- function(data, samples) {
+#' nucleotide strings for each sequence a \link{dataset} object parsed by sample.
+get_sequences_by_sample <- function(data, samples = as.character( c())) {
     .Call(`_rdataset_get_sequences_by_sample`, data, samples)
 }
 
@@ -989,14 +954,12 @@ get_sequences_by_sample <- function(data, samples) {
 #' @description
 #' Get sequence report data: starts, ends, lengths, ambigs, longest
 #' homopolymers and numns.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#'
+#' @param data, a \link{dataset} object
 #' @examples
 #'
-#'  dataset <- new_dataset("miseq_sop", 4)
-#'  sequences <- read_fasta(rdataset_example("final.fasta"))
-#'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
-#'  get_sequence_report(dataset)
+#'  data <- miseq_sop_example()
+#'  get_sequence_report(data)
 #'
 #' @return data.frame
 get_sequence_report <- function(data) {
@@ -1007,36 +970,36 @@ get_sequence_report <- function(data) {
 #' @description
 #' Get a summary of the sequence report data, as well as reports of containing
 #' scrapped data.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#'
+#' @param data, a \link{dataset} object
 #' @examples
 #'
-#'  dataset <- new_dataset("miseq_sop", 4)
-#'  sequences <- read_fasta(rdataset_example("final.fasta"))
-#'  add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
-#'  get_sequence_summary(dataset)
+#'  data <- miseq_sop_example()
 #'
-#' @return data.frame
+#'  # Sequence summary, nothing has been scrapped
+#'
+#'  get_sequence_summary(data)
+#'
+#'  # Sequence summary, after removing sample 'F3D0'
+#'
+#'  remove_samples(data, c("F3D0"))
+#'  get_sequence_summary(data)
+#'
+#' @return list of data.frames containing the 'sequence_summary' table and
+#' 'scrap_summary' table if sequences have been removed
 get_sequence_summary <- function(data) {
     .Call(`_rdataset_get_sequence_summary`, data)
 }
 
 #' @title get_sequence_taxonomy_report
 #' @description
-#' Get the sequence classifications of an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the sequence classifications of a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @examples
 #'
-#' seq_ids <- c("seq1", "seq2", "seq3", "seq4")
-#' taxonomies <- c("Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
-#'               "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
-#'                "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
-#'            "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;")
-#'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_taxonomy(dataset, seq_ids, taxonomies)
-#' get_sequence_taxonomy_report(dataset)
+#' data <- miseq_sop_example()
+#' get_sequence_taxonomy_report(data)
 #'
 #' @return data.frame
 get_sequence_taxonomy_report <- function(data) {
@@ -1045,122 +1008,82 @@ get_sequence_taxonomy_report <- function(data) {
 
 #' @title get_bin_assignments
 #' @description
-#' Get data.frame containing bin abundance data
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get data.frame containing bin abundance data of a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
 #' @param type a string indicating the type of bin assignments. Default "otu".
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   samples <- c("sample1", "sample2", "sample5",
-#'    "sample1", "sample3", "sample1")
-#'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#'   assign_bins(dataset, bin_ids, sample_abundances, samples, "")
+#'   data <- miseq_sop_example()
+#'   get_bin_assignments(data, "otu")
 #'
-#'   # (shared) bins would look like:
-#'   # sample   bin1   bin2   bin3
-#'   # sample1  10     500    80
-#'   # sample2  100    0      0
-#'   # sample3  0      25     0
-#'   # sample5  1      0      0
-#'
-#'   get_bin_assignments(dataset)
-#'
-#' @return data.frame
+#' @return data.frame containing 2, 3 or 4 columns: bin_names, abundances,
+#' samples (if assigned), and treatments (if assigned)
 get_bin_assignments <- function(data, type = "otu") {
     .Call(`_rdataset_get_bin_assignments`, data, type)
 }
 
 #' @title get_shared_vector
 #' @description
-#' Get 2D vector containing bin abundance data by sample
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get 2D vector containing bin abundance data by sample in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object.
 #' @param type a string indicating the type of bin assignments. Default "otu".
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   samples <- c("sample1", "sample2", "sample5",
-#'    "sample1", "sample3", "sample1")
-#'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#'   assign_bins(dataset, bin_ids, sample_abundances, samples, "")
+#'  data <- miseq_sop_example()
+#'  get_shared_vector(data)
 #'
-#'   # (shared) bins would look like:
-#'   # sample   bin1   bin2   bin3
-#'   # sample1  10     500    80
-#'   # sample2  100    0      0
-#'   # sample3  0      25     0
-#'   # sample5  1      0      0
-#'
-#'   get_shared_vector(dataset)
-#'
-#' @return 2D vector ([num_bins][num_samples]) containing
-#' the abundances of each bin parsed by sample.
+#' @return 2D vector ([num_bins][num_samples]) containing the abundances of
+#' each bin parsed by sample.
 get_shared_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_shared_vector`, data, type)
 }
 
 #' @title get_treatments
 #' @description
-#' Get the treatments in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the treatments in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object.
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-#' treatments <- c("early", "early", "late", "early", "late", "early")
-#' sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#' assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
-#' get_treatments(dataset)
+#'  data <- miseq_sop_example()
+#'  get_treatments(data)
 #'
-#' @return vector of strings containing the names of the treatments in an
-#' instance of the 'Dataset' class.
+#' @return vector of strings containing the names of the treatments in a
+#' \link{dataset} object
 get_treatments <- function(data) {
     .Call(`_rdataset_get_treatments`, data)
 }
 
 #' @title get_treatment_totals
 #' @description
-#' Get the number of sequences in each treatment in an instance of the 'Dataset'
-#'  class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Get the number of sequences in each treatment in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object.
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-#' treatments <- c("early", "early", "late", "early", "late", "early")
-#' sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#' assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
-#' get_treatment_totals(dataset)
+#' data <- miseq_sop_example()
+#' get_treatment_totals(data)
 #'
-#' @return vector containing the number of sequences in each
-#' treatment in an instance of the 'Dataset' class.
+#' @return vector containing the number of sequences in each treatment in a
+#' \link{dataset} object
 get_treatment_totals <- function(data) {
     .Call(`_rdataset_get_treatment_totals`, data)
 }
 
 #' @title has_sample
 #' @description
-#' Determine if a given sample is in an instance of the 'Dataset'
-#'  class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Determine if a given sample is in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object.
 #' @param sample a string containing the name of a sample.
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#' samples <- c("sample1", "sample2", "sample5", "sample1", "sample3", "sample1")
-#' sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#' treatments <- c("early", "early", "late", "early", "late", "early")
-#' assign_bins(dataset, bin_ids, sample_abundances, samples, treatments)
-#' has_sample(dataset, "sample2")
+#' data <- miseq_sop_example()
+#' has_sample(data, "F3D0")
+#' has_sample(data, "not a valid sample")
 #'
 #' @return boolean indicating whether the dataset has a given sample
 has_sample <- function(data, sample) {
@@ -1169,18 +1092,13 @@ has_sample <- function(data, sample) {
 
 #' @title has_sequence_strings
 #' @description
-#' Determine if an instance of the 'Dataset' class contains sequence
-#' nucleotide strings.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Determine if a \link{dataset} object contains sequence nucleotide strings.
+#'
+#' @param data, a \link{dataset} object.
 #' @examples
 #'
-#' seq_names <- c("seq1", "seq2", "seq3", "seq4")
-#' sequences <- c("ATTGC", "ACTGC", "AGTGC", "TTTGC")
-#'
-#' dataset <- new_dataset("my_dataset", 4)
-#' add_sequences(dataset, seq_names, sequences, "")
-#' has_sequence_strings(dataset)
+#' data <- miseq_sop_example()
+#' has_sequence_strings(data)
 #'
 #' @return boolean indicating whether the dataset has sequence nucleotide
 #' strings.
@@ -1190,22 +1108,32 @@ has_sequence_strings <- function(data) {
 
 #' @title merge_bins
 #' @description
-#' Merge bins in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param bin_names a vector of strings containing the names of the bins you
+#' Designed with package integration in mind, the merge bins function allows
+#' you to merge bins in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object.
+#'
+#' @param bin_names, a vector of strings containing the names of the bins you
 #' would like merge. The resulting merged bin will be stored in the first
 #' bin_id in the vector.
-#' @param reason a string indicating why you are merging bins
-#' @param type a string indicating the type of bin clusters. Default = "otu"
+#' @param reason, a string indicating why you are merging bins. Default =
+#' "merged".
+#' @param type, a string indicating the type of bin clusters. Default = "otu"
+#'
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   bin_ids <- c("bin1", "bin2", "bin3")
-#'   abundances <- c(110, 525, 80)
-#'   assign_bins(dataset, bin_ids, abundances, "", "", "otu")
-#'   bins_to_merge <- c("bin1", "bin3")
-#'   merge_bins(dataset, bins_to_merge)
+#'  data <- miseq_sop_example()
+#'
+#'  # to merge otu5 and otu6
+#'
+#'  bins_to_merge <- c("Otu005", "Otu006")
+#'
+#'  merge_bins(data, bins_to_merge)
+#'
+#'  # If you look at the scrap report, you will see Otu006 with the trash code
+#'  # set to "merged".
+#'
+#'  get_scrap_report(data, "bin")
 #'
 merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
     invisible(.Call(`_rdataset_merge_bins`, data, bin_names, reason, type))
@@ -1213,28 +1141,41 @@ merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 
 #' @title merge_sequences
 #' @description
-#' Merge sequences in an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param sequence_names a vector of strings containing the names of the sequences you
+#' Designed with package integration in mind, the merge sequences function
+#' allows you to merge sequences in a \link{dataset} object.
+#'
+#' @param data, a \link{dataset} object.
+#'
+#' @param sequence_names, a vector of strings containing the names of the
 #' sequences you would like merge. The resulting merged sequence will be stored
 #' in the first sequence name in the vector.
 #' @param reason a string indicating why you are merging sequences.
 #' Default = "merged"
+#'
 #' @examples
 #'
-#' sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2",
-#'              "seq2", "seq3", "seq3", "seq4")
-#' samples <- c("sample2", "sample3", "sample4",
-#'             "sample2", "sample3", "sample4",
-#'            "sample2", "sample3", "sample4")
-#' abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
+#' data <- miseq_sop_example()
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
+#' get_num_sequences(data)
 #'
-#' seqs_to_merge <- c("seq1", "seq4")
-#' merge_sequences(dataset, seqs_to_merge, "identical")
+#' # For the sake of example let's merge the first 3 sequences from
+#' # miseq_sop_example:
+#'
+#' seqs_to_merge <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
+#'                    "M00967_43_000000000-A3JHG_1_1113_12711_3318",
+#'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
+#'
+#' merge_sequences(data, seqs_to_merge)
+#'
+#' # If you look at the scrap report, you will see the second two sequence
+#' # names, listed with the trash code set to "merged".
+#'
+#' get_scrap_report(data)
+#'
+#' # You can see from the get_num_sequences function that the merged sequence's
+#' # abundances are added to the first sequence.
+#'
+#' get_num_sequences(data)
 #'
 merge_sequences <- function(data, sequence_names, reason = "merged") {
     invisible(.Call(`_rdataset_merge_sequences`, data, sequence_names, reason))
@@ -1242,23 +1183,34 @@ merge_sequences <- function(data, sequence_names, reason = "merged") {
 
 #' @title remove_bins
 #' @description
-#' Remove bins from an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param bin_names a vector of strings containing the names of the bins you
+#' Designed with package integration in mind, the remove bins function allows
+#' you to remove bins from a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object.
+#'
+#' @param bin_names, a vector of strings containing the names of the bins you
 #' would like removed.
-#' @param trash_tags a vector of strings containing the reasons you are
+#' @param trash_tags, a vector of strings containing the reasons you are
 #' removing each bin
 #' @param type a string indicating the type of clusters.
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   bin_ids <- c("bin1", "bin2", "bin3")
+#'   data <- new_dataset("my_dataset", 2)
+#'
+#'   bin_names <- c("bin1", "bin2", "bin3")
 #'   abundances <- c(110, 525, 80)
-#'   assign_bins(dataset, bin_ids, abundances, "", "")
+#'
+#'   assign_bins(data, data.frame(bin_names = bin_names,
+#'                                abundances = abundances))
+#'
+#'   get_num_bins(data)
+#'
 #'   bins_to_remove <- c("bin1")
 #'   trash_tag <- c("bad_bin")
-#'   remove_bins(dataset, bins_to_remove, trash_tag)
+#'
+#'   remove_bins(data, bins_to_remove, trash_tag)
+#'
+#'   get_num_bins(data)
 #'
 remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
     invisible(.Call(`_rdataset_remove_bins`, data, bin_names, trash_tags, type))
@@ -1266,15 +1218,18 @@ remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
 
 #' @title remove_lineages
 #' @description
-#' Remove contaminants from an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param contaminants vector of strings containing the taxonomies you would
+#' Designed with package integration in mind, the remove lineages function
+#' allows you to remove contaminents from a \link{dataset}
+#'
+#' @param data, a \link{dataset} object.
+#'
+#' @param contaminants, vector of strings containing the taxonomies you would
 #' like to remove
-#' @param trash_tag a string containing reason you are removing the lineages.
+#' @param trash_tag, a string containing reason you are removing the lineages.
 #' Default = "contaminant".
+#'
 #' @examples
-#' dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
+#' data <- read_mothur(fasta = rdataset_example("final.fasta"),
 #'                        count = rdataset_example("final.count_table"),
 #'                        taxonomy = rdataset_example("final.taxonomy"),
 #'                        design = rdataset_example("mouse.time.design"),
@@ -1284,7 +1239,7 @@ remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
 #' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
 #'  "Eukaryota")
 #'
-#' remove_lineages(dataset$data, contaminants)
+#' remove_lineages(data, contaminants)
 #'
 remove_lineages <- function(data, contaminants, trash_tag = "contaminant") {
     invisible(.Call(`_rdataset_remove_lineages`, data, contaminants, trash_tag))
@@ -1292,25 +1247,24 @@ remove_lineages <- function(data, contaminants, trash_tag = "contaminant") {
 
 #' @title remove_samples
 #' @description
-#' Remove samples from an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param samples vector of strings containing the names of the samples to
-#' @examples
-#' dataset <- read_mothur(fasta = rdataset_example("final.fasta"),
-#'                        count = rdataset_example("final.count_table"),
-#'                        taxonomy = rdataset_example("final.taxonomy"),
-#'                        design = rdataset_example("mouse.time.design"),
-#'                        otu_list = rdataset_example("final.opti_mcc.list"),
-#'                        dataset_name = "miseq_sop")
+#' Remove samples from a \link{dataset} object
 #'
-#' get_num_samples(dataset$data)
+#' @param data, a \link{dataset} object.
+#'
+#' @param samples, vector of strings containing the names of the samples to
+#' remove.
+#'
+#' @examples
+#'
+#' data <- miseq_sop_example()
+#'
+#' get_num_samples(data)
 #'
 #' # To remove samples 'F3D0' and 'F3D1'
 #'
-#' remove_samples(dataset$data, c("F3D0", "F3D1"))
+#' remove_samples(data, c("F3D0", "F3D1"))
 #'
-#' get_num_samples(dataset$data)
+#' get_num_samples(data)
 #'
 remove_samples <- function(data, samples) {
     invisible(.Call(`_rdataset_remove_samples`, data, samples))
@@ -1318,53 +1272,77 @@ remove_samples <- function(data, samples) {
 
 #' @title remove_sequences
 #' @description
-#' Remove sequences from an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param names vector of strings containing the names of the sequences to remove
+#' Designed with package integration in mind, the remove sequences function
+#' allows you to remove sequences from a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object.
+#'
+#' @param sequence_names, vector of strings containing the names of the
+#' sequences to remove
 #' @param trash_tags vector of strings containing the reasons for the sequences
-#'  removals
+#' removals
+#'
 #' @examples
 #'
-#' seq_names <- c("seq1", "seq2", "seq3", "seq4")
+#' data <- miseq_sop_example()
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' add_sequences(dataset, seq_names, "", "")
+#' get_num_sequences(data)
 #'
-#' names_to_remove <- c("seq1", "seq3")
-#' trash_tags <- c("screen_seqs-too_short", "screen_seqs-contains_ns")
+#' # For the sake of example let's remove the first 3 sequences from
+#' # miseq_sop_example:
 #'
-#' remove_sequences(dataset, names_to_remove, trash_tags)
+#' seqs_to_remove <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
+#'                    "M00967_43_000000000-A3JHG_1_1113_12711_3318",
+#'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
+#' trash_codes <- c("example", "removing", "sequences")
 #'
-remove_sequences <- function(data, names, trash_tags) {
-    invisible(.Call(`_rdataset_remove_sequences`, data, names, trash_tags))
+#' remove_sequences(data, seqs_to_remove, trash_codes)
+#'
+#' # If you look at the scrap report, you the sequences names, listed with the
+#' # trash codes set to "example", "removing", "sequences".
+#'
+#' get_scrap_report(data)
+#'
+#' # You can see from the get_num_sequences function that the removed
+#' # sequence's abundances are removed from the dataset.
+#'
+#' get_num_sequences(data)
+#'
+remove_sequences <- function(data, sequence_names, trash_tags) {
+    invisible(.Call(`_rdataset_remove_sequences`, data, sequence_names, trash_tags))
 }
 
 #' @title set_abundance
 #' @description
-#' Set sequence abundances for an instance of the 'Dataset' class without
-#' sample data
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param sequence_names a vector of strings containing sequence names
-#' @param sequence_abundances vector containing the abundances of
-#' each sequence.
-#' @param reason a string containing the trash tag to be applied to any sequences
-#'  set to 0 abundance. Default = "update".
+#' Designed with package integration in mind, the set abundance function
+#' allows you to change the abundances of sequences in a \link{dataset} object
+#' without samples.
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param sequence_names, a vector of strings containing sequence names
+#' @param sequence_abundances, vector containing the abundances of each
+#' sequence.
+#' @param reason, a string containing the trash tag to be applied to any
+#' sequences set to 0 abundance. Default = "update".
+#'
 #' @examples
 #'
-#' sequence_names <- c("seq1", "seq2", "seq3",  "seq4")
-#' abundances <- c(1250, 65, 50, 4)
+#' names <- c("seq1", "seq2", "seq3",  "seq4")
+#' abunds <- c(1250, 65, 50, 4)
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_abundance(dataset, sequence_names, abundances, "", "")
-#' get_sequence_abundances(dataset)
+#' data <- new_dataset("my_dataset", 2)
+#'
+#' assign_sequence_abundance(data, data.frame(sequence_names = names,
+#'                                            abundances = abunds))
+#' get_sequence_abundances(data)
 #'
 #' seqs_to_update <- c("seq1", "seq3")
 #' new_abunds <- c(1000, 100)
 #'
-#' set_abundance(dataset, seqs_to_update, new_abunds)
-#' get_sequence_abundances(dataset)
+#' set_abundance(data, seqs_to_update, new_abunds)
+#'
+#' get_sequence_abundances(data)
 #'
 set_abundance <- function(data, sequence_names, sequence_abundances, reason = "update") {
     invisible(.Call(`_rdataset_set_abundance`, data, sequence_names, sequence_abundances, reason))
@@ -1372,16 +1350,20 @@ set_abundance <- function(data, sequence_names, sequence_abundances, reason = "u
 
 #' @title set_abundances
 #' @description
-#' Set sequence abundances for an instance of the 'Dataset' class with
-#' sample data
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param sequence_names a vector of strings containing sequence names
-#' @param abundances 2D vector ([num_seqs][num_samples]) containing
+#' Designed with package integration in mind, the set abundances function
+#' allows you to change the abundances of sequences in a \link{dataset} object
+#' with samples.
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param sequence_names, a vector of strings containing sequence names
+#' @param abundances, 2D vector ([num_seqs][num_samples]) containing
 #' the abundances of each sequence parsed by sample.
-#' @param reason a string containing the trash tag to be applied to any sequences
-#'  set to 0 abundance. Default = "update".
+#' @param reason, a string containing the trash tag to be applied to any
+#' sequences set to 0 abundance. Default = "update".
 #' @examples
+#'
+#' data <- new_dataset("my_dataset", 2)
 #'
 #' sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2", "seq2", "seq3",
 #'                     "seq3", "seq4")
@@ -1389,13 +1371,14 @@ set_abundance <- function(data, sequence_names, sequence_abundances, reason = "u
 #'              "sample4", "sample2", "sample3", "sample4")
 #' abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 #'
-#' dataset <- new_dataset("my_dataset", 4)
-#' assign_sequence_abundance(dataset, sequence_names, abundances, samples, "")
+#' assign_sequence_abundance(data, data.frame(sequence_names = sequence_names,
+#'                                            abundances = abundances,
+#'                                            samples = samples))
 #'
 #' seqs_to_update <- c("seq4")
 #' new_abunds <- list(c(20, 10, 4))
 #'
-#' set_abundances(dataset, seqs_to_update, new_abunds)
+#' set_abundances(data, seqs_to_update, new_abunds)
 #'
 set_abundances <- function(data, sequence_names, abundances, reason = "update") {
     invisible(.Call(`_rdataset_set_abundances`, data, sequence_names, abundances, reason))
@@ -1403,97 +1386,133 @@ set_abundances <- function(data, sequence_names, abundances, reason = "update") 
 
 #' @title set_bin_abundance
 #' @description
-#' Set bin abundances for an instance of the 'Dataset' class without sample data
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param bin_names a vector strings containing of bin names to set the
-#' abundances for.
-#' @param abunds vector containing the abundances of each bin.
-#' @param reason a string containing the trash tag to be applied to any bins
-#'  set to 0 abundance. Default = "update".
-#' @param type a string indicating the type of clusters. Default = "otu".
-#' @examples
+#' Designed with package integration in mind, the set bin abundance function
+#' allows you to change the abundances of bins in a \link{dataset} object
+#' without sample data.
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
+#' @param data, a \link{dataset} object
+#'
+#' @param bin_names, a vector strings containing of bin names to set the
+#' abundances for.
+#' @param abundances, vector containing the abundances of each bin.
+#' @param type, a string indicating the type of clusters. Default = "otu".
+#' @param reason, a string containing the trash tag to be applied to any bins
+#'  set to 0 abundance. Default = "update".
+#'
+#' @examples
+#'   # For example sake, let's create a dataset with 3 bins:
+#'
+#'   data <- new_dataset("my_dataset", 2)
+#'
 #'   bin_ids <- c("bin1", "bin2", "bin3")
 #'   abundances <- c(110, 525, 80)
-#'   assign_bins(dataset, bin_ids, abundances, "", "")
+#'
+#'   assign_bins(data, data.frame(bin_names = bin_ids,
+#'                                abundances = abundances))
+#'
+#'   get_bin_abundance(data, "bin1")
+#'   get_bin_abundance(data, "bin2")
+#'
+#'   # Now we can use set_bin_abundance to change the abundances of bin1 and
+#'   # bin2
 #'
 #'   bins <- c("bin1", "bin2")
 #'   new_abunds <- c(300, 250)
 #'
-#'   set_bin_abundance(dataset, bins, new_abunds)
-#'   get_bin_abundance(dataset, "bin1")
+#'   set_bin_abundance(data, bins, new_abunds)
 #'
-set_bin_abundance <- function(data, bin_names, abunds, reason = "update", type = "otu") {
-    invisible(.Call(`_rdataset_set_bin_abundance`, data, bin_names, abunds, reason, type))
+#'   get_bin_abundance(data, "bin1")
+#'   get_bin_abundance(data, "bin2")
+#'
+set_bin_abundance <- function(data, bin_names, abundances, type = "otu", reason = "update") {
+    invisible(.Call(`_rdataset_set_bin_abundance`, data, bin_names, abundances, type, reason))
 }
 
 #' @title set_bin_abundances
 #' @description
-#' Set bin abundances for an instance of the 'Dataset' class with sample data
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param bin_names a vector strings containing of bin names to set the
+#' Designed with package integration in mind, the set bin abundances function
+#' allows you to change the abundances of bins in a \link{dataset} object
+#' with sample data.
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param bin_names, a vector strings containing of bin names to set the
 #' abundances for.
-#' @param abunds 2D vector ([num_seqs][num_samples]) containing the
+#' @param abundances, 2D vector ([num_seqs][num_samples]) containing the
 #' abundances of each bin parsed by sample.
-#' @param reason a string containing the trash tag to be applied to any bins
-#'  set to 0 abundance. Default = "update".
 #' @param type a string indicating the type of clusters. Default = "otu".
+#' @param reason, a string containing the trash tag to be applied to any bins
+#'  set to 0 abundance. Default = "update".
+#'
 #' @examples
 #'
-#'   dataset <- new_dataset("my_dataset", 4)
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   samples <- c("sample1", "sample2", "sample5",
-#'    "sample1", "sample3", "sample1")
-#'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#'   assign_bins(dataset, bin_ids, sample_abundances, samples, "")
+#'   # For example sake, let's create a dataset with 3 bins:
 #'
-#'   # bin1's abundances parsed by sample: c(10,100,0,1)
-#'   old_bin1_abunds <- get_bin_abundances(dataset, "bin1")
+#'   data <- new_dataset("my_dataset", 2)
+#'
+#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
+#'   samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
+#'                "sample1")
+#'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
+#'
+#'   assign_bins(data, data.frame(bin_names = bin_ids,
+#'                                abundances = sample_abundances,
+#'                                samples = samples))
+#'
+#'   # You can see bin1's abundances parsed by sample using get_bin_abundances:
+#'   get_bin_abundances(data, "bin1")
+#'
+#'   # You can change bin1's abundances as follows:
 #'
 #'   new_bin1_abunds <- list(c(10,50,0,0))
 #'   bins <- c("bin1")
 #'
-#'   set_bin_abundances(dataset, bins, new_bin1_abunds)
-#'   get_bin_abundances(dataset, "bin1")
+#'   set_bin_abundances(data, bins, new_bin1_abunds)
 #'
-set_bin_abundances <- function(data, bin_names, abunds, reason = "update", type = "otu") {
-    invisible(.Call(`_rdataset_set_bin_abundances`, data, bin_names, abunds, reason, type))
+#'   get_bin_abundances(data, "bin1")
+#'
+set_bin_abundances <- function(data, bin_names, abundances, type = "otu", reason = "update") {
+    invisible(.Call(`_rdataset_set_bin_abundances`, data, bin_names, abundances, type, reason))
 }
 
 #' @title set_sequences
 #' @description
-#' Set sequence nucleotide strings for an instance of the 'Dataset' class
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param sequence_names a vector of strings containing sequence names
-#' @param sequences a vector of strings containing sequence nucleotide strings
-#' @param comments a vector of strings containing sequence comments
+#' Designed with package integration in mind, the set sequences function
+#' allows you to change the nucleotide strings of sequences in a \link{dataset}
+#' object. For example, set_sequences may be used after alignment to overwrite
+#' the unaligned sequences with aligned sequences.
+#'
+#' @param data, a \link{dataset} object
+#' @param sequence_names, a vector of strings containing sequence names
+#' @param sequences, a vector of strings containing sequence nucleotide strings
+#' @param comments, a vector of strings containing sequence comments.
+#' (Optional)
+#'
 #' @examples
 #'
-#' sequence_names <- c("seq1", "seq2", "seq3", "seq4")
-#' sequences <- c("ATTGC", "ACTGC", "AGTGC", "TTTGC")
+#' data <- new_dataset("my_dataset", 2)
 #'
-#' dataset <- new_dataset("my_dataset", 4)
+#' add_sequences(data, data.frame(sequence_names = c("seq1", "seq2",
+#'                                                   "seq3", "seq4")))
 #'
-#' add_sequences(dataset, sequence_names, "", "")
-#' set_sequences(dataset, sequence_names, sequences, "")
+#' set_sequences(data, c("seq1", "seq2","seq3", "seq4"),
+#'                     c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 #'
-set_sequences <- function(data, sequence_names, sequences, comments) {
+set_sequences <- function(data, sequence_names, sequences, comments = as.character( c())) {
     invisible(.Call(`_rdataset_set_sequences`, data, sequence_names, sequences, comments))
 }
 
 #' @title set_dataset_name
 #' @description
-#' Set the name of an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Set the name of a \link{dataset} object.
+#'
+#' @param data, a \link{dataset} object
 #' @param dataset_name, a string containing the desired name
+#'
 #' @examples
-#' dataset <- new_dataset("my_dataset", 4)
-#' set_dataset_name(dataset, "new_dataset_name")
+#'
+#' data <- new_dataset("my_dataset", 2)
+#' set_dataset_name(data, "new_dataset_name")
 #'
 set_dataset_name <- function(data, dataset_name) {
     invisible(.Call(`_rdataset_set_dataset_name`, data, dataset_name))
@@ -1501,14 +1520,14 @@ set_dataset_name <- function(data, dataset_name) {
 
 #' @title set_num_processors
 #' @description
-#' Set the number of processors used to summarize an instance of the
-#'  'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Set the number of processors used to summarize a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
 #' @param processors, a integer containing the desired number of processors
 #' @examples
-#' dataset <- new_dataset("my_dataset", 4)
-#' set_num_processors(dataset, 8)
+#'
+#' data <- new_dataset("my_dataset", 2)
+#' set_num_processors(data, 1)
 #'
 set_num_processors <- function(data, processors) {
     invisible(.Call(`_rdataset_set_num_processors`, data, processors))
@@ -1516,11 +1535,12 @@ set_num_processors <- function(data, processors) {
 
 #' @title is_aligned
 #' @description
-#' Determine if the instance of the 'Dataset' class contains aligned sequences.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
+#' Determine if a \link{dataset} object contains aligned sequences.
+#'
+#' @param data, a \link{dataset} object
 #' @examples
-#' dataset <- new_dataset("my_dataset", 4)
+#'
+#' dataset <- miseq_sop_example()
 #' is_aligned(dataset)
 #'
 #' @return Boolean
@@ -1528,35 +1548,55 @@ is_aligned <- function(data) {
     .Call(`_rdataset_is_aligned`, data)
 }
 
-#' @title load_dataset
+#' @title new_pointer
+#' @name new_pointer
 #' @description
-#' Load an instance of the 'Dataset' class from serialized raw data.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#' 'Dataset' c++ class.
-#' @param raw a Rcpp::RawVector containing the serialize 'Dataset' class data.
-#' @examples
-#' dataset <- new_dataset("my_dataset", 4)
-#' raw <- serialize(dataset)
-#' load_dataset(dataset, raw)
-#'
-load_dataset <- function(data, raw) {
-    invisible(.Call(`_rdataset_load_dataset`, data, raw))
+#' For internal use only, create an instance of the C++ 'Dataset' class.
+#' @param dataset_name, string containing dataset name
+#' @param processors, number of processors to use
+#' @return pointer to an instance of the C++ 'Dataset' class.
+#' @keywords internal
+new_pointer <- function(dataset_name = "", processors = 1L) {
+    .Call(`_rdataset_new_pointer`, dataset_name, processors)
 }
 
-#' @title serialize
+#' @title copy_pointer
+#' @name copy_pointer
 #' @description
-#' Serialize an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @examples
-#'
-#' dataset <- new_dataset("my_dataset", 4)
-#' raw <- serialize(dataset)
-#' load_dataset(dataset, raw)
-#'
-#' @return Rcpp::RawVector
-serialize <- function(data) {
-    .Call(`_rdataset_serialize`, data)
+#' For internal use only, copy an instance of the C++ 'Dataset' class.
+#' @param data, a \link{dataset} object
+#' @return pointer to an instance of the C++ 'Dataset' class.
+#' @keywords internal
+copy_pointer <- function(data) {
+    .Call(`_rdataset_copy_pointer`, data)
+}
+
+#' @title get_available_processors
+#' @name get_available_processors
+#' @description
+#' Get the number of available cores
+get_available_processors <- function() {
+    .Call(`_rdataset_get_available_processors`)
+}
+
+#' @title deserialize_dobject
+#' @name deserialize_dobject
+#' @description
+#' For internal use only, deserialize_dobject an instance of the C++ 'Dataset'
+#'  class.
+#' @param data, a \link{dataset} object
+deserialize_dobject <- function(data) {
+    invisible(.Call(`_rdataset_deserialize_dobject`, data))
+}
+
+#' @title serialize_dobject
+#' @name serialize_dobject
+#' @description
+#' For internal use only, serialize_dobject an instance of the C++ 'Dataset'
+#' class.
+#' @param data, a \link{dataset} object
+serialize_dobject <- function(data) {
+    invisible(.Call(`_rdataset_serialize_dobject`, data))
 }
 
 #' @name summarize_reports

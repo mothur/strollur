@@ -4,31 +4,57 @@
 \alias{add_sequences}
 \title{add_sequences}
 \usage{
-add_sequences(data, sequence_names, sequences, comments)
+add_sequences(
+  data,
+  table,
+  reference = NULL,
+  sequence_name = "sequence_names",
+  sequence = "sequences",
+  comment = "comments"
+)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
-\item{sequence_names}{a vector of strings containing sequence names}
+\item{table, }{a data.frame containing names, sequences(optional) and
+comments(optional).}
 
-\item{sequences}{a vector of strings containing sequence nucleotide strings}
+\item{reference, }{a list created by the function [new_reference]. Optional.}
 
-\item{comments}{a vector of strings containing sequence comments}
+\item{sequence_name, }{a string containing the name of the column in 'table'
+that contains the sequence names. Default column name is 'sequence_names'.}
+
+\item{sequence, }{a string containing the name of the column in 'table' that
+contains the sequence nucleotide strings. Default column name is
+'sequences'.}
+
+\item{comment, }{a string containing the name of the column in
+'table' that contains the sequence comments. Default column name is
+'comments'.}
 }
 \value{
 double containing the number of sequences added
 }
 \description{
-Add sequence data to an instance of the 'Dataset' class
+Add sequence data to a \link{dataset} object
 }
 \examples{
 
- dataset <- new_dataset("miseq_sop", 4)
- sequences <- read_fasta(rdataset_example("final.fasta"))
- add_sequences(dataset, sequences$sequence_names, sequences$sequences, "")
+ data <- new_dataset("miseq_sop", 2)
+ fasta_data <- read_fasta(rdataset_example("final.fasta"))
+ add_sequences(data, fasta_data)
 
-}
-\seealso{
-[dataset$add_sequences()]
+# With the additional parameters to add information about the reference
+
+ data <- new_dataset("miseq_sop", 2)
+ fasta_data <- read_fasta(rdataset_example("final.fasta"))
+
+ add_sequences(data, fasta_data,
+               new_reference("silva.bacteria.fasta",
+               "1.38.1",
+               "alignment by mothur2 v1.0 using default options",
+               "https://mothur.org/wiki/silva_reference_files/"))
+
+# You can also add references using the 'add_references' function.
+
 }

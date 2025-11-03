@@ -24,7 +24,7 @@
 unpack_qiime2_artifact <- function(qza, dir_path = NULL) {
   # error checks
   if (!file.exists(qza)) {
-    abort_nonexistant_file(qza)
+    .abort_nonexistant_file(qza)
   }
 
   # if no dir given, set to current working directory

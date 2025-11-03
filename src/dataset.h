@@ -32,6 +32,10 @@ static bool inline setContains(const set<string>& t, string tag) {
     return (t.find(tag) != t.end());
 }
 
+static bool inline vectorContains(const vector<string>& t, string tag) {
+    return (std::find(t.begin(), t.end(), tag) != t.end());
+}
+
 static bool inline isZero(const float& t) {
     return ((fabs(t - 0.0f)) < EPSILON);
 }

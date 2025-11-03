@@ -7,8 +7,7 @@
 get_bin_names(data, type = "otu")
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
+\item{data, }{a \link{dataset} object}
 
 \item{type, }{string indicating the type of clusters. Default = "otu".}
 }
@@ -16,11 +15,11 @@ get_bin_names(data, type = "otu")
 vector containing the names of bins
 }
 \description{
-Get the names of the bins in an instance of the  'Dataset' class.
+Get the names of the bins in a \link{dataset} object
 }
 \examples{
 
   miseq <- miseq_sop_example()
-  get_bin_names(miseq$data, "phylotype")
+  get_bin_names(miseq, "phylotype")
 
 }
