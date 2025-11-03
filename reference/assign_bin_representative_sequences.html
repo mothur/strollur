@@ -52,9 +52,11 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assign_bin_representative_sequences</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  <span class="va">bin_names</span>,</span>
-<span>  <span class="va">sequence_names</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"otu"</span></span>
+<span>  <span class="va">table</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"otu"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  bin_name <span class="op">=</span> <span class="st">"bin_names"</span>,</span>
+<span>  sequence_name <span class="op">=</span> <span class="st">"sequence_names"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -62,35 +64,35 @@
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>a data.frame containing bin_names and representative
-sequences for your data.</p></dd>
+<dl><dt id="arg-data-">data, <a class="anchor" aria-label="anchor" href="#arg-data-"></a></dt>
+<dd><p>a <a href="dataset.html">dataset</a> object</p></dd>
 
 
-<dt id="arg-bin-names">bin_names<a class="anchor" aria-label="anchor" href="#arg-bin-names"></a></dt>
-<dd><p>a vector strings containing bin names or if using the
-'data' parameter a string containing the name of the column in 'data'
-that contains the bin names. Default column name is 'bin_names'.</p></dd>
-
-
-<dt id="arg-sequence-names">sequence_names<a class="anchor" aria-label="anchor" href="#arg-sequence-names"></a></dt>
-<dd><p>a vector of strings containing bin representative
-sequences or if using the 'data' parameter a string containing the name
-of the column in 'data' that contains the bin names. Default column name
-is 'sequence_names'.</p></dd>
+<dt id="arg-table-">table, <a class="anchor" aria-label="anchor" href="#arg-table-"></a></dt>
+<dd><p>a data.frame containing bin representative assignments</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>a string indicating the type of bin assignments. Default "otu".</p></dd>
 
+
+<dt id="arg-reference-">reference, <a class="anchor" aria-label="anchor" href="#arg-reference-"></a></dt>
+<dd><p>a list created by the function [new_reference]. Optional.</p></dd>
+
+
+<dt id="arg-bin-name-">bin_name, <a class="anchor" aria-label="anchor" href="#arg-bin-name-"></a></dt>
+<dd><p>a string containing the name of the column in 'table' that
+contains the bin names. Default column name is 'bin_names'.</p></dd>
+
+
+<dt id="arg-sequence-name">sequence_name<a class="anchor" aria-label="anchor" href="#arg-sequence-name"></a></dt>
+<dd><p>a string containing the name of the column in 'table' that
+contains the bin names. Default column name is 'sequence_names'.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>double containing the number of representative sequences assigned</p>
-    </div>
-    <div id="see-also">
-    <h2>See also</h2>
-    <div class="dont-index"><p>[dataset$assign_bin_representative_sequences()]</p></div>
     </div>
 
     <div id="ref-examples">
@@ -105,15 +107,18 @@ is 'sequence_names'.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># For examples sake, select first 531 sequences to be the representatives</span></span></span>
-<span class="r-in"><span>  <span class="va">num_bins</span> <span class="op">&lt;-</span> <span class="va">miseq</span><span class="op">$</span><span class="fu">get_num_bins</span><span class="op">(</span><span class="st">"otu"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">rep_names</span> <span class="op">&lt;-</span> <span class="va">miseq</span><span class="op">$</span><span class="fu">get_sequence_names</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">num_bins</span><span class="op">]</span></span></span>
-<span class="r-in"><span>  <span class="va">bin_names</span> <span class="op">&lt;-</span> <span class="va">miseq</span><span class="op">$</span><span class="fu">get_bin_names</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">num_bins</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_num_bins.html">get_num_bins</a></span><span class="op">(</span><span class="va">miseq</span>, <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="fu">assign_bin_representative_sequences</span><span class="op">(</span><span class="va">miseq</span><span class="op">$</span><span class="va">data</span>,</span></span>
-<span class="r-in"><span>                                      <span class="va">bin_names</span>, <span class="va">rep_names</span>, <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># For examples sake, select first 531 sequences to be the representatives</span></span></span>
+<span class="r-in"><span>  <span class="va">table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>bin_names <span class="op">=</span> <span class="fu"><a href="get_bin_names.html">get_bin_names</a></span><span class="op">(</span><span class="va">miseq</span>, <span class="st">"otu"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      sequence_names <span class="op">=</span> <span class="fu"><a href="get_sequence_names.html">get_sequence_names</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">num_bins</span><span class="op">]</span></span></span>
+<span class="r-in"><span>                      <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu">assign_bin_representative_sequences</span><span class="op">(</span><span class="va">miseq</span>, <span class="va">table</span>, <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

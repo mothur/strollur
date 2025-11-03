@@ -59,34 +59,76 @@ scrapped data.</p>
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>an Rcpp::XPtr&lt;Dataset&gt; pointer to an instance of the
-'Dataset' c++ class.</p></dd>
+<dl><dt id="arg-data-">data, <a class="anchor" aria-label="anchor" href="#arg-data-"></a></dt>
+<dd><p>a <a href="dataset.html">dataset</a> object</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.frame</p>
+    <p>list of data.frames containing the 'sequence_summary' table and
+'scrap_summary' table if sequences have been removed</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"miseq_sop"</span>, <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="va">sequences</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.fasta"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="add_sequences.html">add_sequences</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">sequences</span><span class="op">$</span><span class="va">sequence_names</span>, <span class="va">sequences</span><span class="op">$</span><span class="va">sequences</span>, <span class="st">""</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
-<span class="r-in"><span> <span class="fu">get_sequence_summary</span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Sequence summary, nothing has been scrapped</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="fu">get_sequence_summary</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $sequence_summary</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends   nbases ambigs polymers numns    numseqs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375 249.0000      0 3.000000     0      1.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Median:          1  375 252.0000      0 4.000000     0  56982.500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum:         1  375 256.0000      0 6.000000     0 113963.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375 252.4472      0 4.368699     0      0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Sequence summary, after removing sample 'F3D0'</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="remove_samples.html">remove_samples</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="fu">get_sequence_summary</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sequence_summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends   nbases ambigs polymers numns  numseqs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375 249.0000      0 3.000000     0    1.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25%-tile:        1  375 252.0000      0 4.000000     0  607.250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Median:          1  375 253.0000      0 4.000000     0 1213.500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum:         1  375 256.0000      0 6.000000     0 2425.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375 252.7406      0 4.496082     0    0.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375 249.0000      0 3.000000     0      1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2695.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25%-tile:        1  375 252.0000      0 4.000000     0  26944.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Median:          1  375 252.0000      0 4.000000     0  53887.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75%-tile:        1  375 253.0000      0 5.000000     0  80830.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97.5%-tile:      1  375 253.0000      0 6.000000     0 105078.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum:         1  375 256.0000      0 6.000000     0 107772.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375 252.4444      0 4.361532     0      0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $scrap_summary</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sequence_scrap_summary.trash_code sequence_scrap_summary.unique_count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                    removedSamples                                 101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sequence_scrap_summary.total_count otu_scrap_summary.trash_code</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                  0               removedSamples</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   otu_scrap_summary.otu_count otu_scrap_summary.total_abundance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                          14                                 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   asv_scrap_summary.trash_code asv_scrap_summary.asv_count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1               removedSamples                         101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   asv_scrap_summary.total_abundance phylotype_scrap_summary.trash_code</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                 1                     removedSamples</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   phylotype_scrap_summary.phylotype_count</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   phylotype_scrap_summary.total_abundance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -96,16 +96,11 @@ count file"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># You can add your sequence abundance data to your dataset as follows:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign_sequence_abundance</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>  <span class="va">sample_table</span><span class="op">$</span><span class="va">id</span>,</span></span>
-<span class="r-in"><span>  <span class="va">sample_table</span><span class="op">$</span><span class="va">abundance</span>,</span></span>
-<span class="r-in"><span>  <span class="va">sample_table</span><span class="op">$</span><span class="va">sample</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="assign_sequence_abundance.html">assign_sequence_abundance</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">sample_table</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
 <span class="r-in"><span><span class="va">data</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample   Total:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> F3D0	6191 </span>
