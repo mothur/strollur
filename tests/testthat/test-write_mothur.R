@@ -31,7 +31,7 @@ test_that("write_mothur - miseq", {
     show_col_types = FALSE
   ))
 
-  data$add_metadata(readr::read_tsv(outputs[14],
+  add_metadata(data, readr::read_tsv(outputs[14],
     col_names = TRUE,
     show_col_types = FALSE
   ))
@@ -50,7 +50,7 @@ test_that("write_mothur - miseq", {
   expect_equal(data$get_num_bins("otu"), 531)
   expect_equal(data$get_num_bins("asv"), 2425)
   expect_equal(data$get_num_bins("phylotype"), 63)
-  expect_equal(data$get_metadata(), miseq$get_metadata())
+  expect_equal(data$get_metadata_table(), miseq$get_metadata_table())
   expect_equal(get_references(data), get_references(miseq))
 })
 
@@ -94,23 +94,20 @@ test_that("write_mothur - bin_data only", {
 test_that("write_mothur - report_data only", {
   data <- dataset$new()
 
-  data$add_alignment_report(readr::read_tsv(
+  add_report(data, readr::read_tsv(
     rdataset_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
-  ), "QueryName")
+  ), "alignment_report", "QueryName")
 
-  data$add_contigs_assembly_report(readr::read_tsv(
+  add_report(data, readr::read_tsv(
     rdataset_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
-  ), "Name")
+  ), "contigs_report", "Name")
 
   outputs <- write_mothur(data,
     dir_path = get_full_name("tmp"),
     compress = TRUE,
-    tags = c(
-      "alignment_report",
-      "contigs_assembly_report"
-    )
+    tags = c("reports")
   )
   zip_file <- get_full_name("tmp.zip")
 
@@ -118,15 +115,17 @@ test_that("write_mothur - report_data only", {
 
   data2 <- dataset$new()
 
-  data2$add_alignment_report(readr::read_tsv(
-    outputs[1],
-    col_names = TRUE, show_col_types = FALSE
-  ), "QueryName")
+  seq_col <- list("QueryName", "Name")
+  names(seq_col) <- outputs
 
-  data2$add_contigs_assembly_report(readr::read_tsv(
-    outputs[2],
-    col_names = TRUE, show_col_types = FALSE
-  ), "Name")
+  for (output in outputs) {
+    extension <- tail(strsplit(output, "\\.")[[1]], 1)
+
+    add_report(data2, readr::read_tsv(
+      output,
+      col_names = TRUE, show_col_types = FALSE
+    ), extension, seq_col[[output]])
+  }
 
   for (output in outputs) {
     remove_file(output)
@@ -138,17 +137,20 @@ test_that("write_mothur - report_data only", {
   expect_equal(data$get_num_sequences(TRUE), 5)
   expect_equal(data$get_num_sequences(), 5)
   expect_equal(
-    data$get_contigs_assembly_report(),
-    data2$get_contigs_assembly_report()
+    get_reports(data)[["contigs_report"]],
+    get_reports(data2)[["contigs_report"]]
   )
-  expect_equal(data$get_alignment_report(), data2$get_alignment_report())
+  expect_equal(
+    get_reports(data)[["alignment_report"]],
+    get_reports(data2)[["alignment_report"]]
+  )
 
   data <- dataset$new()
 
-  data$add_chimera_report(readr::read_tsv(
+  add_report(data, readr::read_tsv(
     rdataset_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
-  ), "Query")
+  ), "chimera_report", "Query")
 
   outputs <- write_mothur(data,
     dir_path = get_full_name("tmp"),
@@ -161,10 +163,10 @@ test_that("write_mothur - report_data only", {
 
   data2 <- dataset$new()
 
-  data2$add_chimera_report(readr::read_tsv(
+  add_report(data2, readr::read_tsv(
     outputs[2],
     col_names = TRUE, show_col_types = FALSE
-  ), "Query")
+  ), "chimera_report", "Query")
 
   for (output in outputs) {
     remove_file(output)
@@ -176,7 +178,7 @@ test_that("write_mothur - report_data only", {
   expect_equal(data$get_num_sequences(TRUE), 71)
   expect_equal(data$get_num_sequences(), 71)
   expect_equal(
-    data$get_chimera_report(),
-    data2$get_chimera_report()
+    get_reports(data)[["chimera_report"]],
+    get_reports(data2)[["chimera_report"]]
   )
 })

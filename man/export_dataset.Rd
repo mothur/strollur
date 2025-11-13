@@ -11,8 +11,9 @@ export_dataset(data, tags = as.character(c()))
 'Dataset' c++ class.}
 
 \item{tags}{a vector of strings containing the items you wish to export.
-Options are 'sequence_data' and 'bin_data'. By default, everything is
- exported.}
+Options are 'sequence_data' and 'bin_data', 'metadata',
+'references', 'sequence_tree', 'sample_tree', and 'reports'.
+By default, everything is exported.}
 }
 \value{
 Rcpp::List, containing the data in the 'Dataset
@@ -23,6 +24,6 @@ Export all data from an instance of the 'Dataset' class.
 \examples{
 
 dataset <- new_dataset("my_dataset", 2)
-export_dataset(dataset, c(""))
+export_dataset(dataset)
 
 }

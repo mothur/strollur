@@ -6,9 +6,8 @@
 #' can create the table using 'export(dataset)'.
 #' @param tags a vector of strings containing the items you wish to export.
 #' Options are 'sequence_data', 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
-#' 'contigs_assembly_report' and 'chimera_report'. By default, everything is
-#'  imported.
+#' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
+#' By default, everything is imported.
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
@@ -267,7 +266,7 @@ import_dataset <- function(table, tags = NULL) {
 
   # add metadata
   if (("metadata" %in% names) && (!ht || ("metadata" %in% tags))) {
-    data$add_metadata(table$metadata)
+    add_metadata(data, table$metadata)
   } else if (("metadata" %in% tags) && !("metadata" %in% names)) {
     .abort_missing_tag_alert("metadata")
   }
@@ -279,37 +278,15 @@ import_dataset <- function(table, tags = NULL) {
     .abort_missing_tag_alert("references")
   }
 
-  # add alignment report
-  report <- "alignment_report"
-  if ((report %in% names) && (!ht || (report %in% tags))) {
-    data$add_alignment_report(
-      table$alignment_report,
-      attributes(table$alignment_report)$sequence_name_column
-    )
-  } else if ((report %in% tags) && !(report %in% names)) {
-    .abort_missing_tag_alert("alignment_report")
-  }
+  if (("reports" %in% names) && (!ht || ("reports" %in% tags))) {
+    report_names <- names(table$reports)
 
-  # add chimera report
-  report <- "chimera_report"
-  if ((report %in% names) && (!ht || (report %in% tags))) {
-    data$add_chimera_report(
-      table$chimera_report,
-      attributes(table$chimera_report)$sequence_name_column
-    )
-  } else if ((report %in% tags) && !(report %in% names)) {
-    .abort_missing_tag_alert("chimera_report")
-  }
-
-  # add contigs report
-  report <- "contigs_assembly_report"
-  if ((report %in% names) && (!ht || (report %in% tags))) {
-    data$add_contigs_assembly_report(
-      table$contigs_assembly_report,
-      attributes(table$contigs_assembly_report)$sequence_name_column
-    )
-  } else if ((report %in% tags) && !(report %in% names)) {
-    .abort_missing_tag_alert("contigs_assembly_report")
+    for (name in report_names) {
+      name_col <- attr(table$reports[[name]], "sequence_name")
+      add_report(data, table$reports[[name]], name, name_col)
+    }
+  } else if (("reports" %in% tags) && !("reports" %in% names)) {
+    .abort_missing_tag_alert("reports")
   }
 
   # add sequence_tree

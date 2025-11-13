@@ -12,9 +12,8 @@ can create the table using 'export(dataset)'.}
 
 \item{tags}{a vector of strings containing the items you wish to export.
 Options are 'sequence_data', 'bin_data', 'metadata',
-'references', 'sequence_tree', 'sample_tree', 'alignment_report',
-'contigs_assembly_report' and 'chimera_report'. By default, everything is
- imported.}
+'references', 'sequence_tree', 'sample_tree', and 'reports'.
+By default, everything is imported.}
 }
 \value{
 a \link{dataset} object

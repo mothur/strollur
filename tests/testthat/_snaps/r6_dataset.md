@@ -5,6 +5,7 @@
     Output
       miseq_sop:
       
+      sequence_summary:
                   starts ends   nbases ambigs polymers numns    numseqs
       Minimum:         1  375 249.0000      0 3.000000     0      1.000
       2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
@@ -50,6 +51,7 @@
       
       miseq_sop:
       
+      sequence_summary:
                   starts ends   nbases ambigs polymers numns    numseqs
       Minimum:         1  375 249.0000      0 3.000000     0      1.000
       2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075

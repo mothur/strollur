@@ -70,16 +70,18 @@ test_that("import - miseq_sop_example", {
   data <- dataset$new()
   abunds <- c(1, 10, 100)
   bins <- c("otu1", "otu2", "otu3")
-  data$add_alignment_report(
+  add_report(
+    data,
     readr::read_tsv(rdataset_example("alignment_data.tsv"),
       col_names = TRUE, show_col_types = FALSE
-    ),
+    ), "alignment_report",
     "QueryName"
   )
-  data$add_contigs_assembly_report(
+  add_report(
+    data,
     readr::read_tsv(rdataset_example("contigs_data.tsv"),
       col_names = TRUE, show_col_types = FALSE
-    ), "Name"
+    ), "contigs_report", "Name"
   )
   assign_bins(data, data.frame(bin_names = bins, abundances = abunds))
 
@@ -129,8 +131,6 @@ test_that("import - no sequence data", {
   expect_error(import_dataset(table, c("sequence_data")))
   expect_error(import_dataset(table, c("metadata")))
   expect_error(import_dataset(table, c("references")))
-  expect_error(import_dataset(table, c("alignment_report")))
-  expect_error(import_dataset(table, c("contigs_assembly_report")))
   expect_error(import_dataset(table, c("sequence_tree")))
 
   attr(table, "rdataset_version") <- "0.2.1"

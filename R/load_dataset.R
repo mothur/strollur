@@ -5,8 +5,8 @@
 #' @param file a string containing the .rds file name.
 #' @examples
 #'
-#' dataset <- load_dataset(rdataset_example("miseq_sop.rds"))
-#' dataset
+#' data <- load_dataset(rdataset_example("miseq_sop.rds"))
+#' data
 #'
 #' @return a \link{dataset} object
 #' @export

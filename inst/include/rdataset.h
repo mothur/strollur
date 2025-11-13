@@ -22,13 +22,15 @@
 #include <cereal/types/vector.hpp> // Include for std::vector serialization
 #include <cereal/types/set.hpp> // Include for std::set serialization
 #include <cereal/types/map.hpp>   // Include for std::map serialization
+#include <cereal/types/list.hpp>
 
-// [[Rcpp::plugins(cpp11)]]
-// [[Rcpp::depends(RcppThread)]]
-// [[Rcpp::depends(Rcereal)]]
+//[[Rcpp::plugins(cpp11)]]
+//[[Rcpp::depends(RcppThread)]]
+//[[Rcpp::depends(Rcereal)]]
 
 using namespace std;
 
+const set<string> nullSet;  // used to pass blank set
 const vector<string> nullVector;  // used to pass blank vector
 const vector< vector<string> > null2DVector;  // used to pass blank vector
 const vector<int> nullIntVector;  // used to pass blank ints
@@ -266,7 +268,51 @@ private:
            sampleTreatment, hasSampleData, hasTreatments);
     }
 };
+/******************************************************************************/
+/*
+ * The 'Report' class store a data.frame as vectors to allow for serialization
+ */
 
+class Report {
+
+public:
+
+    Report();
+    ~Report() {}
+
+    void addReport(Rcpp::DataFrame& report);
+    void clear();
+    Rcpp::DataFrame getReport(set<string> datasetNames);
+
+    Rcpp::DataFrame summarizeReport(set<string> datasetNames,
+                                    int proc, vector<float> counts);
+
+    bool hasReport;
+
+private:
+
+    map<int, string> columnNames;
+    string sequence_name;
+    int sequence_name_col, numRows;
+    bool hasStr, hasInt, hasNum, hasLog, hasColumnNames;
+
+    // index in df -> df[index] values
+    map<int, vector<string>> strColumns;
+    map<int, vector<int>> intColumns;
+    map<int, vector<double>> numColumns;
+    map<int, vector<bool>> logColumns;
+
+    void pruneReport(set<string> names);
+
+    friend class cereal::access; // Grants Cereal access
+
+    template<class Archive>
+    void serialize(Archive& ar) {
+        ar(columnNames, sequence_name, hasStr, hasInt, hasNum, hasLog,
+           hasColumnNames, strColumns, intColumns, numColumns, logColumns,
+           sequence_name_col, numRows);
+    }
+};
 /******************************************************************************/
 /*
  * The 'BinTable' class will store asv / otu / phylotype data.
@@ -454,6 +500,8 @@ public:
                         vector<string> c = nullVector,
                         Reference reference = nullReference);
     double addReferences(const vector<Reference>& refs);
+    void addReport(Rcpp::DataFrame& report, string type);
+    void addMetadata(Rcpp::DataFrame& metadata);
 
     // names, abundances, samples(optional), treatments(optional)
     double assignSequenceAbundance(vector<string>& names,
@@ -501,11 +549,14 @@ public:
     const int getNumBins(string type = "otu");
     const int getNumSamples();
     const int getNumTreatments();
+
+    const Rcpp::DataFrame getMetadata();
     // 2 column dataframe - bin_id, abundance
     const Rcpp::DataFrame getRAbund(string type = "otu");
     // vector of total abundances for each bin
     const vector<float> getRAbundVector(string type = "otu");
     const Rcpp::DataFrame getReferences();
+    const Rcpp::List getReports();
     const vector<string> getSamples();
     const vector<double> getSampleTotals();
     const Rcpp::DataFrame getSampleTreatmentAssignments();
@@ -611,6 +662,10 @@ private:
     // ie. otu, asv, phylotype
     vector<BinTable> binTables;
 
+    // sequence reports
+    map<string, Report> reports;
+    Report metadata;
+
     // if unaligned, returns -1
     int getAlignedLength();
     const vector<int> getIncludedNamesIndexes();
@@ -631,7 +686,8 @@ private:
            starts, ends, lengths, ambigs, polymers, numns, taxonomies,
            tableSeqs, seqIndex, badAccnos, uniqueBad, count, binTables,
            datasetName, alignmentLength, isAligned,
-           hasSequenceData, hasSequenceTaxonomy, numUnique, processors);
+           hasSequenceData, hasSequenceTaxonomy, numUnique, processors,
+           reports, metadata);
     }
 };
 

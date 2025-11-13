@@ -65,6 +65,9 @@ Dataset::Dataset(const Dataset& dataset) {
         table.clone(dataset.binTables[i]);
         binTables.push_back(table);
     }
+
+    metadata = dataset.metadata;
+    reports = dataset.reports;
 }
 /******************************************************************************/
 void Dataset::loadFromSerialized(Rcpp::RawVector serializedDataset) {
@@ -115,6 +118,8 @@ void Dataset::clear(vector<string> tags) {
         count.clear();
         binTables.clear();
         references.clear();
+        reports.clear();
+        metadata.clear();
     }else {
         for (string tag : tags) {
             if (tag == "sequence_data") {
@@ -152,6 +157,10 @@ void Dataset::clear(vector<string> tags) {
                 binTables.clear();
             }else if (tag == "references") {
                 references.clear();
+            }else if (tag == "reports") {
+                reports.clear();
+            }else if (tag == "metadata") {
+                metadata.clear();
             }
         }
     }
@@ -187,11 +196,19 @@ Rcpp::List Dataset::exportDataset(vector<string> tags){
             }
         }
 
-        if (references.empty()) {
+        if (!metadata.hasReport) {
 
-            if (setContains(t, "references")) {
+            if (setContains(t, "metadata")) {
                 string message = "[WARNING]: The dataset does not include ";
-                message += " references, ignoring 'references' tag.";
+                message += " metadata, ignoring 'metadata' tag.";
+                RcppThread::Rcout << endl << message << endl;
+            }
+        }
+
+        if (reports.empty()) {
+            if (setContains(t, "reports")) {
+                string message = "[WARNING]: The dataset does not include ";
+                message += " reports, ignoring 'reports' tag.";
                 RcppThread::Rcout << endl << message << endl;
             }
         }
@@ -285,6 +302,20 @@ Rcpp::List Dataset::exportDataset(vector<string> tags){
         }
     }
 
+    if (!hasTags || setContains(t, "metadata")) {
+        if (metadata.hasReport) {
+            results.push_back(getMetadata());
+            resultsLabels.push_back("metadata");
+        }
+    }
+
+    if (!hasTags || setContains(t, "reports")) {
+        if (!reports.empty()) {
+            results.push_back(getReports());
+            resultsLabels.push_back("reports");
+        }
+    }
+
     results.attr("names") = resultsLabels;
     return results;
 }
@@ -292,6 +323,21 @@ Rcpp::List Dataset::exportDataset(vector<string> tags){
 double Dataset::addReferences(const vector<Reference>& refs) {
     references.insert(references.end(), refs.begin(), refs.end());
     return refs.size();
+}
+/******************************************************************************/
+void Dataset::addReport(Rcpp::DataFrame& report, string type) {
+    auto it = reports.find(type);
+
+    if (it == reports.end()) {
+        // this is a new report
+        reports[type].addReport(report);
+    }else{
+        it->second.addReport(report);
+    }
+}
+/******************************************************************************/
+void Dataset::addMetadata(Rcpp::DataFrame& data){
+    metadata.addReport(data);
 }
 /******************************************************************************/
 double Dataset::addSequences(const vector<string>& n,
@@ -751,6 +797,10 @@ const Rcpp::DataFrame Dataset::getList(string type) {
     return empty;
 }
 /******************************************************************************/
+const Rcpp::DataFrame Dataset::getMetadata() {
+    return metadata.getReport(nullSet);
+}
+/******************************************************************************/
 const vector<string> Dataset::getListVector(string type) {
     if (hasBinTable(type)) {
         return binTables[getBinTableIndex(type)].getListVector(names);
@@ -895,6 +945,21 @@ const vector<float> Dataset::getRAbundVector(string type) {
         return binTables[getBinTableIndex(type)].getRAbundVector();
     }
     return nullFloatVector;
+}
+/******************************************************************************/
+const Rcpp::List Dataset::getReports() {
+    Rcpp::List reportResults = Rcpp::List::create();
+
+    if (!reports.empty()) {
+        vector<string> reportResultsLabels;
+        for (auto it = reports.begin(); it != reports.end(); it++) {
+            reportResults.push_back(it->second.getReport(toSet(getSequenceNames())));
+            reportResultsLabels.push_back(it->first);
+        }
+        reportResults.attr("names") = reportResultsLabels;
+    }
+
+    return reportResults;
 }
 /******************************************************************************/
 const Rcpp::DataFrame Dataset::getReferences() {
@@ -1121,31 +1186,34 @@ const Rcpp::DataFrame Dataset::getSequenceReport(){
 const Rcpp::List Dataset::getSequenceSummary() {
 
     Rcpp::List result = Rcpp::List::create();
-
-    if (!hasSeqs()) {
-        return result;
-    }
-
     vector<string> result_names;
 
-    Summary* summary = new Summary(processors);
+    if (hasSeqs()) {
+        Summary* summary = new Summary(processors);
 
-    vector<vector<int> > report;
+        vector<vector<int> > report;
 
-    report.push_back(select(starts, tableSeqs));
-    report.push_back(select(ends, tableSeqs));
-    report.push_back(select(lengths, tableSeqs));
-    report.push_back(select(ambigs, tableSeqs));
-    report.push_back(select(polymers, tableSeqs));
-    report.push_back(select(numns, tableSeqs));
+        report.push_back(select(starts, tableSeqs));
+        report.push_back(select(ends, tableSeqs));
+        report.push_back(select(lengths, tableSeqs));
+        report.push_back(select(ambigs, tableSeqs));
+        report.push_back(select(polymers, tableSeqs));
+        report.push_back(select(numns, tableSeqs));
 
-    Rcpp::DataFrame seqResults = summary->summarizeFasta(
-        report, count.getTotalAbundances(getIncludedNamesIndexes()));
+        Rcpp::DataFrame seqResults = summary->summarizeFasta(
+            report, count.getTotalAbundances(getIncludedNamesIndexes()));
 
-    result.push_back(seqResults);
-    result_names.push_back("sequence_summary");
+        result.push_back(seqResults);
+        result_names.push_back("sequence_summary");
 
-    delete summary;
+        delete summary;
+    }
+
+    for (auto itReport = reports.begin(); itReport != reports.end(); itReport++) {
+        result.push_back(itReport->second.summarizeReport(toSet(getSequenceNames()), processors,
+                                                          getSequenceAbundances()));
+        result_names.push_back(itReport->first);
+    }
 
     Rcpp::DataFrame scrap = getScrapSummary();
     if (scrap.size() != 0) {
@@ -1153,7 +1221,10 @@ const Rcpp::List Dataset::getSequenceSummary() {
         result_names.push_back("scrap_summary");
     }
 
-    result.attr("names") = result_names;
+    if (result.size() != 0) {
+        result.attr("names") = result_names;
+    }
+
     return result;
 }
 /******************************************************************************/
