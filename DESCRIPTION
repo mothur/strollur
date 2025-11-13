@@ -29,7 +29,7 @@ Imports: Rcpp (>= 1.1.0),
     rbiom,
     rhdf5
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
-Depends: R (>= 4.5.0)
+Depends: R (>= 4.4.0)
 Suggests: 
     testthat (>= 3.0.0), xml2
 Config/testthat/edition: 3
