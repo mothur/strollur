@@ -8,6 +8,17 @@ remove_file <- function(filename) {
   }
 }
 # =========================================================================== #
+#' @title sort_dataframe
+#' @description Sort dataframe
+#' @param data, the data.frame to be sorted
+#' @param order, vector containing the order desired
+#' @param named_col, name of column in data.frame to match order
+#' @return sorted data.frame
+#' @export
+sort_dataframe <- function(data, order, named_col) {
+  sorted <- data[order(match(data[[named_col]], order)), ]
+}
+# =========================================================================== #
 #' @title .split_white_space
 #' @description Split string at white space
 #' @param line, String containing data to split

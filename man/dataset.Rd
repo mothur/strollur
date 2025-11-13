@@ -22,53 +22,6 @@ data <- new_dataset("soil")
 
 
 ## ------------------------------------------------
-## Method `dataset$add_alignment_report`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_alignment_report(align_report, "QueryName")
-
-
-## ------------------------------------------------
-## Method `dataset$add_chimera_report`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-
-  chimera_report <- readr::read_tsv(
-  rdataset_example("chimera_report.tsv"),
-  col_names = TRUE, show_col_types = FALSE)
-
-  data$add_chimera_report(chimera_report, "Query")
-
-
-## ------------------------------------------------
-## Method `dataset$add_contigs_assembly_report`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-  contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_contigs_assembly_report(contigs_report, "Name")
-
-
-## ------------------------------------------------
-## Method `dataset$add_metadata`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_metadata(metadata)
-
-
-## ------------------------------------------------
 ## Method `dataset$add_sample_tree`
 ## ------------------------------------------------
 
@@ -92,33 +45,6 @@ data <- new_dataset("soil")
  data <- dataset$new("my_dataset")
  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
  data$add_sequence_tree(tree)
-
-
-## ------------------------------------------------
-## Method `dataset$get_alignment_report`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_alignment_report(align_report, "QueryName")
-  data$get_alignment_report()
-
-
-## ------------------------------------------------
-## Method `dataset$get_chimera_report`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-
-  chimera_report <- readr::read_tsv(
-  rdataset_example("chimera_report.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-
-  data$add_chimera_report(chimera_report, "Query")
-  data$get_chimera_report()
 
 
 ## ------------------------------------------------
@@ -154,26 +80,17 @@ data$get_bin_types()
 
 
 ## ------------------------------------------------
-## Method `dataset$get_contigs_assembly_report`
-## ------------------------------------------------
-
-
-  data <- dataset$new("my_dataset")
-  contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_contigs_assembly_report(contigs_report, "Name")
-  data$get_contigs_assembly_report()
-
-
-## ------------------------------------------------
-## Method `dataset$get_metadata`
+## Method `dataset$get_metadata_table`
 ## ------------------------------------------------
 
   data <- dataset$new("my_dataset")
+
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
-  data$add_metadata(metadata)
-  data$get_metadata()
+
+  add_metadata(data, metadata)
+
+  data$get_metadata_table()
 
 
 ## ------------------------------------------------
@@ -229,6 +146,10 @@ with additional functionality.}
 \item{\code{raw}}{Rcpp::RawVector containing the serialized data of the
 'Dataset' c++ class. This allows the load and save functions to work with
 the class.}
+
+\item{\code{sequence_tree}}{a tree that relates sequences to eachother}
+
+\item{\code{sample_tree}}{a tree that relates samples to eachother}
 }
 \if{html}{\out{</div>}}
 }
@@ -237,21 +158,14 @@ the class.}
 \itemize{
 \item \href{#method-dataset-new}{\code{dataset$new()}}
 \item \href{#method-dataset-print}{\code{dataset$print()}}
-\item \href{#method-dataset-add_alignment_report}{\code{dataset$add_alignment_report()}}
-\item \href{#method-dataset-add_chimera_report}{\code{dataset$add_chimera_report()}}
-\item \href{#method-dataset-add_contigs_assembly_report}{\code{dataset$add_contigs_assembly_report()}}
-\item \href{#method-dataset-add_metadata}{\code{dataset$add_metadata()}}
 \item \href{#method-dataset-add_sample_tree}{\code{dataset$add_sample_tree()}}
 \item \href{#method-dataset-add_sequence_tree}{\code{dataset$add_sequence_tree()}}
 \item \href{#method-dataset-clear}{\code{dataset$clear()}}
-\item \href{#method-dataset-get_alignment_report}{\code{dataset$get_alignment_report()}}
-\item \href{#method-dataset-get_chimera_report}{\code{dataset$get_chimera_report()}}
 \item \href{#method-dataset-get_bin_assignments}{\code{dataset$get_bin_assignments()}}
 \item \href{#method-dataset-get_bin_names}{\code{dataset$get_bin_names()}}
 \item \href{#method-dataset-get_bin_types}{\code{dataset$get_bin_types()}}
-\item \href{#method-dataset-get_contigs_assembly_report}{\code{dataset$get_contigs_assembly_report()}}
 \item \href{#method-dataset-get_dataset_name}{\code{dataset$get_dataset_name()}}
-\item \href{#method-dataset-get_metadata}{\code{dataset$get_metadata()}}
+\item \href{#method-dataset-get_metadata_table}{\code{dataset$get_metadata_table()}}
 \item \href{#method-dataset-get_num_bins}{\code{dataset$get_num_bins()}}
 \item \href{#method-dataset-get_num_sequences}{\code{dataset$get_num_sequences()}}
 \item \href{#method-dataset-get_num_treatments}{\code{dataset$get_num_treatments()}}
@@ -315,140 +229,6 @@ data <- new_dataset("soil")
 Get summary of sequence data
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataset$print()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-add_alignment_report"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-add_alignment_report}{}}}
-\subsection{Method \code{add_alignment_report()}}{
-Add alignment report for your dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$add_alignment_report(report, sequence_name_column)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{report}}{a data.frame containing alignment data about your dataset}
-
-\item{\code{sequence_name_column}}{a string containing the name of the column
-containing the sequence names.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_alignment_report(align_report, "QueryName")
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-add_chimera_report"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-add_chimera_report}{}}}
-\subsection{Method \code{add_chimera_report()}}{
-Add chimera report for your dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$add_chimera_report(report, sequence_name_column)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{report}}{a data.frame containing chimeric sequence data about your
-dataset}
-
-\item{\code{sequence_name_column}}{a string containing the name of the column
-containing the sequence names.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-
-  chimera_report <- readr::read_tsv(
-  rdataset_example("chimera_report.tsv"),
-  col_names = TRUE, show_col_types = FALSE)
-
-  data$add_chimera_report(chimera_report, "Query")
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-add_contigs_assembly_report"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-add_contigs_assembly_report}{}}}
-\subsection{Method \code{add_contigs_assembly_report()}}{
-Add contigs assembly report for your dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$add_contigs_assembly_report(report, sequence_name_column)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{report}}{a data.frame containing contigs assembly data about your
-dataset}
-
-\item{\code{sequence_name_column}}{a string containing the name of the column
-containing the sequence names.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-  contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_contigs_assembly_report(contigs_report, "Name")
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-add_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-add_metadata}{}}}
-\subsection{Method \code{add_metadata()}}{
-Add metadata about your dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$add_metadata(metadata)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{metadata}}{a data.frame containing metadata about your dataset}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_metadata(metadata)
-
-}
-\if{html}{\out{</div>}}
-
 }
 
 }
@@ -520,9 +300,7 @@ Add phylo tree relating the sequences in your dataset
 \if{html}{\out{<a id="method-dataset-clear"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-clear}{}}}
 \subsection{Method \code{clear()}}{
-Remove 'metadata', 'references', 'alignment_report',
-'contigs_assembly_report', 'sample_tree', or 'sequence_tree' data from
-your dataset.
+Remove 'sample_tree', or 'sequence_tree' data from your dataset.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataset$clear(tags = NULL)}\if{html}{\out{</div>}}
 }
@@ -537,63 +315,6 @@ By default, everything is cleared.}
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_alignment_report"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_alignment_report}{}}}
-\subsection{Method \code{get_alignment_report()}}{
-Get data.frame containing the alignment report data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_alignment_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.frame
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_alignment_report(align_report, "QueryName")
-  data$get_alignment_report()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_chimera_report"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_chimera_report}{}}}
-\subsection{Method \code{get_chimera_report()}}{
-Get data.frame containing the chimera report data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_chimera_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.frame
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-
-  chimera_report <- readr::read_tsv(
-  rdataset_example("chimera_report.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-
-  data$add_chimera_report(chimera_report, "Query")
-  data$get_chimera_report()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_bin_assignments"></a>}}
@@ -689,33 +410,6 @@ data$get_bin_types()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_contigs_assembly_report"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_contigs_assembly_report}{}}}
-\subsection{Method \code{get_contigs_assembly_report()}}{
-Get data.frame containing contigs report
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_contigs_assembly_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.frame
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  data <- dataset$new("my_dataset")
-  contigs_report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-  data$add_contigs_assembly_report(contigs_report, "Name")
-  data$get_contigs_assembly_report()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_dataset_name"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-get_dataset_name}{}}}
 \subsection{Method \code{get_dataset_name()}}{
@@ -729,12 +423,12 @@ String
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_metadata}{}}}
-\subsection{Method \code{get_metadata()}}{
+\if{html}{\out{<a id="method-dataset-get_metadata_table"></a>}}
+\if{latex}{\out{\hypertarget{method-dataset-get_metadata_table}{}}}
+\subsection{Method \code{get_metadata_table()}}{
 Get data.frame containing metadata for the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_metadata()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{dataset$get_metadata_table()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -743,10 +437,13 @@ data.frame()
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{  data <- dataset$new("my_dataset")
+
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
-  data$add_metadata(metadata)
-  data$get_metadata()
+
+  add_metadata(data, metadata)
+
+  data$get_metadata_table()
 
 }
 \if{html}{\out{</div>}}

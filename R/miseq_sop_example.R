@@ -28,7 +28,7 @@ miseq_sop_example <- function() {
   metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
     col_names = TRUE, show_col_types = FALSE
   )
-  data$add_metadata(metadata)
+  add_metadata(data, metadata)
 
   reference <- readr::read_csv(rdataset_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE

@@ -767,7 +767,7 @@ test_that("dataset - ", {
   )
 
   expect_error(assign_bin_taxonomy(dataset_t, data = "not_a_data.frame"))
-  expect_equal(dataset_t$get_contigs_assembly_report(), data.frame())
+  expect_equal(get_reports(dataset_t), list())
   expect_equal(dataset_t$get_summary(), list())
   expect_false(dataset_t$has_sample("noSample"))
 
@@ -886,15 +886,14 @@ test_that("dataset - ", {
 test_that("dataset - add_metadata, get_metadata", {
   dataset_t <- dataset$new("my_dataset")
 
-  expect_equal(dataset_t$get_metadata(), data.frame())
-  expect_error(dataset_t$add_metadata(c("bad_type")))
+  expect_equal(get_metadata(dataset_t), data.frame())
 
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
 
-  dataset_t$add_metadata(metadata)
-  metadata <- dataset_t$get_metadata()
+  add_metadata(dataset_t, metadata)
+  metadata <- get_metadata(dataset_t)
 
   expect_equal(names(metadata), c(
     "sample-id", "barcode-sequence",
@@ -910,8 +909,8 @@ test_that("dataset - add_metadata, get_metadata", {
   expect_equal(metadata[[2, 3]], "gut")
   expect_equal(metadata[[3, 7]], "subject-1")
 
-  dataset_t$clear("metadata")
-  metadata <- dataset_t$get_metadata()
+  clear(dataset_t, "metadata")
+  metadata <- get_metadata(dataset_t)
   expect_equal(nrow(metadata), 0)
 })
 
@@ -988,19 +987,14 @@ test_that("dataset - add_references, get_references", {
 test_that("dataset - add_alignment_report, get_alignment_report", {
   dataset_t <- dataset$new("my_dataset")
 
-  expect_equal(dataset_t$get_alignment_report(), data.frame())
-  expect_error(dataset_t$add_alignment_report(report = c("bad_type")))
-  expect_error(dataset_t$add_alignment_report(data.frame()))
-  expect_error(dataset_t$add_alignment_report())
-
   align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
 
-  expect_error(dataset_t$add_alignment_report(align_report, "badName"))
-  dataset_t$add_alignment_report(align_report, "QueryName")
+  expect_error(add_report(dataset_t, align_report, "align_report", "badName"))
+  add_report(dataset_t, align_report, "align_report", "QueryName")
 
-  align_report <- dataset_t$get_alignment_report()
+  align_report <- get_reports(dataset_t)[["align_report"]]
 
   # random spot checks
   expect_equal(nrow(align_report), 5)
@@ -1011,32 +1005,26 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
   expect_equal(align_report[[5, 8]], 1)
   expect_equal(align_report[[4, 4]], 292)
 
-  dataset_t$clear("alignment_report")
-  expect_equal(nrow(dataset_t$get_alignment_report()), 0)
+  clear(dataset_t, "reports")
+  expect_equal(get_reports(dataset_t), list())
 
   # no report added because of missing entries
-
   add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
-  dataset_t$add_alignment_report(align_report, "QueryName")
-  expect_equal(nrow(dataset_t$get_alignment_report()), 0)
+  add_report(dataset_t, align_report, "align_report", "QueryName")
+  expect_equal(get_reports(dataset_t), list())
 })
 
 test_that("dataset - add / get _contigs_assembly_report,", {
   dataset_t <- dataset$new("my_dataset")
 
-  expect_equal(dataset_t$get_contigs_assembly_report(), data.frame())
-  expect_error(dataset_t$add_contigs_assembly_report(report = c("bad_type")))
-  expect_error(dataset_t$add_contigs_assembly_report(data.frame()))
-  expect_error(dataset_t$add_contigs_assembly_report())
-
   report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  expect_error(dataset_t$add_contigs_assembly_report(report, "badName"))
+  expect_error(add_report(dataset_t, report, "contigs_report", "badName"))
 
-  dataset_t$add_contigs_assembly_report(report, "Name")
+  add_report(dataset_t, report, "contigs_report", "Name")
 
-  report <- dataset_t$get_contigs_assembly_report()
+  report <- get_reports(dataset_t)[["contigs_report"]]
 
   # random spot checks
   expect_equal(nrow(report), 5)
@@ -1047,38 +1035,34 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   expect_equal(round(report[[5, 8]], digits = 4), 0.0257)
   expect_equal(report[[4, 4]], 2)
 
-  dataset_t$clear("contigs_assembly_report")
-  expect_equal(nrow(dataset_t$get_contigs_assembly_report()), 0)
+  clear(dataset_t, "reports")
+  expect_equal(length(get_reports(dataset_t)), 0)
   expect_equal(dataset_t$get_num_sequences(), 5)
-  dataset_t$add_contigs_assembly_report(report, "Name")
+  add_report(dataset_t, report, "contigs_report", "Name")
 
-  report <- dataset_t$get_contigs_assembly_report()
+  report <- get_reports(dataset_t)[["contigs_report"]]
 
   expect_equal(nrow(report), 5)
   expect_equal(report[, 1], c("seq1", "seq2", "seq3", "seq4", "seq5"))
 
   # no report added because of missing entries
-  dataset_t$clear("contigs_assembly_report")
+  clear(dataset_t)
   add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
-  dataset_t$add_contigs_assembly_report(report, "Name")
-  expect_equal(nrow(dataset_t$get_contigs_assembly_report()), 0)
+  add_report(dataset_t, report, "contigs_report", "Name")
+  expect_equal(length(get_reports(dataset_t)), 0)
 })
 
 test_that("dataset - add / get _chimera_report,", {
   dataset_t <- dataset$new("my_dataset")
 
-  expect_equal(dataset_t$get_chimera_report(), data.frame())
-  expect_error(dataset_t$add_chimera_report(report = c("bad_type")))
-  expect_error(dataset_t$add_chimera_report(data.frame()))
-
   report <- readr::read_tsv(rdataset_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  expect_error(dataset_t$add_chimera_report(report, "badName"))
+  expect_error(add_report(dataset_t, report, "chimera_report", "badName"))
 
-  dataset_t$add_chimera_report(report, "Query")
+  add_report(dataset_t, report, "chimera_report", "Query")
 
-  report <- dataset_t$get_chimera_report()
+  report <- get_reports(dataset_t)[["chimera_report"]]
 
   # random spot checks
   expect_equal(nrow(report), 71)
@@ -1087,25 +1071,25 @@ test_that("dataset - add / get _chimera_report,", {
   expect_equal(report[[8, 17]], "N")
   expect_equal(report[[67, 17]], "Y")
 
-  dataset_t$clear("chimera_report")
-  expect_equal(nrow(dataset_t$get_chimera_report()), 0)
+  clear(dataset_t, "reports")
+  expect_equal(length(get_reports(dataset_t)), 0)
   expect_equal(dataset_t$get_num_sequences(), 71)
-  dataset_t$add_chimera_report(report, "Query")
+  add_report(dataset_t, report, "chimera_report", "Query")
 
-  report <- dataset_t$get_chimera_report()
+  report <- get_reports(dataset_t)[["chimera_report"]]
 
   expect_equal(nrow(report), 71)
   expect_equal(report[, 2], get_sequence_names(dataset_t))
 
-  chimera_summary <- dataset_t$get_summary()
+  chimera_summary <- dataset_t$get_summary()[["chimera_report"]]
 
-  expect_equal(ncol(chimera_summary$chimera_summary), 13)
+  expect_equal(ncol(chimera_summary), 13)
 
   # no report added because of missing entries
-  dataset_t$clear("chimera_report")
+  clear(dataset_t, "reports")
   add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
-  dataset_t$add_chimera_report(report, "Query")
-  expect_equal(nrow(dataset_t$get_chimera_report()), 0)
+  add_report(dataset_t, report, "chimera_report", "Query")
+  expect_equal(length(get_reports(dataset_t)), 0)
 })
 
 test_that("dataset - get_sequence_summary,", {
@@ -1114,27 +1098,27 @@ test_that("dataset - get_sequence_summary,", {
   report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  dataset_t$add_contigs_assembly_report(report, "Name")
+  add_report(dataset_t, report, "contigs_report", "Name")
 
   report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  dataset_t$add_alignment_report(report, "QueryName")
+  add_report(dataset_t, report, "alignment_report", "QueryName")
 
   summary <- dataset_t$get_summary()
 
-  expect_equal(summary$contigs_summary$MisMatches, c(0, 0, 1, 2, 7, 7, 7, 2))
-  expect_equal(summary$contigs_summary$Overlap_End, rep(251, 8))
-  expect_equal(summary$contigs_summary$Length[1], 252)
-  expect_equal(summary$contigs_summary$Length[7], 253)
+  expect_equal(summary$contigs_report$MisMatches, c(0, 0, 1, 2, 7, 7, 7, 2))
+  expect_equal(summary$contigs_report$Overlap_End, rep(251, 8))
+  expect_equal(summary$contigs_report$Length[1], 252)
+  expect_equal(summary$contigs_report$Length[7], 253)
 
-  expect_equal(summary$alignment_summary$QueryLength, c(
+  expect_equal(summary$alignment_report$QueryLength, c(
     252, 252, 253, 253,
     253, 253, 253, 252.6
   ))
-  expect_equal(summary$alignment_summary$GapsInQuery, rep(0, 8))
-  expect_equal(summary$alignment_summary$SearchScore[1], 57.55)
-  expect_equal(summary$alignment_summary$SearchScore[7], 82.44)
+  expect_equal(summary$alignment_report$GapsInQuery, rep(0, 8))
+  expect_equal(summary$alignment_report$SearchScore[1], 57.55)
+  expect_equal(summary$alignment_report$SearchScore[7], 82.44)
 })
 
 test_that("dataset - add_sequence_tree / get_sequence_tree,", {

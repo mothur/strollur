@@ -80,6 +80,46 @@ copy_dataset <- function(data) {
     .Call(`_rdataset_copy_dataset`, data)
 }
 
+#' @title add_metadata
+#' @description
+#' Add metadata to a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#' @param metadata, a data.frame containing your metadata
+#'
+#' @examples
+#'
+#' data <- new_dataset("just for fun", 2)
+#' metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+#'                             col_names = TRUE, show_col_types = FALSE)
+#' add_metadata(data, metadata)
+#'
+add_metadata <- function(data, metadata) {
+    invisible(.Call(`_rdataset_add_metadata`, data, metadata))
+}
+
+#' @title add_report
+#' @description
+#' Add a report to a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param table, a data.frame containing your report.
+#'
+#' @param type, a string containing the type of report. For example: "align".
+#' @param sequence_name, a string containing the name of the column in 'table'
+#' that contains the sequence names. Default column name is 'sequence_names'.
+#' @examples
+#'
+#' data <- new_dataset("just for fun", 2)
+#' align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+#'    col_names = TRUE, show_col_types = FALSE)
+#' add_report(data, align_report, "align", "QueryName")
+#'
+add_report <- function(data, table, type, sequence_name = "sequence_names") {
+    invisible(.Call(`_rdataset_add_report`, data, table, type, sequence_name))
+}
+
 #' @title add_references
 #' @description
 #' Add resource references to a \link{dataset} object
@@ -392,9 +432,8 @@ assign_treatments <- function(data, table, sample = "samples", treatment = "trea
 #' @param data, a \link{dataset} object
 #' @param tags a vector of strings containing the items you wish to clear.
 #' Options are 'sequence_data', 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
-#' 'contigs_assembly_report' and 'chimera_report'. By default, everything
-#'  is cleared.
+#' 'references', 'sequence_tree', 'sample_tree' and 'reports'. By default,
+#' everything is cleared.
 #'
 #' @examples
 #'
@@ -411,13 +450,14 @@ clear <- function(data, tags = as.character( c())) {
 #' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 #'  'Dataset' c++ class.
 #' @param tags a vector of strings containing the items you wish to export.
-#' Options are 'sequence_data' and 'bin_data'. By default, everything is
-#'  exported.
+#' Options are 'sequence_data' and 'bin_data', 'metadata',
+#' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
+#' By default, everything is exported.
 #'
 #' @examples
 #'
 #' dataset <- new_dataset("my_dataset", 2)
-#' export_dataset(dataset, c(""))
+#' export_dataset(dataset)
 #'
 #' @return Rcpp::List, containing the data in the 'Dataset
 export_dataset <- function(data, tags = as.character( c())) {
@@ -603,6 +643,22 @@ get_list_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_list_vector`, data, type)
 }
 
+#' @title get_metadata
+#' @description
+#' Get the metadata of a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @examples
+#'
+#' data <- miseq_sop_example()
+#' get_metadata(data)
+#'
+#' @return data.frame
+get_metadata <- function(data) {
+    .Call(`_rdataset_get_metadata`, data)
+}
+
 #' @title get_num_processors
 #' @description
 #' Get the number of processors used to summarize a \link{dataset} object
@@ -737,6 +793,16 @@ get_rabund_vector <- function(data, type = "otu") {
 #' @return data.frame
 get_references <- function(data) {
     .Call(`_rdataset_get_references`, data)
+}
+
+#' @title get_reports
+#' @description
+#' Get a list containing the reports in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#' @return list
+get_reports <- function(data) {
+    .Call(`_rdataset_get_reports`, data)
 }
 
 #' @title get_samples
@@ -1597,31 +1663,5 @@ deserialize_dobject <- function(data) {
 #' @param data, a \link{dataset} object
 serialize_dobject <- function(data) {
     invisible(.Call(`_rdataset_serialize_dobject`, data))
-}
-
-#' @name summarize_reports
-#' @title summarize_reports
-#' @rdname summarize_reports
-#' @param report DataFrame, containing all numeric columns
-#' @param count NumericalVector, containing abundances of sequences
-#' @param processors Integer, number of cores to use. Default = all available
-#' @description Summarizes a report
-#' @examples
-#'
-#' alignment_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
-#'    col_names = TRUE, show_col_types = FALSE)
-#'
-#' # for this simple example we assume all the sequences in the report are
-#' # unique, therefore we set their abundance to 1.
-#' counts <- rep(1, 5)
-#'
-#' # extract numeric columns to summarize
-#' numeric_report <- alignment_report[sapply(alignment_report, is.numeric)]
-#'
-#' report_summary <- summarize_reports(numeric_report, counts, 10)
-#'
-#' @return DataFrame with summary values
-summarize_reports <- function(report, count, processors) {
-    .Call(`_rdataset_summarize_reports`, report, count, processors)
 }
 

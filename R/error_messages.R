@@ -66,13 +66,13 @@
   cli::cli_abort(message)
 }
 
-#' @title .abort_missing_column
+#' @title abort_missing_column
 #' @description
 #' Data.frame is missing necessary columns
 #' @param parameter name of missing required column
-#' @keywords internal
-.abort_missing_column <- function(parameter) {
-  message <- paste("[ERROR]: Expected a data.frame column named ",
+#' @export
+abort_missing_column <- function(parameter) {
+  message <- paste("Expected a data.frame column named ",
     parameter, " to be provided.",
     collapse = ""
   )

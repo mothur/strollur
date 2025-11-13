@@ -161,6 +161,105 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
     return copy;
 }
 /******************************************************************************/
+//' @title add_metadata
+//' @description
+//' Add metadata to a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//' @param metadata, a data.frame containing your metadata
+//'
+//' @examples
+//'
+//' data <- new_dataset("just for fun", 2)
+//' metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+//'                             col_names = TRUE, show_col_types = FALSE)
+//' add_metadata(data, metadata)
+//'
+//[[Rcpp::export]]
+void add_metadata(Rcpp::Environment data, Rcpp::DataFrame metadata) {
+
+     Rcpp::XPtr<Dataset> d = data["data"];
+
+     // add metadata to dataset
+     d.get()->addMetadata(metadata);
+}
+/******************************************************************************/
+//' @title add_report
+//' @description
+//' Add a report to a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing your report.
+//'
+//' @param type, a string containing the type of report. For example: "align".
+//' @param sequence_name, a string containing the name of the column in 'table'
+//' that contains the sequence names. Default column name is 'sequence_names'.
+//' @examples
+//'
+//' data <- new_dataset("just for fun", 2)
+//' align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+//'    col_names = TRUE, show_col_types = FALSE)
+//' add_report(data, align_report, "align", "QueryName")
+//'
+//[[Rcpp::export]]
+void add_report(Rcpp::Environment data,
+                       Rcpp::DataFrame table,
+                       string type,
+                       string sequence_name = "sequence_names") {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    vector<string> dfNames = Rcpp::as<vector<string>>(table.attr("names"));
+
+    // do we have a sequence_names column
+    if (!vectorContains(dfNames, sequence_name)) {
+        string message = "The report must include a column containing sequence";
+        message += " names. " + sequence_name + " is not a named column in your report.";
+        throw Rcpp::exception(message.c_str());
+    }else {
+
+        // sequence names in table
+        vector<string> sequenceNames = Rcpp::as<vector<string>>(
+            fill_required_parameters(table, sequence_name));
+
+        // if we don't have any sequences yet, add them
+        if (d.get()->getTotal("") == 0) {
+            vector<string> sequences, comments;
+            Reference ref;
+
+            d.get()->addSequences(sequenceNames,
+                  sequences, comments, ref);
+        }else {
+            // we have sequences already, make sure there is a report row for
+            // each sequence in dataset
+            vector<string> datasetSeqNames = d.get()->getSequenceNames("");
+
+            // find seqs in dataset and not in report
+            vector<string> missingSeqs = setDiff(datasetSeqNames, sequenceNames);
+
+            if (missingSeqs.size() == 0) {
+                // preserve order of dataset
+                Rcpp::Environment rdataset_env("package:rdataset");
+                Rcpp::Function sort = rdataset_env["sort_dataframe"];
+
+                table = sort(table, datasetSeqNames, sequence_name);
+            }else {
+                string message = "Your report does not contain an entry for ";
+                message += "every sequence in your dataset, ignoring report. ",
+                RcppThread::Rcout << endl << message << endl;
+                return;
+            }
+        }
+
+        // save name column
+        table.attr("sequence_name") = sequence_name;
+
+        // add report to dataset
+        d.get()->addReport(table, type);
+    }
+}
+/******************************************************************************/
 //' @title add_references
 //' @description
 //' Add resource references to a \link{dataset} object
@@ -422,7 +521,7 @@ double assign_bins(Rcpp::Environment data,
                                                                   "float"));
 
     if ((abundances.size() == 0) && (sequence_names.size() == 0)) {
-        string message = "[ERROR]: You must provide either abundances or ";
+        string message = "You must provide either abundances or ";
         message += "sequence_names to assign bins.";
         RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
@@ -892,9 +991,8 @@ double assign_treatments(Rcpp::Environment data,
 //' @param data, a \link{dataset} object
 //' @param tags a vector of strings containing the items you wish to clear.
 //' Options are 'sequence_data', 'bin_data', 'metadata',
-//' 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
-//' 'contigs_assembly_report' and 'chimera_report'. By default, everything
-//'  is cleared.
+//' 'references', 'sequence_tree', 'sample_tree' and 'reports'. By default,
+//' everything is cleared.
 //'
 //' @examples
 //'
@@ -935,13 +1033,14 @@ void clear(Rcpp::Environment data,
 //' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
 //'  'Dataset' c++ class.
 //' @param tags a vector of strings containing the items you wish to export.
-//' Options are 'sequence_data' and 'bin_data'. By default, everything is
-//'  exported.
+//' Options are 'sequence_data' and 'bin_data', 'metadata',
+//' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
+//' By default, everything is exported.
 //'
 //' @examples
 //'
 //' dataset <- new_dataset("my_dataset", 2)
-//' export_dataset(dataset, c(""))
+//' export_dataset(dataset)
 //'
 //' @return Rcpp::List, containing the data in the 'Dataset
 //[[Rcpp::export]]
@@ -955,49 +1054,6 @@ Rcpp::List export_dataset(Rcpp::Environment data,
     Rcpp::XPtr<Dataset> d = data["data"];
     Rcpp::List results = d.get()->exportDataset(t);
     vector<string> resultNames = results.names();
-
-    if ((!hasTags) || (vectorContains(t, "metadata"))) {
-        Rcpp::Function get = data["get_metadata"];
-
-        Rcpp::DataFrame metadata = get();
-        if (metadata.size() != 0) {
-            results.push_back(metadata);
-            resultNames.push_back("metadata");
-        }
-    }
-
-    if ((!hasTags) || (vectorContains(t, "alignment_report"))) {
-
-        Rcpp::Function get = data["get_alignment_report"];
-        Rcpp::DataFrame alignment_report = get();
-
-        if (alignment_report.size() != 0) {
-            results.push_back(alignment_report);
-            resultNames.push_back("alignment_report");
-        }
-    }
-
-    if ((!hasTags) || (vectorContains(t, "chimera_report"))) {
-
-        Rcpp::Function get = data["get_chimera_report"];
-        Rcpp::DataFrame chimera_report = get();
-
-        if (chimera_report.size() != 0) {
-            results.push_back(chimera_report);
-            resultNames.push_back("chimera_report");
-        }
-    }
-
-    if ((!hasTags) || (vectorContains(t, "contigs_assembly_report"))) {
-
-        Rcpp::Function get = data["get_contigs_assembly_report"];
-        Rcpp::DataFrame contigs_report = get();
-
-        if (contigs_report.size() != 0) {
-            results.push_back(contigs_report);
-            resultNames.push_back("contigs_assembly_report");
-        }
-    }
 
     if ((!hasTags) || (vectorContains(t, "sequence_tree"))) {
 
@@ -1234,6 +1290,24 @@ vector<string> get_list_vector(Rcpp::Environment data, string type = "otu") {
      return d.get()->getListVector(type);
 }
 /******************************************************************************/
+//' @title get_metadata
+//' @description
+//' Get the metadata of a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @examples
+//'
+//' data <- miseq_sop_example()
+//' get_metadata(data)
+//'
+//' @return data.frame
+//[[Rcpp::export]]
+const Rcpp::DataFrame get_metadata(Rcpp::Environment data) {
+     Rcpp::XPtr<Dataset> d = data["data"];
+     return d.get()->getMetadata();
+}
+/******************************************************************************/
 //' @title get_num_processors
 //' @description
 //' Get the number of processors used to summarize a \link{dataset} object
@@ -1390,6 +1464,18 @@ vector<float> get_rabund_vector(Rcpp::Environment data, string type = "otu") {
 Rcpp::DataFrame get_references(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getReferences();
+}
+/******************************************************************************/
+//' @title get_reports
+//' @description
+//' Get a list containing the reports in a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//' @return list
+//[[Rcpp::export]]
+Rcpp::List get_reports(Rcpp::Environment data) {
+     Rcpp::XPtr<Dataset> d = data["data"];
+     return d.get()->getReports();
 }
 /******************************************************************************/
 //' @title get_samples

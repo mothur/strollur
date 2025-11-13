@@ -9,9 +9,9 @@
 #' should be written. Default = current working directory.
 #' @param tags a vector of strings containing the items you wish to write
 #' Options are 'sequence_data', 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree', 'alignment_report',
-#' 'contigs_assembly_report' and 'chimera_report'. By default, everything is
-#'  written to files.
+#' 'references', 'sequence_tree', 'sample_tree' and 'reports'.
+#'  By default, everything is written to files.
+#'
 #' @param compress boolean, Default = TRUE.
 #'
 #' @examples
@@ -124,7 +124,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("metadata" %in% tags)) {
-    metadata <- data$get_metadata()
+    metadata <- get_metadata(data)
 
     if (nrow(metadata) != 0) {
       filename <- file.path(
@@ -136,48 +136,20 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     }
   }
 
-  if (!ht || ("alignment_report" %in% tags)) {
-    report <- data$get_alignment_report()
+  if (!ht || ("reports" %in% tags)) {
+    reports <- get_reports(data)
+    report_names <- names(reports)
 
-    if (nrow(report) != 0) {
-      filename <- file.path(
-        dir_path,
-        paste0(dataset_name, ".alignment_report",
-          collapse = ""
+    if (length(reports) != 0) {
+      for (name in report_names) {
+        filename <- file.path(
+          dir_path,
+          paste0(dataset_name, ".", name, collapse = "")
         )
-      )
-      readr::write_tsv(report, filename)
-      outputs <- c(outputs, filename)
-    }
-  }
 
-  if (!ht || ("contigs_assembly_report" %in% tags)) {
-    report <- data$get_contigs_assembly_report()
-
-    if (nrow(report) != 0) {
-      filename <- file.path(
-        dir_path,
-        paste0(dataset_name, ".contigs_report",
-          collapse = ""
-        )
-      )
-      readr::write_tsv(report, filename)
-      outputs <- c(outputs, filename)
-    }
-  }
-
-  if (!ht || ("chimera_report" %in% tags)) {
-    report <- data$get_chimera_report()
-
-    if (nrow(report) != 0) {
-      filename <- file.path(
-        dir_path,
-        paste0(dataset_name, ".chimera_report",
-          collapse = ""
-        )
-      )
-      readr::write_tsv(report, filename)
-      outputs <- c(outputs, filename)
+        readr::write_tsv(reports[[name]], filename)
+        outputs <- c(outputs, filename)
+      }
     }
   }
 

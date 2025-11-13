@@ -52,6 +52,32 @@ struct pieceOfWork {
     ~pieceOfWork() {}
 };
 /**********************************************************************/
+template<typename T>
+vector<T> setDiff(vector<T> x, vector<T> y) {
+
+    // sort so we can use set_difference
+    sort(x.begin(), x.end());
+    sort(y.begin(), y.end());
+
+    vector<T> results;
+    set_difference(x.begin(), x.end(), y.begin(), y.end(),
+                   back_inserter(results));
+
+    return results;
+}
+/**********************************************************************/
+template<typename T>
+bool addNextColumn(Rcpp::DataFrame& data, map<int, vector<T>>& y, int index) {
+
+    auto it = y.find(index);
+
+    if (it != y.end()) {
+        data.push_back(it->second);
+        return true;
+    }
+    return false;
+}
+/**********************************************************************/
 // parse s by delim store in result. return numItems
 template <typename Out>
 int split(const string &s, char delim, Out result) {

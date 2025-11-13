@@ -50,6 +50,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// add_metadata
+void add_metadata(Rcpp::Environment data, Rcpp::DataFrame metadata);
+RcppExport SEXP _rdataset_add_metadata(SEXP dataSEXP, SEXP metadataSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type metadata(metadataSEXP);
+    add_metadata(data, metadata);
+    return R_NilValue;
+END_RCPP
+}
+// add_report
+void add_report(Rcpp::Environment data, Rcpp::DataFrame table, string type, string sequence_name);
+RcppExport SEXP _rdataset_add_report(SEXP dataSEXP, SEXP tableSEXP, SEXP typeSEXP, SEXP sequence_nameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
+    add_report(data, table, type, sequence_name);
+    return R_NilValue;
+END_RCPP
+}
 // add_references
 double add_references(Rcpp::Environment data, Rcpp::DataFrame table, string reference_name, string reference_version, string reference_usage, string reference_note, string reference_url);
 RcppExport SEXP _rdataset_add_references(SEXP dataSEXP, SEXP tableSEXP, SEXP reference_nameSEXP, SEXP reference_versionSEXP, SEXP reference_usageSEXP, SEXP reference_noteSEXP, SEXP reference_urlSEXP) {
@@ -322,6 +346,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_metadata
+const Rcpp::DataFrame get_metadata(Rcpp::Environment data);
+RcppExport SEXP _rdataset_get_metadata(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_metadata(data));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_num_processors
 int get_num_processors(Rcpp::Environment data);
 RcppExport SEXP _rdataset_get_num_processors(SEXP dataSEXP) {
@@ -412,6 +447,17 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
     rcpp_result_gen = Rcpp::wrap(get_references(data));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_reports
+Rcpp::List get_reports(Rcpp::Environment data);
+RcppExport SEXP _rdataset_get_reports(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_reports(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -869,19 +915,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// summarize_reports
-Rcpp::DataFrame summarize_reports(Rcpp::DataFrame& report, Rcpp::NumericVector& count, int processors);
-RcppExport SEXP _rdataset_summarize_reports(SEXP reportSEXP, SEXP countSEXP, SEXP processorsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::DataFrame& >::type report(reportSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector& >::type count(countSEXP);
-    Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
-    rcpp_result_gen = Rcpp::wrap(summarize_reports(report, count, processors));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 RcppExport SEXP run_testthat_tests(SEXP);
 
@@ -889,6 +922,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_new_dataset", (DL_FUNC) &_rdataset_new_dataset, 2},
     {"_rdataset_new_reference", (DL_FUNC) &_rdataset_new_reference, 5},
     {"_rdataset_copy_dataset", (DL_FUNC) &_rdataset_copy_dataset, 1},
+    {"_rdataset_add_metadata", (DL_FUNC) &_rdataset_add_metadata, 2},
+    {"_rdataset_add_report", (DL_FUNC) &_rdataset_add_report, 4},
     {"_rdataset_add_references", (DL_FUNC) &_rdataset_add_references, 7},
     {"_rdataset_add_sequences", (DL_FUNC) &_rdataset_add_sequences, 6},
     {"_rdataset_assign_bins", (DL_FUNC) &_rdataset_assign_bins, 8},
@@ -909,6 +944,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_dataset_name", (DL_FUNC) &_rdataset_get_dataset_name, 1},
     {"_rdataset_get_list", (DL_FUNC) &_rdataset_get_list, 2},
     {"_rdataset_get_list_vector", (DL_FUNC) &_rdataset_get_list_vector, 2},
+    {"_rdataset_get_metadata", (DL_FUNC) &_rdataset_get_metadata, 1},
     {"_rdataset_get_num_processors", (DL_FUNC) &_rdataset_get_num_processors, 1},
     {"_rdataset_get_num_bins", (DL_FUNC) &_rdataset_get_num_bins, 2},
     {"_rdataset_get_num_samples", (DL_FUNC) &_rdataset_get_num_samples, 1},
@@ -917,6 +953,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_rabund", (DL_FUNC) &_rdataset_get_rabund, 2},
     {"_rdataset_get_rabund_vector", (DL_FUNC) &_rdataset_get_rabund_vector, 2},
     {"_rdataset_get_references", (DL_FUNC) &_rdataset_get_references, 1},
+    {"_rdataset_get_reports", (DL_FUNC) &_rdataset_get_reports, 1},
     {"_rdataset_get_samples", (DL_FUNC) &_rdataset_get_samples, 1},
     {"_rdataset_get_sample_treatment_assignments", (DL_FUNC) &_rdataset_get_sample_treatment_assignments, 1},
     {"_rdataset_get_sample_totals", (DL_FUNC) &_rdataset_get_sample_totals, 1},
@@ -956,7 +993,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_available_processors", (DL_FUNC) &_rdataset_get_available_processors, 0},
     {"_rdataset_deserialize_dobject", (DL_FUNC) &_rdataset_deserialize_dobject, 1},
     {"_rdataset_serialize_dobject", (DL_FUNC) &_rdataset_serialize_dobject, 1},
-    {"_rdataset_summarize_reports", (DL_FUNC) &_rdataset_summarize_reports, 3},
     {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
     {NULL, NULL, 0}
 };
