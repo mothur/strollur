@@ -74,6 +74,14 @@ with additional functionality.</p></dd>
 the class.</p></dd>
 
 
+<dt><code>sequence_tree</code></dt>
+<dd><p>a tree that relates sequences to eachother</p></dd>
+
+
+<dt><code>sample_tree</code></dt>
+<dd><p>a tree that relates samples to eachother</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div id="methods">
@@ -84,21 +92,14 @@ the class.</p></dd>
 
 <ul><li><p><a href="#method-dataset-new"><code>dataset$new()</code></a></p></li>
 <li><p><a href="#method-dataset-print"><code>dataset$print()</code></a></p></li>
-<li><p><a href="#method-dataset-add_alignment_report"><code>dataset$add_alignment_report()</code></a></p></li>
-<li><p><a href="#method-dataset-add_chimera_report"><code>dataset$add_chimera_report()</code></a></p></li>
-<li><p><a href="#method-dataset-add_contigs_assembly_report"><code>dataset$add_contigs_assembly_report()</code></a></p></li>
-<li><p><a href="#method-dataset-add_metadata"><code>dataset$add_metadata()</code></a></p></li>
 <li><p><a href="#method-dataset-add_sample_tree"><code>dataset$add_sample_tree()</code></a></p></li>
 <li><p><a href="#method-dataset-add_sequence_tree"><code>dataset$add_sequence_tree()</code></a></p></li>
 <li><p><a href="#method-dataset-clear"><code>dataset$clear()</code></a></p></li>
-<li><p><a href="#method-dataset-get_alignment_report"><code>dataset$get_alignment_report()</code></a></p></li>
-<li><p><a href="#method-dataset-get_chimera_report"><code>dataset$get_chimera_report()</code></a></p></li>
 <li><p><a href="#method-dataset-get_bin_assignments"><code>dataset$get_bin_assignments()</code></a></p></li>
 <li><p><a href="#method-dataset-get_bin_names"><code>dataset$get_bin_names()</code></a></p></li>
 <li><p><a href="#method-dataset-get_bin_types"><code>dataset$get_bin_types()</code></a></p></li>
-<li><p><a href="#method-dataset-get_contigs_assembly_report"><code>dataset$get_contigs_assembly_report()</code></a></p></li>
 <li><p><a href="#method-dataset-get_dataset_name"><code>dataset$get_dataset_name()</code></a></p></li>
-<li><p><a href="#method-dataset-get_metadata"><code>dataset$get_metadata()</code></a></p></li>
+<li><p><a href="#method-dataset-get_metadata_table"><code>dataset$get_metadata_table()</code></a></p></li>
 <li><p><a href="#method-dataset-get_num_bins"><code>dataset$get_num_bins()</code></a></p></li>
 <li><p><a href="#method-dataset-get_num_sequences"><code>dataset$get_num_sequences()</code></a></p></li>
 <li><p><a href="#method-dataset-get_num_treatments"><code>dataset$get_num_treatments()</code></a></p></li>
@@ -162,139 +163,15 @@ Default = all available</p></dd>
 </div>
 
 
-</div><p></p><hr><a id="method-dataset-add_alignment_report"></a><div class="section">
-<h3 id="method-add-alignment-report-">Method <code>add_alignment_report()</code><a class="anchor" aria-label="anchor" href="#method-add-alignment-report-"></a></h3>
-<p>Add alignment report for your dataset</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">add_alignment_report</span><span class="op">(</span><span class="va">report</span>, <span class="va">sequence_name_column</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>report</code></dt>
-<dd><p>a data.frame containing alignment data about your dataset</p></dd>
-
-
-<dt><code>sequence_name_column</code></dt>
-<dd><p>a string containing the name of the column
-containing the sequence names.</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
-<span>  <span class="va">align_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"alignment_data.tsv"</span><span class="op">)</span>,</span>
-<span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_alignment_report</span><span class="op">(</span><span class="va">align_report</span>, <span class="st">"QueryName"</span><span class="op">)</span></span>
-<span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-dataset-add_chimera_report"></a><div class="section">
-<h3 id="method-add-chimera-report-">Method <code>add_chimera_report()</code><a class="anchor" aria-label="anchor" href="#method-add-chimera-report-"></a></h3>
-<p>Add chimera report for your dataset</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">add_chimera_report</span><span class="op">(</span><span class="va">report</span>, <span class="va">sequence_name_column</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>report</code></dt>
-<dd><p>a data.frame containing chimeric sequence data about your
-dataset</p></dd>
-
-
-<dt><code>sequence_name_column</code></dt>
-<dd><p>a string containing the name of the column
-containing the sequence names.</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">chimera_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"chimera_report.tsv"</span><span class="op">)</span>,</span>
-<span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_chimera_report</span><span class="op">(</span><span class="va">chimera_report</span>, <span class="st">"Query"</span><span class="op">)</span></span>
-<span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-dataset-add_contigs_assembly_report"></a><div class="section">
-<h3 id="method-add-contigs-assembly-report-">Method <code>add_contigs_assembly_report()</code><a class="anchor" aria-label="anchor" href="#method-add-contigs-assembly-report-"></a></h3>
-<p>Add contigs assembly report for your dataset</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">add_contigs_assembly_report</span><span class="op">(</span><span class="va">report</span>, <span class="va">sequence_name_column</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>report</code></dt>
-<dd><p>a data.frame containing contigs assembly data about your
-dataset</p></dd>
-
-
-<dt><code>sequence_name_column</code></dt>
-<dd><p>a string containing the name of the column
-containing the sequence names.</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
-<span>  <span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"contigs_data.tsv"</span><span class="op">)</span>,</span>
-<span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_contigs_assembly_report</span><span class="op">(</span><span class="va">contigs_report</span>, <span class="st">"Name"</span><span class="op">)</span></span>
-<span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-dataset-add_metadata"></a><div class="section">
-<h3 id="method-add-metadata-">Method <code>add_metadata()</code><a class="anchor" aria-label="anchor" href="#method-add-metadata-"></a></h3>
-<p>Add metadata about your dataset</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">add_metadata</span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>metadata</code></dt>
-<dd><p>a data.frame containing metadata about your dataset</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
-<span>  <span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"sample-metadata.tsv"</span><span class="op">)</span>,</span>
-<span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_metadata</span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span></span>
-<span></span></code></pre></div><p></p></div>
-</div>
-
-
 </div><p></p><hr><a id="method-dataset-add_sample_tree"></a><div class="section">
 <h3 id="method-add-sample-tree-">Method <code>add_sample_tree()</code><a class="anchor" aria-label="anchor" href="#method-add-sample-tree-"></a></h3>
 <p>Add phylo tree relating the samples in your dataset</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">add_sample_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>tree</code></dt>
 <dd><p>a phylo tree object created by ape::read.tree.</p></dd>
 
@@ -302,7 +179,7 @@ containing the sequence names.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span></span>
@@ -320,12 +197,12 @@ containing the sequence names.</p></dd>
 </div><p></p><hr><a id="method-dataset-add_sequence_tree"></a><div class="section">
 <h3 id="method-add-sequence-tree-">Method <code>add_sequence_tree()</code><a class="anchor" aria-label="anchor" href="#method-add-sequence-tree-"></a></h3>
 <p>Add phylo tree relating the sequences in your dataset</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">add_sequence_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>tree</code></dt>
 <dd><p>a phylo tree object created by ape::read.tree.</p></dd>
 
@@ -333,7 +210,7 @@ containing the sequence names.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre"</span><span class="op">)</span><span class="op">)</span></span>
@@ -344,15 +221,13 @@ containing the sequence names.</p></dd>
 
 </div><p></p><hr><a id="method-dataset-clear"></a><div class="section">
 <h3 id="method-clear-">Method <code><a href="clear.html">clear()</a></code><a class="anchor" aria-label="anchor" href="#method-clear-"></a></h3>
-<p>Remove 'metadata', 'references', 'alignment_report',
-'contigs_assembly_report', 'sample_tree', or 'sequence_tree' data from
-your dataset.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p>Remove 'sample_tree', or 'sequence_tree' data from your dataset.</p><div class="section">
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span>tags <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>tags</code></dt>
 <dd><p>a vector of strings containing the items you wish to clear.
 Options are 'metadata', 'references', 'sequence_tree', 'sample_tree',
@@ -363,64 +238,15 @@ By default, everything is cleared.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-dataset-get_alignment_report"></a><div class="section">
-<h3 id="method-get-alignment-report-">Method <code>get_alignment_report()</code><a class="anchor" aria-label="anchor" href="#method-get-alignment-report-"></a></h3>
-<p>Get data.frame containing the alignment report data</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_alignment_report</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
-<p>data.frame</p>
-</div>
-<div class="section">
-<h4 id="examples-7">Examples<a class="anchor" aria-label="anchor" href="#examples-7"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
-<span>  <span class="va">align_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"alignment_data.tsv"</span><span class="op">)</span>,</span>
-<span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_alignment_report</span><span class="op">(</span><span class="va">align_report</span>, <span class="st">"QueryName"</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_alignment_report</span><span class="op">(</span><span class="op">)</span></span>
-<span></span></code></pre></div><p></p></div>
-</div>
-
-
-</div><p></p><hr><a id="method-dataset-get_chimera_report"></a><div class="section">
-<h3 id="method-get-chimera-report-">Method <code>get_chimera_report()</code><a class="anchor" aria-label="anchor" href="#method-get-chimera-report-"></a></h3>
-<p>Get data.frame containing the chimera report data</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_chimera_report</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
-<p>data.frame</p>
-</div>
-<div class="section">
-<h4 id="examples-8">Examples<a class="anchor" aria-label="anchor" href="#examples-8"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">chimera_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"chimera_report.tsv"</span><span class="op">)</span>,</span>
-<span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_chimera_report</span><span class="op">(</span><span class="va">chimera_report</span>, <span class="st">"Query"</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_chimera_report</span><span class="op">(</span><span class="op">)</span></span>
-<span></span></code></pre></div><p></p></div>
-</div>
-
-
 </div><p></p><hr><a id="method-dataset-get_bin_assignments"></a><div class="section">
 <h3 id="method-get-bin-assignments-">Method <code><a href="get_bin_assignments.html">get_bin_assignments()</a></code><a class="anchor" aria-label="anchor" href="#method-get-bin-assignments-"></a></h3>
 <p>Get data frame containing sequence bin assignments</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_bin_assignments</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type</code></dt>
 <dd><p>a string indicating the type of clusters. Options
 include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
@@ -429,11 +255,11 @@ include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>data.frame</p>
 </div>
 <div class="section">
-<h4 id="examples-9">Examples<a class="anchor" aria-label="anchor" href="#examples-9"></a></h4>
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span></span>
@@ -450,12 +276,12 @@ include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
 </div><p></p><hr><a id="method-dataset-get_bin_names"></a><div class="section">
 <h3 id="method-get-bin-names-">Method <code><a href="get_bin_names.html">get_bin_names()</a></code><a class="anchor" aria-label="anchor" href="#method-get-bin-names-"></a></h3>
 <p>Get the names of the bins in your dataset</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_bin_names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type</code></dt>
 <dd><p>a string indicating the type of clusters. Options
 include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
@@ -464,11 +290,11 @@ include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>vector of strings containing the bin names</p>
 </div>
 <div class="section">
-<h4 id="examples-10">Examples<a class="anchor" aria-label="anchor" href="#examples-10"></a></h4>
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_bin_names</span><span class="op">(</span><span class="st">"otu"</span><span class="op">)</span></span>
 <span></span></code></pre></div><p></p></div>
@@ -478,16 +304,16 @@ include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
 </div><p></p><hr><a id="method-dataset-get_bin_types"></a><div class="section">
 <h3 id="method-get-bin-types-">Method <code><a href="get_bin_types.html">get_bin_types()</a></code><a class="anchor" aria-label="anchor" href="#method-get-bin-types-"></a></h3>
 <p>Get bin table types</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_bin_types</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>vector of strings</p>
 </div>
 <div class="section">
-<h4 id="examples-11">Examples<a class="anchor" aria-label="anchor" href="#examples-11"></a></h4>
+<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="fu">get_bin_types</span><span class="op">(</span><span class="op">)</span></span>
@@ -495,59 +321,39 @@ include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
 </div>
 
 
-</div><p></p><hr><a id="method-dataset-get_contigs_assembly_report"></a><div class="section">
-<h3 id="method-get-contigs-assembly-report-">Method <code>get_contigs_assembly_report()</code><a class="anchor" aria-label="anchor" href="#method-get-contigs-assembly-report-"></a></h3>
-<p>Get data.frame containing contigs report</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_contigs_assembly_report</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
-<p>data.frame</p>
-</div>
-<div class="section">
-<h4 id="examples-12">Examples<a class="anchor" aria-label="anchor" href="#examples-12"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
-<span>  <span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"contigs_data.tsv"</span><span class="op">)</span>,</span>
-<span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_contigs_assembly_report</span><span class="op">(</span><span class="va">contigs_report</span>, <span class="st">"Name"</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_contigs_assembly_report</span><span class="op">(</span><span class="op">)</span></span>
-<span></span></code></pre></div><p></p></div>
-</div>
-
-
 </div><p></p><hr><a id="method-dataset-get_dataset_name"></a><div class="section">
 <h3 id="method-get-dataset-name-">Method <code><a href="get_dataset_name.html">get_dataset_name()</a></code><a class="anchor" aria-label="anchor" href="#method-get-dataset-name-"></a></h3>
 <p>Get dataset name</p><div class="section">
-<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_dataset_name</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>String</p>
 </div>
 
-</div><p></p><hr><a id="method-dataset-get_metadata"></a><div class="section">
-<h3 id="method-get-metadata-">Method <code>get_metadata()</code><a class="anchor" aria-label="anchor" href="#method-get-metadata-"></a></h3>
+</div><p></p><hr><a id="method-dataset-get_metadata_table"></a><div class="section">
+<h3 id="method-get-metadata-table-">Method <code>get_metadata_table()</code><a class="anchor" aria-label="anchor" href="#method-get-metadata-table-"></a></h3>
 <p>Get data.frame containing metadata for the dataset</p><div class="section">
-<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_metadata_table</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>data.frame()</p>
 </div>
 <div class="section">
-<h4 id="examples-13">Examples<a class="anchor" aria-label="anchor" href="#examples-13"></a></h4>
+<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
+<span></span>
 <span>  <span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"sample-metadata.tsv"</span><span class="op">)</span>,</span>
 <span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_metadata</span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span></span>
-<span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="../reference/add_metadata.html">add_metadata</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">metadata</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_metadata_table</span><span class="op">(</span><span class="op">)</span></span>
 <span></span></code></pre></div><p></p></div>
 </div>
 
@@ -555,12 +361,12 @@ include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
 </div><p></p><hr><a id="method-dataset-get_num_bins"></a><div class="section">
 <h3 id="method-get-num-bins-">Method <code><a href="get_num_bins.html">get_num_bins()</a></code><a class="anchor" aria-label="anchor" href="#method-get-num-bins-"></a></h3>
 <p>Get the number of bins in the dataset</p><div class="section">
-<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_num_bins</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type</code></dt>
 <dd><p>a string indicating the type of clusters. Default = "otu".</p></dd>
 
@@ -568,11 +374,11 @@ include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>An integer</p>
 </div>
 <div class="section">
-<h4 id="examples-14">Examples<a class="anchor" aria-label="anchor" href="#examples-14"></a></h4>
+<h4 id="examples-7">Examples<a class="anchor" aria-label="anchor" href="#examples-7"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span>  <span class="va">otu_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span></span>
 <span>                            <span class="st">"final.opti_mcc.list"</span><span class="op">)</span><span class="op">)</span></span>
@@ -587,12 +393,12 @@ include: "otu", "asv", or "phylotype". Default = "otu".</p></dd>
 </div><p></p><hr><a id="method-dataset-get_num_sequences"></a><div class="section">
 <h3 id="method-get-num-sequences-">Method <code><a href="get_num_sequences.html">get_num_sequences()</a></code><a class="anchor" aria-label="anchor" href="#method-get-num-sequences-"></a></h3>
 <p>Get the number of sequences in the dataset</p><div class="section">
-<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_num_sequences</span><span class="op">(</span>distinct <span class="op">=</span> <span class="cn">FALSE</span>, sample <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>distinct</code></dt>
 <dd><p>Boolean. When distinct is TRUE the number of unique
 sequence is returned.</p></dd>
@@ -606,55 +412,55 @@ optional</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>An integer</p>
 </div>
 
 </div><p></p><hr><a id="method-dataset-get_num_treatments"></a><div class="section">
 <h3 id="method-get-num-treatments-">Method <code><a href="get_num_treatments.html">get_num_treatments()</a></code><a class="anchor" aria-label="anchor" href="#method-get-num-treatments-"></a></h3>
 <p>Get the number of treatments in the dataset</p><div class="section">
-<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_num_treatments</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>An integer</p>
 </div>
 
 </div><p></p><hr><a id="method-dataset-get_num_samples"></a><div class="section">
 <h3 id="method-get-num-samples-">Method <code><a href="get_num_samples.html">get_num_samples()</a></code><a class="anchor" aria-label="anchor" href="#method-get-num-samples-"></a></h3>
 <p>Get the number of samples in the dataset</p><div class="section">
-<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_num_samples</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>A character vector</p>
 </div>
 
 </div><p></p><hr><a id="method-dataset-get_samples"></a><div class="section">
 <h3 id="method-get-samples-">Method <code><a href="get_samples.html">get_samples()</a></code><a class="anchor" aria-label="anchor" href="#method-get-samples-"></a></h3>
 <p>Get names of samples in the dataset</p><div class="section">
-<h4 id="usage-21">Usage<a class="anchor" aria-label="anchor" href="#usage-21"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_samples</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>A character vector</p>
 </div>
 
 </div><p></p><hr><a id="method-dataset-get_sample_tree"></a><div class="section">
 <h3 id="method-get-sample-tree-">Method <code>get_sample_tree()</code><a class="anchor" aria-label="anchor" href="#method-get-sample-tree-"></a></h3>
 <p>Get phylo tree relating the samples in your dataset.</p><div class="section">
-<h4 id="usage-22">Usage<a class="anchor" aria-label="anchor" href="#usage-22"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_sample_tree</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="examples-15">Examples<a class="anchor" aria-label="anchor" href="#examples-15"></a></h4>
+<h4 id="examples-8">Examples<a class="anchor" aria-label="anchor" href="#examples-8"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span></span>
 <span>  <span class="st">"final.opti_mcc.jclass.ave.tre"</span><span class="op">)</span><span class="op">)</span></span>
@@ -673,12 +479,12 @@ optional</p></dd>
 <h3 id="method-get-scrap-report-">Method <code><a href="get_scrap_report.html">get_scrap_report()</a></code><a class="anchor" aria-label="anchor" href="#method-get-scrap-report-"></a></h3>
 <p>Get report containing the scrapped sequences / bins -
 ids, trash_codes</p><div class="section">
-<h4 id="usage-23">Usage<a class="anchor" aria-label="anchor" href="#usage-23"></a></h4>
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_scrap_report</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p>list of data.frames</p>
 </div>
 
@@ -687,24 +493,24 @@ ids, trash_codes</p><div class="section">
 <p>Get data.frame sequence report data. Sequence report data includes: start
 positions, end positions, number of bases, number of ambiguous bases,
 length of longest homopolymer, and the number of N's.</p><div class="section">
-<h4 id="usage-24">Usage<a class="anchor" aria-label="anchor" href="#usage-24"></a></h4>
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_sequence_report</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p>data.frame</p>
 </div>
 
 </div><p></p><hr><a id="method-dataset-get_summary"></a><div class="section">
 <h3 id="method-get-summary-">Method <code>get_summary()</code><a class="anchor" aria-label="anchor" href="#method-get-summary-"></a></h3>
 <p>Get summary of the sequence reports</p><div class="section">
-<h4 id="usage-25">Usage<a class="anchor" aria-label="anchor" href="#usage-25"></a></h4>
+<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_summary</span><span class="op">(</span>silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>silent</code></dt>
 <dd><p>Default = FALSE, meaning print summaries</p></dd>
 
@@ -712,19 +518,19 @@ length of longest homopolymer, and the number of N's.</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>list of data.frames</p>
 </div>
 
 </div><p></p><hr><a id="method-dataset-get_sequence_tree"></a><div class="section">
 <h3 id="method-get-sequence-tree-">Method <code>get_sequence_tree()</code><a class="anchor" aria-label="anchor" href="#method-get-sequence-tree-"></a></h3>
 <p>Get phylo tree relating the sequences in your dataset.</p><div class="section">
-<h4 id="usage-26">Usage<a class="anchor" aria-label="anchor" href="#usage-26"></a></h4>
+<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_sequence_tree</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="examples-16">Examples<a class="anchor" aria-label="anchor" href="#examples-16"></a></h4>
+<h4 id="examples-9">Examples<a class="anchor" aria-label="anchor" href="#examples-9"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/dataset.html">dataset</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre"</span><span class="op">)</span><span class="op">)</span></span>
@@ -737,24 +543,24 @@ length of longest homopolymer, and the number of N's.</p><div class="section">
 </div><p></p><hr><a id="method-dataset-get_treatments"></a><div class="section">
 <h3 id="method-get-treatments-">Method <code><a href="get_treatments.html">get_treatments()</a></code><a class="anchor" aria-label="anchor" href="#method-get-treatments-"></a></h3>
 <p>Get names of treatments in the dataset</p><div class="section">
-<h4 id="usage-27">Usage<a class="anchor" aria-label="anchor" href="#usage-27"></a></h4>
+<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_treatments</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-17">Returns<a class="anchor" aria-label="anchor" href="#returns-17"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>A character vector</p>
 </div>
 
 </div><p></p><hr><a id="method-dataset-has_sample"></a><div class="section">
 <h3 id="method-has-sample-">Method <code><a href="has_sample.html">has_sample()</a></code><a class="anchor" aria-label="anchor" href="#method-has-sample-"></a></h3>
 <p>Determine if a sample is present in the dataset</p><div class="section">
-<h4 id="usage-28">Usage<a class="anchor" aria-label="anchor" href="#usage-28"></a></h4>
+<h4 id="usage-21">Usage<a class="anchor" aria-label="anchor" href="#usage-21"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">has_sample</span><span class="op">(</span><span class="va">sample</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>sample</code></dt>
 <dd><p>String, Name of sample</p></dd>
 
@@ -762,19 +568,19 @@ length of longest homopolymer, and the number of N's.</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-18">Returns<a class="anchor" aria-label="anchor" href="#returns-18"></a></h4>
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
 <p>Boolean</p>
 </div>
 
 </div><p></p><hr><a id="method-dataset-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code><a href="clone.html">clone()</a></code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-29">Usage<a class="anchor" aria-label="anchor" href="#usage-29"></a></h4>
+<h4 id="usage-22">Usage<a class="anchor" aria-label="anchor" href="#usage-22"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -797,56 +603,6 @@ length of longest homopolymer, and the number of N's.</p><div class="section">
 <span class="r-in"><span><span class="co"># to create an empty dataset, run the following:</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"soil"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co">## Method `dataset$add_alignment_report`</span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dataset</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">align_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"alignment_data.tsv"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_alignment_report</span><span class="op">(</span><span class="va">align_report</span>, <span class="st">"QueryName"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 5 sequences.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co">## Method `dataset$add_chimera_report`</span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dataset</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">chimera_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"chimera_report.tsv"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_chimera_report</span><span class="op">(</span><span class="va">chimera_report</span>, <span class="st">"Query"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 71 sequences.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co">## Method `dataset$add_contigs_assembly_report`</span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dataset</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"contigs_data.tsv"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_contigs_assembly_report</span><span class="op">(</span><span class="va">contigs_report</span>, <span class="st">"Name"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 5 sequences.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co">## Method `dataset$add_metadata`</span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dataset</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"sample-metadata.tsv"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_metadata</span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -876,347 +632,6 @@ length of longest homopolymer, and the number of N's.</p><div class="section">
 <span class="r-in"><span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sequence_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co">## Method `dataset$get_alignment_report`</span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dataset</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">align_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"alignment_data.tsv"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_alignment_report</span><span class="op">(</span><span class="va">align_report</span>, <span class="st">"QueryName"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 5 sequences.</span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_alignment_report</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   QueryName QueryLength TemplateName TemplateLength SearchMethod SearchScore</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      seq1         253   AF371552.1            293         kmer       66.26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      seq2         253   AY169428.1            293         kmer       74.79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      seq3         253   AF132257.1            293         kmer       71.13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      seq4         252   AJ400264.1            292         kmer       57.55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      seq5         252   AJ400264.1            292         kmer       82.44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   AlignmentMethod QueryStart QueryEnd TemplateStart TemplateEnd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       needleman          1      253            20         272</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       needleman          1      253            20         272</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       needleman          1      253            20         272</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       needleman          1      252            20         271</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       needleman          1      252            20         271</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   PairwiseAlignmentLength GapsInQuery GapsInTemplate LongestInsert</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                     253           0              0             0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                     253           0              0             0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                     253           0              0             0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                     252           0              0             0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                     252           0              0             0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SimBtwnQuery&amp;Template</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 94.07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 96.04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 94.07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                 92.06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 97.22</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co">## Method `dataset$get_chimera_report`</span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dataset</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">chimera_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"chimera_report.tsv"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_chimera_report</span><span class="op">(</span><span class="va">chimera_report</span>, <span class="st">"Query"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 71 sequences.</span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_chimera_report</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Score                                                Query</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.0000 M00967_43_000000000-A3JHG_1_2108_23416_15877/ab=628/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.0000  M00967_43_000000000-A3JHG_1_1113_9501_25122/ab=495/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.0000 M00967_43_000000000-A3JHG_1_1108_18843_22284/ab=401/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.0000  M00967_43_000000000-A3JHG_1_1114_22331_5651/ab=390/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.0000  M00967_43_000000000-A3JHG_1_2105_10604_3260/ab=348/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.0000  M00967_43_000000000-A3JHG_1_2111_14430_5622/ab=306/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.0000 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.0164  M00967_43_000000000-A3JHG_1_2109_22508_9332/ab=168/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.0146 M00967_43_000000000-A3JHG_1_1103_12770_16200/ab=162/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.0000  M00967_43_000000000-A3JHG_1_1111_7042_21365/ab=135/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.0903 M00967_43_000000000-A3JHG_1_1109_26108_17578/ab=114/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.0705  M00967_43_000000000-A3JHG_1_1112_4971_21787/ab=100/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.0000    M00967_43_000000000-A3JHG_1_1113_9702_4236/ab=98/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.0000    M00967_43_000000000-A3JHG_1_1106_8087_8342/ab=84/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 0.0000   M00967_43_000000000-A3JHG_1_2102_8220_14784/ab=78/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 0.0000  M00967_43_000000000-A3JHG_1_1107_10661_18652/ab=76/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 0.0502   M00967_43_000000000-A3JHG_1_1111_21761_7263/ab=74/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 0.0000   M00967_43_000000000-A3JHG_1_1106_4103_17889/ab=71/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 0.0000   M00967_43_000000000-A3JHG_1_1110_24017_9907/ab=68/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 0.0114  M00967_43_000000000-A3JHG_1_2101_10871_19189/ab=67/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 0.0278   M00967_43_000000000-A3JHG_1_2105_17531_5415/ab=61/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 0.0000   M00967_43_000000000-A3JHG_1_1104_4506_10116/ab=60/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 0.0000   M00967_43_000000000-A3JHG_1_2113_7657_17783/ab=60/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 0.0329   M00967_43_000000000-A3JHG_1_1103_13364_5496/ab=60/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 0.0000  M00967_43_000000000-A3JHG_1_1111_26680_19728/ab=58/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 0.0000  M00967_43_000000000-A3JHG_1_1101_27104_22165/ab=57/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 0.0000  M00967_43_000000000-A3JHG_1_1113_15228_21507/ab=52/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 0.0000    M00967_43_000000000-A3JHG_1_2113_7234_8020/ab=49/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 0.0467   M00967_43_000000000-A3JHG_1_2105_14672_5493/ab=47/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 0.0000  M00967_43_000000000-A3JHG_1_1114_11896_11540/ab=46/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 0.0174    M00967_43_000000000-A3JHG_1_1105_9356_8680/ab=45/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 0.0469  M00967_43_000000000-A3JHG_1_1112_28797_19471/ab=42/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33 0.0000   M00967_43_000000000-A3JHG_1_2106_26525_7964/ab=37/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34 0.0083  M00967_43_000000000-A3JHG_1_1106_11083_10537/ab=36/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35 0.0486  M00967_43_000000000-A3JHG_1_1107_10973_13486/ab=35/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36 0.0493   M00967_43_000000000-A3JHG_1_2102_10788_9887/ab=33/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37 0.0200  M00967_43_000000000-A3JHG_1_2114_27066_20568/ab=32/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38 0.0506   M00967_43_000000000-A3JHG_1_1111_8024_13028/ab=32/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39 0.0000  M00967_43_000000000-A3JHG_1_1105_14168_12229/ab=31/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40 0.0000   M00967_43_000000000-A3JHG_1_1111_3911_19539/ab=31/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41 0.0000   M00967_43_000000000-A3JHG_1_1104_5472_10083/ab=26/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42 0.0000  M00967_43_000000000-A3JHG_1_1104_10294_20604/ab=26/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43 0.0867  M00967_43_000000000-A3JHG_1_2110_10358_21620/ab=25/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44 0.0142  M00967_43_000000000-A3JHG_1_1109_15253_16129/ab=25/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45 0.0313  M00967_43_000000000-A3JHG_1_2104_21227_27835/ab=24/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46 0.0286  M00967_43_000000000-A3JHG_1_2102_28084_12952/ab=24/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47 0.0146   M00967_43_000000000-A3JHG_1_2108_19952_7710/ab=24/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48 0.0000  M00967_43_000000000-A3JHG_1_2111_11186_16262/ab=23/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49 0.0693    M00967_43_000000000-A3JHG_1_1111_9420_7291/ab=23/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50 0.0148  M00967_43_000000000-A3JHG_1_2110_17645_21649/ab=21/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51 0.0294   M00967_43_000000000-A3JHG_1_2109_12921_6704/ab=20/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52 0.0000   M00967_43_000000000-A3JHG_1_1108_13859_8465/ab=19/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53 0.0714   M00967_43_000000000-A3JHG_1_2101_18467_4167/ab=19/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54 0.0563  M00967_43_000000000-A3JHG_1_1112_19376_17765/ab=17/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55 0.6391   M00967_43_000000000-A3JHG_1_2104_18459_1792/ab=17/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56 0.0414  M00967_43_000000000-A3JHG_1_1112_12172_19010/ab=16/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57 0.0000  M00967_43_000000000-A3JHG_1_1107_19088_18601/ab=16/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58 0.0122  M00967_43_000000000-A3JHG_1_2101_14928_20269/ab=16/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59 0.0000  M00967_43_000000000-A3JHG_1_2111_12632_14843/ab=16/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60 0.0600   M00967_43_000000000-A3JHG_1_1106_3870_17627/ab=16/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61 0.1244  M00967_43_000000000-A3JHG_1_1101_23557_24622/ab=16/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62 0.1653   M00967_43_000000000-A3JHG_1_2111_6994_15829/ab=15/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63 0.0080  M00967_43_000000000-A3JHG_1_2110_13578_25878/ab=15/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64 0.0000   M00967_43_000000000-A3JHG_1_2101_6377_14009/ab=14/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65 0.0345  M00967_43_000000000-A3JHG_1_1109_22008_18955/ab=13/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66 0.0349  M00967_43_000000000-A3JHG_1_2113_22459_19160/ab=13/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67 0.4783   M00967_43_000000000-A3JHG_1_1104_24304_8100/ab=13/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68 0.0883   M00967_43_000000000-A3JHG_1_1107_9655_13149/ab=12/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69 0.0445   M00967_43_000000000-A3JHG_1_1112_6697_21562/ab=12/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70 0.5261  M00967_43_000000000-A3JHG_1_1103_12963_26676/ab=12/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71 0.0558  M00967_43_000000000-A3JHG_1_2107_23719_18135/ab=11/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 ParentA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                                  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                                  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                                                  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                                                  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                                                  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   M00967_43_000000000-A3JHG_1_1114_22331_5651/ab=390/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   M00967_43_000000000-A3JHG_1_1114_22331_5651/ab=390/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  M00967_43_000000000-A3JHG_1_2111_14430_5622/ab=306/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  M00967_43_000000000-A3JHG_1_1114_22331_5651/ab=390/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 M00967_43_000000000-A3JHG_1_2108_23416_15877/ab=628/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20  M00967_43_000000000-A3JHG_1_2111_14430_5622/ab=306/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 M00967_43_000000000-A3JHG_1_2108_23416_15877/ab=628/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 M00967_43_000000000-A3JHG_1_1108_18843_22284/ab=401/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31    M00967_43_000000000-A3JHG_1_1113_9702_4236/ab=98/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34    M00967_43_000000000-A3JHG_1_1106_8087_8342/ab=84/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36  M00967_43_000000000-A3JHG_1_1113_9501_25122/ab=495/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37   M00967_43_000000000-A3JHG_1_1110_24017_9907/ab=68/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38  M00967_43_000000000-A3JHG_1_1107_10661_18652/ab=76/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43   M00967_43_000000000-A3JHG_1_1104_4506_10116/ab=60/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44 M00967_43_000000000-A3JHG_1_2108_23416_15877/ab=628/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45   M00967_43_000000000-A3JHG_1_1106_4103_17889/ab=71/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46  M00967_43_000000000-A3JHG_1_1107_10661_18652/ab=76/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47   M00967_43_000000000-A3JHG_1_1110_24017_9907/ab=68/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49   M00967_43_000000000-A3JHG_1_2105_14672_5493/ab=47/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50  M00967_43_000000000-A3JHG_1_1113_15228_21507/ab=52/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51   M00967_43_000000000-A3JHG_1_2113_7657_17783/ab=60/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53  M00967_43_000000000-A3JHG_1_2101_10871_19189/ab=67/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54  M00967_43_000000000-A3JHG_1_2101_10871_19189/ab=67/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55   M00967_43_000000000-A3JHG_1_1106_13287_8561/ab=42/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56  M00967_43_000000000-A3JHG_1_1111_26680_19728/ab=58/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58  M00967_43_000000000-A3JHG_1_1114_11896_11540/ab=46/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60   M00967_43_000000000-A3JHG_1_1106_4103_17889/ab=71/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61  M00967_43_000000000-A3JHG_1_1107_10973_13486/ab=35/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62  M00967_43_000000000-A3JHG_1_2114_27066_20568/ab=32/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64                                                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65  M00967_43_000000000-A3JHG_1_1113_26354_21596/ab=36/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66  M00967_43_000000000-A3JHG_1_1114_11896_11540/ab=46/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67 M00967_43_000000000-A3JHG_1_2108_23416_15877/ab=628/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68   M00967_43_000000000-A3JHG_1_2108_19952_7710/ab=24/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70  M00967_43_000000000-A3JHG_1_1114_22331_5651/ab=390/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71  M00967_43_000000000-A3JHG_1_1107_10661_18652/ab=76/</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 ParentB  IdQM IdQA IdQB IdAB</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                  &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                                  &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                                  &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                  &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                                                  &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                                                  &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                                                  &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   M00967_43_000000000-A3JHG_1_1113_9501_25122/ab=495/  82.7 81.5 81.0 89.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  M00967_43_000000000-A3JHG_1_2108_23416_15877/ab=628/  83.4 82.6 81.0 93.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/  82.7 73.0 80.6 73.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  M00967_43_000000000-A3JHG_1_2111_14430_5622/ab=306/  96.4 95.2 93.1 92.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 M00967_43_000000000-A3JHG_1_1103_12770_16200/ab=162/  73.8 72.2 69.4 81.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 M00967_43_000000000-A3JHG_1_1108_18843_22284/ab=401/  75.0 74.6 71.8 91.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21  M00967_43_000000000-A3JHG_1_1114_22331_5651/ab=390/  93.5 91.5 92.7 93.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24  M00967_43_000000000-A3JHG_1_1114_22331_5651/ab=390/  91.5 89.1 90.3 93.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29  M00967_43_000000000-A3JHG_1_1111_7042_21365/ab=135/  85.5 84.7 73.8 71.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/  90.8 86.7 90.0 88.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32    M00967_43_000000000-A3JHG_1_1106_8087_8342/ab=84/  95.2 92.8 94.0 93.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34  M00967_43_000000000-A3JHG_1_1107_10661_18652/ab=76/  91.2 90.8 90.4 93.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35    M00967_43_000000000-A3JHG_1_1106_8087_8342/ab=84/  96.4 94.8 95.2 93.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36  M00967_43_000000000-A3JHG_1_1111_7042_21365/ab=135/  96.0 94.4 93.5 92.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37    M00967_43_000000000-A3JHG_1_1106_8087_8342/ab=84/  92.0 91.2 90.8 95.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38   M00967_43_000000000-A3JHG_1_1106_4103_17889/ab=71/  95.6 94.8 92.8 96.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/  94.8 92.4 92.0 92.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44  M00967_43_000000000-A3JHG_1_1111_7042_21365/ab=135/  91.5 89.9 91.1 92.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45    M00967_43_000000000-A3JHG_1_2113_7234_8020/ab=49/  95.6 90.0 95.2 91.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46 M00967_43_000000000-A3JHG_1_1109_26108_17578/ab=114/  82.7 80.7 82.3 83.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47   M00967_43_000000000-A3JHG_1_1104_4506_10116/ab=60/  94.0 92.0 93.2 95.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49  M00967_43_000000000-A3JHG_1_1107_10661_18652/ab=76/  89.1 83.9 85.9 85.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50   M00967_43_000000000-A3JHG_1_1106_13287_8561/ab=42/  78.7 77.1 77.5 79.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51   M00967_43_000000000-A3JHG_1_1104_4506_10116/ab=60/  93.6 92.4 92.8 92.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53    M00967_43_000000000-A3JHG_1_1113_9702_4236/ab=98/  86.3 83.5 81.9 82.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54  M00967_43_000000000-A3JHG_1_1114_11896_11540/ab=46/  92.0 87.1 91.6 90.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55    M00967_43_000000000-A3JHG_1_1105_9356_8680/ab=45/  98.4 94.8 90.8 87.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56  M00967_43_000000000-A3JHG_1_1113_26354_21596/ab=36/  94.0 88.8 92.8 87.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58  M00967_43_000000000-A3JHG_1_2101_10871_19189/ab=67/  89.6 89.2 87.1 90.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60   M00967_43_000000000-A3JHG_1_1111_8024_13028/ab=32/  95.6 93.6 94.0 92.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61  M00967_43_000000000-A3JHG_1_1111_26680_19728/ab=58/  95.2 92.8 90.0 87.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62    M00967_43_000000000-A3JHG_1_1106_8087_8342/ab=84/  95.6 92.4 92.8 90.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63   M00967_43_000000000-A3JHG_1_1111_8024_13028/ab=32/  85.5 83.9 84.7 92.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64                                                 &lt;NA&gt;    NA   NA   NA   NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65 M00967_43_000000000-A3JHG_1_1109_26108_17578/ab=114/  87.1 85.9 85.5 81.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66 M00967_43_000000000-A3JHG_1_1112_13569_19268/ab=276/  85.9 83.9 84.7 85.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67  M00967_43_000000000-A3JHG_1_1114_22331_5651/ab=390/ 100.0 98.0 95.2 93.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68  M00967_43_000000000-A3JHG_1_1111_26680_19728/ab=58/  94.8 93.1 89.1 87.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69  M00967_43_000000000-A3JHG_1_1107_10661_18652/ab=76/  97.6 96.0 96.0 95.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70 M00967_43_000000000-A3JHG_1_2108_23416_15877/ab=628/ 100.0 97.6 95.6 93.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71  M00967_43_000000000-A3JHG_1_1106_11083_10537/ab=36/  97.2 96.0 94.4 90.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    IdQT LY LN LA RY RN RA  Div YN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  81.7  7  2 17  5  2 21 1.49  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  82.5  6  2 40  2  0  1 0.98  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 80.6 15 10 19 26  2 12 2.50  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 95.2  9  2  7  3  0  0 1.27  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 72.6 19  7 57  4  0  1 2.23  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 75.0  8  0 56  3  2  4 0.54  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 92.9  5  3  3  6  1  9 0.87  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 90.5  4  1  5  8  2 13 1.34  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 84.6 41 12 22  4  2  0 0.95  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 90.1  1  0  1 16  6 16 0.89  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 94.1  5  2  5  7  1  4 1.28  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34 90.9  1  0  0  7  6 16 0.44  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35 95.7  7  4  4  4  0  1 1.27  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36 94.4  8  3  5  5  1  1 1.71  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37 91.3  3  0  3  4  2 15 0.88  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38 94.9  7  0  7  2  0  4 0.85  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43 92.9  8  2  5  6  0  6 2.61  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44 91.3  3  2 11  6  2  6 0.44  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45 95.3  1  0  2 17  3  6 0.42  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46 82.6 13 12 25  5  0  6 0.98  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47 93.3  1  0  2  6  1 12 0.86  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49 86.6  7  1 15 17  4  7 3.76  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50 77.9  3  1  4 18 14 34 1.55  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51 92.9  9  7  8  3  0  1 0.87  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53 85.0 18  7 16  7  0 10 3.37  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54 91.7  4  3  7 12  0  9 0.44  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55 94.9 19  0  0 11  2  2 3.81  Y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56 92.9  2  0  2 20  7  6 1.30  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58 89.3 10  4 19  1  0  2 0.45  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60 94.5  4  0  1  9  4  6 1.71  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61 94.1 16  3  2  7  1  5 2.60  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62 93.3 10  3  8  8  0  0 3.03  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63 85.0  1  0  3  9  5 28 0.95  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64   NA NA NA NA NA NA NA   NA  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65 86.2 20 16 16  3  0  0 2.34  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66 84.9 13  9 19  5  0  7 1.43  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67 98.0 12  0  0  5  0  0 2.06  Y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68 92.9 16  2  6  7  3  3 1.73  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69 96.0  4  1  2  5  1  2 1.67  N</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70 97.6 11  0  0  6  0  0 2.48  Y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71 96.0 14  7  0  3  0  0 1.26  N</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -1342,55 +757,87 @@ length of longest homopolymer, and the number of N's.</p><div class="section">
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co">## Method `dataset$get_contigs_assembly_report`</span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dataset</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"contigs_data.tsv"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_contigs_assembly_report</span><span class="op">(</span><span class="va">contigs_report</span>, <span class="st">"Name"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 5 sequences.</span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_contigs_assembly_report</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Name Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 seq1    253            249             2         251          0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 seq2    252            249             2         251          7      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 seq3    252            249             2         251          2      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 seq4    253            249             2         251          0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 seq5    253            249             2         251          1      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Expected_Errors</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      0.00210751</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.02764050</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.00777748</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.00210940</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.02568780</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co">## Method `dataset$get_metadata`</span></span></span>
+<span class="r-in"><span><span class="co">## Method `dataset$get_metadata_table`</span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">dataset</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"sample-metadata.tsv"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">add_metadata</span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_metadata</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 34 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    `sample-id` `barcode-sequence` `body-site`  year month   day subject  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> L1S8        AGCTGACTAGTC       gut          <span style="text-decoration: underline;">2</span>008    10    28 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> L1S57       ACACACTATGGC       gut          <span style="text-decoration: underline;">2</span>009     1    20 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> L1S76       ACTACGTGTGGT       gut          <span style="text-decoration: underline;">2</span>009     2    17 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> L1S105      AGTGCGATGCGT       gut          <span style="text-decoration: underline;">2</span>009     3    17 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> L2S155      ACGATGCGACCA       left palm    <span style="text-decoration: underline;">2</span>009     1    20 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> L2S175      AGCTATCCACGA       left palm    <span style="text-decoration: underline;">2</span>009     2    17 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> L2S204      ATGCAGCTCAGT       left palm    <span style="text-decoration: underline;">2</span>009     3    17 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> L2S222      CACGTGACATGT       left palm    <span style="text-decoration: underline;">2</span>009     4    14 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> L3S242      ACAGTTGCGCGA       right palm   <span style="text-decoration: underline;">2</span>008    10    28 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> L3S294      CACGACAGGCTA       right palm   <span style="text-decoration: underline;">2</span>009     1    20 subject-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 24 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: `reported-antibiotic-usage` &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `days-since-experiment-start` &lt;dbl&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="add_metadata.html">add_metadata</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">metadata</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">data</span><span class="op">$</span><span class="fu">get_metadata_table</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sample-id barcode-sequence  body-site year month day   subject</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       L1S8     AGCTGACTAGTC        gut 2008    10  28 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      L1S57     ACACACTATGGC        gut 2009     1  20 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      L1S76     ACTACGTGTGGT        gut 2009     2  17 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     L1S105     AGTGCGATGCGT        gut 2009     3  17 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     L2S155     ACGATGCGACCA  left palm 2009     1  20 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     L2S175     AGCTATCCACGA  left palm 2009     2  17 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     L2S204     ATGCAGCTCAGT  left palm 2009     3  17 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     L2S222     CACGTGACATGT  left palm 2009     4  14 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     L3S242     ACAGTTGCGCGA right palm 2008    10  28 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    L3S294     CACGACAGGCTA right palm 2009     1  20 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    L3S313     AGTGTCACGGTG right palm 2009     2  17 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    L3S341     CAAGTGAGAGAG right palm 2009     3  17 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13    L3S360     CATCGTATCAAC right palm 2009     4  14 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    L5S104     CAGTGTCAGGAC     tongue 2008    10  28 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    L5S155     ATCTTAGACTGC     tongue 2009     1  20 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16    L5S174     CAGACATTGCGT     tongue 2009     2  17 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17    L5S203     CGATGCACCAGA     tongue 2009     3  17 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18    L5S222     CTAGAGACTCTT     tongue 2009     4  14 subject-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19    L1S140     ATGGCAGCTCTA        gut 2008    10  28 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20    L1S208     CTGAGATACGCG        gut 2009     1  20 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21    L1S257     CCGACTGAGATG        gut 2009     3  17 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22    L1S281     CCTCTCGTGATC        gut 2009     4  14 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23    L2S240     CATATCGCAGTT  left palm 2008    10  28 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24    L2S309     CGTGCATTATCA  left palm 2009     1  20 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25    L2S357     CTAACGCAGTCA  left palm 2009     3  17 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26    L2S382     CTCAATGACTCA  left palm 2009     4  14 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27    L3S378     ATCGATCTGTGG right palm 2008    10  28 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28     L4S63     CTCGTGGAGTAG right palm 2009     1  20 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29    L4S112     GCGTTACACACA right palm 2009     3  17 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30    L4S137     GAACTGTATCTC right palm 2009     4  14 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31    L5S240     CTGGACTCATAG     tongue 2008    10  28 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32     L6S20     GAGGCTCATCAT     tongue 2009     1  20 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33     L6S68     GATACGTCCTGA     tongue 2009     3  17 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34     L6S93     GATTAGCACTCT     tongue 2009     4  14 subject-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    reported-antibiotic-usage days-since-experiment-start</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                        Yes                           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                         No                          84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         No                         112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                         No                         140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                         No                          84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                         No                         112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                         No                         140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                         No                         168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                        Yes                           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                        No                          84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                        No                         112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                        No                         140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                        No                         168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                       Yes                           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                        No                          84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                        No                         112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                        No                         140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                        No                         168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                       Yes                           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20                        No                          84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                        No                         140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22                        No                         168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23                       Yes                           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24                        No                          84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25                        No                         140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26                        No                         168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27                       Yes                           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28                        No                          84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29                        No                         140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30                        No                         168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31                       Yes                           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32                        No                          84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33                        No                         140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34                        No                         168</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -1466,7 +913,7 @@ length of longest homopolymer, and the number of N's.</p><div class="section">
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

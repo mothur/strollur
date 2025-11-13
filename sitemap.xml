@@ -3,7 +3,10 @@
 <url><loc>/LICENSE.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
+<url><loc>/reference/abort_missing_column.html</loc></url>
+<url><loc>/reference/add_metadata.html</loc></url>
 <url><loc>/reference/add_references.html</loc></url>
+<url><loc>/reference/add_report.html</loc></url>
 <url><loc>/reference/add_sequences.html</loc></url>
 <url><loc>/reference/added_message.html</loc></url>
 <url><loc>/reference/assign_bin_representative_sequences.html</loc></url>
@@ -21,7 +24,6 @@
 <url><loc>/reference/deserialize_dobject.html</loc></url>
 <url><loc>/reference/dot-abort_incorrect_format.html</loc></url>
 <url><loc>/reference/dot-abort_incorrect_type.html</loc></url>
-<url><loc>/reference/dot-abort_missing_column.html</loc></url>
 <url><loc>/reference/dot-abort_missing_tag_alert.html</loc></url>
 <url><loc>/reference/dot-abort_no_name.html</loc></url>
 <url><loc>/reference/dot-abort_nonexistant_file.html</loc></url>
@@ -42,6 +44,7 @@
 <url><loc>/reference/get_dataset_name.html</loc></url>
 <url><loc>/reference/get_list.html</loc></url>
 <url><loc>/reference/get_list_vector.html</loc></url>
+<url><loc>/reference/get_metadata.html</loc></url>
 <url><loc>/reference/get_num_bins.html</loc></url>
 <url><loc>/reference/get_num_processors.html</loc></url>
 <url><loc>/reference/get_num_samples.html</loc></url>
@@ -50,6 +53,7 @@
 <url><loc>/reference/get_rabund.html</loc></url>
 <url><loc>/reference/get_rabund_vector.html</loc></url>
 <url><loc>/reference/get_references.html</loc></url>
+<url><loc>/reference/get_reports.html</loc></url>
 <url><loc>/reference/get_sample_totals.html</loc></url>
 <url><loc>/reference/get_sample_treatment_assignments.html</loc></url>
 <url><loc>/reference/get_samples.html</loc></url>
@@ -109,7 +113,7 @@
 <url><loc>/reference/set_dataset_name.html</loc></url>
 <url><loc>/reference/set_num_processors.html</loc></url>
 <url><loc>/reference/set_sequences.html</loc></url>
-<url><loc>/reference/summarize_reports.html</loc></url>
+<url><loc>/reference/sort_dataframe.html</loc></url>
 <url><loc>/reference/unpack_qiime2_artifact.html</loc></url>
 <url><loc>/reference/write_fasta.html</loc></url>
 <url><loc>/reference/write_mothur.html</loc></url>
