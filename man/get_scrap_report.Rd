@@ -13,7 +13,7 @@ get_scrap_report(data, type = "sequence")
 Default = 'sequence'.}
 }
 \value{
-data.frame containing sequences or otus removed from the
+data.frame containing sequences or bins removed from the
 \link{dataset} object during analysis
 }
 \description{
@@ -26,6 +26,6 @@ Get a scrap report containing sequences and bins eliminated from a
   remove_bins(data, c("Otu005"), c("bad_bin"))
 
   sequence_scrap_report <- get_scrap_report(data, "sequence")
-  otu_scrap_report <- get_scrap_report(data, "otu")
+  otu_scrap_report <- get_scrap_report(data, "bin")
 
 }

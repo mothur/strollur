@@ -871,9 +871,9 @@ get_sample_totals <- function(data) {
 #'   remove_bins(data, c("Otu005"), c("bad_bin"))
 #'
 #'   sequence_scrap_report <- get_scrap_report(data, "sequence")
-#'   otu_scrap_report <- get_scrap_report(data, "otu")
+#'   otu_scrap_report <- get_scrap_report(data, "bin")
 #'
-#' @return data.frame containing sequences or otus removed from the
+#' @return data.frame containing sequences or bins removed from the
 #' \link{dataset} object during analysis
 get_scrap_report <- function(data, type = "sequence") {
     .Call(`_rdataset_get_scrap_report`, data, type)

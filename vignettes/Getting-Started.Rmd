@@ -1,0 +1,148 @@
+---
+title: "Getting-Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting-Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The *rdataset* package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
+
+## Installing rdataset
+
+You can install the CRAN version with:
+
+```{r, eval = FALSE}
+install.packages("rdataset")
+```
+
+You can install the development version of *rdataset* from [GitHub](https://github.com/SchlossLab/rdataset) with:
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("SchlossLab/rdataset")
+```
+
+```{r setup}
+library(rdataset)
+```
+
+## Importing Data
+
+*rdataset* has several functions that will read data from mothur, qiime2, dada2, and phyloseq.
+
+### mothur
+
+*rdataset* includes the function **read_mothur** as well as several functions to read [mothur](https://mothur.org) output files individually. To create a dataset from the outputs of the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/), run the following:
+
+```{r}
+data <- read_mothur(
+  fasta = rdataset_example("final.fasta"),
+  count = rdataset_example("final.count_table"),
+  taxonomy = rdataset_example("final.taxonomy"),
+  design = rdataset_example("mouse.time.design"),
+  otu_list = rdataset_example("final.opti_mcc.list"),
+  asv_list = rdataset_example("final.asv.list"),
+  phylo_list = rdataset_example("final.tx.list"),
+  sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+  dataset_name = "miseq_sop"
+)
+data
+```
+
+To create a dataset and read the individual file types, you can use the functions below. First let's create a dataset named my_data.
+
+```{r}
+my_data <- new_dataset("my_data")
+```
+
+To add [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data to your dataset you can use the **read_fasta** function:
+
+```{r}
+fasta_data <- read_fasta(rdataset_example("final.fasta"))
+```
+
+fasta_data is a data.frame containing sequence names, sequence nucleotide strings, and comments if provided. You can add the fasta sequences to your dataset as follows:
+
+```{r}
+add_sequences(my_data, fasta_data)
+my_data
+```
+
+To add your sequence abundance data, you can read a [mothur count file](https://mothur.org/wiki/count_file/) file using the **read_mothur_count** function:
+
+```{r}
+sample_table <- read_mothur_count(rdataset_example("final.count_table"))
+```
+
+sample_table is a data.frame containing sequence_names, samples, and abundances. You can add the sequence abundance data to your dataset as follows:
+
+```{r}
+assign_sequence_abundance(my_data, sample_table)
+my_data
+```
+
+To add sequence taxonomy assignments, you can read a [taxonomy file](https://mothur.org/wiki/taxonomy_file/) file using the **read_mothur_taxonomy** function:
+
+```{r}
+classification_data <- read_mothur_taxonomy(rdataset_example("final.taxonomy"))
+```
+
+classification_data is a data.frame containing sequence names and taxonomies. You can add the sequence classification data to your dataset as follows:
+
+```{r}
+assign_sequence_taxonomy(my_data, classification_data)
+```
+
+To assign sequences to bins, you can read a [mothur list file](https://mothur.org/wiki/list_file/) file using the **read_mothur_list** function:
+
+```{r}
+otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
+asv_data <- read_mothur_list(rdataset_example("final.asv.list"))
+phylotype_data <- read_mothur_list(rdataset_example("final.tx.list"))
+```
+
+otu_data, asv_data and phylotype_data are data.frames containing bin names and sequence names. You can add the bin data to your dataset as follows:
+
+```{r}
+assign_bins(my_data, otu_data, "otu")
+assign_bins(my_data, asv_data, "asv")
+assign_bins(my_data, phylotype_data, "phylotype")
+my_data
+```
+
+When you assign bins to sequences with taxonomic assignments the dataset object will find the consensus taxonomy of the bins automatically. If you wish to assign the bin taxonomy separately, you can read a [mothur cons_taxonomy file](https://mothur.org/wiki/constaxonomy_file/) file using the **read_mothur_cons_taxonomy** function:
+
+```{r}
+otu_taxonomy_data <- read_mothur_cons_taxonomy(
+  rdataset_example("final.cons.taxonomy")
+)
+```
+
+otu_taxonomy_data is a data.frame containing bin names, abundances and taxonomies. You can add the bin taxonomic data to your dataset as follows:
+
+```{r}
+assign_bin_taxonomy(my_data, otu_taxonomy_data)
+```
+
+Other functions available for reading mothur file types include: **read_mothur_rabund** and **read_mothur_shared**.
+
+### qiime2
+
+TODO
+
+### dada2
+
+TODO 
+
+### phyloseq
+
+TODO

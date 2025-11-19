@@ -1,0 +1,37 @@
+---
+title: "Data_Transfers"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data_Transfers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The *rdataset* package stores the data associated with your microbial DNA analysis. This tutorial will explain how to save, load, copy, export, and import your dataset object. If you haven't reviewed the "Getting Started" tuturial, we recommend you start there. First let's load the rdataset package.
+
+```{r setup}
+library(rdataset)
+```
+We can use the **miseq_sop_example** function to create a dataset object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
+
+```{r}
+miseq <- miseq_sop_example()
+miseq
+```
+
+## Save
+
+## Load
+
+## Copy
+
+## Export
+
+## Import

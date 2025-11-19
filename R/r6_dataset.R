@@ -89,28 +89,18 @@ dataset <- R6Class("dataset",
         "\n"
       )
 
-      if (get_num_bins(self, "otu") != 0) {
-        cat(
-          paste("Total number of otus:", get_num_bins(self, "otu")),
-          "\n"
-        )
-      }
-      if (get_num_bins(self, "asv") != 0) {
-        cat(
-          paste(
-            "Total number of asvs:", get_num_bins(self, "asv"),
+      bin_types <- get_bin_types(self)
+
+      for (bin_type in bin_types) {
+        if (get_num_bins(self, bin_type) != 0) {
+          cat(
+            paste0(
+              "Total number of ", bin_type, "s: ",
+              get_num_bins(self, bin_type)
+            ),
             "\n"
           )
-        )
-      }
-      if (get_num_bins(self, "phylotype") != 0) {
-        cat(
-          paste(
-            "Total number of phylotype bins:",
-            get_num_bins(self, "phylotype"),
-            "\n"
-          )
-        )
+        }
       }
       cat("\n")
     },
