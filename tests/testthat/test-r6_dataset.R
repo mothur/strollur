@@ -48,7 +48,7 @@ test_that("dataset - intialize from read_mothur / print", {
   phylo06 <- get_bin(dataset_t, "Phylo06", "phylotype")
   expect_equal(length(.split_at_char(phylo06)), 47)
 
-  remove_bins(
+  xdev_remove_bins(
     dataset_t,
     c("Phylo05", "Phylo06"),
     c("test", "test"),
@@ -71,7 +71,7 @@ test_that("dataset - intialize from read_mothur / print", {
   expect_equal(dataset_t$get_num_sequences(TRUE, "F3D1"), 266)
 
   # remove samples
-  remove_samples(dataset_t, c("F3D0", "F3D1"))
+  xdev_remove_samples(dataset_t, c("F3D0", "F3D1"))
   expect_equal(dataset_t$get_num_treatments(), 2)
   expect_equal(dataset_t$get_num_samples(), 17)
   expect_equal(dataset_t$get_num_bins("phylotype"), 57)
@@ -86,7 +86,7 @@ test_that("dataset - intialize from read_mothur / print", {
 
   # remove things just classified to bacteria, and things classified to
   # Bacteria;"Bacteroidetes"; with confidence less than 95
-  remove_lineages(dataset_t, c(
+  xdev_remove_lineages(dataset_t, c(
     "Bacteria;Bacteria_unclassified;",
     "Bacteria(100);\"Bacteroidetes\"(95);"
   ))
@@ -407,7 +407,7 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
   )
   expect_equal(data$get_num_treatments(), 2)
 
-  remove_sequences(data, seqs_to_remove, trash_codes)
+  xdev_remove_sequences(data, seqs_to_remove, trash_codes)
 
   expect_equal(data$get_num_sequences(), 29)
   expect_equal(data$get_num_sequences(TRUE), 2)
@@ -1144,7 +1144,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   )
 
   # remove seq and make sure tree is pruned as well
-  remove_sequences(dataset_t, c("seq1"), c("bad"))
+  xdev_remove_sequences(dataset_t, c("seq1"), c("bad"))
 
   tree <- dataset_t$get_sequence_tree()
 
@@ -1238,7 +1238,7 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
   expect_equal(sort(dataset_t$get_samples()), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
 
-  remove_samples(dataset_t, c("F3D1", "F3D141"))
+  xdev_remove_samples(dataset_t, c("F3D1", "F3D141"))
 
   tree <- dataset_t$get_sample_tree()
 

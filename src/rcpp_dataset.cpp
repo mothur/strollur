@@ -1087,6 +1087,20 @@ Rcpp::List export_dataset(Rcpp::Environment data,
     return results;
 }
 /******************************************************************************/
+//' @title get_available_processors
+//' @name get_available_processors
+//' @description
+//' Get the number of available cores
+// [[Rcpp::export]]
+int get_available_processors() {
+    // Use Rcpp::Environment and Rcpp::Function to call R code from C++.
+    Rcpp::Environment parallelly_env = Rcpp::Environment::namespace_env("parallelly");
+    Rcpp::Function availableCores = parallelly_env["availableCores"];
+
+    // Call the R function and return the result.
+    return Rcpp::as<int>(availableCores());
+}
+/******************************************************************************/
 //' @title get_bin
 //' @description
 //' Get the names of the sequences in a given bin in a \link{dataset} object
@@ -1805,7 +1819,7 @@ vector<vector<string> > get_sequences_by_sample(Rcpp::Environment data,
 //'
 //'  # Sequence summary, after removing sample 'F3D0'
 //'
-//'  remove_samples(data, c("F3D0"))
+//'  xdev_remove_samples(data, c("F3D0"))
 //'  get_sequence_summary(data)
 //'
 //' @return list of data.frames containing the 'sequence_summary' table and
@@ -1929,7 +1943,24 @@ bool has_sequence_strings(Rcpp::Environment data) {
    return d.get()->hasSeqs();
 }
 /******************************************************************************/
-//' @title merge_bins
+//' @title is_aligned
+//' @description
+//' Determine if a \link{dataset} object contains aligned sequences.
+//'
+//' @param data, a \link{dataset} object
+//' @examples
+//'
+//' dataset <- miseq_sop_example()
+//' is_aligned(dataset)
+//'
+//' @return Boolean
+//[[Rcpp::export]]
+bool is_aligned(Rcpp::Environment data) {
+     Rcpp::XPtr<Dataset> d = data["data"];
+     return d.get()->isAligned;
+}
+/******************************************************************************/
+//' @title xdev_merge_bins
 //' @description
 //' Designed with package integration in mind, the merge bins function allows
 //' you to merge bins in a \link{dataset} object
@@ -1951,7 +1982,7 @@ bool has_sequence_strings(Rcpp::Environment data) {
 //'
 //'  bins_to_merge <- c("Otu005", "Otu006")
 //'
-//'  merge_bins(data, bins_to_merge)
+//'  xdev_merge_bins(data, bins_to_merge)
 //'
 //'  # If you look at the scrap report, you will see Otu006 with the trash code
 //'  # set to "merged".
@@ -1959,13 +1990,13 @@ bool has_sequence_strings(Rcpp::Environment data) {
 //'  report(data, "bin_scrap")
 //'
 //[[Rcpp::export]]
-void merge_bins(Rcpp::Environment data, vector<string> bin_names,
+void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
                 string reason = "merged", string type = "otu") {
     Rcpp::XPtr<Dataset> d = data["data"];
     d.get()->mergeBins(bin_names, reason, type);
 }
 /******************************************************************************/
-//' @title merge_sequences
+//' @title xdev_merge_sequences
 //' @description
 //' Designed with package integration in mind, the merge sequences function
 //' allows you to merge sequences in a \link{dataset} object.
@@ -1991,7 +2022,7 @@ void merge_bins(Rcpp::Environment data, vector<string> bin_names,
 //'                    "M00967_43_000000000-A3JHG_1_1113_12711_3318",
 //'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 //'
-//' merge_sequences(data, seqs_to_merge)
+//' xdev_merge_sequences(data, seqs_to_merge)
 //'
 //' # If you look at the scrap report, you will see the second two sequence
 //' # names, listed with the trash code set to "merged".
@@ -2004,13 +2035,13 @@ void merge_bins(Rcpp::Environment data, vector<string> bin_names,
 //' get_num_sequences(data)
 //'
 //[[Rcpp::export]]
-void merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
+void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
                  string reason = "merged") {
     Rcpp::XPtr<Dataset> d = data["data"];
     d.get()->mergeSequences(sequence_names, reason);
 }
 /******************************************************************************/
-//' @title remove_bins
+//' @title xdev_remove_bins
 //' @description
 //' Designed with package integration in mind, the remove bins function allows
 //' you to remove bins from a \link{dataset} object
@@ -2037,18 +2068,18 @@ void merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
 //'   bins_to_remove <- c("bin1")
 //'   trash_tag <- c("bad_bin")
 //'
-//'   remove_bins(data, bins_to_remove, trash_tag)
+//'   xdev_remove_bins(data, bins_to_remove, trash_tag)
 //'
 //'   get_num_bins(data)
 //'
 //[[Rcpp::export]]
-void remove_bins(Rcpp::Environment data, vector<string> bin_names,
+void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
                  vector<string> trash_tags, string type = "otu") {
     Rcpp::XPtr<Dataset> d = data["data"];
     d.get()->removeBins(bin_names, trash_tags, type);
 }
 /******************************************************************************/
-//' @title remove_lineages
+//' @title xdev_remove_lineages
 //' @description
 //' Designed with package integration in mind, the remove lineages function
 //' allows you to remove contaminents from a \link{dataset}
@@ -2071,18 +2102,19 @@ void remove_bins(Rcpp::Environment data, vector<string> bin_names,
 //' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
 //'  "Eukaryota")
 //'
-//' remove_lineages(data, contaminants)
+//' xdev_remove_lineages(data, contaminants)
 //'
 //[[Rcpp::export]]
-void remove_lineages(Rcpp::Environment data, vector<string> contaminants,
+void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants,
                      string trash_tag = "contaminant") {
     Rcpp::XPtr<Dataset> d = data["data"];
     d.get()->removeLineages(contaminants, trash_tag);
 }
 /******************************************************************************/
-//' @title remove_samples
+//' @title xdev_remove_samples
 //' @description
-//' Remove samples from a \link{dataset} object
+//' Designed with package integration in mind, the remove samples function allows
+//' you to remove samples from a \link{dataset} object
 //'
 //' @param data, a \link{dataset} object.
 //'
@@ -2097,17 +2129,17 @@ void remove_lineages(Rcpp::Environment data, vector<string> contaminants,
 //'
 //' # To remove samples 'F3D0' and 'F3D1'
 //'
-//' remove_samples(data, c("F3D0", "F3D1"))
+//' xdev_remove_samples(data, c("F3D0", "F3D1"))
 //'
 //' get_num_samples(data)
 //'
 //[[Rcpp::export]]
-void remove_samples(Rcpp::Environment data, vector<string> samples) {
+void xdev_remove_samples(Rcpp::Environment data, vector<string> samples) {
     Rcpp::XPtr<Dataset> d = data["data"];
     d.get()->removeSamples(samples);
 }
 /******************************************************************************/
-//' @title remove_sequences
+//' @title xdev_remove_sequences
 //' @description
 //' Designed with package integration in mind, the remove sequences function
 //' allows you to remove sequences from a \link{dataset} object
@@ -2133,7 +2165,7 @@ void remove_samples(Rcpp::Environment data, vector<string> samples) {
 //'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 //' trash_codes <- c("example", "removing", "sequences")
 //'
-//' remove_sequences(data, seqs_to_remove, trash_codes)
+//' xdev_remove_sequences(data, seqs_to_remove, trash_codes)
 //'
 //' # If you look at the scrap report, you the sequences names, listed with the
 //' # trash codes set to "example", "removing", "sequences".
@@ -2146,7 +2178,7 @@ void remove_samples(Rcpp::Environment data, vector<string> samples) {
 //' get_num_sequences(data)
 //'
 //[[Rcpp::export]]
-void remove_sequences(Rcpp::Environment data,
+void xdev_remove_sequences(Rcpp::Environment data,
                       vector<string> sequence_names,
                       vector<string> trash_tags) {
 
@@ -2154,7 +2186,7 @@ void remove_sequences(Rcpp::Environment data,
     d.get()->removeSequences(sequence_names, trash_tags);
 }
 /******************************************************************************/
-//' @title set_abundance
+//' @title xdev_set_abundance
 //' @description
 //' Designed with package integration in mind, the set abundance function
 //' allows you to change the abundances of sequences in a \link{dataset} object
@@ -2182,12 +2214,12 @@ void remove_sequences(Rcpp::Environment data,
 //' seqs_to_update <- c("seq1", "seq3")
 //' new_abunds <- c(1000, 100)
 //'
-//' set_abundance(data, seqs_to_update, new_abunds)
+//' xdev_set_abundance(data, seqs_to_update, new_abunds)
 //'
 //' get_sequence_abundances(data)
 //'
 //[[Rcpp::export]]
-void set_abundance(Rcpp::Environment data,
+void xdev_set_abundance(Rcpp::Environment data,
                    vector<string> sequence_names,
                    vector<float> sequence_abundances,
                    string reason = "update") {
@@ -2205,7 +2237,7 @@ void set_abundance(Rcpp::Environment data,
     }
 }
 /******************************************************************************/
-//' @title set_abundances
+//' @title xdev_set_abundances
 //' @description
 //' Designed with package integration in mind, the set abundances function
 //' allows you to change the abundances of sequences in a \link{dataset} object
@@ -2235,10 +2267,10 @@ void set_abundance(Rcpp::Environment data,
 //' seqs_to_update <- c("seq4")
 //' new_abunds <- list(c(20, 10, 4))
 //'
-//' set_abundances(data, seqs_to_update, new_abunds)
+//' xdev_set_abundances(data, seqs_to_update, new_abunds)
 //'
 //[[Rcpp::export]]
-void set_abundances(Rcpp::Environment data,
+void xdev_set_abundances(Rcpp::Environment data,
                    vector<string> sequence_names,
                    vector<vector<float>> abundances,
                    string reason = "update") {
@@ -2256,7 +2288,7 @@ void set_abundances(Rcpp::Environment data,
     }
 }
 /******************************************************************************/
-//' @title set_bin_abundance
+//' @title xdev_set_bin_abundance
 //' @description
 //' Designed with package integration in mind, the set bin abundance function
 //' allows you to change the abundances of bins in a \link{dataset} object
@@ -2291,13 +2323,13 @@ void set_abundances(Rcpp::Environment data,
 //'   bins <- c("bin1", "bin2")
 //'   new_abunds <- c(300, 250)
 //'
-//'   set_bin_abundance(data, bins, new_abunds)
+//'   xdev_set_bin_abundance(data, bins, new_abunds)
 //'
 //'   get_bin_abundance(data, "bin1")
 //'   get_bin_abundance(data, "bin2")
 //'
 //[[Rcpp::export]]
-void set_bin_abundance(Rcpp::Environment data,
+void xdev_set_bin_abundance(Rcpp::Environment data,
                        vector<string> bin_names,
                        vector<float> abundances,
                        string type = "otu",
@@ -2322,7 +2354,7 @@ void set_bin_abundance(Rcpp::Environment data,
     }
 }
 /******************************************************************************/
-//' @title set_bin_abundances
+//' @title xdev_set_bin_abundances
 //' @description
 //' Designed with package integration in mind, the set bin abundances function
 //' allows you to change the abundances of bins in a \link{dataset} object
@@ -2361,12 +2393,12 @@ void set_bin_abundance(Rcpp::Environment data,
 //'   new_bin1_abunds <- list(c(10,50,0,0))
 //'   bins <- c("bin1")
 //'
-//'   set_bin_abundances(data, bins, new_bin1_abunds)
+//'   xdev_set_bin_abundances(data, bins, new_bin1_abunds)
 //'
 //'   get_bin_abundances(data, "bin1")
 //'
 //[[Rcpp::export]]
-void set_bin_abundances(Rcpp::Environment data,
+void xdev_set_bin_abundances(Rcpp::Environment data,
                         vector<string> bin_names,
                         vector<vector<float>> abundances,
                         string type = "otu", string reason = "update") {
@@ -2389,7 +2421,7 @@ void set_bin_abundances(Rcpp::Environment data,
     }
 }
 /******************************************************************************/
-//' @title set_sequences
+//' @title xdev_set_sequences
 //' @description
 //' Designed with package integration in mind, the set sequences function
 //' allows you to change the nucleotide strings of sequences in a \link{dataset}
@@ -2409,11 +2441,11 @@ void set_bin_abundances(Rcpp::Environment data,
 //' add_sequences(data, data.frame(sequence_names = c("seq1", "seq2",
 //'                                                   "seq3", "seq4")))
 //'
-//' set_sequences(data, c("seq1", "seq2","seq3", "seq4"),
+//' xdev_set_sequences(data, c("seq1", "seq2","seq3", "seq4"),
 //'                     c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 //'
 //[[Rcpp::export]]
-void set_sequences(Rcpp::Environment data,
+void xdev_set_sequences(Rcpp::Environment data,
                    vector<string> sequence_names,
                    vector<string> sequences,
                    Rcpp::CharacterVector comments = Rcpp::CharacterVector::create()) {
@@ -2423,9 +2455,9 @@ void set_sequences(Rcpp::Environment data,
                           Rcpp::as<vector<string>>(comments));
 }
 /******************************************************************************/
-//' @title set_dataset_name
+//' @title xdev_set_dataset_name
 //' @description
-//' Set the name of a \link{dataset} object.
+//' Designed with package integration in mind, set the name of a \link{dataset} object.
 //'
 //' @param data, a \link{dataset} object
 //' @param dataset_name, a string containing the desired name
@@ -2433,50 +2465,50 @@ void set_sequences(Rcpp::Environment data,
 //' @examples
 //'
 //' data <- new_dataset("my_dataset", 2)
-//' set_dataset_name(data, "new_dataset_name")
+//' xdev_set_dataset_name(data, "new_dataset_name")
 //'
 //[[Rcpp::export]]
-void set_dataset_name(Rcpp::Environment data, string dataset_name) {
+void xdev_set_dataset_name(Rcpp::Environment data, string dataset_name) {
     Rcpp::XPtr<Dataset> d = data["data"];
     d.get()->datasetName = dataset_name;
 }
 /******************************************************************************/
-//' @title set_num_processors
+//' @title xdev_set_num_processors
 //' @description
-//' Set the number of processors used to summarize a \link{dataset} object
+//' Designed with package integration in mind, set the number of processors used
+//'  to summarize a \link{dataset} object
 //'
 //' @param data, a \link{dataset} object
 //' @param processors, a integer containing the desired number of processors
 //' @examples
 //'
 //' data <- new_dataset("my_dataset", 2)
-//' set_num_processors(data, 1)
+//' xdev_set_num_processors(data, 1)
 //'
 //[[Rcpp::export]]
-void set_num_processors(Rcpp::Environment data, int processors) {
+void xdev_set_num_processors(Rcpp::Environment data, int processors) {
     Rcpp::XPtr<Dataset> d = data["data"];
     d.get()->processors = processors;
 }
 /******************************************************************************/
-//' @title is_aligned
+
+/******************************************************************************/
+//' @title xint_copy_pointer
+//' @name xint_copy_pointer
 //' @description
-//' Determine if a \link{dataset} object contains aligned sequences.
-//'
+//' For internal use only, copy an instance of the C++ 'Dataset' class.
 //' @param data, a \link{dataset} object
-//' @examples
-//'
-//' dataset <- miseq_sop_example()
-//' is_aligned(dataset)
-//'
-//' @return Boolean
+//' @return pointer to an instance of the C++ 'Dataset' class.
+//' @keywords internal
 //[[Rcpp::export]]
-bool is_aligned(Rcpp::Environment data) {
+Rcpp::XPtr<Dataset> xint_copy_pointer(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->isAligned;
+    Dataset* copy = new Dataset(*d.get());
+    return Rcpp::XPtr<Dataset>(copy);
 }
 /******************************************************************************/
-//' @title new_pointer
-//' @name new_pointer
+//' @title xint_new_pointer
+//' @name xint_new_pointer
 //' @description
 //' For internal use only, create an instance of the C++ 'Dataset' class.
 //' @param dataset_name, string containing dataset name
@@ -2484,61 +2516,33 @@ bool is_aligned(Rcpp::Environment data) {
 //' @return pointer to an instance of the C++ 'Dataset' class.
 //' @keywords internal
 //[[Rcpp::export]]
-Rcpp::XPtr<Dataset> new_pointer(string dataset_name = "", int processors = 1) {
+Rcpp::XPtr<Dataset> xint_new_pointer(string dataset_name = "", int processors = 1) {
      Dataset* d = new Dataset(dataset_name, processors);
      return Rcpp::XPtr<Dataset>(d);
 }
 /******************************************************************************/
-//' @title copy_pointer
-//' @name copy_pointer
-//' @description
-//' For internal use only, copy an instance of the C++ 'Dataset' class.
-//' @param data, a \link{dataset} object
-//' @return pointer to an instance of the C++ 'Dataset' class.
-//' @keywords internal
-//[[Rcpp::export]]
-Rcpp::XPtr<Dataset> copy_pointer(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    Dataset* copy = new Dataset(*d.get());
-    return Rcpp::XPtr<Dataset>(copy);
-}
-/******************************************************************************/
-//' @title get_available_processors
-//' @name get_available_processors
-//' @description
-//' Get the number of available cores
-// [[Rcpp::export]]
-int get_available_processors() {
-    // Use Rcpp::Environment and Rcpp::Function to call R code from C++.
-    Rcpp::Environment parallelly_env = Rcpp::Environment::namespace_env("parallelly");
-    Rcpp::Function availableCores = parallelly_env["availableCores"];
-
-    // Call the R function and return the result.
-    return Rcpp::as<int>(availableCores());
-}
-/******************************************************************************/
-//' @title deserialize_dobject
-//' @name deserialize_dobject
+//' @title xint_deserialize_dobject
+//' @name xint_deserialize_dobject
 //' @description
 //' For internal use only, deserialize_dobject an instance of the C++ 'Dataset'
 //'  class.
 //' @param data, a \link{dataset} object
 //[[Rcpp::export]]
-void deserialize_dobject(Rcpp::Environment data) {
-     data["data"] = new_pointer();
+void xint_deserialize_dobject(Rcpp::Environment data) {
+     data["data"] = xint_new_pointer();
      Rcpp::XPtr<Dataset> d = data["data"];
      const Rcpp::RawVector raw = data["raw"];
      d.get()->loadFromSerialized(raw);
 }
 /******************************************************************************/
-//' @title serialize_dobject
-//' @name serialize_dobject
+//' @title xint_serialize_dobject
+//' @name xint_serialize_dobject
 //' @description
-//' For internal use only, serialize_dobject an instance of the C++ 'Dataset'
+//' For internal use only, xint_serialize_dobject an instance of the C++ 'Dataset'
 //' class.
 //' @param data, a \link{dataset} object
 //[[Rcpp::export]]
-void serialize_dobject(Rcpp::Environment data) {
+void xint_serialize_dobject(Rcpp::Environment data) {
      Rcpp::XPtr<Dataset> d = data["data"];
      data["raw"] = d.get()->serializeDataset();
  }

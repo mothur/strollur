@@ -459,6 +459,14 @@ export_dataset <- function(data, tags = as.character( c())) {
     .Call(`_rdataset_export_dataset`, data, tags)
 }
 
+#' @title get_available_processors
+#' @name get_available_processors
+#' @description
+#' Get the number of available cores
+get_available_processors <- function() {
+    .Call(`_rdataset_get_available_processors`)
+}
+
 #' @title get_bin
 #' @description
 #' Get the names of the sequences in a given bin in a \link{dataset} object
@@ -1066,7 +1074,7 @@ get_sequences_by_sample <- function(data, samples = as.character( c())) {
 #'
 #'  # Sequence summary, after removing sample 'F3D0'
 #'
-#'  remove_samples(data, c("F3D0"))
+#'  xdev_remove_samples(data, c("F3D0"))
 #'  get_sequence_summary(data)
 #'
 #' @return list of data.frames containing the 'sequence_summary' table and
@@ -1175,7 +1183,22 @@ has_sequence_strings <- function(data) {
     .Call(`_rdataset_has_sequence_strings`, data)
 }
 
-#' @title merge_bins
+#' @title is_aligned
+#' @description
+#' Determine if a \link{dataset} object contains aligned sequences.
+#'
+#' @param data, a \link{dataset} object
+#' @examples
+#'
+#' dataset <- miseq_sop_example()
+#' is_aligned(dataset)
+#'
+#' @return Boolean
+is_aligned <- function(data) {
+    .Call(`_rdataset_is_aligned`, data)
+}
+
+#' @title xdev_merge_bins
 #' @description
 #' Designed with package integration in mind, the merge bins function allows
 #' you to merge bins in a \link{dataset} object
@@ -1197,18 +1220,18 @@ has_sequence_strings <- function(data) {
 #'
 #'  bins_to_merge <- c("Otu005", "Otu006")
 #'
-#'  merge_bins(data, bins_to_merge)
+#'  xdev_merge_bins(data, bins_to_merge)
 #'
 #'  # If you look at the scrap report, you will see Otu006 with the trash code
 #'  # set to "merged".
 #'
 #'  report(data, "bin_scrap")
 #'
-merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
-    invisible(.Call(`_rdataset_merge_bins`, data, bin_names, reason, type))
+xdev_merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
+    invisible(.Call(`_rdataset_xdev_merge_bins`, data, bin_names, reason, type))
 }
 
-#' @title merge_sequences
+#' @title xdev_merge_sequences
 #' @description
 #' Designed with package integration in mind, the merge sequences function
 #' allows you to merge sequences in a \link{dataset} object.
@@ -1234,7 +1257,7 @@ merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 #'                    "M00967_43_000000000-A3JHG_1_1113_12711_3318",
 #'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 #'
-#' merge_sequences(data, seqs_to_merge)
+#' xdev_merge_sequences(data, seqs_to_merge)
 #'
 #' # If you look at the scrap report, you will see the second two sequence
 #' # names, listed with the trash code set to "merged".
@@ -1246,11 +1269,11 @@ merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 #'
 #' get_num_sequences(data)
 #'
-merge_sequences <- function(data, sequence_names, reason = "merged") {
-    invisible(.Call(`_rdataset_merge_sequences`, data, sequence_names, reason))
+xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
+    invisible(.Call(`_rdataset_xdev_merge_sequences`, data, sequence_names, reason))
 }
 
-#' @title remove_bins
+#' @title xdev_remove_bins
 #' @description
 #' Designed with package integration in mind, the remove bins function allows
 #' you to remove bins from a \link{dataset} object
@@ -1277,15 +1300,15 @@ merge_sequences <- function(data, sequence_names, reason = "merged") {
 #'   bins_to_remove <- c("bin1")
 #'   trash_tag <- c("bad_bin")
 #'
-#'   remove_bins(data, bins_to_remove, trash_tag)
+#'   xdev_remove_bins(data, bins_to_remove, trash_tag)
 #'
 #'   get_num_bins(data)
 #'
-remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
-    invisible(.Call(`_rdataset_remove_bins`, data, bin_names, trash_tags, type))
+xdev_remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
+    invisible(.Call(`_rdataset_xdev_remove_bins`, data, bin_names, trash_tags, type))
 }
 
-#' @title remove_lineages
+#' @title xdev_remove_lineages
 #' @description
 #' Designed with package integration in mind, the remove lineages function
 #' allows you to remove contaminents from a \link{dataset}
@@ -1308,15 +1331,16 @@ remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
 #' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
 #'  "Eukaryota")
 #'
-#' remove_lineages(data, contaminants)
+#' xdev_remove_lineages(data, contaminants)
 #'
-remove_lineages <- function(data, contaminants, trash_tag = "contaminant") {
-    invisible(.Call(`_rdataset_remove_lineages`, data, contaminants, trash_tag))
+xdev_remove_lineages <- function(data, contaminants, trash_tag = "contaminant") {
+    invisible(.Call(`_rdataset_xdev_remove_lineages`, data, contaminants, trash_tag))
 }
 
-#' @title remove_samples
+#' @title xdev_remove_samples
 #' @description
-#' Remove samples from a \link{dataset} object
+#' Designed with package integration in mind, the remove samples function allows
+#' you to remove samples from a \link{dataset} object
 #'
 #' @param data, a \link{dataset} object.
 #'
@@ -1331,15 +1355,15 @@ remove_lineages <- function(data, contaminants, trash_tag = "contaminant") {
 #'
 #' # To remove samples 'F3D0' and 'F3D1'
 #'
-#' remove_samples(data, c("F3D0", "F3D1"))
+#' xdev_remove_samples(data, c("F3D0", "F3D1"))
 #'
 #' get_num_samples(data)
 #'
-remove_samples <- function(data, samples) {
-    invisible(.Call(`_rdataset_remove_samples`, data, samples))
+xdev_remove_samples <- function(data, samples) {
+    invisible(.Call(`_rdataset_xdev_remove_samples`, data, samples))
 }
 
-#' @title remove_sequences
+#' @title xdev_remove_sequences
 #' @description
 #' Designed with package integration in mind, the remove sequences function
 #' allows you to remove sequences from a \link{dataset} object
@@ -1365,7 +1389,7 @@ remove_samples <- function(data, samples) {
 #'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 #' trash_codes <- c("example", "removing", "sequences")
 #'
-#' remove_sequences(data, seqs_to_remove, trash_codes)
+#' xdev_remove_sequences(data, seqs_to_remove, trash_codes)
 #'
 #' # If you look at the scrap report, you the sequences names, listed with the
 #' # trash codes set to "example", "removing", "sequences".
@@ -1377,11 +1401,11 @@ remove_samples <- function(data, samples) {
 #'
 #' get_num_sequences(data)
 #'
-remove_sequences <- function(data, sequence_names, trash_tags) {
-    invisible(.Call(`_rdataset_remove_sequences`, data, sequence_names, trash_tags))
+xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
+    invisible(.Call(`_rdataset_xdev_remove_sequences`, data, sequence_names, trash_tags))
 }
 
-#' @title set_abundance
+#' @title xdev_set_abundance
 #' @description
 #' Designed with package integration in mind, the set abundance function
 #' allows you to change the abundances of sequences in a \link{dataset} object
@@ -1409,15 +1433,15 @@ remove_sequences <- function(data, sequence_names, trash_tags) {
 #' seqs_to_update <- c("seq1", "seq3")
 #' new_abunds <- c(1000, 100)
 #'
-#' set_abundance(data, seqs_to_update, new_abunds)
+#' xdev_set_abundance(data, seqs_to_update, new_abunds)
 #'
 #' get_sequence_abundances(data)
 #'
-set_abundance <- function(data, sequence_names, sequence_abundances, reason = "update") {
-    invisible(.Call(`_rdataset_set_abundance`, data, sequence_names, sequence_abundances, reason))
+xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason = "update") {
+    invisible(.Call(`_rdataset_xdev_set_abundance`, data, sequence_names, sequence_abundances, reason))
 }
 
-#' @title set_abundances
+#' @title xdev_set_abundances
 #' @description
 #' Designed with package integration in mind, the set abundances function
 #' allows you to change the abundances of sequences in a \link{dataset} object
@@ -1447,13 +1471,13 @@ set_abundance <- function(data, sequence_names, sequence_abundances, reason = "u
 #' seqs_to_update <- c("seq4")
 #' new_abunds <- list(c(20, 10, 4))
 #'
-#' set_abundances(data, seqs_to_update, new_abunds)
+#' xdev_set_abundances(data, seqs_to_update, new_abunds)
 #'
-set_abundances <- function(data, sequence_names, abundances, reason = "update") {
-    invisible(.Call(`_rdataset_set_abundances`, data, sequence_names, abundances, reason))
+xdev_set_abundances <- function(data, sequence_names, abundances, reason = "update") {
+    invisible(.Call(`_rdataset_xdev_set_abundances`, data, sequence_names, abundances, reason))
 }
 
-#' @title set_bin_abundance
+#' @title xdev_set_bin_abundance
 #' @description
 #' Designed with package integration in mind, the set bin abundance function
 #' allows you to change the abundances of bins in a \link{dataset} object
@@ -1488,16 +1512,16 @@ set_abundances <- function(data, sequence_names, abundances, reason = "update") 
 #'   bins <- c("bin1", "bin2")
 #'   new_abunds <- c(300, 250)
 #'
-#'   set_bin_abundance(data, bins, new_abunds)
+#'   xdev_set_bin_abundance(data, bins, new_abunds)
 #'
 #'   get_bin_abundance(data, "bin1")
 #'   get_bin_abundance(data, "bin2")
 #'
-set_bin_abundance <- function(data, bin_names, abundances, type = "otu", reason = "update") {
-    invisible(.Call(`_rdataset_set_bin_abundance`, data, bin_names, abundances, type, reason))
+xdev_set_bin_abundance <- function(data, bin_names, abundances, type = "otu", reason = "update") {
+    invisible(.Call(`_rdataset_xdev_set_bin_abundance`, data, bin_names, abundances, type, reason))
 }
 
-#' @title set_bin_abundances
+#' @title xdev_set_bin_abundances
 #' @description
 #' Designed with package integration in mind, the set bin abundances function
 #' allows you to change the abundances of bins in a \link{dataset} object
@@ -1536,15 +1560,15 @@ set_bin_abundance <- function(data, bin_names, abundances, type = "otu", reason 
 #'   new_bin1_abunds <- list(c(10,50,0,0))
 #'   bins <- c("bin1")
 #'
-#'   set_bin_abundances(data, bins, new_bin1_abunds)
+#'   xdev_set_bin_abundances(data, bins, new_bin1_abunds)
 #'
 #'   get_bin_abundances(data, "bin1")
 #'
-set_bin_abundances <- function(data, bin_names, abundances, type = "otu", reason = "update") {
-    invisible(.Call(`_rdataset_set_bin_abundances`, data, bin_names, abundances, type, reason))
+xdev_set_bin_abundances <- function(data, bin_names, abundances, type = "otu", reason = "update") {
+    invisible(.Call(`_rdataset_xdev_set_bin_abundances`, data, bin_names, abundances, type, reason))
 }
 
-#' @title set_sequences
+#' @title xdev_set_sequences
 #' @description
 #' Designed with package integration in mind, the set sequences function
 #' allows you to change the nucleotide strings of sequences in a \link{dataset}
@@ -1564,16 +1588,16 @@ set_bin_abundances <- function(data, bin_names, abundances, type = "otu", reason
 #' add_sequences(data, data.frame(sequence_names = c("seq1", "seq2",
 #'                                                   "seq3", "seq4")))
 #'
-#' set_sequences(data, c("seq1", "seq2","seq3", "seq4"),
+#' xdev_set_sequences(data, c("seq1", "seq2","seq3", "seq4"),
 #'                     c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 #'
-set_sequences <- function(data, sequence_names, sequences, comments = as.character( c())) {
-    invisible(.Call(`_rdataset_set_sequences`, data, sequence_names, sequences, comments))
+xdev_set_sequences <- function(data, sequence_names, sequences, comments = as.character( c())) {
+    invisible(.Call(`_rdataset_xdev_set_sequences`, data, sequence_names, sequences, comments))
 }
 
-#' @title set_dataset_name
+#' @title xdev_set_dataset_name
 #' @description
-#' Set the name of a \link{dataset} object.
+#' Designed with package integration in mind, set the name of a \link{dataset} object.
 #'
 #' @param data, a \link{dataset} object
 #' @param dataset_name, a string containing the desired name
@@ -1581,90 +1605,68 @@ set_sequences <- function(data, sequence_names, sequences, comments = as.charact
 #' @examples
 #'
 #' data <- new_dataset("my_dataset", 2)
-#' set_dataset_name(data, "new_dataset_name")
+#' xdev_set_dataset_name(data, "new_dataset_name")
 #'
-set_dataset_name <- function(data, dataset_name) {
-    invisible(.Call(`_rdataset_set_dataset_name`, data, dataset_name))
+xdev_set_dataset_name <- function(data, dataset_name) {
+    invisible(.Call(`_rdataset_xdev_set_dataset_name`, data, dataset_name))
 }
 
-#' @title set_num_processors
+#' @title xdev_set_num_processors
 #' @description
-#' Set the number of processors used to summarize a \link{dataset} object
+#' Designed with package integration in mind, set the number of processors used
+#'  to summarize a \link{dataset} object
 #'
 #' @param data, a \link{dataset} object
 #' @param processors, a integer containing the desired number of processors
 #' @examples
 #'
 #' data <- new_dataset("my_dataset", 2)
-#' set_num_processors(data, 1)
+#' xdev_set_num_processors(data, 1)
 #'
-set_num_processors <- function(data, processors) {
-    invisible(.Call(`_rdataset_set_num_processors`, data, processors))
+xdev_set_num_processors <- function(data, processors) {
+    invisible(.Call(`_rdataset_xdev_set_num_processors`, data, processors))
 }
 
-#' @title is_aligned
+#' @title xint_copy_pointer
+#' @name xint_copy_pointer
 #' @description
-#' Determine if a \link{dataset} object contains aligned sequences.
-#'
+#' For internal use only, copy an instance of the C++ 'Dataset' class.
 #' @param data, a \link{dataset} object
-#' @examples
-#'
-#' dataset <- miseq_sop_example()
-#' is_aligned(dataset)
-#'
-#' @return Boolean
-is_aligned <- function(data) {
-    .Call(`_rdataset_is_aligned`, data)
+#' @return pointer to an instance of the C++ 'Dataset' class.
+#' @keywords internal
+xint_copy_pointer <- function(data) {
+    .Call(`_rdataset_xint_copy_pointer`, data)
 }
 
-#' @title new_pointer
-#' @name new_pointer
+#' @title xint_new_pointer
+#' @name xint_new_pointer
 #' @description
 #' For internal use only, create an instance of the C++ 'Dataset' class.
 #' @param dataset_name, string containing dataset name
 #' @param processors, number of processors to use
 #' @return pointer to an instance of the C++ 'Dataset' class.
 #' @keywords internal
-new_pointer <- function(dataset_name = "", processors = 1L) {
-    .Call(`_rdataset_new_pointer`, dataset_name, processors)
+xint_new_pointer <- function(dataset_name = "", processors = 1L) {
+    .Call(`_rdataset_xint_new_pointer`, dataset_name, processors)
 }
 
-#' @title copy_pointer
-#' @name copy_pointer
-#' @description
-#' For internal use only, copy an instance of the C++ 'Dataset' class.
-#' @param data, a \link{dataset} object
-#' @return pointer to an instance of the C++ 'Dataset' class.
-#' @keywords internal
-copy_pointer <- function(data) {
-    .Call(`_rdataset_copy_pointer`, data)
-}
-
-#' @title get_available_processors
-#' @name get_available_processors
-#' @description
-#' Get the number of available cores
-get_available_processors <- function() {
-    .Call(`_rdataset_get_available_processors`)
-}
-
-#' @title deserialize_dobject
-#' @name deserialize_dobject
+#' @title xint_deserialize_dobject
+#' @name xint_deserialize_dobject
 #' @description
 #' For internal use only, deserialize_dobject an instance of the C++ 'Dataset'
 #'  class.
 #' @param data, a \link{dataset} object
-deserialize_dobject <- function(data) {
-    invisible(.Call(`_rdataset_deserialize_dobject`, data))
+xint_deserialize_dobject <- function(data) {
+    invisible(.Call(`_rdataset_xint_deserialize_dobject`, data))
 }
 
-#' @title serialize_dobject
-#' @name serialize_dobject
+#' @title xint_serialize_dobject
+#' @name xint_serialize_dobject
 #' @description
-#' For internal use only, serialize_dobject an instance of the C++ 'Dataset'
+#' For internal use only, xint_serialize_dobject an instance of the C++ 'Dataset'
 #' class.
 #' @param data, a \link{dataset} object
-serialize_dobject <- function(data) {
-    invisible(.Call(`_rdataset_serialize_dobject`, data))
+xint_serialize_dobject <- function(data) {
+    invisible(.Call(`_rdataset_xint_serialize_dobject`, data))
 }
 

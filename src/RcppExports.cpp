@@ -214,6 +214,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_available_processors
+int get_available_processors();
+RcppExport SEXP _rdataset_get_available_processors() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(get_available_processors());
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_bin
 string get_bin(Rcpp::Environment data, string bin_name, string type);
 RcppExport SEXP _rdataset_get_bin(SEXP dataSEXP, SEXP bin_nameSEXP, SEXP typeSEXP) {
@@ -635,168 +645,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// merge_bins
-void merge_bins(Rcpp::Environment data, vector<string> bin_names, string reason, string type);
-RcppExport SEXP _rdataset_merge_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP reasonSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    merge_bins(data, bin_names, reason, type);
-    return R_NilValue;
-END_RCPP
-}
-// merge_sequences
-void merge_sequences(Rcpp::Environment data, vector<string> sequence_names, string reason);
-RcppExport SEXP _rdataset_merge_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    merge_sequences(data, sequence_names, reason);
-    return R_NilValue;
-END_RCPP
-}
-// remove_bins
-void remove_bins(Rcpp::Environment data, vector<string> bin_names, vector<string> trash_tags, string type);
-RcppExport SEXP _rdataset_remove_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP trash_tagsSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type trash_tags(trash_tagsSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    remove_bins(data, bin_names, trash_tags, type);
-    return R_NilValue;
-END_RCPP
-}
-// remove_lineages
-void remove_lineages(Rcpp::Environment data, vector<string> contaminants, string trash_tag);
-RcppExport SEXP _rdataset_remove_lineages(SEXP dataSEXP, SEXP contaminantsSEXP, SEXP trash_tagSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type contaminants(contaminantsSEXP);
-    Rcpp::traits::input_parameter< string >::type trash_tag(trash_tagSEXP);
-    remove_lineages(data, contaminants, trash_tag);
-    return R_NilValue;
-END_RCPP
-}
-// remove_samples
-void remove_samples(Rcpp::Environment data, vector<string> samples);
-RcppExport SEXP _rdataset_remove_samples(SEXP dataSEXP, SEXP samplesSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type samples(samplesSEXP);
-    remove_samples(data, samples);
-    return R_NilValue;
-END_RCPP
-}
-// remove_sequences
-void remove_sequences(Rcpp::Environment data, vector<string> sequence_names, vector<string> trash_tags);
-RcppExport SEXP _rdataset_remove_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP trash_tagsSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type trash_tags(trash_tagsSEXP);
-    remove_sequences(data, sequence_names, trash_tags);
-    return R_NilValue;
-END_RCPP
-}
-// set_abundance
-void set_abundance(Rcpp::Environment data, vector<string> sequence_names, vector<float> sequence_abundances, string reason);
-RcppExport SEXP _rdataset_set_abundance(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequence_abundancesSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< vector<float> >::type sequence_abundances(sequence_abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    set_abundance(data, sequence_names, sequence_abundances, reason);
-    return R_NilValue;
-END_RCPP
-}
-// set_abundances
-void set_abundances(Rcpp::Environment data, vector<string> sequence_names, vector<vector<float>> abundances, string reason);
-RcppExport SEXP _rdataset_set_abundances(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP abundancesSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< vector<vector<float>> >::type abundances(abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    set_abundances(data, sequence_names, abundances, reason);
-    return R_NilValue;
-END_RCPP
-}
-// set_bin_abundance
-void set_bin_abundance(Rcpp::Environment data, vector<string> bin_names, vector<float> abundances, string type, string reason);
-RcppExport SEXP _rdataset_set_bin_abundance(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< vector<float> >::type abundances(abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    set_bin_abundance(data, bin_names, abundances, type, reason);
-    return R_NilValue;
-END_RCPP
-}
-// set_bin_abundances
-void set_bin_abundances(Rcpp::Environment data, vector<string> bin_names, vector<vector<float>> abundances, string type, string reason);
-RcppExport SEXP _rdataset_set_bin_abundances(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< vector<vector<float>> >::type abundances(abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    set_bin_abundances(data, bin_names, abundances, type, reason);
-    return R_NilValue;
-END_RCPP
-}
-// set_sequences
-void set_sequences(Rcpp::Environment data, vector<string> sequence_names, vector<string> sequences, Rcpp::CharacterVector comments);
-RcppExport SEXP _rdataset_set_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequencesSEXP, SEXP commentsSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequences(sequencesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type comments(commentsSEXP);
-    set_sequences(data, sequence_names, sequences, comments);
-    return R_NilValue;
-END_RCPP
-}
-// set_dataset_name
-void set_dataset_name(Rcpp::Environment data, string dataset_name);
-RcppExport SEXP _rdataset_set_dataset_name(SEXP dataSEXP, SEXP dataset_nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type dataset_name(dataset_nameSEXP);
-    set_dataset_name(data, dataset_name);
-    return R_NilValue;
-END_RCPP
-}
-// set_num_processors
-void set_num_processors(Rcpp::Environment data, int processors);
-RcppExport SEXP _rdataset_set_num_processors(SEXP dataSEXP, SEXP processorsSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
-    set_num_processors(data, processors);
-    return R_NilValue;
-END_RCPP
-}
 // is_aligned
 bool is_aligned(Rcpp::Environment data);
 RcppExport SEXP _rdataset_is_aligned(SEXP dataSEXP) {
@@ -808,56 +656,208 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// new_pointer
-Rcpp::XPtr<Dataset> new_pointer(string dataset_name, int processors);
-RcppExport SEXP _rdataset_new_pointer(SEXP dataset_nameSEXP, SEXP processorsSEXP) {
+// xdev_merge_bins
+void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names, string reason, string type);
+RcppExport SEXP _rdataset_xdev_merge_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP reasonSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    xdev_merge_bins(data, bin_names, reason, type);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_merge_sequences
+void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names, string reason);
+RcppExport SEXP _rdataset_xdev_merge_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_merge_sequences(data, sequence_names, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_remove_bins
+void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names, vector<string> trash_tags, string type);
+RcppExport SEXP _rdataset_xdev_remove_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP trash_tagsSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type trash_tags(trash_tagsSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    xdev_remove_bins(data, bin_names, trash_tags, type);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_remove_lineages
+void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants, string trash_tag);
+RcppExport SEXP _rdataset_xdev_remove_lineages(SEXP dataSEXP, SEXP contaminantsSEXP, SEXP trash_tagSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type contaminants(contaminantsSEXP);
+    Rcpp::traits::input_parameter< string >::type trash_tag(trash_tagSEXP);
+    xdev_remove_lineages(data, contaminants, trash_tag);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_remove_samples
+void xdev_remove_samples(Rcpp::Environment data, vector<string> samples);
+RcppExport SEXP _rdataset_xdev_remove_samples(SEXP dataSEXP, SEXP samplesSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type samples(samplesSEXP);
+    xdev_remove_samples(data, samples);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_remove_sequences
+void xdev_remove_sequences(Rcpp::Environment data, vector<string> sequence_names, vector<string> trash_tags);
+RcppExport SEXP _rdataset_xdev_remove_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP trash_tagsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type trash_tags(trash_tagsSEXP);
+    xdev_remove_sequences(data, sequence_names, trash_tags);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_abundance
+void xdev_set_abundance(Rcpp::Environment data, vector<string> sequence_names, vector<float> sequence_abundances, string reason);
+RcppExport SEXP _rdataset_xdev_set_abundance(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequence_abundancesSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< vector<float> >::type sequence_abundances(sequence_abundancesSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_set_abundance(data, sequence_names, sequence_abundances, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_abundances
+void xdev_set_abundances(Rcpp::Environment data, vector<string> sequence_names, vector<vector<float>> abundances, string reason);
+RcppExport SEXP _rdataset_xdev_set_abundances(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP abundancesSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< vector<vector<float>> >::type abundances(abundancesSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_set_abundances(data, sequence_names, abundances, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_bin_abundance
+void xdev_set_bin_abundance(Rcpp::Environment data, vector<string> bin_names, vector<float> abundances, string type, string reason);
+RcppExport SEXP _rdataset_xdev_set_bin_abundance(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
+    Rcpp::traits::input_parameter< vector<float> >::type abundances(abundancesSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_set_bin_abundance(data, bin_names, abundances, type, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_bin_abundances
+void xdev_set_bin_abundances(Rcpp::Environment data, vector<string> bin_names, vector<vector<float>> abundances, string type, string reason);
+RcppExport SEXP _rdataset_xdev_set_bin_abundances(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
+    Rcpp::traits::input_parameter< vector<vector<float>> >::type abundances(abundancesSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_set_bin_abundances(data, bin_names, abundances, type, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_sequences
+void xdev_set_sequences(Rcpp::Environment data, vector<string> sequence_names, vector<string> sequences, Rcpp::CharacterVector comments);
+RcppExport SEXP _rdataset_xdev_set_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequencesSEXP, SEXP commentsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequences(sequencesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type comments(commentsSEXP);
+    xdev_set_sequences(data, sequence_names, sequences, comments);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_dataset_name
+void xdev_set_dataset_name(Rcpp::Environment data, string dataset_name);
+RcppExport SEXP _rdataset_xdev_set_dataset_name(SEXP dataSEXP, SEXP dataset_nameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type dataset_name(dataset_nameSEXP);
+    xdev_set_dataset_name(data, dataset_name);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_num_processors
+void xdev_set_num_processors(Rcpp::Environment data, int processors);
+RcppExport SEXP _rdataset_xdev_set_num_processors(SEXP dataSEXP, SEXP processorsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
+    xdev_set_num_processors(data, processors);
+    return R_NilValue;
+END_RCPP
+}
+// xint_copy_pointer
+Rcpp::XPtr<Dataset> xint_copy_pointer(Rcpp::Environment data);
+RcppExport SEXP _rdataset_xint_copy_pointer(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(xint_copy_pointer(data));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xint_new_pointer
+Rcpp::XPtr<Dataset> xint_new_pointer(string dataset_name, int processors);
+RcppExport SEXP _rdataset_xint_new_pointer(SEXP dataset_nameSEXP, SEXP processorsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< string >::type dataset_name(dataset_nameSEXP);
     Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
-    rcpp_result_gen = Rcpp::wrap(new_pointer(dataset_name, processors));
+    rcpp_result_gen = Rcpp::wrap(xint_new_pointer(dataset_name, processors));
     return rcpp_result_gen;
 END_RCPP
 }
-// copy_pointer
-Rcpp::XPtr<Dataset> copy_pointer(Rcpp::Environment data);
-RcppExport SEXP _rdataset_copy_pointer(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(copy_pointer(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_available_processors
-int get_available_processors();
-RcppExport SEXP _rdataset_get_available_processors() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(get_available_processors());
-    return rcpp_result_gen;
-END_RCPP
-}
-// deserialize_dobject
-void deserialize_dobject(Rcpp::Environment data);
-RcppExport SEXP _rdataset_deserialize_dobject(SEXP dataSEXP) {
+// xint_deserialize_dobject
+void xint_deserialize_dobject(Rcpp::Environment data);
+RcppExport SEXP _rdataset_xint_deserialize_dobject(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    deserialize_dobject(data);
+    xint_deserialize_dobject(data);
     return R_NilValue;
 END_RCPP
 }
-// serialize_dobject
-void serialize_dobject(Rcpp::Environment data);
-RcppExport SEXP _rdataset_serialize_dobject(SEXP dataSEXP) {
+// xint_serialize_dobject
+void xint_serialize_dobject(Rcpp::Environment data);
+RcppExport SEXP _rdataset_xint_serialize_dobject(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    serialize_dobject(data);
+    xint_serialize_dobject(data);
     return R_NilValue;
 END_RCPP
 }
@@ -879,6 +879,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_assign_treatments", (DL_FUNC) &_rdataset_assign_treatments, 4},
     {"_rdataset_clear", (DL_FUNC) &_rdataset_clear, 2},
     {"_rdataset_export_dataset", (DL_FUNC) &_rdataset_export_dataset, 2},
+    {"_rdataset_get_available_processors", (DL_FUNC) &_rdataset_get_available_processors, 0},
     {"_rdataset_get_bin", (DL_FUNC) &_rdataset_get_bin, 3},
     {"_rdataset_get_bin_abundance", (DL_FUNC) &_rdataset_get_bin_abundance, 3},
     {"_rdataset_get_bin_abundances", (DL_FUNC) &_rdataset_get_bin_abundances, 3},
@@ -915,25 +916,24 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_treatment_totals", (DL_FUNC) &_rdataset_get_treatment_totals, 1},
     {"_rdataset_has_sample", (DL_FUNC) &_rdataset_has_sample, 2},
     {"_rdataset_has_sequence_strings", (DL_FUNC) &_rdataset_has_sequence_strings, 1},
-    {"_rdataset_merge_bins", (DL_FUNC) &_rdataset_merge_bins, 4},
-    {"_rdataset_merge_sequences", (DL_FUNC) &_rdataset_merge_sequences, 3},
-    {"_rdataset_remove_bins", (DL_FUNC) &_rdataset_remove_bins, 4},
-    {"_rdataset_remove_lineages", (DL_FUNC) &_rdataset_remove_lineages, 3},
-    {"_rdataset_remove_samples", (DL_FUNC) &_rdataset_remove_samples, 2},
-    {"_rdataset_remove_sequences", (DL_FUNC) &_rdataset_remove_sequences, 3},
-    {"_rdataset_set_abundance", (DL_FUNC) &_rdataset_set_abundance, 4},
-    {"_rdataset_set_abundances", (DL_FUNC) &_rdataset_set_abundances, 4},
-    {"_rdataset_set_bin_abundance", (DL_FUNC) &_rdataset_set_bin_abundance, 5},
-    {"_rdataset_set_bin_abundances", (DL_FUNC) &_rdataset_set_bin_abundances, 5},
-    {"_rdataset_set_sequences", (DL_FUNC) &_rdataset_set_sequences, 4},
-    {"_rdataset_set_dataset_name", (DL_FUNC) &_rdataset_set_dataset_name, 2},
-    {"_rdataset_set_num_processors", (DL_FUNC) &_rdataset_set_num_processors, 2},
     {"_rdataset_is_aligned", (DL_FUNC) &_rdataset_is_aligned, 1},
-    {"_rdataset_new_pointer", (DL_FUNC) &_rdataset_new_pointer, 2},
-    {"_rdataset_copy_pointer", (DL_FUNC) &_rdataset_copy_pointer, 1},
-    {"_rdataset_get_available_processors", (DL_FUNC) &_rdataset_get_available_processors, 0},
-    {"_rdataset_deserialize_dobject", (DL_FUNC) &_rdataset_deserialize_dobject, 1},
-    {"_rdataset_serialize_dobject", (DL_FUNC) &_rdataset_serialize_dobject, 1},
+    {"_rdataset_xdev_merge_bins", (DL_FUNC) &_rdataset_xdev_merge_bins, 4},
+    {"_rdataset_xdev_merge_sequences", (DL_FUNC) &_rdataset_xdev_merge_sequences, 3},
+    {"_rdataset_xdev_remove_bins", (DL_FUNC) &_rdataset_xdev_remove_bins, 4},
+    {"_rdataset_xdev_remove_lineages", (DL_FUNC) &_rdataset_xdev_remove_lineages, 3},
+    {"_rdataset_xdev_remove_samples", (DL_FUNC) &_rdataset_xdev_remove_samples, 2},
+    {"_rdataset_xdev_remove_sequences", (DL_FUNC) &_rdataset_xdev_remove_sequences, 3},
+    {"_rdataset_xdev_set_abundance", (DL_FUNC) &_rdataset_xdev_set_abundance, 4},
+    {"_rdataset_xdev_set_abundances", (DL_FUNC) &_rdataset_xdev_set_abundances, 4},
+    {"_rdataset_xdev_set_bin_abundance", (DL_FUNC) &_rdataset_xdev_set_bin_abundance, 5},
+    {"_rdataset_xdev_set_bin_abundances", (DL_FUNC) &_rdataset_xdev_set_bin_abundances, 5},
+    {"_rdataset_xdev_set_sequences", (DL_FUNC) &_rdataset_xdev_set_sequences, 4},
+    {"_rdataset_xdev_set_dataset_name", (DL_FUNC) &_rdataset_xdev_set_dataset_name, 2},
+    {"_rdataset_xdev_set_num_processors", (DL_FUNC) &_rdataset_xdev_set_num_processors, 2},
+    {"_rdataset_xint_copy_pointer", (DL_FUNC) &_rdataset_xint_copy_pointer, 1},
+    {"_rdataset_xint_new_pointer", (DL_FUNC) &_rdataset_xint_new_pointer, 2},
+    {"_rdataset_xint_deserialize_dobject", (DL_FUNC) &_rdataset_xint_deserialize_dobject, 1},
+    {"_rdataset_xint_serialize_dobject", (DL_FUNC) &_rdataset_xint_serialize_dobject, 1},
     {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
     {NULL, NULL, 0}
 };

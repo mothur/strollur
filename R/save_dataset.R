@@ -23,7 +23,7 @@ save_dataset <- function(dataset, file) {
     .abort_incorrect_type("dataset", dataset)
   }
 
-  serialize_dobject(dataset)
+  xint_serialize_dobject(dataset)
   saveRDS(dataset, file = file)
   file
 }

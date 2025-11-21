@@ -27,7 +27,7 @@ scrapped data.
 
  # Sequence summary, after removing sample 'F3D0'
 
- remove_samples(data, c("F3D0"))
+ xdev_remove_samples(data, c("F3D0"))
  get_sequence_summary(data)
 
 }

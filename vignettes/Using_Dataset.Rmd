@@ -57,7 +57,7 @@ head(sequence_abundance_table, n = 10)
     * **is_aligned** - Returns TRUE if sequence data is aligned
     * **get_num_sequences** - Return the number of sequences in your dataset
     * **has_sequence_strings** - Returns TRUE if your dataset contains sequence nucleotide strings
-    * **remove_lineages** - Removes contaminants from your dataset
+    
     
 ```{r}
 # To get all the names of the sequences
@@ -105,10 +105,6 @@ get_num_sequences(miseq, FALSE, "F3D0")
 
 # To find the number of unique sequence from a given sample:
 get_num_sequences(miseq, TRUE, "F3D0")
-
-# To remove contaminants from your dataset:
-con <- c("Chloroplast", "Mitochondria", "unknown", "Archaea", "Eukaryota")
-remove_lineages(miseq, con)
 ```    
 
 * **Sample and Treatment Functions**
@@ -275,8 +271,7 @@ head(summary[[1]], n = 10)
 * **Utility Functions**
     * **get_dataset_name** - Return the name of your dataset
     * **get_num_processors** - Return the number of processors used in summary functions
-    * **set_dataset_name** - Change the name of your dataset
-    * **set_num_processors** - Change the number of processors used in the summary functions
+
     
 ```{r}
 # To get the dataset name
@@ -284,10 +279,4 @@ get_dataset_name(miseq)
 
 # To get the number of processors used by your dataset
 get_num_processors(miseq)
-
-# To change the name of your dataset
-set_dataset_name(miseq, "My_Miseq_Dataset")
-
-# To change the number of processors used to summarize your dataset
-set_num_processors(miseq, 2)
 ```

@@ -11,7 +11,7 @@ test_that("import - miseq_sop_example", {
   reasons_to_remove <- c("testing", "testing")
 
   # remove some bins to allow for filtering
-  remove_bins(
+  xdev_remove_bins(
     miseq, phylo_bins_to_remove,
     reasons_to_remove, "phylotype"
   )

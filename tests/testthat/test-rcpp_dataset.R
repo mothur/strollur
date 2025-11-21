@@ -59,7 +59,7 @@ test_that("rcpp_dataset - add_sequences", {
 
   expect_error(add_sequences(data))
 
-  message <- capture_output(set_sequences(
+  message <- capture_output(xdev_set_sequences(
     data,
     c("non_existant_sequence"),
     c("ATGC"), ""
@@ -254,14 +254,14 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
   expect_equal(abund_table$abundances, abundances)
   expect_equal(abund_table$samples, samples)
 
-  message <- capture_output(set_abundances(
+  message <- capture_output(xdev_set_abundances(
     data,
     c("non_existant_sequence"),
     list(c(0, 0, 0))
   ))
 
   expect_true(grepl("non_existant_sequence", message))
-  expect_error(set_abundance(data, c("seq1"), c(0)))
+  expect_error(xdev_set_abundance(data, c("seq1"), c(0)))
 
   clear(data)
 
@@ -274,9 +274,9 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
   )
   expect_equal(get_sequence_abundances(data), c(100, 50))
 
-  expect_error(set_abundances(data, c("seq1"), list(c(0))))
+  expect_error(xdev_set_abundances(data, c("seq1"), list(c(0))))
 
-  message <- capture_output(set_abundance(
+  message <- capture_output(xdev_set_abundance(
     data,
     c("non_existant_sequence"),
     c(0)
@@ -408,7 +408,7 @@ test_that("rcpp_dataset - get_names / sequences_by_sample", {
   expect_equal(names_by_sample[[3]], c("seq1", "seq2", "seq4"))
 
   seqs <- c("ATGCCT", "GTGCCT", "CTGCCT", "TTGCCT")
-  set_sequences(data, unique(names), seqs)
+  xdev_set_sequences(data, unique(names), seqs)
 
   seqs_by_sample <- get_sequences_by_sample(data)
   expect_equal(length(seqs_by_sample), 3)
@@ -431,7 +431,7 @@ test_that("rcpp_dataset - get_names / sequences_by_sample", {
   expect_equal(length(seqs_by_sample), 1)
 })
 
-test_that("rcpp_dataset - merge_bins / merge_seqs", {
+test_that("rcpp_dataset - xdev_merge_bins / xdev_merge_seqs", {
   data <- new_dataset("miseq_sop", 2)
 
   # assign sequence abundances then bins
@@ -459,7 +459,7 @@ test_that("rcpp_dataset - merge_bins / merge_seqs", {
 
   expect_equal(get_sequence_abundances(data), c(1150, 115, 50, 4))
 
-  merge_sequences(data, c("seq3", "seq1"))
+  xdev_merge_sequences(data, c("seq3", "seq1"))
 
   expect_equal(get_num_sequences(data), 1319)
   expect_equal(get_num_sequences(data, TRUE), 3)
@@ -476,23 +476,23 @@ test_that("rcpp_dataset - merge_bins / merge_seqs", {
   expect_equal(get_num_bins(data), 2)
   expect_equal(get_num_samples(data), 3)
 
-  merge_bins(data, c("bin1", "bin2"))
+  xdev_merge_bins(data, c("bin1", "bin2"))
 
   expect_equal(get_num_sequences(data), 1319)
   expect_equal(get_num_sequences(data, TRUE), 3)
   expect_equal(get_num_bins(data), 1)
   expect_equal(get_num_samples(data), 3)
 
-  expect_error(merge_sequences(data, c("seq3", "non_existant_seq")))
+  expect_error(xdev_merge_sequences(data, c("seq3", "non_existant_seq")))
 
-  message <- capture_output(remove_sequences(
+  message <- capture_output(xdev_remove_sequences(
     data,
     c("non_existent_seq"),
     c("trash_tag")
   ))
   expect_true(grepl("non_existent_seq", message))
 
-  message <- capture_output(remove_sequences(
+  message <- capture_output(xdev_remove_sequences(
     data,
     c("non_existent_seq"),
     c("trash_tag")
@@ -500,7 +500,7 @@ test_that("rcpp_dataset - merge_bins / merge_seqs", {
   expect_true(grepl("non_existent_seq", message))
 })
 
-test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
+test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
   data <- new_dataset("miseq_sop", 2)
 
   # test with no samples bins
@@ -514,7 +514,7 @@ test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
   expect_equal(get_bin_abundance(data, "bin1"), 10)
   expect_equal(get_num_sequences(data), 60)
 
-  message <- capture_output(set_bin_abundance(
+  message <- capture_output(xdev_set_bin_abundance(
     data,
     c("bin1", "non_existent_bin"),
     c(100, 20)
@@ -524,7 +524,7 @@ test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
   expect_equal(get_num_sequences(data), 150)
   expect_true(grepl("non_existent_bin", message))
 
-  expect_error(set_bin_abundances(
+  expect_error(xdev_set_bin_abundances(
     data,
     c("bin1"), list(c(100, 20))
   ))
@@ -546,7 +546,7 @@ test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
   expect_equal(get_num_sequences(data), 150)
   expect_equal(get_sample_totals(data), c(80, 70))
 
-  message <- capture_output(set_bin_abundances(
+  message <- capture_output(xdev_set_bin_abundances(
     data,
     c("bin1", "non_existent_bin"),
     list(c(100, 20), c(10, 0))
@@ -554,20 +554,20 @@ test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
   expect_equal(get_num_sequences(data), 240)
   expect_equal(get_sample_totals(data), c(170, 70))
   expect_true(grepl("non_existent_bin", message))
-  expect_error(set_bin_abundance(
+  expect_error(xdev_set_bin_abundance(
     data,
     c("bin1"), c(100)
   ))
 
   # remove samples that will force bin2 removal
-  remove_samples(data, c("sample1"))
+  xdev_remove_samples(data, c("sample1"))
 
   expect_equal(get_num_bins(data), 2)
   expect_equal(get_rabund_vector(data), c(20, 50))
   expect_equal(get_num_samples(data), 1)
   expect_equal(get_num_sequences(data), 70)
 
-  expect_error(remove_bins(data, c("bin1"), c("trash_tag", "extra_one")))
+  expect_error(xdev_remove_bins(data, c("bin1"), c("trash_tag", "extra_one")))
 
   clear(data, "")
 
@@ -579,8 +579,8 @@ test_that("rcpp_dataset - set_bin_abundance / set_bin_abundances, warnings", {
     )
   )
 
-  expect_error(set_bin_abundance(data, c("bin1"), c(11)))
-  expect_error(set_bin_abundances(data, c("bin1"), list(c(11))))
+  expect_error(xdev_set_bin_abundance(data, c("bin1"), c(11)))
+  expect_error(xdev_set_bin_abundances(data, c("bin1"), list(c(11))))
 })
 
 test_that("rcpp_dataset - misc ", {
@@ -600,7 +600,7 @@ test_that("rcpp_dataset - misc ", {
   expect_equal(get_bin_taxonomy_report(data), data.frame())
 })
 
-test_that("dataset - set_abundances, set_sequences", {
+test_that("dataset - xdev_set_abundances, xdev_set_sequences", {
   # create dataset sequences and shared data
   dataset_t <- read_mothur(
     fasta = rdataset_example("final.fasta"),
@@ -611,7 +611,7 @@ test_that("dataset - set_abundances, set_sequences", {
 
   expect_equal(get_num_sequences(dataset_t), 113963)
 
-  expect_error(set_sequences(
+  expect_error(xdev_set_sequences(
     dataset_t$data,
     rep("seq1", 5),
     rep("ATGC", 5),
@@ -623,6 +623,6 @@ test_that("dataset - set_abundances, set_sequences", {
   new_abunds <- list(rep(0, 19))
 
   # this will remove the sequence
-  set_abundances(dataset_t, seqs_to_update, new_abunds)
+  xdev_set_abundances(dataset_t, seqs_to_update, new_abunds)
   # expect_equal(get_num_sequences(dataset_t), 113772)
 })

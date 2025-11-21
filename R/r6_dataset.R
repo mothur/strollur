@@ -47,17 +47,17 @@ dataset <- R6Class("dataset",
                           processors = parallelly::availableCores(),
                           dataset = NULL) {
       if (is.null(dataset)) {
-        self$data <- new_pointer(name, processors)
+        self$data <- xint_new_pointer(name, processors)
         self$sequence_tree <- NULL
         private$processors <- processors
         self$sample_tree <- NULL
       } else {
         # copy of dataset backend
-        self$data <- copy_pointer(dataset)
-        set_num_processors(self, processors)
+        self$data <- xint_copy_pointer(dataset)
+        xdev_set_num_processors(self, processors)
         # assign new name
         if (name != "") {
-          set_dataset_name(self, name)
+          xdev_set_dataset_name(self, name)
         }
 
         private$processors <- processors

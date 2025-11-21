@@ -16,6 +16,6 @@ load_dataset <- function(file) {
   }
 
   dataset <- readRDS(file)
-  deserialize_dobject(dataset)
+  xint_deserialize_dobject(dataset)
   dataset
 }
