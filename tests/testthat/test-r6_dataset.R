@@ -731,7 +731,7 @@ test_that("dataset - ", {
   bins <- c("bin1", "bin1", "bin1", "bin2")
   assign_bins(dataset_t, data.frame(bin_names = bins, sequence_names = names))
 
-  report <- get_bin_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "bin_taxonomy")
 
   ids <- c(
     "bin1", "bin1", "bin1", "bin1",
@@ -792,7 +792,7 @@ test_that("dataset - ", {
   )
   expect_equal(references[[1, "reference_urls"]], url)
 
-  report <- get_bin_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "bin_taxonomy")
 
   ids <- c(
     "bin1", "bin1", "bin1", "bin1",
@@ -827,7 +827,7 @@ test_that("dataset - ", {
     taxonomies = taxonomies
   ))
 
-  report <- get_bin_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "bin_taxonomy")
 
   expect_equal(report$id, ids)
   expect_equal(report$taxon, c(
@@ -863,7 +863,7 @@ test_that("dataset - ", {
 
   assign_bin_taxonomy(dataset_t, table, "otu", NULL, "OTU", "Taxonomy")
 
-  table <- get_bin_taxonomy_report(dataset_t)
+  table <- report(dataset_t, "bin_taxonomy")
 
   expect_equal(table[2758, 1], "Otu460")
   expect_equal(table[2758, 3], "\"Bacteroidales\"")

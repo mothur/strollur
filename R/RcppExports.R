@@ -565,22 +565,6 @@ get_bin_representative_sequences <- function(data, type = "otu") {
     .Call(`_rdataset_get_bin_representative_sequences`, data, type)
 }
 
-#' @title get_bin_taxonomy_report
-#' @description
-#' Get the bin classifications of a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#' @param type, string indicating the type of bin clusters. Default = "otu".
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_bin_taxonomy_report(data, "otu")
-#'
-#' @return data.frame
-get_bin_taxonomy_report <- function(data, type = "otu") {
-    .Call(`_rdataset_get_bin_taxonomy_report`, data, type)
-}
-
 #' @title get_bin_types
 #' @description
 #' Get bin table types of a \link{dataset} object
@@ -1646,7 +1630,7 @@ xint_copy_pointer <- function(data) {
 #' @param processors, number of processors to use
 #' @return pointer to an instance of the C++ 'Dataset' class.
 #' @keywords internal
-xint_new_pointer <- function(dataset_name = "", processors = 1L) {
+xint_new_pointer <- function(dataset_name, processors) {
     .Call(`_rdataset_xint_new_pointer`, dataset_name, processors)
 }
 

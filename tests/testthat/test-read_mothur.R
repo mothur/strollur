@@ -41,7 +41,7 @@ test_that("test read_mothur", {
   expect_equal(dataset$get_num_samples(), 19)
   expect_equal(dataset$get_num_bins("otu"), 531)
 
-  report <- get_bin_taxonomy_report(dataset)
+  report <- report(dataset, "bin_taxonomy")
 
   expect_equal(report[2707, 1], "Otu452")
   expect_equal(report[2707, 2], 1)

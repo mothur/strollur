@@ -4,7 +4,7 @@
 \alias{xint_new_pointer}
 \title{xint_new_pointer}
 \usage{
-xint_new_pointer(dataset_name = "", processors = 1L)
+xint_new_pointer(dataset_name, processors)
 }
 \arguments{
 \item{dataset_name, }{string containing dataset name}

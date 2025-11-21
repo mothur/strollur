@@ -587,7 +587,7 @@ test_that("rcpp_dataset - misc ", {
   data <- new_dataset("miseq_sop", 2)
 
   # no bin data
-  expect_equal(get_bin_taxonomy_report(data), data.frame())
+  expect_equal(report(data, "bin_taxonomy"), data.frame())
 
   assign_bins(
     data, data.frame(
@@ -597,7 +597,7 @@ test_that("rcpp_dataset - misc ", {
   )
 
   # no bin taxonomies
-  expect_equal(get_bin_taxonomy_report(data), data.frame())
+  expect_equal(report(data, "bin_taxonomy"), data.frame())
 })
 
 test_that("dataset - xdev_set_abundances, xdev_set_sequences", {
