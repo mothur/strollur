@@ -124,7 +124,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("metadata" %in% tags)) {
-    metadata <- get_metadata(data)
+    metadata <- report(data, "metadata")
 
     if (nrow(metadata) != 0) {
       filename <- file.path(
@@ -137,24 +137,23 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("reports" %in% tags)) {
-    reports <- get_reports(data)
-    report_names <- names(reports)
+    report_types <- get_custom_report_types(data)
 
-    if (length(reports) != 0) {
-      for (name in report_names) {
+    if (length(report_types) != 0) {
+      for (type in report_types) {
         filename <- file.path(
           dir_path,
-          paste0(dataset_name, ".", name, collapse = "")
+          paste0(dataset_name, ".", type, collapse = "")
         )
 
-        readr::write_tsv(reports[[name]], filename)
+        readr::write_tsv(report(data, type), filename)
         outputs <- c(outputs, filename)
       }
     }
   }
 
   if (!ht || ("references" %in% tags)) {
-    references <- get_references(data)
+    references <- report(data, "references")
 
     if (nrow(references) != 0) {
       filename <- file.path(

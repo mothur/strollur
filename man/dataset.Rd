@@ -80,7 +80,7 @@ data$get_bin_types()
 
 
 ## ------------------------------------------------
-## Method `dataset$get_metadata_table`
+## Method `dataset$get_metadata`
 ## ------------------------------------------------
 
   data <- dataset$new("my_dataset")
@@ -88,9 +88,9 @@ data$get_bin_types()
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
 
-  add_metadata(data, metadata)
+  add_report(data, metadata, "metadata")
 
-  data$get_metadata_table()
+  data$get_metadata()
 
 
 ## ------------------------------------------------
@@ -165,14 +165,13 @@ the class.}
 \item \href{#method-dataset-get_bin_names}{\code{dataset$get_bin_names()}}
 \item \href{#method-dataset-get_bin_types}{\code{dataset$get_bin_types()}}
 \item \href{#method-dataset-get_dataset_name}{\code{dataset$get_dataset_name()}}
-\item \href{#method-dataset-get_metadata_table}{\code{dataset$get_metadata_table()}}
+\item \href{#method-dataset-get_metadata}{\code{dataset$get_metadata()}}
 \item \href{#method-dataset-get_num_bins}{\code{dataset$get_num_bins()}}
 \item \href{#method-dataset-get_num_sequences}{\code{dataset$get_num_sequences()}}
 \item \href{#method-dataset-get_num_treatments}{\code{dataset$get_num_treatments()}}
 \item \href{#method-dataset-get_num_samples}{\code{dataset$get_num_samples()}}
 \item \href{#method-dataset-get_samples}{\code{dataset$get_samples()}}
 \item \href{#method-dataset-get_sample_tree}{\code{dataset$get_sample_tree()}}
-\item \href{#method-dataset-get_scrap_report}{\code{dataset$get_scrap_report()}}
 \item \href{#method-dataset-get_sequence_report}{\code{dataset$get_sequence_report()}}
 \item \href{#method-dataset-get_summary}{\code{dataset$get_summary()}}
 \item \href{#method-dataset-get_sequence_tree}{\code{dataset$get_sequence_tree()}}
@@ -423,12 +422,12 @@ String
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_metadata_table"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_metadata_table}{}}}
-\subsection{Method \code{get_metadata_table()}}{
+\if{html}{\out{<a id="method-dataset-get_metadata"></a>}}
+\if{latex}{\out{\hypertarget{method-dataset-get_metadata}{}}}
+\subsection{Method \code{get_metadata()}}{
 Get data.frame containing metadata for the dataset
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_metadata_table()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{dataset$get_metadata()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -441,9 +440,9 @@ data.frame()
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
 
-  add_metadata(data, metadata)
+  add_report(data, metadata, "metadata")
 
-  data$get_metadata_table()
+  data$get_metadata()
 
 }
 \if{html}{\out{</div>}}
@@ -576,20 +575,6 @@ Get phylo tree relating the samples in your dataset.
 
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_scrap_report"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_scrap_report}{}}}
-\subsection{Method \code{get_scrap_report()}}{
-Get report containing the scrapped sequences / bins -
-ids, trash_codes
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_scrap_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-list of data.frames
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_sequence_report"></a>}}

@@ -32,7 +32,7 @@ write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- get_bin_taxonomy_report(data, type)
+    df <- report(data, "bin_taxonomy", type)
 
     if (nrow(df) != 0) {
       # confidence scores are available

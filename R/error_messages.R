@@ -98,11 +98,16 @@ abort_missing_column <- function(parameter) {
 #' @param num integer containing the number of items added.
 #' @param tag string containing item added. Default = 'sequences'.
 #' @export
-added_message <- function(num, tag = "sequences") {
-  message <- paste0("Added ", as.character(num), " ", tag, ".",
-    collapse = ""
-  )
-  cli::cli_alert_info(message)
+added_message <- function(num = NULL, tag = "sequences") {
+  if (!is.null(num)) {
+    message <- paste0("Added ", as.character(num), " ", tag, ".",
+      collapse = ""
+    )
+    cli::cli_alert_info(message)
+  } else {
+    message <- paste0("Added ", tag, ".", collapse = "")
+    cli::cli_alert_info(message)
+  }
 }
 
 #' @title assigned_message

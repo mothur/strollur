@@ -21,20 +21,24 @@ test_that("write_mothur - miseq", {
     otu_list = outputs[5],
     asv_list = outputs[6],
     phylo_list = outputs[7],
-    sample_tree = outputs[16],
-    sequence_tree = outputs[17],
+    sample_tree = outputs[17],
+    sequence_tree = outputs[18],
     dataset_name = "miseq_sop"
   )
 
-  add_references(data, readr::read_tsv(outputs[15],
+  add_references(data, readr::read_tsv(outputs[16],
     col_names = TRUE,
     show_col_types = FALSE
   ))
 
-  add_metadata(data, readr::read_tsv(outputs[14],
-    col_names = TRUE,
-    show_col_types = FALSE
-  ))
+  add_report(
+    data,
+    readr::read_tsv(outputs[14],
+      col_names = TRUE,
+      show_col_types = FALSE
+    ),
+    "metadata"
+  )
 
   for (output in outputs) {
     remove_file(output)
@@ -50,8 +54,8 @@ test_that("write_mothur - miseq", {
   expect_equal(data$get_num_bins("otu"), 531)
   expect_equal(data$get_num_bins("asv"), 2425)
   expect_equal(data$get_num_bins("phylotype"), 63)
-  expect_equal(data$get_metadata_table(), miseq$get_metadata_table())
-  expect_equal(get_references(data), get_references(miseq))
+  expect_equal(data$get_metadata(), miseq$get_metadata())
+  expect_equal(report(data, "references"), report(miseq, "references"))
 })
 
 test_that("write_mothur - bin_data only", {
@@ -137,12 +141,12 @@ test_that("write_mothur - report_data only", {
   expect_equal(data$get_num_sequences(TRUE), 5)
   expect_equal(data$get_num_sequences(), 5)
   expect_equal(
-    get_reports(data)[["contigs_report"]],
-    get_reports(data2)[["contigs_report"]]
+    report(data, "contigs_report"),
+    report(data2, "contigs_report")
   )
   expect_equal(
-    get_reports(data)[["alignment_report"]],
-    get_reports(data2)[["alignment_report"]]
+    report(data, "alignment_report"),
+    report(data2, "alignment_report")
   )
 
   data <- dataset$new()
@@ -178,7 +182,7 @@ test_that("write_mothur - report_data only", {
   expect_equal(data$get_num_sequences(TRUE), 71)
   expect_equal(data$get_num_sequences(), 71)
   expect_equal(
-    get_reports(data)[["chimera_report"]],
-    get_reports(data2)[["chimera_report"]]
+    report(data, "chimera_report"),
+    report(data2, "chimera_report")
   )
 })

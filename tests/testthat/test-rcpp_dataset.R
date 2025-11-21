@@ -35,7 +35,7 @@ test_that("rcpp_dataset - add_sequences", {
   expect_equal(get_num_sequences(data), 2425)
   expect_true(has_sequence_strings(data))
 
-  seq_report <- get_sequence_report(data)
+  seq_report <- report(data, "sequence_data")
 
   first_three_seqs <- c(
     "M00967_43_000000000-A3JHG_1_2101_16474_12783",
@@ -302,7 +302,7 @@ test_that("rcpp_dataset - assign_sequence_taxonomy", {
     taxonomies = taxonomies
   ))
 
-  report <- get_sequence_taxonomy_report(data)
+  report <- report(data, "sequence_taxonomy")
 
   expect_equal(report[[1]][[1]], "seq1")
   expect_equal(report[[3]][[1]], "Bacteria")

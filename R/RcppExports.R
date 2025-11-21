@@ -80,24 +80,6 @@ copy_dataset <- function(data) {
     .Call(`_rdataset_copy_dataset`, data)
 }
 
-#' @title add_metadata
-#' @description
-#' Add metadata to a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#' @param metadata, a data.frame containing your metadata
-#'
-#' @examples
-#'
-#' data <- new_dataset("just for fun", 2)
-#' metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
-#'                             col_names = TRUE, show_col_types = FALSE)
-#' add_metadata(data, metadata)
-#'
-add_metadata <- function(data, metadata) {
-    invisible(.Call(`_rdataset_add_metadata`, data, metadata))
-}
-
 #' @title add_report
 #' @description
 #' Add a report to a \link{dataset} object
@@ -106,17 +88,30 @@ add_metadata <- function(data, metadata) {
 #'
 #' @param table, a data.frame containing your report.
 #'
-#' @param type, a string containing the type of report. For example: "align".
+#' @param type, a string containing the type of report. Options include:
+#' "metadata" and custom report tags. Default = "metadata".
+#'
 #' @param sequence_name, a string containing the name of the column in 'table'
-#' that contains the sequence names. Default column name is 'sequence_names'.
+#' that contains the sequence names. This is used for custom reports, metadata
+#' does not require a sequence_name column. Default column name is 'sequence_names'.
 #' @examples
 #'
-#' data <- new_dataset("just for fun", 2)
-#' align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
-#'    col_names = TRUE, show_col_types = FALSE)
-#' add_report(data, align_report, "align", "QueryName")
+#' # To add a custom report including your contigs assembly data
 #'
-add_report <- function(data, table, type, sequence_name = "sequence_names") {
+#' data <- new_dataset("just for fun", 2)
+#' contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+#'    col_names = TRUE, show_col_types = FALSE)
+#'
+#' add_report(data, contigs_report, "contigs_report", "Name")
+#'
+#' # To add metadata related to your study
+#'
+#' metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+#'                             col_names = TRUE, show_col_types = FALSE)
+#'
+#' add_report(data, metadata, "metadata")
+#'
+add_report <- function(data, table, type = "metadata", sequence_name = "sequence_names") {
     invisible(.Call(`_rdataset_add_report`, data, table, type, sequence_name))
 }
 
@@ -643,22 +638,6 @@ get_list_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_list_vector`, data, type)
 }
 
-#' @title get_metadata
-#' @description
-#' Get the metadata of a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_metadata(data)
-#'
-#' @return data.frame
-get_metadata <- function(data) {
-    .Call(`_rdataset_get_metadata`, data)
-}
-
 #' @title get_num_processors
 #' @description
 #' Get the number of processors used to summarize a \link{dataset} object
@@ -785,24 +764,102 @@ get_rabund_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_rabund_vector`, data, type)
 }
 
-#' @title get_references
+#' @title get_custom_report_types
 #' @description
-#' Get a table containing resource references in a \link{dataset} object
+#' Get the custom report types of a \link{dataset} object
 #'
 #' @param data, a \link{dataset} object
-#' @return data.frame
-get_references <- function(data) {
-    .Call(`_rdataset_get_references`, data)
+#' @examples
+#'
+#' data <- miseq_sop_example()
+#' get_custom_report_types(data)
+#'
+#' @return vector of strings
+get_custom_report_types <- function(data) {
+    .Call(`_rdataset_get_custom_report_types`, data)
 }
 
-#' @title get_reports
+#' @title report
 #' @description
-#' Get a list containing the reports in a \link{dataset} object
+#' Get a data.frame containing the given report in a \link{dataset} object
 #'
 #' @param data, a \link{dataset} object
-#' @return list
-get_reports <- function(data) {
-    .Call(`_rdataset_get_reports`, data)
+#'
+#' @param type, string containing the type of report you would like. Options
+#' include: "sequence_data", "sequence_taxonomy", "bin_taxonomy",
+#' "sequence_scrap", "bin_scrap", "metadata", "references". If you have added
+#' custom reports for alignment, contigs_assembly or chimeras, you can get those
+#' as well. Default = "sequence_data".
+#'
+#' @param bin_type, string containing the bin type you would like a bin_taxonomy
+#' report for. Default = "otu".
+#'
+#' @examples
+#'
+#' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' # To get a report about the FASTA data
+#'
+#' sequence_report <- report(data = miseq, type = "sequence_data")
+#' head(sequence_report, n = 10)
+#'
+#' # To get a report about sequence classifications
+#'
+#' sequence_taxonomy_report <- report(data = miseq,
+#'                                        type = "sequence_taxonomy")
+#' head(sequence_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'otu' data
+#'
+#' otu_taxonomy_report <- report(data = miseq,
+#'                                        type = "bin_taxonomy",
+#'                                        bin_type = "otu")
+#' head(otu_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'asv' data
+#'
+#' asv_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
+#'                               bin_type = "asv")
+#' head(asv_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'phylotype' data
+#'
+#' phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
+#'                                     bin_type = "phylotype")
+#' head(phylotype_taxonomy_report, n = 10)
+#'
+#' # To get a report about the sequences removed during your analysis:
+#'
+#' scrapped_sequence_report <- report(data = miseq, type = "sequence_scrap")
+#'
+#' # To get a report about the "otu" bins removed during your analysis:
+#'
+#' scrapped_otu_report <- report(data = miseq, type = "bin_scrap",
+#'                               bin_type = "otu")
+#'
+#' # To get a report about the "phylotype" bins removed during your analysis:
+#'
+#' scrapped_phylotype_report <- report(data = miseq, type = "bin_scrap",
+#'                                     bin_type = "phylotype")
+#'
+#' # To get the metadata associated with your data:
+#'
+#' metadata <- report(data = miseq, type = "metadata")
+#'
+#' # To get the resource references associated with your data:
+#'
+#' references <- report(data = miseq, type = "references")
+#'
+#' # To get our custom report containing the contigs assembly data:
+#'
+#' contigs_report <- report(data = miseq, type = "contigs_report")
+#' head(contigs_report, n = 10)
+#'
+#' @return data.frame
+report <- function(data, type = "sequence_data", bin_type = "otu") {
+    .Call(`_rdataset_report`, data, type, bin_type)
 }
 
 #' @title get_samples
@@ -854,29 +911,6 @@ get_sample_treatment_assignments <- function(data) {
 #' \link{dataset} object
 get_sample_totals <- function(data) {
     .Call(`_rdataset_get_sample_totals`, data)
-}
-
-#' @title get_scrap_report
-#' @description
-#' Get a scrap report containing sequences and bins eliminated from a
-#' \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type a string indicating the type of scrap report you would like.
-#'  Default = 'sequence'.
-#' @examples
-#'
-#'   data <- miseq_sop_example()
-#'   remove_bins(data, c("Otu005"), c("bad_bin"))
-#'
-#'   sequence_scrap_report <- get_scrap_report(data, "sequence")
-#'   otu_scrap_report <- get_scrap_report(data, "bin")
-#'
-#' @return data.frame containing sequences or bins removed from the
-#' \link{dataset} object during analysis
-get_scrap_report <- function(data, type = "sequence") {
-    .Call(`_rdataset_get_scrap_report`, data, type)
 }
 
 #' @title get_sequence_abundances
@@ -1016,22 +1050,6 @@ get_sequences_by_sample <- function(data, samples = as.character( c())) {
     .Call(`_rdataset_get_sequences_by_sample`, data, samples)
 }
 
-#' @title get_sequence_report
-#' @description
-#' Get sequence report data: starts, ends, lengths, ambigs, longest
-#' homopolymers and numns.
-#'
-#' @param data, a \link{dataset} object
-#' @examples
-#'
-#'  data <- miseq_sop_example()
-#'  get_sequence_report(data)
-#'
-#' @return data.frame
-get_sequence_report <- function(data) {
-    .Call(`_rdataset_get_sequence_report`, data)
-}
-
 #' @title get_sequence_summary
 #' @description
 #' Get a summary of the sequence report data, as well as reports of containing
@@ -1055,21 +1073,6 @@ get_sequence_report <- function(data) {
 #' 'scrap_summary' table if sequences have been removed
 get_sequence_summary <- function(data) {
     .Call(`_rdataset_get_sequence_summary`, data)
-}
-
-#' @title get_sequence_taxonomy_report
-#' @description
-#' Get the sequence classifications of a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_sequence_taxonomy_report(data)
-#'
-#' @return data.frame
-get_sequence_taxonomy_report <- function(data) {
-    .Call(`_rdataset_get_sequence_taxonomy_report`, data)
 }
 
 #' @title get_bin_assignments
@@ -1199,7 +1202,7 @@ has_sequence_strings <- function(data) {
 #'  # If you look at the scrap report, you will see Otu006 with the trash code
 #'  # set to "merged".
 #'
-#'  get_scrap_report(data, "bin")
+#'  report(data, "bin_scrap")
 #'
 merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
     invisible(.Call(`_rdataset_merge_bins`, data, bin_names, reason, type))
@@ -1236,7 +1239,7 @@ merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 #' # If you look at the scrap report, you will see the second two sequence
 #' # names, listed with the trash code set to "merged".
 #'
-#' get_scrap_report(data)
+#' report(data, "sequence_scrap")
 #'
 #' # You can see from the get_num_sequences function that the merged sequence's
 #' # abundances are added to the first sequence.
@@ -1367,7 +1370,7 @@ remove_samples <- function(data, samples) {
 #' # If you look at the scrap report, you the sequences names, listed with the
 #' # trash codes set to "example", "removing", "sequences".
 #'
-#' get_scrap_report(data)
+#' report(data, "sequence_scrap")
 #'
 #' # You can see from the get_num_sequences function that the removed
 #' # sequence's abundances are removed from the dataset.

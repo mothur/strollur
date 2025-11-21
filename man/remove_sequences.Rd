@@ -38,7 +38,7 @@ remove_sequences(data, seqs_to_remove, trash_codes)
 # If you look at the scrap report, you the sequences names, listed with the
 # trash codes set to "example", "removing", "sequences".
 
-get_scrap_report(data)
+report(data, "sequence_scrap")
 
 # You can see from the get_num_sequences function that the removed
 # sequence's abundances are removed from the dataset.

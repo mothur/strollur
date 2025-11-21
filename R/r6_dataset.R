@@ -331,13 +331,13 @@ dataset <- R6Class("dataset",
     #'   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
     #'
-    #'   add_metadata(data, metadata)
+    #'   add_report(data, metadata, "metadata")
     #'
-    #'   data$get_metadata_table()
+    #'   data$get_metadata()
     #'
     #' @return data.frame()
-    get_metadata_table = function() {
-      get_metadata(self)
+    get_metadata = function() {
+      report(self, "metadata")
     },
 
     #' @description
@@ -426,30 +426,6 @@ dataset <- R6Class("dataset",
       self$sample_tree
     },
 
-    #' @description
-    #' Get report containing the scrapped sequences / bins -
-    #' ids, trash_codes
-    #' @return list of data.frames
-    get_scrap_report = function() {
-      results <- list()
-      list_names <- c("sequence_scrap_report")
-      scrap_sequence_report <- get_scrap_report(self, "sequence")
-      results[[1]] <- scrap_sequence_report
-      if (get_num_bins(self, "otu") != 0) {
-        results[[2]] <- get_scrap_report(self, "otu")
-        list_names <- c(list_names, "otu_scrap_report")
-      }
-      if (get_num_bins(self, "asv") != 0) {
-        results[[3]] <- get_scrap_report(self, "asv")
-        list_names <- c(list_names, "asv_scrap_report")
-      }
-      if (get_num_bins(self, "phylotype") != 0) {
-        results[[4]] <- get_scrap_report(self, "phylotype")
-        list_names <- c(list_names, "phylotype_scrap_report")
-      }
-      names(results) <- list_names
-      results
-    },
 
     #' @description
     #' Get data.frame sequence report data. Sequence report data includes: start
@@ -457,7 +433,7 @@ dataset <- R6Class("dataset",
     #' length of longest homopolymer, and the number of N's.
     #' @return data.frame
     get_sequence_report = function() {
-      get_sequence_report(self)
+      report(self, "sequence_data")
     },
 
     #' @description

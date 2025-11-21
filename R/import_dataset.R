@@ -266,7 +266,7 @@ import_dataset <- function(table, tags = NULL) {
 
   # add metadata
   if (("metadata" %in% names) && (!ht || ("metadata" %in% tags))) {
-    add_metadata(data, table$metadata)
+    add_report(data, table$metadata, "metadata")
   } else if (("metadata" %in% tags) && !("metadata" %in% names)) {
     .abort_missing_tag_alert("metadata")
   }

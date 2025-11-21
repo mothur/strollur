@@ -63,9 +63,9 @@ test_that("import - miseq_sop_example", {
   expect_equal(get_rabund(dataset_t, "asv")$abundance[1:3], c(7436, 6285, 5207))
   # no list, since no sequences
   expect_equal(get_list(dataset_t, "asv"), data.frame())
-  expect_equal(get_sequence_taxonomy_report(dataset_t), data.frame())
+  expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
   # 303 bins x 6 tax levels
-  expect_equal(nrow(get_bin_taxonomy_report(dataset_t)), 1818)
+  expect_equal(nrow(report(dataset_t, "bin_taxonomy")), 1818)
 
   data <- dataset$new()
   abunds <- c(1, 10, 100)

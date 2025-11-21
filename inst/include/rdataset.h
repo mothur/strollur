@@ -556,7 +556,8 @@ public:
     // vector of total abundances for each bin
     const vector<float> getRAbundVector(string type = "otu");
     const Rcpp::DataFrame getReferences();
-    const Rcpp::List getReports();
+    const Rcpp::DataFrame getReports(string type);
+    const vector<string> getReportTypes();
     const vector<string> getSamples();
     const vector<double> getSampleTotals();
     const Rcpp::DataFrame getSampleTreatmentAssignments();

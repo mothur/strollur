@@ -55,7 +55,6 @@ head(sequence_abundance_table, n = 10)
     * **get_sequences** - Returns the nucleotide strings for each sequence
     * **get_sequences_by_sample** - Returns the nucleotide strings for each sequence parsed by sample
     * **is_aligned** - Returns TRUE if sequence data is aligned
-    * **get_sequence_taxonomy_report** - Returns the classification assignments for your sequences
     * **get_num_sequences** - Return the number of sequences in your dataset
     * **has_sequence_strings** - Returns TRUE if your dataset contains sequence nucleotide strings
     * **remove_lineages** - Removes contaminants from your dataset
@@ -92,7 +91,7 @@ head(seqs[[10]], n = 10)
 is_aligned(miseq)
 
 # To get the sequence classifications
-seqs_taxonomy <- get_sequence_taxonomy_report(miseq)
+seqs_taxonomy <- report(miseq, "sequence_taxonomy")
 head(seqs_taxonomy, n = 10)
 
 # To find the total number of sequences:
@@ -221,20 +220,20 @@ head(otu_shared_abundance, n = 10)
 
     
 * **Bin Classifications and Representatives**
-    * **get_bin_taxonomy_report** - Returns the classification assignments for your bins
+    * **report** - Returns the classification assignments for your bins
     * **get_bin_representative_sequences** - Returns a data.frame containing the representative_names and representative_sequences
     
 ```{r}
 # To get the consensus taxonomies assigned to your 'otu' bins
-bin_tax <- get_bin_taxonomy_report(miseq, "otu")
+bin_tax <- report(miseq, "bin_taxonomy", "otu")
 head(bin_tax, n = 10)
 
 # To get the consensus taxonomies assigned to your 'asv' bins
-bin_tax <- get_bin_taxonomy_report(miseq, "asv")
+bin_tax <- report(miseq, "bin_taxonomy", "asv")
 head(bin_tax, n = 10)
 
 # To get the consensus taxonomies assigned to your 'phylotype' bins
-bin_tax <- get_bin_taxonomy_report(miseq, "phylotype")
+bin_tax <- report(miseq, "bin_taxonomy", "phylotype")
 head(bin_tax, n = 10)
 
 otu_bin_reps <- get_bin_representative_sequences(miseq, "otu")
@@ -243,39 +242,26 @@ head(otu_bin_reps, n = 10)
 
 ## Reports, Metadata and References
 
-* **Metadata and References**
-    * **get_metadata** - Returns a data.frame containing your datasets metadata
-    * **get_references** - Returns a table containing resource references
-
-```{r}
-# To get the metadata associated with your dataset
-get_metadata(miseq)
-
-# To get the resources associated with your dataset
-get_references(miseq)
-```
-
 * **Reports**
-    * **get_reports** - Returns a list containing the reports from your dataset
-    * **get_sequence_report** - Returns a data.frame containing the sequence report data: starts, ends, lengths, ambigs, longest homopolymers and numns
-    * **get_scrap_report** - Returns a data.frame containing sequences or bins removed
+    * **report** - Returns a data.frame containing the report requested
     * **get_sequence_summary** - Returns list of data.frames containing the summaries of all reports, and scrapped data
     
 ```{r}
-# To get the reports in your dataset. miseq does not contain reports, but these
-# may be chimera, alignment, contigs_assembly or another generic report you have
-# added to your dataset
-reports <- get_reports(miseq)
-
-# To get the fasta sequence report
-reports <- get_sequence_report(miseq)
+# To get the FASTA sequence report
+reports <- report(miseq, "sequence_data")
 head(reports, n = 10)
 
 # To get the scrapped sequences report
-get_scrap_report(miseq, "sequence")
+report(miseq, "sequence_scrap")
 
-# To get the scrapped bins report
-get_scrap_report(miseq, "bin")
+# To get the "otu" scrapped bins report
+report(miseq, "bin_scrap", "otu")
+
+# To get the metadata associated with your dataset
+report(miseq, "metadata")
+
+# To get the resources associated with your dataset
+report(miseq, "references")
 
 # To get the summary reports
 summary <- get_sequence_summary(miseq)

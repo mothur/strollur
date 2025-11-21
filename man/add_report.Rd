@@ -4,26 +4,38 @@
 \alias{add_report}
 \title{add_report}
 \usage{
-add_report(data, table, type, sequence_name = "sequence_names")
+add_report(data, table, type = "metadata", sequence_name = "sequence_names")
 }
 \arguments{
 \item{data, }{a \link{dataset} object}
 
 \item{table, }{a data.frame containing your report.}
 
-\item{type, }{a string containing the type of report. For example: "align".}
+\item{type, }{a string containing the type of report. Options include:
+"metadata" and custom report tags. Default = "metadata".}
 
 \item{sequence_name, }{a string containing the name of the column in 'table'
-that contains the sequence names. Default column name is 'sequence_names'.}
+that contains the sequence names. This is used for custom reports, metadata
+does not require a sequence_name column. Default column name is 'sequence_names'.}
 }
 \description{
 Add a report to a \link{dataset} object
 }
 \examples{
 
+# To add a custom report including your contigs assembly data
+
 data <- new_dataset("just for fun", 2)
-align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
    col_names = TRUE, show_col_types = FALSE)
-add_report(data, align_report, "align", "QueryName")
+
+add_report(data, contigs_report, "contigs_report", "Name")
+
+# To add metadata related to your study
+
+metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+                            col_names = TRUE, show_col_types = FALSE)
+
+add_report(data, metadata, "metadata")
 
 }

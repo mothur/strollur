@@ -311,8 +311,10 @@ Rcpp::List Dataset::exportDataset(vector<string> tags){
 
     if (!hasTags || setContains(t, "reports")) {
         if (!reports.empty()) {
-            results.push_back(getReports());
-            resultsLabels.push_back("reports");
+            for (auto it = reports.begin(); it != reports.end(); it++) {
+                results.push_back(getReports(it->first));
+                resultsLabels.push_back(it->first);
+            }
         }
     }
 
@@ -947,19 +949,27 @@ const vector<float> Dataset::getRAbundVector(string type) {
     return nullFloatVector;
 }
 /******************************************************************************/
-const Rcpp::List Dataset::getReports() {
-    Rcpp::List reportResults = Rcpp::List::create();
+const Rcpp::DataFrame Dataset::getReports(string type) {
+    Rcpp::DataFrame reportResults = Rcpp::DataFrame::create();
 
     if (!reports.empty()) {
-        vector<string> reportResultsLabels;
-        for (auto it = reports.begin(); it != reports.end(); it++) {
-            reportResults.push_back(it->second.getReport(toSet(getSequenceNames())));
-            reportResultsLabels.push_back(it->first);
+        auto it = reports.find(type);
+
+        if (it != reports.end()) {
+            return it->second.getReport(toSet(getSequenceNames()));
+        }else{
+            string message = "Your dataset does not include a report named ";
+            message += type + ", ignoring request.";
+            RcppThread::Rcout << endl << message << endl;
         }
-        reportResults.attr("names") = reportResultsLabels;
     }
 
     return reportResults;
+}
+/******************************************************************************/
+const vector<string> Dataset::getReportTypes() {
+    vector<string> reportTypes = getKeys(reports);
+    return reportTypes;
 }
 /******************************************************************************/
 const Rcpp::DataFrame Dataset::getReferences() {

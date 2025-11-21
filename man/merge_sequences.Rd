@@ -38,7 +38,7 @@ merge_sequences(data, seqs_to_merge)
 # If you look at the scrap report, you will see the second two sequence
 # names, listed with the trash code set to "merged".
 
-get_scrap_report(data)
+report(data, "sequence_scrap")
 
 # You can see from the get_num_sequences function that the merged sequence's
 # abundances are added to the first sequence.

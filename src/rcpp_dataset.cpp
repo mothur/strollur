@@ -161,29 +161,6 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
     return copy;
 }
 /******************************************************************************/
-//' @title add_metadata
-//' @description
-//' Add metadata to a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//' @param metadata, a data.frame containing your metadata
-//'
-//' @examples
-//'
-//' data <- new_dataset("just for fun", 2)
-//' metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
-//'                             col_names = TRUE, show_col_types = FALSE)
-//' add_metadata(data, metadata)
-//'
-//[[Rcpp::export]]
-void add_metadata(Rcpp::Environment data, Rcpp::DataFrame metadata) {
-
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-     // add metadata to dataset
-     d.get()->addMetadata(metadata);
-}
-/******************************************************************************/
 //' @title add_report
 //' @description
 //' Add a report to a \link{dataset} object
@@ -192,71 +169,97 @@ void add_metadata(Rcpp::Environment data, Rcpp::DataFrame metadata) {
 //'
 //' @param table, a data.frame containing your report.
 //'
-//' @param type, a string containing the type of report. For example: "align".
+//' @param type, a string containing the type of report. Options include:
+//' "metadata" and custom report tags. Default = "metadata".
+//'
 //' @param sequence_name, a string containing the name of the column in 'table'
-//' that contains the sequence names. Default column name is 'sequence_names'.
+//' that contains the sequence names. This is used for custom reports, metadata
+//' does not require a sequence_name column. Default column name is 'sequence_names'.
 //' @examples
 //'
+//' # To add a custom report including your contigs assembly data
+//'
 //' data <- new_dataset("just for fun", 2)
-//' align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+//' contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
 //'    col_names = TRUE, show_col_types = FALSE)
-//' add_report(data, align_report, "align", "QueryName")
+//'
+//' add_report(data, contigs_report, "contigs_report", "Name")
+//'
+//' # To add metadata related to your study
+//'
+//' metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+//'                             col_names = TRUE, show_col_types = FALSE)
+//'
+//' add_report(data, metadata, "metadata")
 //'
 //[[Rcpp::export]]
 void add_report(Rcpp::Environment data,
                        Rcpp::DataFrame table,
-                       string type,
+                       string type = "metadata",
                        string sequence_name = "sequence_names") {
 
     Rcpp::XPtr<Dataset> d = data["data"];
 
-    vector<string> dfNames = Rcpp::as<vector<string>>(table.attr("names"));
+    if (type == "metadata") {
+        d.get()->addMetadata(table);
+        Rcpp::Environment rdataset_env("package:rdataset");
+        Rcpp::Function message = rdataset_env["added_message"];
+        message(R_NilValue, type);
+    }
+    else{
 
-    // do we have a sequence_names column
-    if (!vectorContains(dfNames, sequence_name)) {
-        string message = "The report must include a column containing sequence";
-        message += " names. " + sequence_name + " is not a named column in your report.";
-        throw Rcpp::exception(message.c_str());
-    }else {
+        vector<string> dfNames = Rcpp::as<vector<string>>(table.attr("names"));
 
-        // sequence names in table
-        vector<string> sequenceNames = Rcpp::as<vector<string>>(
-            fill_required_parameters(table, sequence_name));
-
-        // if we don't have any sequences yet, add them
-        if (d.get()->getTotal("") == 0) {
-            vector<string> sequences, comments;
-            Reference ref;
-
-            d.get()->addSequences(sequenceNames,
-                  sequences, comments, ref);
+        // do we have a sequence_names column
+        if (!vectorContains(dfNames, sequence_name)) {
+            string message = "The report must include a column containing sequence";
+            message += " names. " + sequence_name + " is not a named column in your report.";
+            throw Rcpp::exception(message.c_str());
         }else {
-            // we have sequences already, make sure there is a report row for
-            // each sequence in dataset
-            vector<string> datasetSeqNames = d.get()->getSequenceNames("");
 
-            // find seqs in dataset and not in report
-            vector<string> missingSeqs = setDiff(datasetSeqNames, sequenceNames);
+            // sequence names in table
+            vector<string> sequenceNames = Rcpp::as<vector<string>>(
+                fill_required_parameters(table, sequence_name));
 
-            if (missingSeqs.size() == 0) {
-                // preserve order of dataset
-                Rcpp::Environment rdataset_env("package:rdataset");
-                Rcpp::Function sort = rdataset_env["sort_dataframe"];
+            // if we don't have any sequences yet, add them
+            if (d.get()->getTotal("") == 0) {
+                vector<string> sequences, comments;
+                Reference ref;
 
-                table = sort(table, datasetSeqNames, sequence_name);
+                d.get()->addSequences(sequenceNames,
+                    sequences, comments, ref);
             }else {
-                string message = "Your report does not contain an entry for ";
-                message += "every sequence in your dataset, ignoring report. ",
-                RcppThread::Rcout << endl << message << endl;
-                return;
+                // we have sequences already, make sure there is a report row for
+                // each sequence in dataset
+                vector<string> datasetSeqNames = d.get()->getSequenceNames("");
+
+                // find seqs in dataset and not in report
+                vector<string> missingSeqs = setDiff(datasetSeqNames, sequenceNames);
+
+                if (missingSeqs.size() == 0) {
+                    // preserve order of dataset
+                    Rcpp::Environment rdataset_env("package:rdataset");
+                    Rcpp::Function sort = rdataset_env["sort_dataframe"];
+
+                    table = sort(table, datasetSeqNames, sequence_name);
+                }else {
+                    string message = "Your report does not contain an entry for ";
+                    message += "every sequence in your dataset, ignoring report. ",
+                    RcppThread::Rcout << endl << message << endl;
+                    return;
+                }
             }
+
+            // save name column
+            table.attr("sequence_name") = sequence_name;
+
+            // add report to dataset
+            d.get()->addReport(table, type);
+
+            Rcpp::Environment rdataset_env("package:rdataset");
+            Rcpp::Function message = rdataset_env["added_message"];
+            message(R_NilValue, "a " + type);
         }
-
-        // save name column
-        table.attr("sequence_name") = sequence_name;
-
-        // add report to dataset
-        d.get()->addReport(table, type);
     }
 }
 /******************************************************************************/
@@ -1290,24 +1293,6 @@ vector<string> get_list_vector(Rcpp::Environment data, string type = "otu") {
      return d.get()->getListVector(type);
 }
 /******************************************************************************/
-//' @title get_metadata
-//' @description
-//' Get the metadata of a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_metadata(data)
-//'
-//' @return data.frame
-//[[Rcpp::export]]
-const Rcpp::DataFrame get_metadata(Rcpp::Environment data) {
-     Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getMetadata();
-}
-/******************************************************************************/
 //' @title get_num_processors
 //' @description
 //' Get the number of processors used to summarize a \link{dataset} object
@@ -1454,28 +1439,143 @@ vector<float> get_rabund_vector(Rcpp::Environment data, string type = "otu") {
     return d.get()->getRAbundVector(type);
 }
 /******************************************************************************/
-//' @title get_references
+//' @title get_custom_report_types
 //' @description
-//' Get a table containing resource references in a \link{dataset} object
+//' Get the custom report types of a \link{dataset} object
 //'
 //' @param data, a \link{dataset} object
-//' @return data.frame
+//' @examples
+//'
+//' data <- miseq_sop_example()
+//' get_custom_report_types(data)
+//'
+//' @return vector of strings
 //[[Rcpp::export]]
-Rcpp::DataFrame get_references(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getReferences();
+vector<string> get_custom_report_types(Rcpp::Environment data) {
+     Rcpp::XPtr<Dataset> d = data["data"];
+     return d.get()->getReportTypes();
 }
 /******************************************************************************/
-//' @title get_reports
+//' @title report
 //' @description
-//' Get a list containing the reports in a \link{dataset} object
+//' Get a data.frame containing the given report in a \link{dataset} object
 //'
 //' @param data, a \link{dataset} object
-//' @return list
+//'
+//' @param type, string containing the type of report you would like. Options
+//' include: "sequence_data", "sequence_taxonomy", "bin_taxonomy",
+//' "sequence_scrap", "bin_scrap", "metadata", "references". If you have added
+//' custom reports for alignment, contigs_assembly or chimeras, you can get those
+//' as well. Default = "sequence_data".
+//'
+//' @param bin_type, string containing the bin type you would like a bin_taxonomy
+//' report for. Default = "otu".
+//'
+//' @examples
+//'
+//' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
+//'
+//' miseq <- miseq_sop_example()
+//'
+//' # To get a report about the FASTA data
+//'
+//' sequence_report <- report(data = miseq, type = "sequence_data")
+//' head(sequence_report, n = 10)
+//'
+//' # To get a report about sequence classifications
+//'
+//' sequence_taxonomy_report <- report(data = miseq,
+//'                                        type = "sequence_taxonomy")
+//' head(sequence_taxonomy_report, n = 10)
+//'
+//' # To get a report about bin classifications for 'otu' data
+//'
+//' otu_taxonomy_report <- report(data = miseq,
+//'                                        type = "bin_taxonomy",
+//'                                        bin_type = "otu")
+//' head(otu_taxonomy_report, n = 10)
+//'
+//' # To get a report about bin classifications for 'asv' data
+//'
+//' asv_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
+//'                               bin_type = "asv")
+//' head(asv_taxonomy_report, n = 10)
+//'
+//' # To get a report about bin classifications for 'phylotype' data
+//'
+//' phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
+//'                                     bin_type = "phylotype")
+//' head(phylotype_taxonomy_report, n = 10)
+//'
+//' # To get a report about the sequences removed during your analysis:
+//'
+//' scrapped_sequence_report <- report(data = miseq, type = "sequence_scrap")
+//'
+//' # To get a report about the "otu" bins removed during your analysis:
+//'
+//' scrapped_otu_report <- report(data = miseq, type = "bin_scrap",
+//'                               bin_type = "otu")
+//'
+//' # To get a report about the "phylotype" bins removed during your analysis:
+//'
+//' scrapped_phylotype_report <- report(data = miseq, type = "bin_scrap",
+//'                                     bin_type = "phylotype")
+//'
+//' # To get the metadata associated with your data:
+//'
+//' metadata <- report(data = miseq, type = "metadata")
+//'
+//' # To get the resource references associated with your data:
+//'
+//' references <- report(data = miseq, type = "references")
+//'
+//' # To get our custom report containing the contigs assembly data:
+//'
+//' contigs_report <- report(data = miseq, type = "contigs_report")
+//' head(contigs_report, n = 10)
+//'
+//' @return data.frame
 //[[Rcpp::export]]
-Rcpp::List get_reports(Rcpp::Environment data) {
+Rcpp::DataFrame report(Rcpp::Environment data, string type = "sequence_data",
+                       string bin_type = "otu") {
+
      Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getReports();
+
+     // sequence_data reports contain the starts, ends, ambigs,...
+     if (type == "sequence_data") {
+        return d.get()->getSequenceReport();
+     }
+     // sequence classification report
+     else if (type == "sequence_taxonomy") {
+        return d.get()->getSequenceTaxonomyReport();
+     }
+     // bin classification report
+     else if (type == "bin_taxonomy") {
+        return d.get()->getBinTaxonomyReport(bin_type);
+     }
+     // sequence_scrap report
+     else if (type == "sequence_scrap") {
+         return d.get()->getScrapReport("sequence");
+     }
+     // bin_scrap report
+     else if (type == "bin_scrap") {
+         return d.get()->getScrapReport(bin_type);
+     }
+     // metadata
+     else if (type == "metadata") {
+         return d.get()->getMetadata();
+     }
+     // references
+     else if (type == "references") {
+         return d.get()->getReferences();
+     }
+     else {
+         // custom reports like alignreport, contigs report and chimera reports
+        return d.get()->getReports(type);
+     }
+
+     // empty report
+     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 //' @title get_samples
@@ -1533,32 +1633,6 @@ Rcpp::DataFrame get_sample_treatment_assignments(Rcpp::Environment data) {
 vector<double> get_sample_totals(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
    return d.get()->getSampleTotals();
-}
-/******************************************************************************/
-//' @title get_scrap_report
-//' @description
-//' Get a scrap report containing sequences and bins eliminated from a
-//' \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param type a string indicating the type of scrap report you would like.
-//'  Default = 'sequence'.
-//' @examples
-//'
-//'   data <- miseq_sop_example()
-//'   remove_bins(data, c("Otu005"), c("bad_bin"))
-//'
-//'   sequence_scrap_report <- get_scrap_report(data, "sequence")
-//'   otu_scrap_report <- get_scrap_report(data, "bin")
-//'
-//' @return data.frame containing sequences or bins removed from the
-//' \link{dataset} object during analysis
-//[[Rcpp::export]]
-Rcpp::DataFrame get_scrap_report(Rcpp::Environment data,
-                               string type = "sequence") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getScrapReport(type);
 }
 /******************************************************************************/
 //' @title get_sequence_abundances
@@ -1715,24 +1789,6 @@ vector<vector<string> > get_sequences_by_sample(Rcpp::Environment data,
     return d.get()->getSequencesBySample(Rcpp::as<vector<string>>(samples));
 }
 /******************************************************************************/
-//' @title get_sequence_report
-//' @description
-//' Get sequence report data: starts, ends, lengths, ambigs, longest
-//' homopolymers and numns.
-//'
-//' @param data, a \link{dataset} object
-//' @examples
-//'
-//'  data <- miseq_sop_example()
-//'  get_sequence_report(data)
-//'
-//' @return data.frame
-//[[Rcpp::export]]
-Rcpp::DataFrame get_sequence_report(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getSequenceReport();
-}
-/******************************************************************************/
 //' @title get_sequence_summary
 //' @description
 //' Get a summary of the sequence report data, as well as reports of containing
@@ -1758,23 +1814,6 @@ Rcpp::DataFrame get_sequence_report(Rcpp::Environment data) {
 Rcpp::List get_sequence_summary(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getSequenceSummary();
-}
-/******************************************************************************/
-//' @title get_sequence_taxonomy_report
-//' @description
-//' Get the sequence classifications of a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_sequence_taxonomy_report(data)
-//'
-//' @return data.frame
-//[[Rcpp::export]]
-Rcpp::DataFrame get_sequence_taxonomy_report(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getSequenceTaxonomyReport();
 }
 /******************************************************************************/
 //' @title get_bin_assignments
@@ -1917,7 +1956,7 @@ bool has_sequence_strings(Rcpp::Environment data) {
 //'  # If you look at the scrap report, you will see Otu006 with the trash code
 //'  # set to "merged".
 //'
-//'  get_scrap_report(data, "bin")
+//'  report(data, "bin_scrap")
 //'
 //[[Rcpp::export]]
 void merge_bins(Rcpp::Environment data, vector<string> bin_names,
@@ -1957,7 +1996,7 @@ void merge_bins(Rcpp::Environment data, vector<string> bin_names,
 //' # If you look at the scrap report, you will see the second two sequence
 //' # names, listed with the trash code set to "merged".
 //'
-//' get_scrap_report(data)
+//' report(data, "sequence_scrap")
 //'
 //' # You can see from the get_num_sequences function that the merged sequence's
 //' # abundances are added to the first sequence.
@@ -2099,7 +2138,7 @@ void remove_samples(Rcpp::Environment data, vector<string> samples) {
 //' # If you look at the scrap report, you the sequences names, listed with the
 //' # trash codes set to "example", "removing", "sequences".
 //'
-//' get_scrap_report(data)
+//' report(data, "sequence_scrap")
 //'
 //' # You can see from the get_num_sequences function that the removed
 //' # sequence's abundances are removed from the dataset.

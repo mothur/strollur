@@ -35,6 +35,6 @@ you to merge bins in a \link{dataset} object
  # If you look at the scrap report, you will see Otu006 with the trash code
  # set to "merged".
 
- get_scrap_report(data, "bin")
+ report(data, "bin_scrap")
 
 }

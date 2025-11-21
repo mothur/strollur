@@ -28,7 +28,7 @@ write_taxonomy <- function(data, filename = NULL) {
     filename <- paste0(filename, ".taxonomy")
   }
 
-  df <- get_sequence_taxonomy_report(data)
+  df <- report(data, "sequence_taxonomy")
 
   if (nrow(df) != 0) {
     # confidence scores are available
