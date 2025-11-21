@@ -4,14 +4,14 @@
 \alias{get_bin_abundance}
 \title{get_bin_abundance}
 \usage{
-get_bin_abundance(data, bin_name, type = "otu")
+get_bin_abundance(data, bin_name, bin_type = "otu")
 }
 \arguments{
 \item{data, }{a \link{dataset} object}
 
 \item{bin_name, }{string containing the bin name}
 
-\item{type}{a string indicating the type of clusters. Default = "otu".}
+\item{bin_type}{a string indicating the type of clusters. Default = "otu".}
 }
 \value{
 double, containing the abundance of a given bin

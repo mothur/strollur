@@ -23,7 +23,7 @@ allows you to remove sequences from a \link{dataset} object
 
 data <- miseq_sop_example()
 
-get_num_sequences(data)
+num(data = data, type = "sequences")
 
 # For the sake of example let's remove the first 3 sequences from
 # miseq_sop_example:
@@ -33,16 +33,17 @@ seqs_to_remove <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 trash_codes <- c("example", "removing", "sequences")
 
-xdev_remove_sequences(data, seqs_to_remove, trash_codes)
+xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
+                      trash_tags = trash_codes)
 
 # If you look at the scrap report, you the sequences names, listed with the
 # trash codes set to "example", "removing", "sequences".
 
-report(data, "sequence_scrap")
+report(data = data, type = "sequence_scrap")
 
 # You can see from the get_num_sequences function that the removed
 # sequence's abundances are removed from the dataset.
 
-get_num_sequences(data)
+num(data = data, type = "sequences")
 
 }

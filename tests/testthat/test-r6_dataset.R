@@ -125,7 +125,6 @@ test_that("dataset - intialize from dataset object", {
   expect_equal(dataset_t$get_num_bins("otu"), 531)
   expect_equal(dataset_t$get_num_bins("phylotype"), 63)
   expect_equal(dataset_t$get_num_bins("asv"), 2425)
-  expect_equal(get_num_processors(dataset_t), 4)
 })
 
 test_that("dataset - addSeqs, assign samples", {

@@ -7,7 +7,7 @@
 assign_bins(
   data,
   table,
-  type = "otu",
+  bin_type = "otu",
   reference = NULL,
   bin_name = "bin_names",
   abundance = "abundances",
@@ -20,7 +20,7 @@ assign_bins(
 
 \item{table, }{a data.frame containing bin_data assignments}
 
-\item{type}{a string indicating the type of bin assignments. Default "otu".}
+\item{bin_type}{a string indicating the type of bin assignments. Default "otu".}
 
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
@@ -52,14 +52,14 @@ Add bin assignments to a \link{dataset} object
   data <- new_dataset("miseq_sop", 2)
   otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 
-  assign_bins(data, otu_data)
+  assign_bins(data = data, table = otu_data, bin_type = "otu")
 
   # To add abundance only bin assignments:
 
   data <- new_dataset("miseq_sop", 2)
   otu_data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
 
-  assign_bins(data, otu_data)
+  assign_bins(data = data, table = otu_data, bin_type = "otu")
 
   # To add abundance bin assignments parsed by sample:
 
@@ -67,6 +67,6 @@ Add bin assignments to a \link{dataset} object
   otu_data <- readr::read_tsv(rdataset_example(
                                 "mothur2_bin_assignments_shared.tsv"))
 
-  assign_bins(data, otu_data)
+  assign_bins(data = data, table = otu_data, bin_type = "otu")
 
 }

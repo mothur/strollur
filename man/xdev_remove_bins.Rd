@@ -23,21 +23,23 @@ you to remove bins from a \link{dataset} object
 }
 \examples{
 
-  data <- new_dataset("my_dataset", 2)
+  data <- new_dataset(dataset_name = "my_dataset")
 
   bin_names <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
 
-  assign_bins(data, data.frame(bin_names = bin_names,
-                               abundances = abundances))
+  assign_bins(data = data, table = data.frame(bin_names = bin_names,
+                               abundances = abundances), bin_type = "otu")
 
-  get_num_bins(data)
+  num(data = data, type = "bins", bin_type = "otu")
 
   bins_to_remove <- c("bin1")
   trash_tag <- c("bad_bin")
 
-  xdev_remove_bins(data, bins_to_remove, trash_tag)
+  xdev_remove_bins(data = data,
+                   bin_names = bins_to_remove,
+                   trash_tags = trash_tag)
 
-  get_num_bins(data)
+  num(data = data, type = "bins", bin_type = "otu")
 
 }

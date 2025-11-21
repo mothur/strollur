@@ -30,11 +30,11 @@ you to merge bins in a \link{dataset} object
 
  bins_to_merge <- c("Otu005", "Otu006")
 
- xdev_merge_bins(data, bins_to_merge)
+ xdev_merge_bins(data = data, bin_names = bins_to_merge)
 
  # If you look at the scrap report, you will see Otu006 with the trash code
  # set to "merged".
 
- report(data, "bin_scrap")
+ report(data = data, type = "bin_scrap")
 
 }

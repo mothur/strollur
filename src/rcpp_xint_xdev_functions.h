@@ -39,12 +39,12 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
 //'
 //'  bins_to_merge <- c("Otu005", "Otu006")
 //'
-//'  xdev_merge_bins(data, bins_to_merge)
+//'  xdev_merge_bins(data = data, bin_names = bins_to_merge)
 //'
 //'  # If you look at the scrap report, you will see Otu006 with the trash code
 //'  # set to "merged".
 //'
-//'  report(data, "bin_scrap")
+//'  report(data = data, type = "bin_scrap")
 //'
 //[[Rcpp::export]]
 void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
@@ -67,7 +67,7 @@ void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
 //'
 //' data <- miseq_sop_example()
 //'
-//' get_num_sequences(data)
+//' num(data = data, type = "sequences")
 //'
 //' # For the sake of example let's merge the first 3 sequences from
 //' # miseq_sop_example:
@@ -76,17 +76,17 @@ void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
 //'                    "M00967_43_000000000-A3JHG_1_1113_12711_3318",
 //'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 //'
-//' xdev_merge_sequences(data, seqs_to_merge)
+//' xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 //'
 //' # If you look at the scrap report, you will see the second two sequence
 //' # names, listed with the trash code set to "merged".
 //'
-//' report(data, "sequence_scrap")
+//' report(data = data, type = "sequence_scrap")
 //'
 //' # You can see from the get_num_sequences function that the merged sequence's
 //' # abundances are added to the first sequence.
 //'
-//' get_num_sequences(data)
+//' num(data = data, type = "sequences")
 //'
 //[[Rcpp::export]]
 void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
@@ -108,22 +108,24 @@ void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
 //' @param type a string indicating the type of clusters.
 //' @examples
 //'
-//'   data <- new_dataset("my_dataset", 2)
+//'   data <- new_dataset(dataset_name = "my_dataset")
 //'
 //'   bin_names <- c("bin1", "bin2", "bin3")
 //'   abundances <- c(110, 525, 80)
 //'
-//'   assign_bins(data, data.frame(bin_names = bin_names,
-//'                                abundances = abundances))
+//'   assign_bins(data = data, table = data.frame(bin_names = bin_names,
+//'                                abundances = abundances), bin_type = "otu")
 //'
-//'   get_num_bins(data)
+//'   num(data = data, type = "bins", bin_type = "otu")
 //'
 //'   bins_to_remove <- c("bin1")
 //'   trash_tag <- c("bad_bin")
 //'
-//'   xdev_remove_bins(data, bins_to_remove, trash_tag)
+//'   xdev_remove_bins(data = data,
+//'                    bin_names = bins_to_remove,
+//'                    trash_tags = trash_tag)
 //'
-//'   get_num_bins(data)
+//'   num(data = data, type = "bins", bin_type = "otu")
 //'
 //[[Rcpp::export]]
 void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
@@ -152,7 +154,7 @@ void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
 //' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
 //'  "Eukaryota")
 //'
-//' xdev_remove_lineages(data, contaminants)
+//' xdev_remove_lineages(data = data, contaminants = contaminants)
 //'
 //[[Rcpp::export]]
 void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants,
@@ -172,13 +174,13 @@ void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants,
 //'
 //' data <- miseq_sop_example()
 //'
-//' get_num_samples(data)
+//' num(data = data, type = "samples")
 //'
 //' # To remove samples 'F3D0' and 'F3D1'
 //'
 //' xdev_remove_samples(data, c("F3D0", "F3D1"))
 //'
-//' get_num_samples(data)
+//' num(data = data, type = "samples")
 //'
 //[[Rcpp::export]]
 void xdev_remove_samples(Rcpp::Environment data, vector<string> samples);
@@ -199,7 +201,7 @@ void xdev_remove_samples(Rcpp::Environment data, vector<string> samples);
 //'
 //' data <- miseq_sop_example()
 //'
-//' get_num_sequences(data)
+//' num(data = data, type = "sequences")
 //'
 //' # For the sake of example let's remove the first 3 sequences from
 //' # miseq_sop_example:
@@ -209,17 +211,18 @@ void xdev_remove_samples(Rcpp::Environment data, vector<string> samples);
 //'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 //' trash_codes <- c("example", "removing", "sequences")
 //'
-//' xdev_remove_sequences(data, seqs_to_remove, trash_codes)
+//' xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
+//'                       trash_tags = trash_codes)
 //'
 //' # If you look at the scrap report, you the sequences names, listed with the
 //' # trash codes set to "example", "removing", "sequences".
 //'
-//' report(data, "sequence_scrap")
+//' report(data = data, type = "sequence_scrap")
 //'
 //' # You can see from the get_num_sequences function that the removed
 //' # sequence's abundances are removed from the dataset.
 //'
-//' get_num_sequences(data)
+//' num(data = data, type = "sequences")
 //'
 //[[Rcpp::export]]
 void xdev_remove_sequences(Rcpp::Environment data,
@@ -247,18 +250,20 @@ void xdev_remove_sequences(Rcpp::Environment data,
 //' names <- c("seq1", "seq2", "seq3",  "seq4")
 //' abunds <- c(1250, 65, 50, 4)
 //'
-//' data <- new_dataset("my_dataset", 2)
+//' data <- new_dataset(dataset_name = "my_dataset")
 //'
-//' assign_sequence_abundance(data, data.frame(sequence_names = names,
+//' assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
 //'                                            abundances = abunds))
-//' get_sequence_abundances(data)
+//' get_sequence_abundances(data = data)
 //'
 //' seqs_to_update <- c("seq1", "seq3")
 //' new_abunds <- c(1000, 100)
 //'
-//' xdev_set_abundance(data, seqs_to_update, new_abunds)
+//' xdev_set_abundance(data = data,
+//'                    sequence_names = seqs_to_update,
+//'                    sequence_abundances = new_abunds)
 //'
-//' get_sequence_abundances(data)
+//' get_sequence_abundances(data = data)
 //'
 //[[Rcpp::export]]
 void xdev_set_abundance(Rcpp::Environment data,
@@ -281,7 +286,7 @@ void xdev_set_abundance(Rcpp::Environment data,
 //' sequences set to 0 abundance. Default = "update".
 //' @examples
 //'
-//' data <- new_dataset("my_dataset", 2)
+//' data <- new_dataset(dataset_name = "my_dataset")
 //'
 //' sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2", "seq2", "seq3",
 //'                     "seq3", "seq4")
@@ -289,14 +294,17 @@ void xdev_set_abundance(Rcpp::Environment data,
 //'              "sample4", "sample2", "sample3", "sample4")
 //' abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 //'
-//' assign_sequence_abundance(data, data.frame(sequence_names = sequence_names,
-//'                                            abundances = abundances,
-//'                                            samples = samples))
+//' assign_sequence_abundance(data = data,
+//'                           table = data.frame(sequence_names = sequence_names,
+//'                                              abundances = abundances,
+//'                                              samples = samples))
 //'
 //' seqs_to_update <- c("seq4")
 //' new_abunds <- list(c(20, 10, 4))
 //'
-//' xdev_set_abundances(data, seqs_to_update, new_abunds)
+//' xdev_set_abundances(data = data,
+//'                     sequence_names = seqs_to_update,
+//'                     abundances = new_abunds)
 //'
 //[[Rcpp::export]]
 void xdev_set_abundances(Rcpp::Environment data,
@@ -322,13 +330,13 @@ void xdev_set_abundances(Rcpp::Environment data,
 //' @examples
 //'   # For example sake, let's create a dataset with 3 bins:
 //'
-//'   data <- new_dataset("my_dataset", 2)
+//'   data <- new_dataset(dataset_name = "my_dataset")
 //'
 //'   bin_ids <- c("bin1", "bin2", "bin3")
 //'   abundances <- c(110, 525, 80)
 //'
-//'   assign_bins(data, data.frame(bin_names = bin_ids,
-//'                                abundances = abundances))
+//'   assign_bins(data = data, table = data.frame(bin_names = bin_ids,
+//'                                               abundances = abundances))
 //'
 //'   get_bin_abundance(data, "bin1")
 //'   get_bin_abundance(data, "bin2")
@@ -339,7 +347,9 @@ void xdev_set_abundances(Rcpp::Environment data,
 //'   bins <- c("bin1", "bin2")
 //'   new_abunds <- c(300, 250)
 //'
-//'   xdev_set_bin_abundance(data, bins, new_abunds)
+//'   xdev_set_bin_abundance(data = data,
+//'                          bin_names = bins,
+//'                          abundances = new_abunds)
 //'
 //'   get_bin_abundance(data, "bin1")
 //'   get_bin_abundance(data, "bin2")
@@ -371,28 +381,30 @@ void xdev_set_bin_abundance(Rcpp::Environment data,
 //'
 //'   # For example sake, let's create a dataset with 3 bins:
 //'
-//'   data <- new_dataset("my_dataset", 2)
+//'   data <- new_dataset(dataset_name = "my_dataset")
 //'
 //'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
 //'   samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
 //'                "sample1")
 //'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
 //'
-//'   assign_bins(data, data.frame(bin_names = bin_ids,
-//'                                abundances = sample_abundances,
-//'                                samples = samples))
+//'   assign_bins(data = data, table = data.frame(bin_names = bin_ids,
+//'                                               abundances = sample_abundances,
+//'                                               samples = samples))
 //'
 //'   # You can see bin1's abundances parsed by sample using get_bin_abundances:
-//'   get_bin_abundances(data, "bin1")
+//'   get_bin_abundances(data = data, bin_name = "bin1")
 //'
 //'   # You can change bin1's abundances as follows:
 //'
 //'   new_bin1_abunds <- list(c(10,50,0,0))
 //'   bins <- c("bin1")
 //'
-//'   xdev_set_bin_abundances(data, bins, new_bin1_abunds)
+//'   xdev_set_bin_abundances(data = data,
+//'                           bin_names = bins,
+//'                           abundances = new_bin1_abunds)
 //'
-//'   get_bin_abundances(data, "bin1")
+//'   get_bin_abundances(data = data, bin_name = "bin1")
 //'
 //[[Rcpp::export]]
 void xdev_set_bin_abundances(Rcpp::Environment data,
@@ -415,13 +427,15 @@ void xdev_set_bin_abundances(Rcpp::Environment data,
 //'
 //' @examples
 //'
-//' data <- new_dataset("my_dataset", 2)
+//' data <- new_dataset(dataset_name = "my_dataset")
 //'
-//' add_sequences(data, data.frame(sequence_names = c("seq1", "seq2",
+//' add_sequences(data = data,
+//'               table = data.frame(sequence_names = c("seq1", "seq2",
 //'                                                   "seq3", "seq4")))
 //'
-//' xdev_set_sequences(data, c("seq1", "seq2","seq3", "seq4"),
-//'                     c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
+//' xdev_set_sequences(data = data,
+//'                    sequence_names = c("seq1", "seq2","seq3", "seq4"),
+//'                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 //'
 //[[Rcpp::export]]
 void xdev_set_sequences(Rcpp::Environment data,
@@ -438,8 +452,8 @@ void xdev_set_sequences(Rcpp::Environment data,
 //'
 //' @examples
 //'
-//' data <- new_dataset("my_dataset", 2)
-//' xdev_set_dataset_name(data, "new_dataset_name")
+//' data <- new_dataset(dataset_name = "my_dataset")
+//' xdev_set_dataset_name(data = data, dataset_name = "new_dataset_name")
 //'
 //[[Rcpp::export]]
 void xdev_set_dataset_name(Rcpp::Environment data, string dataset_name);
@@ -453,8 +467,8 @@ void xdev_set_dataset_name(Rcpp::Environment data, string dataset_name);
 //' @param processors, a integer containing the desired number of processors
 //' @examples
 //'
-//' data <- new_dataset("my_dataset", 2)
-//' xdev_set_num_processors(data, 1)
+//' data <- new_dataset(dataset_name = "my_dataset")
+//' xdev_set_num_processors(data = data, processors = 1)
 //'
 //[[Rcpp::export]]
 void xdev_set_num_processors(Rcpp::Environment data, int processors);

@@ -24,7 +24,7 @@ allows you to merge sequences in a \link{dataset} object.
 
 data <- miseq_sop_example()
 
-get_num_sequences(data)
+num(data = data, type = "sequences")
 
 # For the sake of example let's merge the first 3 sequences from
 # miseq_sop_example:
@@ -33,16 +33,16 @@ seqs_to_merge <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
                    "M00967_43_000000000-A3JHG_1_1113_12711_3318",
                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 
-xdev_merge_sequences(data, seqs_to_merge)
+xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 
 # If you look at the scrap report, you will see the second two sequence
 # names, listed with the trash code set to "merged".
 
-report(data, "sequence_scrap")
+report(data = data, type = "sequence_scrap")
 
 # You can see from the get_num_sequences function that the merged sequence's
 # abundances are added to the first sequence.
 
-get_num_sequences(data)
+num(data = data, type = "sequences")
 
 }

@@ -29,12 +29,14 @@ the unaligned sequences with aligned sequences.
 }
 \examples{
 
-data <- new_dataset("my_dataset", 2)
+data <- new_dataset(dataset_name = "my_dataset")
 
-add_sequences(data, data.frame(sequence_names = c("seq1", "seq2",
+add_sequences(data = data,
+              table = data.frame(sequence_names = c("seq1", "seq2",
                                                   "seq3", "seq4")))
 
-xdev_set_sequences(data, c("seq1", "seq2","seq3", "seq4"),
-                    c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
+xdev_set_sequences(data = data,
+                   sequence_names = c("seq1", "seq2","seq3", "seq4"),
+                   sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 
 }

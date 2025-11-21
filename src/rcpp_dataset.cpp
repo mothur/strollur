@@ -4,6 +4,20 @@
 #include "rcpp_xint_xdev_functions.h"
 
 /******************************************************************************/
+//' @title get_available_processors
+//' @name get_available_processors
+//' @description
+//' Get the number of available cores
+// [[Rcpp::export]]
+int get_available_processors() {
+     // Use Rcpp::Environment and Rcpp::Function to call R code from C++.
+     Rcpp::Environment parallelly_env = Rcpp::Environment::namespace_env("parallelly");
+     Rcpp::Function availableCores = parallelly_env["availableCores"];
+
+     // Call the R function and return the result.
+     return Rcpp::as<int>(availableCores());
+}
+/******************************************************************************/
 //' @title new_dataset
 //' @description
 //' Create a new \link{dataset} object
@@ -11,32 +25,40 @@
 //' @param dataset_name string, a string containing the dataset name.
 //' Default = ""
 //' @param processors integer, number of cores to use during summary functions.
-//' Default = 2
+//' Default = all available
 //' @examples
 //'
 //' data <- new_dataset()
 //'
-//' # to create a new dataset named "soil" and allow for 2 processors during
-//' # summary functions, run the following:
-//'
-//' data <- new_dataset("soil", 2)
-//'
 //' # to create a new dataset named "soil" and allow for all available
 //' # processors during summary functions, run the following:
 //'
-//' data <- new_dataset("soil", get_available_processors())
+//' data <- new_dataset(dataset_name = "soil")
+//'
+//' # to create a new dataset named "soil" and allow for 2
+//' # processors during summary functions, run the following:
+//'
+//' data <- new_dataset(dataset_name = "soil", processors = 2)
 //'
 //' @returns a \link{dataset} object
 //' @seealso The 'new' method in the \link{dataset} class
 //[[Rcpp::export]]
-Rcpp::Environment new_dataset(string dataset_name = "", int processors = 2) {
+Rcpp::Environment new_dataset(string dataset_name = "",
+                              Rcpp::Nullable<int> processors = R_NilValue) {
 
     // dataset$new()
     Rcpp::Environment rdataset_env("package:rdataset");
     Rcpp::Environment dataset_class_env = rdataset_env["dataset"];
     Rcpp::Function constructor = dataset_class_env["new"];
 
-    Rcpp::Environment data = constructor(dataset_name, processors, R_NilValue);
+    int num_proc = 1;
+    if (processors.isNotNull()) {
+        num_proc = Rcpp::as<int>(processors);
+    }else{
+        num_proc = get_available_processors();
+    }
+
+    Rcpp::Environment data = constructor(dataset_name, num_proc, R_NilValue);
     return data;
 }
 /******************************************************************************/
@@ -409,7 +431,7 @@ double add_sequences(Rcpp::Environment data,
 //' @param data, a \link{dataset} object
 //'
 //' @param table, a data.frame containing bin_data assignments
-//' @param type a string indicating the type of bin assignments. Default "otu".
+//' @param bin_type a string indicating the type of bin assignments. Default "otu".
 //'
 //' @param reference, a list created by the function [new_reference]. Optional.
 //'
@@ -432,14 +454,14 @@ double add_sequences(Rcpp::Environment data,
 //'   data <- new_dataset("miseq_sop", 2)
 //'   otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 //'
-//'   assign_bins(data, otu_data)
+//'   assign_bins(data = data, table = otu_data, bin_type = "otu")
 //'
 //'   # To add abundance only bin assignments:
 //'
 //'   data <- new_dataset("miseq_sop", 2)
 //'   otu_data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
 //'
-//'   assign_bins(data, otu_data)
+//'   assign_bins(data = data, table = otu_data, bin_type = "otu")
 //'
 //'   # To add abundance bin assignments parsed by sample:
 //'
@@ -447,13 +469,13 @@ double add_sequences(Rcpp::Environment data,
 //'   otu_data <- readr::read_tsv(rdataset_example(
 //'                                 "mothur2_bin_assignments_shared.tsv"))
 //'
-//'   assign_bins(data, otu_data)
+//'   assign_bins(data = data, table = otu_data, bin_type = "otu")
 //'
 //' @return double containing the number of bins assigned
 //[[Rcpp::export]]
 double assign_bins(Rcpp::Environment data,
                    Rcpp::DataFrame table,
-                   string type = "otu",
+                   string bin_type = "otu",
                    Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
                    string bin_name = "bin_names",
                    string abundance = "abundances",
@@ -504,7 +526,7 @@ double assign_bins(Rcpp::Environment data,
     }
 
     // if you have list assignments, don't allow setting bin abundances
-    if (d.get()->hasListAssignments(type) && ((abundances.size() != 0) ||
+    if (d.get()->hasListAssignments(bin_type) && ((abundances.size() != 0) ||
         (samples.size() != 0))) {
         string message = "[ERROR]: You cannot assign abundance and sample data";
         message += " to bins that have sequence assignments. This could cause ";
@@ -513,10 +535,10 @@ double assign_bins(Rcpp::Environment data,
         throw Rcpp::exception(message.c_str());
     }else{
         numBinsAssigned = d.get()->assignBins(bin_names, abundances, samples,
-                                   sequence_names, type);
+                                   sequence_names, bin_type);
     }
 
-    string tag = " " + type +" bins.";
+    string tag = " " + bin_type +" bins.";
     Rcpp::Environment rdataset_env("package:rdataset");
     Rcpp::Function message = rdataset_env["assigned_message"];
     message(numBinsAssigned, tag);
@@ -547,7 +569,7 @@ double assign_bins(Rcpp::Environment data,
 //' @param data, a \link{dataset} object
 //'
 //' @param table, a data.frame containing bin representative assignments
-//' @param type a string indicating the type of bin assignments. Default "otu".
+//' @param bin_type a string indicating the type of bin assignments. Default "otu".
 //'
 //' @param reference, a list created by the function [new_reference]. Optional.
 //'
@@ -560,20 +582,22 @@ double assign_bins(Rcpp::Environment data,
 //'
 //'   miseq <- miseq_sop_example()
 //'
-//'   num_bins <- get_num_bins(miseq, "otu")
+//'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 //'
 //'   # For examples sake, select first 531 sequences to be the representatives
 //'   table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
 //'                       sequence_names = get_sequence_names(miseq)[1:num_bins]
 //'                       )
 //'
-//'   assign_bin_representative_sequences(miseq, table, "otu")
+//'   assign_bin_representative_sequences(data = miseq,
+//'                                       table = table,
+//'                                       bin_type = "otu")
 //'
 //' @return double containing the number of representative sequences assigned
 //[[Rcpp::export]]
 double assign_bin_representative_sequences(Rcpp::Environment data,
                                            Rcpp::DataFrame table,
-                                           string type = "otu",
+                                           string bin_type = "otu",
                                            Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
                                            string bin_name = "bin_names",
                                            string sequence_name = "sequence_names") {
@@ -587,9 +611,9 @@ double assign_bin_representative_sequences(Rcpp::Environment data,
     Rcpp::XPtr<Dataset> d = data["data"];
 
     double numAssigned = d.get()->assignBinRepresentativeSequences(bin_names,
-             sequence_names, type);
+             sequence_names, bin_type);
 
-    string tag = " " + type +" bin representative sequences.";
+    string tag = " " + bin_type +" bin representative sequences.";
     Rcpp::Environment rdataset_env("package:rdataset");
     Rcpp::Function message = rdataset_env["assigned_message"];
     message(numAssigned, tag);
@@ -1041,20 +1065,6 @@ Rcpp::List export_dataset(Rcpp::Environment data,
     return results;
 }
 /******************************************************************************/
-//' @title get_available_processors
-//' @name get_available_processors
-//' @description
-//' Get the number of available cores
-// [[Rcpp::export]]
-int get_available_processors() {
-    // Use Rcpp::Environment and Rcpp::Function to call R code from C++.
-    Rcpp::Environment parallelly_env = Rcpp::Environment::namespace_env("parallelly");
-    Rcpp::Function availableCores = parallelly_env["availableCores"];
-
-    // Call the R function and return the result.
-    return Rcpp::as<int>(availableCores());
-}
-/******************************************************************************/
 //' @title get_bin
 //' @description
 //' Get the names of the sequences in a given bin in a \link{dataset} object
@@ -1085,7 +1095,7 @@ string get_bin(Rcpp::Environment data,
 //' @param data, a \link{dataset} object
 //'
 //' @param bin_name, string containing the bin name
-//' @param type a string indicating the type of clusters. Default = "otu".
+//' @param bin_type a string indicating the type of clusters. Default = "otu".
 //' @examples
 //'
 //' data <- miseq_sop_example()
@@ -1094,9 +1104,9 @@ string get_bin(Rcpp::Environment data,
 //' @return double, containing the abundance of a given bin
 //[[Rcpp::export]]
 double get_bin_abundance(Rcpp::Environment data,
-                       string bin_name, string type = "otu") {
+                       string bin_name, string bin_type = "otu") {
     Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getBinAbundance(bin_name, type);
+    return d.get()->getBinAbundance(bin_name, bin_type);
 }
 /******************************************************************************/
 //' @title get_bin_abundances
@@ -1143,30 +1153,32 @@ vector<string> get_bin_names(Rcpp::Environment data, string type = "otu") {
 //' Get the representative sequences of the bins in a \link{dataset} object
 //'
 //' @param data, a \link{dataset} object
-//' @param type, string indicating the type of clusters. Default = "otu".
+//' @param bin_type, string indicating the type of clusters. Default = "otu".
 //' @examples
 //'
 //'   miseq <- miseq_sop_example()
 //'
-//'   num_bins <- get_num_bins(miseq, "otu")
+//'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 //'
 //'   # For examples sake, select first 531 sequences to be the representatives
 //'   table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
 //'                       sequence_names = get_sequence_names(miseq)[1:num_bins]
 //'                       )
 //'
-//'   assign_bin_representative_sequences(miseq, table, "otu")
+//'   assign_bin_representative_sequences(data = miseq,
+//'                                       table = table,
+//'                                       bin_type = "otu")
 //'
 //'
-//'   get_bin_representative_sequences(miseq, "otu")
+//'   get_bin_representative_sequences(data = miseq, bin_type= "otu")
 //'
 //' @return data.frame containing 2 columns representative_names and
 //'  representative_sequences
 //[[Rcpp::export]]
 Rcpp::DataFrame get_bin_representative_sequences(Rcpp::Environment data,
-                                                 string type = "otu") {
+                                                 string bin_type = "otu") {
     Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getBinRepresentativeSequences(type);
+    return d.get()->getBinRepresentativeSequences(bin_type);
 }
 /******************************************************************************/
 //' @title get_bin_types
@@ -1240,114 +1252,6 @@ Rcpp::DataFrame get_list(Rcpp::Environment data, string type = "otu") {
 vector<string> get_list_vector(Rcpp::Environment data, string type = "otu") {
     Rcpp::XPtr<Dataset> d = data["data"];
      return d.get()->getListVector(type);
-}
-/******************************************************************************/
-//' @title get_num_processors
-//' @description
-//' Get the number of processors used to summarize a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//' @examples
-//' data <- new_dataset("my_dataset", 2)
-//' get_num_processors(data)
-//'
-//' @return Integer, containing number of processors
-//[[Rcpp::export]]
-int get_num_processors(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->processors;
-}
-/******************************************************************************/
-//' @title get_num_bins
-//' @description
-//' Get the number of bins of a specific type in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//' @param type a string indicating the type of clusters. Default = "otu".
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_num_bins(data, "otu")
-//' get_num_bins(data, "asv")
-//' get_num_bins(data, "phylotype")
-//'
-//' @return Integer, the number of bins of a specific type in a \link{dataset}
-//'  object
-//[[Rcpp::export]]
-int get_num_bins(Rcpp::Environment data, string type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getNumBins(type);
-}
-/******************************************************************************/
-//' @title get_num_samples
-//' @description
-//' Get the number of samples in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//' @examples
-//'
-//' data <- new_dataset()
-//' bin_table <- readr::read_tsv(rdataset_example(
-//'                               "mothur2_bin_assignments_shared.tsv"),
-//'                               show_col_types = FALSE)
-//' assign_bins(data, bin_table)
-//' get_num_samples(data)
-//'
-//' @return Integer, the number of samples in a \link{dataset} object
-//[[Rcpp::export]]
-int get_num_samples(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getNumSamples();
-}
-/******************************************************************************/
-//' @title get_num_sequences
-//' @description
-//' Get the number of sequences in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param distinct Boolean. When distinct is TRUE the number of unique
-//' sequence is returned. Default = FALSE.
-//' @param sample, string containing the name of the sample you want number of
-//'  sequences for.
-//'
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_num_sequences(data)
-//' get_num_sequences(data, TRUE)
-//' get_num_sequences(data, FALSE, "F3D0")
-//' get_num_sequences(data, TRUE, "F3D0")
-//'
-//' @return double, the number of sequences in a \link{dataset} object
-//[[Rcpp::export]]
-double get_num_sequences(Rcpp::Environment data, bool distinct = false,
-                            string sample = "") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-
-    if (distinct) {
-        return d.get()->getUniqueTotal(sample);
-    }
-
-    return d.get()->getTotal(sample);
-}
-/******************************************************************************/
-//' @title get_num_treatments
-//' @description
-//' Get the number of treatments in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_num_treatments(data)
-//'
-//' @return Integer, the number of treatments in a \link{dataset} object
-//[[Rcpp::export]]
-int get_num_treatments(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getNumTreatments();
 }
 /******************************************************************************/
 //' @title get_rabund
@@ -1893,6 +1797,88 @@ bool has_sequence_strings(Rcpp::Environment data) {
 bool is_aligned(Rcpp::Environment data) {
      Rcpp::XPtr<Dataset> d = data["data"];
      return d.get()->isAligned;
+}
+/******************************************************************************/
+//' @title num
+//' @description
+//' Find the number of sequences, samples, treatments or bins of a given type in
+//' a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param type, string containing the type of data you want the number of.
+//' Options include: "sequences", "samples", "treatments", "bins".
+//' Default = "sequences".
+//'
+//' @param bin_type, string containing the bin type you would like the number of
+//' bins for. Default = "otu".
+//'
+//' @param distinct, Boolean. distinct is only used when 'type' <- "sequences".
+//' When distinct is TRUE the number of unique sequences is returned.
+//' Default = FALSE.
+//'
+//' @param sample, string. sample is only used when 'type' <- "sequences". sample
+//' should contain the name of the sample you want number of sequences for.
+//'
+//' @examples
+//'
+//' miseq <- miseq_sop_example()
+//'
+//' # To get number of sequences in the dataset
+//' num(data = miseq, type = "sequences")
+//'
+//' # To get number of unique sequences in the dataset
+//' num(data = miseq, type = "sequences", distinct = TRUE)
+//'
+//' # To get number of sequences in the dataset from sample 'F3D0'
+//' num(data = miseq, type = "sequences", sample = "F3D0")
+//'
+//' # To get number of unique sequences in the dataset from sample 'F3D0'
+//' num(data = miseq, type = "sequences", distinct = TRUE, sample = "F3D0")
+//'
+//' # To get the number of samples in the dataset
+//' num(data = miseq, type = "samples")
+//'
+//' # To get the number of treatments in the dataset
+//' num(data = miseq, type = "treatments")
+//'
+//' # To get the number of "otu" bins in the dataset
+//' num(data = miseq, type = "bins", bin_type = "otu")
+//'
+//' # To get the number of "asv" bins in the dataset
+//' num(data = miseq, type = "bins", bin_type = "asv")
+//'
+//' # To get the number of "phylotype" bins in the dataset
+//' num(data = miseq, type = "bins", bin_type = "phylotype")
+//'
+//' @return double
+//[[Rcpp::export]]
+double num(Rcpp::Environment data,
+            string type = "sequences",
+            string bin_type = "otu",
+            bool distinct = false,
+            string sample = "") {
+
+     Rcpp::XPtr<Dataset> d = data["data"];
+
+     if (type == "sequences") {
+         if (distinct) {
+             return d.get()->getUniqueTotal(sample);
+         }
+
+         return d.get()->getTotal(sample);
+     }
+     else if (type == "samples") {
+         return d.get()->getNumSamples();
+     }
+     else if (type == "treatments") {
+         return d.get()->getNumTreatments();
+     }
+     else if (type == "bins") {
+         return d.get()->getNumBins(bin_type);
+     }
+
+     return 0;
 }
 /******************************************************************************/
 

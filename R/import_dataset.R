@@ -198,7 +198,7 @@ import_dataset <- function(table, tags = NULL) {
             table[[bin_type]]$bin_names[m_indices]
 
           # bin_id, abund, sample(optional), treatment(optional)
-          assign_bins(data, table[[otu_bin_abund_table]], type = type)
+          assign_bins(data, table[[otu_bin_abund_table]], bin_type = type)
 
           if ("treatments" %in% otu_bin_abund_names) {
             assign_treatments(data, table[[otu_bin_abund_table]])
@@ -224,10 +224,10 @@ import_dataset <- function(table, tags = NULL) {
           table[[sequence_bin_assignments]]$sequence_names <-
             table$sequence_data$sequence_names[m_indices]
 
-          assign_bins(data, table[[sequence_bin_assignments]], type = type)
+          assign_bins(data, table[[sequence_bin_assignments]], bin_type = type)
         } else {
           # does not want sequence data, just bins and abundances
-          assign_bins(data, table[[bin_type]], type = type)
+          assign_bins(data, table[[bin_type]], bin_type = type)
         }
 
         otu_bin_rep_table <- paste0(type, "_bin_representative_sequences")
@@ -253,7 +253,7 @@ import_dataset <- function(table, tags = NULL) {
           assign_bin_representative_sequences(
             data,
             table[[otu_bin_rep_table]],
-            type = type
+            bin_type = type
           )
         }
 

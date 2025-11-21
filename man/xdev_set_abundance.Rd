@@ -32,17 +32,19 @@ without samples.
 names <- c("seq1", "seq2", "seq3",  "seq4")
 abunds <- c(1250, 65, 50, 4)
 
-data <- new_dataset("my_dataset", 2)
+data <- new_dataset(dataset_name = "my_dataset")
 
-assign_sequence_abundance(data, data.frame(sequence_names = names,
+assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
                                            abundances = abunds))
-get_sequence_abundances(data)
+get_sequence_abundances(data = data)
 
 seqs_to_update <- c("seq1", "seq3")
 new_abunds <- c(1000, 100)
 
-xdev_set_abundance(data, seqs_to_update, new_abunds)
+xdev_set_abundance(data = data,
+                   sequence_names = seqs_to_update,
+                   sequence_abundances = new_abunds)
 
-get_sequence_abundances(data)
+get_sequence_abundances(data = data)
 
 }

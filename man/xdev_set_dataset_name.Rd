@@ -16,7 +16,7 @@ Designed with package integration in mind, set the name of a \link{dataset} obje
 }
 \examples{
 
-data <- new_dataset("my_dataset", 2)
-xdev_set_dataset_name(data, "new_dataset_name")
+data <- new_dataset(dataset_name = "my_dataset")
+xdev_set_dataset_name(data = data, dataset_name = "new_dataset_name")
 
 }

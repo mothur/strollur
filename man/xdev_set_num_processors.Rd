@@ -17,7 +17,7 @@ Designed with package integration in mind, set the number of processors used
 }
 \examples{
 
-data <- new_dataset("my_dataset", 2)
-xdev_set_num_processors(data, 1)
+data <- new_dataset(dataset_name = "my_dataset")
+xdev_set_num_processors(data = data, processors = 1)
 
 }

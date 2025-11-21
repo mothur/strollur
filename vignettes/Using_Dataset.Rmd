@@ -55,9 +55,8 @@ head(sequence_abundance_table, n = 10)
     * **get_sequences** - Returns the nucleotide strings for each sequence
     * **get_sequences_by_sample** - Returns the nucleotide strings for each sequence parsed by sample
     * **is_aligned** - Returns TRUE if sequence data is aligned
-    * **get_num_sequences** - Return the number of sequences in your dataset
     * **has_sequence_strings** - Returns TRUE if your dataset contains sequence nucleotide strings
-    
+    * **num** - Find the number of sequences, samples, treatments or bins of a given type
     
 ```{r}
 # To get all the names of the sequences
@@ -95,21 +94,19 @@ seqs_taxonomy <- report(miseq, "sequence_taxonomy")
 head(seqs_taxonomy, n = 10)
 
 # To find the total number of sequences:
-get_num_sequences(miseq)
+num(data = miseq, type = "sequences")
 
 # To find the number of unique sequences:
-get_num_sequences(miseq, TRUE)
+num(data = miseq, type = "sequences", distinct = TRUE)
 
 # To find total number of sequences from a given sample:
-get_num_sequences(miseq, FALSE, "F3D0")
+num(data = miseq, type = "sequences", sample = "F3D0")
 
 # To find the number of unique sequence from a given sample:
-get_num_sequences(miseq, TRUE, "F3D0")
+num(data = miseq, type = "sequences", distinct = TRUE, sample = "F3D0")
 ```    
 
 * **Sample and Treatment Functions**
-    * **get_num_samples** - Returns the number of samples
-    * **get_num_treatments** - Returns the number of treatments
     * **get_samples** - Returns the names of the samples
     * **get_treatments** - Returns the names of the treatments
     * **get_sample_totals** - Returns the total number of sequences assigned to each sample
@@ -118,15 +115,32 @@ get_num_sequences(miseq, TRUE, "F3D0")
     * **has_sample** - Returns TRUE if a given sample is present
     
 ```{r}
-get_num_samples(miseq)
-get_samples(miseq)
-get_sample_totals(miseq)
-get_num_treatments(miseq)
-get_treatments(miseq)
-get_treatment_totals(miseq)
-get_sample_treatment_assignments(miseq)
-has_sample(miseq, "F3D0")
-has_sample(miseq, "sample_not_in_dataset")
+# To find the number of samples
+num(data = miseq, type = "samples")
+
+# To get the names of the samples
+get_samples(data = miseq)
+
+# To get the number of sequences in each sample
+get_sample_totals(data = miseq)
+
+# To find the number of treatments
+num(data = miseq, type = "treatments")
+
+# To get the names of the treatments
+get_treatments(data = miseq)
+
+# To get the number of sequences in each treatment
+get_treatment_totals(data = miseq)
+
+# To get a table with sample treatment assignments
+get_sample_treatment_assignments(data = miseq)
+
+# To determine if sample 'F3D0' is present
+has_sample(data = miseq, sample = "F3D0")
+
+# To determine if sample 'sample_not_in_dataset' is present
+has_sample(data = miseq, sample = "sample_not_in_dataset")
 ```
     
 ## Bin Data
@@ -152,7 +166,6 @@ get_bin_abundances(miseq, "Phylo01", "phylotype")
 
 * **Bin Assignments**
     * **get_bin_types** - Returns the types of bins in your dataset
-    * **get_num_bins** - Returns the number of bins
     * **get_bin_names** - Returns the names of the bins
     * **get_bin_assignments** - Returns a data.frame containing bin_names, bin abundances, samples (if assigned), and treatments (if assigned)
     * **get_bin** - Returns the names of sequences in a given bin
@@ -167,13 +180,13 @@ get_bin_abundances(miseq, "Phylo01", "phylotype")
 get_bin_types(miseq)
 
 # To find the number of 'otu' bins
-get_num_bins(miseq, "otu")
+num(data = miseq, type = "bins", bin_type = "otu")
 
 # To find the number of 'asv' bins
-get_num_bins(miseq, "asv")
+num(data = miseq, type = "bins", bin_type = "asv")
 
 # To find the number of 'phylotype' bins
-get_num_bins(miseq, "phylotype")
+num(data = miseq, type = "bins", bin_type = "phylotype")
 
 # To get the names of the 'otu' bins
 otu_names <- get_bin_names(miseq, "otu")
@@ -270,13 +283,8 @@ head(summary[[1]], n = 10)
 ## General
 * **Utility Functions**
     * **get_dataset_name** - Return the name of your dataset
-    * **get_num_processors** - Return the number of processors used in summary functions
-
     
 ```{r}
 # To get the dataset name
 get_dataset_name(miseq)
-
-# To get the number of processors used by your dataset
-get_num_processors(miseq)
 ```

@@ -30,6 +30,6 @@ data <- read_mothur(fasta = rdataset_example("final.fasta"),
 contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
  "Eukaryota")
 
-xdev_remove_lineages(data, contaminants)
+xdev_remove_lineages(data = data, contaminants = contaminants)
 
 }

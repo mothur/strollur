@@ -24,7 +24,7 @@ with samples.
 }
 \examples{
 
-data <- new_dataset("my_dataset", 2)
+data <- new_dataset(dataset_name = "my_dataset")
 
 sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2", "seq2", "seq3",
                     "seq3", "seq4")
@@ -32,13 +32,16 @@ samples <- c("sample2", "sample3", "sample4", "sample2", "sample3",
              "sample4", "sample2", "sample3", "sample4")
 abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
-assign_sequence_abundance(data, data.frame(sequence_names = sequence_names,
-                                           abundances = abundances,
-                                           samples = samples))
+assign_sequence_abundance(data = data,
+                          table = data.frame(sequence_names = sequence_names,
+                                             abundances = abundances,
+                                             samples = samples))
 
 seqs_to_update <- c("seq4")
 new_abunds <- list(c(20, 10, 4))
 
-xdev_set_abundances(data, seqs_to_update, new_abunds)
+xdev_set_abundances(data = data,
+                    sequence_names = seqs_to_update,
+                    abundances = new_abunds)
 
 }

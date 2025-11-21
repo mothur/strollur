@@ -4,12 +4,12 @@
 \alias{get_bin_representative_sequences}
 \title{get_bin_representative_sequences}
 \usage{
-get_bin_representative_sequences(data, type = "otu")
+get_bin_representative_sequences(data, bin_type = "otu")
 }
 \arguments{
 \item{data, }{a \link{dataset} object}
 
-\item{type, }{string indicating the type of clusters. Default = "otu".}
+\item{bin_type, }{string indicating the type of clusters. Default = "otu".}
 }
 \value{
 data.frame containing 2 columns representative_names and
@@ -22,16 +22,18 @@ Get the representative sequences of the bins in a \link{dataset} object
 
   miseq <- miseq_sop_example()
 
-  num_bins <- get_num_bins(miseq, "otu")
+  num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 
   # For examples sake, select first 531 sequences to be the representatives
   table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
                       sequence_names = get_sequence_names(miseq)[1:num_bins]
                       )
 
-  assign_bin_representative_sequences(miseq, table, "otu")
+  assign_bin_representative_sequences(data = miseq,
+                                      table = table,
+                                      bin_type = "otu")
 
 
-  get_bin_representative_sequences(miseq, "otu")
+  get_bin_representative_sequences(data = miseq, bin_type= "otu")
 
 }

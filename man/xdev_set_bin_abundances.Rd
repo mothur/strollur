@@ -35,27 +35,29 @@ with sample data.
 
   # For example sake, let's create a dataset with 3 bins:
 
-  data <- new_dataset("my_dataset", 2)
+  data <- new_dataset(dataset_name = "my_dataset")
 
   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
                "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
 
-  assign_bins(data, data.frame(bin_names = bin_ids,
-                               abundances = sample_abundances,
-                               samples = samples))
+  assign_bins(data = data, table = data.frame(bin_names = bin_ids,
+                                              abundances = sample_abundances,
+                                              samples = samples))
 
   # You can see bin1's abundances parsed by sample using get_bin_abundances:
-  get_bin_abundances(data, "bin1")
+  get_bin_abundances(data = data, bin_name = "bin1")
 
   # You can change bin1's abundances as follows:
 
   new_bin1_abunds <- list(c(10,50,0,0))
   bins <- c("bin1")
 
-  xdev_set_bin_abundances(data, bins, new_bin1_abunds)
+  xdev_set_bin_abundances(data = data,
+                          bin_names = bins,
+                          abundances = new_bin1_abunds)
 
-  get_bin_abundances(data, "bin1")
+  get_bin_abundances(data = data, bin_name = "bin1")
 
 }

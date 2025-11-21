@@ -76,27 +76,27 @@ dataset <- R6Class("dataset",
         cat(":\n\n")
       }
       self$get_summary()
-      if (get_num_sequences(self, TRUE) != 0) {
+      if (self$get_num_sequences(TRUE) != 0) {
         cat(
-          paste("\nNumber of unique seqs:", get_num_sequences(self, TRUE)),
+          paste("\nNumber of unique seqs:", self$get_num_sequences(TRUE)),
           "\n"
         )
       } else {
         cat("\n")
       }
       cat(
-        paste("Total number of seqs:", get_num_sequences(self)),
+        paste("Total number of seqs:", self$get_num_sequences()),
         "\n"
       )
 
       bin_types <- get_bin_types(self)
 
       for (bin_type in bin_types) {
-        if (get_num_bins(self, bin_type) != 0) {
+        if (self$get_num_bins(bin_type) != 0) {
           cat(
             paste0(
               "Total number of ", bin_type, "s: ",
-              get_num_bins(self, bin_type)
+              self$get_num_bins(bin_type)
             ),
             "\n"
           )
@@ -354,7 +354,7 @@ dataset <- R6Class("dataset",
     #'
     #' @return An integer
     get_num_bins = function(type = "otu") {
-      get_num_bins(self, type)
+      num(self, "bins", type)
     },
 
     #' @description
@@ -369,21 +369,21 @@ dataset <- R6Class("dataset",
         sample <- ""
       }
 
-      get_num_sequences(self, distinct, sample)
+      num(self, "sequences", "", distinct, sample)
     },
 
     #' @description
     #' Get the number of treatments in the dataset
     #' @return An integer
     get_num_treatments = function() {
-      get_num_treatments(self)
+      num(self, "treatments")
     },
 
     #' @description
     #' Get the number of samples in the dataset
     #' @return A character vector
     get_num_samples = function() {
-      get_num_samples(self)
+      num(self, "samples")
     },
 
     #' @description
@@ -483,7 +483,7 @@ dataset <- R6Class("dataset",
         }
       }
 
-      if (get_num_samples(self) != 0) {
+      if (self$get_num_samples() != 0) {
         sample_totals <- get_sample_totals(self)
         sample_names <- get_samples(self)
 

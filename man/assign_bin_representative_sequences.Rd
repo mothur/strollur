@@ -7,7 +7,7 @@
 assign_bin_representative_sequences(
   data,
   table,
-  type = "otu",
+  bin_type = "otu",
   reference = NULL,
   bin_name = "bin_names",
   sequence_name = "sequence_names"
@@ -18,7 +18,7 @@ assign_bin_representative_sequences(
 
 \item{table, }{a data.frame containing bin representative assignments}
 
-\item{type}{a string indicating the type of bin assignments. Default "otu".}
+\item{bin_type}{a string indicating the type of bin assignments. Default "otu".}
 
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
@@ -38,13 +38,15 @@ Assign representative sequences to bins.
 
   miseq <- miseq_sop_example()
 
-  num_bins <- get_num_bins(miseq, "otu")
+  num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 
   # For examples sake, select first 531 sequences to be the representatives
   table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
                       sequence_names = get_sequence_names(miseq)[1:num_bins]
                       )
 
-  assign_bin_representative_sequences(miseq, table, "otu")
+  assign_bin_representative_sequences(data = miseq,
+                                      table = table,
+                                      bin_type = "otu")
 
 }

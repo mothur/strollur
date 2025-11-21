@@ -33,13 +33,13 @@ without sample data.
 \examples{
   # For example sake, let's create a dataset with 3 bins:
 
-  data <- new_dataset("my_dataset", 2)
+  data <- new_dataset(dataset_name = "my_dataset")
 
   bin_ids <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
 
-  assign_bins(data, data.frame(bin_names = bin_ids,
-                               abundances = abundances))
+  assign_bins(data = data, table = data.frame(bin_names = bin_ids,
+                                              abundances = abundances))
 
   get_bin_abundance(data, "bin1")
   get_bin_abundance(data, "bin2")
@@ -50,7 +50,9 @@ without sample data.
   bins <- c("bin1", "bin2")
   new_abunds <- c(300, 250)
 
-  xdev_set_bin_abundance(data, bins, new_abunds)
+  xdev_set_bin_abundance(data = data,
+                         bin_names = bins,
+                         abundances = new_abunds)
 
   get_bin_abundance(data, "bin1")
   get_bin_abundance(data, "bin2")
