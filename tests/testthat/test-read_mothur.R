@@ -11,23 +11,23 @@ test_that("test read_mothur", {
     dataset_name = "miseq_sop"
   )
 
-  expect_equal(dataset$get_dataset_name(), "miseq_sop")
-  expect_equal(dataset$get_num_sequences(TRUE), 2425)
-  expect_equal(dataset$get_num_sequences(), 113963)
-  expect_equal(dataset$get_num_treatments(), 2)
-  expect_equal(dataset$get_num_samples(), 19)
-  expect_equal(dataset$get_num_bins("otu"), 531)
+  expect_equal(name(dataset, "dataset"), "miseq_sop")
+  expect_equal(num(dataset, "sequences", distinct = TRUE), 2425)
+  expect_equal(num(dataset, "sequences"), 113963)
+  expect_equal(num(dataset, "treatments"), 2)
+  expect_equal(num(dataset, "samples"), 19)
+  expect_equal(num(dataset, type = "bins", bin_type = "otu"), 531)
 
   # test count table only, no samples
   dataset <- read_mothur(count = rdataset_example(
     "test_nogroups.count_table"
   ))
 
-  expect_equal(dataset$get_num_sequences(TRUE), 6)
-  expect_equal(dataset$get_num_sequences(), 295696)
-  expect_equal(dataset$get_num_treatments(), 0)
-  expect_equal(dataset$get_num_samples(), 0)
-  expect_equal(dataset$get_num_bins(), 0)
+  expect_equal(num(dataset, "sequences", distinct = TRUE), 6)
+  expect_equal(num(dataset, "sequences"), 295696)
+  expect_equal(num(dataset, "treatments"), 0)
+  expect_equal(num(dataset, "samples"), 0)
+  expect_equal(num(dataset, type = "bins"), 0)
 
   # test shared file and cons_tax
   dataset <- read_mothur(
@@ -37,9 +37,9 @@ test_that("test read_mothur", {
     )
   )
 
-  expect_equal(dataset$get_num_sequences(), 113963)
-  expect_equal(dataset$get_num_samples(), 19)
-  expect_equal(dataset$get_num_bins("otu"), 531)
+  expect_equal(num(dataset, "sequences"), 113963)
+  expect_equal(num(dataset, "samples"), 19)
+  expect_equal(num(dataset, type = "bins", bin_type = "otu"), 531)
 
   report <- report(dataset, "bin_taxonomy")
 
@@ -65,8 +65,8 @@ test_that("test read_mothur shared", {
     dataset_name = "miseq_sop"
   )
 
-  expect_equal(dataset$get_num_bins(type = "asv"), 531)
-  expect_equal(dataset$get_num_bins(type = "phylotype"), 531)
+  expect_equal(num(dataset, type = "bins", bin_type = "asv"), 531)
+  expect_equal(num(dataset, type = "bins", bin_type = "phylotype"), 531)
 })
 
 test_that("test read taxonomy files", {
@@ -99,21 +99,21 @@ test_that("test read taxonomy files", {
     dataset_name = "miseq_sop"
   )
 
-  expect_equal(dataset$get_dataset_name(), "miseq_sop")
-  expect_equal(dataset$get_num_sequences(TRUE), 2425)
-  expect_equal(dataset$get_num_sequences(), 113963)
-  expect_equal(dataset$get_num_treatments(), 2)
-  expect_equal(dataset$get_num_samples(), 19)
-  expect_equal(dataset$get_num_bins("otu"), 531)
-  expect_equal(dataset$get_num_bins("asv"), 2425)
-  expect_equal(dataset$get_num_bins("phylotype"), 63)
+  expect_equal(name(dataset, "dataset"), "miseq_sop")
+  expect_equal(num(dataset, "sequences", distinct = TRUE), 2425)
+  expect_equal(num(dataset, "sequences"), 113963)
+  expect_equal(num(dataset, "treatments"), 2)
+  expect_equal(num(dataset, "samples"), 19)
+  expect_equal(num(dataset, type = "bins", bin_type = "otu"), 531)
+  expect_equal(num(dataset, type = "bins", bin_type = "asv"), 2425)
+  expect_equal(num(dataset, type = "bins", bin_type = "phylotype"), 63)
 
   tree <- dataset$get_sample_tree()
 
-  expect_equal(sort(dataset$get_samples()), sort(tree$tip.label))
+  expect_equal(sort(name(dataset, "samples")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
 
   tree <- dataset$get_sequence_tree()
 
-  expect_equal(sort(get_sequence_names(dataset)), sort(tree$tip.label))
+  expect_equal(sort(name(dataset, "sequences")), sort(tree$tip.label))
 })

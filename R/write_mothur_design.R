@@ -21,7 +21,7 @@ write_mothur_design <- function(data, filename = NULL) {
   }
 
   if (is.null(filename)) {
-    filename <- get_dataset_name(data)
+    filename <- name(data, "dataset")
     if (filename == "") {
       .abort_no_name()
     }

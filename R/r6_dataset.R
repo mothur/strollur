@@ -71,32 +71,36 @@ dataset <- R6Class("dataset",
     #' @description
     #' Get summary of sequence data
     print = function() {
-      if (get_dataset_name(self) != "") {
-        cat(get_dataset_name(self))
+      if (name(self, "dataset")[1] != "") {
+        cat(name(self, "dataset")[1])
         cat(":\n\n")
       }
       self$get_summary()
-      if (self$get_num_sequences(TRUE) != 0) {
+      if (num(data = self, type = "sequences", distinct = TRUE) != 0) {
         cat(
-          paste("\nNumber of unique seqs:", self$get_num_sequences(TRUE)),
+          paste("\nNumber of unique seqs:", num(
+            data = self,
+            type = "sequences",
+            distinct = TRUE
+          )),
           "\n"
         )
       } else {
         cat("\n")
       }
       cat(
-        paste("Total number of seqs:", self$get_num_sequences()),
+        paste("Total number of seqs:", num(data = self, type = "sequences")),
         "\n"
       )
 
       bin_types <- get_bin_types(self)
 
       for (bin_type in bin_types) {
-        if (self$get_num_bins(bin_type) != 0) {
+        if (num(data = self, type = "bins", bin_type = bin_type) != 0) {
           cat(
             paste0(
               "Total number of ", bin_type, "s: ",
-              self$get_num_bins(bin_type)
+              num(data = self, type = "bins", bin_type = bin_type)
             ),
             "\n"
           )
@@ -127,7 +131,7 @@ dataset <- R6Class("dataset",
       }
 
       # if no samples, add sequences in tree to dataset
-      if (self$get_num_samples() == 0) {
+      if (num(self, "samples") == 0) {
         message <- paste0("[Warning]: Your dataset does not contain sample ",
           "data, ignoring sample tree.",
           collapse = ""
@@ -137,14 +141,14 @@ dataset <- R6Class("dataset",
         # make sure the tree includes all "good" samples
         if (identical(
           sort(tree$tip.label),
-          sort(self$get_samples())
+          sort(name(self, "samples"))
         )) {
           # save tree
           self$sample_tree <- tree
         } else {
           # samples in dataset and not in tree
           missing_samples <- setdiff(
-            self$get_samples(),
+            name(self, "samples"),
             tree$tip.label
           )
 
@@ -163,7 +167,7 @@ dataset <- R6Class("dataset",
             # samples in tree and not in dataset
             extra_samples <- setdiff(
               tree$tip.label,
-              self$get_samples()
+              name(self, "samples")
             )
 
             # if tree contains "extra" names, prune the tree
@@ -190,7 +194,7 @@ dataset <- R6Class("dataset",
       }
 
       # if no seqs yet, add sequences in tree to dataset
-      if (self$get_num_sequences() == 0) {
+      if (num(self, "sequences") == 0) {
         add_sequences(self, data.frame(sequence_names = tree$tip.label))
 
         # save tree
@@ -199,14 +203,14 @@ dataset <- R6Class("dataset",
         # make sure the tree includes all "good" sequences
         if (identical(
           sort(tree$tip.label),
-          sort(get_sequence_names(self))
+          sort(name(self, "sequences"))
         )) {
           # save tree
           self$sequence_tree <- tree
         } else {
           # seqs in dataset and not in tree
           missing_seqs <- setdiff(
-            get_sequence_names(self),
+            name(self, "sequences"),
             tree$tip.label
           )
 
@@ -225,7 +229,7 @@ dataset <- R6Class("dataset",
             # seqs in tree and not in dataset
             extra_seqs <- setdiff(
               tree$tip.label,
-              get_sequence_names(self)
+              name(self, "sequences")
             )
 
             # if tree contains "extra" names, prune the tree
@@ -272,39 +276,6 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
-    #' Get data frame containing sequence bin assignments
-    #' @param type a string indicating the type of clusters. Options
-    #' include: "otu", "asv", or "phylotype". Default = "otu".
-    #' @examples
-    #'   data <- dataset$new("my_dataset")
-    #'
-    #'   bin_table <- readr::read_tsv(rdataset_example(
-    #'                                "mothur2_bin_assignments_shared.tsv"),
-    #'                                show_col_types = FALSE)
-    #'
-    #'   assign_bins(data, bin_table)
-    #'
-    #'   shared <- data$get_bin_assignments()
-    #'
-    #' @return data.frame
-    get_bin_assignments = function(type = "otu") {
-      get_bin_assignments(self, type)
-    },
-
-    #' @description
-    #' Get the names of the bins in your dataset
-    #' @param type a string indicating the type of clusters. Options
-    #' include: "otu", "asv", or "phylotype". Default = "otu".
-    #' @examples
-    #'   data <- miseq_sop_example()
-    #'   data$get_bin_names("otu")
-    #'
-    #' @return vector of strings containing the bin names
-    get_bin_names = function(type = "otu") {
-      get_bin_names(self, type)
-    },
-
-    #' @description
     #' Get bin table types
     #' @examples
     #'
@@ -314,13 +285,6 @@ dataset <- R6Class("dataset",
     #' @return vector of strings
     get_bin_types = function() {
       get_bin_types(self)
-    },
-
-    #' @description
-    #' Get dataset name
-    #' @return String
-    get_dataset_name = function() {
-      get_dataset_name(self)
     },
 
     #' @description
@@ -338,59 +302,6 @@ dataset <- R6Class("dataset",
     #' @return data.frame()
     get_metadata = function() {
       report(self, "metadata")
-    },
-
-    #' @description
-    #' Get the number of bins in the dataset
-    #' @param type a string indicating the type of clusters. Default = "otu".
-    #' @examples
-    #'
-    #'   otu_data <- read_mothur_list(rdataset_example(
-    #'                             "final.opti_mcc.list"))
-    #'
-    #'   data <- dataset$new("my_dataset")
-    #'   assign_bins(data, otu_data)
-    #'   data$get_num_bins()
-    #'
-    #' @return An integer
-    get_num_bins = function(type = "otu") {
-      num(self, "bins", type)
-    },
-
-    #' @description
-    #' Get the number of sequences in the dataset
-    #' @param distinct Boolean. When distinct is TRUE the number of unique
-    #' sequence is returned.
-    #' @param sample The name of the sample you want number of sequences for,
-    #'  optional
-    #' @return An integer
-    get_num_sequences = function(distinct = FALSE, sample = NULL) {
-      if (is.null(sample)) {
-        sample <- ""
-      }
-
-      num(self, "sequences", "", distinct, sample)
-    },
-
-    #' @description
-    #' Get the number of treatments in the dataset
-    #' @return An integer
-    get_num_treatments = function() {
-      num(self, "treatments")
-    },
-
-    #' @description
-    #' Get the number of samples in the dataset
-    #' @return A character vector
-    get_num_samples = function() {
-      num(self, "samples")
-    },
-
-    #' @description
-    #' Get names of samples in the dataset
-    #' @return A character vector
-    get_samples = function() {
-      get_samples(self)
     },
 
     #' @description
@@ -413,7 +324,7 @@ dataset <- R6Class("dataset",
         # samples in tree and not in dataset
         extra_samples <- setdiff(
           self$sample_tree$tip.label,
-          self$get_samples()
+          name(self, "samples")
         )
 
         if (length(extra_samples) != 0) {
@@ -453,8 +364,11 @@ dataset <- R6Class("dataset",
         if (!silent) {
           cat("sequence_summary:\n")
           print(results[["sequence_summary"]])
-          cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
-          cat("Total seqs:\t", self$get_num_sequences(), "\n")
+          cat("Unique seqs:\t", num(
+            data = self,
+            type = "sequences", distinct = TRUE
+          ), "\n")
+          cat("Total seqs:\t", num(data = self, type = "sequences"), "\n")
         }
       }
 
@@ -464,8 +378,11 @@ dataset <- R6Class("dataset",
           for (name in report_names) {
             cat(name, ":\n")
             print(results[[name]])
-            cat("Unique seqs:\t", self$get_num_sequences(TRUE), "\n")
-            cat("Total seqs:\t", self$get_num_sequences(), "\n\n")
+            cat("Unique seqs:\t", num(
+              data = self,
+              type = "sequences", distinct = TRUE
+            ), "\n")
+            cat("Total seqs:\t", num(data = self, type = "sequences"), "\n\n")
           }
         }
       }
@@ -484,7 +401,7 @@ dataset <- R6Class("dataset",
         }
       }
 
-      if (self$get_num_samples() != 0) {
+      if (num(self, "samples") != 0) {
         results[["sample_summary"]] <- totals(self, "samples")
 
         if (!silent) {
@@ -497,21 +414,22 @@ dataset <- R6Class("dataset",
           }
         }
 
-        if (self$get_num_treatments() != 0) {
-            results[["treatment_summary"]] <- totals(self, "treatments")
+        if (num(self, "treatments") != 0) {
+          results[["treatment_summary"]] <- totals(self, "treatments")
 
-            if (!silent) {
-                treatment_names <- results[["treatment_summary"]]$treatments
-                treatment_totals <- results[["treatment_summary"]]$totals
-                cat("\n")
-                cat("Treatment   Total:\n")
-                for (i in seq_along(treatment_names)) {
-                    cat(
-                        paste(treatment_names[i], treatment_totals[i],
-                              sep = "\t"), "\n"
-                    )
-                }
+          if (!silent) {
+            treatment_names <- results[["treatment_summary"]]$treatments
+            treatment_totals <- results[["treatment_summary"]]$totals
+            cat("\n")
+            cat("Treatment   Total:\n")
+            for (i in seq_along(treatment_names)) {
+              cat(
+                paste(treatment_names[i], treatment_totals[i],
+                  sep = "\t"
+                ), "\n"
+              )
             }
+          }
         }
       } else {
         if (!silent) {
@@ -537,7 +455,7 @@ dataset <- R6Class("dataset",
         # seqs in tree and not in dataset
         extra_seqs <- setdiff(
           self$sequence_tree$tip.label,
-          get_sequence_names(self)
+          name(self, "sequences")
         )
 
         if (length(extra_seqs) != 0) {
@@ -548,21 +466,6 @@ dataset <- R6Class("dataset",
         }
       }
       self$sequence_tree
-    },
-
-    #' @description
-    #' Get names of treatments in the dataset
-    #' @return A character vector
-    get_treatments = function() {
-      get_treatments(self)
-    },
-
-    #' @description
-    #' Determine if a sample is present in the dataset
-    #' @param sample String, Name of sample
-    #' @return Boolean
-    has_sample = function(sample) {
-      has_sample(self, sample)
     }
   ),
   private = list(

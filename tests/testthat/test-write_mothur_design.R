@@ -18,8 +18,8 @@ test_that("write_mothur_design", {
 
   remove_file(output)
 
-  expect_equal(data$get_num_treatments(), 2)
-  expect_equal(data$get_num_samples(), 19)
+  expect_equal(num(data, "treatments"), 2)
+  expect_equal(num(data, "samples"), 19)
 
   data <- read_mothur(
     otu_list = rdataset_example("final.opti_mcc.list"),

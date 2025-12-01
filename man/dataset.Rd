@@ -48,29 +48,6 @@ data <- new_dataset("soil")
 
 
 ## ------------------------------------------------
-## Method `dataset$get_bin_assignments`
-## ------------------------------------------------
-
-  data <- dataset$new("my_dataset")
-
-  bin_table <- readr::read_tsv(rdataset_example(
-                               "mothur2_bin_assignments_shared.tsv"),
-                               show_col_types = FALSE)
-
-  assign_bins(data, bin_table)
-
-  shared <- data$get_bin_assignments()
-
-
-## ------------------------------------------------
-## Method `dataset$get_bin_names`
-## ------------------------------------------------
-
-  data <- miseq_sop_example()
-  data$get_bin_names("otu")
-
-
-## ------------------------------------------------
 ## Method `dataset$get_bin_types`
 ## ------------------------------------------------
 
@@ -91,19 +68,6 @@ data$get_bin_types()
   add_report(data, metadata, "metadata")
 
   data$get_metadata()
-
-
-## ------------------------------------------------
-## Method `dataset$get_num_bins`
-## ------------------------------------------------
-
-
-  otu_data <- read_mothur_list(rdataset_example(
-                            "final.opti_mcc.list"))
-
-  data <- dataset$new("my_dataset")
-  assign_bins(data, otu_data)
-  data$get_num_bins()
 
 
 ## ------------------------------------------------
@@ -161,22 +125,12 @@ the class.}
 \item \href{#method-dataset-add_sample_tree}{\code{dataset$add_sample_tree()}}
 \item \href{#method-dataset-add_sequence_tree}{\code{dataset$add_sequence_tree()}}
 \item \href{#method-dataset-clear}{\code{dataset$clear()}}
-\item \href{#method-dataset-get_bin_assignments}{\code{dataset$get_bin_assignments()}}
-\item \href{#method-dataset-get_bin_names}{\code{dataset$get_bin_names()}}
 \item \href{#method-dataset-get_bin_types}{\code{dataset$get_bin_types()}}
-\item \href{#method-dataset-get_dataset_name}{\code{dataset$get_dataset_name()}}
 \item \href{#method-dataset-get_metadata}{\code{dataset$get_metadata()}}
-\item \href{#method-dataset-get_num_bins}{\code{dataset$get_num_bins()}}
-\item \href{#method-dataset-get_num_sequences}{\code{dataset$get_num_sequences()}}
-\item \href{#method-dataset-get_num_treatments}{\code{dataset$get_num_treatments()}}
-\item \href{#method-dataset-get_num_samples}{\code{dataset$get_num_samples()}}
-\item \href{#method-dataset-get_samples}{\code{dataset$get_samples()}}
 \item \href{#method-dataset-get_sample_tree}{\code{dataset$get_sample_tree()}}
 \item \href{#method-dataset-get_sequence_report}{\code{dataset$get_sequence_report()}}
 \item \href{#method-dataset-get_summary}{\code{dataset$get_summary()}}
 \item \href{#method-dataset-get_sequence_tree}{\code{dataset$get_sequence_tree()}}
-\item \href{#method-dataset-get_treatments}{\code{dataset$get_treatments()}}
-\item \href{#method-dataset-has_sample}{\code{dataset$has_sample()}}
 \item \href{#method-dataset-clone}{\code{dataset$clone()}}
 }
 }
@@ -316,75 +270,6 @@ By default, everything is cleared.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_bin_assignments"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_bin_assignments}{}}}
-\subsection{Method \code{get_bin_assignments()}}{
-Get data frame containing sequence bin assignments
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_bin_assignments(type = "otu")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{a string indicating the type of clusters. Options
-include: "otu", "asv", or "phylotype". Default = "otu".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-data.frame
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{  data <- dataset$new("my_dataset")
-
-  bin_table <- readr::read_tsv(rdataset_example(
-                               "mothur2_bin_assignments_shared.tsv"),
-                               show_col_types = FALSE)
-
-  assign_bins(data, bin_table)
-
-  shared <- data$get_bin_assignments()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_bin_names"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_bin_names}{}}}
-\subsection{Method \code{get_bin_names()}}{
-Get the names of the bins in your dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_bin_names(type = "otu")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{a string indicating the type of clusters. Options
-include: "otu", "asv", or "phylotype". Default = "otu".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-vector of strings containing the bin names
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{  data <- miseq_sop_example()
-  data$get_bin_names("otu")
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_bin_types"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-get_bin_types}{}}}
 \subsection{Method \code{get_bin_types()}}{
@@ -407,19 +292,6 @@ data$get_bin_types()
 
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_dataset_name"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_dataset_name}{}}}
-\subsection{Method \code{get_dataset_name()}}{
-Get dataset name
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_dataset_name()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-String
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_metadata"></a>}}
@@ -449,104 +321,6 @@ data.frame()
 
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_num_bins"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_num_bins}{}}}
-\subsection{Method \code{get_num_bins()}}{
-Get the number of bins in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_num_bins(type = "otu")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{type}}{a string indicating the type of clusters. Default = "otu".}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An integer
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{
-  otu_data <- read_mothur_list(rdataset_example(
-                            "final.opti_mcc.list"))
-
-  data <- dataset$new("my_dataset")
-  assign_bins(data, otu_data)
-  data$get_num_bins()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_num_sequences"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_num_sequences}{}}}
-\subsection{Method \code{get_num_sequences()}}{
-Get the number of sequences in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_num_sequences(distinct = FALSE, sample = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{distinct}}{Boolean. When distinct is TRUE the number of unique
-sequence is returned.}
-
-\item{\code{sample}}{The name of the sample you want number of sequences for,
-optional}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An integer
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_num_treatments"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_num_treatments}{}}}
-\subsection{Method \code{get_num_treatments()}}{
-Get the number of treatments in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_num_treatments()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-An integer
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_num_samples"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_num_samples}{}}}
-\subsection{Method \code{get_num_samples()}}{
-Get the number of samples in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_num_samples()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-A character vector
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_samples"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_samples}{}}}
-\subsection{Method \code{get_samples()}}{
-Get names of samples in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_samples()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-A character vector
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_sample_tree"></a>}}
@@ -633,39 +407,6 @@ Get phylo tree relating the sequences in your dataset.
 
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-get_treatments"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-get_treatments}{}}}
-\subsection{Method \code{get_treatments()}}{
-Get names of treatments in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_treatments()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-A character vector
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-dataset-has_sample"></a>}}
-\if{latex}{\out{\hypertarget{method-dataset-has_sample}{}}}
-\subsection{Method \code{has_sample()}}{
-Determine if a sample is present in the dataset
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$has_sample(sample)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{sample}}{String, Name of sample}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Boolean
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-clone"></a>}}

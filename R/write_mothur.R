@@ -27,7 +27,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     .abort_incorrect_type("dataset", data)
   }
 
-  dataset_name <- data$get_dataset_name()
+  dataset_name <- name(data, "dataset")
 
   if (dataset_name == "") {
     dataset_name <- paste0("rdataset.", as.integer(Sys.time()),
@@ -86,7 +86,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
       wrote_count <- TRUE
     }
 
-    if (data$get_num_treatments() != 0) {
+    if (num(data, "treatments") != 0) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)
@@ -115,7 +115,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     ))
     outputs <- c(outputs, output)
 
-    if ((data$get_num_treatments() != 0) && !wrote_design) {
+    if ((num(data, "treatments") != 0) && !wrote_design) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)
@@ -137,7 +137,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("reports" %in% tags)) {
-    report_types <- get_custom_report_types(data)
+    report_types <- name(data, "reports")
 
     if (length(report_types) != 0) {
       for (type in report_types) {

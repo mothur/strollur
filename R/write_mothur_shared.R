@@ -22,7 +22,7 @@ write_mothur_shared <- function(data, file_root = NULL) {
   }
 
   if (is.null(file_root)) {
-    file_root <- data$get_dataset_name()
+    file_root <- name(data, "dataset")
     if (file_root == "") {
       .abort_no_name()
     }
@@ -32,7 +32,7 @@ write_mothur_shared <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- data$get_bin_assignments(type)
+    df <- get_bin_assignments(data, type)
 
     if (nrow(df) != 0) {
       num_cols <- ncol(df)

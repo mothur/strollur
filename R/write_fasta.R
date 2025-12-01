@@ -22,14 +22,14 @@ write_fasta <- function(data, filename = NULL) {
   }
 
   if (is.null(filename)) {
-    filename <- get_dataset_name(data)
+    filename <- name(data, "dataset")
     if (filename == "") {
       .abort_no_name()
     }
     filename <- paste0(filename, ".fasta")
   }
 
-  sequence_names <- get_sequence_names(data)
+  sequence_names <- name(data, "sequences")
 
   # data contains sequences
   if (length(sequence_names) != 0) {

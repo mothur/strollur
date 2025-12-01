@@ -10,7 +10,7 @@ test_that("test read_mothur_shared", {
   data <- dataset$new()
   assign_bins(data, shared_data)
 
-  expect_equal(data$get_num_sequences(), 113963)
-  expect_equal(data$get_num_samples(), 19)
-  expect_equal(data$get_num_bins("otu"), 531)
+  expect_equal(num(data), 113963)
+  expect_equal(num(data, "samples"), 19)
+  expect_equal(num(data, "bins", "otu"), 531)
 })

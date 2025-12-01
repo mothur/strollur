@@ -361,7 +361,7 @@ public:
     // 2 column dataframe - bin_id, seq_id
     const Rcpp::DataFrame getList(const vector<string>& seqNames);
     // names of bins
-    const vector<string> getIds();
+    const vector<string> getIds(string sample = "", bool distinct = false);
     const int getNumBins();
     // 2 column dataframe - bin_id, abundance
     const Rcpp::DataFrame getRAbund();
@@ -537,7 +537,8 @@ public:
     // string containing sequence names for given binID
     const string getBin(const string binID, string type = "otu");
     // names of bins
-    const vector<string> getBinIds(string type = "otu");
+    const vector<string> getBinIds(string type = "otu", string sample = "",
+                                   bool distinct = false);
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getBinTaxonomyReport(string type = "otu");
     // 3 columns: bin_names, representative_names, representative_sequences

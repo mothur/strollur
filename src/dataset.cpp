@@ -906,9 +906,10 @@ const string Dataset::getBin(const string binId, string type) {
     return "";
 }
 /******************************************************************************/
-const vector<string> Dataset::getBinIds(string type) {
+const vector<string> Dataset::getBinIds(string type, string sample, bool distinct) {
+
     if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getIds();
+        return binTables[getBinTableIndex(type)].getIds(sample, distinct);
     }
     return nullVector;
 }
@@ -968,7 +969,25 @@ const Rcpp::DataFrame Dataset::getReports(string type) {
 }
 /******************************************************************************/
 const vector<string> Dataset::getReportTypes() {
+
+    //custom report types
     vector<string> reportTypes = getKeys(reports);
+
+    if (hasSeqs()) {
+        reportTypes.push_back("sequence_data");
+
+        if (badAccnos.size() != 0) {
+            reportTypes.push_back("sequence_scrap");
+        }
+    }
+
+    for (int i = 0; i < binTables.size(); i++) {
+        if (binTables[i].getScrapReport().size() != 0) {
+            reportTypes.push_back("bin_scrap");
+            break;
+        }
+    }
+
     return reportTypes;
 }
 /******************************************************************************/

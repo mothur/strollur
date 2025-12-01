@@ -21,7 +21,7 @@ write_mothur_list <- function(data, file_root = NULL) {
   }
 
   if (is.null(file_root)) {
-    file_root <- data$get_dataset_name()
+    file_root <- name(data, "dataset")
     if (file_root == "") {
       .abort_no_name()
     }

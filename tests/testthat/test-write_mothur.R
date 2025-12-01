@@ -12,7 +12,7 @@ test_that("write_mothur - miseq", {
   zip_file <- get_full_name("tmp.zip")
 
   unzip(zip_file, exdir = get_full_name("tmp"), junkpaths = TRUE)
-
+  print(outputs)
   data <- read_mothur(
     fasta = outputs[1],
     count = outputs[3],
@@ -21,12 +21,12 @@ test_that("write_mothur - miseq", {
     otu_list = outputs[5],
     asv_list = outputs[6],
     phylo_list = outputs[7],
-    sample_tree = outputs[17],
-    sequence_tree = outputs[18],
+    sample_tree = outputs[18],
+    sequence_tree = outputs[19],
     dataset_name = "miseq_sop"
   )
 
-  add_references(data, readr::read_tsv(outputs[16],
+  add_references(data, readr::read_tsv(outputs[17],
     col_names = TRUE,
     show_col_types = FALSE
   ))
@@ -46,15 +46,15 @@ test_that("write_mothur - miseq", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(data$get_dataset_name(), "miseq_sop")
-  expect_equal(data$get_num_sequences(TRUE), 2425)
-  expect_equal(data$get_num_sequences(), 113963)
-  expect_equal(data$get_num_treatments(), 2)
-  expect_equal(data$get_num_samples(), 19)
-  expect_equal(data$get_num_bins("otu"), 531)
-  expect_equal(data$get_num_bins("asv"), 2425)
-  expect_equal(data$get_num_bins("phylotype"), 63)
-  expect_equal(data$get_metadata(), miseq$get_metadata())
+  expect_equal(name(data, "dataset"), "miseq_sop")
+  expect_equal(num(data, "sequences", distinct = TRUE), 2425)
+  expect_equal(num(data, "sequences"), 113963)
+  expect_equal(num(data, "treatments"), 2)
+  expect_equal(num(data, "samples"), 19)
+  expect_equal(num(data, "bins", "otu"), 531)
+  expect_equal(num(data, "bins", "asv"), 2425)
+  expect_equal(num(data, "bins", "phylotype"), 63)
+  expect_equal(report(data, "metadata"), report(miseq, "metadata"))
   expect_equal(report(data, "references"), report(miseq, "references"))
 })
 
@@ -85,14 +85,14 @@ test_that("write_mothur - bin_data only", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(data$get_dataset_name(), "miseq_sop")
-  expect_equal(data$get_num_sequences(TRUE), 2425)
-  expect_equal(data$get_num_sequences(), 113963)
-  expect_equal(data$get_num_treatments(), 2)
-  expect_equal(data$get_num_samples(), 19)
-  expect_equal(data$get_num_bins("otu"), 531)
-  expect_equal(data$get_num_bins("asv"), 2425)
-  expect_equal(data$get_num_bins("phylotype"), 63)
+  expect_equal(name(data, "dataset"), "miseq_sop")
+  expect_equal(num(data, "sequences", distinct = TRUE), 2425)
+  expect_equal(num(data, "sequences"), 113963)
+  expect_equal(num(data, "treatments"), 2)
+  expect_equal(num(data, "samples"), 19)
+  expect_equal(num(data, "bins", "otu"), 531)
+  expect_equal(num(data, "bins", "asv"), 2425)
+  expect_equal(num(data, "bins", "phylotype"), 63)
 })
 
 test_that("write_mothur - report_data only", {
@@ -137,9 +137,9 @@ test_that("write_mothur - report_data only", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(data$get_dataset_name(), "")
-  expect_equal(data$get_num_sequences(TRUE), 5)
-  expect_equal(data$get_num_sequences(), 5)
+  expect_equal(name(data, "dataset"), "")
+  expect_equal(num(data, "sequences", distinct = TRUE), 5)
+  expect_equal(num(data, "sequences"), 5)
   expect_equal(
     report(data, "contigs_report"),
     report(data2, "contigs_report")
@@ -178,9 +178,9 @@ test_that("write_mothur - report_data only", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(data$get_dataset_name(), "")
-  expect_equal(data$get_num_sequences(TRUE), 71)
-  expect_equal(data$get_num_sequences(), 71)
+  expect_equal(name(data, "dataset"), "")
+  expect_equal(num(data, "sequences", distinct = TRUE), 71)
+  expect_equal(num(data, "sequences"), 71)
   expect_equal(
     report(data, "chimera_report"),
     report(data2, "chimera_report")

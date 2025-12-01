@@ -21,17 +21,35 @@ test_that("clone - deep copy of dataset object", {
   dataset <- load_dataset(file_name)
   remove_file(file_name)
 
-  expect_equal(dataset$get_dataset_name(), get_dataset_name(temp))
-  expect_equal(dataset$get_num_sequences(TRUE), temp$get_num_sequences(TRUE))
-  expect_equal(dataset$get_num_sequences(), temp$get_num_sequences())
-  expect_equal(dataset$get_num_treatments(), temp$get_num_treatments())
-  expect_equal(dataset$get_num_samples(), temp$get_num_samples())
-  expect_equal(dataset$get_num_bins("otu"), temp$get_num_bins("otu"))
+  expect_equal(name(dataset, "dataset"), name(temp, "dataset"))
   expect_equal(
-    dataset$get_num_bins("phylotype"),
-    temp$get_num_bins("phylotype")
+    num(dataset, "sequences", distinct = TRUE),
+    num(temp, "sequences", distinct = TRUE)
   )
-  expect_equal(dataset$get_num_bins("asv"), temp$get_num_bins("asv"))
+  expect_equal(
+    num(dataset, "sequences"),
+    num(temp, "sequences")
+  )
+  expect_equal(
+    num(dataset, "treatments"),
+    num(temp, "treatments")
+  )
+  expect_equal(
+    num(dataset, "samples"),
+    num(temp, "samples")
+  )
+  expect_equal(
+    num(dataset, "bins", "otu"),
+    num(temp, "bins", "otu")
+  )
+  expect_equal(
+    num(dataset, "bins", "phylotype"),
+    num(temp, "bins", "phylotype")
+  )
+  expect_equal(
+    num(dataset, "bins", "asv"),
+    num(temp, "bins", "asv")
+  )
   expect_equal(
     totals(dataset),
     totals(temp)

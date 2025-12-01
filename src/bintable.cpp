@@ -494,8 +494,54 @@ const Rcpp::DataFrame BinTable::getList(const vector<string>& seqNames){
 }
 /******************************************************************************/
 // names of OTUs
-const vector<string> BinTable::getIds(){
-    return select(binNames, tableBins);
+const vector<string> BinTable::getIds(string sample, bool distinct){
+
+    vector<string> results;
+
+    // no sample given, return all "good" bin names
+    if (sample == "") {
+        return select(binNames, tableBins);
+    }else {
+        // index of sample we are looking for
+        int sampleIndex = -1;
+        if (distinct) {
+            vector<string> sampleNames = getSamples();
+            for (int i = 0; i < sampleNames.size(); i++) {
+                if (sampleNames[i] == sample) {
+                    sampleIndex = i;
+                    break;
+                }
+            }
+        }
+
+        // for every bin
+        for (int i = 0; i < binNames.size(); i++) {
+
+            auto it = binIndex.find(binNames[i]);
+
+            if (it != binIndex.end()) {
+
+                // if this is a "good" bin
+                if (tableBins[it->second]) {
+
+                    // includes ONLY sequences from this sample
+                    if (distinct) {
+                        const vector<float> sampleAbunds = binCount.getAbundances(it->second);
+                        // if all the sequences come from this sample, save name
+                        if (isEqual(sum(sampleAbunds), sampleAbunds[sampleIndex])) {
+                            results.push_back(binNames[i]);
+                        }
+                    }else {
+                        if (binCount.getAbundance(it->second, sample) != 0) {
+                            results.push_back(binNames[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    return results;
 }
 /******************************************************************************/
 // 3 column dataframe - bin_id, abundance, sample

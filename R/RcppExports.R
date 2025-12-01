@@ -277,8 +277,11 @@ assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bin_nam
 #'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 #'
 #'   # For examples sake, select first 531 sequences to be the representatives
-#'   table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
-#'                       sequence_names = get_sequence_names(miseq)[1:num_bins]
+#'   table <- data.frame(bin_names = name(data = miseq,
+#'                                        type = "bins",
+#'                                        bin_type = "otu"),
+#'                       sequence_names = name(data = miseq,
+#'                                             type = "sequences")[1:num_bins]
 #'                       )
 #'
 #'   assign_bin_representative_sequences(data = miseq,
@@ -523,22 +526,6 @@ get_bin_abundances <- function(data, bin_name, type = "otu") {
     .Call(`_rdataset_get_bin_abundances`, data, bin_name, type)
 }
 
-#' @title get_bin_names
-#' @description
-#' Get the names of the bins in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#' @param type, string indicating the type of clusters. Default = "otu".
-#' @examples
-#'
-#'   miseq <- miseq_sop_example()
-#'   get_bin_names(miseq, "phylotype")
-#'
-#' @return vector containing the names of bins
-get_bin_names <- function(data, type = "otu") {
-    .Call(`_rdataset_get_bin_names`, data, type)
-}
-
 #' @title get_bin_representative_sequences
 #' @description
 #' Get the representative sequences of the bins in a \link{dataset} object
@@ -552,8 +539,11 @@ get_bin_names <- function(data, type = "otu") {
 #'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 #'
 #'   # For examples sake, select first 531 sequences to be the representatives
-#'   table <- data.frame(bin_names = get_bin_names(miseq, "otu"),
-#'                       sequence_names = get_sequence_names(miseq)[1:num_bins]
+#'   table <- data.frame(bin_names = name(data = miseq,
+#'                                        type = "bins",
+#'                                        bin_type = "otu"),
+#'                       sequence_names = name(data = miseq,
+#'                                             type = "sequences")[1:num_bins]
 #'                       )
 #'
 #'   assign_bin_representative_sequences(data = miseq,
@@ -582,21 +572,6 @@ get_bin_representative_sequences <- function(data, bin_type = "otu") {
 #' @return vector of strings
 get_bin_types <- function(data) {
     .Call(`_rdataset_get_bin_types`, data)
-}
-
-#' @title get_dataset_name
-#' @description
-#' Get the name of a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @examples
-#' data <- new_dataset("my_dataset", 2)
-#' get_dataset_name(data)
-#'
-#' @return String, containing the name of the dataset
-get_dataset_name <- function(data) {
-    .Call(`_rdataset_get_dataset_name`, data)
 }
 
 #' @title get_list
@@ -666,21 +641,6 @@ get_rabund <- function(data, type = "otu") {
 #' @return vector containing each bins abundance
 get_rabund_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_rabund_vector`, data, type)
-}
-
-#' @title get_custom_report_types
-#' @description
-#' Get the custom report types of a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_custom_report_types(data)
-#'
-#' @return vector of strings
-get_custom_report_types <- function(data) {
-    .Call(`_rdataset_get_custom_report_types`, data)
 }
 
 #' @title report
@@ -766,23 +726,6 @@ report <- function(data, type = "sequence_data", bin_type = "otu") {
     .Call(`_rdataset_report`, data, type, bin_type)
 }
 
-#' @title get_samples
-#' @description
-#' Get the samples in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_samples(data)
-#'
-#' @return vector of strings containing the names of the samples in a
-#' \link{dataset} object
-get_samples <- function(data) {
-    .Call(`_rdataset_get_samples`, data)
-}
-
 #' @title get_sample_treatment_assignments
 #' @description
 #' Get treatment assignments for samples in a \link{dataset} object
@@ -850,34 +793,6 @@ get_sequence_abundances_by_sample <- function(data) {
 #' object
 get_sequence_abundance_table <- function(data) {
     .Call(`_rdataset_get_sequence_abundance_table`, data)
-}
-
-#' @title get_sequence_names
-#' @description
-#' Get the names of the sequences in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param sample a string containing the name of the sample you
-#' would like sequence names for. For all samples in dataset, sample = "".
-#'
-#' @examples
-#'
-#'
-#' data <- miseq_sop_example()
-#'
-#' # to get the names of all the sequences in the dataset
-#'
-#' get_sequence_names(data)
-#'
-#' # to get the names of the sequences in sample 'F3D0' from the dataset
-#'
-#' get_sequence_names(data, "F3D0")
-#'
-#' @return vector of string containing the names of the sequences a
-#' \link{dataset} object
-get_sequence_names <- function(data, sample = "") {
-    .Call(`_rdataset_get_sequence_names`, data, sample)
 }
 
 #' @title get_sequence_names_by_sample
@@ -997,22 +912,6 @@ get_shared_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_shared_vector`, data, type)
 }
 
-#' @title get_treatments
-#' @description
-#' Get the treatments in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object.
-#' @examples
-#'
-#'  data <- miseq_sop_example()
-#'  get_treatments(data)
-#'
-#' @return vector of strings containing the names of the treatments in a
-#' \link{dataset} object
-get_treatments <- function(data) {
-    .Call(`_rdataset_get_treatments`, data)
-}
-
 #' @title has_sample
 #' @description
 #' Determine if a given sample is in a \link{dataset} object
@@ -1059,6 +958,68 @@ has_sequence_strings <- function(data) {
 #' @return Boolean
 is_aligned <- function(data) {
     .Call(`_rdataset_is_aligned`, data)
+}
+
+#' @title name
+#' @description
+#' Get the names of a given type of data in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of data you would like. Options
+#' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
+#' Default = "sequences".
+#'
+#' @param bin_type, string containing the bin type you would like the names
+#' for. Default = "otu".
+#'
+#' @param sample, string. sample is only used when 'type' <- "sequences" or
+#' 'type' <- "bins" . sample should contain the name of the sample you want
+#' names for. Default = "".
+#'
+#' @param distinct, Boolean. distinct is only used when 'type' <- "bins" and
+#' the sample parameter is used. The distinct parameter allows you to get the
+#' names of the bins that are unique to a given sample. When distinct is TRUE,
+#' the names function will return the names of the bins that ONLY contain
+#' sequences from the given sample. When distinct is FALSE the bins return
+#' contains sequences from a given sample, but may ALSO contain sequences from
+#' other samples. Default = FALSE.
+#'
+#' @examples
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' # To get the name of the dataset
+#' name(data = miseq, type = "dataset")
+#'
+#' # To get the names of the sequences in the dataset
+#' name(data = miseq, type = "sequences")
+#'
+#' # To get the names of the sequences in sample 'F3D0' in the dataset
+#' name(data = miseq, type = "sequences", sample = "F3D0")
+#'
+#' # To get the names of the samples in the dataset
+#' name(data = miseq, type = "samples")
+#'
+#' # To get the names of the treatments in the dataset
+#' name(data = miseq, type = "treatments")
+#'
+#' # To get the names of the bins in the dataset
+#' name(data = miseq, type = "bins")
+#'
+#' # To get the names of the bins in the dataset that are unique to 'F3D0'
+#' name(data = miseq, type = "bins", sample = "F3D0", distinct = TRUE)
+#'
+#' # To get the names of the bins in the dataset that include sequences
+#' # from 'F3D0'
+#' name(data = miseq, type = "bins", sample = "F3D0", distinct = FALSE)
+#'
+#' # To get the names of the reports in the dataset
+#' name(data = miseq, type = "reports")
+#'
+#' @return vector of strings, containing the names requested
+name <- function(data, type = "sequences", bin_type = "otu", sample = "", distinct = FALSE) {
+    .Call(`_rdataset_name`, data, type, bin_type, sample, distinct)
 }
 
 #' @title num
