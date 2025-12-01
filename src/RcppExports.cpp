@@ -391,18 +391,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// get_sequence_names_by_sample
-vector<vector<string> > get_sequence_names_by_sample(Rcpp::Environment data, Rcpp::CharacterVector samples);
-RcppExport SEXP _rdataset_get_sequence_names_by_sample(SEXP dataSEXP, SEXP samplesSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type samples(samplesSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_names_by_sample(data, samples));
-    return rcpp_result_gen;
-END_RCPP
-}
 // get_sequences
 vector<string> get_sequences(Rcpp::Environment data, string sample);
 RcppExport SEXP _rdataset_get_sequences(SEXP dataSEXP, SEXP sampleSEXP) {
@@ -412,18 +400,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
     rcpp_result_gen = Rcpp::wrap(get_sequences(data, sample));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequences_by_sample
-vector<vector<string> > get_sequences_by_sample(Rcpp::Environment data, Rcpp::CharacterVector samples);
-RcppExport SEXP _rdataset_get_sequences_by_sample(SEXP dataSEXP, SEXP samplesSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type samples(samplesSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequences_by_sample(data, samples));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -535,6 +511,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
     rcpp_result_gen = Rcpp::wrap(totals(data, type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_get_by_sample
+vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data, string type, Rcpp::CharacterVector samples);
+RcppExport SEXP _rdataset_xdev_get_by_sample(SEXP dataSEXP, SEXP typeSEXP, SEXP samplesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type samples(samplesSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_get_by_sample(data, type, samples));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -776,9 +765,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_get_sequence_abundances", (DL_FUNC) &_rdataset_get_sequence_abundances, 1},
     {"_rdataset_get_sequence_abundances_by_sample", (DL_FUNC) &_rdataset_get_sequence_abundances_by_sample, 1},
     {"_rdataset_get_sequence_abundance_table", (DL_FUNC) &_rdataset_get_sequence_abundance_table, 1},
-    {"_rdataset_get_sequence_names_by_sample", (DL_FUNC) &_rdataset_get_sequence_names_by_sample, 2},
     {"_rdataset_get_sequences", (DL_FUNC) &_rdataset_get_sequences, 2},
-    {"_rdataset_get_sequences_by_sample", (DL_FUNC) &_rdataset_get_sequences_by_sample, 2},
     {"_rdataset_get_sequence_summary", (DL_FUNC) &_rdataset_get_sequence_summary, 1},
     {"_rdataset_get_bin_assignments", (DL_FUNC) &_rdataset_get_bin_assignments, 2},
     {"_rdataset_get_shared_vector", (DL_FUNC) &_rdataset_get_shared_vector, 2},
@@ -788,6 +775,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_name", (DL_FUNC) &_rdataset_name, 5},
     {"_rdataset_num", (DL_FUNC) &_rdataset_num, 5},
     {"_rdataset_totals", (DL_FUNC) &_rdataset_totals, 2},
+    {"_rdataset_xdev_get_by_sample", (DL_FUNC) &_rdataset_xdev_get_by_sample, 3},
     {"_rdataset_xdev_merge_bins", (DL_FUNC) &_rdataset_xdev_merge_bins, 4},
     {"_rdataset_xdev_merge_sequences", (DL_FUNC) &_rdataset_xdev_merge_sequences, 3},
     {"_rdataset_xdev_remove_bins", (DL_FUNC) &_rdataset_xdev_remove_bins, 4},

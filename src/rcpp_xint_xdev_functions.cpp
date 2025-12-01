@@ -50,6 +50,26 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
     return Rcpp::CharacterVector(0);
 }
 /******************************************************************************/
+vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
+                                           string type,
+                                           Rcpp::CharacterVector samples) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    if (type == "sequence_names") {
+        return d.get()->getSequenceNamesBySample(Rcpp::as<vector<string>>(samples));
+    }
+    else if (type == "sequences") {
+        return d.get()->getSequencesBySample(Rcpp::as<vector<string>>(samples));
+    }
+    else {
+        string message = "Invalid type. Types include: 'sequence_names' and ";
+        message += "'sequences'";
+        throw Rcpp::exception(message.c_str());
+    }
+    return null2DVector;
+}
+/******************************************************************************/
 void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
                       string reason, string type) {
      Rcpp::XPtr<Dataset> d = data["data"];

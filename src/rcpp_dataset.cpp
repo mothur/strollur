@@ -1462,29 +1462,6 @@ Rcpp::DataFrame get_sequence_abundance_table(Rcpp::Environment data) {
     return d.get()->getSequenceAbundanceTable();
 }
 /******************************************************************************/
-//' @title get_sequence_names_by_sample
-//' @description
-//' Get the names of the sequences in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//' @param samples a vector of strings containing the names of the samples you
-//' would like sequence names for. By default all samples are included.
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//'
-//' get_sequence_names_by_sample(data)
-//'
-//' @return 2D vector of strings ([num_seqs][num_samples]) containing the
-//' names of each sequence a \link{dataset} object parsed by sample.
-//[[Rcpp::export]]
-vector<vector<string> > get_sequence_names_by_sample(Rcpp::Environment data,
-                    Rcpp::CharacterVector samples = Rcpp::CharacterVector::create()) {
-
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getSequenceNamesBySample(Rcpp::as<vector<string>>(samples));
-}
-/******************************************************************************/
 //' @title get_sequences
 //' @description
 //' Get the nucleotide strings for each sequence in a \link{dataset} object
@@ -1504,28 +1481,6 @@ vector<vector<string> > get_sequence_names_by_sample(Rcpp::Environment data,
 vector<string> get_sequences(Rcpp::Environment data, string sample = "") {
     Rcpp::XPtr<Dataset> d = data["data"];
      return d.get()->getSequences(sample);
-}
-/******************************************************************************/
-//' @title get_sequences_by_sample
-//' @description
-//' Get the nucleotide strings for each sequence in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param samples a vector of strings containing the names of the samples you
-//' would like sequence names for. By default all samples are included.
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_sequences_by_sample(data)
-//'
-//' @return 2D vector of strings ([num_seqs][num_samples]) containing the
-//' nucleotide strings for each sequence a \link{dataset} object parsed by sample.
-//[[Rcpp::export]]
-vector<vector<string> > get_sequences_by_sample(Rcpp::Environment data,
-                 Rcpp::CharacterVector samples = Rcpp::CharacterVector::create()) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getSequencesBySample(Rcpp::as<vector<string>>(samples));
 }
 /******************************************************************************/
 //' @title get_sequence_summary

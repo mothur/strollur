@@ -795,25 +795,6 @@ get_sequence_abundance_table <- function(data) {
     .Call(`_rdataset_get_sequence_abundance_table`, data)
 }
 
-#' @title get_sequence_names_by_sample
-#' @description
-#' Get the names of the sequences in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#' @param samples a vector of strings containing the names of the samples you
-#' would like sequence names for. By default all samples are included.
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#'
-#' get_sequence_names_by_sample(data)
-#'
-#' @return 2D vector of strings ([num_seqs][num_samples]) containing the
-#' names of each sequence a \link{dataset} object parsed by sample.
-get_sequence_names_by_sample <- function(data, samples = as.character( c())) {
-    .Call(`_rdataset_get_sequence_names_by_sample`, data, samples)
-}
-
 #' @title get_sequences
 #' @description
 #' Get the nucleotide strings for each sequence in a \link{dataset} object
@@ -831,25 +812,6 @@ get_sequence_names_by_sample <- function(data, samples = as.character( c())) {
 #' a \link{dataset} object
 get_sequences <- function(data, sample = "") {
     .Call(`_rdataset_get_sequences`, data, sample)
-}
-
-#' @title get_sequences_by_sample
-#' @description
-#' Get the nucleotide strings for each sequence in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param samples a vector of strings containing the names of the samples you
-#' would like sequence names for. By default all samples are included.
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_sequences_by_sample(data)
-#'
-#' @return 2D vector of strings ([num_seqs][num_samples]) containing the
-#' nucleotide strings for each sequence a \link{dataset} object parsed by sample.
-get_sequences_by_sample <- function(data, samples = as.character( c())) {
-    .Call(`_rdataset_get_sequences_by_sample`, data, samples)
 }
 
 #' @title get_sequence_summary
@@ -1103,6 +1065,33 @@ num <- function(data, type = "sequences", bin_type = "otu", distinct = FALSE, sa
 #' @return data.frame
 totals <- function(data, type = "samples") {
     .Call(`_rdataset_totals`, data, type)
+}
+
+#' @title xdev_get_by_sample
+#' @description
+#' Get the requested data in a \link{dataset} object parsed by sample
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of data you want the totals of.
+#' Options include: "sequence_names", "sequences". Default = "sequence_names".
+#'
+#' @param samples a vector of strings containing the names of the samples you
+#' would like sequence names for. By default all samples are included.
+#' @examples
+#'
+#' data <- miseq_sop_example()
+#'
+#' # To get the sequence names parsed by sample
+#' xdev_get_by_sample(data, "sequence_names")
+#'
+#' # To get the sequence nucleotide strings parsed by sample
+#' xdev_get_by_sample(data, "sequences")
+#'
+#' @return 2D vector of strings ([num_seqs][num_samples]) containing data
+#' requested parsed by sample.
+xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.character( c())) {
+    .Call(`_rdataset_xdev_get_by_sample`, data, type, samples)
 }
 
 #' @title xdev_merge_bins

@@ -15,6 +15,36 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
                                    const string& given_column_name,
                                    string type = "string");
 
+
+/******************************************************************************/
+//' @title xdev_get_by_sample
+//' @description
+//' Get the requested data in a \link{dataset} object parsed by sample
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param type, string containing the type of data you want the totals of.
+//' Options include: "sequence_names", "sequences". Default = "sequence_names".
+//'
+//' @param samples a vector of strings containing the names of the samples you
+//' would like sequence names for. By default all samples are included.
+//' @examples
+//'
+//' data <- miseq_sop_example()
+//'
+//' # To get the sequence names parsed by sample
+//' xdev_get_by_sample(data, "sequence_names")
+//'
+//' # To get the sequence nucleotide strings parsed by sample
+//' xdev_get_by_sample(data, "sequences")
+//'
+//' @return 2D vector of strings ([num_seqs][num_samples]) containing data
+//' requested parsed by sample.
+//[[Rcpp::export]]
+vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
+                                      string type = "sequence_names",
+                                      Rcpp::CharacterVector samples = Rcpp::CharacterVector::create());
+
 // ******** merging *********
 
 //' @title xdev_merge_bins

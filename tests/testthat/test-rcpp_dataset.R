@@ -397,7 +397,7 @@ test_that("rcpp_dataset - get_names / sequences_by_sample", {
     samples = samples
   ))
 
-  names_by_sample <- get_sequence_names_by_sample(data)
+  names_by_sample <- xdev_get_by_sample(data)
   expect_equal(length(names_by_sample), 3)
 
   # seqs in sample2
@@ -408,7 +408,7 @@ test_that("rcpp_dataset - get_names / sequences_by_sample", {
   seqs <- c("ATGCCT", "GTGCCT", "CTGCCT", "TTGCCT")
   xdev_set_sequences(data, unique(names), seqs)
 
-  seqs_by_sample <- get_sequences_by_sample(data)
+  seqs_by_sample <- xdev_get_by_sample(data, "sequences")
   expect_equal(length(seqs_by_sample), 3)
 
   # seqs in sample2
@@ -416,13 +416,13 @@ test_that("rcpp_dataset - get_names / sequences_by_sample", {
   # seqs in sample4
   expect_equal(seqs_by_sample[[3]], c("ATGCCT", "GTGCCT", "TTGCCT"))
 
-  names_by_sample <- get_sequence_names_by_sample(data, c("sample3"))
+  names_by_sample <- xdev_get_by_sample(data, "sequence_names", c("sample3"))
 
   # seqs in sample3
   expect_equal(names_by_sample[[1]], c("seq1", "seq2", "seq3"))
   expect_equal(length(names_by_sample), 1)
 
-  seqs_by_sample <- get_sequences_by_sample(data, c("sample3"))
+  seqs_by_sample <- xdev_get_by_sample(data, "sequences", c("sample3"))
 
   # seqs in sample3
   expect_equal(seqs_by_sample[[1]], c("ATGCCT", "GTGCCT", "CTGCCT"))

@@ -51,9 +51,7 @@ head(sequence_abundance_table, n = 10)
     
 * **Fasta, Classifications**
     * **name** - Returns the names of a given type of data
-    * **get_sequence_names_by_sample** - Returns the names of the sequences parsed by sample
     * **get_sequences** - Returns the nucleotide strings for each sequence
-    * **get_sequences_by_sample** - Returns the nucleotide strings for each sequence parsed by sample
     * **is_aligned** - Returns TRUE if sequence data is aligned
     * **has_sequence_strings** - Returns TRUE if your dataset contains sequence nucleotide strings
     * **num** - Find the number of sequences, samples, treatments or bins of a given type
@@ -67,10 +65,6 @@ head(seq_names, n = 10)
 seq_names_f3d0 <- name(data = miseq, type = "sequences", sample = "F3D0")
 head(seq_names_f3d0, n = 10)
 
-# To get the names of the sequences parsed by sample
-seq_names <- get_sequence_names_by_sample(miseq)
-head(seq_names[[10]], n = 10)
-
 # To determine if your dataset contains nucleotide strings
 has_sequence_strings(miseq)
 
@@ -81,10 +75,6 @@ head(seqs, n = 10)
 # To get nucleotide strings for the sequences in sample 'F3D0'
 seqs_f3d0 <- get_sequences(miseq, "F3D0")
 head(seqs_f3d0, n = 10)
-
-# To get nucleotide strings parsed by sample
-seqs <- get_sequences_by_sample(miseq)
-head(seqs[[10]], n = 10)
 
 # To determine if the sequence data is aligned
 is_aligned(miseq)
