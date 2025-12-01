@@ -38,12 +38,12 @@ test_that("import - miseq_sop_example", {
   )
   expect_equal(dataset_t$get_num_bins("asv"), miseq$get_num_bins("asv"))
   expect_equal(
-    get_sample_totals(dataset_t),
-    get_sample_totals(miseq)
+    totals(dataset_t),
+    totals(miseq)
   )
   expect_equal(
-    get_treatment_totals(dataset_t),
-    get_treatment_totals(miseq)
+    totals(dataset_t, "treatments"),
+    totals(miseq, "treatments")
   )
 
   dfd <- get_bin_representative_sequences(dataset_t)

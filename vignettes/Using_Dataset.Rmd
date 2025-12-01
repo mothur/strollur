@@ -109,8 +109,7 @@ num(data = miseq, type = "sequences", distinct = TRUE, sample = "F3D0")
 * **Sample and Treatment Functions**
     * **get_samples** - Returns the names of the samples
     * **get_treatments** - Returns the names of the treatments
-    * **get_sample_totals** - Returns the total number of sequences assigned to each sample
-    * **get_treatment_totals** - Returns the total number of sequences assigned to each treatment
+    * **totals** - Returns the total number of sequences assigned to each sample or treatment
     * **get_sample_treatment_assignments** - Return a data.frame with sample treatment assignments
     * **has_sample** - Returns TRUE if a given sample is present
     
@@ -122,7 +121,7 @@ num(data = miseq, type = "samples")
 get_samples(data = miseq)
 
 # To get the number of sequences in each sample
-get_sample_totals(data = miseq)
+totals(data = miseq, type = "samples")
 
 # To find the number of treatments
 num(data = miseq, type = "treatments")
@@ -131,7 +130,7 @@ num(data = miseq, type = "treatments")
 get_treatments(data = miseq)
 
 # To get the number of sequences in each treatment
-get_treatment_totals(data = miseq)
+totals(data = miseq, type = "treatments")
 
 # To get a table with sample treatment assignments
 get_sample_treatment_assignments(data = miseq)

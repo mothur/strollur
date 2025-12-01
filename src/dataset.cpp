@@ -1020,13 +1020,6 @@ const vector<string> Dataset::getSamples(){
     return count.getSamples();
 }
 /******************************************************************************/
-const vector<double> Dataset::getSampleTotals(){
-    if (binTables.size() != 0) {
-        return binTables[0].getSampleTotals();
-    }
-    return count.getSampleTotals();
-}
-/******************************************************************************/
 const Rcpp::DataFrame Dataset::getSampleTreatmentAssignments() {
     map<string, string> sampleToTreatment;
     if (binTables.size() != 0) {
@@ -1270,14 +1263,6 @@ const vector<string> Dataset::getTreatments(){
     return count.getTreatments();
 }
 /******************************************************************************/
-const vector<double> Dataset::getTreatmentTotals(){
-    // maybe we just provided an binTable with no seqIds
-    if (binTables.size() != 0) {
-        return binTables[0].getTreatmentTotals();
-    }
-    return count.getTreatmentTotals();
-}
-/******************************************************************************/
 const double Dataset::getTotal(string sample){
 
     if (binTables.size() != 0) {
@@ -1285,6 +1270,38 @@ const double Dataset::getTotal(string sample){
     }
 
     return count.getTotal(sample);
+}
+/******************************************************************************/
+const Rcpp::DataFrame Dataset::getTotals(string type){
+
+    vector<double> totals;
+    vector<string> names;
+
+    if (type == "samples") {
+        if (binTables.size() != 0) {
+            totals = binTables[0].getSampleTotals();
+        }else{
+            totals = count.getSampleTotals();
+        }
+        names = getSamples();
+    }else if (type == "treatments") {
+        if (binTables.size() != 0) {
+            totals = binTables[0].getTreatmentTotals();
+        }else{
+            totals = count.getTreatmentTotals();
+        }
+        names = getTreatments();
+    }
+
+    if (!totals.empty()) {
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named(type) = names,
+            Rcpp::_["totals"] = totals);
+        return df;
+    }
+
+    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+    return empty;
 }
 /******************************************************************************/
 const double Dataset::getUniqueTotal(string sample){

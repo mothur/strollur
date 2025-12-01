@@ -1,7 +1,7 @@
 #include <Rcpp.h>
 #include "../inst/include/rdataset.h"
-#include "dataset.h"
 #include "rcpp_xint_xdev_functions.h"
+#include "dataset.h"
 
 /******************************************************************************/
 //' @title get_available_processors
@@ -1469,25 +1469,6 @@ Rcpp::DataFrame get_sample_treatment_assignments(Rcpp::Environment data) {
      return d.get()->getSampleTreatmentAssignments();
 }
 /******************************************************************************/
-//' @title get_sample_totals
-//' @description
-//' Get the number of sequences in each sample in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_sample_totals(data)
-//'
-//' @return vector containing the number of sequences in each sample in a
-//' \link{dataset} object
-//[[Rcpp::export]]
-vector<double> get_sample_totals(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-   return d.get()->getSampleTotals();
-}
-/******************************************************************************/
 //' @title get_sequence_abundances
 //' @description
 //' Get the total abundance for each sequence in a \link{dataset} object
@@ -1727,24 +1708,6 @@ vector<string> get_treatments(Rcpp::Environment data) {
      return d.get()->getTreatments();
 }
 /******************************************************************************/
-//' @title get_treatment_totals
-//' @description
-//' Get the number of sequences in each treatment in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object.
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_treatment_totals(data)
-//'
-//' @return vector containing the number of sequences in each treatment in a
-//' \link{dataset} object
-//[[Rcpp::export]]
-vector<double> get_treatment_totals(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getTreatmentTotals();
-}
-/******************************************************************************/
 //' @title has_sample
 //' @description
 //' Determine if a given sample is in a \link{dataset} object
@@ -1879,6 +1842,46 @@ double num(Rcpp::Environment data,
      }
 
      return 0;
+}
+/******************************************************************************/
+//' @title totals
+//' @description
+//' Find the total number of sequences in your samples or treatments in a
+//' \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param type, string containing the type of data you want the totals of.
+//' Options include: "samples", "treatments".
+//' Default = "samples".
+//'
+//' @examples
+//'
+//' miseq <- miseq_sop_example()
+//'
+//' # To get a table with the sample totals in the dataset
+//' totals(data = miseq, type = "samples")
+//'
+//' # To get a table with the treatment totals in the dataset
+//' totals(data = miseq, type = "treatments")
+//'
+//' @return data.frame
+//[[Rcpp::export]]
+Rcpp::DataFrame totals(Rcpp::Environment data, string type = "samples") {
+
+     Rcpp::XPtr<Dataset> d = data["data"];
+
+     if ((type == "samples") || (type == "treatments")){
+         return d.get()->getTotals(type);
+     }
+     else {
+         string message = type + " is not a valid type for the totals function";
+         message += ". Types include: 'samples' and 'treatments'.";
+         RcppThread::Rcout << endl << message << endl;
+     }
+
+     // empty report
+     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 

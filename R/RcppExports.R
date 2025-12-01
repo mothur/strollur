@@ -800,23 +800,6 @@ get_sample_treatment_assignments <- function(data) {
     .Call(`_rdataset_get_sample_treatment_assignments`, data)
 }
 
-#' @title get_sample_totals
-#' @description
-#' Get the number of sequences in each sample in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_sample_totals(data)
-#'
-#' @return vector containing the number of sequences in each sample in a
-#' \link{dataset} object
-get_sample_totals <- function(data) {
-    .Call(`_rdataset_get_sample_totals`, data)
-}
-
 #' @title get_sequence_abundances
 #' @description
 #' Get the total abundance for each sequence in a \link{dataset} object
@@ -1030,22 +1013,6 @@ get_treatments <- function(data) {
     .Call(`_rdataset_get_treatments`, data)
 }
 
-#' @title get_treatment_totals
-#' @description
-#' Get the number of sequences in each treatment in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object.
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_treatment_totals(data)
-#'
-#' @return vector containing the number of sequences in each treatment in a
-#' \link{dataset} object
-get_treatment_totals <- function(data) {
-    .Call(`_rdataset_get_treatment_totals`, data)
-}
-
 #' @title has_sample
 #' @description
 #' Determine if a given sample is in a \link{dataset} object
@@ -1149,6 +1116,32 @@ is_aligned <- function(data) {
 #' @return double
 num <- function(data, type = "sequences", bin_type = "otu", distinct = FALSE, sample = "") {
     .Call(`_rdataset_num`, data, type, bin_type, distinct, sample)
+}
+
+#' @title totals
+#' @description
+#' Find the total number of sequences in your samples or treatments in a
+#' \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of data you want the totals of.
+#' Options include: "samples", "treatments".
+#' Default = "samples".
+#'
+#' @examples
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' # To get a table with the sample totals in the dataset
+#' totals(data = miseq, type = "samples")
+#'
+#' # To get a table with the treatment totals in the dataset
+#' totals(data = miseq, type = "treatments")
+#'
+#' @return data.frame
+totals <- function(data, type = "samples") {
+    .Call(`_rdataset_totals`, data, type)
 }
 
 #' @title xdev_merge_bins

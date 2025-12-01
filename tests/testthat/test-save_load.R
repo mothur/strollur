@@ -33,12 +33,12 @@ test_that("clone - deep copy of dataset object", {
   )
   expect_equal(dataset$get_num_bins("asv"), temp$get_num_bins("asv"))
   expect_equal(
-    get_sample_totals(dataset),
-    get_sample_totals(temp)
+    totals(dataset),
+    totals(temp)
   )
   expect_equal(
-    get_treatment_totals(dataset),
-    get_treatment_totals(temp)
+    totals(dataset, "treatments"),
+    totals(temp, "treatments")
   )
 
   expect_error(load_dataset("non_existant_file.rds"))

@@ -460,6 +460,7 @@ dataset <- R6Class("dataset",
 
       if (length(report_names) != 0) {
         if (!silent) {
+          cat("\n")
           for (name in report_names) {
             cat(name, ":\n")
             print(results[[name]])
@@ -484,41 +485,33 @@ dataset <- R6Class("dataset",
       }
 
       if (self$get_num_samples() != 0) {
-        sample_totals <- get_sample_totals(self)
-        sample_names <- get_samples(self)
+        results[["sample_summary"]] <- totals(self, "samples")
 
         if (!silent) {
           cat("\nSample   Total:\n")
+          sample_names <- results[["sample_summary"]]$samples
+          sample_totals <- results[["sample_summary"]]$totals
+
           for (i in seq_along(sample_names)) {
             cat(paste(sample_names[i], sample_totals[i], sep = "\t"), "\n")
           }
-
-          if (self$get_num_treatments() != 0) {
-            treatment_names <- self$get_treatments()
-            treatment_totals <- get_treatment_totals(self)
-            cat("\n")
-            cat("Treatment   Total:\n")
-            for (i in seq_along(treatment_names)) {
-              cat(
-                paste(treatment_names[i], treatment_totals[i], sep = "\t"),
-                "\n"
-              )
-            }
-          }
         }
 
-        results[["sample_summary"]] <- data.frame(
-          sample = sample_names,
-          total = sample_totals
-        )
         if (self$get_num_treatments() != 0) {
-          treatment_names <- self$get_treatments()
-          treatment_totals <- get_treatment_totals(self)
+            results[["treatment_summary"]] <- totals(self, "treatments")
 
-          results[["treatment_summary"]] <- data.frame(
-            treatment = treatment_names,
-            total = treatment_totals
-          )
+            if (!silent) {
+                treatment_names <- results[["treatment_summary"]]$treatments
+                treatment_totals <- results[["treatment_summary"]]$totals
+                cat("\n")
+                cat("Treatment   Total:\n")
+                for (i in seq_along(treatment_names)) {
+                    cat(
+                        paste(treatment_names[i], treatment_totals[i],
+                              sep = "\t"), "\n"
+                    )
+                }
+            }
         }
       } else {
         if (!silent) {

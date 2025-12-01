@@ -125,7 +125,7 @@ test_that("rcpp_dataset - assign_bins", {
   expect_equal(data$get_num_sequences(), 716)
   expect_equal(data$get_num_bins(), 3)
   expect_equal(data$get_num_samples(), 4)
-  expect_equal(get_sample_totals(data), c(590, 100, 25, 1))
+  expect_equal(totals(data, "samples")$totals, c(590, 100, 25, 1))
   expect_equal(get_bin(data, "bin1"), "")
   expect_equal(get_bin_abundances(data, "bin1"), c(10, 100, 0, 1))
 
@@ -542,7 +542,7 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
 
   expect_equal(get_bin_abundances(data, "bin1"), c(10, 20))
   expect_equal(data$get_num_sequences(), 150)
-  expect_equal(get_sample_totals(data), c(80, 70))
+  expect_equal(totals(data, "samples")$totals, c(80, 70))
 
   message <- capture_output(xdev_set_bin_abundances(
     data,
@@ -550,7 +550,7 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
     list(c(100, 20), c(10, 0))
   ))
   expect_equal(data$get_num_sequences(), 240)
-  expect_equal(get_sample_totals(data), c(170, 70))
+  expect_equal(totals(data, "samples")$totals, c(170, 70))
   expect_true(grepl("non_existent_bin", message))
   expect_error(xdev_set_bin_abundance(
     data,

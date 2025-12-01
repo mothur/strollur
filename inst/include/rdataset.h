@@ -310,7 +310,7 @@ private:
     void serialize(Archive& ar) {
         ar(columnNames, sequence_name, hasStr, hasInt, hasNum, hasLog,
            hasColumnNames, strColumns, intColumns, numColumns, logColumns,
-           sequence_name_col, numRows);
+           sequence_name_col, numRows, hasReport);
     }
 };
 /******************************************************************************/
@@ -559,7 +559,6 @@ public:
     const Rcpp::DataFrame getReports(string type);
     const vector<string> getReportTypes();
     const vector<string> getSamples();
-    const vector<double> getSampleTotals();
     const Rcpp::DataFrame getSampleTreatmentAssignments();
     const Rcpp::DataFrame getScrapReport(string mode = "sequence");
     // trashCode, uniqueCount, totalCount
@@ -586,8 +585,8 @@ public:
     // 3 column dataframe - bin_id, abundance, sample
     const Rcpp::DataFrame getShared(string type = "otu");
     const double getTotal(string sample = "");
+    const Rcpp::DataFrame getTotals(string type = "samples");
     const vector<string> getTreatments();
-    const vector<double> getTreatmentTotals();
     const double getUniqueTotal(string sample = "");
 
     const bool hasSample(string sample);

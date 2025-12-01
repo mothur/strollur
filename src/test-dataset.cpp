@@ -264,7 +264,7 @@ context("Dataset class C++ unit tests") {
         sampleTotals[1] = 465;
         sampleTotals[2] = 554;
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getTotal() == 1320);
 
         vector<vector<string>> parsed = data.getSequenceNamesBySample(unique(samples));
@@ -312,14 +312,14 @@ context("Dataset class C++ unit tests") {
         sampleTotals[1] = 465;
         sampleTotals[2] = 554;
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getTotal() == 1320);
 
         vector<double> treatmentTotals(2, 0);
         treatmentTotals[0] = 766;
         treatmentTotals[1] = 554;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
 
         vector<string> uniqueTreatments(2, "");
         uniqueTreatments[0] = "early";
@@ -338,9 +338,9 @@ context("Dataset class C++ unit tests") {
 
         data.assignTreatments(newSamples, newTreatments);
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getTotal() == 1320);
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getTreatments() == uniqueTreatments);
 
         countTable = data.getSequenceAbundanceTable();
@@ -539,7 +539,7 @@ context("Dataset class C++ unit tests") {
         sampleTotals[1] = 465;
         sampleTotals[2] = 554;
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getTotal() == 1269);
         expect_true(data.numUnique == 4);
         expect_true(data.getNumSamples() == 3);
@@ -553,7 +553,7 @@ context("Dataset class C++ unit tests") {
         treatmentTotals[0] = 250;
         treatmentTotals[1] = 1019;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
 
         vector<string> uniqueTreatments(2, "");
         uniqueTreatments[0] = "early";
@@ -576,7 +576,7 @@ context("Dataset class C++ unit tests") {
         sampleTotals[0] = 25;
         sampleTotals[1] = 4;
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getTotal() == 29);
         expect_true(data.numUnique == 2);
         expect_true(data.getNumSamples() == 2);
@@ -585,7 +585,7 @@ context("Dataset class C++ unit tests") {
         treatmentTotals.resize(1, 0);
         treatmentTotals[0] = 29;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
 
         uniqueTreatments.resize(1, "");
         uniqueTreatments[0] = "late";
@@ -760,14 +760,14 @@ context("Dataset class C++ unit tests") {
         sampleTotals[0] = 160;
         sampleTotals[1] = 936;
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getNumSamples() == 2);
         expect_true(data.getNumTreatments() == 1);
 
         vector<double> treatmentTotals(1, 0);
         treatmentTotals[0] = 1096;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
 
         vector<string> uniqueTreatments(1, "late");
 
@@ -956,7 +956,7 @@ context("Dataset class C++ unit tests") {
         vector<double> treatmentTotals(1, 0);
         treatmentTotals[0] = 100;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getTreatments() == unique(treatments));
         expect_true(data.getNumTreatments() == 1);
         expect_true(data.getNumSamples() == 6);
@@ -971,7 +971,7 @@ context("Dataset class C++ unit tests") {
         treatmentTotals[0] = 63;
         treatmentTotals[1] = 37;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getTreatments() == unique(treatments));
         expect_true(data.getNumTreatments() == 2);
         expect_true(data.getNumSamples() == 6);
@@ -987,7 +987,7 @@ context("Dataset class C++ unit tests") {
         data.assignTreatments(uniqueSamples, treatments);
 
         // ignored bad entry
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getNumTreatments() == 2);
         expect_true(data.getNumSamples() == 6);
 
@@ -1004,7 +1004,7 @@ context("Dataset class C++ unit tests") {
         sampleTotals[4] = 13;
         sampleTotals[5] = 4;
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getBinIds() == otuIds);
         expect_true(data.getSamples() == unique(samples));
 
@@ -1207,7 +1207,7 @@ context("Dataset class C++ unit tests") {
         vector<double> treatmentTotals(1, 0);
         treatmentTotals[0] = 100;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getTreatments() == unique(treatments));
 
         vector<double> sampleTotals(6, 0);
@@ -1218,7 +1218,7 @@ context("Dataset class C++ unit tests") {
         sampleTotals[4] = 13;
         sampleTotals[5] = 4;
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getSamples() == uniqueSamples);
 
         treatments[3] = "late";
@@ -1231,7 +1231,7 @@ context("Dataset class C++ unit tests") {
         treatmentTotals[0] = 63;
         treatmentTotals[1] = 37;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getTreatments() == unique(treatments));
 
         uniqueSamples.push_back("SampleNotInDataset");
@@ -1240,7 +1240,7 @@ context("Dataset class C++ unit tests") {
         data.assignTreatments(uniqueSamples, treatments);
 
         // ignored bad entry
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getNumTreatments() == 2);
 
         expect_true(data.getTotal() == 100);
@@ -1248,7 +1248,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.numUnique == 10);
         expect_true(data.getNumSamples() == 6);
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getBinIds() == otuIds);
         expect_true(data.getSamples() == unique(samples));
 
@@ -1484,7 +1484,7 @@ context("Dataset class C++ unit tests") {
         treatmentTotals[0] = 63;
         treatmentTotals[1] = 37;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getTreatments() == unique(treatments));
 
         otusToChange.resize(2);
@@ -1747,14 +1747,14 @@ context("Dataset class C++ unit tests") {
         sampleTotals[4] = 13;
         sampleTotals[5] = 4;
 
-        expect_true(data.getSampleTotals() == sampleTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getSamples() == uniqueSamples);
 
         vector<double> treatmentTotals(2, 0);
         treatmentTotals[0] = 63;
         treatmentTotals[1] = 37;
 
-        expect_true(data.getTreatmentTotals() == treatmentTotals);
+        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getTreatments() == unique(treatments));
 
         expect_true(data.getTotal() == 100);
