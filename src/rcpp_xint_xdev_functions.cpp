@@ -50,6 +50,65 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
     return Rcpp::CharacterVector(0);
 }
 /******************************************************************************/
+double xdev_count(Rcpp::Environment data,
+                  string type,
+                  string bin_type,
+                  Rcpp::Nullable<Rcpp::List> samples,
+                  bool distinct) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    vector<string> s;
+    if (samples.isNotNull()) {
+        s = Rcpp::as<vector<string>>(samples);
+    }
+
+    // types include "sequences", "samples", "treatments", "bins"
+
+    if (type == "sequences") {
+        // no sequence data and asked for samples. we can't find the number of
+        // sequences in the given samples without sequence data because there is
+        // not a correlation between otu sample abundance counts and # of seqs
+        if (!d.get()->hasSequenceData && !s.empty()) {
+            string message = "Unable to find the number of sequences in the ";
+            message += "samples requested without sequence data.";
+            throw Rcpp::exception(message.c_str());
+        }
+
+        if (distinct) {
+            return d.get()->getUniqueTotal(s);
+        }
+
+        return d.get()->getTotal(s);
+    }
+    else if (type == "samples") {
+        return d.get()->getNumSamples();
+    }
+    else if (type == "treatments") {
+        return d.get()->getNumTreatments();
+    }
+    else if (type == "bins") {
+        if (!s.empty()) {
+            if (d.get()->hasSamples(s)) {
+                return d.get()->getNumBins(bin_type,
+                             s, distinct);
+            }else {
+                string message = "Your dataset does not include all the ";
+                message += "samples requested, ignoring.";
+                RcppThread::Rcout << endl << message << endl;
+            }
+        }else {
+            return d.get()->getNumBins(bin_type);
+        }
+    }else{
+        string message = "Invalid type. Types include: 'sequences', 'samples'";
+        message += ", 'treatments' and 'bins'";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    return 0;
+}
+/******************************************************************************/
 vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
                                            string type,
                                            Rcpp::CharacterVector samples) {

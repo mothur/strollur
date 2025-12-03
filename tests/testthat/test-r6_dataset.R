@@ -14,13 +14,19 @@ test_that("dataset - intialize from read_mothur / print", {
 
   expect_equal(dataset_t$get_bin_types(), c("otu", "asv", "phylotype"))
   expect_equal(names(dataset_t, "dataset")[1], "miseq_sop")
-  expect_equal(num(data = dataset_t, type = "sequences", distinct = TRUE), 2425)
-  expect_equal(num(data = dataset_t, type = "sequences"), 113963)
-  expect_equal(num(data = dataset_t, type = "treatments"), 2)
-  expect_equal(num(data = dataset_t, type = "samples"), 19)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "otu"), 531)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "phylotype"), 63)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "asv"), 2425)
+  expect_equal(
+    count(data = dataset_t, type = "sequences", distinct = TRUE),
+    2425
+  )
+  expect_equal(count(data = dataset_t, type = "sequences"), 113963)
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 19)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 531)
+  expect_equal(
+    count(data = dataset_t, type = "bins", bin_type = "phylotype"),
+    63
+  )
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2425)
 
   seqs_summary <- dataset_t$get_summary()[["sequence_summary"]]
 
@@ -55,49 +61,72 @@ test_that("dataset - intialize from read_mothur / print", {
     "phylotype"
   )
 
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "phylotype"), 61)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "otu"), 512)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "asv"), 2324)
-  expect_equal(num(data = dataset_t, type = "sequences"), 107911)
-  expect_equal(num(data = dataset_t, type = "sequences", distinct = TRUE), 2324)
-  expect_equal(num(data = dataset_t, type = "treatments"), 2)
-  expect_equal(num(data = dataset_t, type = "samples"), 19)
-  expect_equal(num(data = dataset_t, type = "sequences", sample = "F3D0"), 5977)
-  expect_equal(num(data = dataset_t, type = "sequences", sample = "F3D1"), 4467)
+  expect_equal(
+    count(data = dataset_t, type = "bins", bin_type = "phylotype"),
+    61
+  )
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 512)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2324)
+  expect_equal(count(data = dataset_t, type = "sequences"), 107911)
+  expect_equal(
+    count(data = dataset_t, type = "sequences", distinct = TRUE),
+    2324
+  )
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 19)
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    samples = c("F3D0")
+  ), 5977)
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    samples = c("F3D1")
+  ), 4467)
+
   # note that the number of seqs removed will be less that 297+266 because
   # some seqs are assigned to both samples and some seqs will be present in
   # other samples
-  expect_equal(num(
+  expect_equal(count(
     data = dataset_t, type = "sequences",
-    distinct = TRUE, sample = "F3D0"
-  ), 297)
-  expect_equal(num(
+    distinct = TRUE, samples = "F3D0"
+  ), 99)
+  expect_equal(count(
     data = dataset_t, type = "sequences",
-    distinct = TRUE, sample = "F3D1"
-  ), 266)
+    distinct = TRUE, samples = "F3D1"
+  ), 99)
 
   # remove samples
   xdev_remove_samples(dataset_t, c("F3D0", "F3D1"))
-  expect_equal(num(data = dataset_t, type = "treatments"), 2)
-  expect_equal(num(data = dataset_t, type = "samples"), 17)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "phylotype"), 57)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "otu"), 482)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "asv"), 2124)
-  expect_equal(num(data = dataset_t, type = "sequences"), 97467)
-  expect_equal(num(data = dataset_t, type = "sequences", distinct = TRUE), 2124)
-  expect_equal(num(
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 17)
+  expect_equal(count(
+    data = dataset_t,
+    type = "bins",
+    bin_type = "phylotype"
+  ), 57)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 482)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2124)
+  expect_equal(count(data = dataset_t, type = "sequences"), 97467)
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    distinct = TRUE
+  ), 2124)
+  expect_equal(count(
     data = dataset_t, type = "sequences", distinct = TRUE,
     sample = "F3D0"
   ), 0)
-  expect_equal(num(
+  expect_equal(count(
     data = dataset_t, type = "sequences", distinct = TRUE,
     sample = "F3D1"
   ), 0)
-  expect_equal(num(
+  expect_equal(count(
     data = dataset_t, type = "sequences",
     sample = "F3D0"
   ), 0)
-  expect_equal(num(
+  expect_equal(count(
     data = dataset_t, type = "sequences", distinct = TRUE,
     sample = "F3D1"
   ), 0)
@@ -109,13 +138,21 @@ test_that("dataset - intialize from read_mothur / print", {
     "Bacteria(100);\"Bacteroidetes\"(95);"
   ))
 
-  expect_equal(num(data = dataset_t, type = "treatments"), 2)
-  expect_equal(num(data = dataset_t, type = "samples"), 17)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "phylotype"), 57)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "otu"), 475)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "asv"), 2086)
-  expect_equal(num(data = dataset_t, type = "sequences"), 97428)
-  expect_equal(num(data = dataset_t, type = "sequences", distinct = TRUE), 2086)
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 17)
+  expect_equal(count(
+    data = dataset_t,
+    type = "bins",
+    bin_type = "phylotype"
+  ), 57)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 475)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2086)
+  expect_equal(count(data = dataset_t, type = "sequences"), 97428)
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    distinct = TRUE
+  ), 2086)
 })
 
 test_that("dataset - intialize from dataset object", {
@@ -136,13 +173,21 @@ test_that("dataset - intialize from dataset object", {
   )
 
   expect_equal(names(dataset_t, "dataset"), "clone_of_miseq")
-  expect_equal(num(data = dataset_t, type = "sequences", distinct = TRUE), 2425)
-  expect_equal(num(data = dataset_t, type = "sequences"), 113963)
-  expect_equal(num(data = dataset_t, type = "treatments"), 2)
-  expect_equal(num(data = dataset_t, type = "samples"), 19)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "otu"), 531)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "phylotype"), 63)
-  expect_equal(num(data = dataset_t, type = "bins", bin_type = "asv"), 2425)
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    distinct = TRUE
+  ), 2425)
+  expect_equal(count(data = dataset_t, type = "sequences"), 113963)
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 19)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 531)
+  expect_equal(count(
+    data = dataset_t,
+    type = "bins",
+    bin_type = "phylotype"
+  ), 63)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2425)
 })
 
 test_that("dataset - addSeqs, assign samples", {
@@ -159,7 +204,7 @@ test_that("dataset - addSeqs, assign samples", {
 
   add_sequences(data, fasta_data, NULL, "myNameTag", "mySeqTag")
 
-  expect_equal(num(data = data, type = "sequences"), 2425)
+  expect_equal(count(data = data, type = "sequences"), 2425)
 
   clear(data)
 
@@ -175,7 +220,7 @@ test_that("dataset - addSeqs, assign samples", {
   ))
   add_sequences(data, fasta_data, NULL, "names", "seqs")
 
-  expect_equal(num(data = data, type = "sequences"), 4)
+  expect_equal(count(data = data, type = "sequences"), 4)
   expect_equal(get_sequences(data), seqs)
   clear(data)
 
@@ -185,13 +230,13 @@ test_that("dataset - addSeqs, assign samples", {
   ))
   add_sequences(data, fasta_data, NULL, "names", "seqs", "comments")
 
-  expect_equal(num(data = data, type = "sequences"), 4)
+  expect_equal(count(data = data, type = "sequences"), 4)
   expect_equal(get_sequences(data), seqs)
 
   clear(data)
   add_sequences(data, fasta_data, NULL, "names", "", "comments")
 
-  expect_equal(num(data = data, type = "sequences"), 4)
+  expect_equal(count(data = data, type = "sequences"), 4)
   expect_equal(get_sequences(data), rep("", 4))
   clear(data)
 
@@ -251,7 +296,7 @@ test_that("dataset - addSeqs, assign samples", {
   bins <- c("bin1", "bin2", "bin1", "bin2")
   assign_bins(data, data.frame(bin_names = bins, sequence_names = names))
 
-  expect_equal(num(data = data, type = "bins"), 2)
+  expect_equal(count(data = data, type = "bins"), 2)
   expect_equal(get_list(data)$otu_id, c("bin1", "bin1", "bin2", "bin2"))
   expect_equal(get_list(data)$seq_id, c("seq1", "seq3", "seq2", "seq4"))
 
@@ -279,23 +324,23 @@ test_that("dataset - addSeqs, assign samples", {
   expect_equal(names(data, "sequences"), names)
   expect_equal(get_sequences(data), seqs)
   expect_equal(
-    names(data = data, type = "sequences", sample = "sample2"),
+    names(data = data, type = "sequences", samples = c("sample2")),
     names
   )
   expect_equal(
-    names(data, type = "sequences", sample = "sample3"),
+    names(data, type = "sequences", samples = c("sample3")),
     c("seq1", "seq2", "seq3")
   )
   expect_equal(
-    names(data, type = "sequences", sample = "sample4"),
+    names(data, type = "sequences", samples = c("sample4")),
     c("seq1", "seq2", "seq4")
   )
   expect_equal(get_sequences(data, "sample2"), seqs)
   expect_equal(get_sequences(data, "sample3"), c("ATTGC", "ATTGC", "ATTGC"))
   expect_equal(get_sequences(data, "sample4"), c("ATTGC", "ATTGC", "ATTGC"))
 
-  expect_equal(num(data = data, type = "samples"), 3)
-  expect_equal(num(data = data, type = "treatments"), 2)
+  expect_equal(count(data = data, type = "samples"), 3)
+  expect_equal(count(data = data, type = "treatments"), 2)
   expect_equal(names(data, "treatments"), c("early", "late"))
   expect_equal(names(data, "samples"), c("sample2", "sample3", "sample4"))
 
@@ -306,23 +351,27 @@ test_that("dataset - addSeqs, assign samples", {
   expect_equal(sample_summary$total, c(301, 465, 554))
 
   # total
-  expect_equal(num(data = data, type = "sequences"), 1320)
+  expect_equal(count(data = data, type = "sequences"), 1320)
   # unique
-  expect_equal(num(data = data, type = "sequences", distinct = TRUE), 4)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 4)
   # unique and sample
-  expect_equal(num(
+  expect_equal(count(
     data = data, type = "sequences",
-    distinct = TRUE, sample = "sample2"
-  ), 4)
-  expect_equal(num(
+    distinct = TRUE, samples = c("sample2")
+  ), 0)
+  expect_equal(count(
     data = data, type = "sequences",
-    distinct = TRUE, sample = "sample3"
-  ), 3)
-  # total and sample
-  expect_equal(num(
-    data = data, type = "sequences",
-    sample = "sample2"
+    distinct = FALSE, samples = c("sample2")
   ), 301)
+  expect_equal(count(
+    data = data, type = "sequences",
+    distinct = FALSE, samples = c("sample3")
+  ), 465)
+
+  expect_equal(count(
+    data = data, type = "sequences",
+    distinct = TRUE, samples = c("sample3")
+  ), 0)
 })
 
 test_that("dataset - assign_sequence_abundance, remove_sequences", {
@@ -338,9 +387,9 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
 
   assign_sequence_abundance(data, sequence_abundance, "names")
 
-  expect_equal(num(data = data, type = "sequences", distinct = TRUE), 2425)
-  expect_equal(num(data = data, type = "samples"), 19)
-  expect_equal(num(data = data, type = "treatments"), 2)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2425)
+  expect_equal(count(data = data, type = "samples"), 19)
+  expect_equal(count(data = data, type = "treatments"), 2)
 
   names(sequence_abundance) <- c("ids", "abunds", "groups", "time")
 
@@ -349,18 +398,18 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
   # no treatments
   assign_sequence_abundance(data, sequence_abundance, "ids", "abunds", "groups")
 
-  expect_equal(num(data = data, type = "sequences", distinct = TRUE), 2425)
-  expect_equal(num(data = data, type = "samples"), 19)
-  expect_equal(num(data = data, type = "treatments"), 0)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2425)
+  expect_equal(count(data = data, type = "samples"), 19)
+  expect_equal(count(data = data, type = "treatments"), 0)
 
   assign_sequence_abundance(
     data, sequence_abundance, "ids", "abunds", "groups",
     "time"
   )
 
-  expect_equal(num(data = data, type = "sequences", distinct = TRUE), 2425)
-  expect_equal(num(data = data, type = "samples"), 19)
-  expect_equal(num(data = data, type = "treatments"), 2)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2425)
+  expect_equal(count(data = data, type = "samples"), 19)
+  expect_equal(count(data = data, type = "treatments"), 2)
 
   clear(data)
 
@@ -411,10 +460,10 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
     abundances = rabunds
   ))
 
-  expect_equal(num(data = data, type = "sequences"), 1269)
-  expect_equal(num(data = data, type = "sequences", distinct = TRUE), 4)
-  expect_equal(num(data = data, type = "samples"), 0)
-  expect_equal(num(data = data, type = "treatments"), 0)
+  expect_equal(count(data = data, type = "sequences"), 1269)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 4)
+  expect_equal(count(data = data, type = "samples"), 0)
+  expect_equal(count(data = data, type = "treatments"), 0)
 
   missing_id <- c(
     "seq1", "seq1", "seq1",
@@ -429,10 +478,10 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
     samples = groups
   ))
 
-  expect_equal(num(data = data, type = "sequences"), 1269)
-  expect_equal(num(data = data, type = "sequences", distinct = TRUE), 4)
-  expect_equal(num(data = data, type = "samples"), 3)
-  expect_equal(num(data = data, type = "treatments"), 0)
+  expect_equal(count(data = data, type = "sequences"), 1269)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 4)
+  expect_equal(count(data = data, type = "samples"), 3)
+  expect_equal(count(data = data, type = "treatments"), 0)
 
   assign_sequence_abundance(
     data, data.frame(
@@ -440,14 +489,14 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
       samples = groups, treatments = treatments
     )
   )
-  expect_equal(num(data = data, type = "treatments"), 2)
+  expect_equal(count(data = data, type = "treatments"), 2)
 
   xdev_remove_sequences(data, seqs_to_remove, trash_codes)
 
-  expect_equal(num(data = data, type = "sequences"), 29)
-  expect_equal(num(data = data, type = "sequences", distinct = TRUE), 2)
-  expect_equal(num(data = data, type = "samples"), 2)
-  expect_equal(num(data = data, type = "treatments"), 1)
+  expect_equal(count(data = data, type = "sequences"), 29)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2)
+  expect_equal(count(data = data, type = "samples"), 2)
+  expect_equal(count(data = data, type = "treatments"), 1)
 })
 
 test_that("dataset - get_list get_rabund, get_bin_assignments", {
@@ -513,7 +562,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
   expect_equal(shared$bin_names, bin_ids)
   expect_equal(shared$abundances, sample_abundances)
   expect_equal(shared$samples, samples)
-  expect_equal(num(data = dataset_t, type = "bins"), 3)
+  expect_equal(count(data = dataset_t, type = "bins"), 3)
 
   expect_equal(
     get_bin_assignments(dataset_t, "non_existance_bin_type"),
@@ -560,8 +609,8 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     )
   )
 
-  expect_equal(num(dataset_t, "bins"), 3)
-  expect_equal(num(dataset_t, "samples"), 6)
+  expect_equal(count(dataset_t, "bins"), 3)
+  expect_equal(count(dataset_t, "samples"), 6)
   expect_equal(
     dataset_t$get_summary(TRUE)[["sample_summary"]]$total,
     c(36, 25, 2, 20, 13, 4)
@@ -577,8 +626,8 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
 
   assign_bins(dataset_t, bin_table)
 
-  expect_equal(num(dataset_t, "bins"), 531)
-  expect_equal(num(dataset_t, "samples"), 19)
+  expect_equal(count(dataset_t, "bins"), 531)
+  expect_equal(count(dataset_t, "samples"), 19)
 
   clear(dataset_t)
 
@@ -591,8 +640,8 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     "otu_id", "", "", "seq_id"
   )
 
-  expect_equal(num(dataset_t, "bins"), 531)
-  expect_equal(num(dataset_t, "sequences"), 2425)
+  expect_equal(count(dataset_t, "bins"), 531)
+  expect_equal(count(dataset_t, "sequences"), 2425)
 })
 
 # assign_sequence_taxonomy, get_sequence_taxonomy_report
@@ -1063,7 +1112,7 @@ test_that("dataset - add / get _contigs_assembly_report,", {
 
   clear(dataset_t, "reports")
   expect_equal(length(report(dataset_t, "contigs_report")), 0)
-  expect_equal(num(dataset_t, "sequences"), 5)
+  expect_equal(count(dataset_t, "sequences"), 5)
   add_report(dataset_t, report, "contigs_report", "Name")
 
   report <- report(dataset_t, "contigs_report")
@@ -1099,7 +1148,7 @@ test_that("dataset - add / get _chimera_report,", {
 
   clear(dataset_t, "reports")
   expect_equal(length(report(dataset_t, "chimera_report")), 0)
-  expect_equal(num(dataset_t, "sequences"), 71)
+  expect_equal(count(dataset_t, "sequences"), 71)
   add_report(dataset_t, report, "chimera_report", "Query")
 
   report <- report(dataset_t, "chimera_report")
@@ -1306,8 +1355,8 @@ test_that("dataset - assign_treatments", {
     show_col_types = FALSE
   )
 
-  expect_equal(num(dataset_t, "samples"), 19)
-  expect_equal(num(dataset_t, "treatments"), 0)
+  expect_equal(count(dataset_t, "samples"), 19)
+  expect_equal(count(dataset_t, "treatments"), 0)
 
   expect_error(dataset_t$assign_treatments(design_table, samples = "group"))
   expect_error(dataset_t$assign_treatments(design_table, treaments = "time"))
@@ -1318,8 +1367,8 @@ test_that("dataset - assign_treatments", {
   # test with data.frame
   assign_treatments(dataset_t, design_table)
 
-  expect_equal(num(dataset_t, "samples"), 19)
-  expect_equal(num(dataset_t, "treatments"), 2)
+  expect_equal(count(dataset_t, "samples"), 19)
+  expect_equal(count(dataset_t, "treatments"), 2)
 
   dataset_t <- read_mothur(
     fasta = rdataset_example("final.fasta"),
@@ -1330,14 +1379,14 @@ test_that("dataset - assign_treatments", {
     dataset_name = "miseq_sop"
   )
 
-  expect_equal(num(dataset_t, "samples"), 19)
-  expect_equal(num(dataset_t, "treatments"), 0)
+  expect_equal(count(dataset_t, "samples"), 19)
+  expect_equal(count(dataset_t, "treatments"), 0)
 
   # test with samples and treatments
   assign_treatments(dataset_t, design_table)
 
-  expect_equal(num(dataset_t, "samples"), 19)
-  expect_equal(num(dataset_t, "treatments"), 2)
+  expect_equal(count(dataset_t, "samples"), 19)
+  expect_equal(count(dataset_t, "treatments"), 2)
 })
 
 test_that("dataset - assign_sequence_taxonomy", {
@@ -1494,7 +1543,7 @@ test_that("dataset - assign_bin_representative_sequences", {
   )
 
   # select first 531 seqs to be the representatives
-  num_bins <- num(dataset_t, "bins")
+  num_bins <- count(dataset_t, "bins")
   rep_names <- names(dataset_t, "sequences")[1:num_bins]
   bin_names <- names(dataset_t, "bins")
 

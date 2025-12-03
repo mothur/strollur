@@ -710,7 +710,7 @@ const float Dataset::getAbundance(const string name){
     auto it = seqIndex.find(name);
     if (it != seqIndex.end()) {
         if (tableSeqs[it->second]) {
-            abund = count.getAbundance(it->second, "");
+            abund = count.getAbundance(it->second);
         }
     }
     return abund;
@@ -883,11 +883,12 @@ const int Dataset::getNumTreatments() {
 }
 /******************************************************************************/
 // TODO document in module_exports.R
-const int Dataset::getNumBins(string type) {
+const int Dataset::getNumBins(string type, vector<string> samples,
+                              bool distinct) {
     int numBins = 0;
 
     if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getNumBins();
+        return binTables[getBinTableIndex(type)].getNumBins(samples, distinct);
     }
 
     return numBins;
@@ -896,7 +897,7 @@ const int Dataset::getNumBins(string type) {
 // total abundance for a given binID
 const float Dataset::getBinAbundance(string binId, string type) {
     if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getAbundance(binId, "");
+        return binTables[getBinTableIndex(type)].getAbundance(binId);
     }
     return 0;
 }
@@ -1294,13 +1295,38 @@ const vector<string> Dataset::getTreatments(){
     return count.getTreatments();
 }
 /******************************************************************************/
-const double Dataset::getTotal(string sample){
+const double Dataset::getTotal(vector<string> samples){
 
-    if (binTables.size() != 0) {
-        return binTables[0].getTotal(sample);
+    if (samples.empty()) {
+        if (binTables.size() != 0) {
+            return binTables[0].getTotal();
+        }
+
+        return count.getTotal();
+    }else {
+       if (hasSequenceData) {
+
+           double seqTotal = 0;
+
+           // all seqs
+           for (int i = 0; i < tableSeqs.size(); i++) {
+
+               // if "good" seq
+               if (tableSeqs[i]) {
+
+                   // include all the requested samples, but may have
+                   // additional samples present
+                   if (count.hasSamples(samples, i)) {
+                       seqTotal += count.getAbundance(i, samples);
+                   }
+               }
+           }
+
+           return seqTotal;
+       }
     }
 
-    return count.getTotal(sample);
+    return 0;
 }
 /******************************************************************************/
 const Rcpp::DataFrame Dataset::getTotals(string type){
@@ -1335,13 +1361,11 @@ const Rcpp::DataFrame Dataset::getTotals(string type){
     return empty;
 }
 /******************************************************************************/
-const double Dataset::getUniqueTotal(string sample){
-    if (sample == "") {
+const double Dataset::getUniqueTotal(vector<string> samples){
+    if (samples.empty()) {
         return numUnique;
     }
-    vector<string> samples;
-    samples.push_back(sample);
-    return getSequenceNames(samples).size();
+    return getSequenceNames(samples, true).size();
 }
 /******************************************************************************/
 const bool Dataset::hasBinTable(string type) {

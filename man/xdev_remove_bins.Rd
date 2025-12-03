@@ -31,7 +31,7 @@ you to remove bins from a \link{dataset} object
   assign_bins(data = data, table = data.frame(bin_names = bin_names,
                                abundances = abundances), bin_type = "otu")
 
-  num(data = data, type = "bins", bin_type = "otu")
+  count(data = data, type = "bins", bin_type = "otu")
 
   bins_to_remove <- c("bin1")
   trash_tag <- c("bad_bin")
@@ -40,6 +40,6 @@ you to remove bins from a \link{dataset} object
                    bin_names = bins_to_remove,
                    trash_tags = trash_tag)
 
-  num(data = data, type = "bins", bin_type = "otu")
+  count(data = data, type = "bins", bin_type = "otu")
 
 }

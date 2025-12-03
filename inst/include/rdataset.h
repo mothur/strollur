@@ -199,7 +199,7 @@ public:
     const vector<float> getTotalAbundances(const vector<int>& names);
     // total abundance for sequence, if sample is provided then abundance for
     // that sequence in that sample
-    const float getAbundance(const int name, const string sample = "");
+    const float getAbundance(const int name, vector<string> samples = nullVector);
     // abundances by sample for id, (in the same order as the samples)
     const vector<float> getAbundances(const int id);
     // abundances by sample for ids
@@ -364,7 +364,8 @@ public:
     // names of bins
     const vector<string> getIds(vector<string> sample = nullVector,
                                 bool distinct = false);
-    const int getNumBins();
+    const int getNumBins(vector<string> samples = nullVector,
+                         bool distinct = false);
     // 2 column dataframe - bin_id, abundance
     const Rcpp::DataFrame getRAbund();
     // vector of total abundances for each binId
@@ -392,7 +393,7 @@ public:
     // vector containing total abundance for each treatment
     const vector<double> getTreatmentTotals();
     // total number of sequences
-    const double getTotal(const string sample = "");
+    const double getTotal(vector<string> samples = nullVector);
     const bool hasSample(const string sample);
 
     void merge(vector<string> binIds, string reason = "merged");
@@ -550,7 +551,9 @@ public:
     const vector<string> getBinTypes();
     const Rcpp::DataFrame getList(string type = "otu");
     const vector<string> getListVector(string type = "otu");
-    const int getNumBins(string type = "otu");
+    const int getNumBins(string type = "otu",
+                         vector<string> samples = nullVector,
+                         bool distinct = false);
     const int getNumSamples();
     const int getNumTreatments();
 
@@ -589,10 +592,10 @@ public:
     const vector<vector<float> > getSharedVector(string type = "otu");
     // 3 column dataframe - bin_id, abundance, sample
     const Rcpp::DataFrame getShared(string type = "otu");
-    const double getTotal(string sample = "");
+    const double getTotal(vector<string> samples = nullVector);
     const Rcpp::DataFrame getTotals(string type = "samples");
     const vector<string> getTreatments();
-    const double getUniqueTotal(string sample = "");
+    const double getUniqueTotal(vector<string> samples = nullVector);
 
     const bool hasSample(string sample);
     const bool hasSamples(vector<string> samples = nullVector);

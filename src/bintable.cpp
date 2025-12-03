@@ -528,7 +528,8 @@ const vector<string> BinTable::getIds(vector<string> samples, bool distinct){
 
                     int numSamplesFound = 0;
                     for (string sample : samples) {
-                        if (binCount.getAbundance(it->second, sample) != 0) {
+                        vector<string> s; s.push_back(sample);
+                        if (binCount.getAbundance(it->second, s) != 0) {
                             numSamplesFound++;
                         }
                     }
@@ -542,7 +543,7 @@ const vector<string> BinTable::getIds(vector<string> samples, bool distinct){
                             theseSamples += sampleAbunds[index];
                         }
                         // if all the sequences come from this sample, save name
-                        if (isEqual(sum(sampleAbunds), theseSamples) && 
+                        if (isEqual(sum(sampleAbunds), theseSamples) &&
                                     (numSamplesFound == samples.size())) {
                             results.push_back(binNames[i]);
                         }
@@ -666,7 +667,11 @@ const float BinTable::getAbundance(const string binId, const string sample){
     if (it != binIndex.end()) {
         // if this is a "good" bin
         if (tableBins[it->second]) {
-            return binCount.getAbundance(it->second, sample);
+            vector<string> s;
+            if (sample != "") {
+                s.push_back(sample);
+            }
+            return binCount.getAbundance(it->second, s);
         }
     }
 
@@ -687,7 +692,13 @@ const vector<float> BinTable::getAbundances(const string binId){
     return nullFloatVector;
 }
 /******************************************************************************/
-const int BinTable::getNumBins() {
+const int BinTable::getNumBins(vector<string> samples,
+                               bool distinct) {
+    if (!samples.empty()) {
+        return getIds(samples, distinct).size();
+    }
+
+    // all "good" bins
     return accumulate(tableBins.begin(), tableBins.end(), 0);
 }
 /******************************************************************************/
@@ -823,8 +834,11 @@ const vector<double> BinTable::getTreatmentTotals(){
 }
 /******************************************************************************/
 // total number of sequences
-const double BinTable::getTotal(const string sample){
-    return binCount.getTotal(sample);
+const double BinTable::getTotal(vector<string> samples){
+    if (!samples.empty()) {
+        return getIds(samples).size();
+    }
+    return binCount.getTotal();
 }
 /******************************************************************************/
 const bool BinTable::okToMerge(const vector<int>& seqIds) {
@@ -936,8 +950,8 @@ void BinTable::remove(const int seqId, AbundTable& count,
 
                             if (!isZero(seqAbunds[i]) &&
                                 binCount.hasSample(seqSamples[i])) {
-
-                                float orig = binCount.getAbundance(index, seqSamples[i]);
+                                vector<string> s; s.push_back(seqSamples[i]);
+                                float orig = binCount.getAbundance(index, s);
                                 binCount.setAbundance(index,
                                                        (orig-seqAbunds[i]),
                                                        seqSamples[i]);

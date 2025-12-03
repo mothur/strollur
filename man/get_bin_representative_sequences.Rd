@@ -22,7 +22,7 @@ Get the representative sequences of the bins in a \link{dataset} object
 
   miseq <- miseq_sop_example()
 
-  num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
+  num_bins <- count(data = miseq, type = "bins", bin_type = "otu")
 
   # For examples sake, select first 531 sequences to be the representatives
   table <- data.frame(bin_names = names(data = miseq,

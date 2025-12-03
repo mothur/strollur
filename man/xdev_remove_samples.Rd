@@ -20,12 +20,12 @@ you to remove samples from a \link{dataset} object
 
 data <- miseq_sop_example()
 
-num(data = data, type = "samples")
+count(data = data, type = "samples")
 
 # To remove samples 'F3D0' and 'F3D1'
 
 xdev_remove_samples(data, c("F3D0", "F3D1"))
 
-num(data = data, type = "samples")
+count(data = data, type = "samples")
 
 }

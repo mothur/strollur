@@ -1,7 +1,7 @@
 # Define an S3 generic - this allows for the additional parameters to names
 names <- function(x, type = "sequences",
                   bin_type = "otu",
-                  sample = "",
+                  sample = NULL,
                   distinct = FALSE) {
   UseMethod("names", x)
 }

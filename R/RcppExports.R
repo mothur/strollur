@@ -303,7 +303,7 @@ assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bin_nam
 #'
 #'   miseq <- miseq_sop_example()
 #'
-#'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
+#'   num_bins <- count(data = miseq, type = "bins", bin_type = "otu")
 #'
 #'   # For examples sake, select first 531 sequences to be the representatives
 #'   table <- data.frame(bin_names = names(data = miseq,
@@ -565,7 +565,7 @@ get_bin_abundances <- function(data, bin_name, type = "otu") {
 #'
 #'   miseq <- miseq_sop_example()
 #'
-#'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
+#'   num_bins <- count(data = miseq, type = "bins", bin_type = "otu")
 #'
 #'   # For examples sake, select first 531 sequences to be the representatives
 #'   table <- data.frame(bin_names = names(data = miseq,
@@ -951,63 +951,6 @@ is_aligned <- function(data) {
     .Call(`_rdataset_is_aligned`, data)
 }
 
-#' @title num
-#' @description
-#' Find the number of sequences, samples, treatments or bins of a given type in
-#' a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type, string containing the type of data you want the number of.
-#' Options include: "sequences", "samples", "treatments", "bins".
-#' Default = "sequences".
-#'
-#' @param bin_type, string containing the bin type you would like the number of
-#' bins for. Default = "otu".
-#'
-#' @param distinct, Boolean. distinct is only used when 'type' = "sequences".
-#' When distinct is TRUE the number of unique sequences is returned.
-#' Default = FALSE.
-#'
-#' @param sample, string. sample is only used when 'type' = "sequences". sample
-#' should contain the name of the sample you want number of sequences for.
-#'
-#' @examples
-#'
-#' miseq <- miseq_sop_example()
-#'
-#' # To get number of sequences in the dataset
-#' num(data = miseq, type = "sequences")
-#'
-#' # To get number of unique sequences in the dataset
-#' num(data = miseq, type = "sequences", distinct = TRUE)
-#'
-#' # To get number of sequences in the dataset from sample 'F3D0'
-#' num(data = miseq, type = "sequences", sample = "F3D0")
-#'
-#' # To get number of unique sequences in the dataset from sample 'F3D0'
-#' num(data = miseq, type = "sequences", distinct = TRUE, sample = "F3D0")
-#'
-#' # To get the number of samples in the dataset
-#' num(data = miseq, type = "samples")
-#'
-#' # To get the number of treatments in the dataset
-#' num(data = miseq, type = "treatments")
-#'
-#' # To get the number of "otu" bins in the dataset
-#' num(data = miseq, type = "bins", bin_type = "otu")
-#'
-#' # To get the number of "asv" bins in the dataset
-#' num(data = miseq, type = "bins", bin_type = "asv")
-#'
-#' # To get the number of "phylotype" bins in the dataset
-#' num(data = miseq, type = "bins", bin_type = "phylotype")
-#'
-#' @return double
-num <- function(data, type = "sequences", bin_type = "otu", distinct = FALSE, sample = "") {
-    .Call(`_rdataset_num`, data, type, bin_type, distinct, sample)
-}
-
 #' @title totals
 #' @description
 #' Find the total number of sequences in your samples or treatments in a
@@ -1032,6 +975,88 @@ num <- function(data, type = "sequences", bin_type = "otu", distinct = FALSE, sa
 #' @return data.frame
 totals <- function(data, type = "samples") {
     .Call(`_rdataset_totals`, data, type)
+}
+
+#' @title xdev_count
+#' @description
+#' Find the number of sequences, samples, treatments or bins of a given type in
+#' a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of data you want the number of.
+#' Options include: "sequences", "samples", "treatments", "bins".
+#' Default = "sequences".
+#'
+#' @param bin_type, string containing the bin type you would like the number of
+#' bins for. Default = "otu".
+#'
+#' @param samples, vector of strings. samples is only used when 'type' =
+#' "sequences" or 'type' = "bins" . samples should contain the names of the
+#' samples you want the count for. Default = NULL.
+#'
+#' @param distinct, Boolean. distinct is used when 'type' =
+#' "sequences" or 'type' = "bins". When 'type' = "sequences" and distinct is
+#' TRUE the number of unique sequences is returned. When 'type' = "sequences"
+#' and distinct is FALSE total number of sequences is returned. This can also
+#' be combined with samples to find the number of unique sequences found only
+#' in a given set of samples, or to find the total number of sequences in a
+#' given set of samples.
+#' When 'type' = "bins", you can set distinct = TRUE to return the number of
+#' bins that ONLY contain sequences from the given samples. When distinct is
+#' FALSE the count returned contains bins with sequences from a given samples,
+#' but those bins may also contain other samples.
+#' Default = FALSE.
+#' @examples
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' # To get the total number of sequences
+#' xdev_count(data = miseq, type = "sequences")
+#'
+#' # To get number of unique sequences
+#' xdev_count(data = miseq, type = "sequences", distinct = TRUE)
+#'
+#' # To get number of unique sequences from samples 'F3D0' and 'F3D1'
+#' # Note these sequences will be present in both samples but may be
+#' # be present in other samples as well
+#' xdev_count(data = miseq, type = "sequences", samples = c("F3D0", "F3D1"))
+#'
+#' # To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
+#' # Note these sequences are present in both samples and NOT present in
+#' # other samples
+#' xdev_count(data = miseq, type = "sequences", samples = c("F3D0", "F3D1"),
+#' distinct = TRUE)
+#'
+#' # To get the number of samples in the dataset
+#' xdev_count(data = miseq, type = "samples")
+#'
+#' # To get the number of treatments in the dataset
+#' xdev_count(data = miseq, type = "treatments")
+#'
+#' # To get the number of "otu" bins in the dataset
+#' xdev_count(data = miseq, type = "bins", bin_type = "otu")
+#'
+#' # To get the number of "asv" bins in the dataset
+#' xdev_count(data = miseq, type = "bins", bin_type = "asv")
+#'
+#' # To get the number of "phylotype" bins in the dataset
+#' xdev_count(data = miseq, type = "bins", bin_type = "phylotype")
+#'
+#' # To get number of bins from samples 'F3D0' and 'F3D1'
+#' # Note these bins will have sequences from both samples but there may be
+#' # other samples present as well
+#' xdev_count(data = miseq, type = "bins", samples = c("F3D0", "F3D1"))
+#'
+#' # To get number of bins unique to samples 'F3D0' and 'F3D1'
+#' # Note these bins will have sequences from both samples and NO other samples
+#' # will be present in the bins.
+#' xdev_count(data = miseq, type = "bins", samples = c("F3D0", "F3D1"),
+#' distinct = TRUE)
+#'
+#' @return double
+xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NULL, distinct = FALSE) {
+    .Call(`_rdataset_xdev_count`, data, type, bin_type, samples, distinct)
 }
 
 #' @title xdev_get_by_sample
@@ -1111,7 +1136,7 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 #'
 #' data <- miseq_sop_example()
 #'
-#' num(data = data, type = "sequences")
+#' count(data = data, type = "sequences")
 #'
 #' # For the sake of example let's merge the first 3 sequences from
 #' # miseq_sop_example:
@@ -1130,7 +1155,7 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 #' # You can see from the get_num_sequences function that the merged sequence's
 #' # abundances are added to the first sequence.
 #'
-#' num(data = data, type = "sequences")
+#' count(data = data, type = "sequences")
 #'
 xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
     invisible(.Call(`_rdataset_xdev_merge_sequences`, data, sequence_names, reason))
@@ -1223,7 +1248,7 @@ xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #'   assign_bins(data = data, table = data.frame(bin_names = bin_names,
 #'                                abundances = abundances), bin_type = "otu")
 #'
-#'   num(data = data, type = "bins", bin_type = "otu")
+#'   count(data = data, type = "bins", bin_type = "otu")
 #'
 #'   bins_to_remove <- c("bin1")
 #'   trash_tag <- c("bad_bin")
@@ -1232,7 +1257,7 @@ xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #'                    bin_names = bins_to_remove,
 #'                    trash_tags = trash_tag)
 #'
-#'   num(data = data, type = "bins", bin_type = "otu")
+#'   count(data = data, type = "bins", bin_type = "otu")
 #'
 xdev_remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
     invisible(.Call(`_rdataset_xdev_remove_bins`, data, bin_names, trash_tags, type))
@@ -1281,13 +1306,13 @@ xdev_remove_lineages <- function(data, contaminants, trash_tag = "contaminant") 
 #'
 #' data <- miseq_sop_example()
 #'
-#' num(data = data, type = "samples")
+#' count(data = data, type = "samples")
 #'
 #' # To remove samples 'F3D0' and 'F3D1'
 #'
 #' xdev_remove_samples(data, c("F3D0", "F3D1"))
 #'
-#' num(data = data, type = "samples")
+#' count(data = data, type = "samples")
 #'
 xdev_remove_samples <- function(data, samples) {
     invisible(.Call(`_rdataset_xdev_remove_samples`, data, samples))
@@ -1309,7 +1334,7 @@ xdev_remove_samples <- function(data, samples) {
 #'
 #' data <- miseq_sop_example()
 #'
-#' num(data = data, type = "sequences")
+#' count(data = data, type = "sequences")
 #'
 #' # For the sake of example let's remove the first 3 sequences from
 #' # miseq_sop_example:
@@ -1330,7 +1355,7 @@ xdev_remove_samples <- function(data, samples) {
 #' # You can see from the get_num_sequences function that the removed
 #' # sequence's abundances are removed from the dataset.
 #'
-#' num(data = data, type = "sequences")
+#' count(data = data, type = "sequences")
 #'
 xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
     invisible(.Call(`_rdataset_xdev_remove_sequences`, data, sequence_names, trash_tags))

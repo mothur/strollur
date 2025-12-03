@@ -23,32 +23,32 @@ test_that("clone - deep copy of dataset object", {
 
   expect_equal(names(dataset, "dataset"), names(temp, "dataset"))
   expect_equal(
-    num(dataset, "sequences", distinct = TRUE),
-    num(temp, "sequences", distinct = TRUE)
+    count(dataset, "sequences", distinct = TRUE),
+    count(temp, "sequences", distinct = TRUE)
   )
   expect_equal(
-    num(dataset, "sequences"),
-    num(temp, "sequences")
+    count(dataset, "sequences"),
+    count(temp, "sequences")
   )
   expect_equal(
-    num(dataset, "treatments"),
-    num(temp, "treatments")
+    count(dataset, "treatments"),
+    count(temp, "treatments")
   )
   expect_equal(
-    num(dataset, "samples"),
-    num(temp, "samples")
+    count(dataset, "samples"),
+    count(temp, "samples")
   )
   expect_equal(
-    num(dataset, "bins", "otu"),
-    num(temp, "bins", "otu")
+    count(dataset, "bins", "otu"),
+    count(temp, "bins", "otu")
   )
   expect_equal(
-    num(dataset, "bins", "phylotype"),
-    num(temp, "bins", "phylotype")
+    count(dataset, "bins", "phylotype"),
+    count(temp, "bins", "phylotype")
   )
   expect_equal(
-    num(dataset, "bins", "asv"),
-    num(temp, "bins", "asv")
+    count(dataset, "bins", "asv"),
+    count(temp, "bins", "asv")
   )
   expect_equal(
     totals(dataset),

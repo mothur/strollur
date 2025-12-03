@@ -485,21 +485,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// num
-double num(Rcpp::Environment data, string type, string bin_type, bool distinct, string sample);
-RcppExport SEXP _rdataset_num(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP, SEXP distinctSEXP, SEXP sampleSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
-    Rcpp::traits::input_parameter< bool >::type distinct(distinctSEXP);
-    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
-    rcpp_result_gen = Rcpp::wrap(num(data, type, bin_type, distinct, sample));
-    return rcpp_result_gen;
-END_RCPP
-}
 // totals
 Rcpp::DataFrame totals(Rcpp::Environment data, string type);
 RcppExport SEXP _rdataset_totals(SEXP dataSEXP, SEXP typeSEXP) {
@@ -509,6 +494,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
     rcpp_result_gen = Rcpp::wrap(totals(data, type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_count
+double xdev_count(Rcpp::Environment data, string type, string bin_type, Rcpp::Nullable<Rcpp::List> samples, bool distinct);
+RcppExport SEXP _rdataset_xdev_count(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP, SEXP samplesSEXP, SEXP distinctSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type samples(samplesSEXP);
+    Rcpp::traits::input_parameter< bool >::type distinct(distinctSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_count(data, type, bin_type, samples, distinct));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -786,8 +786,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_has_sample", (DL_FUNC) &_rdataset_has_sample, 2},
     {"_rdataset_has_sequence_strings", (DL_FUNC) &_rdataset_has_sequence_strings, 1},
     {"_rdataset_is_aligned", (DL_FUNC) &_rdataset_is_aligned, 1},
-    {"_rdataset_num", (DL_FUNC) &_rdataset_num, 5},
     {"_rdataset_totals", (DL_FUNC) &_rdataset_totals, 2},
+    {"_rdataset_xdev_count", (DL_FUNC) &_rdataset_xdev_count, 5},
     {"_rdataset_xdev_get_by_sample", (DL_FUNC) &_rdataset_xdev_get_by_sample, 3},
     {"_rdataset_xdev_merge_bins", (DL_FUNC) &_rdataset_xdev_merge_bins, 4},
     {"_rdataset_xdev_merge_sequences", (DL_FUNC) &_rdataset_xdev_merge_sequences, 3},

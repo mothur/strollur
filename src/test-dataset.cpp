@@ -1505,7 +1505,8 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 66);
         expect_true(data.getNumBins() == 2);
         expect_true(data.getNumSamples() == 5);
-        expect_true(data.getTotal("sample6") == 0);
+        vector<string> tmp; tmp.push_back("sample6");
+        expect_true(data.getTotal(tmp) == 0);
     }
 
     test_that("Tests assignSequenceTaxonomy, assignBinTaxonomy, removeLineages") {

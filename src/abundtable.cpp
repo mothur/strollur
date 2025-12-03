@@ -246,25 +246,28 @@ double AbundTable::assignTreatments(const vector<string>& s,
 /******************************************************************************/
 // total abundance for sequence.
 // If sample provided, then abundance for sequence in sample
-const float AbundTable::getAbundance(const int name, const string sample) {
+const float AbundTable::getAbundance(const int name, vector<string> samples) {
 
     float abund = 0;
 
-    if (sample == "") {
+    if (samples.empty()) {
         if (hasSampleData) {
             vector<float> abunds = getAbundances(name);
             abund = sum(abunds);
         }else{
             abund = counts[name].abunds[0];
         }
-    }else if (hasSample(sample)) {
-        int gIndex = sampleIndex[sample];
+    }else if (hasSamples(samples)) {
 
-        // if the sequence does not have this sample, -1 returned
-        int thisSamplesIndex = getSparseIndex(name, gIndex);
+        for (string sample : samples) {
+            int gIndex = sampleIndex[sample];
 
-        if (thisSamplesIndex != -1) {
-            abund = counts[name].abunds[thisSamplesIndex];
+            // if the sequence does not have this sample, -1 returned
+            int thisSamplesIndex = getSparseIndex(name, gIndex);
+
+            if (thisSamplesIndex != -1) {
+                abund += counts[name].abunds[thisSamplesIndex];
+            }
         }
     }
 

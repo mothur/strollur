@@ -76,9 +76,9 @@ dataset <- R6Class("dataset",
         cat(":\n\n")
       }
       self$get_summary()
-      if (num(data = self, type = "sequences", distinct = TRUE) != 0) {
+      if (count(data = self, type = "sequences", distinct = TRUE) != 0) {
         cat(
-          paste("\nNumber of unique seqs:", num(
+          paste("\nNumber of unique seqs:", count(
             data = self,
             type = "sequences",
             distinct = TRUE
@@ -89,18 +89,18 @@ dataset <- R6Class("dataset",
         cat("\n")
       }
       cat(
-        paste("Total number of seqs:", num(data = self, type = "sequences")),
+        paste("Total number of seqs:", count(data = self, type = "sequences")),
         "\n"
       )
 
       bin_types <- get_bin_types(self)
 
       for (bin_type in bin_types) {
-        if (num(data = self, type = "bins", bin_type = bin_type) != 0) {
+        if (count(data = self, type = "bins", bin_type = bin_type) != 0) {
           cat(
             paste0(
               "Total number of ", bin_type, "s: ",
-              num(data = self, type = "bins", bin_type = bin_type)
+              count(data = self, type = "bins", bin_type = bin_type)
             ),
             "\n"
           )
@@ -131,7 +131,7 @@ dataset <- R6Class("dataset",
       }
 
       # if no samples, add sequences in tree to dataset
-      if (num(self, type = "samples") == 0) {
+      if (count(self, type = "samples") == 0) {
         message <- paste0("[Warning]: Your dataset does not contain sample ",
           "data, ignoring sample tree.",
           collapse = ""
@@ -194,7 +194,7 @@ dataset <- R6Class("dataset",
       }
 
       # if no seqs yet, add sequences in tree to dataset
-      if (num(self, type = "sequences") == 0) {
+      if (count(self, type = "sequences") == 0) {
         add_sequences(self, data.frame(sequence_names = tree$tip.label))
 
         # save tree
@@ -364,11 +364,11 @@ dataset <- R6Class("dataset",
         if (!silent) {
           cat("sequence_summary:\n")
           print(results[["sequence_summary"]])
-          cat("Unique seqs:\t", num(
+          cat("Unique seqs:\t", count(
             data = self,
             type = "sequences", distinct = TRUE
           ), "\n")
-          cat("Total seqs:\t", num(data = self, type = "sequences"), "\n")
+          cat("Total seqs:\t", count(data = self, type = "sequences"), "\n")
         }
       }
 
@@ -378,11 +378,11 @@ dataset <- R6Class("dataset",
           for (name in report_names) {
             cat(name, ":\n")
             print(results[[name]])
-            cat("Unique seqs:\t", num(
+            cat("Unique seqs:\t", count(
               data = self,
               type = "sequences", distinct = TRUE
             ), "\n")
-            cat("Total seqs:\t", num(data = self, type = "sequences"), "\n\n")
+            cat("Total seqs:\t", count(data = self, type = "sequences"), "\n\n")
           }
         }
       }
@@ -401,7 +401,7 @@ dataset <- R6Class("dataset",
         }
       }
 
-      if (num(self, type = "samples") != 0) {
+      if (count(self, type = "samples") != 0) {
         results[["sample_summary"]] <- totals(self, type = "samples")
 
         if (!silent) {
@@ -414,7 +414,7 @@ dataset <- R6Class("dataset",
           }
         }
 
-        if (num(self, "treatments") != 0) {
+        if (count(self, "treatments") != 0) {
           results[["treatment_summary"]] <- totals(self, "treatments")
 
           if (!silent) {

@@ -24,7 +24,7 @@ allows you to merge sequences in a \link{dataset} object.
 
 data <- miseq_sop_example()
 
-num(data = data, type = "sequences")
+count(data = data, type = "sequences")
 
 # For the sake of example let's merge the first 3 sequences from
 # miseq_sop_example:
@@ -43,6 +43,6 @@ report(data = data, type = "sequence_scrap")
 # You can see from the get_num_sequences function that the merged sequence's
 # abundances are added to the first sequence.
 
-num(data = data, type = "sequences")
+count(data = data, type = "sequences")
 
 }

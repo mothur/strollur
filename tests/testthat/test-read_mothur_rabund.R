@@ -10,6 +10,6 @@ test_that("test read_mothur_rabund", {
   data <- dataset$new()
   assign_bins(data, table)
 
-  expect_equal(num(data), 2425)
-  expect_equal(num(data, "bins", "otu"), 531)
+  expect_equal(count(data), 2425)
+  expect_equal(count(data, "bins", "otu"), 531)
 })

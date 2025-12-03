@@ -234,7 +234,7 @@ void add_report(Rcpp::Environment data,
                 xint_fill_required_parameters(table, sequence_name));
 
             // if we don't have any sequences yet, add them
-            if (d.get()->getTotal("") == 0) {
+            if (d.get()->getTotal() == 0) {
                 vector<string> sequences, comments;
                 Reference ref;
 
@@ -618,7 +618,7 @@ double assign_bins(Rcpp::Environment data,
 //'
 //'   miseq <- miseq_sop_example()
 //'
-//'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
+//'   num_bins <- count(data = miseq, type = "bins", bin_type = "otu")
 //'
 //'   # For examples sake, select first 531 sequences to be the representatives
 //'   table <- data.frame(bin_names = names(data = miseq,
@@ -1179,7 +1179,7 @@ vector<float> get_bin_abundances(Rcpp::Environment data,
 //'
 //'   miseq <- miseq_sop_example()
 //'
-//'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
+//'   num_bins <- count(data = miseq, type = "bins", bin_type = "otu")
 //'
 //'   # For examples sake, select first 531 sequences to be the representatives
 //'   table <- data.frame(bin_names = names(data = miseq,
@@ -1638,88 +1638,6 @@ bool has_sequence_strings(Rcpp::Environment data) {
 bool is_aligned(Rcpp::Environment data) {
      Rcpp::XPtr<Dataset> d = data["data"];
      return d.get()->isAligned;
-}
-/******************************************************************************/
-//' @title num
-//' @description
-//' Find the number of sequences, samples, treatments or bins of a given type in
-//' a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param type, string containing the type of data you want the number of.
-//' Options include: "sequences", "samples", "treatments", "bins".
-//' Default = "sequences".
-//'
-//' @param bin_type, string containing the bin type you would like the number of
-//' bins for. Default = "otu".
-//'
-//' @param distinct, Boolean. distinct is only used when 'type' = "sequences".
-//' When distinct is TRUE the number of unique sequences is returned.
-//' Default = FALSE.
-//'
-//' @param sample, string. sample is only used when 'type' = "sequences". sample
-//' should contain the name of the sample you want number of sequences for.
-//'
-//' @examples
-//'
-//' miseq <- miseq_sop_example()
-//'
-//' # To get number of sequences in the dataset
-//' num(data = miseq, type = "sequences")
-//'
-//' # To get number of unique sequences in the dataset
-//' num(data = miseq, type = "sequences", distinct = TRUE)
-//'
-//' # To get number of sequences in the dataset from sample 'F3D0'
-//' num(data = miseq, type = "sequences", sample = "F3D0")
-//'
-//' # To get number of unique sequences in the dataset from sample 'F3D0'
-//' num(data = miseq, type = "sequences", distinct = TRUE, sample = "F3D0")
-//'
-//' # To get the number of samples in the dataset
-//' num(data = miseq, type = "samples")
-//'
-//' # To get the number of treatments in the dataset
-//' num(data = miseq, type = "treatments")
-//'
-//' # To get the number of "otu" bins in the dataset
-//' num(data = miseq, type = "bins", bin_type = "otu")
-//'
-//' # To get the number of "asv" bins in the dataset
-//' num(data = miseq, type = "bins", bin_type = "asv")
-//'
-//' # To get the number of "phylotype" bins in the dataset
-//' num(data = miseq, type = "bins", bin_type = "phylotype")
-//'
-//' @return double
-//[[Rcpp::export]]
-double num(Rcpp::Environment data,
-            string type = "sequences",
-            string bin_type = "otu",
-            bool distinct = false,
-            string sample = "") {
-
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-     if (type == "sequences") {
-         if (distinct) {
-             return d.get()->getUniqueTotal(sample);
-         }
-
-         return d.get()->getTotal(sample);
-     }
-     else if (type == "samples") {
-         return d.get()->getNumSamples();
-     }
-     else if (type == "treatments") {
-         return d.get()->getNumTreatments();
-     }
-     else if (type == "bins") {
-         return d.get()->getNumBins(bin_type);
-     }
-
-     return 0;
 }
 /******************************************************************************/
 //' @title totals

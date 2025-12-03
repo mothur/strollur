@@ -86,7 +86,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
       wrote_count <- TRUE
     }
 
-    if (num(data, "treatments") != 0) {
+    if (count(data, "treatments") != 0) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)
@@ -115,7 +115,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     ))
     outputs <- c(outputs, output)
 
-    if ((num(data, "treatments") != 0) && !wrote_design) {
+    if ((count(data, "treatments") != 0) && !wrote_design) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)

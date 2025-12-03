@@ -20,8 +20,8 @@ test_that("test read_dada2", {
 
   expect_equal(names(data, "dataset"), "data")
   expect_equal(names(data, "samples"), c("sample1", "sample2", "sample3"))
-  expect_equal(num(data, "sequences", distinct = TRUE), 100)
-  expect_equal(num(data, "sequences"), 45150)
+  expect_equal(count(data, "sequences", distinct = TRUE), 100)
+  expect_equal(count(data, "sequences"), 45150)
   expect_equal(get_sequences(data), rep("ATGCTTT", 100))
   expect_equal(length(names(data, "sequences")), 100)
 })
