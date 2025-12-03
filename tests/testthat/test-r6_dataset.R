@@ -13,7 +13,7 @@ test_that("dataset - intialize from read_mothur / print", {
   )
 
   expect_equal(dataset_t$get_bin_types(), c("otu", "asv", "phylotype"))
-  expect_equal(name(dataset_t, "dataset")[1], "miseq_sop")
+  expect_equal(names(dataset_t, "dataset")[1], "miseq_sop")
   expect_equal(num(data = dataset_t, type = "sequences", distinct = TRUE), 2425)
   expect_equal(num(data = dataset_t, type = "sequences"), 113963)
   expect_equal(num(data = dataset_t, type = "treatments"), 2)
@@ -135,7 +135,7 @@ test_that("dataset - intialize from dataset object", {
     processors = 4
   )
 
-  expect_equal(name(dataset_t, "dataset"), "clone_of_miseq")
+  expect_equal(names(dataset_t, "dataset"), "clone_of_miseq")
   expect_equal(num(data = dataset_t, type = "sequences", distinct = TRUE), 2425)
   expect_equal(num(data = dataset_t, type = "sequences"), 113963)
   expect_equal(num(data = dataset_t, type = "treatments"), 2)
@@ -276,15 +276,18 @@ test_that("dataset - addSeqs, assign samples", {
   ))
 
   expect_true(is_aligned(data))
-  expect_equal(name(data, "sequences"), names)
+  expect_equal(names(data, "sequences"), names)
   expect_equal(get_sequences(data), seqs)
-  expect_equal(name(data = data, type = "sequences", sample = "sample2"), names)
   expect_equal(
-    name(data, type = "sequences", sample = "sample3"),
+    names(data = data, type = "sequences", sample = "sample2"),
+    names
+  )
+  expect_equal(
+    names(data, type = "sequences", sample = "sample3"),
     c("seq1", "seq2", "seq3")
   )
   expect_equal(
-    name(data, type = "sequences", sample = "sample4"),
+    names(data, type = "sequences", sample = "sample4"),
     c("seq1", "seq2", "seq4")
   )
   expect_equal(get_sequences(data, "sample2"), seqs)
@@ -293,8 +296,8 @@ test_that("dataset - addSeqs, assign samples", {
 
   expect_equal(num(data = data, type = "samples"), 3)
   expect_equal(num(data = data, type = "treatments"), 2)
-  expect_equal(name(data, "treatments"), c("early", "late"))
-  expect_equal(name(data, "samples"), c("sample2", "sample3", "sample4"))
+  expect_equal(names(data, "treatments"), c("early", "late"))
+  expect_equal(names(data, "samples"), c("sample2", "sample3", "sample4"))
 
   sample_summary <- data$get_summary(TRUE)$sample_summary
   treatment_summary <- data$get_summary(TRUE)$treatment_summary
@@ -1089,7 +1092,7 @@ test_that("dataset - add / get _chimera_report,", {
 
   # random spot checks
   expect_equal(nrow(report), 71)
-  expect_equal(report[, 2], name(dataset_t, "sequences"))
+  expect_equal(report[, 2], names(dataset_t, "sequences"))
   expect_equal(report[[8, 5]], 82.7)
   expect_equal(report[[8, 17]], "N")
   expect_equal(report[[67, 17]], "Y")
@@ -1102,7 +1105,7 @@ test_that("dataset - add / get _chimera_report,", {
   report <- report(dataset_t, "chimera_report")
 
   expect_equal(nrow(report), 71)
-  expect_equal(report[, 2], name(dataset_t, "sequences"))
+  expect_equal(report[, 2], names(dataset_t, "sequences"))
 
   chimera_summary <- dataset_t$get_summary()[["chimera_report"]]
 
@@ -1167,7 +1170,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   tree <- dataset_t$get_sequence_tree()
 
-  expect_equal(sort(name(dataset_t, "sequences")), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
   expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
   expect_equal(
@@ -1180,7 +1183,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   tree <- dataset_t$get_sequence_tree()
 
-  expect_equal(sort(name(dataset_t, "sequences")), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(4, 4, 4))
   expect_equal(tree$edge[, 2], c(3, 2, 1))
   expect_equal(
@@ -1203,7 +1206,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   dataset_t$add_sequence_tree(read.tree(rdataset_example("final.phylip.tre")))
   tree <- dataset_t$get_sequence_tree()
 
-  expect_equal(sort(name(dataset_t, "sequences")), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(2426, 2427, 2427, 2426, 2428))
   expect_equal(tree$edge[1:5, 2], c(2427, 1, 2, 2428, 2429))
   expect_equal(
@@ -1225,7 +1228,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   tree <- dataset_t$get_sequence_tree()
 
-  expect_equal(sort(name(dataset_t, "sequences")), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
   expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
   expect_equal(
@@ -1267,14 +1270,14 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
 
   tree <- dataset_t$get_sample_tree()
 
-  expect_equal(sort(name(dataset_t, "samples")), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "samples")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
 
   xdev_remove_samples(dataset_t, c("F3D1", "F3D141"))
 
   tree <- dataset_t$get_sample_tree()
 
-  expect_equal(sort(name(dataset_t, "samples")), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "samples")), sort(tree$tip.label))
 
   # add tree with all groups, prune tree on add
   dataset_t$add_sample_tree(sample_tree)
@@ -1282,7 +1285,7 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
   tree <- dataset_t$get_sample_tree()
 
   # confirm pruning
-  expect_equal(sort(name(dataset_t, "samples")), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "samples")), sort(tree$tip.label))
 })
 
 test_that("dataset - assign_treatments", {
@@ -1446,7 +1449,10 @@ test_that("dataset - export,", {
 
   expect_equal(names(miseq_table$sequence_data), sequence_data_names)
   expect_equal(names(miseq_table$sequence_report), sequence_report_names)
-  expect_equal(names(miseq_table$sequence_abundance_table), sequence_at_names)
+  expect_equal(
+    names(miseq_table$sequence_abundance_table),
+    sequence_at_names
+  )
 
   expect_equal(names(miseq_table$otu_bin_data), bin_data_names)
   expect_equal(names(miseq_table$asv_bin_data), bin_data_names)
@@ -1470,7 +1476,7 @@ test_that("dataset - export,", {
 
   expect_equal(
     miseq_table$sequence_data$sequence_names,
-    name(miseq, "sequences")
+    names(miseq, "sequences")
   )
   expect_equal(
     miseq_table$sequence_data$sequences,
@@ -1489,8 +1495,8 @@ test_that("dataset - assign_bin_representative_sequences", {
 
   # select first 531 seqs to be the representatives
   num_bins <- num(dataset_t, "bins")
-  rep_names <- name(dataset_t, "sequences")[1:num_bins]
-  bin_names <- name(dataset_t, "bins")
+  rep_names <- names(dataset_t, "sequences")[1:num_bins]
+  bin_names <- names(dataset_t, "bins")
 
   assign_bin_representative_sequences(
     dataset_t,

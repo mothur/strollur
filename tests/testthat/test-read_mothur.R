@@ -11,7 +11,7 @@ test_that("test read_mothur", {
     dataset_name = "miseq_sop"
   )
 
-  expect_equal(name(dataset, "dataset"), "miseq_sop")
+  expect_equal(names(dataset, "dataset"), "miseq_sop")
   expect_equal(num(dataset, "sequences", distinct = TRUE), 2425)
   expect_equal(num(dataset, "sequences"), 113963)
   expect_equal(num(dataset, "treatments"), 2)
@@ -99,7 +99,7 @@ test_that("test read taxonomy files", {
     dataset_name = "miseq_sop"
   )
 
-  expect_equal(name(dataset, "dataset"), "miseq_sop")
+  expect_equal(names(dataset, "dataset"), "miseq_sop")
   expect_equal(num(dataset, "sequences", distinct = TRUE), 2425)
   expect_equal(num(dataset, "sequences"), 113963)
   expect_equal(num(dataset, "treatments"), 2)
@@ -110,10 +110,10 @@ test_that("test read taxonomy files", {
 
   tree <- dataset$get_sample_tree()
 
-  expect_equal(sort(name(dataset, "samples")), sort(tree$tip.label))
+  expect_equal(sort(names(dataset, "samples")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
 
   tree <- dataset$get_sequence_tree()
 
-  expect_equal(sort(name(dataset, "sequences")), sort(tree$tip.label))
+  expect_equal(sort(names(dataset, "sequences")), sort(tree$tip.label))
 })

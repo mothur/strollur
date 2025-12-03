@@ -21,7 +21,7 @@ write_mothur_count <- function(data, filename = NULL) {
   }
 
   if (is.null(filename)) {
-    filename <- name(data, "dataset")
+    filename <- names(data, "dataset")
     if (filename == "") {
       .abort_no_name()
     }

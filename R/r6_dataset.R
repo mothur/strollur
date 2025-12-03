@@ -71,8 +71,8 @@ dataset <- R6Class("dataset",
     #' @description
     #' Get summary of sequence data
     print = function() {
-      if (name(self, "dataset")[1] != "") {
-        cat(name(self, "dataset")[1])
+      if (names(self, type = "dataset")[1] != "") {
+        cat(names(self, type = "dataset")[1])
         cat(":\n\n")
       }
       self$get_summary()
@@ -131,7 +131,7 @@ dataset <- R6Class("dataset",
       }
 
       # if no samples, add sequences in tree to dataset
-      if (num(self, "samples") == 0) {
+      if (num(self, type = "samples") == 0) {
         message <- paste0("[Warning]: Your dataset does not contain sample ",
           "data, ignoring sample tree.",
           collapse = ""
@@ -141,14 +141,14 @@ dataset <- R6Class("dataset",
         # make sure the tree includes all "good" samples
         if (identical(
           sort(tree$tip.label),
-          sort(name(self, "samples"))
+          sort(names(self, type = "samples"))
         )) {
           # save tree
           self$sample_tree <- tree
         } else {
           # samples in dataset and not in tree
           missing_samples <- setdiff(
-            name(self, "samples"),
+            names(self, type = "samples"),
             tree$tip.label
           )
 
@@ -167,7 +167,7 @@ dataset <- R6Class("dataset",
             # samples in tree and not in dataset
             extra_samples <- setdiff(
               tree$tip.label,
-              name(self, "samples")
+              names(self, type = "samples")
             )
 
             # if tree contains "extra" names, prune the tree
@@ -194,7 +194,7 @@ dataset <- R6Class("dataset",
       }
 
       # if no seqs yet, add sequences in tree to dataset
-      if (num(self, "sequences") == 0) {
+      if (num(self, type = "sequences") == 0) {
         add_sequences(self, data.frame(sequence_names = tree$tip.label))
 
         # save tree
@@ -203,14 +203,14 @@ dataset <- R6Class("dataset",
         # make sure the tree includes all "good" sequences
         if (identical(
           sort(tree$tip.label),
-          sort(name(self, "sequences"))
+          sort(names(self, type = "sequences"))
         )) {
           # save tree
           self$sequence_tree <- tree
         } else {
           # seqs in dataset and not in tree
           missing_seqs <- setdiff(
-            name(self, "sequences"),
+            names(self, type = "sequences"),
             tree$tip.label
           )
 
@@ -229,7 +229,7 @@ dataset <- R6Class("dataset",
             # seqs in tree and not in dataset
             extra_seqs <- setdiff(
               tree$tip.label,
-              name(self, "sequences")
+              names(self, type = "sequences")
             )
 
             # if tree contains "extra" names, prune the tree
@@ -324,7 +324,7 @@ dataset <- R6Class("dataset",
         # samples in tree and not in dataset
         extra_samples <- setdiff(
           self$sample_tree$tip.label,
-          name(self, "samples")
+          names(self, type = "samples")
         )
 
         if (length(extra_samples) != 0) {
@@ -401,8 +401,8 @@ dataset <- R6Class("dataset",
         }
       }
 
-      if (num(self, "samples") != 0) {
-        results[["sample_summary"]] <- totals(self, "samples")
+      if (num(self, type = "samples") != 0) {
+        results[["sample_summary"]] <- totals(self, type = "samples")
 
         if (!silent) {
           cat("\nSample   Total:\n")
@@ -455,7 +455,7 @@ dataset <- R6Class("dataset",
         # seqs in tree and not in dataset
         extra_seqs <- setdiff(
           self$sequence_tree$tip.label,
-          name(self, "sequences")
+          names(self, type = "sequences")
         )
 
         if (length(extra_seqs) != 0) {

@@ -26,7 +26,7 @@ test_that("import - miseq_sop_example", {
 
   dataset_t <- import_dataset(exported_miseq)
 
-  expect_equal(name(dataset_t, "dataset"), name(miseq, "dataset"))
+  expect_equal(names(dataset_t, "dataset"), names(miseq, "dataset"))
   expect_equal(num(dataset_t, distinct = TRUE), num(miseq, distinct = TRUE))
   expect_equal(num(dataset_t), num(miseq))
   expect_equal(num(dataset_t, "treatments"), num(miseq, "treatments"))
@@ -121,14 +121,14 @@ test_that("import - no sequence data", {
   expect_equal(num(dataset), 113963)
 
   expect_equal(
-    name(dataset, "dataset"),
-    name(just_bins, "dataset")
+    names(dataset, "dataset"),
+    names(just_bins, "dataset")
   )
 
   expect_equal(num(dataset), num(just_bins))
   expect_equal(num(dataset, "treatments"), num(just_bins, "treatments"))
   expect_equal(num(dataset, "samples"), num(just_bins, "samples"))
-  expect_equal(length(name(dataset, "sequences")), 0)
+  expect_equal(length(names(dataset, "sequences")), 0)
 
   expect_error(import_dataset(table, c("sequence_data")))
   expect_error(import_dataset(table, c("metadata")))
@@ -162,12 +162,12 @@ test_that("import - no bin data", {
   expect_equal(num(dataset), 113963)
   expect_equal(num(dataset, distinct = TRUE), 2425)
 
-  expect_equal(name(dataset, "dataset"), name(just_seqs, "dataset"))
+  expect_equal(names(dataset, "dataset"), names(just_seqs, "dataset"))
 
   expect_equal(num(dataset), num(just_seqs))
   expect_equal(num(dataset, "treatments"), num(just_seqs, "treatments"))
   expect_equal(num(dataset, "samples"), num(just_seqs, "samples"))
-  expect_equal(length(name(dataset)), 2425)
+  expect_equal(length(names(dataset)), 2425)
 
   expect_error(import_dataset(table, c("bin_data")))
   expect_error(import_dataset(table, c("sample_tree")))
@@ -192,12 +192,12 @@ test_that("import - errors and warnings", {
   expect_equal(num(data, "bins", "otu"), 531)
   expect_equal(num(data), 113963)
 
-  expect_equal(name(data, "dataset"), name(just_bins, "dataset"))
+  expect_equal(names(data, "dataset"), names(just_bins, "dataset"))
 
   expect_equal(num(data), num(just_bins))
   expect_equal(num(data, "treatments"), num(just_bins, "treatments"))
   expect_equal(num(data, "samples"), num(just_bins, "samples"))
-  expect_equal(length(name(data)), 0)
+  expect_equal(length(names(data)), 0)
 
   data <- dataset$new()
 
@@ -222,9 +222,9 @@ test_that("import - with tags", {
   expect_equal(num(just_bins), 113963)
   expect_equal(num(just_bins, distinct = TRUE), 0)
 
-  expect_equal(name(miseq, "dataset"), name(just_bins, "dataset"))
+  expect_equal(names(miseq, "dataset"), names(just_bins, "dataset"))
   expect_equal(num(just_bins, "treatments"), 0)
   expect_equal(num(just_bins, "samples"), 0)
-  expect_equal(length(name(just_bins)), 0)
+  expect_equal(length(names(just_bins)), 0)
   expect_equal(nrow(get_bin_representative_sequences(just_bins)), 0)
 })

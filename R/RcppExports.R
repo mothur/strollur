@@ -88,6 +88,35 @@ copy_dataset <- function(data) {
     .Call(`_rdataset_copy_dataset`, data)
 }
 
+#' @title abundance
+#' @description
+#' Get a table containing the requested abundance data in a \link{dataset}
+#' object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of data you want the number of.
+#' Options include: "sequences", "bins".
+#' Default = "sequences".
+#'
+#' @param by_sample, Boolean. When by_sample is TRUE, the abundance data will
+#' be parsed by sample. Default = FALSE.
+#'
+#' @examples
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' # To the total abundance for each sequence
+#' abundance(data = miseq, type = "sequence")
+#'
+#' # To the total abundance for each sequence parsed by sample
+#' abundance(data = miseq, type = "sequence", by_sample = TRUE)
+#'
+#' @return data.frame
+abundance <- function(data, type = "sequence", by_sample = FALSE) {
+    .Call(`_rdataset_abundance`, data, type, by_sample)
+}
+
 #' @title add_report
 #' @description
 #' Add a report to a \link{dataset} object
@@ -277,10 +306,10 @@ assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bin_nam
 #'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 #'
 #'   # For examples sake, select first 531 sequences to be the representatives
-#'   table <- data.frame(bin_names = name(data = miseq,
+#'   table <- data.frame(bin_names = names(data = miseq,
 #'                                        type = "bins",
 #'                                        bin_type = "otu"),
-#'                       sequence_names = name(data = miseq,
+#'                       sequence_names = names(data = miseq,
 #'                                             type = "sequences")[1:num_bins]
 #'                       )
 #'
@@ -539,10 +568,10 @@ get_bin_abundances <- function(data, bin_name, type = "otu") {
 #'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 #'
 #'   # For examples sake, select first 531 sequences to be the representatives
-#'   table <- data.frame(bin_names = name(data = miseq,
+#'   table <- data.frame(bin_names = names(data = miseq,
 #'                                        type = "bins",
 #'                                        bin_type = "otu"),
-#'                       sequence_names = name(data = miseq,
+#'                       sequence_names = names(data = miseq,
 #'                                             type = "sequences")[1:num_bins]
 #'                       )
 #'
@@ -922,68 +951,6 @@ is_aligned <- function(data) {
     .Call(`_rdataset_is_aligned`, data)
 }
 
-#' @title name
-#' @description
-#' Get the names of a given type of data in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type, string containing the type of data you would like. Options
-#' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
-#' Default = "sequences".
-#'
-#' @param bin_type, string containing the bin type you would like the names
-#' for. Default = "otu".
-#'
-#' @param sample, string. sample is only used when 'type' <- "sequences" or
-#' 'type' <- "bins" . sample should contain the name of the sample you want
-#' names for. Default = "".
-#'
-#' @param distinct, Boolean. distinct is only used when 'type' <- "bins" and
-#' the sample parameter is used. The distinct parameter allows you to get the
-#' names of the bins that are unique to a given sample. When distinct is TRUE,
-#' the names function will return the names of the bins that ONLY contain
-#' sequences from the given sample. When distinct is FALSE the bins return
-#' contains sequences from a given sample, but may ALSO contain sequences from
-#' other samples. Default = FALSE.
-#'
-#' @examples
-#'
-#' miseq <- miseq_sop_example()
-#'
-#' # To get the name of the dataset
-#' name(data = miseq, type = "dataset")
-#'
-#' # To get the names of the sequences in the dataset
-#' name(data = miseq, type = "sequences")
-#'
-#' # To get the names of the sequences in sample 'F3D0' in the dataset
-#' name(data = miseq, type = "sequences", sample = "F3D0")
-#'
-#' # To get the names of the samples in the dataset
-#' name(data = miseq, type = "samples")
-#'
-#' # To get the names of the treatments in the dataset
-#' name(data = miseq, type = "treatments")
-#'
-#' # To get the names of the bins in the dataset
-#' name(data = miseq, type = "bins")
-#'
-#' # To get the names of the bins in the dataset that are unique to 'F3D0'
-#' name(data = miseq, type = "bins", sample = "F3D0", distinct = TRUE)
-#'
-#' # To get the names of the bins in the dataset that include sequences
-#' # from 'F3D0'
-#' name(data = miseq, type = "bins", sample = "F3D0", distinct = FALSE)
-#'
-#' # To get the names of the reports in the dataset
-#' name(data = miseq, type = "reports")
-#'
-#' @return vector of strings, containing the names requested
-name <- function(data, type = "sequences", bin_type = "otu", sample = "", distinct = FALSE) {
-    .Call(`_rdataset_name`, data, type, bin_type, sample, distinct)
-}
-
 #' @title num
 #' @description
 #' Find the number of sequences, samples, treatments or bins of a given type in
@@ -998,11 +965,11 @@ name <- function(data, type = "sequences", bin_type = "otu", sample = "", distin
 #' @param bin_type, string containing the bin type you would like the number of
 #' bins for. Default = "otu".
 #'
-#' @param distinct, Boolean. distinct is only used when 'type' <- "sequences".
+#' @param distinct, Boolean. distinct is only used when 'type' = "sequences".
 #' When distinct is TRUE the number of unique sequences is returned.
 #' Default = FALSE.
 #'
-#' @param sample, string. sample is only used when 'type' <- "sequences". sample
+#' @param sample, string. sample is only used when 'type' = "sequences". sample
 #' should contain the name of the sample you want number of sequences for.
 #'
 #' @examples
@@ -1167,6 +1134,71 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 #'
 xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
     invisible(.Call(`_rdataset_xdev_merge_sequences`, data, sequence_names, reason))
+}
+
+#' @title xdev_names
+#' @description
+#' Get the names of a given type of data in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of data you would like. Options
+#' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
+#' Default = "sequences".
+#'
+#' @param bin_type, string containing the bin type you would like the names
+#' for. Default = "otu".
+#'
+#' @param samples, vector of strings. samples is only used when 'type' =
+#' "sequences" or 'type' = "bins" . samples should contain the names of the
+#' samples you want names for. Default = NULL.
+#'
+#' @param distinct, Boolean. distinct is used when 'type' =
+#' "sequences" or 'type' = "bins" and the samples parameter is used. The
+#' distinct parameter allows you to get the names that are unique to a given
+#' set of samples. When distinct is TRUE, the names function will return the
+#' names that ONLY contain data from the given samples. When distinct is FALSE
+#' the data returned contains data from a given samples, but may ALSO contain
+#' data from other samples. Default = FALSE.
+#'
+#' @examples
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' # To get the name of the dataset
+#' xdev_names(data = miseq, type = "dataset")
+#'
+#' # To get the names of the sequences in the dataset
+#' xdev_names(data = miseq, type = "sequences")
+#'
+#' # To get the names of the sequences that are unique to sample 'F3D0'
+#' xdev_names(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE)
+#'
+#' # To get the names of the sequences that include sample 'F3D0'
+#' xdev_names(data = miseq, type = "sequences", samples = c("F3D0"))
+#'
+#' # To get the names of the samples in the dataset
+#' xdev_names(data = miseq, type = "samples")
+#'
+#' # To get the names of the treatments in the dataset
+#' xdev_names(data = miseq, type = "treatments")
+#'
+#' # To get the names of the bins in the dataset
+#' xdev_names(data = miseq, type = "bins")
+#'
+#' # To get the names of the bins in the dataset that are unique to 'F3D0'
+#' xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = TRUE)
+#'
+#' # To get the names of the bins in the dataset that include sequences
+#' # from 'F3D0'
+#' xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = FALSE)
+#'
+#' # To get the names of the reports in the dataset
+#' xdev_names(data = miseq, type = "reports")
+#'
+#' @return vector of strings, containing the names requested
+xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NULL, distinct = FALSE) {
+    .Call(`_rdataset_xdev_names`, data, type, bin_type, samples, distinct)
 }
 
 #' @title xdev_remove_bins

@@ -494,22 +494,24 @@ const Rcpp::DataFrame BinTable::getList(const vector<string>& seqNames){
 }
 /******************************************************************************/
 // names of OTUs
-const vector<string> BinTable::getIds(string sample, bool distinct){
+const vector<string> BinTable::getIds(vector<string> samples, bool distinct){
 
     vector<string> results;
 
     // no sample given, return all "good" bin names
-    if (sample == "") {
+    if (samples.empty()) {
         return select(binNames, tableBins);
     }else {
         // index of sample we are looking for
-        int sampleIndex = -1;
+        vector<int> sampleIndexes(samples.size(), -1);
         if (distinct) {
             vector<string> sampleNames = getSamples();
+            int next = 0;
             for (int i = 0; i < sampleNames.size(); i++) {
-                if (sampleNames[i] == sample) {
-                    sampleIndex = i;
-                    break;
+                // is this sample in the samples requested
+                if (vectorContains(samples, sampleNames[i])) {
+                    sampleIndexes[next] = i;
+                    next++;
                 }
             }
         }
@@ -524,15 +526,29 @@ const vector<string> BinTable::getIds(string sample, bool distinct){
                 // if this is a "good" bin
                 if (tableBins[it->second]) {
 
-                    // includes ONLY sequences from this sample
+                    int numSamplesFound = 0;
+                    for (string sample : samples) {
+                        if (binCount.getAbundance(it->second, sample) != 0) {
+                            numSamplesFound++;
+                        }
+                    }
+
+                    // includes ONLY sequences from these samples
                     if (distinct) {
                         const vector<float> sampleAbunds = binCount.getAbundances(it->second);
+
+                        float theseSamples = 0;
+                        for (int index : sampleIndexes) {
+                            theseSamples += sampleAbunds[index];
+                        }
                         // if all the sequences come from this sample, save name
-                        if (isEqual(sum(sampleAbunds), sampleAbunds[sampleIndex])) {
+                        if (isEqual(sum(sampleAbunds), theseSamples) && 
+                                    (numSamplesFound == samples.size())) {
                             results.push_back(binNames[i]);
                         }
                     }else {
-                        if (binCount.getAbundance(it->second, sample) != 0) {
+                        // all samples requested are present
+                        if (numSamplesFound == samples.size()) {
                             results.push_back(binNames[i]);
                         }
                     }
@@ -911,7 +927,7 @@ void BinTable::remove(const int seqId, AbundTable& count,
             }else{
                 // update bin counts using count table
                 if (update) {
-                    if (binCount.hasSamples()) {
+                    if (binCount.hasSamplesData()) {
 
                         vector<float> seqAbunds = count.getAbundances(seqId);
                         vector<string> seqSamples = count.getSamples();

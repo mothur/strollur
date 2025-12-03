@@ -15,7 +15,7 @@ test_that("write_fasta", {
 
   remove_file(output)
 
-  expect_equal(df[[1]], name(miseq, "sequences"))
+  expect_equal(df[[1]], names(miseq, "sequences"))
   seq1 <- paste0(
     "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-A",
     "A-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-C-A-G-C-G-G--TA-A-AA-TT-G-A",

@@ -58,11 +58,11 @@ head(sequence_abundance_table, n = 10)
     
 ```{r}
 # To get all the names of the sequences
-seq_names <- name(data = miseq, type = "sequences")
+seq_names <- names(data = miseq, type = "sequences")
 head(seq_names, n = 10)
 
 # To get the names of the sequences in sample 'F3D0'
-seq_names_f3d0 <- name(data = miseq, type = "sequences", sample = "F3D0")
+seq_names_f3d0 <- names(data = miseq, type = "sequences", sample = "F3D0")
 head(seq_names_f3d0, n = 10)
 
 # To determine if your dataset contains nucleotide strings
@@ -107,7 +107,7 @@ num(data = miseq, type = "sequences", distinct = TRUE, sample = "F3D0")
 num(data = miseq, type = "samples")
 
 # To get the names of the samples
-name(data = miseq, type = "samples")
+names(data = miseq, type = "samples")
 
 # To get the number of sequences in each sample
 totals(data = miseq, type = "samples")
@@ -116,7 +116,7 @@ totals(data = miseq, type = "samples")
 num(data = miseq, type = "treatments")
 
 # To get the names of the treatments
-name(data = miseq, type = "treatments")
+names(data = miseq, type = "treatments")
 
 # To get the number of sequences in each treatment
 totals(data = miseq, type = "treatments")
@@ -177,7 +177,7 @@ num(data = miseq, type = "bins", bin_type = "asv")
 num(data = miseq, type = "bins", bin_type = "phylotype")
 
 # To get the names of the 'otu' bins
-otu_names <- name(data = miseq, type = "bins", bin_type = "otu")
+otu_names <- names(data = miseq, type = "bins", bin_type = "otu")
 head(otu_names, n = 10)
 
 # To get the bin assignment of the 'otu' bins
@@ -274,5 +274,5 @@ head(summary[[1]], n = 10)
     
 ```{r}
 # To get the dataset name
-name(miseq, "dataset")
+names(miseq, "dataset")
 ```

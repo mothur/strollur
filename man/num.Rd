@@ -16,11 +16,11 @@ Default = "sequences".}
 \item{bin_type, }{string containing the bin type you would like the number of
 bins for. Default = "otu".}
 
-\item{distinct, }{Boolean. distinct is only used when 'type' <- "sequences".
+\item{distinct, }{Boolean. distinct is only used when 'type' = "sequences".
 When distinct is TRUE the number of unique sequences is returned.
 Default = FALSE.}
 
-\item{sample, }{string. sample is only used when 'type' <- "sequences". sample
+\item{sample, }{string. sample is only used when 'type' = "sequences". sample
 should contain the name of the sample you want number of sequences for.}
 }
 \value{

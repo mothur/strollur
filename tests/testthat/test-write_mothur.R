@@ -46,7 +46,7 @@ test_that("write_mothur - miseq", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(name(data, "dataset"), "miseq_sop")
+  expect_equal(names(data, "dataset"), "miseq_sop")
   expect_equal(num(data, "sequences", distinct = TRUE), 2425)
   expect_equal(num(data, "sequences"), 113963)
   expect_equal(num(data, "treatments"), 2)
@@ -85,7 +85,7 @@ test_that("write_mothur - bin_data only", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(name(data, "dataset"), "miseq_sop")
+  expect_equal(names(data, "dataset"), "miseq_sop")
   expect_equal(num(data, "sequences", distinct = TRUE), 2425)
   expect_equal(num(data, "sequences"), 113963)
   expect_equal(num(data, "treatments"), 2)
@@ -137,7 +137,7 @@ test_that("write_mothur - report_data only", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(name(data, "dataset"), "")
+  expect_equal(names(data, "dataset"), "")
   expect_equal(num(data, "sequences", distinct = TRUE), 5)
   expect_equal(num(data, "sequences"), 5)
   expect_equal(
@@ -178,7 +178,7 @@ test_that("write_mothur - report_data only", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(name(data, "dataset"), "")
+  expect_equal(names(data, "dataset"), "")
   expect_equal(num(data, "sequences", distinct = TRUE), 71)
   expect_equal(num(data, "sequences"), 71)
   expect_equal(

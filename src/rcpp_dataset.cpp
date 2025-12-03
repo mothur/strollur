@@ -137,6 +137,42 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
     return copy;
 }
 /******************************************************************************/
+//' @title abundance
+//' @description
+//' Get a table containing the requested abundance data in a \link{dataset}
+//' object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param type, string containing the type of data you want the number of.
+//' Options include: "sequences", "bins".
+//' Default = "sequences".
+//'
+//' @param by_sample, Boolean. When by_sample is TRUE, the abundance data will
+//' be parsed by sample. Default = FALSE.
+//'
+//' @examples
+//'
+//' miseq <- miseq_sop_example()
+//'
+//' # To the total abundance for each sequence
+//' abundance(data = miseq, type = "sequence")
+//'
+//' # To the total abundance for each sequence parsed by sample
+//' abundance(data = miseq, type = "sequence", by_sample = TRUE)
+//'
+//' @return data.frame
+//[[Rcpp::export]]
+Rcpp::DataFrame abundance(Rcpp::Environment data,
+                        string type = "sequence",
+                        bool by_sample = false) {
+
+     Rcpp::XPtr<Dataset> d = data["data"];
+
+
+     return d.get()->getSequenceAbundances();
+ }
+/******************************************************************************/
 //' @title add_report
 //' @description
 //' Add a report to a \link{dataset} object
@@ -207,7 +243,7 @@ void add_report(Rcpp::Environment data,
             }else {
                 // we have sequences already, make sure there is a report row for
                 // each sequence in dataset
-                vector<string> datasetSeqNames = d.get()->getSequenceNames("");
+                vector<string> datasetSeqNames = d.get()->getSequenceNames();
 
                 // find seqs in dataset and not in report
                 vector<string> missingSeqs = setDiff(datasetSeqNames, sequenceNames);
@@ -585,10 +621,10 @@ double assign_bins(Rcpp::Environment data,
 //'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 //'
 //'   # For examples sake, select first 531 sequences to be the representatives
-//'   table <- data.frame(bin_names = name(data = miseq,
+//'   table <- data.frame(bin_names = names(data = miseq,
 //'                                        type = "bins",
 //'                                        bin_type = "otu"),
-//'                       sequence_names = name(data = miseq,
+//'                       sequence_names = names(data = miseq,
 //'                                             type = "sequences")[1:num_bins]
 //'                       )
 //'
@@ -1146,10 +1182,10 @@ vector<float> get_bin_abundances(Rcpp::Environment data,
 //'   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 //'
 //'   # For examples sake, select first 531 sequences to be the representatives
-//'   table <- data.frame(bin_names = name(data = miseq,
+//'   table <- data.frame(bin_names = names(data = miseq,
 //'                                        type = "bins",
 //'                                        bin_type = "otu"),
-//'                       sequence_names = name(data = miseq,
+//'                       sequence_names = names(data = miseq,
 //'                                             type = "sequences")[1:num_bins]
 //'                       )
 //'
@@ -1604,112 +1640,6 @@ bool is_aligned(Rcpp::Environment data) {
      return d.get()->isAligned;
 }
 /******************************************************************************/
-//' @title name
-//' @description
-//' Get the names of a given type of data in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param type, string containing the type of data you would like. Options
-//' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
-//' Default = "sequences".
-//'
-//' @param bin_type, string containing the bin type you would like the names
-//' for. Default = "otu".
-//'
-//' @param sample, string. sample is only used when 'type' <- "sequences" or
-//' 'type' <- "bins" . sample should contain the name of the sample you want
-//' names for. Default = "".
-//'
-//' @param distinct, Boolean. distinct is only used when 'type' <- "bins" and
-//' the sample parameter is used. The distinct parameter allows you to get the
-//' names of the bins that are unique to a given sample. When distinct is TRUE,
-//' the names function will return the names of the bins that ONLY contain
-//' sequences from the given sample. When distinct is FALSE the bins return
-//' contains sequences from a given sample, but may ALSO contain sequences from
-//' other samples. Default = FALSE.
-//'
-//' @examples
-//'
-//' miseq <- miseq_sop_example()
-//'
-//' # To get the name of the dataset
-//' name(data = miseq, type = "dataset")
-//'
-//' # To get the names of the sequences in the dataset
-//' name(data = miseq, type = "sequences")
-//'
-//' # To get the names of the sequences in sample 'F3D0' in the dataset
-//' name(data = miseq, type = "sequences", sample = "F3D0")
-//'
-//' # To get the names of the samples in the dataset
-//' name(data = miseq, type = "samples")
-//'
-//' # To get the names of the treatments in the dataset
-//' name(data = miseq, type = "treatments")
-//'
-//' # To get the names of the bins in the dataset
-//' name(data = miseq, type = "bins")
-//'
-//' # To get the names of the bins in the dataset that are unique to 'F3D0'
-//' name(data = miseq, type = "bins", sample = "F3D0", distinct = TRUE)
-//'
-//' # To get the names of the bins in the dataset that include sequences
-//' # from 'F3D0'
-//' name(data = miseq, type = "bins", sample = "F3D0", distinct = FALSE)
-//'
-//' # To get the names of the reports in the dataset
-//' name(data = miseq, type = "reports")
-//'
-//' @return vector of strings, containing the names requested
-//[[Rcpp::export]]
-const vector<string> name(Rcpp::Environment data,
-                           string type = "sequences",
-                           string bin_type = "otu",
-                           string sample = "",
-                           bool distinct = false) {
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-    // types -> "dataset", "sequences", "bins", "samples",
-    //            "treatments", "reports"
-
-    vector<string> names;
-    if (type == "sequences") {
-        return d.get()->getSequenceNames(sample);
-    }
-    else if (type == "samples") {
-        return d.get()->getSamples();
-    }
-    else if (type == "treatments") {
-        return d.get()->getTreatments();
-    }
-    else if (type == "bins") {
-        if (sample != "") {
-            if (d.get()->hasSample(sample)) {
-                return d.get()->getBinIds(bin_type, sample, distinct);
-            }else {
-                string message = "Your dataset does not include the sample '";
-                message += sample + "', ignoring.";
-                RcppThread::Rcout << endl << message << endl;
-            }
-        }else {
-            return d.get()->getBinIds(bin_type, sample, distinct);
-        }
-    }
-    else if (type == "reports") {
-        return d.get()->getReportTypes();
-    }
-    else if (type == "dataset") {
-        names.push_back(d.get()->datasetName);
-    }else{
-        string message = "Invalid type. Types include: 'dataset', 'sequences'";
-        message += ", 'bins', 'samples', 'treatments' and 'reports'";
-        throw Rcpp::exception(message.c_str());
-    }
-
-    return names;
-}
-/******************************************************************************/
 //' @title num
 //' @description
 //' Find the number of sequences, samples, treatments or bins of a given type in
@@ -1724,11 +1654,11 @@ const vector<string> name(Rcpp::Environment data,
 //' @param bin_type, string containing the bin type you would like the number of
 //' bins for. Default = "otu".
 //'
-//' @param distinct, Boolean. distinct is only used when 'type' <- "sequences".
+//' @param distinct, Boolean. distinct is only used when 'type' = "sequences".
 //' When distinct is TRUE the number of unique sequences is returned.
 //' Default = FALSE.
 //'
-//' @param sample, string. sample is only used when 'type' <- "sequences". sample
+//' @param sample, string. sample is only used when 'type' = "sequences". sample
 //' should contain the name of the sample you want number of sequences for.
 //'
 //' @examples

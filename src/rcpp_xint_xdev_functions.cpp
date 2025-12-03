@@ -82,6 +82,61 @@ void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
      d.get()->mergeSequences(sequence_names, reason);
 }
 /******************************************************************************/
+const vector<string> xdev_names(Rcpp::Environment data,
+                          string type,
+                          string bin_type,
+                          Rcpp::Nullable<Rcpp::List> samples,
+                          bool distinct) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    vector<string> s;
+    if (samples.isNotNull()) {
+        s = Rcpp::as<vector<string>>(samples);
+    }
+
+    // types -> "dataset", "sequences", "bins", "samples",
+    //            "treatments", "reports"
+
+    vector<string> names;
+    if (type == "sequences") {
+        return d.get()->getSequenceNames(s, distinct);
+    }
+    else if (type == "samples") {
+        return d.get()->getSamples();
+    }
+    else if (type == "treatments") {
+        return d.get()->getTreatments();
+    }
+    else if (type == "bins") {
+        if (!s.empty()) {
+            if (d.get()->hasSamples(s)) {
+                return d.get()->getBinIds(bin_type,
+                             s, distinct);
+            }else {
+                string message = "Your dataset does not include all the ";
+                message += "samples requested, ignoring.";
+                RcppThread::Rcout << endl << message << endl;
+            }
+        }else {
+            return d.get()->getBinIds(bin_type,
+                         nullVector, distinct);
+        }
+    }
+    else if (type == "reports") {
+        return d.get()->getReportTypes();
+    }
+    else if (type == "dataset") {
+        names.push_back(d.get()->datasetName);
+    }else{
+        string message = "Invalid type. Types include: 'dataset', 'sequences'";
+        message += ", 'bins', 'samples', 'treatments' and 'reports'";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    return names;
+}
+/******************************************************************************/
 void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
                        vector<string> trash_tags, string type) {
      Rcpp::XPtr<Dataset> d = data["data"];

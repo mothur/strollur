@@ -811,25 +811,34 @@ const vector<string> Dataset::getListVector(string type) {
     return nullVector;
 }
 /******************************************************************************/
-const vector<string> Dataset::getSequenceNames(string sample){
+const vector<string> Dataset::getSequenceNames(vector<string> samples,
+                                               bool distinct){
     vector<string> included;
 
     // get all "good" names in dataset
-    if (sample == "")  {
+    if (samples.empty())  {
         for (int i = 0; i < tableSeqs.size(); i++) {
             if (tableSeqs[i]) {
                 included.push_back(names[i]);
             }
         }
-    // get all "good" names in specific sample
+    // get all "good" names in specific set of samples
     }else {
-        if (count.hasSample(sample)) {
-            // all seqs
-            for (int i = 0; i < tableSeqs.size(); i++) {
-                // if "good" seq
-                if (tableSeqs[i]) {
-                    // if this sequence is in sample
-                    if (count.hasSample(sample, i)) {
+
+        // all seqs
+        for (int i = 0; i < tableSeqs.size(); i++) {
+            // if "good" seq
+            if (tableSeqs[i]) {
+
+                if (!distinct) {
+                    // include all the requested samples, but may have
+                    // additional samples present
+                    if (count.hasSamples(samples, i)) {
+                        included.push_back(names[i]);
+                    }
+                }else {
+                    // sequences must have ONLY the samples requested
+                    if (identical(count.getSamples(i), samples)) {
                         included.push_back(names[i]);
                     }
                 }
@@ -849,7 +858,9 @@ const vector<vector<string> > Dataset::getSequenceNamesBySample(vector<string> s
     }
 
     for (int i = 0; i < samples.size(); i++) {
-        result.push_back(getSequenceNames(samples[i]));
+        vector<string> s;
+        s.push_back(samples[i]);
+        result.push_back(getSequenceNames(s));
     }
 
     return result;
@@ -906,10 +917,11 @@ const string Dataset::getBin(const string binId, string type) {
     return "";
 }
 /******************************************************************************/
-const vector<string> Dataset::getBinIds(string type, string sample, bool distinct) {
+const vector<string> Dataset::getBinIds(string type,
+                                        vector<string> samples, bool distinct) {
 
     if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getIds(sample, distinct);
+        return binTables[getBinTableIndex(type)].getIds(samples, distinct);
     }
     return nullVector;
 }
@@ -1327,7 +1339,9 @@ const double Dataset::getUniqueTotal(string sample){
     if (sample == "") {
         return numUnique;
     }
-    return getSequenceNames(sample).size();
+    vector<string> samples;
+    samples.push_back(sample);
+    return getSequenceNames(samples).size();
 }
 /******************************************************************************/
 const bool Dataset::hasBinTable(string type) {
@@ -1353,6 +1367,21 @@ const bool Dataset::hasSample(string sample){
         return binTables[0].hasSample(sample);
     }
     return count.hasSample(sample);
+}
+/******************************************************************************/
+const bool Dataset::hasSamples(vector<string> samples) {
+
+    int numFound = 0;
+    for (string sample : samples) {
+        if (hasSample(sample)) {
+            numFound++;
+        }
+    }
+
+    if (numFound == samples.size()) {
+        return true;
+    }
+    return false;
 }
 /******************************************************************************/
 const bool Dataset::hasListAssignments(string type){

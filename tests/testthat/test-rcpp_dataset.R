@@ -2,11 +2,11 @@
 
 test_that("rcpp_dataset - new_dataset, copy_dataset", {
   data <- new_dataset("miseq_sop", 2)
-  expect_equal(name(data, "dataset"), "miseq_sop")
+  expect_equal(names(data, "dataset"), "miseq_sop")
   expect_equal(num(data, "sequences"), 0)
 
   dataset2 <- copy_dataset(data)
-  expect_equal(name(dataset2, "dataset"), "miseq_sop")
+  expect_equal(names(dataset2, "dataset"), "miseq_sop")
   expect_equal(num(dataset2, "sequences"), 0)
 
   add_sequences(data, data.frame(sequence_names = c("seq1")))

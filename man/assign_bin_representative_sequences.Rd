@@ -41,10 +41,10 @@ Assign representative sequences to bins.
   num_bins <- num(data = miseq, type = "bins", bin_type = "otu")
 
   # For examples sake, select first 531 sequences to be the representatives
-  table <- data.frame(bin_names = name(data = miseq,
+  table <- data.frame(bin_names = names(data = miseq,
                                        type = "bins",
                                        bin_type = "otu"),
-                      sequence_names = name(data = miseq,
+                      sequence_names = names(data = miseq,
                                             type = "sequences")[1:num_bins]
                       )
 

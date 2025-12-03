@@ -27,7 +27,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     .abort_incorrect_type("dataset", data)
   }
 
-  dataset_name <- name(data, "dataset")
+  dataset_name <- names(data, "dataset")
 
   if (dataset_name == "") {
     dataset_name <- paste0("rdataset.", as.integer(Sys.time()),
@@ -137,7 +137,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("reports" %in% tags)) {
-    report_types <- name(data, "reports")
+    report_types <- names(data, "reports")
 
     if (length(report_types) != 0) {
       for (type in report_types) {

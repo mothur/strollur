@@ -14,7 +14,7 @@ test_that("clone - deep copy of dataset object", {
 
   data <- clone(temp)
 
-  expect_equal(name(data, "dataset"), "miseq_sop")
+  expect_equal(names(data, "dataset"), "miseq_sop")
   expect_equal(num(data, distinct = TRUE), 2425)
   expect_equal(num(data), 113963)
   expect_equal(num(data, "treatments"), 2)

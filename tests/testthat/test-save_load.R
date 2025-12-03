@@ -21,7 +21,7 @@ test_that("clone - deep copy of dataset object", {
   dataset <- load_dataset(file_name)
   remove_file(file_name)
 
-  expect_equal(name(dataset, "dataset"), name(temp, "dataset"))
+  expect_equal(names(dataset, "dataset"), names(temp, "dataset"))
   expect_equal(
     num(dataset, "sequences", distinct = TRUE),
     num(temp, "sequences", distinct = TRUE)

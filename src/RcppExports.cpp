@@ -60,6 +60,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// abundance
+Rcpp::DataFrame abundance(Rcpp::Environment data, string type, bool by_sample);
+RcppExport SEXP _rdataset_abundance(SEXP dataSEXP, SEXP typeSEXP, SEXP by_sampleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< bool >::type by_sample(by_sampleSEXP);
+    rcpp_result_gen = Rcpp::wrap(abundance(data, type, by_sample));
+    return rcpp_result_gen;
+END_RCPP
+}
 // add_report
 void add_report(Rcpp::Environment data, Rcpp::DataFrame table, string type, string sequence_name);
 RcppExport SEXP _rdataset_add_report(SEXP dataSEXP, SEXP tableSEXP, SEXP typeSEXP, SEXP sequence_nameSEXP) {
@@ -472,21 +485,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// name
-const vector<string> name(Rcpp::Environment data, string type, string bin_type, string sample, bool distinct);
-RcppExport SEXP _rdataset_name(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP, SEXP sampleSEXP, SEXP distinctSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
-    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
-    Rcpp::traits::input_parameter< bool >::type distinct(distinctSEXP);
-    rcpp_result_gen = Rcpp::wrap(name(data, type, bin_type, sample, distinct));
-    return rcpp_result_gen;
-END_RCPP
-}
 // num
 double num(Rcpp::Environment data, string type, string bin_type, bool distinct, string sample);
 RcppExport SEXP _rdataset_num(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP, SEXP distinctSEXP, SEXP sampleSEXP) {
@@ -550,6 +548,21 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
     xdev_merge_sequences(data, sequence_names, reason);
     return R_NilValue;
+END_RCPP
+}
+// xdev_names
+const vector<string> xdev_names(Rcpp::Environment data, string type, string bin_type, Rcpp::Nullable<Rcpp::List> samples, bool distinct);
+RcppExport SEXP _rdataset_xdev_names(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP, SEXP samplesSEXP, SEXP distinctSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type samples(samplesSEXP);
+    Rcpp::traits::input_parameter< bool >::type distinct(distinctSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_names(data, type, bin_type, samples, distinct));
+    return rcpp_result_gen;
 END_RCPP
 }
 // xdev_remove_bins
@@ -740,6 +753,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_new_dataset", (DL_FUNC) &_rdataset_new_dataset, 2},
     {"_rdataset_new_reference", (DL_FUNC) &_rdataset_new_reference, 5},
     {"_rdataset_copy_dataset", (DL_FUNC) &_rdataset_copy_dataset, 1},
+    {"_rdataset_abundance", (DL_FUNC) &_rdataset_abundance, 3},
     {"_rdataset_add_report", (DL_FUNC) &_rdataset_add_report, 4},
     {"_rdataset_add_references", (DL_FUNC) &_rdataset_add_references, 7},
     {"_rdataset_add_sequences", (DL_FUNC) &_rdataset_add_sequences, 6},
@@ -772,12 +786,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_has_sample", (DL_FUNC) &_rdataset_has_sample, 2},
     {"_rdataset_has_sequence_strings", (DL_FUNC) &_rdataset_has_sequence_strings, 1},
     {"_rdataset_is_aligned", (DL_FUNC) &_rdataset_is_aligned, 1},
-    {"_rdataset_name", (DL_FUNC) &_rdataset_name, 5},
     {"_rdataset_num", (DL_FUNC) &_rdataset_num, 5},
     {"_rdataset_totals", (DL_FUNC) &_rdataset_totals, 2},
     {"_rdataset_xdev_get_by_sample", (DL_FUNC) &_rdataset_xdev_get_by_sample, 3},
     {"_rdataset_xdev_merge_bins", (DL_FUNC) &_rdataset_xdev_merge_bins, 4},
     {"_rdataset_xdev_merge_sequences", (DL_FUNC) &_rdataset_xdev_merge_sequences, 3},
+    {"_rdataset_xdev_names", (DL_FUNC) &_rdataset_xdev_names, 5},
     {"_rdataset_xdev_remove_bins", (DL_FUNC) &_rdataset_xdev_remove_bins, 4},
     {"_rdataset_xdev_remove_lineages", (DL_FUNC) &_rdataset_xdev_remove_lineages, 3},
     {"_rdataset_xdev_remove_samples", (DL_FUNC) &_rdataset_xdev_remove_samples, 2},

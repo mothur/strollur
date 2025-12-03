@@ -207,14 +207,14 @@ public:
     // total number of sequences
     const double getTotal(const string sample = "");
 
-    const int getNumSamples();
+    const int getNumSamples(const int name = -1);
     const int getNumTreatments();
     // vector containing total abundance for each sample
     const vector<double> getSampleTotals();
     // vector containing total abundance for each treatment
     const vector<double> getTreatmentTotals();
     // vector containing names of samples
-    const vector<string> getSamples();
+    const vector<string> getSamples(const int name = -1);
     const vector<string> getTreatments();
     // maps sampleName to treatmentName
     const map<string, string> getSampleTreatmentAssignments();
@@ -222,8 +222,9 @@ public:
     // does the table contain a sample
     // if name provided, does the sequence have this sample
     const bool hasSample(const string sample, const int name = -1);
+    const bool hasSamples(const vector<string> samples, const int name = -1);
     // does the table have sample information
-    const bool hasSamples() { return hasSampleData; }
+    const bool hasSamplesData() { return hasSampleData; }
 
 private:
 
@@ -361,7 +362,8 @@ public:
     // 2 column dataframe - bin_id, seq_id
     const Rcpp::DataFrame getList(const vector<string>& seqNames);
     // names of bins
-    const vector<string> getIds(string sample = "", bool distinct = false);
+    const vector<string> getIds(vector<string> sample = nullVector,
+                                bool distinct = false);
     const int getNumBins();
     // 2 column dataframe - bin_id, abundance
     const Rcpp::DataFrame getRAbund();
@@ -537,7 +539,8 @@ public:
     // string containing sequence names for given binID
     const string getBin(const string binID, string type = "otu");
     // names of bins
-    const vector<string> getBinIds(string type = "otu", string sample = "",
+    const vector<string> getBinIds(string type = "otu",
+                                   vector<string> samples = nullVector,
                                    bool distinct = false);
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getBinTaxonomyReport(string type = "otu");
@@ -570,9 +573,10 @@ public:
     const vector<float> getSequenceAbundances();
     // 3 columns: id, sample, abundance
     const Rcpp::DataFrame getSequenceAbundanceTable();
-    // sequence report: starts, ends, lengths, ambigs, polymers, numns
-    const vector<string> getSequenceNames(string sample = "");
+    const vector<string> getSequenceNames(vector<string> sample = nullVector,
+                                          bool distinct = false);
     const vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector);
+    // sequence report: starts, ends, lengths, ambigs, polymers, numns
     const Rcpp::DataFrame getSequenceReport();
     const vector<string> getSequences(string sample = "");
     const vector<vector<string> > getSequencesBySample(const vector<string> samples);
@@ -591,6 +595,7 @@ public:
     const double getUniqueTotal(string sample = "");
 
     const bool hasSample(string sample);
+    const bool hasSamples(vector<string> samples = nullVector);
     const bool hasListAssignments(string type = "otu");
     const bool hasSeqs();
     void mergeBins(const vector<string>& binIDS, string reason = "merged",

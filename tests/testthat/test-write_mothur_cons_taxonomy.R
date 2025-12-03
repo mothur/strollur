@@ -25,7 +25,7 @@ test_that("write_mothur_cons_taxonomy", {
 
   df <- read_mothur_cons_taxonomy(outputs[1])
 
-  expect_equal(df[[1]], name(miseq, "bins", bin_types[1]))
+  expect_equal(df[[1]], names(miseq, "bins", bin_types[1]))
   expect_equal(df[[2]], get_rabund_vector(miseq, bin_types[1]))
   tax1 <- paste0(
     "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);",
@@ -37,7 +37,7 @@ test_that("write_mothur_cons_taxonomy", {
 
   df <- read_mothur_cons_taxonomy(outputs[2])
 
-  expect_equal(df[[1]], name(miseq, "bins", bin_types[2]))
+  expect_equal(df[[1]], names(miseq, "bins", bin_types[2]))
   expect_equal(df[[2]], get_rabund_vector(miseq, bin_types[2]))
   tax2 <- paste0(
     "Bacteria(100);Firmicutes(100);Clostridia(100);",
@@ -49,7 +49,7 @@ test_that("write_mothur_cons_taxonomy", {
 
   df <- read_mothur_cons_taxonomy(outputs[3])
 
-  expect_equal(df[[1]], name(miseq, "bins", bin_types[3]))
+  expect_equal(df[[1]], names(miseq, "bins", bin_types[3]))
   expect_equal(df[[2]], get_rabund_vector(miseq, bin_types[3]))
   tax3 <- paste0(
     "Bacteria(100);Firmicutes(100);Clostridia(100);",

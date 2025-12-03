@@ -22,7 +22,7 @@ write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
   }
 
   if (is.null(file_root)) {
-    file_root <- name(data, "dataset")
+    file_root <- names(data, "dataset")
     if (file_root == "") {
       .abort_no_name()
     }

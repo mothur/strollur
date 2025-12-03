@@ -122,6 +122,75 @@ void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
 void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
                           string reason = "merged");
 
+/******************************************************************************/
+//' @title xdev_names
+//' @description
+//' Get the names of a given type of data in a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param type, string containing the type of data you would like. Options
+//' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
+//' Default = "sequences".
+//'
+//' @param bin_type, string containing the bin type you would like the names
+//' for. Default = "otu".
+//'
+//' @param samples, vector of strings. samples is only used when 'type' =
+//' "sequences" or 'type' = "bins" . samples should contain the names of the
+//' samples you want names for. Default = NULL.
+//'
+//' @param distinct, Boolean. distinct is used when 'type' =
+//' "sequences" or 'type' = "bins" and the samples parameter is used. The
+//' distinct parameter allows you to get the names that are unique to a given
+//' set of samples. When distinct is TRUE, the names function will return the
+//' names that ONLY contain data from the given samples. When distinct is FALSE
+//' the data returned contains data from a given samples, but may ALSO contain
+//' data from other samples. Default = FALSE.
+//'
+//' @examples
+//'
+//' miseq <- miseq_sop_example()
+//'
+//' # To get the name of the dataset
+//' xdev_names(data = miseq, type = "dataset")
+//'
+//' # To get the names of the sequences in the dataset
+//' xdev_names(data = miseq, type = "sequences")
+//'
+//' # To get the names of the sequences that are unique to sample 'F3D0'
+//' xdev_names(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE)
+//'
+//' # To get the names of the sequences that include sample 'F3D0'
+//' xdev_names(data = miseq, type = "sequences", samples = c("F3D0"))
+//'
+//' # To get the names of the samples in the dataset
+//' xdev_names(data = miseq, type = "samples")
+//'
+//' # To get the names of the treatments in the dataset
+//' xdev_names(data = miseq, type = "treatments")
+//'
+//' # To get the names of the bins in the dataset
+//' xdev_names(data = miseq, type = "bins")
+//'
+//' # To get the names of the bins in the dataset that are unique to 'F3D0'
+//' xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = TRUE)
+//'
+//' # To get the names of the bins in the dataset that include sequences
+//' # from 'F3D0'
+//' xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = FALSE)
+//'
+//' # To get the names of the reports in the dataset
+//' xdev_names(data = miseq, type = "reports")
+//'
+//' @return vector of strings, containing the names requested
+//[[Rcpp::export]]
+const vector<string> xdev_names(Rcpp::Environment data,
+                           string type = "sequences",
+                           string bin_type = "otu",
+                           Rcpp::Nullable<Rcpp::List> samples = R_NilValue,
+                           bool distinct = false);
+
 // ************** removing ******************
 
 //' @title xdev_remove_bins
