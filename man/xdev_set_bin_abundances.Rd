@@ -46,8 +46,8 @@ with sample data.
                                               abundances = sample_abundances,
                                               samples = samples))
 
-  # You can see bin1's abundances parsed by sample using get_bin_abundances:
-  get_bin_abundances(data = data, bin_name = "bin1")
+  # You can see bin1's abundances parsed by sample using abundance:
+  abundance(data, type = "bins", by_sample = TRUE)
 
   # You can change bin1's abundances as follows:
 
@@ -58,6 +58,6 @@ with sample data.
                           bin_names = bins,
                           abundances = new_bin1_abunds)
 
-  get_bin_abundances(data = data, bin_name = "bin1")
+  abundance(data, type = "bins", by_sample = TRUE)
 
 }

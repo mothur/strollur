@@ -136,42 +136,7 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 
     return copy;
 }
-/******************************************************************************/
-//' @title abundance
-//' @description
-//' Get a table containing the requested abundance data in a \link{dataset}
-//' object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param type, string containing the type of data you want the number of.
-//' Options include: "sequences", "bins".
-//' Default = "sequences".
-//'
-//' @param by_sample, Boolean. When by_sample is TRUE, the abundance data will
-//' be parsed by sample. Default = FALSE.
-//'
-//' @examples
-//'
-//' miseq <- miseq_sop_example()
-//'
-//' # To the total abundance for each sequence
-//' abundance(data = miseq, type = "sequence")
-//'
-//' # To the total abundance for each sequence parsed by sample
-//' abundance(data = miseq, type = "sequence", by_sample = TRUE)
-//'
-//' @return data.frame
-//[[Rcpp::export]]
-Rcpp::DataFrame abundance(Rcpp::Environment data,
-                        string type = "sequence",
-                        bool by_sample = false) {
 
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-
-     return d.get()->getSequenceAbundances();
- }
 /******************************************************************************/
 //' @title add_report
 //' @description
@@ -1104,71 +1069,6 @@ Rcpp::List export_dataset(Rcpp::Environment data,
     return results;
 }
 /******************************************************************************/
-//' @title get_bin
-//' @description
-//' Get the names of the sequences in a given bin in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param bin_name, string containing the bin name
-//' @param type a string indicating the type of clusters. Default = "otu".
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_bin(data, "Otu005", "otu")
-//'
-//' @return String, containing names of the sequences in a given bin
-//[[Rcpp::export]]
-string get_bin(Rcpp::Environment data,
-               string bin_name,
-               string type = "otu") {
-
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getBin(bin_name, type);
-}
-/******************************************************************************/
-//' @title get_bin_abundance
-//' @description
-//' Get the abundance of a given bin in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param bin_name, string containing the bin name
-//' @param bin_type a string indicating the type of clusters. Default = "otu".
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_bin_abundance(data, "Otu005", "otu")
-//'
-//' @return double, containing the abundance of a given bin
-//[[Rcpp::export]]
-double get_bin_abundance(Rcpp::Environment data,
-                       string bin_name, string bin_type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getBinAbundance(bin_name, bin_type);
-}
-/******************************************************************************/
-//' @title get_bin_abundances
-//' @description
-//' Get the abundance of a given bin parsed by sample in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param bin_name, string containing the bin name
-//' @param type, string indicating the type of clusters. Default = "otu".
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_bin_abundances(data, "Otu005", "otu")
-//'
-//' @return vector containing the abundance of a given bin parsed by sample
-//[[Rcpp::export]]
-vector<float> get_bin_abundances(Rcpp::Environment data,
-                       string bin_name, string type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getBinAbundances(bin_name, type);
-}
-/******************************************************************************/
 //' @title get_bin_representative_sequences
 //' @description
 //' Get the representative sequences of the bins in a \link{dataset} object
@@ -1259,44 +1159,6 @@ Rcpp::DataFrame get_list(Rcpp::Environment data, string type = "otu") {
 vector<string> get_list_vector(Rcpp::Environment data, string type = "otu") {
     Rcpp::XPtr<Dataset> d = data["data"];
      return d.get()->getListVector(type);
-}
-/******************************************************************************/
-//' @title get_rabund
-//' @description
-//' Get data.frame containing bin abundance data in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param type a string indicating the type of bin assignments. Default "otu".
-//' @examples
-//'
-//'   data <- miseq_sop_example()
-//'   get_rabund(data)
-//'
-//' @return a 2 column data.frame containing bin names and bin abundances
-//[[Rcpp::export]]
-Rcpp::DataFrame get_rabund(Rcpp::Environment data, string type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getRAbund(type);
-}
-/******************************************************************************/
-//' @title get_rabund_vector
-//' @description
-//' Get vector containing bin abundance data in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param type a string indicating the type of bin assignments. Default "otu".
-//' @examples
-//'
-//'   data <- miseq_sop_example()
-//'   get_rabund_vector(data)
-//'
-//' @return vector containing each bins abundance
-//[[Rcpp::export]]
-vector<float> get_rabund_vector(Rcpp::Environment data, string type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getRAbundVector(type);
 }
 /******************************************************************************/
 //' @title report
@@ -1440,64 +1302,6 @@ Rcpp::DataFrame get_sample_treatment_assignments(Rcpp::Environment data) {
      return d.get()->getSampleTreatmentAssignments();
 }
 /******************************************************************************/
-//' @title get_sequence_abundances
-//' @description
-//' Get the total abundance for each sequence in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_sequence_abundances(data)
-//'
-//' @return vector containing the total abundance for each sequence a
-//' \link{dataset} object
-//[[Rcpp::export]]
-vector<float> get_sequence_abundances(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getSequenceAbundances();
-}
-/******************************************************************************/
-//' @title get_sequence_abundances_by_sample
-//' @description
-//' Get the abundances of each sequence in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_sequence_abundances_by_sample(data)
-//'
-//' @return 2D vector ([num_seqs][num_samples]) containing the
-//' abundances of each sequence in an instance of the 'Dataset' class parsed by
-//' sample.
-//[[Rcpp::export]]
-vector<vector<float> > get_sequence_abundances_by_sample(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getSeqsAbundsBySample();
-}
-/******************************************************************************/
-//' @title get_sequence_abundance_table
-//' @description
-//' Get the abundances of each sequence in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_sequence_abundance_table(data)
-//'
-//' @return data.frame containing sequence abundance data in a \link{dataset}
-//' object
-//[[Rcpp::export]]
-Rcpp::DataFrame get_sequence_abundance_table(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getSequenceAbundanceTable();
-}
-/******************************************************************************/
 //' @title get_sequences
 //' @description
 //' Get the nucleotide strings for each sequence in a \link{dataset} object
@@ -1544,46 +1348,6 @@ vector<string> get_sequences(Rcpp::Environment data, string sample = "") {
 Rcpp::List get_sequence_summary(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getSequenceSummary();
-}
-/******************************************************************************/
-//' @title get_bin_assignments
-//' @description
-//' Get data.frame containing bin abundance data of a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param type a string indicating the type of bin assignments. Default "otu".
-//' @examples
-//'
-//'   data <- miseq_sop_example()
-//'   get_bin_assignments(data, "otu")
-//'
-//' @return data.frame containing 2, 3 or 4 columns: bin_names, abundances,
-//' samples (if assigned), and treatments (if assigned)
-//[[Rcpp::export]]
-Rcpp::DataFrame get_bin_assignments(Rcpp::Environment data, string type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getShared(type);
-}
-/******************************************************************************/
-//' @title get_shared_vector
-//' @description
-//' Get 2D vector containing bin abundance data by sample in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object.
-//' @param type a string indicating the type of bin assignments. Default "otu".
-//' @examples
-//'
-//'  data <- miseq_sop_example()
-//'  get_shared_vector(data)
-//'
-//' @return 2D vector ([num_bins][num_samples]) containing the abundances of
-//' each bin parsed by sample.
-//[[Rcpp::export]]
-vector<vector<float> > get_shared_vector(Rcpp::Environment data,
-                                         string type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getSharedVector(type);
 }
 /******************************************************************************/
 //' @title has_sample
@@ -1638,46 +1402,6 @@ bool has_sequence_strings(Rcpp::Environment data) {
 bool is_aligned(Rcpp::Environment data) {
      Rcpp::XPtr<Dataset> d = data["data"];
      return d.get()->isAligned;
-}
-/******************************************************************************/
-//' @title totals
-//' @description
-//' Find the total number of sequences in your samples or treatments in a
-//' \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param type, string containing the type of data you want the totals of.
-//' Options include: "samples", "treatments".
-//' Default = "samples".
-//'
-//' @examples
-//'
-//' miseq <- miseq_sop_example()
-//'
-//' # To get a table with the sample totals in the dataset
-//' totals(data = miseq, type = "samples")
-//'
-//' # To get a table with the treatment totals in the dataset
-//' totals(data = miseq, type = "treatments")
-//'
-//' @return data.frame
-//[[Rcpp::export]]
-Rcpp::DataFrame totals(Rcpp::Environment data, string type = "samples") {
-
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-     if ((type == "samples") || (type == "treatments")){
-         return d.get()->getTotals(type);
-     }
-     else {
-         string message = type + " is not a valid type for the totals function";
-         message += ". Types include: 'samples' and 'treatments'.";
-         RcppThread::Rcout << endl << message << endl;
-     }
-
-     // empty report
-     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 

@@ -125,9 +125,13 @@ test_that("rcpp_dataset - assign_bins", {
   expect_equal(count(data, "sequences"), 716)
   expect_equal(count(data, "bins"), 3)
   expect_equal(count(data, "samples"), 4)
-  expect_equal(totals(data, "samples")$totals, c(590, 100, 25, 1))
-  expect_equal(get_bin(data, "bin1"), "")
-  expect_equal(get_bin_abundances(data, "bin1"), c(10, 100, 0, 1))
+  expect_equal(abundance(data, "samples")$abundances, c(590, 100, 25, 1))
+
+  df <- abundance(
+    data = data, type = "bins",
+    bin_type = "otu", by_sample = TRUE
+  )
+  expect_equal(df[[2]][1:3], c(10, 100, 1))
 
   clear(data)
 
@@ -155,8 +159,12 @@ test_that("rcpp_dataset - assign_bins", {
     sequence_names = seq_ids
   ))
 
-  expect_equal(get_bin(data, "bin1"), "seq1,seq2,seq4")
-  expect_equal(get_bin_abundance(data, "bin2"), 85)
+
+  expect_equal(get_list_vector(data)[1], "seq1,seq2,seq4")
+  expect_equal(abundance(
+    data = data, type = "bins",
+    bin_type = "otu"
+  )[[2]][[2]], 85)
   expect_equal(count(data, "sequences"), 866)
   expect_equal(count(data, "bins"), 3)
   expect_equal(count(data, "samples"), 6)
@@ -242,11 +250,11 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
   expect_equal(count(data, "bins"), 0)
   expect_equal(count(data, "samples"), 3)
 
-  abunds_by_sample <- get_sequence_abundances_by_sample(data)
-  expect_equal(abunds_by_sample[[1]], c(250, 400, 500))
-  expect_equal(abunds_by_sample[[3]], c(25, 25, 0))
+  abunds_by_sample <- abundance(data, type = "sequences", by_sample = TRUE)
+  expect_equal(abunds_by_sample[[2]][1:3], c(250, 400, 500))
+  expect_equal(abunds_by_sample[[2]][7:8], c(25, 25))
 
-  abund_table <- get_sequence_abundance_table(data)
+  abund_table <- abundance(data, type = "sequences", by_sample = TRUE)
 
   expect_equal(abund_table$sequence_names, names)
   expect_equal(abund_table$abundances, abundances)
@@ -270,7 +278,8 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
       abundances = c(100, 50)
     )
   )
-  expect_equal(get_sequence_abundances(data), c(100, 50))
+
+  expect_equal(abundance(data, type = "sequences")[[2]], c(100, 50))
 
   expect_error(xdev_set_abundances(data, c("seq1"), list(c(0))))
 
@@ -368,12 +377,10 @@ test_that("rcpp_dataset - assign_treatments", {
   expect_equal(count(data, "bins"), 0)
   expect_equal(count(data, "samples"), 3)
   expect_equal(count(data, "treatments"), 2)
-
-  abunds_by_sample <- list(
-    c(250, 400, 500), c(25, 40, 50),
-    c(25, 25, 0), c(0, 0, 4)
+  expect_equal(
+    abundance(data, "sequences", by_sample = TRUE)[[2]],
+    c(250, 400, 500, 25, 40, 50, 25, 25, 4)
   )
-  expect_equal(get_sequence_abundances_by_sample(data), abunds_by_sample)
 })
 
 test_that("rcpp_dataset - get_names / sequences_by_sample", {
@@ -455,7 +462,7 @@ test_that("rcpp_dataset - xdev_merge_bins / xdev_merge_seqs", {
   expect_equal(count(data, "bins"), 0)
   expect_equal(count(data, "samples"), 3)
 
-  expect_equal(get_sequence_abundances(data), c(1150, 115, 50, 4))
+  expect_equal(abundance(data, type = "sequences")[[2]], c(1150, 115, 50, 4))
 
   xdev_merge_sequences(data, c("seq3", "seq1"))
 
@@ -499,7 +506,7 @@ test_that("rcpp_dataset - xdev_merge_bins / xdev_merge_seqs", {
 })
 
 test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
-  data <- new_dataset("miseq_sop", 2)
+  data <- new_dataset("miseq_sop")
 
   # test with no samples bins
   assign_bins(
@@ -509,7 +516,10 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
     )
   )
 
-  expect_equal(get_bin_abundance(data, "bin1"), 10)
+  expect_equal(abundance(
+    data = data, type = "bins",
+    bin_type = "otu"
+  )[[2]][[1]], 10)
   expect_equal(count(data, "sequences"), 60)
 
   message <- capture_output(xdev_set_bin_abundance(
@@ -518,7 +528,10 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
     c(100, 20)
   ))
   # set bin1, ignore non_existent_bin
-  expect_equal(get_bin_abundance(data, "bin1"), 100)
+  expect_equal(abundance(
+    data = data, type = "bins",
+    bin_type = "otu"
+  )[[2]][[1]], 100)
   expect_equal(count(data, "sequences"), 150)
   expect_true(grepl("non_existent_bin", message))
 
@@ -540,9 +553,15 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
     )
   )
 
-  expect_equal(get_bin_abundances(data, "bin1"), c(10, 20))
+  expect_equal(
+    abundance(
+      data = data, type = "bins",
+      bin_type = "otu", by_sample = TRUE
+    )[[2]][1:2],
+    c(10, 20)
+  )
   expect_equal(count(data, "sequences"), 150)
-  expect_equal(totals(data, "samples")$totals, c(80, 70))
+  expect_equal(abundance(data, "samples")$abundances, c(80, 70))
 
   message <- capture_output(xdev_set_bin_abundances(
     data,
@@ -550,7 +569,7 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
     list(c(100, 20), c(10, 0))
   ))
   expect_equal(count(data, "sequences"), 240)
-  expect_equal(totals(data, "samples")$totals, c(170, 70))
+  expect_equal(abundance(data, "samples")$abundances, c(170, 70))
   expect_true(grepl("non_existent_bin", message))
   expect_error(xdev_set_bin_abundance(
     data,
@@ -561,7 +580,10 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
   xdev_remove_samples(data, c("sample1"))
 
   expect_equal(count(data, "bins"), 2)
-  expect_equal(get_rabund_vector(data), c(20, 50))
+  expect_equal(abundance(
+    data = data, type = "bins",
+    bin_type = "otu"
+  )[[2]], c(20, 50))
   expect_equal(count(data, "samples"), 1)
   expect_equal(count(data, "sequences"), 70)
 

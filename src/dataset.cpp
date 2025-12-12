@@ -705,28 +705,6 @@ Rcpp::DataFrame Dataset::fillTaxReport(string mode) {
     return df;
 }
 /******************************************************************************/
-const float Dataset::getAbundance(const string name){
-    float abund = 0;
-    auto it = seqIndex.find(name);
-    if (it != seqIndex.end()) {
-        if (tableSeqs[it->second]) {
-            abund = count.getAbundance(it->second);
-        }
-    }
-    return abund;
-}
-/******************************************************************************/
-const vector<float> Dataset::getAbundances(const string name){
-    vector<float> abunds;
-    auto it = seqIndex.find(name);
-    if (it != seqIndex.end()) {
-        if (tableSeqs[it->second]) {
-            abunds = count.getAbundances(it->second);
-        }
-    }
-    return abunds;
-}
-/******************************************************************************/
 int Dataset::getAlignedLength() {
     set<int> seqLengths;
     for (int i = 0; i < seqs.size(); i++) {
@@ -893,30 +871,14 @@ const int Dataset::getNumBins(string type, vector<string> samples,
 
     return numBins;
 }
-/******************************************************************************/
-// total abundance for a given binID
-const float Dataset::getBinAbundance(string binId, string type) {
-    if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getAbundance(binId);
-    }
-    return 0;
-}
-/******************************************************************************/
-// abundances for given binID broken down by sample
-const vector<float> Dataset::getBinAbundances(const string binId, string type) {
-    if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getAbundances(binId);
-    }
-    return nullFloatVector;
-}
-/******************************************************************************/
-// string containing sequence names for given binID
-const string Dataset::getBin(const string binId, string type) {
-    if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].get(binId, names);
-    }
-    return "";
-}
+// /******************************************************************************/
+// // string containing sequence names for given binID
+// const string Dataset::getBin(const string binId, string type) {
+//     if (hasBinTable(type)) {
+//         return binTables[getBinTableIndex(type)].get(binId, names);
+//     }
+//     return "";
+// }
 /******************************************************************************/
 const vector<string> Dataset::getBinIds(string type,
                                         vector<string> samples, bool distinct) {
@@ -948,20 +910,25 @@ const vector<string> Dataset::getBinTypes() {
     return types;
 }
 /******************************************************************************/
-const Rcpp::DataFrame Dataset::getRAbund(string type) {
-    if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getRAbund();
+const Rcpp::DataFrame Dataset::getBinAbundances(string bin_type, bool bySample) {
+
+    if (hasBinTable(bin_type)) {
+        if (!bySample) {
+            return binTables[getBinTableIndex(bin_type)].getRAbund();
+        }else {
+            return binTables[getBinTableIndex(bin_type)].getShared();
+        }
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
-const vector<float> Dataset::getRAbundVector(string type) {
-    if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getRAbundVector();
-    }
-    return nullFloatVector;
-}
+// const vector<float> Dataset::getRAbundVector(string type) {
+//     if (hasBinTable(type)) {
+//         return binTables[getBinTableIndex(type)].getRAbundVector();
+//     }
+//     return nullFloatVector;
+// }
 /******************************************************************************/
 const Rcpp::DataFrame Dataset::getReports(string type) {
     Rcpp::DataFrame reportResults = Rcpp::DataFrame::create();
@@ -1145,20 +1112,22 @@ const Rcpp::List Dataset::getScrapSummary() {
     return list;
 }
 /******************************************************************************/
-// ids, abundances, sample(optional), treatment(optional)
-// This table represents mothur's count and design files.
-const Rcpp::DataFrame Dataset::getSequenceAbundanceTable() {
-    return count.getAbundanceTable(select(names, tableSeqs),
-                                            getIncludedNamesIndexes());
-}
-/******************************************************************************/
 // total abundance for each sequence
-const vector<float> Dataset::getSequenceAbundances(){
-    return count.getTotalAbundances(getIncludedNamesIndexes());
-}
-/******************************************************************************/
-const vector<vector<float>> Dataset::getSeqsAbundsBySample(){
-    return count.getAbundances(getIncludedNamesIndexes());
+const Rcpp::DataFrame Dataset::getSequenceAbundances(bool bySample){
+
+    if (!bySample) {
+        vector<float> abunds = count.getTotalAbundances(getIncludedNamesIndexes());
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("sequence_names") = select(names, tableSeqs),
+            Rcpp::_["abundances"] = abunds);
+
+        return df;
+    }
+
+    // ids, abundances, sample(optional), treatment(optional)
+    return count.getAbundanceTable(select(names, tableSeqs),
+                                    getIncludedNamesIndexes());
 }
 /******************************************************************************/
 const vector<string> Dataset::getSequences(string sample){
@@ -1245,8 +1214,9 @@ const Rcpp::List Dataset::getSequenceSummary() {
     }
 
     for (auto itReport = reports.begin(); itReport != reports.end(); itReport++) {
+        Rcpp::DataFrame df = getSequenceAbundances();
         result.push_back(itReport->second.summarizeReport(toSet(getSequenceNames()), processors,
-                                                          getSequenceAbundances()));
+                                                          Rcpp::as<vector<float>>(df[1])));
         result_names.push_back(itReport->first);
     }
 
@@ -1270,21 +1240,6 @@ Rcpp::DataFrame Dataset::getSequenceTaxonomyReport() {
 
     Rcpp::DataFrame empty = Rcpp::DataFrame::create();
     return empty;
-}
-/******************************************************************************/
-const Rcpp::DataFrame Dataset::getShared(string type) {
-    if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getShared();
-    }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
-}
-/******************************************************************************/
-const vector<vector<float> > Dataset::getSharedVector(string type) {
-    if (hasBinTable(type)) {
-        return binTables[getBinTableIndex(type)].getSharedVector();
-    }
-    return null2DFloatVector;
 }
 /******************************************************************************/
 const vector<string> Dataset::getTreatments(){
@@ -1353,7 +1308,7 @@ const Rcpp::DataFrame Dataset::getTotals(string type){
     if (!totals.empty()) {
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named(type) = names,
-            Rcpp::_["totals"] = totals);
+            Rcpp::_["abundances"] = totals);
         return df;
     }
 

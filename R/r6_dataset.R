@@ -402,12 +402,12 @@ dataset <- R6Class("dataset",
       }
 
       if (count(self, type = "samples") != 0) {
-        results[["sample_summary"]] <- totals(self, type = "samples")
+        results[["sample_summary"]] <- abundance(self, type = "samples")
 
         if (!silent) {
           cat("\nSample   Total:\n")
           sample_names <- results[["sample_summary"]]$samples
-          sample_totals <- results[["sample_summary"]]$totals
+          sample_totals <- results[["sample_summary"]]$abundances
 
           for (i in seq_along(sample_names)) {
             cat(paste(sample_names[i], sample_totals[i], sep = "\t"), "\n")
@@ -415,11 +415,11 @@ dataset <- R6Class("dataset",
         }
 
         if (count(self, "treatments") != 0) {
-          results[["treatment_summary"]] <- totals(self, "treatments")
+          results[["treatment_summary"]] <- abundance(self, type = "treatments")
 
           if (!silent) {
             treatment_names <- results[["treatment_summary"]]$treatments
-            treatment_totals <- results[["treatment_summary"]]$totals
+            treatment_totals <- results[["treatment_summary"]]$abundances
             cat("\n")
             cat("Treatment   Total:\n")
             for (i in seq_along(treatment_names)) {

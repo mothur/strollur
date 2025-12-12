@@ -88,35 +88,6 @@ copy_dataset <- function(data) {
     .Call(`_rdataset_copy_dataset`, data)
 }
 
-#' @title abundance
-#' @description
-#' Get a table containing the requested abundance data in a \link{dataset}
-#' object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type, string containing the type of data you want the number of.
-#' Options include: "sequences", "bins".
-#' Default = "sequences".
-#'
-#' @param by_sample, Boolean. When by_sample is TRUE, the abundance data will
-#' be parsed by sample. Default = FALSE.
-#'
-#' @examples
-#'
-#' miseq <- miseq_sop_example()
-#'
-#' # To the total abundance for each sequence
-#' abundance(data = miseq, type = "sequence")
-#'
-#' # To the total abundance for each sequence parsed by sample
-#' abundance(data = miseq, type = "sequence", by_sample = TRUE)
-#'
-#' @return data.frame
-abundance <- function(data, type = "sequence", by_sample = FALSE) {
-    .Call(`_rdataset_abundance`, data, type, by_sample)
-}
-
 #' @title add_report
 #' @description
 #' Add a report to a \link{dataset} object
@@ -501,60 +472,6 @@ export_dataset <- function(data, tags = as.character( c())) {
     .Call(`_rdataset_export_dataset`, data, tags)
 }
 
-#' @title get_bin
-#' @description
-#' Get the names of the sequences in a given bin in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param bin_name, string containing the bin name
-#' @param type a string indicating the type of clusters. Default = "otu".
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_bin(data, "Otu005", "otu")
-#'
-#' @return String, containing names of the sequences in a given bin
-get_bin <- function(data, bin_name, type = "otu") {
-    .Call(`_rdataset_get_bin`, data, bin_name, type)
-}
-
-#' @title get_bin_abundance
-#' @description
-#' Get the abundance of a given bin in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param bin_name, string containing the bin name
-#' @param bin_type a string indicating the type of clusters. Default = "otu".
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_bin_abundance(data, "Otu005", "otu")
-#'
-#' @return double, containing the abundance of a given bin
-get_bin_abundance <- function(data, bin_name, bin_type = "otu") {
-    .Call(`_rdataset_get_bin_abundance`, data, bin_name, bin_type)
-}
-
-#' @title get_bin_abundances
-#' @description
-#' Get the abundance of a given bin parsed by sample in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param bin_name, string containing the bin name
-#' @param type, string indicating the type of clusters. Default = "otu".
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_bin_abundances(data, "Otu005", "otu")
-#'
-#' @return vector containing the abundance of a given bin parsed by sample
-get_bin_abundances <- function(data, bin_name, type = "otu") {
-    .Call(`_rdataset_get_bin_abundances`, data, bin_name, type)
-}
-
 #' @title get_bin_representative_sequences
 #' @description
 #' Get the representative sequences of the bins in a \link{dataset} object
@@ -636,40 +553,6 @@ get_list <- function(data, type = "otu") {
 #' separated by commas
 get_list_vector <- function(data, type = "otu") {
     .Call(`_rdataset_get_list_vector`, data, type)
-}
-
-#' @title get_rabund
-#' @description
-#' Get data.frame containing bin abundance data in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type a string indicating the type of bin assignments. Default "otu".
-#' @examples
-#'
-#'   data <- miseq_sop_example()
-#'   get_rabund(data)
-#'
-#' @return a 2 column data.frame containing bin names and bin abundances
-get_rabund <- function(data, type = "otu") {
-    .Call(`_rdataset_get_rabund`, data, type)
-}
-
-#' @title get_rabund_vector
-#' @description
-#' Get vector containing bin abundance data in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type a string indicating the type of bin assignments. Default "otu".
-#' @examples
-#'
-#'   data <- miseq_sop_example()
-#'   get_rabund_vector(data)
-#'
-#' @return vector containing each bins abundance
-get_rabund_vector <- function(data, type = "otu") {
-    .Call(`_rdataset_get_rabund_vector`, data, type)
 }
 
 #' @title report
@@ -772,58 +655,6 @@ get_sample_treatment_assignments <- function(data) {
     .Call(`_rdataset_get_sample_treatment_assignments`, data)
 }
 
-#' @title get_sequence_abundances
-#' @description
-#' Get the total abundance for each sequence in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_sequence_abundances(data)
-#'
-#' @return vector containing the total abundance for each sequence a
-#' \link{dataset} object
-get_sequence_abundances <- function(data) {
-    .Call(`_rdataset_get_sequence_abundances`, data)
-}
-
-#' @title get_sequence_abundances_by_sample
-#' @description
-#' Get the abundances of each sequence in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_sequence_abundances_by_sample(data)
-#'
-#' @return 2D vector ([num_seqs][num_samples]) containing the
-#' abundances of each sequence in an instance of the 'Dataset' class parsed by
-#' sample.
-get_sequence_abundances_by_sample <- function(data) {
-    .Call(`_rdataset_get_sequence_abundances_by_sample`, data)
-}
-
-#' @title get_sequence_abundance_table
-#' @description
-#' Get the abundances of each sequence in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_sequence_abundance_table(data)
-#'
-#' @return data.frame containing sequence abundance data in a \link{dataset}
-#' object
-get_sequence_abundance_table <- function(data) {
-    .Call(`_rdataset_get_sequence_abundance_table`, data)
-}
-
 #' @title get_sequences
 #' @description
 #' Get the nucleotide strings for each sequence in a \link{dataset} object
@@ -866,41 +697,6 @@ get_sequences <- function(data, sample = "") {
 #' 'scrap_summary' table if sequences have been removed
 get_sequence_summary <- function(data) {
     .Call(`_rdataset_get_sequence_summary`, data)
-}
-
-#' @title get_bin_assignments
-#' @description
-#' Get data.frame containing bin abundance data of a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type a string indicating the type of bin assignments. Default "otu".
-#' @examples
-#'
-#'   data <- miseq_sop_example()
-#'   get_bin_assignments(data, "otu")
-#'
-#' @return data.frame containing 2, 3 or 4 columns: bin_names, abundances,
-#' samples (if assigned), and treatments (if assigned)
-get_bin_assignments <- function(data, type = "otu") {
-    .Call(`_rdataset_get_bin_assignments`, data, type)
-}
-
-#' @title get_shared_vector
-#' @description
-#' Get 2D vector containing bin abundance data by sample in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object.
-#' @param type a string indicating the type of bin assignments. Default "otu".
-#' @examples
-#'
-#'  data <- miseq_sop_example()
-#'  get_shared_vector(data)
-#'
-#' @return 2D vector ([num_bins][num_samples]) containing the abundances of
-#' each bin parsed by sample.
-get_shared_vector <- function(data, type = "otu") {
-    .Call(`_rdataset_get_shared_vector`, data, type)
 }
 
 #' @title has_sample
@@ -951,30 +747,54 @@ is_aligned <- function(data) {
     .Call(`_rdataset_is_aligned`, data)
 }
 
-#' @title totals
+#' @title xdev_abundance
 #' @description
-#' Find the total number of sequences in your samples or treatments in a
-#' \link{dataset} object
+#' Get a table containing the requested abundance data in a \link{dataset}
+#' object
 #'
 #' @param data, a \link{dataset} object
 #'
-#' @param type, string containing the type of data you want the totals of.
-#' Options include: "samples", "treatments".
-#' Default = "samples".
+#' @param type, string containing the type of data you want the number of.
+#' Options include: "sequences", "bins".
+#' Default = "sequences".
+#'
+#' @param bin_type, string containing the bin type you would like the number of
+#' bins for. Default = "otu".
+#'
+#' @param by_sample, Boolean. When by_sample is TRUE, the abundance data will
+#' be parsed by sample. Default = FALSE.
 #'
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
 #'
-#' # To get a table with the sample totals in the dataset
-#' totals(data = miseq, type = "samples")
+#' # To the total abundance for each sequence
+#' xdev_abundance(data = miseq, type = "sequences")
 #'
-#' # To get a table with the treatment totals in the dataset
-#' totals(data = miseq, type = "treatments")
+#' # To the total abundance for each sequence parsed by sample
+#' xdev_abundance(data = miseq, type = "sequences", by_sample = TRUE)
+#'
+#' # To the total abundance for each "otu" bin
+#' xdev_abundance(data = miseq, type = "bins", bin_type = "otu")
+#'
+#' # To the total abundance for each "otu" bin parsed by sample
+#' xdev_abundance(data = miseq, type = "bins", bin_type = "otu", by_sample = TRUE)
+#'
+#' # To the total abundance for each "asv" bin
+#' xdev_abundance(data = miseq, type = "bins", bin_type = "asv")
+#'
+#' # To the total abundance for each "asv" bin parsed by sample
+#' xdev_abundance(data = miseq, type = "bins", bin_type = "asv", by_sample = TRUE)
+#'
+#' # To the total abundance of each sample
+#' xdev_abundance(data = miseq, type = "samples")
+#'
+#' # To the total abundance of each treatment
+#' xdev_abundance(data = miseq, type = "treatments")
 #'
 #' @return data.frame
-totals <- function(data, type = "samples") {
-    .Call(`_rdataset_totals`, data, type)
+xdev_abundance <- function(data, type = "sequence", bin_type = "otu", by_sample = FALSE) {
+    .Call(`_rdataset_xdev_abundance`, data, type, bin_type, by_sample)
 }
 
 #' @title xdev_count
@@ -1384,7 +1204,7 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #'
 #' assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
 #'                                            abundances = abunds))
-#' get_sequence_abundances(data = data)
+#' abundance(data = data, type = "sequences")
 #'
 #' seqs_to_update <- c("seq1", "seq3")
 #' new_abunds <- c(1000, 100)
@@ -1393,7 +1213,7 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #'                    sequence_names = seqs_to_update,
 #'                    sequence_abundances = new_abunds)
 #'
-#' get_sequence_abundances(data = data)
+#' abundance(data = data, type = "sequences")
 #'
 xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason = "update") {
     invisible(.Call(`_rdataset_xdev_set_abundance`, data, sequence_names, sequence_abundances, reason))
@@ -1464,8 +1284,7 @@ xdev_set_abundances <- function(data, sequence_names, abundances, reason = "upda
 #'   assign_bins(data = data, table = data.frame(bin_names = bin_ids,
 #'                                               abundances = abundances))
 #'
-#'   get_bin_abundance(data, "bin1")
-#'   get_bin_abundance(data, "bin2")
+#'   abundance(data, type = "bins")
 #'
 #'   # Now we can use set_bin_abundance to change the abundances of bin1 and
 #'   # bin2
@@ -1477,8 +1296,7 @@ xdev_set_abundances <- function(data, sequence_names, abundances, reason = "upda
 #'                          bin_names = bins,
 #'                          abundances = new_abunds)
 #'
-#'   get_bin_abundance(data, "bin1")
-#'   get_bin_abundance(data, "bin2")
+#'   abundance(data, type = "bins")
 #'
 xdev_set_bin_abundance <- function(data, bin_names, abundances, type = "otu", reason = "update") {
     invisible(.Call(`_rdataset_xdev_set_bin_abundance`, data, bin_names, abundances, type, reason))
@@ -1515,8 +1333,8 @@ xdev_set_bin_abundance <- function(data, bin_names, abundances, type = "otu", re
 #'                                               abundances = sample_abundances,
 #'                                               samples = samples))
 #'
-#'   # You can see bin1's abundances parsed by sample using get_bin_abundances:
-#'   get_bin_abundances(data = data, bin_name = "bin1")
+#'   # You can see bin1's abundances parsed by sample using abundance:
+#'   abundance(data, type = "bins", by_sample = TRUE)
 #'
 #'   # You can change bin1's abundances as follows:
 #'
@@ -1527,7 +1345,7 @@ xdev_set_bin_abundance <- function(data, bin_names, abundances, type = "otu", re
 #'                           bin_names = bins,
 #'                           abundances = new_bin1_abunds)
 #'
-#'   get_bin_abundances(data = data, bin_name = "bin1")
+#'   abundance(data, type = "bins", by_sample = TRUE)
 #'
 xdev_set_bin_abundances <- function(data, bin_names, abundances, type = "otu", reason = "update") {
     invisible(.Call(`_rdataset_xdev_set_bin_abundances`, data, bin_names, abundances, type, reason))

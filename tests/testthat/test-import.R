@@ -37,12 +37,12 @@ test_that("import - miseq_sop_example", {
   )
   expect_equal(count(dataset_t, "bins", "asv"), count(miseq, "bins", "asv"))
   expect_equal(
-    totals(dataset_t),
-    totals(miseq)
+    abundance(dataset_t, type = "samples"),
+    abundance(miseq, type = "samples")
   )
   expect_equal(
-    totals(dataset_t, "treatments"),
-    totals(miseq, "treatments")
+    abundance(dataset_t, "treatments"),
+    abundance(miseq, "treatments")
   )
 
   dfd <- get_bin_representative_sequences(dataset_t)
@@ -59,7 +59,13 @@ test_that("import - miseq_sop_example", {
   dataset_t <- import_dataset(exported_miseq, c("bin_data"))
 
   # abundances reflect the total abundance of the sequence in bin
-  expect_equal(get_rabund(dataset_t, "asv")$abundance[1:3], c(7436, 6285, 5207))
+  abundance(dataset_t,
+    type = "bins", bin_type = "asv"
+  )[[2]][1:3]
+  expect_equal(
+    abundance(dataset_t, type = "bins", bin_type = "asv")[[2]][1:3],
+    c(7436, 6285, 5207)
+  )
   # no list, since no sequences
   expect_equal(get_list(dataset_t, "asv"), data.frame())
   expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())

@@ -2,7 +2,7 @@
 #include "../inst/include/rdataset.h"
 #include "dataset.h"
 
-context("Dataset class C++ unit tests") {
+ context("Dataset class C++ unit tests") {
 
     test_that("Tests dataset.h utils") {
         vector<float> vector_with_dups(10, 1);
@@ -151,7 +151,7 @@ context("Dataset class C++ unit tests") {
         expect_true(1 == Rcpp::as<vector<int>>(df[5])[6]);
 
         // no treatment data
-        Rcpp::DataFrame countTable = data.getSequenceAbundanceTable();
+        Rcpp::DataFrame countTable = data.getSequenceAbundances(true);
 
         expect_true(countTable.size() == 2);
 
@@ -180,7 +180,7 @@ context("Dataset class C++ unit tests") {
         data.assignSequenceAbundance(ids, abunds);
         expect_true(data.getTotal() == 1150);
 
-        countTable = data.getSequenceAbundanceTable();
+        countTable = data.getSequenceAbundances(true);
 
         expect_true(countTable.size() == 2);
 
@@ -285,7 +285,7 @@ context("Dataset class C++ unit tests") {
         expect_true(parsed[2] == seqs);
 
         // no treatment data
-        Rcpp::DataFrame countTable = data.getSequenceAbundanceTable();
+        Rcpp::DataFrame countTable = data.getSequenceAbundances(true);
 
         expect_true(ids == Rcpp::as<vector<string>>(countTable[0]));
         expect_true(abunds == Rcpp::as<vector<float>>(countTable[1]));
@@ -343,7 +343,7 @@ context("Dataset class C++ unit tests") {
         expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getTreatments() == uniqueTreatments);
 
-        countTable = data.getSequenceAbundanceTable();
+        countTable = data.getSequenceAbundances(true);
 
         expect_true(countTable.size() == 4);
 
@@ -351,11 +351,6 @@ context("Dataset class C++ unit tests") {
         expect_true(abunds == Rcpp::as<vector<float>>(countTable[1]));
         expect_true(samples == Rcpp::as<vector<string>>(countTable[2]));
         expect_true(treatments == Rcpp::as<vector<string>>(countTable[3]));
-        expect_true(data.getBinIds() == nullVector);
-        expect_true(data.getBinAbundances("otu1") == nullFloatVector);
-        expect_true(data.getBinAbundance("otu1") == 0);
-        expect_true(data.getBin("otu1") == "");
-
     }
 
     test_that("Tests mergeSeqs, getScrapReport, getScrapSummary") {
@@ -434,7 +429,8 @@ context("Dataset class C++ unit tests") {
         seqTotals[2] = 25;
         seqTotals[3] = 4;
 
-        expect_true(data.getSequenceAbundances() == seqTotals);
+        Rcpp::DataFrame df = data.getSequenceAbundances(false);
+        expect_true(Rcpp::as<vector<float>>(df[1]) == seqTotals);
 
         vector<string> seqsToMerge(2, "seq2");
         seqsToMerge[0] = "seq1";
@@ -447,7 +443,8 @@ context("Dataset class C++ unit tests") {
         seqTotals[1] = 25;
         seqTotals[2] = 4;
 
-        expect_true(data.getSequenceAbundances() == seqTotals);
+        df = data.getSequenceAbundances(false);
+        expect_true(Rcpp::as<vector<float>>(df[1]) == seqTotals);
         expect_true(data.numUnique == 3);
         expect_true(data.getTotal() == 1269);
 
@@ -490,9 +487,9 @@ context("Dataset class C++ unit tests") {
         // mothur count file
         // Representative_Sequence     total   sample2	sample3	sample4
         // seq1	1150	250	400	500
-        // seq2	90	0	40	50
-        // seq3	25	0	25	0
-        // seq4	4	0	0	4
+        // seq2	90	    0	40	50
+        // seq3	25	    0	25	0
+        // seq4	4	    0	0	4
 
         // as a sample table
         vector<string> ids(7, "");
@@ -591,19 +588,15 @@ context("Dataset class C++ unit tests") {
         uniqueTreatments[0] = "late";
 
         expect_true(data.getTreatments() == uniqueTreatments);
-        expect_true(data.getAbundance("seq1") == 0);
-        expect_true(data.getAbundance("seq2") == 0);
-        expect_true(data.getAbundance("seq3") == 25);
-        expect_true(data.getAbundance("seq4") == 4);
+        vector<float> actual = Rcpp::as<vector<float>>(data.getSequenceAbundances()[1]);
+        vector<float> expected = {25,4};
+        expect_true(actual == expected);
 
-        abunds.resize(2, 0);
+        abunds.resize(1, 0);
         abunds[0] = 25;
-        abunds[1] = 0;
-        expect_true(data.getAbundances("seq3") == abunds);
 
-        abunds[0] = 0;
-        abunds[1] = 4;
-        expect_true(data.getAbundances("seq4") == abunds);
+        actual = Rcpp::as<vector<float>>(data.getSequenceAbundances(true)[1]);
+        expect_true(actual == expected);
 
         Rcpp::DataFrame scrapReport = data.getScrapReport();
         expect_true(scrapReport.size() == 2);
@@ -827,7 +820,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 4);
     }
 
-    // // Bin tests
+        // Bin tests
      test_that("Tests assignBins, getBinIds, getList, getRabund, getShared") {
 
         Dataset data("mydata", 1);
@@ -837,7 +830,7 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getNumSamples() == 0);
         expect_true(data.numUnique == 0);
 
-        expect_true(data.getRAbund().size() == 0);
+        expect_true(data.getBinAbundances().size() == 0);
 
         vector<string> otuNames(10, "otu1");
         otuNames[1] = "otu2";
@@ -859,166 +852,9 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getBinIds() == otuNames);
 
         expect_true(data.getList().size() == 0);
-        Rcpp::DataFrame rabund = data.getRAbund();
+        Rcpp::DataFrame rabund = data.getBinAbundances();
         expect_true(otuNames == Rcpp::as<vector<string>>(rabund[0]));
         expect_true(abundances == Rcpp::as<vector<float>>(rabund[1]));
-
-        // no sequence data was given
-        expect_true(data.getBin("otu1") == "");
-        expect_true(data.getBinAbundance("otu1") == 10);
-        vector<float> temp(1, 10);
-        expect_true(data.getBinAbundances("otu1") == temp);
-
-        data.clear();
-
-        // test adding otuNames, seqNames, abundances (list)
-        vector<string> seqNames(10, "");
-        otuNames[0] = "otu1";   seqNames[0] = "seq1";
-        otuNames[1] = "otu1";   seqNames[1] = "seq2";
-        otuNames[2] = "otu1";   seqNames[2] = "seq3";
-        otuNames[3] = "otu2";   seqNames[3] = "seq4";
-        otuNames[4] = "otu2";   seqNames[4] = "seq5";
-        otuNames[5] = "otu3";   seqNames[5] = "seq6";
-        otuNames[6] = "otu4";   seqNames[6] = "seq10";
-        otuNames[7] = "otu4";   seqNames[7] = "seq7";
-        otuNames[8] = "otu4";   seqNames[8] = "seq8";
-        otuNames[9] = "otu4";   seqNames[9] = "seq9";
-
-        data.assignBins(otuNames, abundances, nullVector, seqNames);
-
-        expect_true(data.getTotal() == 100);
-        expect_true(data.getNumBins() == 4);
-        expect_true(data.numUnique == 10);
-
-        expect_true(data.getBin("otu1") == "seq1,seq2,seq3");
-        expect_true(data.getBin("otu2") == "seq4,seq5");
-        expect_true(data.getBin("otu3") == "seq6");
-        expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
-        expect_true(data.getListVector()[0] == "seq1,seq2,seq3");
-        expect_true(data.getListVector()[1] == "seq4,seq5");
-        expect_true(data.getListVector()[2] == "seq6");
-        expect_true(data.getListVector()[3] == "seq10,seq7,seq8,seq9");
-        expect_true(data.getBinAbundance("otu1") == 30);
-        expect_true(data.getBinAbundance("otu2") == 20);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 40);
-        temp[0] = 20;
-        expect_true(data.getBinAbundances("otu2") == temp);
-        expect_true(data.getShared().size() == 0);
-
-        vector<string> otuIds(4, "otu1");
-        otuIds[1] = "otu2";
-        otuIds[2] = "otu3";
-        otuIds[3] = "otu4";
-
-        expect_true(data.getBinIds() == otuIds);
-
-        Rcpp::DataFrame list = data.getList();
-        expect_true(otuNames == Rcpp::as<vector<string>>(list[0]));
-        expect_true(seqNames == Rcpp::as<vector<string>>(list[1]));
-
-        // test adding otuNames abundances, samples (shared)
-        otuNames.resize(15, "otu1");
-        abundances.resize(15, 10);
-        vector<string> samples(15, "sample1");
-        otuNames[0] = "otu1";   samples[0] = "sample1";  abundances[0] = 10;
-        otuNames[1] = "otu1";   samples[1] = "sample2";  abundances[1] = 10;
-        otuNames[2] = "otu1";   samples[2] = "sample4";  abundances[2] = 5;
-        otuNames[3] = "otu1";   samples[3] = "sample5";  abundances[3] = 5;
-        otuNames[4] = "otu2";   samples[4] = "sample1";  abundances[4] = 5;
-        otuNames[5] = "otu2";   samples[5] = "sample2";  abundances[5] = 5;
-        otuNames[6] = "otu2";   samples[6] = "sample4";  abundances[6] = 10;
-        otuNames[7] = "otu3";   samples[7] = "sample1";  abundances[7] = 1;
-        otuNames[8] = "otu3";   samples[8] = "sample3";  abundances[8] = 2;
-        otuNames[9] = "otu3";   samples[9] = "sample5";  abundances[9] = 3;
-        otuNames[10] = "otu3";   samples[10] = "sample6";  abundances[10] = 4;
-        otuNames[11] = "otu4";   samples[11] = "sample1";  abundances[11] = 20;
-        otuNames[12] = "otu4";   samples[12] = "sample2";  abundances[12] = 10;
-        otuNames[13] = "otu4";   samples[13] = "sample4";  abundances[13] = 5;
-        otuNames[14] = "otu4";   samples[14] = "sample5";  abundances[14] = 5;
-
-        // add shared data
-        data.assignBins(otuNames, abundances, samples);
-
-        vector<string> uniqueSamples(6, "");
-        uniqueSamples[0] = "sample1";
-        uniqueSamples[1] = "sample2";
-        uniqueSamples[2] = "sample3";
-        uniqueSamples[3] = "sample4";
-        uniqueSamples[4] = "sample5";
-        uniqueSamples[5] = "sample6";
-
-        // assign treatments differently
-        vector<string> treatments(6, "early");
-
-        data.assignTreatments(uniqueSamples, treatments);
-
-        vector<double> treatmentTotals(1, 0);
-        treatmentTotals[0] = 100;
-
-        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
-        expect_true(data.getTreatments() == unique(treatments));
-        expect_true(data.getNumTreatments() == 1);
-        expect_true(data.getNumSamples() == 6);
-
-        treatments[3] = "late";
-        treatments[4] = "late";
-        treatments[5] = "late";
-
-        data.assignTreatments(uniqueSamples, treatments);
-
-        treatmentTotals.resize(2, 0);
-        treatmentTotals[0] = 63;
-        treatmentTotals[1] = 37;
-
-        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
-        expect_true(data.getTreatments() == unique(treatments));
-        expect_true(data.getNumTreatments() == 2);
-        expect_true(data.getNumSamples() == 6);
-
-        Rcpp::DataFrame shared = data.getShared();
-        expect_true(otuNames == Rcpp::as<vector<string>>(shared[0]));
-        expect_true(abundances == Rcpp::as<vector<float>>(shared[1]));
-        expect_true(samples == Rcpp::as<vector<string>>(shared[2]));
-
-        uniqueSamples.push_back("SampleNotInDataset");
-        treatments.push_back("badEntry");
-
-        data.assignTreatments(uniqueSamples, treatments);
-
-        // ignored bad entry
-        expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
-        expect_true(data.getNumTreatments() == 2);
-        expect_true(data.getNumSamples() == 6);
-
-        expect_true(data.getTotal() == 100);
-        expect_true(data.getNumBins() == 4);
-        expect_true(data.numUnique == 10);
-        expect_true(data.getNumSamples() == 6);
-
-        vector<double> sampleTotals(6, 0);
-        sampleTotals[0] = 36;
-        sampleTotals[1] = 25;
-        sampleTotals[2] = 2;
-        sampleTotals[3] = 20;
-        sampleTotals[4] = 13;
-        sampleTotals[5] = 4;
-
-        expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
-        expect_true(data.getBinIds() == otuIds);
-        expect_true(data.getSamples() == unique(samples));
-
-        expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
-        expect_true(data.getBinAbundance("otu1") == 30);
-        expect_true(data.getBinAbundance("otu2") == 20);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 40);
-        expect_true(data.getBinAbundances("badotu") == nullFloatVector);
-        temp.resize(6, 0);
-        temp[0] = 5;
-        temp[1] = 5;
-        temp[3] = 10;
-        expect_true(data.getBinAbundances("otu2") == temp);
 
         otuNames.clear();
         expect_error(data.assignBins(otuNames, abundances));
@@ -1053,10 +889,8 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getBinIds() == otuNames);
 
         // no sequence data was given
-        expect_true(data.getBin("otu1") == "");
-        expect_true(data.getBinAbundance("otu1") == 10);
-        vector<float> temp(1, 10);
-        expect_true(data.getBinAbundances("otu1") == temp);
+        expect_true(data.getList().size() == 0);
+        expect_true(Rcpp::as<vector<float>>(data.getBinAbundances()[1])[0] == 10); // otu1
 
         // merge otus without seqs or samples
         vector<string> otusToMerge(4, "otu1");
@@ -1068,11 +902,10 @@ context("Dataset class C++ unit tests") {
 
         expect_true(data.getTotal() == 100);
         expect_true(data.getNumBins() == 7);
-        expect_true(data.getBinAbundance("otu1") == 40);
-        expect_true(data.getBinAbundance("otu2") == 0);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 0);
-        expect_true(data.getBinAbundance("otu6") == 0);
+        vector<float> binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expect_true(binAbundances[0] == 40); // otu1
+        expect_true(binAbundances[1] == 10); // otu3
+        expect_true(binAbundances.size() == 7);
         data.clear();
 
         // test adding otuNames, seqNames, abundances (list)
@@ -1094,16 +927,10 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getNumBins() == 4);
         expect_true(data.numUnique == 10);
 
-        expect_true(data.getBin("otu1") == "seq1,seq2,seq3");
-        expect_true(data.getBin("otu2") == "seq4,seq5");
-        expect_true(data.getBin("otu3") == "seq6");
-        expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
-        expect_true(data.getBinAbundance("otu1") == 30);
-        expect_true(data.getBinAbundance("otu2") == 20);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 40);
-        temp[0] = 20;
-        expect_true(data.getBinAbundances("otu2") == temp);
+        vector<float> expected = {30,20,10,40};
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+
+        expect_true(binAbundances == expected);
 
         vector<string> otuIds(4, "otu1");
         otuIds[1] = "otu2";
@@ -1124,16 +951,15 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getNumBins() == 3);
         expect_true(data.numUnique == 10);
 
-        expect_true(data.getBin("otu1") == "seq1,seq2,seq3");
-        expect_true(data.getBin("otu2") == "seq10,seq4,seq5,seq7,seq8,seq9");
-        expect_true(data.getBin("otu3") == "seq6");
-        expect_true(data.getBin("otu4") == "");
-        expect_true(data.getBinAbundance("otu1") == 30);
-        expect_true(data.getBinAbundance("otu2") == 60);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 0);
-        temp[0] = 60;
-        expect_true(data.getBinAbundances("otu2") == temp);
+        vector<string> listVector = data.getListVector();
+        expect_true(listVector[0] == "seq1,seq2,seq3"); // otu1
+        expect_true(listVector[1] == "seq10,seq4,seq5,seq7,seq8,seq9"); // otu2
+        expect_true(listVector[2] == "seq6"); // otu2
+        expect_true(listVector.size() == 3);
+
+        expected = {30,60,10};
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expect_true(binAbundances == expected);
         expect_true(data.getTotal() == 100);
 
         // remove sequence that will remove otu
@@ -1145,9 +971,11 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 90);
         expect_true(data.getNumBins() == 2);
         expect_true(data.numUnique == 9);
-        expect_true(data.getBinAbundance("otu3") == 0);
-        expect_true(data.getBinAbundance("otu2") == 60);
-        expect_true(data.getBin("otu3") == "");
+
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expected = {30,60};
+        expect_true(binAbundances == expected);
+        expect_true(binAbundances.size() == 2);
 
         // remove otu by setting abundance to 0
         vector<string> testRemove(1, "otu2");
@@ -1158,8 +986,11 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 30);
         expect_true(data.getNumBins() == 1);
         expect_true(data.numUnique == 3);
-        expect_true(data.getBinAbundance("otu2") == 0);
-        expect_true(data.getBin("otu2") == "");
+
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expected = {30};
+        expect_true(binAbundances == expected);
+        expect_true(binAbundances.size() == 1);
 
         // test adding otuNames abundances, samples and seqids
         data.clear();
@@ -1199,10 +1030,10 @@ context("Dataset class C++ unit tests") {
 
         data.assignTreatments(uniqueSamples, treatments);
 
-        expect_true(data.getBinAbundance("otu1") == 30);
-        expect_true(data.getBinAbundance("otu2") == 60);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 0);
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expected = {30,60,10};
+        expect_true(binAbundances == expected);
+        expect_true(binAbundances.size() == 3);
 
         vector<double> treatmentTotals(1, 0);
         treatmentTotals[0] = 100;
@@ -1252,35 +1083,24 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getBinIds() == otuIds);
         expect_true(data.getSamples() == unique(samples));
 
-        expect_true(data.getBin("otu4") == "");
-        expect_true(data.getBin("otu2") == "seq4,seq5,seq6,seq7,seq8,seq9");
-        expect_true(data.getBin("otu1") == "seq1,seq2,seq3");
-        expect_true(data.getBin("otu3") == "seq10");
-        expect_true(data.getBinAbundance("otu1") == 30);
-        expect_true(data.getBinAbundance("otu2") == 60);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 0);
-        temp.resize(6, 0);
-        temp[0] = 25;
-        temp[1] = 15;
-        temp[3] = 15;
-        temp[4] = 5;
-        expect_true(data.getBinAbundances("otu2") == temp);
-        expect_true(data.getBinAbundances("badotu") == nullFloatVector);
+        listVector = data.getListVector();
+        expect_true(listVector[1] == "seq4,seq5,seq6,seq7,seq8,seq9"); //otu2
+        expect_true(listVector[0] == "seq1,seq2,seq3"); // otu1
+        expect_true(listVector[2]== "seq10"); //otu3
 
-        auto countMatrix = data.getSeqsAbundsBySample();
-        auto goodNames = data.getSequenceNames();
-        vector<float> abunds(6, 0);
-        //seq1
-        abunds[0] = 10;
-        expect_true(countMatrix[0] == abunds);
-        // seq10
-        abunds[0] = 1; abunds[2] = 2; abunds[4] = 3; abunds[5] = 4;
-        expect_true(countMatrix[1] == abunds);
-        // seq2
-        abunds[0] = 0; abunds[1] = 10;
-        abunds[2] = 0; abunds[4] = 0; abunds[5] = 0;
-        expect_true(countMatrix[2] == abunds);
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expected = {30,60,10};
+        expect_true(binAbundances == expected);
+        expect_true(binAbundances.size() == 3);
+
+        expected = {25,15,15,5}; // otu2
+        Rcpp::DataFrame binAbunds = data.getBinAbundances("otu", true);
+        vector<float> actual = Rcpp::as<vector<float>>(binAbunds[1]);
+        // remove abunds for otu1
+        actual.erase(actual.begin(), actual.begin() + 4);
+        // remove abunds for otu3
+        actual.erase(actual.begin() + 4, actual.end());
+        expect_true(actual == expected);
 
         // remove otu
         vector<string> otusToRemove(2, "otu1");
@@ -1288,11 +1108,10 @@ context("Dataset class C++ unit tests") {
         vector<string> reasonsToRemove(2, "badBin");
         data.removeBins(otusToRemove, reasonsToRemove);
 
-        expect_true(data.getBin("otu1") == "");
-        expect_true(data.getBinAbundance("otu1") == 0);
-        expect_true(data.getBinAbundance("otu2") == 60);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 0);
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expected = {60,10};
+        expect_true(binAbundances == expected);
+        expect_true(binAbundances.size() == 2);
 
         expect_true(data.getTotal() == 70);
         expect_true(data.getNumBins() == 2);
@@ -1356,10 +1175,8 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getBinIds() == otuNames);
 
         // no sequence data was given
-        expect_true(data.getBin("otu1") == "");
-        expect_true(data.getBinAbundance("otu1") == 10);
-        vector<float> temp(1, 10);
-        expect_true(data.getBinAbundances("otu1") == temp);
+        expect_true(data.getList().size() == 0);
+        expect_true(Rcpp::as<vector<float>>(data.getBinAbundances()[1])[0] == 10); // otu1
 
         // set abundance of otus
         vector<string> otusToChange(4, "otu1");
@@ -1375,12 +1192,12 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 110);
         expect_true(data.getNumBins() == 8);
         expect_true(data.numUnique == 0);
-        expect_true(data.getBinAbundance("otu1") == 0);
-        expect_true(data.getBinAbundance("otu2") == 20);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 30);
-        expect_true(data.getBinAbundance("otu6") == 0);
-        data.clear();
+
+       vector<float> binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+       vector<float> expected = {20,10,30,10,10,10,10,10};
+       expect_true(binAbundances == expected);
+       expect_true(binAbundances.size() == 8);
+       data.clear();
 
         // test adding otuNames, seqNames, abundances (list)
         vector<string> seqNames(10, "");
@@ -1401,16 +1218,16 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getNumBins() == 4);
         expect_true(data.numUnique == 10);
 
-        expect_true(data.getBin("otu1") == "seq1,seq2,seq3");
-        expect_true(data.getBin("otu2") == "seq4,seq5");
-        expect_true(data.getBin("otu3") == "seq6");
-        expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
-        expect_true(data.getBinAbundance("otu1") == 30);
-        expect_true(data.getBinAbundance("otu2") == 20);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 40);
-        temp[0] = 20;
-        expect_true(data.getBinAbundances("otu2") == temp);
+        vector<string> list = data.getListVector();
+        expect_true(list[0] == "seq1,seq2,seq3");
+        expect_true(list[1] == "seq4,seq5");
+        expect_true(list[2] == "seq6");
+        expect_true(list[3] == "seq10,seq7,seq8,seq9");
+
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expected = {30,20,10,40};
+        expect_true(binAbundances == expected);
+        expect_true(binAbundances.size() == 4);
 
         vector<string> seqsToChange(6);
         seqsToChange[0] = "seq1";
@@ -1432,11 +1249,10 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 100);
         expect_true(data.getNumBins() == 3);
         expect_true(data.numUnique == 6);
-        expect_true(data.getBinAbundance("otu1") == 70);
-        expect_true(data.getBinAbundance("otu2") == 20);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 0);
-
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expected = {70,20,10};
+        expect_true(binAbundances == expected);
+        expect_true(binAbundances.size() == 3);
         data.clear();
 
         // test adding otuNames abundances, samples (shared)
@@ -1475,10 +1291,10 @@ context("Dataset class C++ unit tests") {
 
         data.assignTreatments(uniqueSamples, treatments);
 
-        expect_true(data.getBinAbundance("otu1") == 30);
-        expect_true(data.getBinAbundance("otu2") == 60);
-        expect_true(data.getBinAbundance("otu3") == 10);
-        expect_true(data.getBinAbundance("otu4") == 0);
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expected = {30,60,10};
+        expect_true(binAbundances == expected);
+        expect_true(binAbundances.size() == 3);
 
         vector<double> treatmentTotals(2, 0);
         treatmentTotals[0] = 63;
@@ -1498,10 +1314,10 @@ context("Dataset class C++ unit tests") {
 
         data.setBinAbundances(otusToChange, abunds);
 
-        expect_true(data.getBinAbundance("otu1") == 0);
-        expect_true(data.getBinAbundance("otu2") == 60);
-        expect_true(data.getBinAbundance("otu3") == 6);
-        expect_true(data.getBinAbundance("otu4") == 0);
+        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expected = {60,6};
+        expect_true(binAbundances == expected);
+        expect_true(binAbundances.size() == 2);
         expect_true(data.getTotal() == 66);
         expect_true(data.getNumBins() == 2);
         expect_true(data.getNumSamples() == 5);
@@ -1633,8 +1449,8 @@ context("Dataset class C++ unit tests") {
         expect_true(data.numUnique == 2);
         expect_true(data.getTotal() == 110);
         expect_true(data.getNumBins() == 1);
-        expect_true(data.getBin("otu1") == "seq1,seq2");
-        expect_true(data.getBin("otu2") == "");
+        vector<string> list = data.getListVector();
+        expect_true(list[0] == "seq1,seq2");
         expect_error(data.assignBinTaxonomy(otus, nullVector));
 
         otuReport = data.getBinTaxonomyReport();
@@ -1736,9 +1552,10 @@ context("Dataset class C++ unit tests") {
 
         data.assignTreatments(uniqueSamples, treatments);
 
-        expect_true(data.getBinAbundance("otu1") == 30);
-        expect_true(data.getBinAbundance("otu2") == 60);
-        expect_true(data.getBinAbundance("otu3") == 10);
+        Rcpp::DataFrame binAbunds = data.getBinAbundances();
+        vector<float> actual = Rcpp::as<vector<float>>(binAbunds[1]);
+        vector<float> expected = {30,60,10};
+        expect_true(actual == expected);
 
         vector<double> sampleTotals(6, 0);
         sampleTotals[0] = 36;
@@ -1796,8 +1613,17 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 10);
         expect_true(data.getNumBins() == 4);
         expect_true(data.numUnique == 10);
-        expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
-        expect_true(data.getBinAbundance("otu4") == 4);
+
+        Rcpp::DataFrame binAbunds = data.getBinAbundances();
+        vector<float> actual = Rcpp::as<vector<float>>(binAbunds[1]);
+        vector<float> expected = {3,2,1,4};
+        vector<string> list = data.getListVector();
+
+        expect_true(actual == expected);
+        expect_true(list[0] == "seq1,seq2,seq3");
+        expect_true(list[1] == "seq4,seq5");
+        expect_true(list[2] == "seq6");
+        expect_true(list[3] == "seq10,seq7,seq8,seq9");
 
         // then assigning sequence abundance
         seqNames.resize(15);
@@ -1824,17 +1650,18 @@ context("Dataset class C++ unit tests") {
         expect_true(data.getTotal() == 100);
         expect_true(data.getNumBins() == 4);
         expect_true(data.numUnique == 10);
-        expect_true(data.getBin("otu4") == "seq10,seq7,seq8,seq9");
-        expect_true(data.getBinAbundance("otu4") == 44);
 
+        binAbunds = data.getBinAbundances();
+        actual = Rcpp::as<vector<float>>(binAbunds[1]);
+        expected = {40,11,5,44};
+        expect_true(actual == expected);
+        expect_true(actual.size() == 4);
         vector<string> clearTags(1, "bin_data");
         data.clear(clearTags);
 
         expect_true(data.getTotal() == 100);
         expect_true(data.getNumBins() == 0);
         expect_true(data.numUnique == 10);
-        expect_true(data.getBin("otu4") == "");
-        expect_true(data.getBinAbundance("otu4") == 0);
     }
 
     test_that("Tests assignSequenceTaxonomy forces reclassify") {

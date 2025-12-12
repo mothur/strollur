@@ -14,8 +14,58 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
                                    const string& default_column_name,
                                    const string& given_column_name,
                                    string type = "string");
-
-
+/******************************************************************************/
+//' @title xdev_abundance
+//' @description
+//' Get a table containing the requested abundance data in a \link{dataset}
+//' object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param type, string containing the type of data you want the number of.
+//' Options include: "sequences", "bins".
+//' Default = "sequences".
+//'
+//' @param bin_type, string containing the bin type you would like the number of
+//' bins for. Default = "otu".
+//'
+//' @param by_sample, Boolean. When by_sample is TRUE, the abundance data will
+//' be parsed by sample. Default = FALSE.
+//'
+//' @examples
+//'
+//' miseq <- miseq_sop_example()
+//'
+//' # To the total abundance for each sequence
+//' xdev_abundance(data = miseq, type = "sequences")
+//'
+//' # To the total abundance for each sequence parsed by sample
+//' xdev_abundance(data = miseq, type = "sequences", by_sample = TRUE)
+//'
+//' # To the total abundance for each "otu" bin
+//' xdev_abundance(data = miseq, type = "bins", bin_type = "otu")
+//'
+//' # To the total abundance for each "otu" bin parsed by sample
+//' xdev_abundance(data = miseq, type = "bins", bin_type = "otu", by_sample = TRUE)
+//'
+//' # To the total abundance for each "asv" bin
+//' xdev_abundance(data = miseq, type = "bins", bin_type = "asv")
+//'
+//' # To the total abundance for each "asv" bin parsed by sample
+//' xdev_abundance(data = miseq, type = "bins", bin_type = "asv", by_sample = TRUE)
+//'
+//' # To the total abundance of each sample
+//' xdev_abundance(data = miseq, type = "samples")
+//'
+//' # To the total abundance of each treatment
+//' xdev_abundance(data = miseq, type = "treatments")
+//'
+//' @return data.frame
+ //[[Rcpp::export]]
+Rcpp::DataFrame xdev_abundance(Rcpp::Environment data,
+                               string type = "sequence",
+                               string bin_type = "otu",
+                               bool by_sample = false);
 /******************************************************************************/
 //' @title xdev_count
 //' @description
@@ -438,7 +488,7 @@ void xdev_remove_sequences(Rcpp::Environment data,
 //'
 //' assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
 //'                                            abundances = abunds))
-//' get_sequence_abundances(data = data)
+//' abundance(data = data, type = "sequences")
 //'
 //' seqs_to_update <- c("seq1", "seq3")
 //' new_abunds <- c(1000, 100)
@@ -447,7 +497,7 @@ void xdev_remove_sequences(Rcpp::Environment data,
 //'                    sequence_names = seqs_to_update,
 //'                    sequence_abundances = new_abunds)
 //'
-//' get_sequence_abundances(data = data)
+//' abundance(data = data, type = "sequences")
 //'
 //[[Rcpp::export]]
 void xdev_set_abundance(Rcpp::Environment data,
@@ -522,8 +572,7 @@ void xdev_set_abundances(Rcpp::Environment data,
 //'   assign_bins(data = data, table = data.frame(bin_names = bin_ids,
 //'                                               abundances = abundances))
 //'
-//'   get_bin_abundance(data, "bin1")
-//'   get_bin_abundance(data, "bin2")
+//'   abundance(data, type = "bins")
 //'
 //'   # Now we can use set_bin_abundance to change the abundances of bin1 and
 //'   # bin2
@@ -535,8 +584,7 @@ void xdev_set_abundances(Rcpp::Environment data,
 //'                          bin_names = bins,
 //'                          abundances = new_abunds)
 //'
-//'   get_bin_abundance(data, "bin1")
-//'   get_bin_abundance(data, "bin2")
+//'   abundance(data, type = "bins")
 //'
 //[[Rcpp::export]]
 void xdev_set_bin_abundance(Rcpp::Environment data,
@@ -576,8 +624,8 @@ void xdev_set_bin_abundance(Rcpp::Environment data,
 //'                                               abundances = sample_abundances,
 //'                                               samples = samples))
 //'
-//'   # You can see bin1's abundances parsed by sample using get_bin_abundances:
-//'   get_bin_abundances(data = data, bin_name = "bin1")
+//'   # You can see bin1's abundances parsed by sample using abundance:
+//'   abundance(data, type = "bins", by_sample = TRUE)
 //'
 //'   # You can change bin1's abundances as follows:
 //'
@@ -588,7 +636,7 @@ void xdev_set_bin_abundance(Rcpp::Environment data,
 //'                           bin_names = bins,
 //'                           abundances = new_bin1_abunds)
 //'
-//'   get_bin_abundances(data = data, bin_name = "bin1")
+//'   abundance(data, type = "bins", by_sample = TRUE)
 //'
 //[[Rcpp::export]]
 void xdev_set_bin_abundances(Rcpp::Environment data,

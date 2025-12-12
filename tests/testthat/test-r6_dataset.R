@@ -45,13 +45,16 @@ test_that("dataset - intialize from read_mothur / print", {
 
   # remove bin from "phylotype" list and confirm that it removes seqs from all
   # from all list types
-  expect_equal(get_bin_abundance(dataset_t, "Phylo05", "phylotype"), 5337)
-  expect_equal(get_bin_abundance(dataset_t, "Phylo06", "phylotype"), 715)
+  # "Phylo05"
+  df <- abundance(dataset_t, type = "bins", bin_type = "phylotype")
+  expect_equal(df[[2]][5], 5337)
+  # "Phylo06"
+  expect_equal(df[[2]][6], 715)
 
-  phylo05 <- get_bin(dataset_t, "Phylo05", "phylotype")
+  phylo05 <- get_list_vector(dataset_t, "phylotype")[5]
   expect_equal(length(.split_at_char(phylo05)), 54)
 
-  phylo06 <- get_bin(dataset_t, "Phylo06", "phylotype")
+  phylo06 <- get_list_vector(dataset_t, "phylotype")[6]
   expect_equal(length(.split_at_char(phylo06)), 47)
 
   xdev_remove_bins(
@@ -304,18 +307,22 @@ test_that("dataset - addSeqs, assign samples", {
   expect_equal(get_list(data, "asv")$asv_id, c("ASV1", "ASV2", "ASV3", "ASV4"))
   expect_equal(get_list(data, "asv")$seq_id, c("seq1", "seq2", "seq3", "seq4"))
 
-  expect_equal(get_rabund(data)$otu_id, c("bin1", "bin2"))
-  expect_equal(get_rabund(data)$abundance, c(1200, 120))
+  expect_equal(abundance(data, type = "bins")[[1]], c("bin1", "bin2"))
+  expect_equal(abundance(data, type = "bins")[[2]], c(1200, 120))
 
-  expect_equal(get_bin_assignments(data)$bin_names, c(
+  df <- abundance(
+    data = data, type = "bins",
+    bin_type = "otu", by_sample = TRUE
+  )
+  expect_equal(df$bin_names, c(
     "bin1", "bin1", "bin1",
     "bin2", "bin2", "bin2"
   ))
-  expect_equal(get_bin_assignments(data)$samples, c(
+  expect_equal(df$samples, c(
     "sample2", "sample3", "sample4",
     "sample2", "sample3", "sample4"
   ))
-  expect_equal(get_bin_assignments(data)$abundances, c(
+  expect_equal(df$abundances, c(
     275, 425, 500,
     26, 40, 54
   ))
@@ -347,8 +354,8 @@ test_that("dataset - addSeqs, assign samples", {
   sample_summary <- data$get_summary(TRUE)$sample_summary
   treatment_summary <- data$get_summary(TRUE)$treatment_summary
 
-  expect_equal(treatment_summary$total, c(766, 554))
-  expect_equal(sample_summary$total, c(301, 465, 554))
+  expect_equal(treatment_summary$abundances, c(766, 554))
+  expect_equal(sample_summary$abundances, c(301, 465, 554))
 
   # total
   expect_equal(count(data = data, type = "sequences"), 1320)
@@ -528,18 +535,24 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     character()
   )
 
-  rabund <- get_rabund(dataset_t)
+  rabund <- abundance(data = dataset_t, type = "bins", bin_type = "otu")
 
   abunds <- c(111, 525, 80)
   expect_equal(rabund$otu_id, unique(bin_ids))
   expect_equal(rabund$abundance, abunds)
 
   expect_equal(
-    get_rabund_vector(dataset_t, "non_existance_bin_type"),
-    numeric()
+    abundance(
+      data = dataset_t, type = "bins",
+      bin_type = "non_existance_bin_type"
+    ),
+    data.frame()
   )
   expect_equal(
-    get_rabund_vector(dataset_t, "otu"),
+    abundance(
+      data = dataset_t, type = "bins",
+      bin_type = "otu"
+    )[[2]],
     abunds
   )
 
@@ -558,23 +571,21 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     )
   )
 
-  shared <- get_bin_assignments(dataset_t)
+  shared <- abundance(data = dataset_t, type = "bins", by_sample = TRUE)
   expect_equal(shared$bin_names, bin_ids)
   expect_equal(shared$abundances, sample_abundances)
   expect_equal(shared$samples, samples)
   expect_equal(count(data = dataset_t, type = "bins"), 3)
 
   expect_equal(
-    get_bin_assignments(dataset_t, "non_existance_bin_type"),
+    abundance(
+      data = dataset_t,
+      type = "bins", bin_type = "non_existance_bin_type"
+    ),
     data.frame()
   )
-  expect_equal(get_shared_vector(dataset_t, "otu"), list(
-    c(10, 100, 0, 1),
-    c(500, 0, 25, 0),
-    c(80, 0, 0, 0)
-  ))
-  expect_equal(length(get_shared_vector(dataset_t, "bad_type")), 0)
 
+  expect_equal(shared[[2]], c(10, 100, 1, 500, 25, 80))
   expect_true(has_sample(dataset_t, "sample1"))
   expect_false(has_sample(dataset_t, "non_existant_sample"))
 
@@ -612,7 +623,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
   expect_equal(count(dataset_t, "bins"), 3)
   expect_equal(count(dataset_t, "samples"), 6)
   expect_equal(
-    dataset_t$get_summary(TRUE)[["sample_summary"]]$total,
+    dataset_t$get_summary(TRUE)[["sample_summary"]]$abundances,
     c(36, 25, 2, 20, 13, 4)
   )
 
@@ -930,7 +941,6 @@ test_that("dataset - ", {
   ))
 
   expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
-  expect_equal(get_bin_assignments(dataset_t), data.frame())
 
   clear(dataset_t)
 

@@ -32,7 +32,7 @@ write_mothur_rabund <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- get_rabund(data, type)
+    df <- abundance(data = data, type = "bins", bin_type = type)
 
     if (nrow(df) != 0) {
       output_file <- paste0(file_root, ".", type, ".rabund")

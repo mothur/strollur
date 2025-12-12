@@ -12,7 +12,7 @@ test_that("write_mothur - miseq", {
   zip_file <- get_full_name("tmp.zip")
 
   unzip(zip_file, exdir = get_full_name("tmp"), junkpaths = TRUE)
-  print(outputs)
+
   data <- read_mothur(
     fasta = outputs[1],
     count = outputs[3],

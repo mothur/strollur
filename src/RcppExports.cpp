@@ -60,19 +60,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// abundance
-Rcpp::DataFrame abundance(Rcpp::Environment data, string type, bool by_sample);
-RcppExport SEXP _rdataset_abundance(SEXP dataSEXP, SEXP typeSEXP, SEXP by_sampleSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< bool >::type by_sample(by_sampleSEXP);
-    rcpp_result_gen = Rcpp::wrap(abundance(data, type, by_sample));
-    return rcpp_result_gen;
-END_RCPP
-}
 // add_report
 void add_report(Rcpp::Environment data, Rcpp::DataFrame table, string type, string sequence_name);
 RcppExport SEXP _rdataset_add_report(SEXP dataSEXP, SEXP tableSEXP, SEXP typeSEXP, SEXP sequence_nameSEXP) {
@@ -237,45 +224,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// get_bin
-string get_bin(Rcpp::Environment data, string bin_name, string type);
-RcppExport SEXP _rdataset_get_bin(SEXP dataSEXP, SEXP bin_nameSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin(data, bin_name, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_bin_abundance
-double get_bin_abundance(Rcpp::Environment data, string bin_name, string bin_type);
-RcppExport SEXP _rdataset_get_bin_abundance(SEXP dataSEXP, SEXP bin_nameSEXP, SEXP bin_typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin_abundance(data, bin_name, bin_type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_bin_abundances
-vector<float> get_bin_abundances(Rcpp::Environment data, string bin_name, string type);
-RcppExport SEXP _rdataset_get_bin_abundances(SEXP dataSEXP, SEXP bin_nameSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin_abundances(data, bin_name, type));
-    return rcpp_result_gen;
-END_RCPP
-}
 // get_bin_representative_sequences
 Rcpp::DataFrame get_bin_representative_sequences(Rcpp::Environment data, string bin_type);
 RcppExport SEXP _rdataset_get_bin_representative_sequences(SEXP dataSEXP, SEXP bin_typeSEXP) {
@@ -323,30 +271,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// get_rabund
-Rcpp::DataFrame get_rabund(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_rabund(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_rabund(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_rabund_vector
-vector<float> get_rabund_vector(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_rabund_vector(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_rabund_vector(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
 // report
 Rcpp::DataFrame report(Rcpp::Environment data, string type, string bin_type);
 RcppExport SEXP _rdataset_report(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP) {
@@ -371,39 +295,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// get_sequence_abundances
-vector<float> get_sequence_abundances(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_abundances(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_abundances(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_abundances_by_sample
-vector<vector<float> > get_sequence_abundances_by_sample(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_abundances_by_sample(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_abundances_by_sample(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_abundance_table
-Rcpp::DataFrame get_sequence_abundance_table(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_abundance_table(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_abundance_table(data));
-    return rcpp_result_gen;
-END_RCPP
-}
 // get_sequences
 vector<string> get_sequences(Rcpp::Environment data, string sample);
 RcppExport SEXP _rdataset_get_sequences(SEXP dataSEXP, SEXP sampleSEXP) {
@@ -424,30 +315,6 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
     rcpp_result_gen = Rcpp::wrap(get_sequence_summary(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_bin_assignments
-Rcpp::DataFrame get_bin_assignments(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_bin_assignments(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin_assignments(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_shared_vector
-vector<vector<float> > get_shared_vector(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_shared_vector(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_shared_vector(data, type));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -485,15 +352,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// totals
-Rcpp::DataFrame totals(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_totals(SEXP dataSEXP, SEXP typeSEXP) {
+// xdev_abundance
+Rcpp::DataFrame xdev_abundance(Rcpp::Environment data, string type, string bin_type, bool by_sample);
+RcppExport SEXP _rdataset_xdev_abundance(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP, SEXP by_sampleSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(totals(data, type));
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< bool >::type by_sample(by_sampleSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_abundance(data, type, bin_type, by_sample));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -753,7 +622,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_new_dataset", (DL_FUNC) &_rdataset_new_dataset, 2},
     {"_rdataset_new_reference", (DL_FUNC) &_rdataset_new_reference, 5},
     {"_rdataset_copy_dataset", (DL_FUNC) &_rdataset_copy_dataset, 1},
-    {"_rdataset_abundance", (DL_FUNC) &_rdataset_abundance, 3},
     {"_rdataset_add_report", (DL_FUNC) &_rdataset_add_report, 4},
     {"_rdataset_add_references", (DL_FUNC) &_rdataset_add_references, 7},
     {"_rdataset_add_sequences", (DL_FUNC) &_rdataset_add_sequences, 6},
@@ -765,28 +633,18 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_assign_treatments", (DL_FUNC) &_rdataset_assign_treatments, 4},
     {"_rdataset_clear", (DL_FUNC) &_rdataset_clear, 2},
     {"_rdataset_export_dataset", (DL_FUNC) &_rdataset_export_dataset, 2},
-    {"_rdataset_get_bin", (DL_FUNC) &_rdataset_get_bin, 3},
-    {"_rdataset_get_bin_abundance", (DL_FUNC) &_rdataset_get_bin_abundance, 3},
-    {"_rdataset_get_bin_abundances", (DL_FUNC) &_rdataset_get_bin_abundances, 3},
     {"_rdataset_get_bin_representative_sequences", (DL_FUNC) &_rdataset_get_bin_representative_sequences, 2},
     {"_rdataset_get_bin_types", (DL_FUNC) &_rdataset_get_bin_types, 1},
     {"_rdataset_get_list", (DL_FUNC) &_rdataset_get_list, 2},
     {"_rdataset_get_list_vector", (DL_FUNC) &_rdataset_get_list_vector, 2},
-    {"_rdataset_get_rabund", (DL_FUNC) &_rdataset_get_rabund, 2},
-    {"_rdataset_get_rabund_vector", (DL_FUNC) &_rdataset_get_rabund_vector, 2},
     {"_rdataset_report", (DL_FUNC) &_rdataset_report, 3},
     {"_rdataset_get_sample_treatment_assignments", (DL_FUNC) &_rdataset_get_sample_treatment_assignments, 1},
-    {"_rdataset_get_sequence_abundances", (DL_FUNC) &_rdataset_get_sequence_abundances, 1},
-    {"_rdataset_get_sequence_abundances_by_sample", (DL_FUNC) &_rdataset_get_sequence_abundances_by_sample, 1},
-    {"_rdataset_get_sequence_abundance_table", (DL_FUNC) &_rdataset_get_sequence_abundance_table, 1},
     {"_rdataset_get_sequences", (DL_FUNC) &_rdataset_get_sequences, 2},
     {"_rdataset_get_sequence_summary", (DL_FUNC) &_rdataset_get_sequence_summary, 1},
-    {"_rdataset_get_bin_assignments", (DL_FUNC) &_rdataset_get_bin_assignments, 2},
-    {"_rdataset_get_shared_vector", (DL_FUNC) &_rdataset_get_shared_vector, 2},
     {"_rdataset_has_sample", (DL_FUNC) &_rdataset_has_sample, 2},
     {"_rdataset_has_sequence_strings", (DL_FUNC) &_rdataset_has_sequence_strings, 1},
     {"_rdataset_is_aligned", (DL_FUNC) &_rdataset_is_aligned, 1},
-    {"_rdataset_totals", (DL_FUNC) &_rdataset_totals, 2},
+    {"_rdataset_xdev_abundance", (DL_FUNC) &_rdataset_xdev_abundance, 4},
     {"_rdataset_xdev_count", (DL_FUNC) &_rdataset_xdev_count, 5},
     {"_rdataset_xdev_get_by_sample", (DL_FUNC) &_rdataset_xdev_get_by_sample, 3},
     {"_rdataset_xdev_merge_bins", (DL_FUNC) &_rdataset_xdev_merge_bins, 4},

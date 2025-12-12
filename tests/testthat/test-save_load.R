@@ -51,12 +51,12 @@ test_that("clone - deep copy of dataset object", {
     count(temp, "bins", "asv")
   )
   expect_equal(
-    totals(dataset),
-    totals(temp)
+    abundance(dataset, "samples"),
+    abundance(temp, "samples")
   )
   expect_equal(
-    totals(dataset, "treatments"),
-    totals(temp, "treatments")
+    abundance(dataset, "treatments"),
+    abundance(temp, "treatments")
   )
 
   expect_error(load_dataset("non_existant_file.rds"))

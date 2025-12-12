@@ -41,8 +41,7 @@ without sample data.
   assign_bins(data = data, table = data.frame(bin_names = bin_ids,
                                               abundances = abundances))
 
-  get_bin_abundance(data, "bin1")
-  get_bin_abundance(data, "bin2")
+  abundance(data, type = "bins")
 
   # Now we can use set_bin_abundance to change the abundances of bin1 and
   # bin2
@@ -54,7 +53,6 @@ without sample data.
                          bin_names = bins,
                          abundances = new_abunds)
 
-  get_bin_abundance(data, "bin1")
-  get_bin_abundance(data, "bin2")
+  abundance(data, type = "bins")
 
 }

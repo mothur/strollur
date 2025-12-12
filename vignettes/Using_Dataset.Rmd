@@ -20,51 +20,138 @@ The *rdataset* package stores the data associated with your microbial DNA analys
 library(rdataset)
 ```
 
-We can use the **miseq_sop_example** function to create a dataset object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
+We can use the **miseq_sop_example()** function to create a dataset object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
 
 ```{r}
 miseq <- miseq_sop_example()
 miseq
 ```
 
-## Sequence Data
-The *rdataset* package includes several functions to access your sequence data. 
+## Accessing Data
+The *rdataset* package includes several functions to access your data. 
 
-* **Abundance**
-    * **get_sequence_abundances** - Returns the total abundance for each sequence
-    * **get_sequence_abundances_by_sample** - Returns the abundances of each sequence in an parsed by sample.
-    * **get_sequence_abundance_table** - Returns a data.frame containing the sequence abundance data
-    
+**names()** - The names function is an extension of base R's names function. It allows you to get the name of your dataset or the names of the sequences, bins, samples, treatments and reports in your dataset.
+
 ```{r}
-# To get the total abundance of each sequence:
-sequence_abundances <- get_sequence_abundances(miseq)
-head(sequence_abundances, n = 10)
+ # To get the name of the dataset
+ names(data = miseq, type = "dataset")
 
-# To get the total abundance of each sequence parsed by sample
-sequence_abundances_by_sample <- get_sequence_abundances_by_sample(miseq)
-head(sequence_abundances_by_sample[[2]], n = 10)
+ # To get the names of the sequences
+ sequence_names <- names(data = miseq, type = "sequences")
+ head(sequence_names, n = 5)
 
-# To a data.frame containing the abundance of each sequence parsed by sample
-sequence_abundance_table <- get_sequence_abundance_table(miseq)
-head(sequence_abundance_table, n = 10)
+ # To get the names of the sequences present in sample 'F3D0'
+ sequence_names <- names(data = miseq, type = "sequences", samples = c("F3D0"))
+ head(sequence_names, n = 5)
+
+# To get the names of the sequences unique to sample 'F3D0'
+sequence_names <- names(
+  data = miseq,
+  type = "sequences",
+  samples = c("F3D0"), distinct = TRUE
+)
+head(sequence_names, n = 5)
+
+# To get the names of the samples
+names(data = miseq, type = "samples")
+
+# To get the names of the treatments
+names(data = miseq, type = "treatments")
+
+# To get the names of the "otu" bins
+bin_names <- names(data = miseq, type = "bins", bin_type = "otu")
+head(bin_names, n = 5)
+
+# To get the names of the "asv" bins
+bin_names <- names(data = miseq, type = "bins", bin_type = "asv")
+head(bin_names, n = 5)
+
+# To get the names of the "phylotype" bins
+bin_names <- names(data = miseq, type = "bins", bin_type = "phylotype")
+head(bin_names, n = 5)
+
+# To get the names of the "otu" bins that are unique to 'F3D0'
+bin_names <- names(
+  data = miseq,
+  type = "bins", samples = c("F3D0"), distinct = TRUE
+)
+head(bin_names, n = 5)
+
+# To get the names of the "otu" bins that include sequences from 'F3D0'
+bin_names <- names(
+  data = miseq,
+  type = "bins", samples = c("F3D0"), distinct = FALSE
+)
+head(bin_names, n = 5)
+
+# To get the names of the reports
+names(data = miseq, type = "reports")
 ```
-    
+
+**count()** - Similair to names() the count() function allows you to get the number of sequences, samples, treatments or bins in your dataset.
+
+```{r}
+# To get the total number of sequences
+count(data = miseq, type = "sequences")
+
+# To get number of unique sequences
+count(data = miseq, type = "sequences", distinct = TRUE)
+
+# To get number of unique sequences from samples 'F3D0' and 'F3D1'
+# Note these sequences will be present in both samples but may be
+# be present in other samples as well
+count(data = miseq, type = "sequences", samples = c("F3D0", "F3D1"))
+
+# To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
+# Note sequences are present in both samples and NOT present in any other
+# samples.
+count(
+  data = miseq, type = "sequences", samples = c("F3D0", "F3D1"),
+  distinct = TRUE
+)
+
+# To get the number of samples in the dataset
+count(data = miseq, type = "samples")
+
+# To get the number of treatments in the dataset
+count(data = miseq, type = "treatments")
+
+# To get the number of "otu" bins in the dataset
+count(data = miseq, type = "bins", bin_type = "otu")
+
+# To get the number of "asv" bins in the dataset
+count(data = miseq, type = "bins", bin_type = "asv")
+
+# To get the number of "phylotype" bins in the dataset
+count(data = miseq, type = "bins", bin_type = "phylotype")
+
+# To get number of "otu" bins from samples 'F3D0' and 'F3D1'
+# Note these bins will have sequences from both samples but there may be
+# other samples present as well
+count(
+  data = miseq,
+  type = "bins", bin_type = "otu", samples = c("F3D0", "F3D1")
+)
+
+# To get number of "otu" bins unique to samples 'F3D0' and 'F3D1'
+# Note these bins will have sequences from both samples and NO other samples
+# will be present in the bins.
+count(
+  data = miseq, type = "bins", bin_type = "otu",
+  samples = c("F3D0", "F3D1"), distinct = TRUE
+)
+```
+
+
+* **abundance**
+
 * **Fasta, Classifications**
-    * **name** - Returns the names of a given type of data
     * **get_sequences** - Returns the nucleotide strings for each sequence
     * **is_aligned** - Returns TRUE if sequence data is aligned
     * **has_sequence_strings** - Returns TRUE if your dataset contains sequence nucleotide strings
     * **num** - Find the number of sequences, samples, treatments or bins of a given type
     
 ```{r}
-# To get all the names of the sequences
-seq_names <- names(data = miseq, type = "sequences")
-head(seq_names, n = 10)
-
-# To get the names of the sequences in sample 'F3D0'
-seq_names_f3d0 <- names(data = miseq, type = "sequences", sample = "F3D0")
-head(seq_names_f3d0, n = 10)
-
 # To determine if your dataset contains nucleotide strings
 has_sequence_strings(miseq)
 
@@ -82,44 +169,25 @@ is_aligned(miseq)
 # To get the sequence classifications
 seqs_taxonomy <- report(miseq, "sequence_taxonomy")
 head(seqs_taxonomy, n = 10)
-
-# To find the total number of sequences:
-count(data = miseq, type = "sequences")
-
-# To find the number of unique sequences:
-count(data = miseq, type = "sequences", distinct = TRUE)
-
-# To find total number of sequences from a given sample:
-count(data = miseq, type = "sequences", sample = "F3D0")
-
-# To find the number of unique sequence from a given sample:
-count(data = miseq, type = "sequences", distinct = TRUE, sample = "F3D0")
 ```    
 
 * **Sample and Treatment Functions**
-    * **name** - Returns the names of a given type of data
     * **totals** - Returns the total number of sequences assigned to each sample or treatment
     * **get_sample_treatment_assignments** - Return a data.frame with sample treatment assignments
     * **has_sample** - Returns TRUE if a given sample is present
     
 ```{r}
-# To find the number of samples
+# To get the number of sequences in each sample
 count(data = miseq, type = "samples")
 
-# To get the names of the samples
-names(data = miseq, type = "samples")
-
-# To get the number of sequences in each sample
-totals(data = miseq, type = "samples")
-
-# To find the number of treatments
+# To get the number of sequences in each treatment
 count(data = miseq, type = "treatments")
 
-# To get the names of the treatments
-names(data = miseq, type = "treatments")
+# To the total abundance for each sample
+abundance(data = miseq, type = "samples")
 
-# To get the number of sequences in each treatment
-totals(data = miseq, type = "treatments")
+# To the total abundance for each treatment
+abundance(data = miseq, type = "treatments")
 
 # To get a table with sample treatment assignments
 get_sample_treatment_assignments(data = miseq)
@@ -133,28 +201,23 @@ has_sample(data = miseq, sample = "sample_not_in_dataset")
     
 ## Bin Data
 The *rdataset* package includes several functions to access your bin data.
-
-* **Bin Abundance**
-    * **get_bin_abundance** - Returns the total abundance of a given bin
-    * **get_bin_abundances** - Returns the abundances of a given bin parsed by sample.
     
 ```{r}
-# To get the abundance of a given otu
-get_bin_abundance(miseq, "Otu001", "otu")
+ # To the total abundance for each "otu" bin
+ abundance(data = miseq, type = "bins", bin_type = "otu")
 
-# To get the abundance of a given phylotype bin
-get_bin_abundance(miseq, "Phylo01", "phylotype")
+ # To the total abundance for each "otu" bin parsed by sample
+ abundance(data = miseq, type = "bins", bin_type = "otu", by_sample = TRUE)
 
-# To get the abundance of a given otu parsed by sample
-get_bin_abundances(miseq, "Otu001", "otu")
+ # To the total abundance for each "asv" bin
+ abundance(data = miseq, type = "bins", bin_type = "asv")
 
-# To get the abundance of a given phylotype bin parsed by sample
-get_bin_abundances(miseq, "Phylo01", "phylotype")
+ # To the total abundance for each "asv" bin parsed by sample
+ abundance(data = miseq, type = "bins", bin_type = "asv", by_sample = TRUE)
 ```
 
 * **Bin Assignments**
     * **get_bin_types** - Returns the types of bins in your dataset
-    * **name** - Returns the names of a given type of data
     * **get_bin_assignments** - Returns a data.frame containing bin_names, bin abundances, samples (if assigned), and treatments (if assigned)
     * **get_bin** - Returns the names of sequences in a given bin
     * **get_list** - Returns a data.frame assigning sequences to bins
@@ -167,25 +230,12 @@ get_bin_abundances(miseq, "Phylo01", "phylotype")
 # To find the types of bins in your dataset
 get_bin_types(miseq)
 
-# To find the number of 'otu' bins
-count(data = miseq, type = "bins", bin_type = "otu")
-
-# To find the number of 'asv' bins
-count(data = miseq, type = "bins", bin_type = "asv")
-
-# To find the number of 'phylotype' bins
-count(data = miseq, type = "bins", bin_type = "phylotype")
-
-# To get the names of the 'otu' bins
-otu_names <- names(data = miseq, type = "bins", bin_type = "otu")
-head(otu_names, n = 10)
-
 # To get the bin assignment of the 'otu' bins
-bin_assignments <- get_bin_assignments(miseq, "otu")
-head(bin_assignments, n = 10)
+#bin_assignments <- get_bin_assignments(miseq, "otu")
+#head(bin_assignments, n = 10)
 
 # To get the names of sequences in the bin named "Otu005"
-get_bin(miseq, "Otu005", "otu")
+#get_bin(miseq, "Otu005", "otu")
 
 # To get the sequence bin assignments for the 'otu' bins
 otu_list <- get_list(miseq, "otu")
@@ -199,19 +249,19 @@ head(phylo_list, n = 10)
 otu_list <- get_list_vector(miseq, "otu")
 
 # To get the bin abundances for the 'otu' bins
-otu_abundance <- get_rabund(miseq, "otu")
+otu_abundance <- abundance(data = miseq, type = "bins", bin_type = "otu")
 head(otu_abundance, n = 10)
 
 # To get the bin abundances for the 'phylotype' bins
-phylo_abundance <- get_rabund(miseq, "phylotype")
+phylo_abundance <- abundance(data = miseq,
+                             type = "bins", bin_type = "phylotype")
 head(phylo_abundance, n = 10)
 
-# To get the bin abundances for the 'otu' bins in vector format
-otu_abundance <- get_rabund_vector(miseq, "otu")
-head(otu_abundance, n = 10)
-
 # To get the bin abundances for the 'otu' bins parsed by sample
-otu_shared_abundance <- get_shared_vector(miseq, "otu")
+otu_shared_abundance <- abundance(data = miseq,
+                                  type = "bins",
+                                  bin_type = "otu",
+                                  by_sample = TRUE)
 head(otu_shared_abundance, n = 10)
 ```
 
@@ -268,11 +318,3 @@ head(summary[[1]], n = 10)
 ## Sample Trees and Sequence Trees
 #TODO
 
-## General
-* **Utility Functions**
-    * **name** - Return the name of your dataset
-    
-```{r}
-# To get the dataset name
-names(miseq, "dataset")
-```

@@ -326,7 +326,6 @@ const vector<string> AbundTable::getSamples(const int name) {
                 }
             }
         }
-
     }
 
     return samples;

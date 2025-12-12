@@ -43,7 +43,10 @@ write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
 
       df <- data.frame(
         bin_name = unique(df[[1]]),
-        bin_abundance = get_rabund_vector(data, type),
+        bin_abundance = abundance(
+          data = data,
+          type = "bins", bin_type = type
+        )[[2]],
         bin_taxonomy = tapply(df[[3]], df[[1]],
           paste,
           collapse = ""

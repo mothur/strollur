@@ -50,6 +50,36 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
     return Rcpp::CharacterVector(0);
 }
 /******************************************************************************/
+Rcpp::DataFrame xdev_abundance(Rcpp::Environment data,
+                           string type,
+                           string bin_type,
+                           bool by_sample) {
+
+     Rcpp::XPtr<Dataset> d = data["data"];
+
+    if (type == "sequences") {
+        // data.frame containing 2, 3 or 4 columns: sequence_names, abundances,
+        //' samples (if assigned), and treatments (if assigned)
+        return d.get()->getSequenceAbundances(by_sample);
+    }
+    else if (type == "bins") {
+        // data.frame containing 2, 3 or 4 columns: bin_names, abundances,
+        //' samples (if assigned), and treatments (if assigned)
+        return d.get()->getBinAbundances(bin_type, by_sample);
+    }
+    else if ((type == "samples") || (type == "treatments")){
+        return d.get()->getTotals(type);
+    }
+    else {
+        string message = type + " is not a valid type for the abundance function";
+        message += ". Types include: 'bins', 'sequences', samples' and 'treatments'.";
+        RcppThread::Rcout << endl << message << endl;
+    }
+
+    // empty
+    return Rcpp::DataFrame::create();
+}
+/******************************************************************************/
 double xdev_count(Rcpp::Environment data,
                   string type,
                   string bin_type,

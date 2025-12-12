@@ -530,15 +530,7 @@ public:
     double assignTreatments(const vector<string>& samples,
                             const vector<string>& treatments);
 
-    const float getAbundance(const string name);
-    // abundances for seq broken down by sample
-    const vector<float> getAbundances(const string name);
-    // total abundance for a given outID, optional sample
-    const float getBinAbundance(const string binID, string type = "otu");
-    // abundances for given binID broken down by sample
-    const vector<float> getBinAbundances(const string binID, string type = "otu");
-    // string containing sequence names for given binID
-    const string getBin(const string binID, string type = "otu");
+    //const string getBin(const string binID, string type = "otu");
     // names of bins
     const vector<string> getBinIds(string type = "otu",
                                    vector<string> samples = nullVector,
@@ -558,10 +550,6 @@ public:
     const int getNumTreatments();
 
     const Rcpp::DataFrame getMetadata();
-    // 2 column dataframe - bin_id, abundance
-    const Rcpp::DataFrame getRAbund(string type = "otu");
-    // vector of total abundances for each bin
-    const vector<float> getRAbundVector(string type = "otu");
     const Rcpp::DataFrame getReferences();
     const Rcpp::DataFrame getReports(string type);
     const vector<string> getReportTypes();
@@ -570,12 +558,10 @@ public:
     const Rcpp::DataFrame getScrapReport(string mode = "sequence");
     // trashCode, uniqueCount, totalCount
     const Rcpp::List getScrapSummary();
-    // vector[5][1] contains the abundance of seq5 in sample1
-    const vector<vector<float>> getSeqsAbundsBySample();
     // total abundance for each sequence
-    const vector<float> getSequenceAbundances();
-    // 3 columns: id, sample, abundance
-    const Rcpp::DataFrame getSequenceAbundanceTable();
+    const Rcpp::DataFrame getSequenceAbundances(bool bySample = false);
+    const Rcpp::DataFrame getBinAbundances(string bin_type = "otu",
+                                           bool bySample = false);
     const vector<string> getSequenceNames(vector<string> sample = nullVector,
                                           bool distinct = false);
     const vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector);
@@ -588,10 +574,6 @@ public:
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getSequenceTaxonomyReport();
 
-    // abundances for each bin broken down by sample
-    const vector<vector<float> > getSharedVector(string type = "otu");
-    // 3 column dataframe - bin_id, abundance, sample
-    const Rcpp::DataFrame getShared(string type = "otu");
     const double getTotal(vector<string> samples = nullVector);
     const Rcpp::DataFrame getTotals(string type = "samples");
     const vector<string> getTreatments();

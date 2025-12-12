@@ -32,7 +32,10 @@ write_mothur_shared <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- get_bin_assignments(data, type)
+    df <- abundance(
+      data = data, type = "bins",
+      bin_type = type, by_sample = TRUE
+    )
 
     if (nrow(df) != 0) {
       num_cols <- ncol(df)

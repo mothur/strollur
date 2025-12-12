@@ -36,7 +36,7 @@ data <- new_dataset(dataset_name = "my_dataset")
 
 assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
                                            abundances = abunds))
-get_sequence_abundances(data = data)
+abundance(data = data, type = "sequences")
 
 seqs_to_update <- c("seq1", "seq3")
 new_abunds <- c(1000, 100)
@@ -45,6 +45,6 @@ xdev_set_abundance(data = data,
                    sequence_names = seqs_to_update,
                    sequence_abundances = new_abunds)
 
-get_sequence_abundances(data = data)
+abundance(data = data, type = "sequences")
 
 }
