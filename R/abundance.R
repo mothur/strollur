@@ -1,12 +1,12 @@
 #' @title abundance
 #' @description
-#' Get a table containing the requested abundance data in a \link{dataset}
-#' object
+#' Get the abundance data for sequences, bins, samples, and treatments in a
+#' \link{dataset} object
 #'
 #' @param data, a \link{dataset} object
 #'
 #' @param type, string containing the type of data you want the number of.
-#' Options include: "sequences", "bins".
+#' Options include: "sequences", "bins", "samples" and "treatments".
 #' Default = "sequences".
 #'
 #' @param bin_type, string containing the bin type you would like the abundance
