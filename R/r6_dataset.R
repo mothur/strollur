@@ -118,7 +118,7 @@ dataset <- R6Class("dataset",
     #'  data <- dataset$new("my_dataset")
     #'
     #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
-    #'  assign_bins(data, df)
+    #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
     #'
     #'  tree <- ape::read.tree(rdataset_example(
     #'  "final.opti_mcc.jclass.ave.tre"))
@@ -195,7 +195,7 @@ dataset <- R6Class("dataset",
 
       # if no seqs yet, add sequences in tree to dataset
       if (count(self, type = "sequences") == 0) {
-        add_sequences(self, data.frame(sequence_names = tree$tip.label))
+        xdev_add_sequences(self, data.frame(sequence_names = tree$tip.label))
 
         # save tree
         self$sequence_tree <- tree
@@ -295,7 +295,7 @@ dataset <- R6Class("dataset",
     #'   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
     #'
-    #'   add_report(data, metadata, "metadata")
+    #'   add(data = data, table = metadata, type = "metadata")
     #'
     #'   data$get_metadata()
     #'
@@ -314,7 +314,10 @@ dataset <- R6Class("dataset",
     #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
     #'
     #'  data <- dataset$new("my_dataset")
-    #'  assign_bins(data, df)
+    #'
+    #'  # assign abundance 'otu' bins
+    #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
+    #'
     #'  data$add_sample_tree(tree)
     #'  data$get_sample_tree()
     #'

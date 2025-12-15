@@ -28,7 +28,7 @@ you to remove bins from a \link{dataset} object
   bin_names <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
 
-  assign_bins(data = data, table = data.frame(bin_names = bin_names,
+  xdev_assign_bins(data = data, table = data.frame(bin_names = bin_names,
                                abundances = abundances), bin_type = "otu")
 
   count(data = data, type = "bins", bin_type = "otu")

@@ -7,10 +7,14 @@
 #'
 #' # You can add your otu assignments to the your data set using the following:
 #'
+#' # read mothur shared file into data.frame
 #' otu_data <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 #'
-#' data <- dataset$new()
-#' assign_bins(data, otu_data)
+#' # create a new empty dataset
+#' data <- new_dataset()
+#'
+#' # assign abundance only 'otu' bins parsed by sample
+#' assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export

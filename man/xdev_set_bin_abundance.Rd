@@ -38,7 +38,7 @@ without sample data.
   bin_ids <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
 
-  assign_bins(data = data, table = data.frame(bin_names = bin_ids,
+  xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
                                               abundances = abundances))
 
   abundance(data, type = "bins")

@@ -42,7 +42,7 @@ with sample data.
                "sample1")
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
 
-  assign_bins(data = data, table = data.frame(bin_names = bin_ids,
+  xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
                                               abundances = sample_abundances,
                                               samples = samples))
 

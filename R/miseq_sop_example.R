@@ -29,22 +29,25 @@ miseq_sop_example <- function() {
     rdataset_example("otu_representative_sequences.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  assign_bin_representative_sequences(data, representative_seqs)
+  assign(
+    data = data, table = representative_seqs,
+    type = "bin_representatives"
+  )
 
   metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
     col_names = TRUE, show_col_types = FALSE
   )
-  add_report(data, metadata, "metadata")
+  xdev_add_report(data, metadata, "metadata")
 
   reference <- readr::read_csv(rdataset_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  add_references(data, reference)
+  xdev_add_references(data, reference)
 
   contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
     col_names = TRUE, show_col_types = FALSE
   )
-  add_report(data, contigs_report, "contigs_report", "Name")
+  xdev_add_report(data, contigs_report, "contigs_report", "Name")
 
   data
 }

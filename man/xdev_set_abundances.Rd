@@ -32,7 +32,7 @@ samples <- c("sample2", "sample3", "sample4", "sample2", "sample3",
              "sample4", "sample2", "sample3", "sample4")
 abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
-assign_sequence_abundance(data = data,
+xdev_assign_sequence_abundance(data = data,
                           table = data.frame(sequence_names = sequence_names,
                                              abundances = abundances,
                                              samples = samples))

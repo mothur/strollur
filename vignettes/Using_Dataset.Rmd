@@ -23,10 +23,10 @@ library(rdataset)
 We can use the **miseq_sop_example()** function to create a dataset object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
 
 ```{r}
- miseq <- miseq_sop_example()
+miseq <- miseq_sop_example()
 
- # To print a summary of the miseq dataset
- miseq
+# To print a summary of the miseq dataset
+miseq
 ```
 
 ## Accessing Data
@@ -46,7 +46,7 @@ names(data = miseq, type = "sequences", samples = c("F3D0")) |> head(n = 5)
 
 # To get the names of the sequences unique to sample 'F3D0'
 names(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE) |>
-head(n = 5)
+  head(n = 5)
 
 # To get the names of the "otu" bins
 names(data = miseq, type = "bins", bin_type = "otu") |> head(n = 5)
@@ -58,13 +58,19 @@ names(data = miseq, type = "bins", bin_type = "asv") |> head(n = 5)
 names(data = miseq, type = "bins", bin_type = "phylotype") |> head(n = 5)
 
 # To get the names of the "otu" bins that are unique to 'F3D0'
-names(data = miseq, type = "bins", samples = c("F3D0"), distinct = TRUE) |> head(n = 5)
+names(
+  data = miseq,
+  type = "bins", samples = c("F3D0"), distinct = TRUE
+) |> head(n = 5)
 
 # To get the names of the "otu" bins that include sequences from 'F3D0'
-names(data = miseq, type = "bins", samples = c("F3D0"), distinct = FALSE) |> head(n = 5)
+names(
+  data = miseq,
+  type = "bins", samples = c("F3D0"), distinct = FALSE
+) |> head(n = 5)
 
 # To get the names of the samples
-names(data = miseq, type = "samples") 
+names(data = miseq, type = "samples")
 
 # To get the names of the treatments
 names(data = miseq, type = "treatments")
@@ -140,13 +146,19 @@ abundance(data = miseq, type = "sequences", by_sample = TRUE) |> head(n = 5)
 abundance(data = miseq, type = "bins", bin_type = "otu") |> head(n = 5)
 
 # To the total abundance for each "otu" bin parsed by sample
-abundance(data = miseq, type = "bins", bin_type = "otu", by_sample = TRUE) |> head(n = 5)
+abundance(
+  data = miseq,
+  type = "bins", bin_type = "otu", by_sample = TRUE
+) |> head(n = 5)
 
 # To the total abundance for each "asv" bin
 abundance(data = miseq, type = "bins", bin_type = "asv") |> head(n = 5)
 
 # To the total abundance for each "asv" bin parsed by sample
-abundance(data = miseq, type = "bins", bin_type = "asv", by_sample = TRUE) |> head(n = 5)
+abundance(
+  data = miseq,
+  type = "bins", bin_type = "asv", by_sample = TRUE
+) |> head(n = 5)
 
 # To the total abundance for each sample
 abundance(data = miseq, type = "samples") |> head(n = 5)
@@ -158,7 +170,6 @@ abundance(data = miseq, type = "treatments") |> head(n = 5)
 * **report()** - The report function can be used to access the various data reports associated with your dataset. These reports include: 'sequence_data', 'sequence_taxonomy', 'bin_taxonomy', 'sequence_scrap', 'bin_scrap', 'metadata' and 'references'. If you have added custom reports for alignment, contigs_assembly or chimeras, you can get those as well using the type name you provided in add_reports(). 
  
 ```{r}
-
 # To get a report about the FASTA sequence data
 report(data = miseq, type = "sequence_data") |> head(n = 5)
 
@@ -172,7 +183,10 @@ report(data = miseq, type = "bin_taxonomy", bin_type = "otu") |> head(n = 7)
 report(data = miseq, type = "bin_taxonomy", bin_type = "asv") |> head(n = 7)
 
 # To get the consensus taxonomies assigned to your 'phylotype' bins
-report(data = miseq, type = "bin_taxonomy", bin_type = "phylotype") |> head(n = 7)
+report(
+  data = miseq,
+  type = "bin_taxonomy", bin_type = "phylotype"
+) |> head(n = 7)
 
 # To get the scrapped sequences report
 report(data = miseq, type = "sequence_scrap")
@@ -184,14 +198,13 @@ report(data = miseq, type = "bin_scrap", bin_type = "otu")
 report(data = miseq, type = "metadata") |> head(n = 7)
 
 # To get the resources associated with your dataset
-report(data = miseq, type = "references") 
+report(data = miseq, type = "references")
 
 # To access the custom reports, first let's find the names of the reports
 names(data = miseq, type = "reports")
 
 # To access our contigs assemble report
 report(data = miseq, type = "contigs_report") |> head(n = 7)
-
 ```    
 
 
@@ -203,7 +216,7 @@ report(data = miseq, type = "contigs_report") |> head(n = 7)
 # To find the types of bins in your dataset
 get_bin_types(data = miseq)
 
-# To determine if the FASTA data is aligned 
+# To determine if the FASTA data is aligned
 is_aligned(data = miseq)
 ```
 

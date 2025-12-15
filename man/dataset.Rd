@@ -29,7 +29,7 @@ data <- new_dataset("soil")
  data <- dataset$new("my_dataset")
 
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
- assign_bins(data, df)
+ assign(data = data, table = df, type = "bins", bin_type = "otu")
 
  tree <- ape::read.tree(rdataset_example(
  "final.opti_mcc.jclass.ave.tre"))
@@ -65,7 +65,7 @@ data$get_bin_types()
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
 
-  add_report(data, metadata, "metadata")
+  add(data = data, table = metadata, type = "metadata")
 
   data$get_metadata()
 
@@ -81,7 +81,10 @@ data$get_bin_types()
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 
  data <- dataset$new("my_dataset")
- assign_bins(data, df)
+
+ # assign abundance 'otu' bins
+ assign(data = data, table = df, type = "bins", bin_type = "otu")
+
  data$add_sample_tree(tree)
  data$get_sample_tree()
 
@@ -207,7 +210,7 @@ Add phylo tree relating the samples in your dataset
  data <- dataset$new("my_dataset")
 
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
- assign_bins(data, df)
+ assign(data = data, table = df, type = "bins", bin_type = "otu")
 
  tree <- ape::read.tree(rdataset_example(
  "final.opti_mcc.jclass.ave.tre"))
@@ -312,7 +315,7 @@ data.frame()
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
 
-  add_report(data, metadata, "metadata")
+  add(data = data, table = metadata, type = "metadata")
 
   data$get_metadata()
 
@@ -340,7 +343,10 @@ Get phylo tree relating the samples in your dataset.
  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 
  data <- dataset$new("my_dataset")
- assign_bins(data, df)
+
+ # assign abundance 'otu' bins
+ assign(data = data, table = df, type = "bins", bin_type = "otu")
+
  data$add_sample_tree(tree)
  data$get_sample_tree()
 

@@ -34,7 +34,7 @@ abunds <- c(1250, 65, 50, 4)
 
 data <- new_dataset(dataset_name = "my_dataset")
 
-assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
+xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
                                            abundances = abunds))
 abundance(data = data, type = "sequences")
 

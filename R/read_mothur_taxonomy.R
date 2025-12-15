@@ -10,12 +10,16 @@
 #' # You can add the sequences and their taxonomies to the your data set
 #' # using the following:
 #'
+#' # read mothur's taxonomy file into a data.frame
 #' classification_data <- read_mothur_taxonomy(rdataset_example(
 #'   "final.taxonomy"
 #' ))
 #'
+#' # create a new empty dataset
 #' data <- dataset$new()
-#' assign_sequence_taxonomy(data, classification_data)
+#'
+#' # assign sequence classifications
+#' assign(data = data, table = classification_data, type = "sequence_taxonomy")
 #'
 #' @return A data.frame containing the sequences names and sequences taxonomies.
 #' @export

@@ -80,6 +80,548 @@ Rcpp::DataFrame xdev_abundance(Rcpp::Environment data,
     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
+double xdev_add_references(Rcpp::Environment data,
+                           Rcpp::DataFrame table,
+                           string reference_name,
+                           string reference_version,
+                           string reference_usage,
+                           string reference_note,
+                           string reference_url,
+                           bool verbose) {
+
+    vector<string> reference_names, reference_versions, reference_usages;
+    vector<string> reference_notes, reference_urls;
+
+    reference_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                             reference_name));
+    reference_versions = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                                "reference_versions",
+                                                                                reference_version));
+    reference_usages = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                              "reference_usages",
+                                                                              reference_usage));
+    reference_notes = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                             "reference_notes",
+                                                                             reference_note));
+    reference_urls = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                            "reference_urls",
+                                                                            reference_url));
+
+
+    bool hasVersions = false, hasUsages = false, hasNotes = false, hasUrls = false;
+    if (reference_versions.size() == reference_names.size()) {
+        hasVersions = true;
+    }
+    if (reference_usages.size() == reference_names.size()) {
+        hasUsages = true;
+    }
+    if (reference_notes.size() == reference_names.size()) {
+        hasNotes = true;
+    }
+    if (reference_urls.size() == reference_names.size()) {
+        hasUrls = true;
+    }
+
+    vector<Reference> refs;
+    for (int i = 0; i < reference_names.size(); i++) {
+
+        Reference ref(reference_names[i]);
+        if (hasVersions) {
+            ref.version = reference_versions[i];
+        }
+        if (hasUsages) {
+            ref.usage = reference_usages[i];
+        }
+        if (hasNotes) {
+            ref.note = reference_notes[i];
+        }
+        if (hasUrls) {
+            ref.url = reference_urls[i];
+        }
+        refs.push_back(ref);
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    double numAdded = d.get()->addReferences(refs);
+
+    if (verbose) {
+        Rcpp::Environment rdataset_env("package:rdataset");
+        Rcpp::Function message = rdataset_env["added_message"];
+        message(numAdded, "resource references");
+    }
+
+    return numAdded;
+}
+/******************************************************************************/
+void xdev_add_report(Rcpp::Environment data,
+                     Rcpp::DataFrame table,
+                     string type,
+                     string sequence_name,
+                     bool verbose) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    if (type == "metadata") {
+        d.get()->addMetadata(table);
+        if (verbose) {
+            Rcpp::Environment rdataset_env("package:rdataset");
+            Rcpp::Function message = rdataset_env["added_message"];
+            message(R_NilValue, type);
+        }
+    }
+    else{
+
+        vector<string> dfNames = Rcpp::as<vector<string>>(table.attr("names"));
+
+        // do we have a sequence_names column
+        if (!vectorContains(dfNames, sequence_name)) {
+            string message = "The report must include a column containing sequence";
+            message += " names. " + sequence_name + " is not a named column in your report.";
+            throw Rcpp::exception(message.c_str());
+        }else {
+
+            // sequence names in table
+            vector<string> sequenceNames = Rcpp::as<vector<string>>(
+                xint_fill_required_parameters(table, sequence_name));
+
+            // if we don't have any sequences yet, add them
+            if (d.get()->getTotal() == 0) {
+                vector<string> sequences, comments;
+                Reference ref;
+
+                d.get()->addSequences(sequenceNames,
+                      sequences, comments, ref);
+            }else {
+                // we have sequences already, make sure there is a report row for
+                // each sequence in dataset
+                vector<string> datasetSeqNames = d.get()->getSequenceNames();
+
+                // find seqs in dataset and not in report
+                vector<string> missingSeqs = setDiff(datasetSeqNames, sequenceNames);
+
+                if (missingSeqs.size() == 0) {
+                    // preserve order of dataset
+                    Rcpp::Environment rdataset_env("package:rdataset");
+                    Rcpp::Function sort = rdataset_env["sort_dataframe"];
+
+                    table = sort(table, datasetSeqNames, sequence_name);
+                }else {
+                    string message = "Your report does not contain an entry for ";
+                    message += "every sequence in your dataset, ignoring report. ",
+                        RcppThread::Rcout << endl << message << endl;
+                    return;
+                }
+            }
+
+            // save name column
+            table.attr("sequence_name") = sequence_name;
+
+            // add report to dataset
+            d.get()->addReport(table, type);
+
+            if (verbose) {
+                Rcpp::Environment rdataset_env("package:rdataset");
+                Rcpp::Function message = rdataset_env["added_message"];
+                message(R_NilValue, "a " + type);
+            }
+        }
+    }
+}
+/******************************************************************************/
+double xdev_add_sequences(Rcpp::Environment data,
+                     Rcpp::DataFrame table,
+                     Rcpp::Nullable<Rcpp::List> reference,
+                     string sequence_name,
+                     string sequence,
+                     string comment,
+                     bool verbose) {
+
+    vector<string> sequence_names, sequences, comments;
+    sequence_names = Rcpp::as<vector<string>>(
+        xint_fill_required_parameters(table, sequence_name));
+    sequences = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                       "sequences",
+                                                                       sequence));
+    comments = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                      "comments",
+                                                                      comment));
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    Reference ref;
+    if (reference.isNotNull()) {
+
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
+        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
+        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
+        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
+        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+    }
+
+    double numAdded = d.get()->addSequences(sequence_names,
+                            sequences, comments, ref);
+
+    if (verbose) {
+        Rcpp::Environment rdataset_env("package:rdataset");
+        Rcpp::Function message = rdataset_env["added_message"];
+        message(numAdded);
+    }
+
+    return numAdded;
+}
+/******************************************************************************/
+double xdev_assign_bins(Rcpp::Environment data,
+                        Rcpp::DataFrame table,
+                        string bin_type,
+                        Rcpp::Nullable<Rcpp::List> reference,
+                        string bin_name,
+                        string abundance,
+                        string sample,
+                        string sequence_name,
+                        bool verbose) {
+
+    vector<string> bin_names, samples, sequence_names;
+    vector<float> abundances;
+
+    // fill vectors with columns from table
+    bin_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                       bin_name));
+    samples = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                     "samples",
+                                                                     sample));
+    sequence_names = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                            "sequence_names",
+                                                                            sequence_name));
+    abundances = Rcpp::as<vector<float>>(xint_fill_optional_parameters(table,
+                                                                       "abundances",
+                                                                       abundance,
+                                                                       "float"));
+
+    if ((abundances.size() == 0) && (sequence_names.size() == 0)) {
+        string message = "You must provide either abundances or ";
+        message += "sequence_names to assign bins.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
+    double numBinsAssigned = 0;
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    set<int> lengths;
+    lengths.insert(bin_names.size());
+
+    // make sure vector lengths all match
+    lengths.insert(sequence_names.size());
+    lengths.insert(abundances.size());
+    lengths.insert(samples.size());
+    lengths.erase(0);
+
+    if (lengths.size() != 1) {
+        string message = "[ERROR]: assign_bins expect lengths of inputs";
+        message += " to match.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
+    // if you have list assignments, don't allow setting bin abundances
+    if (d.get()->hasListAssignments(bin_type) && ((abundances.size() != 0) ||
+        (samples.size() != 0))) {
+        string message = "[ERROR]: You cannot assign abundance and sample data";
+        message += " to bins that have sequence assignments. This could cause ";
+        message += "inconsistencies.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }else{
+        numBinsAssigned = d.get()->assignBins(bin_names, abundances, samples,
+                                sequence_names, bin_type);
+    }
+
+    if (verbose) {
+        string tag = " " + bin_type +" bins.";
+        Rcpp::Environment rdataset_env("package:rdataset");
+        Rcpp::Function message = rdataset_env["assigned_message"];
+        message(numBinsAssigned, tag);
+    }
+
+    Reference ref;
+    if (reference.isNotNull()) {
+
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
+        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
+        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
+        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
+        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+    }
+
+    return numBinsAssigned;
+}
+/******************************************************************************/
+double xdev_assign_bin_representative_sequences(Rcpp::Environment data,
+                                                Rcpp::DataFrame table,
+                                                string bin_type,
+                                                Rcpp::Nullable<Rcpp::List> reference,
+                                                string bin_name,
+                                                string sequence_name,
+                                                bool verbose) {
+
+    vector<string> bin_names,  sequence_names;
+    bin_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                       bin_name));
+    sequence_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                            sequence_name));
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    double numAssigned = d.get()->assignBinRepresentativeSequences(bin_names,
+                               sequence_names, bin_type);
+
+    if (verbose) {
+        string tag = " " + bin_type +" bin representative sequences.";
+        Rcpp::Environment rdataset_env("package:rdataset");
+        Rcpp::Function message = rdataset_env["assigned_message"];
+        message(numAssigned, tag);
+    }
+
+    Reference ref;
+    if (reference.isNotNull()) {
+
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
+        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
+        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
+        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
+        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+    }
+
+    return numAssigned;
+}
+/******************************************************************************/
+double xdev_assign_bin_taxonomy(Rcpp::Environment data,
+                                Rcpp::DataFrame table,
+                                string bin_type,
+                                Rcpp::Nullable<Rcpp::List> reference,
+                                string bin_name,
+                                string taxonomy,
+                                bool verbose) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    if (d.get()->getNumBins(bin_type) == 0) {
+        string message = "[ERROR]: No bin data for type " + bin_type + ", please ";
+        message += " assign bins using the 'assign_bins' function then try ";
+        message += "again.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
+    vector<string> bin_names, taxonomies;
+    bin_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                       bin_name));
+    taxonomies = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                        taxonomy));
+
+    double numAssigned = d.get()->assignBinTaxonomy(bin_names,
+                               taxonomies, bin_type);
+
+    if (verbose) {
+        string tag = " " + bin_type +" bin taxonomies.";
+        Rcpp::Environment rdataset_env("package:rdataset");
+        Rcpp::Function message = rdataset_env["assigned_message"];
+        message(numAssigned, tag);
+    }
+
+    Reference ref;
+    if (reference.isNotNull()) {
+
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
+        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
+        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
+        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
+        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+    }
+
+    return numAssigned;
+}
+/******************************************************************************/
+double xdev_assign_sequence_abundance(Rcpp::Environment data,
+                                      Rcpp::DataFrame table,
+                                      string sequence_name,
+                                      string abundance,
+                                      string sample,
+                                      string treatment,
+                                      bool verbose) {
+
+    vector<string> sequence_names, samples, treatments;
+    vector<float> abundances;
+
+    sequence_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                            sequence_name));
+    samples = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                     "samples",
+                                                                     sample));
+    treatments = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                        "treatments",
+                                                                        treatment));
+    abundances = Rcpp::as<vector<float>>(xint_fill_optional_parameters(table,
+                                                                       "abundances",
+                                                                       abundance,
+                                                                       "float"));
+    if (sequence_names.size() != abundances.size()) {
+        string message = "[ERROR]: The names and abundances must be the same";
+        message += " length.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    vector<string> unique_names = unique(sequence_names);
+    vector<string> dataset_names = d.get()->getSequenceNames();
+
+    // add seqs if needed
+    if (dataset_names.size() == 0) {
+        d.get()->addSequences(unique_names);
+    }else {
+        // sanity check, make sure names are present in dataset
+        if (!identical(unique_names, dataset_names)) {
+            string message = "[ERROR]: You must provide assignments for all";
+            message += " sequences in your dataset.";
+            RcppThread::Rcerr << endl << message << endl;
+            throw Rcpp::exception(message.c_str());
+        }
+    }
+
+    double numAssigned = d.get()->assignSequenceAbundance(sequence_names,
+                               abundances,
+                               samples, treatments);
+
+    if (verbose) {
+        string tag = " sequence abundances.";
+        Rcpp::Environment rdataset_env("package:rdataset");
+        Rcpp::Function message = rdataset_env["assigned_message"];
+        message(numAssigned, tag);
+    }
+
+    return numAssigned;
+}
+/******************************************************************************/
+double xdev_assign_sequence_taxonomy(Rcpp::Environment data,
+                                     Rcpp::DataFrame table,
+                                     Rcpp::Nullable<Rcpp::List> reference,
+                                     string sequence_name,
+                                     string taxonomy,
+                                     bool verbose) {
+
+    vector<string> sequence_names, taxonomies;
+    sequence_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                            sequence_name));
+    taxonomies = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                        taxonomy));
+    // make sure names is same size as taxonomies
+    if (sequence_names.size() != taxonomies.size()) {
+        string message = "Size mismatch. names and taxonomies must be";
+        message += " the same size.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    double numAssigned = d.get()->assignSequenceTaxonomy(sequence_names,
+                               taxonomies);
+
+    if (verbose) {
+        Rcpp::Environment rdataset_env("package:rdataset");
+        Rcpp::Function message = rdataset_env["assigned_message"];
+        message(numAssigned, " sequence taxonomies.");
+    }
+
+    Reference ref;
+    if (reference.isNotNull()) {
+
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
+        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
+        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
+        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
+        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+    }
+
+    return numAssigned;
+}
+/******************************************************************************/
+double xdev_assign_treatments(Rcpp::Environment data,
+                              Rcpp::DataFrame table,
+                              string sample,
+                              string treatment,
+                              bool verbose) {
+
+    vector<string> samples, treatments;
+    samples = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                     sample));
+    treatments = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                        treatment));
+
+    // check to make sure samples and treatments are same length
+    if (samples.size() != treatments.size()) {
+        string message = "[ERROR]: The samples and treatments must be the same";
+        message += " length.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    if (d.get()->getNumSamples() == 0) {
+        string message = "[ERROR]: You cannot assign treatments, your dataset";
+        message += " does not include sample data.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
+    // make sure every sample in dataset is assigned a treatment
+    if (!identical(d.get()->getSamples(), unique(samples))) {
+        string message = "[ERROR]: You must provide treatment assignments for";
+        message += " all samples in your dataset.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
+    double numAssigned = d.get()->assignTreatments(samples, treatments);
+
+    if (verbose) {
+        Rcpp::Environment rdataset_env("package:rdataset");
+        Rcpp::Function message = rdataset_env["assigned_message"];
+        message(numAssigned, " samples to treatments.");
+    }
+
+    return numAssigned;
+}
+/******************************************************************************/
 double xdev_count(Rcpp::Environment data,
                   string type,
                   string bin_type,

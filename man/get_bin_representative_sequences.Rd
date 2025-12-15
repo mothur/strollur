@@ -32,9 +32,8 @@ Get the representative sequences of the bins in a \link{dataset} object
                                             type = "sequences")[1:num_bins]
                       )
 
-  assign_bin_representative_sequences(data = miseq,
-                                      table = table,
-                                      bin_type = "otu")
+  assign(data = miseq, table = table,
+         type = "bin_representatives", bin_type = "otu")
 
 
   get_bin_representative_sequences(data = miseq, bin_type= "otu")

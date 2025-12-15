@@ -20,9 +20,15 @@ Read a mothur formatted
 
 # You can add your otu assignments to the your data set using the following:
 
-otu_data <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
+# read rabund file into data.frame
+otu_data <- read_mothur_rabund(
+  rabund =
+    rdataset_example("final.opti_mcc.rabund")
+)
 
-data <- dataset$new()
-assign_bins(data, otu_data)
+data <- new_dataset()
+
+# assign abundance only 'otu' bins
+assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
 
 }

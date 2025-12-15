@@ -16,6 +16,7 @@ importFrom(stats, na.omit)
 importFrom(utils, zip)
 importFrom(utils, unzip)
 importFrom(utils, read.table)
+importFrom(utils, modifyList)
 
 # tree data
 importFrom(ape, read.tree)

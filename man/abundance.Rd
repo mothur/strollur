@@ -10,7 +10,7 @@ abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 \item{data, }{a \link{dataset} object}
 
 \item{type, }{string containing the type of data you want the number of.
-Options include: "sequences", "bins".
+Options include: "sequences", "bins", "samples" and "treatments".
 Default = "sequences".}
 
 \item{bin_type, }{string containing the bin type you would like the abundance
@@ -23,8 +23,8 @@ be parsed by sample. Default = FALSE.}
 data.frame
 }
 \description{
-Get a table containing the requested abundance data in a \link{dataset}
-object
+Get the abundance data for sequences, bins, samples, and treatments in a
+\link{dataset} object
 }
 \examples{
 

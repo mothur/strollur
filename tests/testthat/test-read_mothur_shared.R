@@ -8,7 +8,7 @@ test_that("test read_mothur_shared", {
   shared_data <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
 
   data <- dataset$new()
-  assign_bins(data, shared_data)
+  assign(data = data, table = shared_data, type = "bins")
 
   expect_equal(count(data), 113963)
   expect_equal(count(data, "samples"), 19)

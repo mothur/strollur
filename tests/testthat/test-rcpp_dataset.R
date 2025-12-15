@@ -9,7 +9,7 @@ test_that("rcpp_dataset - new_dataset, copy_dataset", {
   expect_equal(names(dataset2, "dataset"), "miseq_sop")
   expect_equal(count(dataset2, "sequences"), 0)
 
-  add_sequences(data, data.frame(sequence_names = c("seq1")))
+  xdev_add_sequences(data, data.frame(sequence_names = c("seq1")))
   expect_equal(count(data, "sequences"), 1)
   expect_equal(count(dataset2, "sequences"), 0)
 })
@@ -21,7 +21,7 @@ test_that("rcpp_dataset - add_sequences", {
   sequences$comments <- rep("my comments", length(sequences$sequence_names))
 
   # add with all 3 parameters
-  add_sequences(data, sequences)
+  xdev_add_sequences(data, sequences)
 
   expect_equal(count(data, "sequences"), 2425)
   expect_true(has_sequence_strings(data))
@@ -29,7 +29,7 @@ test_that("rcpp_dataset - add_sequences", {
   clear(data)
 
   # add with 2 parameters
-  add_sequences(data, sequences)
+  xdev_add_sequences(data, sequences)
   expect_equal(count(data, "sequences"), 2425)
   expect_true(has_sequence_strings(data))
 
@@ -49,13 +49,16 @@ test_that("rcpp_dataset - add_sequences", {
   clear(data)
 
   # add with only names
-  add_sequences(data, data.frame(sequence_names = c("seq1", "seq2", "seq3")))
+  xdev_add_sequences(
+    data,
+    data.frame(sequence_names = c("seq1", "seq2", "seq3"))
+  )
   expect_equal(count(data, "sequences"), 3)
   expect_false(has_sequence_strings(data))
 
   clear(data)
 
-  expect_error(add_sequences(data))
+  expect_error(xdev_add_sequences(data))
 
   message <- capture_output(xdev_set_sequences(
     data,
@@ -71,7 +74,7 @@ test_that("rcpp_dataset - assign_bins", {
   # bin labels and seq names (list)
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-  assign_bins(data, data.frame(
+  xdev_assign_bins(data, data.frame(
     bin_names = bin_ids,
     sequence_names = seq_ids
   ))
@@ -82,21 +85,21 @@ test_that("rcpp_dataset - assign_bins", {
 
   abundances <- c(110, 525, 80)
   samples <- c("sample1", "sample1", "sample2")
-  expect_error(assign_bins(data, data.frame(
+  expect_error(xdev_assign_bins(data, data.frame(
     bin_names = unique(bin_ids),
     abundances = abundances
   )))
-  expect_error(assign_bins(data, data.frame(
+  expect_error(xdev_assign_bins(data, data.frame(
     bin_names = unique(bin_ids),
     samples = samples
   )))
   clear(data)
 
   # bin labels and bin abundances (rabund)
-  assign_bins(data, data.frame(
+  assign(data = data, table = data.frame(
     bin_names = unique(bin_ids),
     abundances = abundances
-  ))
+  ), type = "bins", bin_type = "otu")
 
   expect_equal(count(data, "sequences"), 715)
   expect_equal(count(data, "bins"), 3)
@@ -110,13 +113,13 @@ test_that("rcpp_dataset - assign_bins", {
   )
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
 
-  expect_error(assign_bins(data, data.frame(
+  expect_error(xdev_assign_bins(data, data.frame(
     abundances = sample_abundances,
     samples = samples
   )))
 
   # bin labels, samples and bin abundances (shared)
-  assign_bins(data, data.frame(
+  xdev_assign_bins(data, data.frame(
     bin_names = bin_ids,
     abundances = sample_abundances,
     samples = samples
@@ -152,7 +155,7 @@ test_that("rcpp_dataset - assign_bins", {
   abundances <- c(10, 100, 1, 500, 25, 80, 20, 5, 60, 15, 50)
 
   # all four
-  assign_bins(data, data.frame(
+  xdev_assign_bins(data, data.frame(
     bin_names = bin_ids,
     abundances = abundances,
     samples = samples,
@@ -183,7 +186,7 @@ test_that("rcpp_dataset - assign_bins", {
   )
   abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
-  assign_sequence_abundance(data, data.frame(
+  xdev_assign_sequence_abundance(data, data.frame(
     sequence_names = names,
     abundances = abundances,
     samples = samples
@@ -194,7 +197,7 @@ test_that("rcpp_dataset - assign_bins", {
   expect_equal(count(data, "samples"), 3)
 
   # missing seq names
-  expect_error(assign_bins(data, data.frame(
+  expect_error(xdev_assign_bins(data, data.frame(
     bin_names = bin_ids,
     abundances = abundances,
     samples = samples,
@@ -205,7 +208,7 @@ test_that("rcpp_dataset - assign_bins", {
     "bin1", "bin1", "bin1", "bin1",
     "bin1", "bin1", "bin1", "bin1", "bin2"
   )
-  assign_bins(data, data.frame(
+  xdev_assign_bins(data, data.frame(
     bin_names = bin_ids,
     abundances = abundances,
     samples = samples,
@@ -232,7 +235,7 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
   )
   abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
-  expect_error(assign_sequence_abundance(
+  expect_error(xdev_assign_sequence_abundance(
     data,
     data.frame(
       sequence_names = names,
@@ -240,7 +243,7 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
     )
   ))
 
-  assign_sequence_abundance(data, data.frame(
+  xdev_assign_sequence_abundance(data, data.frame(
     sequence_names = names,
     abundances = abundances,
     samples = samples
@@ -271,7 +274,7 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
 
   clear(data)
 
-  assign_sequence_abundance(
+  xdev_assign_sequence_abundance(
     data,
     data.frame(
       sequence_names = c("seq1", "seq2"),
@@ -303,8 +306,8 @@ test_that("rcpp_dataset - assign_sequence_taxonomy", {
     "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;"
   )
 
-  expect_error(assign_sequence_taxonomy(data, names, ""))
-  assign_sequence_taxonomy(data, data.frame(
+  expect_error(xdev_assign_sequence_taxonomy(data, names, ""))
+  xdev_assign_sequence_taxonomy(data, data.frame(
     sequence_names = names,
     taxonomies = taxonomies
   ))
@@ -318,7 +321,7 @@ test_that("rcpp_dataset - assign_sequence_taxonomy", {
   expect_equal(count(data, "bins"), 0)
   expect_equal(count(data, "samples"), 0)
 
-  message <- capture_output(assign_sequence_taxonomy(
+  message <- capture_output(xdev_assign_sequence_taxonomy(
     data,
     data.frame(
       sequence_names = c("non_existant_sequence"),
@@ -344,13 +347,13 @@ test_that("rcpp_dataset - assign_treatments", {
   data <- new_dataset("my_dataset", 2)
 
   # no samples in dataset
-  expect_error(assign_treatments(data, data.frame(
+  expect_error(xdev_assign_treatments(data, data.frame(
     samples = unique(samples),
     treatments = treatments
   )))
 
   # add sample data
-  assign_sequence_abundance(data, data.frame(
+  xdev_assign_sequence_abundance(data, data.frame(
     sequence_names = names,
     abundances = abundances,
     samples = samples
@@ -363,15 +366,15 @@ test_that("rcpp_dataset - assign_treatments", {
 
   missing_samples <- c("sample_not_in_dataset", "sample34", "sample_bad")
 
-  expect_error(assign_treatments(data, data.frame(
+  expect_error(xdev_assign_treatments(data, data.frame(
     samples = missing_samples,
     treatments = treatments
   )))
 
-  assign_treatments(data, data.frame(
+  assign(data = data, table = data.frame(
     samples = unique(samples),
     treatments = treatments
-  ))
+  ), type = "treatments")
 
   expect_equal(count(data, "sequences"), 1319)
   expect_equal(count(data, "bins"), 0)
@@ -398,7 +401,7 @@ test_that("rcpp_dataset - get_names / sequences_by_sample", {
   )
   abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
-  assign_sequence_abundance(data, data.frame(
+  xdev_assign_sequence_abundance(data, data.frame(
     sequence_names = names,
     abundances = abundances,
     samples = samples
@@ -451,7 +454,7 @@ test_that("rcpp_dataset - xdev_merge_bins / xdev_merge_seqs", {
   )
   abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
-  assign_sequence_abundance(data, data.frame(
+  xdev_assign_sequence_abundance(data, data.frame(
     sequence_names = names,
     abundances = abundances,
     samples = samples
@@ -471,7 +474,7 @@ test_that("rcpp_dataset - xdev_merge_bins / xdev_merge_seqs", {
   expect_equal(count(data, "bins"), 0)
   expect_equal(count(data, "samples"), 3)
 
-  assign_bins(data, data.frame(
+  xdev_assign_bins(data, data.frame(
     bin_names = c("bin1", "bin1", "bin2"),
     sequence_names = c("seq2", "seq3", "seq4")
   ))
@@ -509,7 +512,7 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
   data <- new_dataset("miseq_sop")
 
   # test with no samples bins
-  assign_bins(
+  xdev_assign_bins(
     data, data.frame(
       bin_names = c("bin1", "bin2", "bin3"),
       abundances = c(10, 20, 30)
@@ -543,7 +546,7 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
   clear(data)
 
   # test with samples bins
-  assign_bins(
+  xdev_assign_bins(
     data, data.frame(
       bin_names = c("bin1", "bin1", "bin2", "bin3", "bin3"),
       abundances = c(10, 20, 30, 40, 50), samples = c(
@@ -592,7 +595,7 @@ test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
   clear(data, "")
 
   # test with samples bins
-  assign_bins(
+  xdev_assign_bins(
     data, data.frame(
       bin_names = c("bin1", "bin1", "bin2", "bin3", "bin3"),
       sequence_names = c("seq1", "seq2", "seq3", "seq4", "seq5")
@@ -609,7 +612,7 @@ test_that("rcpp_dataset - misc ", {
   # no bin data
   expect_equal(report(data, "bin_taxonomy"), data.frame())
 
-  assign_bins(
+  xdev_assign_bins(
     data, data.frame(
       bin_names = c("bin1", "bin2", "bin3"),
       abundances = c(10, 20, 30)

@@ -13,10 +13,14 @@
 #'
 #' # You can add your otu assignments to the your data set using the following:
 #'
+#' # read mothur's list file into data.frame
 #' otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
 #'
+#' # create a new empty dataset
 #' data <- new_dataset()
-#' assign_bins(data, otu_data)
+#'
+#' # assign sequences to 'otu' bins
+#' assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export

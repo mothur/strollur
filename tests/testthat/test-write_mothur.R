@@ -26,12 +26,12 @@ test_that("write_mothur - miseq", {
     dataset_name = "miseq_sop"
   )
 
-  add_references(data, readr::read_tsv(outputs[17],
+  xdev_add_references(data, readr::read_tsv(outputs[17],
     col_names = TRUE,
     show_col_types = FALSE
   ))
 
-  add_report(
+  xdev_add_report(
     data,
     readr::read_tsv(outputs[14],
       col_names = TRUE,
@@ -98,12 +98,12 @@ test_that("write_mothur - bin_data only", {
 test_that("write_mothur - report_data only", {
   data <- dataset$new()
 
-  add_report(data, readr::read_tsv(
+  xdev_add_report(data, readr::read_tsv(
     rdataset_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   ), "alignment_report", "QueryName")
 
-  add_report(data, readr::read_tsv(
+  xdev_add_report(data, readr::read_tsv(
     rdataset_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   ), "contigs_report", "Name")
@@ -125,7 +125,7 @@ test_that("write_mothur - report_data only", {
   for (output in outputs) {
     extension <- tail(strsplit(output, "\\.")[[1]], 1)
 
-    add_report(data2, readr::read_tsv(
+    xdev_add_report(data2, readr::read_tsv(
       output,
       col_names = TRUE, show_col_types = FALSE
     ), extension, seq_col[[output]])
@@ -151,7 +151,7 @@ test_that("write_mothur - report_data only", {
 
   data <- dataset$new()
 
-  add_report(data, readr::read_tsv(
+  xdev_add_report(data, readr::read_tsv(
     rdataset_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
   ), "chimera_report", "Query")
@@ -167,7 +167,7 @@ test_that("write_mothur - report_data only", {
 
   data2 <- dataset$new()
 
-  add_report(data2, readr::read_tsv(
+  xdev_add_report(data2, readr::read_tsv(
     outputs[2],
     col_names = TRUE, show_col_types = FALSE
   ), "chimera_report", "Query")

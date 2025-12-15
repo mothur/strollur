@@ -31,7 +31,7 @@ the unaligned sequences with aligned sequences.
 
 data <- new_dataset(dataset_name = "my_dataset")
 
-add_sequences(data = data,
+xdev_add_sequences(data = data,
               table = data.frame(sequence_names = c("seq1", "seq2",
                                                   "seq3", "seq4")))
 

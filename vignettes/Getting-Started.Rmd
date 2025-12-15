@@ -61,61 +61,76 @@ data
 To create a dataset and read the individual file types, you can use the functions below. First let's create a dataset named my_data.
 
 ```{r}
-my_data <- new_dataset("my_data")
+my_data <- new_dataset(dataset_name = "my_data")
 ```
 
 To add [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data to your dataset you can use the **read_fasta** function:
 
 ```{r}
-fasta_data <- read_fasta(rdataset_example("final.fasta"))
+fasta_data <- read_fasta(fasta = rdataset_example("final.fasta"))
 ```
 
 fasta_data is a data.frame containing sequence names, sequence nucleotide strings, and comments if provided. You can add the fasta sequences to your dataset as follows:
 
 ```{r}
-add_sequences(my_data, fasta_data)
+add(data = my_data, table = fasta_data, type = "sequences")
 my_data
 ```
 
 To add your sequence abundance data, you can read a [mothur count file](https://mothur.org/wiki/count_file/) file using the **read_mothur_count** function:
 
 ```{r}
-sample_table <- read_mothur_count(rdataset_example("final.count_table"))
+sample_table <- read_mothur_count(
+  filename = rdataset_example("final.count_table")
+)
 ```
 
 sample_table is a data.frame containing sequence_names, samples, and abundances. You can add the sequence abundance data to your dataset as follows:
 
 ```{r}
-assign_sequence_abundance(my_data, sample_table)
+assign(data = my_data, table = sample_table, type = "sequence_abundance")
 my_data
 ```
 
 To add sequence taxonomy assignments, you can read a [taxonomy file](https://mothur.org/wiki/taxonomy_file/) file using the **read_mothur_taxonomy** function:
 
 ```{r}
-classification_data <- read_mothur_taxonomy(rdataset_example("final.taxonomy"))
+classification_data <- read_mothur_taxonomy(
+  taxonomy = rdataset_example("final.taxonomy")
+)
 ```
 
 classification_data is a data.frame containing sequence names and taxonomies. You can add the sequence classification data to your dataset as follows:
 
 ```{r}
-assign_sequence_taxonomy(my_data, classification_data)
+# assign sequence classifications
+assign(data = my_data, table = classification_data, type = "sequence_taxonomy")
 ```
 
 To assign sequences to bins, you can read a [mothur list file](https://mothur.org/wiki/list_file/) file using the **read_mothur_list** function:
 
 ```{r}
-otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
-asv_data <- read_mothur_list(rdataset_example("final.asv.list"))
-phylotype_data <- read_mothur_list(rdataset_example("final.tx.list"))
+otu_data <- read_mothur_list(list = rdataset_example("final.opti_mcc.list"))
+asv_data <- read_mothur_list(list = rdataset_example("final.asv.list"))
+phylotype_data <- read_mothur_list(list = rdataset_example("final.tx.list"))
 ```
 
 otu_data, asv_data and phylotype_data are data.frames containing bin names and sequence names. You can add the bin data to your dataset as follows:
 
 ```{r}
-assign_bins(my_data, otu_data, "otu")
-assign_bins(my_data, asv_data, "asv")
-assign_bins(my_data, phylotype_data, "phylotype")
+# assign otu bins
+assign(data = my_data, table = otu_data, type = "bins", bin_type = "otu")
+
+# assign asv bins
+assign(data = my_data, table = asv_data, type = "bins", bin_type = "asv")
+
+# assign phylotype bins
+assign(
+  data = my_data, table = phylotype_data,
+  type = "bins", bin_type = "phylotype"
+)
+
+# print summary of my_data
 my_data
 ```
 
@@ -123,14 +138,15 @@ When you assign bins to sequences with taxonomic assignments the dataset object 
 
 ```{r}
 otu_taxonomy_data <- read_mothur_cons_taxonomy(
-  rdataset_example("final.cons.taxonomy")
+  taxonomy =
+    rdataset_example("final.cons.taxonomy")
 )
 ```
 
 otu_taxonomy_data is a data.frame containing bin names, abundances and taxonomies. You can add the bin taxonomic data to your dataset as follows:
 
 ```{r}
-assign_bin_taxonomy(my_data, otu_taxonomy_data)
+assign(data = my_data, table = otu_taxonomy_data, type = "bin_taxonomy")
 ```
 
 Other functions available for reading mothur file types include: **read_mothur_rabund** and **read_mothur_shared**.

@@ -67,6 +67,426 @@ Rcpp::DataFrame xdev_abundance(Rcpp::Environment data,
                                string bin_type = "otu",
                                bool by_sample = false);
 /******************************************************************************/
+//' @title xdev_add_references
+//' @description
+//' Add resource references to a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing reference_names, reference_versions
+//' (optional), reference_usages (optional), reference_notes (optional), and
+//' reference_urls (optional).
+//'
+//' @param reference_name, a string containing the name of the column in 'table'
+//' that contains the reference names. Default column name is 'reference_names'.
+//' @param reference_version, a string containing the name of the column in
+//' 'table' that contains the reference versions. Default column name is
+//' 'reference_versions'.
+//' @param reference_usage, a string containing the name of the column in
+//' 'table' that contains the reference usages. Default column name is
+//'  reference_usages'.
+//' @param reference_note, a string containing the name of the column in
+//' 'table' that contains the reference notes. Default column name is
+//'  reference_notes'.
+//' @param reference_url, a string containing the name of the column in
+//' 'table' that contains the reference urls. Default column name is
+//'  reference_urls'.
+//'
+//' @param verbose, a boolean whether or not you want progress messages.
+//' Default = TRUE.
+//'
+//' @examples
+//'
+//' data <- new_dataset("just for fun", 2)
+//' reference_table <- readr::read_csv(rdataset_example("references.csv"),
+//'                              col_names = TRUE, show_col_types = FALSE)
+//' xdev_add_references(data, reference_table)
+//'
+//' @return double containing the number of references added
+//[[Rcpp::export]]
+double xdev_add_references(Rcpp::Environment data,
+                       Rcpp::DataFrame table,
+                       string reference_name = "reference_names",
+                       string reference_version = "reference_versions",
+                       string reference_usage = "reference_usages",
+                       string reference_note = "reference_notes",
+                       string reference_url = "reference_urls",
+                       bool verbose = true);
+/******************************************************************************/
+//' @title xdev_add_report
+//' @description
+//' Add a report to a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing your report.
+//'
+//' @param type, a string containing the type of report. Options include:
+//' "metadata" and custom report tags. Default = "metadata".
+//'
+//' @param sequence_name, a string containing the name of the column in 'table'
+//' that contains the sequence names. This is used for custom reports, metadata
+//' does not require a sequence_name column. Default column name is 'sequence_names'.
+//'
+//' @param verbose, a boolean whether or not you want progress messages.
+//' Default = TRUE.
+//'
+//' @examples
+//'
+//' # To add a custom report including your contigs assembly data
+//'
+//' data <- new_dataset("just for fun", 2)
+//' contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+//'    col_names = TRUE, show_col_types = FALSE)
+//'
+//' xdev_add_report(data, contigs_report, "contigs_report", "Name")
+//'
+//' # To add metadata related to your study
+//'
+//' metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+//'                             col_names = TRUE, show_col_types = FALSE)
+//'
+//' xdev_add_report(data, metadata, "metadata")
+//'
+//[[Rcpp::export]]
+void xdev_add_report(Rcpp::Environment data,
+                 Rcpp::DataFrame table,
+                 string type = "metadata",
+                 string sequence_name = "sequence_names",
+                 bool verbose = true);
+/******************************************************************************/
+//' @title xdev_add_sequences
+//' @description
+//' Add sequence data to a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing names, sequences(optional) and
+//' comments(optional).
+//'
+//' @param reference, a list created by the function [new_reference]. Optional.
+//' @param sequence_name, a string containing the name of the column in 'table'
+//' that contains the sequence names. Default column name is 'sequence_names'.
+//' @param sequence, a string containing the name of the column in 'table' that
+//' contains the sequence nucleotide strings. Default column name is
+//' 'sequences'.
+//' @param comment, a string containing the name of the column in
+//' 'table' that contains the sequence comments. Default column name is
+//' 'comments'.
+//'
+//' @param verbose, a boolean whether or not you want progress messages.
+//' Default = TRUE.
+//'
+//' @examples
+//'
+//'  data <- new_dataset("miseq_sop", 2)
+//'  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+//'  xdev_add_sequences(data, fasta_data)
+//'
+//' # With the additional parameters to add information about the reference
+//'
+//'  data <- new_dataset("miseq_sop", 2)
+//'  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+//'
+//'  xdev_add_sequences(data, fasta_data,
+//'                new_reference("silva.bacteria.fasta",
+//'                "1.38.1",
+//'                "alignment by mothur2 v1.0 using default options",
+//'                "https://mothur.org/wiki/silva_reference_files/"))
+//'
+//' # You can also add references using the 'add_references' function.
+//'
+//' @return double containing the number of sequences added
+//[[Rcpp::export]]
+double xdev_add_sequences(Rcpp::Environment data,
+                      Rcpp::DataFrame table,
+                      Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
+                      string sequence_name = "sequence_names",
+                      string sequence = "sequences",
+                      string comment = "comments",
+                      bool verbose = true);
+/******************************************************************************/
+//' @title xdev_assign_bins
+//' @description
+//' Add bin assignments to a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing bin_data assignments
+//' @param bin_type a string indicating the type of bin assignments. Default "otu".
+//'
+//' @param reference, a list created by the function [new_reference]. Optional.
+//'
+//' @param bin_name, a string containing the name of the column in 'table' that
+//' contains the bin names. Default column name is 'bin_names'.
+//' @param abundance, a string containing the name of the column in 'table'
+//' that contains the bin abundances. Default column name is 'abundances'. Note:
+//'  You must provide either abundances or sequence_names in the table.
+//' @param sample, a string containing the name of the column in 'table' that
+//' contains the sample names for datasets where the abundances are broken down
+//' by sample. Default column name is 'samples'.
+//' @param sequence_name, a string containing the name of the column in 'table'
+//' that contains the sequence names. Default column name is 'sequence_names'.
+//' Note: You must provide either abundances or sequence_names in the table.
+//'
+//' @param verbose, a boolean whether or not you want progress messages.
+//' Default = TRUE.
+//'
+//' @examples
+//'
+//'   # To assign sequences to bins:
+//'
+//'   data <- new_dataset(dataset_name = "miseq_sop")
+//'   otu_data <- read_mothur_list(list = rdataset_example("final.opti_mcc.list"))
+//'
+//'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+//'
+//'   # To add abundance only bin assignments:
+//'
+//'   data <- new_dataset(dataset_name = "miseq_sop")
+//'   otu_data <- read_mothur_rabund(rabund = rdataset_example("final.opti_mcc.rabund"))
+//'
+//'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+//'
+//'   # To add abundance bin assignments parsed by sample:
+//'
+//'   data <- new_dataset(dataset_name = "miseq_sop")
+//'   otu_data <- readr::read_tsv(rdataset_example(
+//'                                 "mothur2_bin_assignments_shared.tsv"))
+//'
+//'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+//'
+//' @return double containing the number of bins assigned
+//[[Rcpp::export]]
+double xdev_assign_bins(Rcpp::Environment data,
+                    Rcpp::DataFrame table,
+                    string bin_type = "otu",
+                    Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
+                    string bin_name = "bin_names",
+                    string abundance = "abundances",
+                    string sample = "samples",
+                    string sequence_name = "sequence_names",
+                    bool verbose = true);
+/******************************************************************************/
+//' @title xdev_assign_bin_representative_sequences
+//' @description
+//' Assign representative sequences to bins.
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing bin representative assignments
+//'
+//' @param bin_type a string indicating the type of bin assignments.
+//' Default "otu".
+//'
+//' @param reference, a list created by the function [new_reference]. Optional.
+//'
+//' @param bin_name, a string containing the name of the column in 'table' that
+//' contains the bin names. Default column name is 'bin_names'.
+//' @param sequence_name a string containing the name of the column in 'table' that
+//' contains the bin names. Default column name is 'sequence_names'.
+//'
+//' @param verbose, a boolean whether or not you want progress messages.
+//' Default = TRUE.
+//'
+//' @examples
+//'
+//'   miseq <- miseq_sop_example()
+//'
+//'   bin_reps <- readr::read_tsv(rdataset_example(
+//'                                       "otu_representative_sequences.tsv"),
+//'                                       show_col_types = FALSE)
+//'
+//'   xdev_assign_bin_representative_sequences(data = miseq,
+//'                                       table = bin_reps,
+//'                                       bin_type = "otu")
+//'
+//' @return double containing the number of representative sequences assigned
+//[[Rcpp::export]]
+double xdev_assign_bin_representative_sequences(Rcpp::Environment data,
+                                            Rcpp::DataFrame table,
+                                            string bin_type = "otu",
+                                            Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
+                                            string bin_name = "bin_names",
+                                            string sequence_name = "sequence_names",
+                                            bool verbose = true);
+/******************************************************************************/
+//' @title xdev_assign_bin_taxonomy
+//' @description
+//' Assign bin classifications to a \link{dataset} object
+//'
+//' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+//'  the concensus taxonomy for each bin for you.
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing bin taxonomy assignments
+//' @param bin_type a string indicating the type of bin assignments. Default "otu".
+//'
+//' @param reference, a list created by the function [new_reference]. Optional.
+//'
+//' @param bin_name, a string containing the name of the column in 'table' that
+//' contains the bin names. Default column name is 'bin_names'.
+//' @param taxonomy, a string containing the name of the column in 'table' that
+//' contains the bin taxonomies. Default column name is 'taxonomies'.
+//'
+//' @param verbose, a boolean whether or not you want progress messages.
+//' Default = TRUE.
+//'
+//' @examples
+//'
+//' otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+//'                         "final.cons.taxonomy"))
+//'
+//' data <- new_dataset(dataset_name = "my_dataset")
+//'
+//' # assign otu abundances
+//' xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+//'
+//' # assign otu classifications
+//' xdev_assign_bin_taxonomy(data = data, table = otu_data,
+//'                          bin_type = "otu")
+//'
+//' @return double containing the number of bins assigned
+//[[Rcpp::export]]
+double xdev_assign_bin_taxonomy(Rcpp::Environment data,
+                            Rcpp::DataFrame table,
+                            string bin_type = "otu",
+                            Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
+                            string bin_name = "bin_names",
+                            string taxonomy = "taxonomies",
+                            bool verbose = true);
+/******************************************************************************/
+//' @title xdev_assign_sequence_taxonomy
+//' @description
+//' Assign sequence classifications to a \link{dataset} object
+//'
+//' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+//'  the consensus taxonomy for each bin for you.
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing sequence taxonomy assignments
+//'
+//' @param reference, a list created by the function [new_reference]. Optional.
+//'
+//' @param sequence_name, a string containing the name of the column in 'table'
+//' that contains the sequence names. Default column name is 'sequence_names'.
+//' @param taxonomy, a string containing the name of the column in 'table' that
+//' contains the sequence taxonomies. Default column name is 'taxonomies'.
+//'
+//' @param verbose, a boolean whether or not you want progress messages.
+//' Default = TRUE.
+//'
+//' @examples
+//'
+//' sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+//'                         "final.taxonomy"))
+//'
+//' data <- new_dataset("my_dataset", 2)
+//'
+//' xdev_assign_sequence_taxonomy(data, sequence_classifications)
+//'
+//' # With the reference parameter you can add information about the reference
+//' # you used to classify your sequences. You can also add references using the
+//' # 'add_references' function.
+//'
+//' reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+//'               "classification by mothur2 v1.0 using default options", "",
+//' "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
+//'
+//' xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
+//'
+//' @return double containing the number of sequence assigned
+//[[Rcpp::export]]
+double xdev_assign_sequence_taxonomy(Rcpp::Environment data,
+                                 Rcpp::DataFrame table,
+                                 Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
+                                 string sequence_name = "sequence_names",
+                                 string taxonomy = "taxonomies",
+                                 bool verbose = true);
+
+/******************************************************************************/
+//' @title xdev_assign_sequence_abundance
+//' @description
+//' Assign sequence abundance and optionally assign sample and treatment data to
+//'  a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing sequence abundance assignments
+//'
+//' @param sequence_name, a string containing the name of the column in 'table'
+//'  that contains the sequence names. Default column name is 'sequence_names'.
+//' @param abundance, a string containing the name of the column in 'table'
+//'  that contains the sequence abundances. Default column name is 'abundances'.
+//' @param sample, a string containing the name of the column in 'table'
+//' that contains the sequence samples. Default column name is 'samples'.
+//' (Optional)
+//' @param treatment, a string containing the name of the column in 'table'
+//' that contains the sequence treatments. Default column name is 'treatments'.
+//'
+//' @param verbose, a boolean whether or not you want progress messages.
+//' Default = TRUE.
+//'
+//' @examples
+//'
+//' data <- new_dataset("my_dataset")
+//' sequence_abundance <- readr::read_tsv(rdataset_example(
+//'                                       "mothur2_count_table.tsv"),
+//'                                       show_col_types = FALSE)
+//'
+//' xdev_assign_sequence_abundance(data = data, table = sequence_abundance,
+//'                                sequence_name = "names")
+//'
+//' @return double containing the number of sequences assigned
+//[[Rcpp::export]]
+double xdev_assign_sequence_abundance(Rcpp::Environment data,
+                                  Rcpp::DataFrame table,
+                                  string sequence_name = "sequence_names",
+                                  string abundance = "abundances",
+                                  string sample = "samples",
+                                  string treatment = "treatments",
+                                  bool verbose = true);
+/******************************************************************************/
+//' @title xdev_assign_treatments
+//' @description
+//' Assign samples to treatments in a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param table, a data.frame containing sample treatment assignments
+//'
+//' @param sample, a string containing the name of the column in 'table'
+//' that contains the samples. Default column name is 'samples'.
+//' @param treatment, a string containing the name of the column in 'table'
+//' that contains the treatments. Default column name is 'treatments'.
+//'
+//' @param verbose, a boolean indicating whether or not you want progress
+//'  messages. Default = TRUE.
+//'
+//' @examples
+//'
+//' data <- new_dataset("my_dataset")
+//' sequence_abundance <- readr::read_tsv(rdataset_example(
+//'                                       "mothur2_count_table.tsv"),
+//'                                       show_col_types = FALSE)
+//'
+//' xdev_assign_sequence_abundance(data, sequence_abundance, "names")
+//'
+//' sample_assignments <- readr::read_table(file = rdataset_example("mouse.time.design"),
+//'                              col_names = TRUE, show_col_types = FALSE)
+//'
+//' xdev_assign_treatments(data, sample_assignments)
+//'
+//' @return double containing the number of samples assigned to treatments
+//[[Rcpp::export]]
+double xdev_assign_treatments(Rcpp::Environment data,
+                          Rcpp::DataFrame table,
+                          string sample = "samples",
+                          string treatment = "treatments",
+                          bool verbose = true);
+/******************************************************************************/
 //' @title xdev_count
 //' @description
 //' Find the number of sequences, samples, treatments or bins of a given type in
@@ -347,7 +767,7 @@ const vector<string> xdev_names(Rcpp::Environment data,
 //'   bin_names <- c("bin1", "bin2", "bin3")
 //'   abundances <- c(110, 525, 80)
 //'
-//'   assign_bins(data = data, table = data.frame(bin_names = bin_names,
+//'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_names,
 //'                                abundances = abundances), bin_type = "otu")
 //'
 //'   count(data = data, type = "bins", bin_type = "otu")
@@ -486,7 +906,7 @@ void xdev_remove_sequences(Rcpp::Environment data,
 //'
 //' data <- new_dataset(dataset_name = "my_dataset")
 //'
-//' assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
+//' xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
 //'                                            abundances = abunds))
 //' abundance(data = data, type = "sequences")
 //'
@@ -528,7 +948,7 @@ void xdev_set_abundance(Rcpp::Environment data,
 //'              "sample4", "sample2", "sample3", "sample4")
 //' abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 //'
-//' assign_sequence_abundance(data = data,
+//' xdev_assign_sequence_abundance(data = data,
 //'                           table = data.frame(sequence_names = sequence_names,
 //'                                              abundances = abundances,
 //'                                              samples = samples))
@@ -569,7 +989,7 @@ void xdev_set_abundances(Rcpp::Environment data,
 //'   bin_ids <- c("bin1", "bin2", "bin3")
 //'   abundances <- c(110, 525, 80)
 //'
-//'   assign_bins(data = data, table = data.frame(bin_names = bin_ids,
+//'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
 //'                                               abundances = abundances))
 //'
 //'   abundance(data, type = "bins")
@@ -620,7 +1040,7 @@ void xdev_set_bin_abundance(Rcpp::Environment data,
 //'                "sample1")
 //'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
 //'
-//'   assign_bins(data = data, table = data.frame(bin_names = bin_ids,
+//'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
 //'                                               abundances = sample_abundances,
 //'                                               samples = samples))
 //'
@@ -661,7 +1081,7 @@ void xdev_set_bin_abundances(Rcpp::Environment data,
 //'
 //' data <- new_dataset(dataset_name = "my_dataset")
 //'
-//' add_sequences(data = data,
+//' xdev_add_sequences(data = data,
 //'               table = data.frame(sequence_names = c("seq1", "seq2",
 //'                                                   "seq3", "seq4")))
 //'

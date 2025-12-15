@@ -75,20 +75,23 @@ test_that("import - miseq_sop_example", {
   data <- dataset$new()
   abunds <- c(1, 10, 100)
   bins <- c("otu1", "otu2", "otu3")
-  add_report(
+  xdev_add_report(
     data,
     readr::read_tsv(rdataset_example("alignment_data.tsv"),
       col_names = TRUE, show_col_types = FALSE
     ), "alignment_report",
     "QueryName"
   )
-  add_report(
+  xdev_add_report(
     data,
     readr::read_tsv(rdataset_example("contigs_data.tsv"),
       col_names = TRUE, show_col_types = FALSE
     ), "contigs_report", "Name"
   )
-  assign_bins(data, data.frame(bin_names = bins, abundances = abunds))
+  xdev_assign_bins(
+    data = data,
+    table = data.frame(bin_names = bins, abundances = abunds)
+  )
 
   expect_equal(count(data, "bins"), 3)
   expect_equal(count(data, distinct = TRUE), 5)
