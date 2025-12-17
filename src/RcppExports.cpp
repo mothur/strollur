@@ -166,17 +166,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// get_sequence_summary
-Rcpp::List get_sequence_summary(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_summary(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_summary(data));
-    return rcpp_result_gen;
-END_RCPP
-}
 // has_sample
 bool has_sample(Rcpp::Environment data, string sample);
 RcppExport SEXP _rdataset_has_sample(SEXP dataSEXP, SEXP sampleSEXP) {
@@ -580,6 +569,19 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// xdev_summarize
+Rcpp::DataFrame xdev_summarize(Rcpp::Environment data, string type, Rcpp::Nullable<Rcpp::CharacterVector> report_type);
+RcppExport SEXP _rdataset_xdev_summarize(SEXP dataSEXP, SEXP typeSEXP, SEXP report_typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::CharacterVector> >::type report_type(report_typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_summarize(data, type, report_type));
+    return rcpp_result_gen;
+END_RCPP
+}
 // xint_copy_pointer
 Rcpp::XPtr<Dataset> xint_copy_pointer(Rcpp::Environment data);
 RcppExport SEXP _rdataset_xint_copy_pointer(SEXP dataSEXP) {
@@ -640,7 +642,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_report", (DL_FUNC) &_rdataset_report, 3},
     {"_rdataset_get_sample_treatment_assignments", (DL_FUNC) &_rdataset_get_sample_treatment_assignments, 1},
     {"_rdataset_get_sequences", (DL_FUNC) &_rdataset_get_sequences, 2},
-    {"_rdataset_get_sequence_summary", (DL_FUNC) &_rdataset_get_sequence_summary, 1},
     {"_rdataset_has_sample", (DL_FUNC) &_rdataset_has_sample, 2},
     {"_rdataset_has_sequence_strings", (DL_FUNC) &_rdataset_has_sequence_strings, 1},
     {"_rdataset_is_aligned", (DL_FUNC) &_rdataset_is_aligned, 1},
@@ -670,6 +671,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_xdev_set_sequences", (DL_FUNC) &_rdataset_xdev_set_sequences, 4},
     {"_rdataset_xdev_set_dataset_name", (DL_FUNC) &_rdataset_xdev_set_dataset_name, 2},
     {"_rdataset_xdev_set_num_processors", (DL_FUNC) &_rdataset_xdev_set_num_processors, 2},
+    {"_rdataset_xdev_summarize", (DL_FUNC) &_rdataset_xdev_summarize, 3},
     {"_rdataset_xint_copy_pointer", (DL_FUNC) &_rdataset_xint_copy_pointer, 1},
     {"_rdataset_xint_new_pointer", (DL_FUNC) &_rdataset_xint_new_pointer, 2},
     {"_rdataset_xint_deserialize_dobject", (DL_FUNC) &_rdataset_xint_deserialize_dobject, 1},

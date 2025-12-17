@@ -355,15 +355,15 @@ dataset <- R6Class("dataset",
     #' @param silent Default = FALSE, meaning print summaries
     #' @return list of data.frames
     get_summary = function(silent = FALSE) {
-      results <- get_sequence_summary(self)
-
-      non_report_names <- c("sequence_summary", "scrap_summary")
-      t <- names(results)
-      report_names <- t[!t %in% non_report_names]
+      results <- list()
 
       # if you have summary results to print
       if (!all(get_sequences(self) == "") && (!silent)) {
         # if you have summary results to print
+        results[["sequence_summary"]] <- xdev_summarize(
+          data = self,
+          type = "sequences"
+        )
         if (!silent) {
           cat("sequence_summary:\n")
           print(results[["sequence_summary"]])
@@ -375,10 +375,19 @@ dataset <- R6Class("dataset",
         }
       }
 
+      exclude <- c("sequence_data", "sequence_scrap", "bin_scrap")
+      report_names <- names(data = self, type = "reports")
+      report_names <- report_names[!report_names %in% exclude]
+
       if (length(report_names) != 0) {
         if (!silent) {
           cat("\n")
           for (name in report_names) {
+            results[[name]] <- xdev_summarize(
+              data = self,
+              type = "reports",
+              report_type = name
+            )
             cat(name, ":\n")
             print(results[[name]])
             cat("Unique seqs:\t", count(
@@ -390,17 +399,24 @@ dataset <- R6Class("dataset",
         }
       }
 
-      if ("scrap_summary" %in% names(results)) {
+      df <- xdev_summarize(
+        data = self,
+        type = "scrap"
+      )
+      if (nrow(df) != 0) {
+        results[["scrap_summary"]] <- df
         if (!silent) {
-          cat("\nTrash_code   Unique_count    Total_count:\n")
-          for (i in seq_along(results$scrap_summary$trash_codes)) {
-            cat(paste(
-              results$scrap_summary$trash_codes[i],
-              results$scrap_summary$unique_count[i],
-              results$scrap_summary$total_count[i],
-              sep = "\t"
-            ), "\n")
-          }
+          print(results[["scrap_summary"]])
+          # cat("\nType    Trash_code   Unique    Total:\n")
+          # for (i in seq_along(results$scrap_summary$trash_code)) {
+          #   cat(paste(
+          #     results$scrap_summary$type[i],
+          #     results$scrap_summary$trash_code[i],
+          #     results$scrap_summary$unique[i],
+          #     results$scrap_summary$total[i],
+          #     sep = "\t"
+          #   ), "\n")
+          # }
         }
       }
 

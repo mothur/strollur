@@ -1071,45 +1071,56 @@ const Rcpp::DataFrame Dataset::getScrapReport(string mode) {
     return empty;
 }
 /******************************************************************************/
-// trashCode, uniqueCount, totalCount
-const Rcpp::List Dataset::getScrapSummary() {
+// type, trashCode, uniqueCount, totalCount
+const Rcpp::DataFrame Dataset::getScrapSummary() {
 
-    Rcpp::List list = Rcpp::List::create();
-    vector<string> listNames;
+    vector<string> types, codes;
+    vector<float> uniqueCounts, totalCounts;
 
     if (badAccnos.size() != 0) {
-        vector<string> codes(badAccnos.size(), "");
-        vector<float> uniqueCounts(badAccnos.size(), 0);
-        vector<float> totalCounts(badAccnos.size(), 0);
+        types.resize(badAccnos.size());
+        codes.resize(badAccnos.size());
+        uniqueCounts.resize(badAccnos.size());
+        totalCounts.resize(badAccnos.size());
 
         int index = 0;
         for (auto it = badAccnos.begin(); it != badAccnos.end(); it++) {
             codes[index] = it->first;
             uniqueCounts[index] = it->second[0];
             totalCounts[index] = it->second[1];
+            types[index] = "sequence";
             index++;
         }
-
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("trash_code") = codes,
-            Rcpp::_["unique_count"] = uniqueCounts,
-            Rcpp::_["total_count"] = totalCounts);
-
-        list.push_back(df);
-        listNames.push_back("sequence_scrap_summary");
     }
 
     if (binTables.size() != 0) {
         for (int i = 0; i < binTables.size(); i++) {
-            list.push_back(binTables[i].getScrapSummary());
-            string tag = binTables[i].label + "_scrap_summary";
-            listNames.push_back(tag);
+            Rcpp::DataFrame df = binTables[i].getScrapSummary();
+            if (df.size() == 4) {
+                vector<string> b = Rcpp::as<vector<string>>(df[0]);
+                types.insert(types.end(), b.begin(), b.end());
+
+                b = Rcpp::as<vector<string>>(df[1]);
+                codes.insert(codes.end(), b.begin(), b.end());
+
+                vector<float> f = Rcpp::as<vector<float>>(df[2]);
+                uniqueCounts.insert(uniqueCounts.end(), f.begin(), f.end());
+
+                f = Rcpp::as<vector<float>>(df[3]);
+                totalCounts.insert(totalCounts.end(), f.begin(), f.end());
+            }
         }
     }
 
-    list.attr("names") = listNames;
+    if (!types.empty()) {
+        return Rcpp::DataFrame::create(
+            Rcpp::Named("type") = types,
+            Rcpp::_["trash_code"] = codes,
+            Rcpp::_["unique"] = uniqueCounts,
+            Rcpp::_["total"] = totalCounts);
+    }
 
-    return list;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 // total abundance for each sequence
@@ -1187,47 +1198,39 @@ const Rcpp::DataFrame Dataset::getSequenceReport(){
     return df;
 }
 /******************************************************************************/
-const Rcpp::List Dataset::getSequenceSummary() {
+const Rcpp::DataFrame Dataset::getSummary(string type, string reportType) {
 
-    Rcpp::List result = Rcpp::List::create();
-    vector<string> result_names;
+    Rcpp::DataFrame result = Rcpp::DataFrame::create();
 
-    if (hasSeqs()) {
-        Summary* summary = new Summary(processors);
+    if (type == "sequences") {
+        if (hasSeqs()) {
+            Summary* summary = new Summary(processors);
 
-        vector<vector<int> > report;
+            vector<vector<int> > report;
 
-        report.push_back(select(starts, tableSeqs));
-        report.push_back(select(ends, tableSeqs));
-        report.push_back(select(lengths, tableSeqs));
-        report.push_back(select(ambigs, tableSeqs));
-        report.push_back(select(polymers, tableSeqs));
-        report.push_back(select(numns, tableSeqs));
+            report.push_back(select(starts, tableSeqs));
+            report.push_back(select(ends, tableSeqs));
+            report.push_back(select(lengths, tableSeqs));
+            report.push_back(select(ambigs, tableSeqs));
+            report.push_back(select(polymers, tableSeqs));
+            report.push_back(select(numns, tableSeqs));
 
-        Rcpp::DataFrame seqResults = summary->summarizeFasta(
-            report, count.getTotalAbundances(getIncludedNamesIndexes()));
+            result = summary->summarizeFasta(
+                report, count.getTotalAbundances(getIncludedNamesIndexes()));
 
-        result.push_back(seqResults);
-        result_names.push_back("sequence_summary");
+            delete summary;
+        }
+    }else if (type == "reports") {
+        auto it = reports.find(reportType);
 
-        delete summary;
-    }
-
-    for (auto itReport = reports.begin(); itReport != reports.end(); itReport++) {
-        Rcpp::DataFrame df = getSequenceAbundances();
-        result.push_back(itReport->second.summarizeReport(toSet(getSequenceNames()), processors,
-                                                          Rcpp::as<vector<float>>(df[1])));
-        result_names.push_back(itReport->first);
-    }
-
-    Rcpp::DataFrame scrap = getScrapSummary();
-    if (scrap.size() != 0) {
-        result.push_back(scrap);
-        result_names.push_back("scrap_summary");
-    }
-
-    if (result.size() != 0) {
-        result.attr("names") = result_names;
+        // do we have this report type
+        if (it != reports.end()) {
+            Rcpp::DataFrame df = getSequenceAbundances();
+            result = it->second.summarizeReport(
+                    toSet(getSequenceNames()), processors, Rcpp::as<vector<float>>(df[1]));
+        }
+    }else if (type == "scrap") {
+        result = getScrapSummary();
     }
 
     return result;
@@ -1551,14 +1554,16 @@ void Dataset::removeBins(const vector<string>& namesToRemove,
 }
 /******************************************************************************/
 void Dataset::removeSamples(const vector<string>& samples) {
-    count.removeSamples(samples);
+    AbundTable dupCount(count);
+
+    dupCount.removeSamples(samples);
 
     // // remove samples from count
     // remove any seqs only assigned to these samples
     for (int i = 0; i < names.size(); i++) {
         // included seq
         if (tableSeqs[i]) {
-            if (sum(count.getAbundances(i)) == 0) {
+            if (sum(dupCount.getAbundances(i)) == 0) {
                 removeSequence(i, "removedSamples", true, false);
 
                 // remove from list otus
@@ -1570,6 +1575,8 @@ void Dataset::removeSamples(const vector<string>& samples) {
             }
         }
     }
+
+    count.removeSamples(samples);
 
     // // remove samples from binTables
     for (int i = 0; i < binTables.size(); i++) {

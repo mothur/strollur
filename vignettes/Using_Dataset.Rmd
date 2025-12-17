@@ -32,36 +32,70 @@ miseq
 ## Accessing Data
 The *rdataset* package includes several functions to access your data. 
 
-**names()** - The names function is an extension of base R's names function. It allows you to get the name of your dataset or the names of the sequences, bins, samples, treatments and reports in your dataset.
+**names()** - The names() function is an extension of base R's names function. It allows you to get the name of your dataset or the names of the sequences, bins, samples, treatments and reports in your dataset.
+
+**count()** - The count() function allows you to get the number of sequences, samples, treatments or bins in your dataset.
+
+**abundance()** - The abundance() function can be used to access the abundance data for sequences, bins, samples, and treatments.
+
+**report()** - The report() function can be used to access the various data reports associated with your dataset. If you have added custom reports for alignment, contigs_assembly or chimeras, you can get those as well using the report_type name you provided in the add() function. 
+
+**summary()** - The summary() function allows you to summarize sequences, your custom reports, and scrapped data. 
+
 
 ```{r}
+# Let's take a closer look at the names() and count() functions:
+
 # To get the name of the dataset
 names(data = miseq, type = "dataset")
+
+# To get the total number of sequences
+count(data = miseq, type = "sequences")
+
+# To get number of unique sequences
+count(data = miseq, type = "sequences", distinct = TRUE)
 
 # To get the names of the sequences
 names(data = miseq, type = "sequences") |> head(n = 5)
 
+# To get number of sequences from sample 'F3D0'
+# Note these sequences will be present in the sample but may be
+# be present in other samples as well
+count(data = miseq, type = "sequences", samples = c("F3D0"))
+
 # To get the names of the sequences present in sample 'F3D0'
 names(data = miseq, type = "sequences", samples = c("F3D0")) |> head(n = 5)
+
+# To get number of unique sequences exclusive to sample 'F3D0'
+# Note sequences are present in the sample and NOT present in any other samples.
+count(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE)
 
 # To get the names of the sequences unique to sample 'F3D0'
 names(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE) |>
   head(n = 5)
 
+# To get the number of "otu" bins in the dataset
+count(data = miseq, type = "bins", bin_type = "otu")
+
 # To get the names of the "otu" bins
 names(data = miseq, type = "bins", bin_type = "otu") |> head(n = 5)
+
+# To get the number of "asv" bins in the dataset
+count(data = miseq, type = "bins", bin_type = "asv")
 
 # To get the names of the "asv" bins
 names(data = miseq, type = "bins", bin_type = "asv") |> head(n = 5)
 
+# To get the number of "phylotype" bins in the dataset
+count(data = miseq, type = "bins", bin_type = "phylotype")
+
 # To get the names of the "phylotype" bins
 names(data = miseq, type = "bins", bin_type = "phylotype") |> head(n = 5)
 
-# To get the names of the "otu" bins that are unique to 'F3D0'
-names(
-  data = miseq,
-  type = "bins", samples = c("F3D0"), distinct = TRUE
-) |> head(n = 5)
+# To get number of "otu" bins from sample 'F3D0'
+# Note these bins will have sequences from the sample but there may be
+# other samples present in the bins as well
+count(data = miseq, type = "bins", bin_type = "otu", samples = c("F3D0"))
 
 # To get the names of the "otu" bins that include sequences from 'F3D0'
 names(
@@ -69,8 +103,28 @@ names(
   type = "bins", samples = c("F3D0"), distinct = FALSE
 ) |> head(n = 5)
 
+# To get number of "otu" bins unique to samples 'F3D0'
+# Note these bins will have sequences from the sample and NO other samples
+# will be present in the bins.
+count(
+  data = miseq, type = "bins",
+  bin_type = "otu", samples = c("F3D0"), distinct = TRUE
+)
+
+# To get the names of the "otu" bins that are unique to 'F3D0'
+names(
+  data = miseq,
+  type = "bins", samples = c("F3D0"), distinct = TRUE
+) |> head(n = 5)
+
+# To get the number of samples in the dataset
+count(data = miseq, type = "samples")
+
 # To get the names of the samples
 names(data = miseq, type = "samples")
+
+# To get the number of treatments in the dataset
+count(data = miseq, type = "treatments")
 
 # To get the names of the treatments
 names(data = miseq, type = "treatments")
@@ -79,61 +133,7 @@ names(data = miseq, type = "treatments")
 names(data = miseq, type = "reports")
 ```
 
-**count()** - Similair to names() the count() function allows you to get the number of sequences, samples, treatments or bins in your dataset.
-
-```{r}
-# To get the total number of sequences
-count(data = miseq, type = "sequences")
-
-# To get number of unique sequences
-count(data = miseq, type = "sequences", distinct = TRUE)
-
-# To get number of unique sequences from samples 'F3D0' and 'F3D1'
-# Note these sequences will be present in both samples but may be
-# be present in other samples as well
-count(data = miseq, type = "sequences", samples = c("F3D0", "F3D1"))
-
-# To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
-# Note sequences are present in both samples and NOT present in any other
-# samples.
-count(
-  data = miseq, type = "sequences", samples = c("F3D0", "F3D1"),
-  distinct = TRUE
-)
-
-# To get the number of samples in the dataset
-count(data = miseq, type = "samples")
-
-# To get the number of treatments in the dataset
-count(data = miseq, type = "treatments")
-
-# To get the number of "otu" bins in the dataset
-count(data = miseq, type = "bins", bin_type = "otu")
-
-# To get the number of "asv" bins in the dataset
-count(data = miseq, type = "bins", bin_type = "asv")
-
-# To get the number of "phylotype" bins in the dataset
-count(data = miseq, type = "bins", bin_type = "phylotype")
-
-# To get number of "otu" bins from samples 'F3D0' and 'F3D1'
-# Note these bins will have sequences from both samples but there may be
-# other samples present as well
-count(
-  data = miseq,
-  type = "bins", bin_type = "otu", samples = c("F3D0", "F3D1")
-)
-
-# To get number of "otu" bins unique to samples 'F3D0' and 'F3D1'
-# Note these bins will have sequences from both samples and NO other samples
-# will be present in the bins.
-count(
-  data = miseq, type = "bins", bin_type = "otu",
-  samples = c("F3D0", "F3D1"), distinct = TRUE
-)
-```
-
-* **abundance()** - You can use the abundance() function for access the abundance data for sequences, bins, samples, and treatments.
+Now that we are familar with the names() and count() functions. Let's take a closer look at how we can use the **abundance()** function.
 
 ```{r}
 # To the total abundance for each sequence
@@ -167,11 +167,14 @@ abundance(data = miseq, type = "samples") |> head(n = 5)
 abundance(data = miseq, type = "treatments") |> head(n = 5)
 ```
     
-* **report()** - The report function can be used to access the various data reports associated with your dataset. These reports include: 'sequence_data', 'sequence_taxonomy', 'bin_taxonomy', 'sequence_scrap', 'bin_scrap', 'metadata' and 'references'. If you have added custom reports for alignment, contigs_assembly or chimeras, you can get those as well using the type name you provided in add_reports(). 
+The **report()** and **summary()** functions allow you to access sequence and  classification reports, metadata, resource references, scrapped data reports, sequence data summaries, custom report summaries and scrapped data summaries. Let's take a closer look using the miseq example.
  
 ```{r}
 # To get a report about the FASTA sequence data
 report(data = miseq, type = "sequence_data") |> head(n = 5)
+
+# To summarize the FASTA sequence data
+summary(data = miseq, type = "sequences", verbose = FALSE)
 
 # To get a classification report about your sequence data
 report(data = miseq, type = "sequence_taxonomy") |> head(n = 7)
@@ -183,35 +186,44 @@ report(data = miseq, type = "bin_taxonomy", bin_type = "otu") |> head(n = 7)
 report(data = miseq, type = "bin_taxonomy", bin_type = "asv") |> head(n = 7)
 
 # To get the consensus taxonomies assigned to your 'phylotype' bins
-report(
-  data = miseq,
-  type = "bin_taxonomy", bin_type = "phylotype"
-) |> head(n = 7)
+report(data = miseq, type = "bin_taxonomy", bin_type = "phylotype") |>
+  head(n = 7)
 
 # To get the scrapped sequences report
+# Note, the miseq example does not include scrapped data
 report(data = miseq, type = "sequence_scrap")
 
 # To get the "otu" scrapped bins report
+# Note, the miseq example does not include scrapped data
 report(data = miseq, type = "bin_scrap", bin_type = "otu")
+
+# To get a summary of the data scrapped during your analysis
+# Note, the miseq example does not include scrapped data
+summary(data = miseq, type = "scrap", verbose = FALSE)
 
 # To get the metadata associated with your dataset
 report(data = miseq, type = "metadata") |> head(n = 7)
 
-# To get the resources associated with your dataset
+# To get the resource references associated with your dataset
 report(data = miseq, type = "references")
 
 # To access the custom reports, first let's find the names of the reports
 names(data = miseq, type = "reports")
 
-# To access our contigs assemble report
+# To access our contigs assembly report
 report(data = miseq, type = "contigs_report") |> head(n = 7)
+
+# To get a summary of your contigs assembly report
+summary(
+  data = miseq, type = "reports",
+  report_type = "contigs_report", verbose = FALSE
+)
 ```    
 
-
-* **General**
+**General**
     * **get_bin_types** - Returns the types of bins in your dataset
     * **is_aligned** - Returns TRUE if sequence data is aligned
-
+    * **TODO**
 ```{r}
 # To find the types of bins in your dataset
 get_bin_types(data = miseq)

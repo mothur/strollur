@@ -123,8 +123,7 @@
 
         // report[0] = starts, report[1] = ends, report[2] = lengths,
         // report[3] = ambigs, report[4] = homopolymers, report[5] = num_ns
-        Rcpp::List summary = data.getSequenceSummary();
-        Rcpp::DataFrame df(summary["sequence_summary"]);
+        Rcpp::DataFrame df = data.getSummary();
 
         // minimum / maximum start
         expect_true(1 == Rcpp::as<vector<int>>(df[0])[0]);
@@ -604,9 +603,8 @@
         expect_true(seqsToRemove == Rcpp::as<vector<string>>(scrapReport[0]));
         expect_true(trashCodes == Rcpp::as<vector<string>>(scrapReport[1]));
 
-        Rcpp::List list = data.getScrapSummary();
-        Rcpp::DataFrame scrapSummary(list["sequence_scrap_summary"]);
-        expect_true(scrapSummary.size() == 3);
+        Rcpp::DataFrame scrapSummary = data.getScrapSummary();
+        expect_true(scrapSummary.size() == 4);
 
         sort(trashCodes.begin(), trashCodes.end());
         vector<double> uniqueCounts(2, 1);
@@ -614,17 +612,15 @@
         totalCounts[0] = 90;
         totalCounts[1] = 1150;
 
-        expect_true(trashCodes == Rcpp::as<vector<string>>(scrapSummary[0]));
-        expect_true(uniqueCounts == Rcpp::as<vector<double>>(scrapSummary[1]));
-        expect_true(totalCounts == Rcpp::as<vector<double>>(scrapSummary[2]));
+        expect_true(trashCodes == Rcpp::as<vector<string>>(scrapSummary[1]));
+        expect_true(uniqueCounts == Rcpp::as<vector<double>>(scrapSummary[2]));
+        expect_true(totalCounts == Rcpp::as<vector<double>>(scrapSummary[3]));
 
-        Rcpp::List summary = data.getSequenceSummary();
-        Rcpp::DataFrame df(summary["scrap_summary"]);
+        Rcpp::DataFrame df = data.getSummary("scrap");
 
-        expect_true(trashCodes == Rcpp::as<vector<string>>(df[0]));
-        expect_true(uniqueCounts == Rcpp::as<vector<double>>(df[1]));
-        expect_true(totalCounts == Rcpp::as<vector<double>>(df[2]));
-
+        expect_true(trashCodes == Rcpp::as<vector<string>>(df[1]));
+        expect_true(uniqueCounts == Rcpp::as<vector<double>>(df[2]));
+        expect_true(totalCounts == Rcpp::as<vector<double>>(df[3]));
     }
 
     test_that("Tests setAbundances") {
@@ -860,7 +856,7 @@
         expect_error(data.assignBins(otuNames, abundances));
      }
 
-    test_that("Tests mergeBins, removeBins, getScrapReport, getScrapSummary") {
+    test_that("Tests mergeBins - abundance only") {
 
         Dataset data("mydata", 1);
 
@@ -869,16 +865,8 @@
         expect_true(data.getNumSamples() == 0);
         expect_true(data.numUnique == 0);
 
-        vector<string> otuNames(10, "otu1");
-        otuNames[1] = "otu2";
-        otuNames[2] = "otu3";
-        otuNames[3] = "otu4";
-        otuNames[4] = "otu5";
-        otuNames[5] = "otu6";
-        otuNames[6] = "otu7";
-        otuNames[7] = "otu8";
-        otuNames[8] = "otu9";
-        otuNames[9] = "otu10";
+        vector<string> otuNames = {"otu1", "otu2", "otu3", "otu4", "otu5",
+                                   "otu6", "otu7", "otu8", "otu9", "otu10"};
         vector<float> abundances(10, 10);
 
         // test adding otuNames and abundances (rabund)
@@ -890,7 +878,8 @@
 
         // no sequence data was given
         expect_true(data.getList().size() == 0);
-        expect_true(Rcpp::as<vector<float>>(data.getBinAbundances()[1])[0] == 10); // otu1
+        vector<float> actual = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expect_true(actual == abundances);
 
         // merge otus without seqs or samples
         vector<string> otusToMerge(4, "otu1");
@@ -906,20 +895,19 @@
         expect_true(binAbundances[0] == 40); // otu1
         expect_true(binAbundances[1] == 10); // otu3
         expect_true(binAbundances.size() == 7);
-        data.clear();
+    }
+
+    test_that("Tests mergeBins - with sequences") {
+
+        Dataset data("mydata", 1);
 
         // test adding otuNames, seqNames, abundances (list)
-        vector<string> seqNames(10, "");
-        otuNames[0] = "otu1";   seqNames[0] = "seq1";
-        otuNames[1] = "otu1";   seqNames[1] = "seq2";
-        otuNames[2] = "otu1";   seqNames[2] = "seq3";
-        otuNames[3] = "otu2";   seqNames[3] = "seq4";
-        otuNames[4] = "otu2";   seqNames[4] = "seq5";
-        otuNames[5] = "otu3";   seqNames[5] = "seq6";
-        otuNames[6] = "otu4";   seqNames[6] = "seq7";
-        otuNames[7] = "otu4";   seqNames[7] = "seq8";
-        otuNames[8] = "otu4";   seqNames[8] = "seq9";
-        otuNames[9] = "otu4";   seqNames[9] = "seq10";
+        vector<string> otuNames = {"otu1", "otu1", "otu1", "otu2", "otu2",
+                                   "otu3", "otu4", "otu4", "otu4", "otu4"};
+
+        vector<string> seqNames = {"seq1", "seq2", "seq3", "seq4", "seq5",
+                                   "seq6", "seq7", "seq8", "seq9", "seq10"};
+        vector<float> abundances(10, 10);
 
         data.assignBins(otuNames, abundances, nullVector, seqNames);
 
@@ -928,22 +916,14 @@
         expect_true(data.numUnique == 10);
 
         vector<float> expected = {30,20,10,40};
-        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        vector<float> actual = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        vector<string> otuIds = {"otu1", "otu2", "otu3", "otu4"};
 
-        expect_true(binAbundances == expected);
-
-        vector<string> otuIds(4, "otu1");
-        otuIds[1] = "otu2";
-        otuIds[2] = "otu3";
-        otuIds[3] = "otu4";
-
+        expect_true(actual == expected);
         expect_true(data.getBinIds() == otuIds);
 
         // test merge with seqids
-        otusToMerge.resize(2);
-        otusToMerge[0] = "otu2";
-        otusToMerge[1] = "otu4";
-
+        vector<string> otusToMerge = {"otu2", "otu4"};
         data.mergeBins(otusToMerge);
         otuIds.pop_back();
 
@@ -958,9 +938,27 @@
         expect_true(listVector.size() == 3);
 
         expected = {30,60,10};
-        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
-        expect_true(binAbundances == expected);
+        actual = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        expect_true(actual == expected);
         expect_true(data.getTotal() == 100);
+    }
+
+    test_that("Tests removeBins, getScrapReport, getScrapSummary") {
+
+        Dataset data("mydata", 1);
+
+        // test adding otuNames, seqNames, abundances (list)
+        vector<string> otuNames = {"otu1", "otu1", "otu1", "otu2", "otu2",
+                                   "otu3", "otu4", "otu4", "otu4", "otu4"};
+
+        vector<string> seqNames = {"seq1", "seq2", "seq3", "seq4", "seq5",
+                                   "seq6", "seq7", "seq8", "seq9", "seq10"};
+        vector<float> abundances(10, 10);
+
+        data.assignBins(otuNames, abundances, nullVector, seqNames);
+
+        vector<string> otusToMerge = {"otu2", "otu4"};
+        data.mergeBins(otusToMerge);
 
         // remove sequence that will remove otu
         vector<string> seqToRemove(1, "seq6");
@@ -972,10 +970,10 @@
         expect_true(data.getNumBins() == 2);
         expect_true(data.numUnique == 9);
 
-        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
-        expected = {30,60};
-        expect_true(binAbundances == expected);
-        expect_true(binAbundances.size() == 2);
+        vector<float> actual = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        vector<float> expected = {30,60};
+        expect_true(actual == expected);
+        expect_true(actual.size() == 2);
 
         // remove otu by setting abundance to 0
         vector<string> testRemove(1, "otu2");
@@ -987,16 +985,16 @@
         expect_true(data.getNumBins() == 1);
         expect_true(data.numUnique == 3);
 
-        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        actual = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
         expected = {30};
-        expect_true(binAbundances == expected);
-        expect_true(binAbundances.size() == 1);
+        expect_true(actual == expected);
+        expect_true(actual.size() == 1);
+    }
 
-        // test adding otuNames abundances, samples and seqids
-        data.clear();
-        otuNames.resize(16, "otu1");
-        abundances.resize(16, 10);
-        seqNames.resize(16, "");
+    test_that("Tests removeBins, getScrapReport, getScrapSummary") {
+        vector<string> otuNames(16, "otu1");
+        vector<float> abundances(16, 10);
+        vector<string> seqNames(16, "");
         vector<string> samples(16, "sample1");
         otuNames[0] = "otu1"; seqNames[0] = "seq1";  samples[0] = "sample1";  abundances[0] = 10;
         otuNames[1] = "otu1"; seqNames[1] = "seq2";  samples[1] = "sample2";  abundances[1] = 10;
@@ -1015,40 +1013,25 @@
         otuNames[14] = "otu3"; seqNames[14] = "seq10";  samples[14] = "sample5";  abundances[14] = 3;
         otuNames[15] = "otu3"; seqNames[15] = "seq10";  samples[15] = "sample6";  abundances[15] = 4;
 
+        Dataset data("mydata", 1);
+
         data.assignBins(otuNames, abundances, samples, seqNames);
 
-        vector<string> uniqueSamples(6, "");
-        uniqueSamples[0] = "sample1";
-        uniqueSamples[1] = "sample2";
-        uniqueSamples[2] = "sample3";
-        uniqueSamples[3] = "sample4";
-        uniqueSamples[4] = "sample5";
-        uniqueSamples[5] = "sample6";
-
-        // assign treatments differently
+        vector<string> uniqueSamples = {"sample1", "sample2", "sample3",
+                                        "sample4", "sample5", "sample6"};
         vector<string> treatments(6, "early");
+        vector<double> treatmentTotals = {100};
+        vector<double> sampleTotals = {36, 25, 2, 20, 13, 4};
+        vector<string> otuIds = {"otu1", "otu2", "otu3"};
 
         data.assignTreatments(uniqueSamples, treatments);
 
-        binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
-        expected = {30,60,10};
+        vector<float> binAbundances = Rcpp::as<vector<float>>(data.getBinAbundances()[1]);
+        vector<float> expected = {30,60,10};
         expect_true(binAbundances == expected);
         expect_true(binAbundances.size() == 3);
-
-        vector<double> treatmentTotals(1, 0);
-        treatmentTotals[0] = 100;
-
         expect_true(Rcpp::as<vector<double>>(data.getTotals("treatments")[1]) == treatmentTotals);
         expect_true(data.getTreatments() == unique(treatments));
-
-        vector<double> sampleTotals(6, 0);
-        sampleTotals[0] = 36;
-        sampleTotals[1] = 25;
-        sampleTotals[2] = 2;
-        sampleTotals[3] = 20;
-        sampleTotals[4] = 13;
-        sampleTotals[5] = 4;
-
         expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getSamples() == uniqueSamples);
 
@@ -1078,12 +1061,11 @@
         expect_true(data.getNumBins() == 3);
         expect_true(data.numUnique == 10);
         expect_true(data.getNumSamples() == 6);
-
         expect_true(Rcpp::as<vector<double>>(data.getTotals("samples")[1]) == sampleTotals);
         expect_true(data.getBinIds() == otuIds);
         expect_true(data.getSamples() == unique(samples));
 
-        listVector = data.getListVector();
+        vector<string> listVector = data.getListVector();
         expect_true(listVector[1] == "seq4,seq5,seq6,seq7,seq8,seq9"); //otu2
         expect_true(listVector[0] == "seq1,seq2,seq3"); // otu1
         expect_true(listVector[2]== "seq10"); //otu3
@@ -1130,16 +1112,16 @@
         expect_true(otusToRemove == Rcpp::as<vector<string>>(scrapReport[0]));
         expect_true(reasonsToRemove == Rcpp::as<vector<string>>(scrapReport[1]));
 
-        Rcpp::List list = data.getScrapSummary();
-        Rcpp::DataFrame scrapSummary(list["otu_scrap_summary"]);
-        expect_true(scrapSummary.size() == 3);
+        Rcpp::DataFrame scrapSummary = data.getScrapSummary();
+        expect_true(scrapSummary.size() == 4);
 
-        vector<double> uniqueCounts(1, 1);
-        vector<double> totalCounts(1, 30);
+        vector<double> uniqueCounts = {3, 1};
+        vector<double> totalCounts = {30, 30};
+        reasonsToRemove.push_back("badBin");
 
-        expect_true(reasonsToRemove == Rcpp::as<vector<string>>(scrapSummary[0]));
-        expect_true(uniqueCounts == Rcpp::as<vector<double>>(scrapSummary[1]));
-        expect_true(totalCounts == Rcpp::as<vector<double>>(scrapSummary[2]));
+        expect_true(reasonsToRemove == Rcpp::as<vector<string>>(scrapSummary[1]));
+        expect_true(uniqueCounts == Rcpp::as<vector<double>>(scrapSummary[2]));
+        expect_true(totalCounts == Rcpp::as<vector<double>>(scrapSummary[3]));
 
         otuNames.clear();
         expect_error(data.assignBins(otuNames, abundances));

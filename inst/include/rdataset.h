@@ -387,7 +387,7 @@ public:
     const vector<double> getSampleTotals();
     const map<string, string> getSampleTreatmentAssignments();
     const Rcpp::DataFrame getScrapReport();
-    // trashCode, binCount, abundanceCount
+    // type, trashCode, binCount, abundanceCount
     const Rcpp::DataFrame getScrapSummary();
     const vector<string> getTreatments();
     // vector containing total abundance for each treatment
@@ -424,6 +424,7 @@ private:
     map<string, int> binIndex;
     // filter for "good" bins
     vector<bool> tableBins;
+    vector<float> originalBinAbunds;
     vector<string> binNames, trashCodes, taxonomies;
 
     // binList[binIndex] -> vector of sequence indexes
@@ -470,7 +471,8 @@ private:
     void serialize(Archive& ar) {
         ar(label, hasListAssignments, hasBinTaxonomy, repSequences, hasBinReps,
            binIndex, tableBins, binNames, trashCodes, taxonomies,
-           runClassify, binList, seqBins, badAccnos, uniqueBad, binCount);
+           runClassify, binList, seqBins, badAccnos, uniqueBad, binCount,
+           originalBinAbunds);
     }
 
 };
@@ -553,11 +555,15 @@ public:
     const Rcpp::DataFrame getReferences();
     const Rcpp::DataFrame getReports(string type);
     const vector<string> getReportTypes();
+    // sequence report: starts, ends, lengths, ambigs, polymers, numns
+    const Rcpp::DataFrame getSequenceReport();
+    // n columns: id, taxonomy split by level
+    Rcpp::DataFrame getSequenceTaxonomyReport();
     const vector<string> getSamples();
     const Rcpp::DataFrame getSampleTreatmentAssignments();
     const Rcpp::DataFrame getScrapReport(string mode = "sequence");
-    // trashCode, uniqueCount, totalCount
-    const Rcpp::List getScrapSummary();
+    // type, trashCode, uniqueCount, totalCount
+    const Rcpp::DataFrame getScrapSummary();
     // total abundance for each sequence
     const Rcpp::DataFrame getSequenceAbundances(bool bySample = false);
     const Rcpp::DataFrame getBinAbundances(string bin_type = "otu",
@@ -565,14 +571,13 @@ public:
     const vector<string> getSequenceNames(vector<string> sample = nullVector,
                                           bool distinct = false);
     const vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector);
-    // sequence report: starts, ends, lengths, ambigs, polymers, numns
-    const Rcpp::DataFrame getSequenceReport();
+
+
     const vector<string> getSequences(string sample = "");
     const vector<vector<string> > getSequencesBySample(const vector<string> samples);
-    // sequence summary summarizes sequence, and scrap reports
-    const Rcpp::List getSequenceSummary();
-    // n columns: id, taxonomy split by level
-    Rcpp::DataFrame getSequenceTaxonomyReport();
+
+    const Rcpp::DataFrame getSummary(string type = "sequences",
+                                     string reportType = "");
 
     const double getTotal(vector<string> samples = nullVector);
     const Rcpp::DataFrame getTotals(string type = "samples");
@@ -583,6 +588,7 @@ public:
     const bool hasSamples(vector<string> samples = nullVector);
     const bool hasListAssignments(string type = "otu");
     const bool hasSeqs();
+
     void mergeBins(const vector<string>& binIDS, string reason = "merged",
                    string type = "otu");
     void mergeSequences(const vector<string>&, string reason = "merged");

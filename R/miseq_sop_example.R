@@ -47,7 +47,11 @@ miseq_sop_example <- function() {
   contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
     col_names = TRUE, show_col_types = FALSE
   )
-  xdev_add_report(data, contigs_report, "contigs_report", "Name")
+  add(
+    data = data, table = contigs_report, type = "reports",
+    report_type = "contigs_report",
+    table_names = list(sequence_name = "Name")
+  )
 
   data
 }

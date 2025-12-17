@@ -493,33 +493,6 @@ vector<string> get_sequences(Rcpp::Environment data, string sample = "") {
      return d.get()->getSequences(sample);
 }
 /******************************************************************************/
-//' @title get_sequence_summary
-//' @description
-//' Get a summary of the sequence report data, as well as reports of containing
-//' scrapped data.
-//'
-//' @param data, a \link{dataset} object
-//' @examples
-//'
-//'  data <- miseq_sop_example()
-//'
-//'  # Sequence summary, nothing has been scrapped
-//'
-//'  get_sequence_summary(data)
-//'
-//'  # Sequence summary, after removing sample 'F3D0'
-//'
-//'  xdev_remove_samples(data, c("F3D0"))
-//'  get_sequence_summary(data)
-//'
-//' @return list of data.frames containing the 'sequence_summary' table and
-//' 'scrap_summary' table if sequences have been removed
-//[[Rcpp::export]]
-Rcpp::List get_sequence_summary(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getSequenceSummary();
-}
-/******************************************************************************/
 //' @title has_sample
 //' @description
 //' Determine if a given sample is in a \link{dataset} object

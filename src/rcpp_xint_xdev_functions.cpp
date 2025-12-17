@@ -896,6 +896,39 @@ void xdev_set_num_processors(Rcpp::Environment data, int processors = 1) {
      d.get()->processors = processors;
 }
 /******************************************************************************/
+Rcpp::DataFrame xdev_summarize(Rcpp::Environment data, string type,
+                               Rcpp::Nullable<Rcpp::CharacterVector> report_type) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    string rType = "";
+    if (report_type.isNotNull()) {
+        rType = Rcpp::as<string>(report_type);
+
+        // make sure its a valid report type
+        vector<string> reportOptions = d.get()->getReportTypes();
+        if (!vectorContains(reportOptions, rType)) {
+            string message = rType + " is not a valid report_type option. ";
+            if (!reportOptions.empty()) {
+                message += "Options include: " + toString(reportOptions, ',') + ".";
+            }
+            RcppThread::Rcerr << endl << message << endl;
+            throw Rcpp::exception(message.c_str());
+        }
+    }
+
+    vector<string> typeOptions = {"sequences", "reports", "scrap"};
+    if (!vectorContains(typeOptions, type)) {
+        string message = type + " is not a valid type option. Options include:";
+        message += " 'sequences', 'reports' and 'scrap'.";
+        RcppThread::Rcerr << endl << message << endl;
+        throw Rcpp::exception(message.c_str());
+    }
+
+
+    return d.get()->getSummary(type, rType);
+}
+/******************************************************************************/
 Rcpp::XPtr<Dataset> xint_copy_pointer(Rcpp::Environment data) {
      Rcpp::XPtr<Dataset> d = data["data"];
      Dataset* copy = new Dataset(*d.get());

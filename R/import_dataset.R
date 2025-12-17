@@ -303,7 +303,7 @@ import_dataset <- function(table, tags = NULL) {
       name_col <- attr(table$reports[[name]], "sequence_name")
       add(
         data = data, table = table$reports[[name]], type = "reports",
-        report_type = name, list(sequence_name = name_col)
+        report_type = name, table_names = list(sequence_name = name_col)
       )
     }
   } else if (("reports" %in% tags) && !("reports" %in% names)) {

@@ -58,6 +58,7 @@
 #'  'reference_urls'.
 #'
 #' @param reference, a list created by the function [new_reference]. Optional.
+#'
 #' @param verbose, boolean indicating whether or not you want progress messages.
 #' Default = TRUE.
 #'
@@ -190,6 +191,12 @@ add <- function(data, table,
       reference_url = table_names[["reference_url"]],
       verbose = verbose
     )
+  } else {
+    message <- paste0(
+      type, " is not a valid 'type' for the add()",
+      " function."
+    )
+    cli::cli_abort(message)
   }
   num_added
 }

@@ -328,31 +328,6 @@ get_sequences <- function(data, sample = "") {
     .Call(`_rdataset_get_sequences`, data, sample)
 }
 
-#' @title get_sequence_summary
-#' @description
-#' Get a summary of the sequence report data, as well as reports of containing
-#' scrapped data.
-#'
-#' @param data, a \link{dataset} object
-#' @examples
-#'
-#'  data <- miseq_sop_example()
-#'
-#'  # Sequence summary, nothing has been scrapped
-#'
-#'  get_sequence_summary(data)
-#'
-#'  # Sequence summary, after removing sample 'F3D0'
-#'
-#'  xdev_remove_samples(data, c("F3D0"))
-#'  get_sequence_summary(data)
-#'
-#' @return list of data.frames containing the 'sequence_summary' table and
-#' 'scrap_summary' table if sequences have been removed
-get_sequence_summary <- function(data) {
-    .Call(`_rdataset_get_sequence_summary`, data)
-}
-
 #' @title has_sample
 #' @description
 #' Determine if a given sample is in a \link{dataset} object
@@ -1440,6 +1415,45 @@ xdev_set_dataset_name <- function(data, dataset_name) {
 #'
 xdev_set_num_processors <- function(data, processors) {
     invisible(.Call(`_rdataset_xdev_set_num_processors`, data, processors))
+}
+
+#' @title xdev_summarize
+#' @description
+#' Summarize the sequences data, custom reports, and scrapped data in a
+#' \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of data you want the number of.
+#' Options include: "sequences", "reports" and "scrap". Default = "sequences".
+#'
+#' @param report_type, string containing the report type you would summarized.
+#' For example, the miseq_sop_example includes contigs assembly data and can be
+#' accessed with report_type = "contigs_report". Default = NULL.
+#'
+#' @examples
+#'
+#'  data <- miseq_sop_example()
+#'
+#'  # summarize FASTA data
+#'  xdev_summarize(data = data, type = "sequences")
+#'
+#'  # summarize contigs_report
+#'  xdev_summarize(data = data, type = "reports",
+#'                  report_type = "contigs_report")
+#'
+#'  # remove sample 'F3D0'
+#'  xdev_remove_samples(data = data, samples = c("F3D0"))
+#'
+#'  # summarize FASTA data after removal of sample F3D0
+#'  xdev_summarize(data = data, type = "sequences")
+#'
+#'  # summarize scrapped data
+#'  xdev_summarize(data = data, type = "scrap")
+#'
+#' @return data.frame()
+xdev_summarize <- function(data, type = "sequences", report_type = NULL) {
+    .Call(`_rdataset_xdev_summarize`, data, type, report_type)
 }
 
 #' @title xint_copy_pointer
