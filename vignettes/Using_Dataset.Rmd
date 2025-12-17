@@ -246,7 +246,7 @@ save_dataset(data = miseq, file = "miseq.rds")
 # To create a dataset from a .rds file
 data <- load_dataset(file = "miseq.rds")
 
-# To create a dataset from a .rds file
+# To export the data into a human readable format
 table <- export_dataset(data = miseq)
 
 # For an overview of the exported data.frames
