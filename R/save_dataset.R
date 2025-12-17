@@ -1,7 +1,9 @@
 #' @title save_dataset
 #' @description
 #' The save_dataset function will save the \link{dataset} object to file.
+#'
 #' @param dataset a \link{dataset} object
+#'
 #' @param file a string containing the file name.
 #' @examples
 #'

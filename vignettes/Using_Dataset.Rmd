@@ -220,11 +220,41 @@ summary(
 )
 ```    
 
-**General**
-    * **get_bin_types** - Returns the types of bins in your dataset
-    * **is_aligned** - Returns TRUE if sequence data is aligned
-    * **TODO**
+## General
+
+**copy_dataset()** - Create a new dataset from an existing dataset.
+
+**save_dataset()** - Save a dataset as a .rds file.
+
+**load_dataset()** - Create a new dataset from a .rds file.
+
+**export_dataset()** - Create a human readable list containing the dataset data.
+
+**import_dataset()** - Create a new dataset from an exported dataset.
+
+**get_bin_types()** - Returns the types of bins in your dataset
+
+**is_aligned()** - Returns TRUE if sequence data is aligned
+
 ```{r}
+# To create a new dataset that is a copy of miseq
+copy_of_miseq <- copy_dataset(data = miseq)
+
+# To save the dataset as a .rds file
+save_dataset(data = miseq, file = "miseq.rds")
+
+# To create a dataset from a .rds file
+data <- load_dataset(file = "miseq.rds")
+
+# To create a dataset from a .rds file
+table <- export_dataset(data = miseq)
+
+# For an overview of the exported data.frames
+names(table)
+
+# To create a new dataset from the exported table
+data <- import_dataset(table = table)
+
 # To find the types of bins in your dataset
 get_bin_types(data = miseq)
 

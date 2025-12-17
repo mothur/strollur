@@ -2,12 +2,15 @@
 #' @description
 #' The import_dataset function will create a \link{dataset} object from the
 #' exported table of a \link{dataset} object.
+#'
 #' @param table a table containing the data from a \link{dataset} object. You
 #' can create the table using 'export(dataset)'.
+#'
 #' @param tags a vector of strings containing the items you wish to export.
 #' Options are 'sequence_data', 'bin_data', 'metadata',
 #' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
 #' By default, everything is imported.
+#'
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
