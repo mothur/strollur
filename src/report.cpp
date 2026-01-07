@@ -105,7 +105,6 @@ Rcpp::DataFrame Report::getReport(set<string> datasetNames) {
     if (hasReport) {
         // assemble dataframe in order
         for (auto itCol = columnNames.begin(); itCol != columnNames.end(); itCol++) {
-
             bool foundNext = false;
 
             if (hasStr) {
@@ -189,7 +188,6 @@ void Report::pruneReport(set<string> datasetNames) {
         vector<string> reportSequenceNames = strColumns[sequence_name_col];
 
         for (int i = 0; i < reportSequenceNames.size(); i++) {
-
             // if the name is in the dataset, set filter pos to true
             if (datasetNames.count(reportSequenceNames[i]) != 0) {
                 filter[i] = true;

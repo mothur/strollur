@@ -17,8 +17,8 @@
 #'
 #' @examples
 #'
-#' # Using the example files from moving-pictures, we can assign bins, assign
-#' # bin taxonomy and representative bin sequences, include a sample tree and
+#' # Using the example files from moving-pictures, we add FASTA data, assign
+#' # taxonomy and abundance for features, and add a newick tree and
 #' # metadata.
 #'
 #' qza_files <- c(
@@ -28,17 +28,19 @@
 #'   rdataset_example("rooted-tree.qza")
 #' )
 #'
-#' # data <- read_qiime2(
-#' #   qza = qza_files,
-#' #   metadata = rdataset_example("sample_metadata.tsv"),
-#' #   dataset_name = "qiime_moving_pictures"
-#' # )
+#' data <- read_qiime2(
+#'   qza = qza_files,
+#'   metadata = rdataset_example("sample_metadata.tsv"),
+#'   dataset_name = "qiime_moving_pictures"
+#' )
+#' data
 #'
 #' @return A 'dataset' object
 #' @export
 read_qiime2 <- function(qza, metadata = NULL,
                         dataset_name = "", dir_path = NULL,
                         remove_unpacked_artifacts = TRUE) {
+
   # if no dir_path given, set to current working directory
   if (is.null(dir_path)) {
     dir_path <- getwd()
@@ -49,6 +51,8 @@ read_qiime2 <- function(qza, metadata = NULL,
     dir.create(dir_path)
   }
 
+  # types of data -> bin_shared_assignments, bin_representatives,
+  #  bin_taxonomy, sequence_tree, metadata
   data_found <- list()
 
   # extract data from the qza
@@ -110,10 +114,14 @@ read_qiime2 <- function(qza, metadata = NULL,
         data_found[["bin_taxonomy"]] <- df
       }
     } else if (artifact$format == "NewickDirectoryFormat") {
-      data_found[["sample_tree"]] <- ape::read.tree(file.path(
+      data_found[["sequence_tree"]] <- ape::read.tree(file.path(
         data_dir,
         "tree.nwk"
       ))
+    }else {
+        message <- paste0("Format ", artifact$format,
+                          " is not supported, ignoring")
+        cli_alert(message)
     }
 
     if (remove_unpacked_artifacts) {
@@ -131,53 +139,39 @@ read_qiime2 <- function(qza, metadata = NULL,
 
   # add data_found to dataset in order that does not cause errors
   if (length(data_found) != 0) {
-    data_names <- names(data_found)
 
-    # if data includes shared data and representative sequences, assign
-    # sample frequency to representative sequence and assign representative
-    # sequence to bin
-    if (all(c(
-      "bin_shared_assignments",
-      "bin_representatives"
-    ) %in% data_names) &&
-      !(c("sequence_data") %in% data_names)) {
-      data$add_sequences(data_found[["bin_representatives"]],
-        sequence_names = "bin_names"
-      )
-      data$assign_sequence_abundance(data_found[["bin_shared_assignments"]],
-        sequence_names = "bin_names"
-      )
-      data$assign_bins(
-        bin_names = data_found[["bin_shared_assignments"]][, 1],
-        sequence_names = data_found[["bin_shared_assignments"]][, 1]
-      )
-      data$assign_bin_representative_sequences(
-        bin_names = data_found[["bin_shared_assignments"]][, 1],
-        sequence_names = data_found[["bin_shared_assignments"]][, 1]
-      )
+    data_names <- names(data_found)
+    bin_type <- "asv"
+
+    # add fasta data
+    if ("bin_representatives" %in% data_names) {
+      add(data = data, table = data_found[["bin_representatives"]],
+            type = "sequences", table_names = list(sequence_name = "bin_names"))
     }
 
-    # add sequence data
+    # assign sequence abundance by sample
+    if ("bin_shared_assignments" %in% data_names) {
+        assign(data = data, table = data_found[["bin_shared_assignments"]],
+               type = "sequence_abundance",
+               table_names = list(sequence_name = "bin_names"))
+    }
 
-    # add sequence abundance
-
-    # add sequence taxonomy
-
-    # add sequence tree
-
-    # add bin data
+    # assign sequences to bins
+    if ("bin_shared_assignments" %in% data_names) {
+        assign(data = data, table = data_found[["bin_shared_assignments"]],
+               type = "bins", bin_type = bin_type)
+    }
 
     # add bin taxonomy
     if ("bin_taxonomy" %in% data_names) {
-      data$assign_bin_taxonomy(data_found[["bin_taxonomy"]])
+      assign(data = data, table = data_found[["bin_taxonomy"]],
+             type = "bin_taxonomy", bin_type = bin_type)
     }
 
-    # add sample tree
-    if ("sample_tree" %in% data_names) {
-      data$add_sample_tree(data_found[["sample_tree"]])
+    # add sequence tree
+    if ("sequence_tree" %in% data_names) {
+      data$add_sequence_tree(data_found[["sequence_tree"]])
     }
-
-    # add metadata
   }
 
   data
