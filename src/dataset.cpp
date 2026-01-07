@@ -1141,6 +1141,27 @@ const Rcpp::DataFrame Dataset::getSequenceAbundances(bool bySample){
                                     getIncludedNamesIndexes());
 }
 /******************************************************************************/
+const Rcpp::DataFrame Dataset::getSequenceTable(string sample) {
+
+    if (hasSequenceData) {
+
+        vector<string> samples;
+
+        if(sample != "") {
+            samples.push_back(sample);
+        }
+
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("sequence_names") = getSequenceNames(samples),
+            Rcpp::_["sequences"] = getSequences(sample)
+        );
+
+        return df;
+    }
+
+    return Rcpp::DataFrame::create();
+}
+/******************************************************************************/
 const vector<string> Dataset::getSequences(string sample){
     vector<string> included;
 

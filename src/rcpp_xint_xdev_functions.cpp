@@ -681,6 +681,12 @@ double xdev_count(Rcpp::Environment data,
     return 0;
 }
 /******************************************************************************/
+vector<string> xdev_get_list_vector(Rcpp::Environment data,
+                                    string type) {
+    Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->getListVector(type);
+}
+/******************************************************************************/
 vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
                                            string type,
                                            Rcpp::CharacterVector samples) {
@@ -699,6 +705,11 @@ vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
         throw Rcpp::exception(message.c_str());
     }
     return null2DVector;
+}
+/******************************************************************************/
+vector<string> xdev_get_sequences(Rcpp::Environment data, string sample) {
+    Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->getSequences(sample);
 }
 /******************************************************************************/
 void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,

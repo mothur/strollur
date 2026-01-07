@@ -14,18 +14,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-The *rdataset* package stores the data associated with your microbial DNA analysis. This tutorial will familiarize you with some of the functions available in the *rdataset* package. If you haven't reviewed the "Getting Started" tuturial, we recommend you start there. First let's load the rdataset package.
+## Overview
 
+The *rdataset* package stores the data associated with your microbial DNA analysis. This tutorial will familiarize you with some of the functions available in the *rdataset* package. If you haven't reviewed the "Getting Started" tuturial, we recommend you start there. 
+
+First let's load the rdataset package.
 ```{r setup}
 library(rdataset)
 ```
+
+## Loading the example dataset
 
 We can use the **miseq_sop_example()** function to create a dataset object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
 
 ```{r}
 miseq <- miseq_sop_example()
+```
 
-# To print a summary of the miseq dataset
+To print a summary of the miseq dataset, run the following:
+
+```{r}
 miseq
 ```
 
@@ -43,93 +51,152 @@ The *rdataset* package includes several functions to access your data.
 **summary()** - The summary() function allows you to summarize sequences, your custom reports, and scrapped data. 
 
 
+### names() and count() 
+Let's take a closer look at the names() and count() functions. 
+
+* **Parameters:** 
+    + *data* - a dataset object
+    + *type* - string containing the type of data you would like.
+    + *bin_type* - string containing the bin type you would like data for.
+    + *samples* - vector of strings containing sample names. samples is only used when 'type' = "sequences" or 'type' = "bins" .
+    + *distinct* - boolean. 'distinct' can be used when 'type' is 'sequences' or 'type' is 'bins'. When 'type' = 'sequences' and distinct is TRUE the number of unique sequences is returned. When 'type' = 'sequences' and distinct is FALSE the total number of sequences is returned. When 'type' = "bins", you can set distinct = TRUE to return the number of bins that ONLY contain sequences from the given samples. When distinct is FALSE the count returned contains bins with sequences from a given samples, but those bins may also contain other samples.
+
+To get the name of the dataset, set the type parameter to 'dataset':
 ```{r}
-# Let's take a closer look at the names() and count() functions:
-
-# To get the name of the dataset
 names(data = miseq, type = "dataset")
+```
 
-# To get the total number of sequences
-count(data = miseq, type = "sequences")
-
-# To get number of unique sequences
-count(data = miseq, type = "sequences", distinct = TRUE)
-
-# To get the names of the sequences
+To get the names of the sequences in your dataset, set the type parameter to 'sequences':
+```{r}
 names(data = miseq, type = "sequences") |> head(n = 5)
+```
 
-# To get number of sequences from sample 'F3D0'
-# Note these sequences will be present in the sample but may be
-# be present in other samples as well
+To find the number of sequences in your dataset, you can use the count() function. Set the type to 'sequences'. Take special note of the 'distinct' parameter.  
+
+To find the total number of sequences in the dataset, run the following:
+```{r}
+count(data = miseq, type = "sequences", distinct = FALSE)
+```
+
+To find the number of unique sequences in the dataset, set 'distinct' to TRUE:
+```{r}
+count(data = miseq, type = "sequences", distinct = TRUE)
+```
+
+To get the names of the unique sequences, run the following:
+```{r}
+names(data = miseq, type = "sequences") |> head(n = 5)
+```
+
+To get number of sequences from sample 'F3D0', you can set the samples parameter.
+Note, these sequences will be present in the sample but may be be present in other samples as well.
+
+```{r}
 count(data = miseq, type = "sequences", samples = c("F3D0"))
+```
 
-# To get the names of the sequences present in sample 'F3D0'
+To get the names of the sequences present in sample 'F3D0'
+```{r}
 names(data = miseq, type = "sequences", samples = c("F3D0")) |> head(n = 5)
+```
 
-# To get number of unique sequences exclusive to sample 'F3D0'
-# Note sequences are present in the sample and NOT present in any other samples.
+To get number of unique sequences exclusive to sample 'F3D0'
+*Note sequences are present in the sample and NOT present in any other samples.*
+```{r}    
 count(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE)
+```
 
-# To get the names of the sequences unique to sample 'F3D0'
+To get the names of the sequences unique to sample 'F3D0'
+```{r}
 names(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE) |>
   head(n = 5)
+```
 
-# To get the number of "otu" bins in the dataset
+To get the number of "otu" bins in the dataset
+```{r}
 count(data = miseq, type = "bins", bin_type = "otu")
+```
 
-# To get the names of the "otu" bins
+To get the names of the "otu" bins
+```{r}
 names(data = miseq, type = "bins", bin_type = "otu") |> head(n = 5)
+```
 
-# To get the number of "asv" bins in the dataset
+To get the number of "asv" bins in the dataset
+```{r}
 count(data = miseq, type = "bins", bin_type = "asv")
+```
 
-# To get the names of the "asv" bins
+To get the names of the "asv" bins
+```{r}
 names(data = miseq, type = "bins", bin_type = "asv") |> head(n = 5)
+```
 
-# To get the number of "phylotype" bins in the dataset
+To get the number of "phylotype" bins in the dataset
+```{r}
 count(data = miseq, type = "bins", bin_type = "phylotype")
+```
 
-# To get the names of the "phylotype" bins
+To get the names of the "phylotype" bins
+```{r}
 names(data = miseq, type = "bins", bin_type = "phylotype") |> head(n = 5)
+```
 
-# To get number of "otu" bins from sample 'F3D0'
-# Note these bins will have sequences from the sample but there may be
-# other samples present in the bins as well
+To get number of "otu" bins from sample 'F3D0'
+*Note these bins will have sequences from the sample but there may be other*
+*samples present in the bins as well*
+```{r}
 count(data = miseq, type = "bins", bin_type = "otu", samples = c("F3D0"))
+```
 
-# To get the names of the "otu" bins that include sequences from 'F3D0'
+To get the names of the "otu" bins that include sequences from 'F3D0'
+```{r}
 names(
   data = miseq,
   type = "bins", samples = c("F3D0"), distinct = FALSE
 ) |> head(n = 5)
+```
 
-# To get number of "otu" bins unique to samples 'F3D0'
-# Note these bins will have sequences from the sample and NO other samples
-# will be present in the bins.
+To get number of "otu" bins unique to samples 'F3D0'
+*Note these bins will have sequences from the sample and NO other samples will* 
+*be present in the bins.*
+```{r}
 count(
   data = miseq, type = "bins",
   bin_type = "otu", samples = c("F3D0"), distinct = TRUE
 )
+```
 
-# To get the names of the "otu" bins that are unique to 'F3D0'
+To get the names of the "otu" bins that are unique to 'F3D0'
+```{r}
 names(
   data = miseq,
   type = "bins", samples = c("F3D0"), distinct = TRUE
 ) |> head(n = 5)
+```
 
-# To get the number of samples in the dataset
+To get the number of samples in the dataset
+```{r}
 count(data = miseq, type = "samples")
+```
 
-# To get the names of the samples
+To get the names of the samples
+```{r}
 names(data = miseq, type = "samples")
+```
 
-# To get the number of treatments in the dataset
+To get the number of treatments in the dataset
+```{r}
 count(data = miseq, type = "treatments")
+```
 
-# To get the names of the treatments
+To get the names of the treatments
+```{r}
 names(data = miseq, type = "treatments")
+```
 
-# To get the names of the reports
+To get the names of the reports
+```{r}
 names(data = miseq, type = "reports")
 ```
 

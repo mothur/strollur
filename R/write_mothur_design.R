@@ -28,7 +28,7 @@ write_mothur_design <- function(data, filename = NULL) {
     filename <- paste0(filename, ".design")
   }
 
-  df <- get_sample_treatment_assignments(data)
+  df <- report(data, "sample_assignments")
 
   if (nrow(df) != 0) {
     # write table

@@ -45,8 +45,8 @@ test_that("import - miseq_sop_example", {
     abundance(miseq, "treatments")
   )
 
-  dfd <- get_bin_representative_sequences(dataset_t)
-  dfm <- get_bin_representative_sequences(miseq)
+  dfd <- report(dataset_t, "bin_representatives")
+  dfm <- report(miseq, "bin_representatives")
 
   for (otu in dfm[[1]]) {
     expect_equal(
@@ -67,7 +67,7 @@ test_that("import - miseq_sop_example", {
     c(7436, 6285, 5207)
   )
   # no list, since no sequences
-  expect_equal(get_list(dataset_t, "asv"), data.frame())
+  expect_equal(report(dataset_t, "sequence_bin_assignments", "asv"), data.frame())
   expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
   # 303 bins x 6 tax levels
   expect_equal(nrow(report(dataset_t, "bin_taxonomy")), 1818)
@@ -220,7 +220,7 @@ test_that("import - with tags", {
   expect_equal(count(miseq, "bins", "otu"), 531)
   expect_equal(count(miseq), 113963)
   expect_equal(count(miseq, distinct = TRUE), 2425)
-  expect_equal(nrow(get_bin_representative_sequences(miseq)), 531)
+  expect_equal(nrow(report(miseq, "bin_representatives")), 531)
 
   # just export bin data, no sequence data
   table <- export_dataset(miseq)
@@ -235,5 +235,5 @@ test_that("import - with tags", {
   expect_equal(count(just_bins, "treatments"), 0)
   expect_equal(count(just_bins, "samples"), 0)
   expect_equal(length(names(just_bins)), 0)
-  expect_equal(nrow(get_bin_representative_sequences(just_bins)), 0)
+  expect_equal(nrow(report(just_bins, "bin_representatives")), 0)
 })

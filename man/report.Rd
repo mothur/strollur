@@ -4,16 +4,17 @@
 \alias{report}
 \title{report}
 \usage{
-report(data, type = "sequence_data", bin_type = "otu")
+report(data, type = "sequences", bin_type = "otu")
 }
 \arguments{
 \item{data, }{a \link{dataset} object}
 
 \item{type, }{string containing the type of report you would like. Options
-include: "sequence_data", "sequence_taxonomy", "bin_taxonomy",
-"sequence_scrap", "bin_scrap", "metadata", "references". If you have added
-custom reports for alignment, contigs_assembly or chimeras, you can get those
-as well. Default = "sequence_data".}
+include: "sequences", "sequence_bin_assignments", "sequence_taxonomy",
+"bin_taxonomy", "bin_representatives","sample_assignments", "metadata",
+"references", "sequence_scrap", "bin_scrap". If you have added custom
+reports for alignment, contigs_assembly or chimeras, you can get those as well.
+ Default = "sequences".}
 
 \item{bin_type, }{string containing the bin type you would like a bin_taxonomy
 report for. Default = "otu".}
@@ -32,8 +33,18 @@ miseq <- miseq_sop_example()
 
 # To get a report about the FASTA data
 
-sequence_report <- report(data = miseq, type = "sequence_data")
+sequence_report <- report(data = miseq, type = "sequences")
 head(sequence_report, n = 10)
+
+# To get the sequence bin assignments
+
+bin_assignments <- report(data = miseq, type = "sequence_bin_assignments",
+                          bin_type = "otu")
+head(bin_assignments, n = 10)
+
+# To get the sample treatment assignments
+
+report(data = miseq, type = "sample_assignments")
 
 # To get a report about sequence classifications
 
@@ -59,6 +70,12 @@ head(asv_taxonomy_report, n = 10)
 phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
                                     bin_type = "phylotype")
 head(phylotype_taxonomy_report, n = 10)
+
+# To get the 'otu' bin representative sequences
+
+otu_bin_reps <- report(data = miseq, type = "bin_representatives",
+                       bin_type = "otu")
+head(otu_bin_reps, n = 10)
 
 # To get a report about the sequences removed during your analysis:
 

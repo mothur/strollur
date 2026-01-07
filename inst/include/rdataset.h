@@ -574,6 +574,8 @@ public:
 
 
     const vector<string> getSequences(string sample = "");
+    // 2 columns: sequence names, sequence strings
+    const Rcpp::DataFrame getSequenceTable(string sample = "");
     const vector<vector<string> > getSequencesBySample(const vector<string> samples);
 
     const Rcpp::DataFrame getSummary(string type = "sequences",

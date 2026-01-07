@@ -127,38 +127,6 @@ export_dataset <- function(data, tags = as.character( c())) {
     .Call(`_rdataset_export_dataset`, data, tags)
 }
 
-#' @title get_bin_representative_sequences
-#' @description
-#' Get the representative sequences of the bins in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#' @param bin_type, string indicating the type of clusters. Default = "otu".
-#' @examples
-#'
-#'   miseq <- miseq_sop_example()
-#'
-#'   num_bins <- count(data = miseq, type = "bins", bin_type = "otu")
-#'
-#'   # For examples sake, select first 531 sequences to be the representatives
-#'   table <- data.frame(bin_names = names(data = miseq,
-#'                                        type = "bins",
-#'                                        bin_type = "otu"),
-#'                       sequence_names = names(data = miseq,
-#'                                             type = "sequences")[1:num_bins]
-#'                       )
-#'
-#'   assign(data = miseq, table = table,
-#'          type = "bin_representatives", bin_type = "otu")
-#'
-#'
-#'   get_bin_representative_sequences(data = miseq, bin_type= "otu")
-#'
-#' @return data.frame containing 2 columns representative_names and
-#'  representative_sequences
-get_bin_representative_sequences <- function(data, bin_type = "otu") {
-    .Call(`_rdataset_get_bin_representative_sequences`, data, bin_type)
-}
-
 #' @title get_bin_types
 #' @description
 #' Get bin table types of a \link{dataset} object
@@ -172,160 +140,6 @@ get_bin_representative_sequences <- function(data, bin_type = "otu") {
 #' @return vector of strings
 get_bin_types <- function(data) {
     .Call(`_rdataset_get_bin_types`, data)
-}
-
-#' @title get_list
-#' @description
-#' Get data frame containing sequence bin assignments of a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type a string indicating the type of bin assignments. Default "otu".
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_list(data)
-#'
-#' @return 2 column data.frame sequences assigned to bins
-get_list <- function(data, type = "otu") {
-    .Call(`_rdataset_get_list`, data, type)
-}
-
-#' @title get_list_vector
-#' @description
-#' Get vector of strings containing the sequences bin data
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type a string indicating the type of bin assignments. Default "otu".
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_list_vector(data)
-#'
-#' @return vector of strings containing the names of the sequences in each bin
-#' separated by commas
-get_list_vector <- function(data, type = "otu") {
-    .Call(`_rdataset_get_list_vector`, data, type)
-}
-
-#' @title report
-#' @description
-#' Get a data.frame containing the given report in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type, string containing the type of report you would like. Options
-#' include: "sequence_data", "sequence_taxonomy", "bin_taxonomy",
-#' "sequence_scrap", "bin_scrap", "metadata", "references". If you have added
-#' custom reports for alignment, contigs_assembly or chimeras, you can get those
-#' as well. Default = "sequence_data".
-#'
-#' @param bin_type, string containing the bin type you would like a bin_taxonomy
-#' report for. Default = "otu".
-#'
-#' @examples
-#'
-#' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
-#'
-#' miseq <- miseq_sop_example()
-#'
-#' # To get a report about the FASTA data
-#'
-#' sequence_report <- report(data = miseq, type = "sequence_data")
-#' head(sequence_report, n = 10)
-#'
-#' # To get a report about sequence classifications
-#'
-#' sequence_taxonomy_report <- report(data = miseq,
-#'                                        type = "sequence_taxonomy")
-#' head(sequence_taxonomy_report, n = 10)
-#'
-#' # To get a report about bin classifications for 'otu' data
-#'
-#' otu_taxonomy_report <- report(data = miseq,
-#'                                        type = "bin_taxonomy",
-#'                                        bin_type = "otu")
-#' head(otu_taxonomy_report, n = 10)
-#'
-#' # To get a report about bin classifications for 'asv' data
-#'
-#' asv_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-#'                               bin_type = "asv")
-#' head(asv_taxonomy_report, n = 10)
-#'
-#' # To get a report about bin classifications for 'phylotype' data
-#'
-#' phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-#'                                     bin_type = "phylotype")
-#' head(phylotype_taxonomy_report, n = 10)
-#'
-#' # To get a report about the sequences removed during your analysis:
-#'
-#' scrapped_sequence_report <- report(data = miseq, type = "sequence_scrap")
-#'
-#' # To get a report about the "otu" bins removed during your analysis:
-#'
-#' scrapped_otu_report <- report(data = miseq, type = "bin_scrap",
-#'                               bin_type = "otu")
-#'
-#' # To get a report about the "phylotype" bins removed during your analysis:
-#'
-#' scrapped_phylotype_report <- report(data = miseq, type = "bin_scrap",
-#'                                     bin_type = "phylotype")
-#'
-#' # To get the metadata associated with your data:
-#'
-#' metadata <- report(data = miseq, type = "metadata")
-#'
-#' # To get the resource references associated with your data:
-#'
-#' references <- report(data = miseq, type = "references")
-#'
-#' # To get our custom report containing the contigs assembly data:
-#'
-#' contigs_report <- report(data = miseq, type = "contigs_report")
-#' head(contigs_report, n = 10)
-#'
-#' @return data.frame
-report <- function(data, type = "sequence_data", bin_type = "otu") {
-    .Call(`_rdataset_report`, data, type, bin_type)
-}
-
-#' @title get_sample_treatment_assignments
-#' @description
-#' Get treatment assignments for samples in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @examples
-#'
-#' data <- miseq_sop_example()
-#' get_sample_treatment_assignments(data)
-#'
-#' @return 2 column data.frame containing the sample treatment assignments in a
-#'  \link{dataset} object
-get_sample_treatment_assignments <- function(data) {
-    .Call(`_rdataset_get_sample_treatment_assignments`, data)
-}
-
-#' @title get_sequences
-#' @description
-#' Get the nucleotide strings for each sequence in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param sample, a string containing the name of the sample you
-#' would like sequence names for. For all samples in dataset, sample = "".
-#' @examples
-#'
-#'  data <- miseq_sop_example()
-#'  get_sequences(data)
-#'
-#' @return vector of string containing nucleotide strings of the sequences in
-#' a \link{dataset} object
-get_sequences <- function(data, sample = "") {
-    .Call(`_rdataset_get_sequences`, data, sample)
 }
 
 #' @title has_sample
@@ -374,6 +188,106 @@ has_sequence_strings <- function(data) {
 #' @return Boolean
 is_aligned <- function(data) {
     .Call(`_rdataset_is_aligned`, data)
+}
+
+#' @title report
+#' @description
+#' Get a data.frame containing the given report in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of report you would like. Options
+#' include: "sequences", "sequence_bin_assignments", "sequence_taxonomy",
+#' "bin_taxonomy", "bin_representatives","sample_assignments", "metadata",
+#' "references", "sequence_scrap", "bin_scrap". If you have added custom
+#' reports for alignment, contigs_assembly or chimeras, you can get those as well.
+#'  Default = "sequences".
+#'
+#' @param bin_type, string containing the bin type you would like a bin_taxonomy
+#' report for. Default = "otu".
+#'
+#' @examples
+#'
+#' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' # To get a report about the FASTA data
+#'
+#' sequence_report <- report(data = miseq, type = "sequences")
+#' head(sequence_report, n = 10)
+#'
+#' # To get the sequence bin assignments
+#'
+#' bin_assignments <- report(data = miseq, type = "sequence_bin_assignments",
+#'                           bin_type = "otu")
+#' head(bin_assignments, n = 10)
+#'
+#' # To get the sample treatment assignments
+#'
+#' report(data = miseq, type = "sample_assignments")
+#'
+#' # To get a report about sequence classifications
+#'
+#' sequence_taxonomy_report <- report(data = miseq,
+#'                                        type = "sequence_taxonomy")
+#' head(sequence_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'otu' data
+#'
+#' otu_taxonomy_report <- report(data = miseq,
+#'                                        type = "bin_taxonomy",
+#'                                        bin_type = "otu")
+#' head(otu_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'asv' data
+#'
+#' asv_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
+#'                               bin_type = "asv")
+#' head(asv_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'phylotype' data
+#'
+#' phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
+#'                                     bin_type = "phylotype")
+#' head(phylotype_taxonomy_report, n = 10)
+#'
+#' # To get the 'otu' bin representative sequences
+#'
+#' otu_bin_reps <- report(data = miseq, type = "bin_representatives",
+#'                        bin_type = "otu")
+#' head(otu_bin_reps, n = 10)
+#'
+#' # To get a report about the sequences removed during your analysis:
+#'
+#' scrapped_sequence_report <- report(data = miseq, type = "sequence_scrap")
+#'
+#' # To get a report about the "otu" bins removed during your analysis:
+#'
+#' scrapped_otu_report <- report(data = miseq, type = "bin_scrap",
+#'                               bin_type = "otu")
+#'
+#' # To get a report about the "phylotype" bins removed during your analysis:
+#'
+#' scrapped_phylotype_report <- report(data = miseq, type = "bin_scrap",
+#'                                     bin_type = "phylotype")
+#'
+#' # To get the metadata associated with your data:
+#'
+#' metadata <- report(data = miseq, type = "metadata")
+#'
+#' # To get the resource references associated with your data:
+#'
+#' references <- report(data = miseq, type = "references")
+#'
+#' # To get our custom report containing the contigs assembly data:
+#'
+#' contigs_report <- report(data = miseq, type = "contigs_report")
+#' head(contigs_report, n = 10)
+#'
+#' @return data.frame
+report <- function(data, type = "sequences", bin_type = "otu") {
+    .Call(`_rdataset_report`, data, type, bin_type)
 }
 
 #' @title xdev_abundance
@@ -884,6 +798,24 @@ xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NUL
     .Call(`_rdataset_xdev_count`, data, type, bin_type, samples, distinct)
 }
 
+#' @title xdev_get_list_vector
+#' @description
+#' Get vector of strings containing the sequences bin data
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type a string indicating the type of bin assignments. Default "otu".
+#' @examples
+#'
+#' data <- miseq_sop_example()
+#' xdev_get_list_vector(data)
+#'
+#' @return vector of strings containing the names of the sequences in each bin
+#' separated by commas
+xdev_get_list_vector <- function(data, type = "otu") {
+    .Call(`_rdataset_xdev_get_list_vector`, data, type)
+}
+
 #' @title xdev_get_by_sample
 #' @description
 #' Get the requested data in a \link{dataset} object parsed by sample
@@ -909,6 +841,25 @@ xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #' requested parsed by sample.
 xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.character( c())) {
     .Call(`_rdataset_xdev_get_by_sample`, data, type, samples)
+}
+
+#' @title xdev_get_sequences
+#' @description
+#' Get the nucleotide strings for each sequence in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param sample, a string containing the name of the sample you
+#' would like sequence names for. For all samples in dataset, sample = "".
+#' @examples
+#'
+#'  data <- miseq_sop_example()
+#'  xdev_get_sequences(data)
+#'
+#' @return vector of string containing nucleotide strings of the sequences in
+#' a \link{dataset} object
+xdev_get_sequences <- function(data, sample = "") {
+    .Call(`_rdataset_xdev_get_sequences`, data, sample)
 }
 
 #' @title xdev_merge_bins

@@ -26,7 +26,7 @@ test_that("write_mothur_list", {
   df <- read_mothur_list(outputs[1])
   names(df) <- c("otu_id", "seq_id")
 
-  expect_equal(df, get_list(miseq, bin_types[1]))
+  expect_equal(df, report(miseq, "sequence_bin_assignments", bin_types[1]))
 
   # cleanup
   for (output in outputs) {

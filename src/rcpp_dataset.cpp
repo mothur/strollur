@@ -240,41 +240,6 @@ Rcpp::List export_dataset(Rcpp::Environment data,
     return results;
 }
 /******************************************************************************/
-//' @title get_bin_representative_sequences
-//' @description
-//' Get the representative sequences of the bins in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//' @param bin_type, string indicating the type of clusters. Default = "otu".
-//' @examples
-//'
-//'   miseq <- miseq_sop_example()
-//'
-//'   num_bins <- count(data = miseq, type = "bins", bin_type = "otu")
-//'
-//'   # For examples sake, select first 531 sequences to be the representatives
-//'   table <- data.frame(bin_names = names(data = miseq,
-//'                                        type = "bins",
-//'                                        bin_type = "otu"),
-//'                       sequence_names = names(data = miseq,
-//'                                             type = "sequences")[1:num_bins]
-//'                       )
-//'
-//'   assign(data = miseq, table = table,
-//'          type = "bin_representatives", bin_type = "otu")
-//'
-//'
-//'   get_bin_representative_sequences(data = miseq, bin_type= "otu")
-//'
-//' @return data.frame containing 2 columns representative_names and
-//'  representative_sequences
-//[[Rcpp::export]]
-Rcpp::DataFrame get_bin_representative_sequences(Rcpp::Environment data,
-                                                 string bin_type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getBinRepresentativeSequences(bin_type);
-}
-/******************************************************************************/
 //' @title get_bin_types
 //' @description
 //' Get bin table types of a \link{dataset} object
@@ -292,43 +257,58 @@ vector<string> get_bin_types(Rcpp::Environment data) {
      return d.get()->getBinTypes();
 }
 /******************************************************************************/
-//' @title get_list
+//' @title has_sample
 //' @description
-//' Get data frame containing sequence bin assignments of a \link{dataset} object
+//' Determine if a given sample is in a \link{dataset} object
 //'
-//' @param data, a \link{dataset} object
-//'
-//' @param type a string indicating the type of bin assignments. Default "otu".
+//' @param data, a \link{dataset} object.
+//' @param sample a string containing the name of a sample.
 //' @examples
 //'
 //' data <- miseq_sop_example()
-//' get_list(data)
+//' has_sample(data, "F3D0")
+//' has_sample(data, "not a valid sample")
 //'
-//' @return 2 column data.frame sequences assigned to bins
+//' @return boolean indicating whether the dataset has a given sample
 //[[Rcpp::export]]
-Rcpp::DataFrame get_list(Rcpp::Environment data, string type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getList(type);
+bool has_sample(Rcpp::Environment data, string sample) {
+     Rcpp::XPtr<Dataset> d = data["data"];
+     return d.get()->hasSample(sample);
 }
 /******************************************************************************/
-//' @title get_list_vector
+//' @title has_sequence_strings
 //' @description
-//' Get vector of strings containing the sequences bin data
+//' Determine if a \link{dataset} object contains sequence nucleotide strings.
 //'
-//' @param data, a \link{dataset} object
-//'
-//' @param type a string indicating the type of bin assignments. Default "otu".
+//' @param data, a \link{dataset} object.
 //' @examples
 //'
 //' data <- miseq_sop_example()
-//' get_list_vector(data)
+//' has_sequence_strings(data)
 //'
-//' @return vector of strings containing the names of the sequences in each bin
-//' separated by commas
+//' @return boolean indicating whether the dataset has sequence nucleotide
+//' strings.
 //[[Rcpp::export]]
-vector<string> get_list_vector(Rcpp::Environment data, string type = "otu") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getListVector(type);
+bool has_sequence_strings(Rcpp::Environment data) {
+     Rcpp::XPtr<Dataset> d = data["data"];
+     return d.get()->hasSeqs();
+}
+/******************************************************************************/
+//' @title is_aligned
+//' @description
+//' Determine if a \link{dataset} object contains aligned sequences.
+//'
+//' @param data, a \link{dataset} object
+//' @examples
+//'
+//' dataset <- miseq_sop_example()
+//' is_aligned(dataset)
+//'
+//' @return Boolean
+//[[Rcpp::export]]
+bool is_aligned(Rcpp::Environment data) {
+     Rcpp::XPtr<Dataset> d = data["data"];
+     return d.get()->isAligned;
 }
 /******************************************************************************/
 //' @title report
@@ -338,10 +318,11 @@ vector<string> get_list_vector(Rcpp::Environment data, string type = "otu") {
 //' @param data, a \link{dataset} object
 //'
 //' @param type, string containing the type of report you would like. Options
-//' include: "sequence_data", "sequence_taxonomy", "bin_taxonomy",
-//' "sequence_scrap", "bin_scrap", "metadata", "references". If you have added
-//' custom reports for alignment, contigs_assembly or chimeras, you can get those
-//' as well. Default = "sequence_data".
+//' include: "sequences", "sequence_bin_assignments", "sequence_taxonomy",
+//' "bin_taxonomy", "bin_representatives","sample_assignments", "metadata",
+//' "references", "sequence_scrap", "bin_scrap". If you have added custom
+//' reports for alignment, contigs_assembly or chimeras, you can get those as well.
+//'  Default = "sequences".
 //'
 //' @param bin_type, string containing the bin type you would like a bin_taxonomy
 //' report for. Default = "otu".
@@ -354,8 +335,18 @@ vector<string> get_list_vector(Rcpp::Environment data, string type = "otu") {
 //'
 //' # To get a report about the FASTA data
 //'
-//' sequence_report <- report(data = miseq, type = "sequence_data")
+//' sequence_report <- report(data = miseq, type = "sequences")
 //' head(sequence_report, n = 10)
+//'
+//' # To get the sequence bin assignments
+//'
+//' bin_assignments <- report(data = miseq, type = "sequence_bin_assignments",
+//'                           bin_type = "otu")
+//' head(bin_assignments, n = 10)
+//'
+//' # To get the sample treatment assignments
+//'
+//' report(data = miseq, type = "sample_assignments")
 //'
 //' # To get a report about sequence classifications
 //'
@@ -381,6 +372,12 @@ vector<string> get_list_vector(Rcpp::Environment data, string type = "otu") {
 //' phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
 //'                                     bin_type = "phylotype")
 //' head(phylotype_taxonomy_report, n = 10)
+//'
+//' # To get the 'otu' bin representative sequences
+//'
+//' otu_bin_reps <- report(data = miseq, type = "bin_representatives",
+//'                        bin_type = "otu")
+//' head(otu_bin_reps, n = 10)
 //'
 //' # To get a report about the sequences removed during your analysis:
 //'
@@ -411,14 +408,26 @@ vector<string> get_list_vector(Rcpp::Environment data, string type = "otu") {
 //'
 //' @return data.frame
 //[[Rcpp::export]]
-Rcpp::DataFrame report(Rcpp::Environment data, string type = "sequence_data",
+Rcpp::DataFrame report(Rcpp::Environment data, string type = "sequences",
                        string bin_type = "otu") {
 
      Rcpp::XPtr<Dataset> d = data["data"];
 
      // sequence_data reports contain the starts, ends, ambigs,...
-     if (type == "sequence_data") {
+     if (type == "sequences") {
         return d.get()->getSequenceReport();
+     }
+     // sequence bin assignments report
+     else if (type == "sequence_bin_assignments") {
+         return d.get()->getList(bin_type);
+     }
+     // sample treatment assignments report
+     else if (type == "sample_assignments") {
+         return d.get()->getSampleTreatmentAssignments();
+     }
+     // representative sequences assignments report
+     else if (type == "bin_representatives") {
+         return d.get()->getBinRepresentativeSequences(bin_type);
      }
      // sequence classification report
      else if (type == "sequence_taxonomy") {
@@ -451,100 +460,6 @@ Rcpp::DataFrame report(Rcpp::Environment data, string type = "sequence_data",
 
      // empty report
      return Rcpp::DataFrame::create();
-}
-/******************************************************************************/
-//' @title get_sample_treatment_assignments
-//' @description
-//' Get treatment assignments for samples in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' get_sample_treatment_assignments(data)
-//'
-//' @return 2 column data.frame containing the sample treatment assignments in a
-//'  \link{dataset} object
-//[[Rcpp::export]]
-Rcpp::DataFrame get_sample_treatment_assignments(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getSampleTreatmentAssignments();
-}
-/******************************************************************************/
-//' @title get_sequences
-//' @description
-//' Get the nucleotide strings for each sequence in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param sample, a string containing the name of the sample you
-//' would like sequence names for. For all samples in dataset, sample = "".
-//' @examples
-//'
-//'  data <- miseq_sop_example()
-//'  get_sequences(data)
-//'
-//' @return vector of string containing nucleotide strings of the sequences in
-//' a \link{dataset} object
-//[[Rcpp::export]]
-vector<string> get_sequences(Rcpp::Environment data, string sample = "") {
-    Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->getSequences(sample);
-}
-/******************************************************************************/
-//' @title has_sample
-//' @description
-//' Determine if a given sample is in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object.
-//' @param sample a string containing the name of a sample.
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' has_sample(data, "F3D0")
-//' has_sample(data, "not a valid sample")
-//'
-//' @return boolean indicating whether the dataset has a given sample
-//[[Rcpp::export]]
-bool has_sample(Rcpp::Environment data, string sample) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->hasSample(sample);
-}
-/******************************************************************************/
-//' @title has_sequence_strings
-//' @description
-//' Determine if a \link{dataset} object contains sequence nucleotide strings.
-//'
-//' @param data, a \link{dataset} object.
-//' @examples
-//'
-//' data <- miseq_sop_example()
-//' has_sequence_strings(data)
-//'
-//' @return boolean indicating whether the dataset has sequence nucleotide
-//' strings.
-//[[Rcpp::export]]
-bool has_sequence_strings(Rcpp::Environment data) {
-    Rcpp::XPtr<Dataset> d = data["data"];
-   return d.get()->hasSeqs();
-}
-/******************************************************************************/
-//' @title is_aligned
-//' @description
-//' Determine if a \link{dataset} object contains aligned sequences.
-//'
-//' @param data, a \link{dataset} object
-//' @examples
-//'
-//' dataset <- miseq_sop_example()
-//' is_aligned(dataset)
-//'
-//' @return Boolean
-//[[Rcpp::export]]
-bool is_aligned(Rcpp::Environment data) {
-     Rcpp::XPtr<Dataset> d = data["data"];
-     return d.get()->isAligned;
 }
 /******************************************************************************/
 #endif

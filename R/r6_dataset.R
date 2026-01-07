@@ -358,7 +358,7 @@ dataset <- R6Class("dataset",
       results <- list()
 
       # if you have summary results to print
-      if (!all(get_sequences(self) == "") && (!silent)) {
+      if (!all(xdev_get_sequences(self) == "") && (!silent)) {
         # if you have summary results to print
         results[["sequence_summary"]] <- xdev_summarize(
           data = self,

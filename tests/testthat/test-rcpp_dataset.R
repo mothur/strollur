@@ -33,7 +33,7 @@ test_that("rcpp_dataset - add_sequences", {
   expect_equal(count(data, "sequences"), 2425)
   expect_true(has_sequence_strings(data))
 
-  seq_report <- report(data, "sequence_data")
+  seq_report <- report(data, "sequences")
 
   first_three_seqs <- c(
     "M00967_43_000000000-A3JHG_1_2101_16474_12783",
@@ -163,7 +163,7 @@ test_that("rcpp_dataset - assign_bins", {
   ))
 
 
-  expect_equal(get_list_vector(data)[1], "seq1,seq2,seq4")
+  expect_equal(xdev_get_list_vector(data)[1], "seq1,seq2,seq4")
   expect_equal(abundance(
     data = data, type = "bins",
     bin_type = "otu"

@@ -33,7 +33,7 @@ write_fasta <- function(data, filename = NULL) {
 
   # data contains sequences
   if (length(sequence_names) != 0) {
-    sequences <- get_sequences(data)
+    sequences <- xdev_get_sequences(data)
 
     # make sure they aren't blank
     if (!any(sequences == "")) {

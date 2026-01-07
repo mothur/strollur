@@ -571,6 +571,25 @@ double xdev_count(Rcpp::Environment data,
             string bin_type = "otu",
             Rcpp::Nullable<Rcpp::List> samples = R_NilValue,
             bool distinct = false);
+
+/******************************************************************************/
+//' @title xdev_get_list_vector
+//' @description
+//' Get vector of strings containing the sequences bin data
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param type a string indicating the type of bin assignments. Default "otu".
+//' @examples
+//'
+//' data <- miseq_sop_example()
+//' xdev_get_list_vector(data)
+//'
+//' @return vector of strings containing the names of the sequences in each bin
+//' separated by commas
+//[[Rcpp::export]]
+vector<string> xdev_get_list_vector(Rcpp::Environment data,
+                                    string type = "otu");
 /******************************************************************************/
 //' @title xdev_get_by_sample
 //' @description
@@ -599,7 +618,25 @@ double xdev_count(Rcpp::Environment data,
 vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
                                       string type = "sequence_names",
                                       Rcpp::CharacterVector samples = Rcpp::CharacterVector::create());
-
+/******************************************************************************/
+//' @title xdev_get_sequences
+//' @description
+//' Get the nucleotide strings for each sequence in a \link{dataset} object
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param sample, a string containing the name of the sample you
+//' would like sequence names for. For all samples in dataset, sample = "".
+//' @examples
+//'
+//'  data <- miseq_sop_example()
+//'  xdev_get_sequences(data)
+//'
+//' @return vector of string containing nucleotide strings of the sequences in
+//' a \link{dataset} object
+//[[Rcpp::export]]
+vector<string> xdev_get_sequences(Rcpp::Environment data, string sample = "");
+/******************************************************************************/
 // ******** merging *********
 
 //' @title xdev_merge_bins
@@ -634,7 +671,7 @@ vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
 //[[Rcpp::export]]
 void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
                      string reason = "merged", string type = "otu");
-
+/******************************************************************************/
 //' @title xdev_merge_sequences
 //' @description
 //' Designed with package integration in mind, the merge sequences function
