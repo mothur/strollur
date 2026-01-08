@@ -1,0 +1,52 @@
+# rdataset
+
+The ‘rdataset’ package stores the data associated with your microbial
+DNA anaylsis. This includes nucleotide sequences, abundance, sample and
+treatment assignments, taxonomic classifications, sequence bin
+assignments, metadata, trees and various reports. It is designed to
+facilitate data analysis across multiple R packages with utility
+functions to read and write from [mothur](https://mothur.org), mothur2,
+[qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/)
+and
+[phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
+
+## Installation
+
+You can install the CRAN version with:
+
+``` r
+install.packages("rdataset")
+```
+
+You can install the development version of rdataset from
+[GitHub](https://github.com/SchlossLab/rdataset) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("SchlossLab/rdataset")
+```
+
+## Data Tranfer Functions
+
+- ‘read_mothur()’ : Create a ‘dataset’ object from mothur’s output
+  files.
+- ‘read_dada2()’ : Create a ‘dataset’ object from dada2’s outputs.
+- ‘read_qiime2()’ : Create a ‘dataset’ object from qiime2’s .qza output
+  files.
+- ‘read_phyloseq()’ : Create a ‘dataset’ object from phyloseq’s outputs.
+
+## Get started
+
+See the [Getting Started](TODO) page to get started.
+
+## Getting help
+
+If you encounter an issue, please file an issue on
+[GitHub](https://github.com/SchlossLab/rdataset/issues). Please include
+a minimal reproducible example with your issue.
+
+## Contributing
+
+Is there a feature you’d like to see included, please let us know! Pull
+requests are welcome on
+[GitHub](https://github.com/SchlossLab/rdataset/pulls).

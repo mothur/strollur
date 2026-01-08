@@ -1,0 +1,45 @@
+# write_mothur_count
+
+Write a mothur formatted [count
+file](https://mothur.org/wiki/count_file/)
+
+## Usage
+
+``` r
+write_mothur_count(data, filename = NULL)
+```
+
+## Arguments
+
+- data:
+
+  A 'dataset' object
+
+- filename:
+
+  a string containing the name of the output file. Default =
+  'dataset_name'.count_table
+
+## Value
+
+name of count file
+
+## Examples
+
+``` r
+miseq <- miseq_sop_example()
+#> ℹ Added 2425 sequences.
+#> ℹ Assigned 2425 sequence abundances.
+#> ℹ Assigned 2425 sequence taxonomies.
+#> ℹ Assigned 531 otu bins.
+#> ℹ Assigned 2425 asv bins.
+#> ℹ Assigned 63 phylotype bins.
+#> ℹ Assigned 19 samples to treatments.
+#> ℹ Assigned 531 otu bin taxonomies.
+#> ℹ Assigned 531 otu bin representative sequences.
+#> ℹ Added metadata.
+#> ℹ Added 2 resource references.
+#> ℹ Added a contigs_report.
+write_mothur_count(miseq)
+#> [1] "miseq_sop.count_table"
+```

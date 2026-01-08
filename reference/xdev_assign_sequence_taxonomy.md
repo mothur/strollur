@@ -1,0 +1,76 @@
+# xdev_assign_sequence_taxonomy
+
+Assign sequence classifications to a [dataset](dataset.md) object
+
+Note, if you assign sequence taxonomies and assign bins, 'Dataset' will
+find the consensus taxonomy for each bin for you.
+
+## Usage
+
+``` r
+xdev_assign_sequence_taxonomy(
+  data,
+  table,
+  reference = NULL,
+  sequence_name = "sequence_names",
+  taxonomy = "taxonomies",
+  verbose = TRUE
+)
+```
+
+## Arguments
+
+- data, :
+
+  a [dataset](dataset.md) object
+
+- table, :
+
+  a data.frame containing sequence taxonomy assignments
+
+- reference, :
+
+  a list created by the function \[new_reference\]. Optional.
+
+- sequence_name, :
+
+  a string containing the name of the column in 'table' that contains
+  the sequence names. Default column name is 'sequence_names'.
+
+- taxonomy, :
+
+  a string containing the name of the column in 'table' that contains
+  the sequence taxonomies. Default column name is 'taxonomies'.
+
+- verbose, :
+
+  a boolean whether or not you want progress messages. Default = TRUE.
+
+## Value
+
+double containing the number of sequence assigned
+
+## Examples
+
+``` r
+sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+                        "final.taxonomy"))
+
+data <- new_dataset("my_dataset", 2)
+
+xdev_assign_sequence_taxonomy(data, sequence_classifications)
+#> ℹ Assigned 2425 sequence taxonomies.
+#> [1] 2425
+
+# With the reference parameter you can add information about the reference
+# you used to classify your sequences. You can also add references using the
+# 'add_references' function.
+
+reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+              "classification by mothur2 v1.0 using default options", "",
+"https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
+
+xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
+#> ℹ Assigned 2425 sequence taxonomies.
+#> [1] 2425
+```
