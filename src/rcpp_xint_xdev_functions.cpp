@@ -42,9 +42,6 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
         return Rcpp::CharacterVector(0);
     }else if ((type == "float") || (type == "double")) {
         return Rcpp::NumericVector(0);
-    }else{
-        string message = "Unsupported column type for conversion.";
-        throw Rcpp::exception(message.c_str());
     }
 
     return Rcpp::CharacterVector(0);
@@ -310,22 +307,6 @@ double xdev_assign_bins(Rcpp::Environment data,
     double numBinsAssigned = 0;
     Rcpp::XPtr<Dataset> d = data["data"];
 
-    set<int> lengths;
-    lengths.insert(bin_names.size());
-
-    // make sure vector lengths all match
-    lengths.insert(sequence_names.size());
-    lengths.insert(abundances.size());
-    lengths.insert(samples.size());
-    lengths.erase(0);
-
-    if (lengths.size() != 1) {
-        string message = "[ERROR]: assign_bins expect lengths of inputs";
-        message += " to match.";
-        RcppThread::Rcerr << endl << message << endl;
-        throw Rcpp::exception(message.c_str());
-    }
-
     // if you have list assignments, don't allow setting bin abundances
     if (d.get()->hasListAssignments(bin_type) && ((abundances.size() != 0) ||
         (samples.size() != 0))) {
@@ -422,7 +403,7 @@ double xdev_assign_bin_taxonomy(Rcpp::Environment data,
 
     if (d.get()->getNumBins(bin_type) == 0) {
         string message = "[ERROR]: No bin data for type " + bin_type + ", please ";
-        message += " assign bins using the 'assign_bins' function then try ";
+        message += " assign bins using the 'assign' function then try ";
         message += "again.";
         RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
@@ -537,13 +518,6 @@ double xdev_assign_sequence_taxonomy(Rcpp::Environment data,
                                                                             sequence_name));
     taxonomies = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                         taxonomy));
-    // make sure names is same size as taxonomies
-    if (sequence_names.size() != taxonomies.size()) {
-        string message = "Size mismatch. names and taxonomies must be";
-        message += " the same size.";
-        throw Rcpp::exception(message.c_str());
-    }
-
     Rcpp::XPtr<Dataset> d = data["data"];
 
     double numAssigned = d.get()->assignSequenceTaxonomy(sequence_names,
@@ -585,14 +559,6 @@ double xdev_assign_treatments(Rcpp::Environment data,
                                                                      sample));
     treatments = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                         treatment));
-
-    // check to make sure samples and treatments are same length
-    if (samples.size() != treatments.size()) {
-        string message = "[ERROR]: The samples and treatments must be the same";
-        message += " length.";
-        RcppThread::Rcerr << endl << message << endl;
-        throw Rcpp::exception(message.c_str());
-    }
 
     Rcpp::XPtr<Dataset> d = data["data"];
 

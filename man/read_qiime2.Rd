@@ -36,8 +36,8 @@ To generate the various input files you can follow \href{https://amplicon-docs.q
 }
 \examples{
 
-# Using the example files from moving-pictures, we can assign bins, assign
-# bin taxonomy and representative bin sequences, include a sample tree and
+# Using the example files from moving-pictures, we add FASTA data, assign
+# taxonomy and abundance for features, and add a newick tree and
 # metadata.
 
 qza_files <- c(
@@ -47,10 +47,11 @@ qza_files <- c(
   rdataset_example("rooted-tree.qza")
 )
 
-# data <- read_qiime2(
-#   qza = qza_files,
-#   metadata = rdataset_example("sample_metadata.tsv"),
-#   dataset_name = "qiime_moving_pictures"
-# )
+data <- read_qiime2(
+  qza = qza_files,
+  metadata = rdataset_example("sample_metadata.tsv"),
+  dataset_name = "qiime_moving_pictures"
+)
+data
 
 }

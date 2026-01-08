@@ -40,7 +40,6 @@
 read_qiime2 <- function(qza, metadata = NULL,
                         dataset_name = "", dir_path = NULL,
                         remove_unpacked_artifacts = TRUE) {
-
   # if no dir_path given, set to current working directory
   if (is.null(dir_path)) {
     dir_path <- getwd()
@@ -118,10 +117,12 @@ read_qiime2 <- function(qza, metadata = NULL,
         data_dir,
         "tree.nwk"
       ))
-    }else {
-        message <- paste0("Format ", artifact$format,
-                          " is not supported, ignoring")
-        cli_alert(message)
+    } else {
+      message <- paste0(
+        "Format ", artifact$format,
+        " is not supported, ignoring"
+      )
+      cli_alert(message)
     }
 
     if (remove_unpacked_artifacts) {
@@ -129,43 +130,50 @@ read_qiime2 <- function(qza, metadata = NULL,
     }
   }
 
-  # read metadata
-  if (!is.null(metadata)) {
-    data_found[["metadata"]] <- read_qiime2_metadata(metadata)
-  }
-
   # create new blank dataset
   data <- dataset$new(name = dataset_name)
 
+  # read metadata
+  if (!is.null(metadata)) {
+    add(data = data, table = read_qiime2_metadata(metadata), type = "metadata")
+  }
+
   # add data_found to dataset in order that does not cause errors
   if (length(data_found) != 0) {
-
     data_names <- names(data_found)
     bin_type <- "asv"
 
     # add fasta data
     if ("bin_representatives" %in% data_names) {
-      add(data = data, table = data_found[["bin_representatives"]],
-            type = "sequences", table_names = list(sequence_name = "bin_names"))
+      add(
+        data = data, table = data_found[["bin_representatives"]],
+        type = "sequences", table_names = list(sequence_name = "bin_names")
+      )
     }
 
     # assign sequence abundance by sample
     if ("bin_shared_assignments" %in% data_names) {
-        assign(data = data, table = data_found[["bin_shared_assignments"]],
-               type = "sequence_abundance",
-               table_names = list(sequence_name = "bin_names"))
+      assign(
+        data = data, table = data_found[["bin_shared_assignments"]],
+        type = "sequence_abundance",
+        table_names = list(sequence_name = "bin_names")
+      )
     }
 
     # assign sequences to bins
     if ("bin_shared_assignments" %in% data_names) {
-        assign(data = data, table = data_found[["bin_shared_assignments"]],
-               type = "bins", bin_type = bin_type)
+      assign(
+        data = data, table = data_found[["bin_shared_assignments"]],
+        type = "bins", bin_type = bin_type
+      )
     }
 
     # add bin taxonomy
     if ("bin_taxonomy" %in% data_names) {
-      assign(data = data, table = data_found[["bin_taxonomy"]],
-             type = "bin_taxonomy", bin_type = bin_type)
+      assign(
+        data = data, table = data_found[["bin_taxonomy"]],
+        type = "bin_taxonomy", bin_type = bin_type
+      )
     }
 
     # add sequence tree

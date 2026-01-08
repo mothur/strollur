@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The *rdataset* package stores the data associated with your microbial DNA analysis. This tutorial will explain how to save, load, copy, export, and import your dataset object. If you haven't reviewed the "Getting Started" tuturial, we recommend you start there. First let's load the rdataset package.
+The *rdataset* package stores the data associated with your microbial DNA analysis. This tutorial will explain how to save, load, copy, export, and import your dataset object. If you haven't reviewed the [Getting Started](Getting-Started.html) tuturial, we recommend you start there. First let's load the rdataset package.
 
 ```{r setup}
 library(rdataset)

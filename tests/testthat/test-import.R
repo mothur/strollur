@@ -67,7 +67,10 @@ test_that("import - miseq_sop_example", {
     c(7436, 6285, 5207)
   )
   # no list, since no sequences
-  expect_equal(report(dataset_t, "sequence_bin_assignments", "asv"), data.frame())
+  expect_equal(
+    report(dataset_t, "sequence_bin_assignments", "asv"),
+    data.frame()
+  )
   expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
   # 303 bins x 6 tax levels
   expect_equal(nrow(report(dataset_t, "bin_taxonomy")), 1818)
