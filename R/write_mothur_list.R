@@ -21,7 +21,7 @@ write_mothur_list <- function(data, file_root = NULL) {
   }
 
   if (is.null(file_root)) {
-    file_root <- data$get_dataset_name()
+    file_root <- names(data, "dataset")
     if (file_root == "") {
       .abort_no_name()
     }
@@ -31,7 +31,7 @@ write_mothur_list <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- get_list(data, type)
+    df <- report(data, "sequence_bin_assignments", type)
 
     if (nrow(df) != 0) {
       output_file <- paste0(file_root, ".", type, ".list")

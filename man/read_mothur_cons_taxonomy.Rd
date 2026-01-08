@@ -25,12 +25,20 @@ Read a mothur formatted
 # You can add the otu assignments and bin taxonomies to the your data set
 # using the following:
 
+# read mothur's consensus taxonomy file into a data.frame
 otu_data <- read_mothur_cons_taxonomy(rdataset_example(
   "final.cons.taxonomy"
 ))
 
 data <- new_dataset()
-assign_bins(data, otu_data)
-assign_bin_taxonomy(data, otu_data)
+
+# assign abundance only 'otu' bins
+assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
+
+# assign consensus taxonomies to 'otu' bins
+assign(
+  data = data, table = otu_data,
+  type = "bin_taxonomy", bin_type = "otu"
+)
 
 }

@@ -1,0 +1,22 @@
+---
+title: "Functions_for_Package_Developers"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Functions_for_Package_Developers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rdataset)
+```
+
+
+## TODO

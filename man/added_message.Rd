@@ -4,7 +4,7 @@
 \alias{added_message}
 \title{added_message}
 \usage{
-added_message(num, tag = "sequences")
+added_message(num = NULL, tag = "sequences")
 }
 \arguments{
 \item{num}{integer containing the number of items added.}

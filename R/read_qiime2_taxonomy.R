@@ -55,7 +55,10 @@ read_qiime2_taxonomy <- function(qza, dir_path = NULL,
       artifact[["data"]] <- read.table(file.path(data_dir, "taxonomy.tsv"),
         sep = "\t", header = TRUE, quote = ""
       )
-      names(artifact[["data"]]) <- c("bin_names", "taxonomies", "confidence")
+      names(artifact[["data"]]) <- c(
+        "bin_names",
+        "taxonomies", "confidence"
+      )
 
       if (remove_unpacked_artifacts) {
         unlink(tmp_path, recursive = TRUE)

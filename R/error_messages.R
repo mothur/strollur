@@ -52,33 +52,6 @@
           but received {.var {type_received}}.")
 }
 
-#' @title .abort_provide_at_least_one
-#' @description
-#' Report missing parameter
-#' @param parameters a list of parameter where one must be selected
-#' @keywords internal
-.abort_provide_at_least_one <- function(parameters) {
-  message <- paste("[ERROR]: Expected at least one of the following parameters",
-    "to be provided ", paste(parameters, collapse = ", "),
-    ".",
-    collapse = ""
-  )
-  cli::cli_abort(message)
-}
-
-#' @title abort_missing_column
-#' @description
-#' Data.frame is missing necessary columns
-#' @param parameter name of missing required column
-#' @export
-abort_missing_column <- function(parameter) {
-  message <- paste("Expected a data.frame column named ",
-    parameter, " to be provided.",
-    collapse = ""
-  )
-  cli::cli_abort(message)
-}
-
 #' @title alert_missing_data
 #' @description
 #' Import table is missing requested tag
@@ -98,11 +71,16 @@ abort_missing_column <- function(parameter) {
 #' @param num integer containing the number of items added.
 #' @param tag string containing item added. Default = 'sequences'.
 #' @export
-added_message <- function(num, tag = "sequences") {
-  message <- paste0("Added ", as.character(num), " ", tag, ".",
-    collapse = ""
-  )
-  cli::cli_alert_info(message)
+added_message <- function(num = NULL, tag = "sequences") {
+  if (!is.null(num)) {
+    message <- paste0("Added ", as.character(num), " ", tag, ".",
+      collapse = ""
+    )
+    cli::cli_alert_info(message)
+  } else {
+    message <- paste0("Added ", tag, ".", collapse = "")
+    cli::cli_alert_info(message)
+  }
 }
 
 #' @title assigned_message

@@ -15,12 +15,12 @@ test_that("write_mothur_count - with sample data", {
 
   remove_file(output)
 
-  expected <- get_sequence_abundance_table(miseq)
+  expected <- abundance(miseq, type = "sequences", by_sample = TRUE)
 
   # remove treatment column since data does not include treatments
   expected <- expected[, -c(4)]
 
-  actual <- get_sequence_abundance_table(data)
+  actual <- abundance(data, type = "sequences", by_sample = TRUE)
 
   # sort to same order
   sorted_indices <- order(expected[[1]])
@@ -51,8 +51,8 @@ test_that("write_mothur_count - without sample data", {
 
   remove_file(output)
 
-  expected <- get_sequence_abundance_table(data2)
-  actual <- get_sequence_abundance_table(data)
+  expected <- abundance(data2, , type = "sequences", by_sample = TRUE)
+  actual <- abundance(data, type = "sequences", by_sample = TRUE)
 
   # sort to same order
   sorted_indices <- order(expected[[1]])

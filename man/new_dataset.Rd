@@ -4,14 +4,14 @@
 \alias{new_dataset}
 \title{new_dataset}
 \usage{
-new_dataset(dataset_name = "", processors = 2L)
+new_dataset(dataset_name = "", processors = NULL)
 }
 \arguments{
 \item{dataset_name}{string, a string containing the dataset name.
 Default = ""}
 
 \item{processors}{integer, number of cores to use during summary functions.
-Default = 2}
+Default = all available}
 }
 \value{
 a \link{dataset} object
@@ -23,15 +23,15 @@ Create a new \link{dataset} object
 
 data <- new_dataset()
 
-# to create a new dataset named "soil" and allow for 2 processors during
-# summary functions, run the following:
-
-data <- new_dataset("soil", 2)
-
 # to create a new dataset named "soil" and allow for all available
 # processors during summary functions, run the following:
 
-data <- new_dataset("soil", get_available_processors())
+data <- new_dataset(dataset_name = "soil")
+
+# to create a new dataset named "soil" and allow for 2
+# processors during summary functions, run the following:
+
+data <- new_dataset(dataset_name = "soil", processors = 2)
 
 }
 \seealso{

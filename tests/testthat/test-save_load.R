@@ -21,24 +21,42 @@ test_that("clone - deep copy of dataset object", {
   dataset <- load_dataset(file_name)
   remove_file(file_name)
 
-  expect_equal(dataset$get_dataset_name(), get_dataset_name(temp))
-  expect_equal(dataset$get_num_sequences(TRUE), temp$get_num_sequences(TRUE))
-  expect_equal(dataset$get_num_sequences(), temp$get_num_sequences())
-  expect_equal(dataset$get_num_treatments(), temp$get_num_treatments())
-  expect_equal(dataset$get_num_samples(), temp$get_num_samples())
-  expect_equal(dataset$get_num_bins("otu"), temp$get_num_bins("otu"))
+  expect_equal(names(dataset, "dataset"), names(temp, "dataset"))
   expect_equal(
-    dataset$get_num_bins("phylotype"),
-    temp$get_num_bins("phylotype")
-  )
-  expect_equal(dataset$get_num_bins("asv"), temp$get_num_bins("asv"))
-  expect_equal(
-    get_sample_totals(dataset),
-    get_sample_totals(temp)
+    count(dataset, "sequences", distinct = TRUE),
+    count(temp, "sequences", distinct = TRUE)
   )
   expect_equal(
-    get_treatment_totals(dataset),
-    get_treatment_totals(temp)
+    count(dataset, "sequences"),
+    count(temp, "sequences")
+  )
+  expect_equal(
+    count(dataset, "treatments"),
+    count(temp, "treatments")
+  )
+  expect_equal(
+    count(dataset, "samples"),
+    count(temp, "samples")
+  )
+  expect_equal(
+    count(dataset, "bins", "otu"),
+    count(temp, "bins", "otu")
+  )
+  expect_equal(
+    count(dataset, "bins", "phylotype"),
+    count(temp, "bins", "phylotype")
+  )
+  expect_equal(
+    count(dataset, "bins", "asv"),
+    count(temp, "bins", "asv")
+  )
+  expect_equal(
+    abundance(dataset, "samples"),
+    abundance(temp, "samples")
+  )
+  expect_equal(
+    abundance(dataset, "treatments"),
+    abundance(temp, "treatments")
   )
 
   expect_error(load_dataset("non_existant_file.rds"))

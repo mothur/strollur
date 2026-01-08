@@ -22,7 +22,7 @@ write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
   }
 
   if (is.null(file_root)) {
-    file_root <- get_dataset_name(data)
+    file_root <- names(data, "dataset")
     if (file_root == "") {
       .abort_no_name()
     }
@@ -32,7 +32,7 @@ write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- get_bin_taxonomy_report(data, type)
+    df <- report(data, "bin_taxonomy", type)
 
     if (nrow(df) != 0) {
       # confidence scores are available
@@ -43,7 +43,10 @@ write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
 
       df <- data.frame(
         bin_name = unique(df[[1]]),
-        bin_abundance = get_rabund_vector(data, type),
+        bin_abundance = abundance(
+          data = data,
+          type = "bins", bin_type = type
+        )[[2]],
         bin_taxonomy = tapply(df[[3]], df[[1]],
           paste,
           collapse = ""

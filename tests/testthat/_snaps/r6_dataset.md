@@ -47,7 +47,7 @@
       Total number of seqs: 113963 
       Total number of otus: 531 
       Total number of asvs: 2425 
-      Total number of phylotype bins: 63 
+      Total number of phylotypes: 63 
       
       miseq_sop:
       
@@ -93,7 +93,7 @@
       Total number of seqs: 113963 
       Total number of otus: 531 
       Total number of asvs: 2425 
-      Total number of phylotype bins: 63 
+      Total number of phylotypes: 63 
       
       v No differences
 

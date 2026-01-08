@@ -106,7 +106,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
   # add sequence nucleotide strings
   if (!is.null(fasta)) {
     fasta_data <- read_fasta(fasta)
-    add_sequences(data, fasta_data)
+    xdev_add_sequences(data, fasta_data)
   }
 
   # add sequence abundance data
@@ -115,7 +115,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
     # you did not add fasta seqs
     if (is.null(fasta)) {
-      add_sequences(data, data.frame(
+      xdev_add_sequences(data, data.frame(
         sequence_names =
           unique(count_table$sequence_names)
       ))
@@ -123,12 +123,12 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
     # if the count file include samples, add them
     if ("sample" %in% names(count_table)) {
-      assign_sequence_abundance(
+      xdev_assign_sequence_abundance(
         data,
         count_table
       )
     } else {
-      assign_sequence_abundance(
+      xdev_assign_sequence_abundance(
         data,
         count_table
       )
@@ -138,38 +138,38 @@ read_mothur <- function(fasta = NULL, count = NULL,
   # add taxonomy data
   if (!is.null(taxonomy)) {
     df <- read_mothur_taxonomy(taxonomy)
-    assign_sequence_taxonomy(data, df)
+    xdev_assign_sequence_taxonomy(data, df)
   }
 
   # add sequence otu assignments
   if (!is.null(otu_list)) {
     df <- read_mothur_list(otu_list)
-    assign_bins(data, df, "otu")
+    assign(data = data, table = df, type = "bins", bin_type = "otu")
   }
 
   if (!is.null(otu_shared)) {
     df <- read_mothur_shared(otu_shared)
-    assign_bins(data, df, "otu")
+    assign(data = data, table = df, type = "bins", bin_type = "otu")
   }
 
   if (!is.null(asv_list)) {
     df <- read_mothur_list(asv_list)
-    assign_bins(data, df, "asv")
+    assign(data = data, table = df, type = "bins", bin_type = "asv")
   }
 
   if (!is.null(asv_shared)) {
     df <- read_mothur_shared(asv_shared)
-    assign_bins(data, df, "asv")
+    assign(data = data, table = df, type = "bins", bin_type = "asv")
   }
 
   if (!is.null(phylo_list)) {
     df <- read_mothur_list(phylo_list)
-    assign_bins(data, df, "phylotype")
+    assign(data = data, table = df, type = "bins", bin_type = "phylotype")
   }
 
   if (!is.null(phylo_shared)) {
     df <- read_mothur_shared(phylo_shared)
-    assign_bins(data, df, "phylotype")
+    assign(data = data, table = df, type = "bins", bin_type = "phylotype")
   }
 
   # add sample / treatment assignments
@@ -178,12 +178,12 @@ read_mothur <- function(fasta = NULL, count = NULL,
       file = design, col_names = TRUE,
       show_col_types = FALSE
     )
-    assign_treatments(data, df)
+    assign(data = data, table = df, type = "treatments")
   }
 
   if (!is.null(cons_taxonomy)) {
     df <- read_mothur_cons_taxonomy(cons_taxonomy)
-    assign_bin_taxonomy(data, df, "otu")
+    assign(data = data, table = df, type = "bin_taxonomy", bin_type = "otu")
   }
 
   if (!is.null(sample_tree)) {

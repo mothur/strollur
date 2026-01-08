@@ -27,7 +27,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     .abort_incorrect_type("dataset", data)
   }
 
-  dataset_name <- data$get_dataset_name()
+  dataset_name <- names(data, "dataset")
 
   if (dataset_name == "") {
     dataset_name <- paste0("rdataset.", as.integer(Sys.time()),
@@ -86,7 +86,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
       wrote_count <- TRUE
     }
 
-    if (data$get_num_treatments() != 0) {
+    if (count(data, "treatments") != 0) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)
@@ -115,7 +115,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     ))
     outputs <- c(outputs, output)
 
-    if ((data$get_num_treatments() != 0) && !wrote_design) {
+    if ((count(data, "treatments") != 0) && !wrote_design) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)
@@ -124,7 +124,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("metadata" %in% tags)) {
-    metadata <- get_metadata(data)
+    metadata <- report(data, "metadata")
 
     if (nrow(metadata) != 0) {
       filename <- file.path(
@@ -137,24 +137,23 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("reports" %in% tags)) {
-    reports <- get_reports(data)
-    report_names <- names(reports)
+    report_types <- names(data, "reports")
 
-    if (length(reports) != 0) {
-      for (name in report_names) {
+    if (length(report_types) != 0) {
+      for (type in report_types) {
         filename <- file.path(
           dir_path,
-          paste0(dataset_name, ".", name, collapse = "")
+          paste0(dataset_name, ".", type, collapse = "")
         )
 
-        readr::write_tsv(reports[[name]], filename)
+        readr::write_tsv(report(data, type), filename)
         outputs <- c(outputs, filename)
       }
     }
   }
 
   if (!ht || ("references" %in% tags)) {
-    references <- get_references(data)
+    references <- report(data, "references")
 
     if (nrow(references) != 0) {
       filename <- file.path(

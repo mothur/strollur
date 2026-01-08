@@ -21,14 +21,14 @@ write_taxonomy <- function(data, filename = NULL) {
   }
 
   if (is.null(filename)) {
-    filename <- get_dataset_name(data)
+    filename <- names(data, "dataset")
     if (filename == "") {
       .abort_no_name()
     }
     filename <- paste0(filename, ".taxonomy")
   }
 
-  df <- get_sequence_taxonomy_report(data)
+  df <- report(data, "sequence_taxonomy")
 
   if (nrow(df) != 0) {
     # confidence scores are available
@@ -46,5 +46,5 @@ write_taxonomy <- function(data, filename = NULL) {
     return(filename)
   }
 
-  return("no_sequence_taxonomy")
+  "no_sequence_taxonomy"
 }

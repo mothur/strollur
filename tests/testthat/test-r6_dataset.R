@@ -13,14 +13,20 @@ test_that("dataset - intialize from read_mothur / print", {
   )
 
   expect_equal(dataset_t$get_bin_types(), c("otu", "asv", "phylotype"))
-  expect_equal(dataset_t$get_dataset_name(), "miseq_sop")
-  expect_equal(dataset_t$get_num_sequences(TRUE), 2425)
-  expect_equal(dataset_t$get_num_sequences(), 113963)
-  expect_equal(dataset_t$get_num_treatments(), 2)
-  expect_equal(dataset_t$get_num_samples(), 19)
-  expect_equal(dataset_t$get_num_bins("otu"), 531)
-  expect_equal(dataset_t$get_num_bins("phylotype"), 63)
-  expect_equal(dataset_t$get_num_bins("asv"), 2425)
+  expect_equal(names(dataset_t, "dataset")[1], "miseq_sop")
+  expect_equal(
+    count(data = dataset_t, type = "sequences", distinct = TRUE),
+    2425
+  )
+  expect_equal(count(data = dataset_t, type = "sequences"), 113963)
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 19)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 531)
+  expect_equal(
+    count(data = dataset_t, type = "bins", bin_type = "phylotype"),
+    63
+  )
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2425)
 
   seqs_summary <- dataset_t$get_summary()[["sequence_summary"]]
 
@@ -39,65 +45,117 @@ test_that("dataset - intialize from read_mothur / print", {
 
   # remove bin from "phylotype" list and confirm that it removes seqs from all
   # from all list types
-  expect_equal(get_bin_abundance(dataset_t, "Phylo05", "phylotype"), 5337)
-  expect_equal(get_bin_abundance(dataset_t, "Phylo06", "phylotype"), 715)
+  # "Phylo05"
+  df <- abundance(dataset_t, type = "bins", bin_type = "phylotype")
+  expect_equal(df[[2]][5], 5337)
+  # "Phylo06"
+  expect_equal(df[[2]][6], 715)
 
-  phylo05 <- get_bin(dataset_t, "Phylo05", "phylotype")
+  phylo05 <- xdev_get_list_vector(dataset_t, "phylotype")[5]
   expect_equal(length(.split_at_char(phylo05)), 54)
 
-  phylo06 <- get_bin(dataset_t, "Phylo06", "phylotype")
+  phylo06 <- xdev_get_list_vector(dataset_t, "phylotype")[6]
   expect_equal(length(.split_at_char(phylo06)), 47)
 
-  remove_bins(
+  xdev_remove_bins(
     dataset_t,
     c("Phylo05", "Phylo06"),
     c("test", "test"),
     "phylotype"
   )
 
-  expect_equal(dataset_t$get_num_bins("phylotype"), 61)
-  expect_equal(dataset_t$get_num_bins("otu"), 512)
-  expect_equal(dataset_t$get_num_bins("asv"), 2324)
-  expect_equal(dataset_t$get_num_sequences(), 107911)
-  expect_equal(dataset_t$get_num_sequences(TRUE), 2324)
-  expect_equal(dataset_t$get_num_treatments(), 2)
-  expect_equal(dataset_t$get_num_samples(), 19)
-  expect_equal(dataset_t$get_num_sequences(sample = "F3D0"), 5977)
-  expect_equal(dataset_t$get_num_sequences(sample = "F3D1"), 4467)
+  expect_equal(
+    count(data = dataset_t, type = "bins", bin_type = "phylotype"),
+    61
+  )
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 512)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2324)
+  expect_equal(count(data = dataset_t, type = "sequences"), 107911)
+  expect_equal(
+    count(data = dataset_t, type = "sequences", distinct = TRUE),
+    2324
+  )
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 19)
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    samples = c("F3D0")
+  ), 5977)
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    samples = c("F3D1")
+  ), 4467)
+
   # note that the number of seqs removed will be less that 297+266 because
   # some seqs are assigned to both samples and some seqs will be present in
   # other samples
-  expect_equal(dataset_t$get_num_sequences(TRUE, "F3D0"), 297)
-  expect_equal(dataset_t$get_num_sequences(TRUE, "F3D1"), 266)
+  expect_equal(count(
+    data = dataset_t, type = "sequences",
+    distinct = TRUE, samples = "F3D0"
+  ), 99)
+  expect_equal(count(
+    data = dataset_t, type = "sequences",
+    distinct = TRUE, samples = "F3D1"
+  ), 99)
 
   # remove samples
-  remove_samples(dataset_t, c("F3D0", "F3D1"))
-  expect_equal(dataset_t$get_num_treatments(), 2)
-  expect_equal(dataset_t$get_num_samples(), 17)
-  expect_equal(dataset_t$get_num_bins("phylotype"), 57)
-  expect_equal(dataset_t$get_num_bins("otu"), 482)
-  expect_equal(dataset_t$get_num_bins("asv"), 2124)
-  expect_equal(dataset_t$get_num_sequences(), 97467)
-  expect_equal(dataset_t$get_num_sequences(TRUE), 2124)
-  expect_equal(dataset_t$get_num_sequences(TRUE, "F3D0"), 0)
-  expect_equal(dataset_t$get_num_sequences(TRUE, "F3D1"), 0)
-  expect_equal(dataset_t$get_num_sequences(sample = "F3D0"), 0)
-  expect_equal(dataset_t$get_num_sequences(sample = "F3D1"), 0)
+  xdev_remove_samples(dataset_t, c("F3D0", "F3D1"))
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 17)
+  expect_equal(count(
+    data = dataset_t,
+    type = "bins",
+    bin_type = "phylotype"
+  ), 57)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 482)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2124)
+  expect_equal(count(data = dataset_t, type = "sequences"), 97467)
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    distinct = TRUE
+  ), 2124)
+  expect_equal(count(
+    data = dataset_t, type = "sequences", distinct = TRUE,
+    sample = "F3D0"
+  ), 0)
+  expect_equal(count(
+    data = dataset_t, type = "sequences", distinct = TRUE,
+    sample = "F3D1"
+  ), 0)
+  expect_equal(count(
+    data = dataset_t, type = "sequences",
+    sample = "F3D0"
+  ), 0)
+  expect_equal(count(
+    data = dataset_t, type = "sequences", distinct = TRUE,
+    sample = "F3D1"
+  ), 0)
 
   # remove things just classified to bacteria, and things classified to
   # Bacteria;"Bacteroidetes"; with confidence less than 95
-  remove_lineages(dataset_t, c(
+  xdev_remove_lineages(dataset_t, c(
     "Bacteria;Bacteria_unclassified;",
     "Bacteria(100);\"Bacteroidetes\"(95);"
   ))
 
-  expect_equal(dataset_t$get_num_treatments(), 2)
-  expect_equal(dataset_t$get_num_samples(), 17)
-  expect_equal(dataset_t$get_num_bins("phylotype"), 57)
-  expect_equal(dataset_t$get_num_bins("otu"), 475)
-  expect_equal(dataset_t$get_num_bins("asv"), 2086)
-  expect_equal(dataset_t$get_num_sequences(), 97428)
-  expect_equal(dataset_t$get_num_sequences(TRUE), 2086)
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 17)
+  expect_equal(count(
+    data = dataset_t,
+    type = "bins",
+    bin_type = "phylotype"
+  ), 57)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 475)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2086)
+  expect_equal(count(data = dataset_t, type = "sequences"), 97428)
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    distinct = TRUE
+  ), 2086)
 })
 
 test_that("dataset - intialize from dataset object", {
@@ -117,32 +175,39 @@ test_that("dataset - intialize from dataset object", {
     processors = 4
   )
 
-  expect_equal(get_dataset_name(dataset_t), "clone_of_miseq")
-  expect_equal(dataset_t$get_num_sequences(TRUE), 2425)
-  expect_equal(dataset_t$get_num_sequences(), 113963)
-  expect_equal(dataset_t$get_num_treatments(), 2)
-  expect_equal(dataset_t$get_num_samples(), 19)
-  expect_equal(dataset_t$get_num_bins("otu"), 531)
-  expect_equal(dataset_t$get_num_bins("phylotype"), 63)
-  expect_equal(dataset_t$get_num_bins("asv"), 2425)
-  expect_equal(get_num_processors(dataset_t), 4)
+  expect_equal(names(dataset_t, "dataset"), "clone_of_miseq")
+  expect_equal(count(
+    data = dataset_t,
+    type = "sequences",
+    distinct = TRUE
+  ), 2425)
+  expect_equal(count(data = dataset_t, type = "sequences"), 113963)
+  expect_equal(count(data = dataset_t, type = "treatments"), 2)
+  expect_equal(count(data = dataset_t, type = "samples"), 19)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "otu"), 531)
+  expect_equal(count(
+    data = dataset_t,
+    type = "bins",
+    bin_type = "phylotype"
+  ), 63)
+  expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2425)
 })
 
 test_that("dataset - addSeqs, assign samples", {
   data <- dataset$new("mydata")
 
   # missing data and names
-  expect_error(data$add_sequences())
+  expect_error(xdev_add_sequences(data))
 
   fasta_data <- read_fasta(rdataset_example("final.fasta"))
   names(fasta_data) <- c("myNameTag", "mySeqTag")
 
-  expect_error(add_sequences(data, fasta_data, NULL, "names", "mySeqTag"))
-  expect_error(add_sequences(data, "not_a_data.frame"))
+  expect_error(xdev_add_sequences(data, fasta_data, NULL, "names", "mySeqTag"))
+  expect_error(xdev_add_sequences(data, "not_a_data.frame"))
 
-  add_sequences(data, fasta_data, NULL, "myNameTag", "mySeqTag")
+  xdev_add_sequences(data, fasta_data, NULL, "myNameTag", "mySeqTag")
 
-  expect_equal(data$get_num_sequences(), 2425)
+  expect_equal(count(data = data, type = "sequences"), 2425)
 
   clear(data)
 
@@ -152,30 +217,30 @@ test_that("dataset - addSeqs, assign samples", {
 
   fasta_data <- data.frame(names = names, seqs = seqs, comments = comments)
 
-  expect_error(add_sequences(data, fasta_data,
+  expect_error(xdev_add_sequences(data, fasta_data,
     sequence_names = "names",
     sequences = "sequences"
   ))
-  add_sequences(data, fasta_data, NULL, "names", "seqs")
+  xdev_add_sequences(data, fasta_data, NULL, "names", "seqs")
 
-  expect_equal(data$get_num_sequences(), 4)
-  expect_equal(get_sequences(data), seqs)
+  expect_equal(count(data = data, type = "sequences"), 4)
+  expect_equal(xdev_get_sequences(data), seqs)
   clear(data)
 
-  expect_error(add_sequences(data, fasta_data,
+  expect_error(xdev_add_sequences(data, fasta_data,
     sequences = "seqs",
     comments = "comments23"
   ))
-  add_sequences(data, fasta_data, NULL, "names", "seqs", "comments")
+  xdev_add_sequences(data, fasta_data, NULL, "names", "seqs", "comments")
 
-  expect_equal(data$get_num_sequences(), 4)
-  expect_equal(get_sequences(data), seqs)
+  expect_equal(count(data = data, type = "sequences"), 4)
+  expect_equal(xdev_get_sequences(data), seqs)
 
   clear(data)
-  add_sequences(data, fasta_data, NULL, "names", "", "comments")
+  xdev_add_sequences(data, fasta_data, NULL, "names", "", "comments")
 
-  expect_equal(data$get_num_sequences(), 4)
-  expect_equal(get_sequences(data), rep("", 4))
+  expect_equal(count(data = data, type = "sequences"), 4)
+  expect_equal(xdev_get_sequences(data), rep("", 4))
   clear(data)
 
   ids <- c(
@@ -205,7 +270,7 @@ test_that("dataset - addSeqs, assign samples", {
 
   # include reference
   url <- "https://mothur.org/wiki/silva_reference_files/"
-  add_sequences(
+  xdev_add_sequences(
     data,
     data.frame(sequence_names = names, sequences = seqs),
     new_reference(
@@ -214,7 +279,7 @@ test_that("dataset - addSeqs, assign samples", {
     )
   )
 
-  references <- get_references(data)
+  references <- report(data, "references")
 
   expect_equal(nrow(references), 1)
   expect_equal(references[[1, "reference_names"]], "silva.bacteria.fasta")
@@ -223,124 +288,174 @@ test_that("dataset - addSeqs, assign samples", {
   expect_equal(references[[1, "reference_notes"]], "alignment by mothur2 v1.0")
   expect_equal(references[[1, "reference_urls"]], url)
 
-  assign_sequence_abundance(
-    data, data.frame(
+  assign(
+    data = data, table = data.frame(
       sequence_names = ids, abundances = abundances,
       samples = samples, treatments = treatments
-    )
+    ), type = "sequence_abundance"
   )
 
   # assign bins
   bins <- c("bin1", "bin2", "bin1", "bin2")
-  assign_bins(data, data.frame(bin_names = bins, sequence_names = names))
+  assign(
+    data = data,
+    table = data.frame(bin_names = bins, sequence_names = names),
+    type = "bins"
+  )
 
-  expect_equal(data$get_num_bins(), 2)
-  expect_equal(get_list(data)$otu_id, c("bin1", "bin1", "bin2", "bin2"))
-  expect_equal(get_list(data)$seq_id, c("seq1", "seq3", "seq2", "seq4"))
+  list <- report(data = data, type = "sequence_bin_assignments")
+
+  expect_equal(count(data = data, type = "bins"), 2)
+  expect_equal(list$otu_id, c("bin1", "bin1", "bin2", "bin2"))
+  expect_equal(list$seq_id, c("seq1", "seq3", "seq2", "seq4"))
+
+  list <- report(
+    data = data, type = "sequence_bin_assignments",
+    bin_type = "asv"
+  )
 
   # get asv generated by dataset
-  expect_equal(get_list(data, "asv")$asv_id, c("ASV1", "ASV2", "ASV3", "ASV4"))
-  expect_equal(get_list(data, "asv")$seq_id, c("seq1", "seq2", "seq3", "seq4"))
+  expect_equal(list$asv_id, c("ASV1", "ASV2", "ASV3", "ASV4"))
+  expect_equal(list$seq_id, c("seq1", "seq2", "seq3", "seq4"))
 
-  expect_equal(get_rabund(data)$otu_id, c("bin1", "bin2"))
-  expect_equal(get_rabund(data)$abundance, c(1200, 120))
+  expect_equal(abundance(data, type = "bins")[[1]], c("bin1", "bin2"))
+  expect_equal(abundance(data, type = "bins")[[2]], c(1200, 120))
 
-  expect_equal(get_bin_assignments(data)$bin_names, c(
+  df <- abundance(
+    data = data, type = "bins",
+    bin_type = "otu", by_sample = TRUE
+  )
+  expect_equal(df$bin_names, c(
     "bin1", "bin1", "bin1",
     "bin2", "bin2", "bin2"
   ))
-  expect_equal(get_bin_assignments(data)$samples, c(
+  expect_equal(df$samples, c(
     "sample2", "sample3", "sample4",
     "sample2", "sample3", "sample4"
   ))
-  expect_equal(get_bin_assignments(data)$abundances, c(
+  expect_equal(df$abundances, c(
     275, 425, 500,
     26, 40, 54
   ))
 
   expect_true(is_aligned(data))
-  expect_equal(get_sequence_names(data), names)
-  expect_equal(get_sequences(data), seqs)
-  expect_equal(get_sequence_names(data, "sample2"), names)
-  expect_equal(get_sequence_names(data, "sample3"), c("seq1", "seq2", "seq3"))
-  expect_equal(get_sequence_names(data, "sample4"), c("seq1", "seq2", "seq4"))
-  expect_equal(get_sequences(data, "sample2"), seqs)
-  expect_equal(get_sequences(data, "sample3"), c("ATTGC", "ATTGC", "ATTGC"))
-  expect_equal(get_sequences(data, "sample4"), c("ATTGC", "ATTGC", "ATTGC"))
+  expect_equal(names(data, "sequences"), names)
+  expect_equal(xdev_get_sequences(data), seqs)
+  expect_equal(
+    names(data = data, type = "sequences", samples = c("sample2")),
+    names
+  )
+  expect_equal(
+    names(data, type = "sequences", samples = c("sample3")),
+    c("seq1", "seq2", "seq3")
+  )
+  expect_equal(
+    names(data, type = "sequences", samples = c("sample4")),
+    c("seq1", "seq2", "seq4")
+  )
+  expect_equal(xdev_get_sequences(data, "sample2"), seqs)
+  expect_equal(
+    xdev_get_sequences(data, "sample3"),
+    c("ATTGC", "ATTGC", "ATTGC")
+  )
+  expect_equal(
+    xdev_get_sequences(data, "sample4"),
+    c("ATTGC", "ATTGC", "ATTGC")
+  )
 
-  expect_equal(data$get_num_samples(), 3)
-  expect_equal(data$get_num_treatments(), 2)
-  expect_equal(data$get_treatments(), c("early", "late"))
-  expect_equal(data$get_samples(), c("sample2", "sample3", "sample4"))
+  expect_equal(count(data = data, type = "samples"), 3)
+  expect_equal(count(data = data, type = "treatments"), 2)
+  expect_equal(names(data, "treatments"), c("early", "late"))
+  expect_equal(names(data, "samples"), c("sample2", "sample3", "sample4"))
 
   sample_summary <- data$get_summary(TRUE)$sample_summary
   treatment_summary <- data$get_summary(TRUE)$treatment_summary
 
-  expect_equal(treatment_summary$total, c(766, 554))
-  expect_equal(sample_summary$total, c(301, 465, 554))
+  expect_equal(treatment_summary$abundances, c(766, 554))
+  expect_equal(sample_summary$abundances, c(301, 465, 554))
 
   # total
-  expect_equal(data$get_num_sequences(), 1320)
+  expect_equal(count(data = data, type = "sequences"), 1320)
   # unique
-  expect_equal(data$get_num_sequences(TRUE), 4)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 4)
   # unique and sample
-  expect_equal(data$get_num_sequences(TRUE, "sample2"), 4)
-  expect_equal(data$get_num_sequences(TRUE, "sample3"), 3)
-  # total and sample
-  expect_equal(data$get_num_sequences(sample = "sample2"), 301)
+  expect_equal(count(
+    data = data, type = "sequences",
+    distinct = TRUE, samples = c("sample2")
+  ), 0)
+  expect_equal(count(
+    data = data, type = "sequences",
+    distinct = FALSE, samples = c("sample2")
+  ), 301)
+  expect_equal(count(
+    data = data, type = "sequences",
+    distinct = FALSE, samples = c("sample3")
+  ), 465)
 
-  results <- list(
-    sequence_scrap_report = data.frame(),
-    otu_scrap_report = data.frame(),
-    asv_scrap_report = data.frame()
-  )
-
-  expect_equal(results, data$get_scrap_report())
+  expect_equal(count(
+    data = data, type = "sequences",
+    distinct = TRUE, samples = c("sample3")
+  ), 0)
 })
 
 test_that("dataset - assign_sequence_abundance, remove_sequences", {
   data <- dataset$new("mydata")
 
   # missing data and names
-  expect_error(data$assign_sequence_abundance())
+  expect_error(xdev_assign_sequence_abundance(data))
 
   sequence_abundance <- readr::read_tsv(rdataset_example(
     "mothur2_count_table.tsv"
   ), show_col_types = FALSE)
 
 
-  assign_sequence_abundance(data, sequence_abundance, "names")
+  assign(
+    data = data, table = sequence_abundance, table_names =
+      list(sequence_name = "names"), type = "sequence_abundance"
+  )
 
-  expect_equal(data$get_num_sequences(TRUE), 2425)
-  expect_equal(data$get_num_samples(), 19)
-  expect_equal(data$get_num_treatments(), 2)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2425)
+  expect_equal(count(data = data, type = "samples"), 19)
+  expect_equal(count(data = data, type = "treatments"), 2)
 
   names(sequence_abundance) <- c("ids", "abunds", "groups", "time")
 
-  expect_error(assign_sequence_abundance(data, sequence_abundance, "ids"))
+  expect_error(xdev_assign_sequence_abundance(data, sequence_abundance, "ids"))
 
   # no treatments
-  assign_sequence_abundance(data, sequence_abundance, "ids", "abunds", "groups")
-
-  expect_equal(data$get_num_sequences(TRUE), 2425)
-  expect_equal(data$get_num_samples(), 19)
-  expect_equal(data$get_num_treatments(), 0)
-
-  assign_sequence_abundance(
-    data, sequence_abundance, "ids", "abunds", "groups",
-    "time"
+  assign(
+    data = data, table = sequence_abundance, type = "sequence_abundance",
+    table_names = list(
+      sequence_name = "ids",
+      abundance = "abunds",
+      sample = "groups"
+    )
   )
 
-  expect_equal(data$get_num_sequences(TRUE), 2425)
-  expect_equal(data$get_num_samples(), 19)
-  expect_equal(data$get_num_treatments(), 2)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2425)
+  expect_equal(count(data = data, type = "samples"), 19)
+  expect_equal(count(data = data, type = "treatments"), 0)
+
+  assign(
+    data = data, table = sequence_abundance, type = "sequence_abundance",
+    table_names = list(
+      sequence_name = "ids",
+      abundance = "abunds",
+      sample = "groups",
+      treatment = "time"
+    )
+  )
+
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2425)
+  expect_equal(count(data = data, type = "samples"), 19)
+  expect_equal(count(data = data, type = "treatments"), 2)
 
   clear(data)
 
   names <- c("seq1", "seq2", "seq3", "seq4")
   abunds <- c(10, 20, 30)
 
-  expect_error(assign_sequence_abundance(
+  expect_error(xdev_assign_sequence_abundance(
     data = NULL,
     sequence_names = names,
     abundances = abunds
@@ -379,15 +494,15 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
   seqs_to_remove <- c("seq1", "seq2")
   trash_codes <- c("trashTest", "trashTest2")
 
-  assign_sequence_abundance(data, data.frame(
+  xdev_assign_sequence_abundance(data, data.frame(
     sequence_names = names,
     abundances = rabunds
   ))
 
-  expect_equal(data$get_num_sequences(), 1269)
-  expect_equal(data$get_num_sequences(TRUE), 4)
-  expect_equal(data$get_num_samples(), 0)
-  expect_equal(data$get_num_treatments(), 0)
+  expect_equal(count(data = data, type = "sequences"), 1269)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 4)
+  expect_equal(count(data = data, type = "samples"), 0)
+  expect_equal(count(data = data, type = "treatments"), 0)
 
   missing_id <- c(
     "seq1", "seq1", "seq1",
@@ -396,74 +511,80 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
     "seq3"
   )
 
-  assign_sequence_abundance(data, data.frame(
+  xdev_assign_sequence_abundance(data, data.frame(
     sequence_names = ids,
     abundances = abundances,
     samples = groups
   ))
 
-  expect_equal(data$get_num_sequences(), 1269)
-  expect_equal(data$get_num_sequences(TRUE), 4)
-  expect_equal(data$get_num_samples(), 3)
-  expect_equal(data$get_num_treatments(), 0)
+  expect_equal(count(data = data, type = "sequences"), 1269)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 4)
+  expect_equal(count(data = data, type = "samples"), 3)
+  expect_equal(count(data = data, type = "treatments"), 0)
 
-  assign_sequence_abundance(
+  xdev_assign_sequence_abundance(
     data, data.frame(
       sequence_names = ids, abundances = abundances,
       samples = groups, treatments = treatments
     )
   )
-  expect_equal(data$get_num_treatments(), 2)
+  expect_equal(count(data = data, type = "treatments"), 2)
 
-  remove_sequences(data, seqs_to_remove, trash_codes)
+  xdev_remove_sequences(data, seqs_to_remove, trash_codes)
 
-  expect_equal(data$get_num_sequences(), 29)
-  expect_equal(data$get_num_sequences(TRUE), 2)
-  expect_equal(data$get_num_samples(), 2)
-  expect_equal(data$get_num_treatments(), 1)
+  expect_equal(count(data = data, type = "sequences"), 29)
+  expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2)
+  expect_equal(count(data = data, type = "samples"), 2)
+  expect_equal(count(data = data, type = "treatments"), 1)
 })
 
 test_that("dataset - get_list get_rabund, get_bin_assignments", {
   dataset_t <- new_dataset("my_dataset")
 
-  expect_error(assign_bins(dataset_t))
+  expect_error(assign(dataset_t))
 
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   sequence_abundances <- c(10, 100, 1, 500, 25, 80)
 
-  assign_bins(dataset_t, data.frame(
+  assign(data = dataset_t, table = data.frame(
     bin_names = bin_ids,
     abundances = sequence_abundances,
     sequence_names = seq_ids
-  ))
+  ), type = "bins")
   # bins would look like:
   # label  bin1             bin2        bin3 ...
   # 0.03   seq1,seq2,seq4   seq3,seq6   seq5 ...
   # 0.03   110              525         80 ...
 
-  list <- get_list(dataset_t)
+  list <- report(data = dataset_t, type = "sequence_bin_assignments")
 
   expect_equal(list$otu_id, bin_ids)
   expect_equal(list$seq_id, seq_ids)
-  expect_equal(get_list(dataset_t, "non_existance_bin_type"), data.frame())
+  expect_equal(report(dataset_t, "non_existance_bin_type"), data.frame())
   expect_equal(
-    get_list_vector(dataset_t, "non_existance_bin_type"),
+    xdev_get_list_vector(dataset_t, "non_existance_bin_type"),
     character()
   )
 
-  rabund <- get_rabund(dataset_t)
+  rabund <- abundance(data = dataset_t, type = "bins", bin_type = "otu")
 
   abunds <- c(111, 525, 80)
   expect_equal(rabund$otu_id, unique(bin_ids))
   expect_equal(rabund$abundance, abunds)
 
   expect_equal(
-    get_rabund_vector(dataset_t, "non_existance_bin_type"),
-    numeric()
+    abundance(
+      data = dataset_t, type = "bins",
+      bin_type = "non_existance_bin_type"
+    ),
+    data.frame()
   )
   expect_equal(
-    get_rabund_vector(dataset_t, "otu"),
+    abundance(
+      data = dataset_t, type = "bins",
+      bin_type = "otu"
+    )[[2]],
     abunds
   )
 
@@ -474,7 +595,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     "sample1", "sample3", "sample1"
   )
   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-  assign_bins(
+  xdev_assign_bins(
     dataset_t,
     data.frame(
       bin_names = bin_ids, abundances = sample_abundances,
@@ -482,23 +603,21 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     )
   )
 
-  shared <- get_bin_assignments(dataset_t)
+  shared <- abundance(data = dataset_t, type = "bins", by_sample = TRUE)
   expect_equal(shared$bin_names, bin_ids)
   expect_equal(shared$abundances, sample_abundances)
   expect_equal(shared$samples, samples)
-  expect_equal(dataset_t$get_num_bins(), 3)
+  expect_equal(count(data = dataset_t, type = "bins"), 3)
 
   expect_equal(
-    get_bin_assignments(dataset_t, "non_existance_bin_type"),
+    abundance(
+      data = dataset_t,
+      type = "bins", bin_type = "non_existance_bin_type"
+    ),
     data.frame()
   )
-  expect_equal(get_shared_vector(dataset_t, "otu"), list(
-    c(10, 100, 0, 1),
-    c(500, 0, 25, 0),
-    c(80, 0, 0, 0)
-  ))
-  expect_equal(length(get_shared_vector(dataset_t, "bad_type")), 0)
 
+  expect_equal(shared[[2]], c(10, 100, 1, 500, 25, 80))
   expect_true(has_sample(dataset_t, "sample1"))
   expect_false(has_sample(dataset_t, "non_existant_sample"))
 
@@ -525,7 +644,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     1, 2, 3, 4
   )
 
-  assign_bins(
+  xdev_assign_bins(
     dataset_t,
     data.frame(
       bin_names = bin_ids, abundances = sample_abundances,
@@ -533,10 +652,10 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     )
   )
 
-  expect_equal(dataset_t$get_num_bins(), 3)
-  expect_equal(dataset_t$get_num_samples(), 6)
+  expect_equal(count(dataset_t, "bins"), 3)
+  expect_equal(count(dataset_t, "samples"), 6)
   expect_equal(
-    dataset_t$get_summary(TRUE)[["sample_summary"]]$total,
+    dataset_t$get_summary(TRUE)[["sample_summary"]]$abundances,
     c(36, 25, 2, 20, 13, 4)
   )
 
@@ -546,12 +665,16 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     "mothur2_bin_assignments_shared.tsv"
   ), show_col_types = FALSE)
 
-  expect_error(assign_bins(dataset_t, bin_table, "otu", NULL, "id"))
+  expect_error(assign(
+    data = dataset_t, table = bin_table,
+    type = "bins", bin_type = "otu",
+    table_names = list(bin_name = "id")
+  ))
 
-  assign_bins(dataset_t, bin_table)
+  xdev_assign_bins(dataset_t, bin_table)
 
-  expect_equal(dataset_t$get_num_bins(), 531)
-  expect_equal(dataset_t$get_num_samples(), 19)
+  expect_equal(count(dataset_t, "bins"), 531)
+  expect_equal(count(dataset_t, "samples"), 19)
 
   clear(dataset_t)
 
@@ -559,13 +682,16 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     "mothur2_bin_assignments_list.tsv"
   ), show_col_types = FALSE)
 
-  assign_bins(
-    dataset_t, bin_table, "otu", NULL,
-    "otu_id", "", "", "seq_id"
+  assign(
+    data = dataset_t, table = bin_table, type = "bins",
+    bin_type = "otu", table_names = list(
+      bin_name = "otu_id",
+      sequence_name = "seq_id"
+    )
   )
 
-  expect_equal(dataset_t$get_num_bins(), 531)
-  expect_equal(dataset_t$get_num_sequences(), 2425)
+  expect_equal(count(dataset_t, "bins"), 531)
+  expect_equal(count(dataset_t, "sequences"), 2425)
 })
 
 # assign_sequence_taxonomy, get_sequence_taxonomy_report
@@ -587,7 +713,7 @@ test_that("dataset - ", {
   )
 
   # assign taxonomy with reference
-  assign_sequence_taxonomy(
+  xdev_assign_sequence_taxonomy(
     dataset_t,
     data.frame(sequence_names = names, taxonomies = taxonomies),
     new_reference(
@@ -597,7 +723,7 @@ test_that("dataset - ", {
     )
   )
 
-  references <- get_references(dataset_t)
+  references <- report(dataset_t, "references")
 
   note <- "classification by mothur2 v1.0 using default options"
   expect_equal(nrow(references), 1)
@@ -607,7 +733,7 @@ test_that("dataset - ", {
   expect_equal(references[[1, 4]], "NA")
   expect_equal(references[[1, 5]], url)
 
-  report <- get_sequence_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "sequence_taxonomy")
 
   ids <- c(
     "seq1", "seq1", "seq1",
@@ -631,11 +757,11 @@ test_that("dataset - ", {
   taxonomies <- c(tax1, tax2, tax3, tax4)
 
   dataset_t <- dataset$new("my_dataset")
-  assign_sequence_taxonomy(dataset_t, data.frame(
+  assign(data = dataset_t, table = data.frame(
     sequence_names = names,
     taxonomies = taxonomies
-  ))
-  report <- get_sequence_taxonomy_report(dataset_t)
+  ), type = "sequence_taxonomy")
+  report <- report(dataset_t, "sequence_taxonomy")
 
   expect_equal(report$id, ids)
   expect_equal(report$taxon[7:12], c(
@@ -652,11 +778,11 @@ test_that("dataset - ", {
   taxonomies <- c(tax1, tax2, tax3, tax4)
 
   dataset_t <- dataset$new("my_dataset")
-  assign_sequence_taxonomy(dataset_t, data.frame(
+  xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
     taxonomies = taxonomies
   ))
-  report <- get_sequence_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "sequence_taxonomy")
 
   ids <- c(
     "seq1", "seq1", "seq1", "seq1", "seq1",
@@ -694,11 +820,11 @@ test_that("dataset - ", {
   taxonomies <- c(tax1, tax2, tax3, tax4)
 
   dataset_t <- dataset$new("my_dataset")
-  assign_sequence_taxonomy(dataset_t, data.frame(
+  xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
     taxonomies = taxonomies
   ))
-  report <- get_sequence_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "sequence_taxonomy")
 
   ids <- c(
     "seq1", "seq1", "seq1", "seq1", "seq1",
@@ -737,9 +863,12 @@ test_that("dataset - ", {
 
   # add bin assignments
   bins <- c("bin1", "bin1", "bin1", "bin2")
-  assign_bins(dataset_t, data.frame(bin_names = bins, sequence_names = names))
+  xdev_assign_bins(
+    dataset_t,
+    data.frame(bin_names = bins, sequence_names = names)
+  )
 
-  report <- get_bin_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "bin_taxonomy")
 
   ids <- c(
     "bin1", "bin1", "bin1", "bin1",
@@ -766,42 +895,46 @@ test_that("dataset - ", {
     "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;"
   )
 
-  expect_error(assign_bin_taxonomy(dataset_t, data = "not_a_data.frame"))
-  expect_equal(get_reports(dataset_t), list())
+  expect_error(assign(dataset_t, table = "not_a_data.frame"))
   expect_equal(dataset_t$get_summary(), list())
-  expect_false(dataset_t$has_sample("noSample"))
+  expect_false(has_sample(dataset_t, "noSample"))
 
   abunds <- c(200, 40, 100, 5)
-  assign_bins(dataset_t, data.frame(bin_names = bin_ids, abundances = abunds))
+  xdev_assign_bins(
+    dataset_t,
+    data.frame(bin_names = bin_ids, abundances = abunds)
+  )
 
   url <- paste0(
     "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
     "9_032012.pds.zip"
   )
 
-  assign_bin_taxonomy(
-    dataset_t,
-    data.frame(bin_names = bin_ids, taxonomies = taxonomies),
-    "otu",
-    new_reference(
-      "trainset9_032012.pds.zip", "9_032012", "",
-      "classification by mothur2 v1.0", url
+  assign(
+    data = dataset_t,
+    table = data.frame(bin_names = bin_ids, taxonomies = taxonomies),
+    type = "bin_taxonomy", bin_type = "otu",
+    reference = new_reference(
+      reference_name = "trainset9_032012.pds.zip",
+      reference_version = "9_032012",
+      reference_usage = "classification by mothur2 v1.0",
+      reference_url = url
     )
   )
 
-  references <- get_references(dataset_t)
+  references <- report(dataset_t, "references")
 
   expect_equal(nrow(references), 1)
   expect_equal(references[[1, "reference_names"]], "trainset9_032012.pds.zip")
   expect_equal(references[[1, "reference_versions"]], "9_032012")
-  expect_equal(references[[1, "reference_usages"]], "NA")
+  expect_equal(references[[1, "reference_notes"]], "NA")
   expect_equal(
-    references[[1, "reference_notes"]],
+    references[[1, "reference_usages"]],
     "classification by mothur2 v1.0"
   )
   expect_equal(references[[1, "reference_urls"]], url)
 
-  report <- get_bin_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "bin_taxonomy")
 
   ids <- c(
     "bin1", "bin1", "bin1", "bin1",
@@ -831,12 +964,12 @@ test_that("dataset - ", {
   )
 
 
-  assign_bin_taxonomy(dataset_t, data.frame(
+  assign(data = dataset_t, table = data.frame(
     bin_names = bin_ids,
     taxonomies = taxonomies
-  ))
+  ), type = "bin_taxonomy")
 
-  report <- get_bin_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "bin_taxonomy")
 
   expect_equal(report$id, ids)
   expect_equal(report$taxon, c(
@@ -854,12 +987,9 @@ test_that("dataset - ", {
     100, 100, 100, 89, 100, 65, 60, 60
   ))
 
-  expect_equal(get_sequence_taxonomy_report(dataset_t), data.frame())
-  expect_equal(get_bin_assignments(dataset_t), data.frame())
+  expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
 
   clear(dataset_t)
-
-  expect_error(dataset_t$assign_bin_taxonomy())
 
   table <- readr::read_tsv(rdataset_example("final.cons.taxonomy"),
     show_col_types = FALSE
@@ -868,11 +998,24 @@ test_that("dataset - ", {
     "mothur2_bin_assignments_list.tsv"
   ), show_col_types = FALSE)
 
-  assign_bins(dataset_t, bin_table, "otu", NULL, "otu_id", "", "", "seq_id")
+  assign(
+    data = dataset_t, table = bin_table, type = "bins",
+    bin_type = "otu", table_names = list(
+      bin_name = "otu_id",
+      sequence_name = "seq_id"
+    )
+  )
 
-  assign_bin_taxonomy(dataset_t, table, "otu", NULL, "OTU", "Taxonomy")
+  assign(
+    data = dataset_t, table = table,
+    type = "bin_taxonomy",
+    bin_type = "otu", list(
+      bin_name = "OTU",
+      taxonomy = "Taxonomy"
+    )
+  )
 
-  table <- get_bin_taxonomy_report(dataset_t)
+  table <- report(dataset_t, "bin_taxonomy")
 
   expect_equal(table[2758, 1], "Otu460")
   expect_equal(table[2758, 3], "\"Bacteroidales\"")
@@ -886,14 +1029,14 @@ test_that("dataset - ", {
 test_that("dataset - add_metadata, get_metadata", {
   dataset_t <- dataset$new("my_dataset")
 
-  expect_equal(get_metadata(dataset_t), data.frame())
+  expect_equal(report(dataset_t, "metadata"), data.frame())
 
   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
 
-  add_metadata(dataset_t, metadata)
-  metadata <- get_metadata(dataset_t)
+  xdev_add_report(dataset_t, metadata, "metadata")
+  metadata <- report(dataset_t, "metadata")
 
   expect_equal(names(metadata), c(
     "sample-id", "barcode-sequence",
@@ -910,19 +1053,19 @@ test_that("dataset - add_metadata, get_metadata", {
   expect_equal(metadata[[3, 7]], "subject-1")
 
   clear(dataset_t, "metadata")
-  metadata <- get_metadata(dataset_t)
+  metadata <- report(dataset_t, "metadata")
   expect_equal(nrow(metadata), 0)
 })
 
 test_that("dataset - add_references, get_references", {
   dataset_t <- dataset$new("my_dataset")
 
-  expect_equal(get_references(dataset_t), data.frame())
-  expect_error(add_references(dataset_t, reference = c("bad_type")))
-  expect_error(add_references(dataset_t, data.frame()))
-  expect_error(add_references(dataset_t))
+  expect_equal(report(dataset_t, "references"), data.frame())
+  expect_error(xdev_add_references(dataset_t, reference = c("bad_type")))
+  expect_error(xdev_add_references(dataset_t, data.frame()))
+  expect_error(xdev_add_references(dataset_t))
 
-  references <- get_references(dataset_t)
+  references <- report(dataset_t, "references")
   expect_equal(nrow(references), 0)
 
   reference <- readr::read_csv(rdataset_example("references.csv"),
@@ -932,9 +1075,9 @@ test_that("dataset - add_references, get_references", {
   mothur_url <- "https://github.com/mothur/mothur/releases/tag/v1.48.2"
 
   # add data.frame and single reference at the same time
-  add_references(dataset_t, reference)
+  xdev_add_references(dataset_t, reference)
 
-  references <- get_references(dataset_t)
+  references <- report(dataset_t, "references")
 
   # random spot checks
   expect_equal(nrow(references), 2)
@@ -957,17 +1100,17 @@ test_that("dataset - add_references, get_references", {
     reference_url = mothur_url
   )
 
-  add_references(
+  xdev_add_references(
     dataset_t, ref, "reference_name", "reference_version",
     "reference_usage", "reference_note", "reference_url"
   )
 
-  references <- get_references(dataset_t)
+  references <- report(dataset_t, "references")
   expect_equal(nrow(references), 1)
 
-  add_references(dataset_t, reference)
+  xdev_add_references(dataset_t, reference)
 
-  references <- get_references(dataset_t)
+  references <- report(dataset_t, "references")
   expect_equal(nrow(references), 3)
 
   expect_equal(references[[2, 1]], "trainset9_032012.pds.zip")
@@ -978,10 +1121,10 @@ test_that("dataset - add_references, get_references", {
   expect_equal(references[[1, 4]], "This is my mothur note")
 
   dataset_t$clear("bad_type")
-  expect_equal(nrow(get_references(dataset_t)), 3)
+  expect_equal(nrow(report(dataset_t, "references")), 3)
 
   clear(dataset_t, c("references"))
-  expect_equal(nrow(get_references(dataset_t)), 0)
+  expect_equal(nrow(report(dataset_t, "references")), 0)
 })
 
 test_that("dataset - add_alignment_report, get_alignment_report", {
@@ -991,10 +1134,15 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
     col_names = TRUE, show_col_types = FALSE
   )
 
-  expect_error(add_report(dataset_t, align_report, "align_report", "badName"))
-  add_report(dataset_t, align_report, "align_report", "QueryName")
+  expect_error(xdev_add_report(
+    dataset_t,
+    align_report,
+    "align_report",
+    "badName"
+  ))
+  xdev_add_report(dataset_t, align_report, "align_report", "QueryName")
 
-  align_report <- get_reports(dataset_t)[["align_report"]]
+  align_report <- report(dataset_t, "align_report")
 
   # random spot checks
   expect_equal(nrow(align_report), 5)
@@ -1006,12 +1154,12 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
   expect_equal(align_report[[4, 4]], 292)
 
   clear(dataset_t, "reports")
-  expect_equal(get_reports(dataset_t), list())
+  expect_equal(report(dataset_t, "align_report"), data.frame())
 
   # no report added because of missing entries
-  add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
-  add_report(dataset_t, align_report, "align_report", "QueryName")
-  expect_equal(get_reports(dataset_t), list())
+  xdev_add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
+  xdev_add_report(dataset_t, align_report, "align_report", "QueryName")
+  expect_equal(report(dataset_t, "align_report"), data.frame())
 })
 
 test_that("dataset - add / get _contigs_assembly_report,", {
@@ -1020,11 +1168,11 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  expect_error(add_report(dataset_t, report, "contigs_report", "badName"))
+  expect_error(xdev_add_report(dataset_t, report, "contigs_report", "badName"))
 
-  add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t, report, "contigs_report", "Name")
 
-  report <- get_reports(dataset_t)[["contigs_report"]]
+  report <- report(dataset_t, "contigs_report")
 
   # random spot checks
   expect_equal(nrow(report), 5)
@@ -1036,20 +1184,20 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   expect_equal(report[[4, 4]], 2)
 
   clear(dataset_t, "reports")
-  expect_equal(length(get_reports(dataset_t)), 0)
-  expect_equal(dataset_t$get_num_sequences(), 5)
-  add_report(dataset_t, report, "contigs_report", "Name")
+  expect_equal(length(report(dataset_t, "contigs_report")), 0)
+  expect_equal(count(dataset_t, "sequences"), 5)
+  xdev_add_report(dataset_t, report, "contigs_report", "Name")
 
-  report <- get_reports(dataset_t)[["contigs_report"]]
+  report <- report(dataset_t, "contigs_report")
 
   expect_equal(nrow(report), 5)
   expect_equal(report[, 1], c("seq1", "seq2", "seq3", "seq4", "seq5"))
 
   # no report added because of missing entries
   clear(dataset_t)
-  add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
-  add_report(dataset_t, report, "contigs_report", "Name")
-  expect_equal(length(get_reports(dataset_t)), 0)
+  xdev_add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
+  xdev_add_report(dataset_t, report, "contigs_report", "Name")
+  expect_equal(length(report(dataset_t, "contigs_report")), 0)
 })
 
 test_that("dataset - add / get _chimera_report,", {
@@ -1058,28 +1206,28 @@ test_that("dataset - add / get _chimera_report,", {
   report <- readr::read_tsv(rdataset_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  expect_error(add_report(dataset_t, report, "chimera_report", "badName"))
+  expect_error(xdev_add_report(dataset_t, report, "chimera_report", "badName"))
 
-  add_report(dataset_t, report, "chimera_report", "Query")
+  xdev_add_report(dataset_t, report, "chimera_report", "Query")
 
-  report <- get_reports(dataset_t)[["chimera_report"]]
+  report <- report(dataset_t, "chimera_report")
 
   # random spot checks
   expect_equal(nrow(report), 71)
-  expect_equal(report[, 2], get_sequence_names(dataset_t))
+  expect_equal(report[, 2], names(dataset_t, "sequences"))
   expect_equal(report[[8, 5]], 82.7)
   expect_equal(report[[8, 17]], "N")
   expect_equal(report[[67, 17]], "Y")
 
   clear(dataset_t, "reports")
-  expect_equal(length(get_reports(dataset_t)), 0)
-  expect_equal(dataset_t$get_num_sequences(), 71)
-  add_report(dataset_t, report, "chimera_report", "Query")
+  expect_equal(length(report(dataset_t, "chimera_report")), 0)
+  expect_equal(count(dataset_t, "sequences"), 71)
+  xdev_add_report(dataset_t, report, "chimera_report", "Query")
 
-  report <- get_reports(dataset_t)[["chimera_report"]]
+  report <- report(dataset_t, "chimera_report")
 
   expect_equal(nrow(report), 71)
-  expect_equal(report[, 2], get_sequence_names(dataset_t))
+  expect_equal(report[, 2], names(dataset_t, "sequences"))
 
   chimera_summary <- dataset_t$get_summary()[["chimera_report"]]
 
@@ -1087,9 +1235,9 @@ test_that("dataset - add / get _chimera_report,", {
 
   # no report added because of missing entries
   clear(dataset_t, "reports")
-  add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
-  add_report(dataset_t, report, "chimera_report", "Query")
-  expect_equal(length(get_reports(dataset_t)), 0)
+  xdev_add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
+  xdev_add_report(dataset_t, report, "chimera_report", "Query")
+  expect_equal(length(report(dataset_t, "chimera_report")), 0)
 })
 
 test_that("dataset - get_sequence_summary,", {
@@ -1098,12 +1246,12 @@ test_that("dataset - get_sequence_summary,", {
   report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t, report, "contigs_report", "Name")
 
   report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  add_report(dataset_t, report, "alignment_report", "QueryName")
+  xdev_add_report(dataset_t, report, "alignment_report", "QueryName")
 
   summary <- dataset_t$get_summary()
 
@@ -1129,12 +1277,15 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   expect_error(dataset_t$add_sequence_tree(tree = c("bad_type")))
 
-  add_sequences(dataset_t, data.frame(sequence_names = names, sequences = seqs))
+  xdev_add_sequences(
+    dataset_t,
+    data.frame(sequence_names = names, sequences = seqs)
+  )
   expect_equal(dataset_t$get_sequence_tree(), NULL)
 
   # add full tree
   dataset_t <- dataset$new()
-  add_sequences(dataset_t, data.frame(sequence_names = names))
+  xdev_add_sequences(dataset_t, data.frame(sequence_names = names))
 
   l <- lapply(strsplit(seqs, split = ""), "[")
   names(l) <- names
@@ -1144,7 +1295,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   tree <- dataset_t$get_sequence_tree()
 
-  expect_equal(sort(get_sequence_names(dataset_t)), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
   expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
   expect_equal(
@@ -1153,11 +1304,11 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   )
 
   # remove seq and make sure tree is pruned as well
-  remove_sequences(dataset_t, c("seq1"), c("bad"))
+  xdev_remove_sequences(dataset_t, c("seq1"), c("bad"))
 
   tree <- dataset_t$get_sequence_tree()
 
-  expect_equal(sort(get_sequence_names(dataset_t)), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(4, 4, 4))
   expect_equal(tree$edge[, 2], c(3, 2, 1))
   expect_equal(
@@ -1171,7 +1322,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   # should alert that the tree is missing reads, and not save it
   dataset_t <- dataset$new()
-  add_sequences(dataset_t, data.frame(sequence_names = names))
+  xdev_add_sequences(dataset_t, data.frame(sequence_names = names))
   dataset_t$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
   expect_equal(dataset_t$get_sequence_tree(), NULL)
 
@@ -1180,7 +1331,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   dataset_t$add_sequence_tree(read.tree(rdataset_example("final.phylip.tre")))
   tree <- dataset_t$get_sequence_tree()
 
-  expect_equal(sort(get_sequence_names(dataset_t)), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(2426, 2427, 2427, 2426, 2428))
   expect_equal(tree$edge[1:5, 2], c(2427, 1, 2, 2428, 2429))
   expect_equal(
@@ -1190,7 +1341,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   # add tree with extra sequences, forcing prune
   dataset_t <- dataset$new()
-  add_sequences(dataset_t, data.frame(sequence_names = names))
+  xdev_add_sequences(dataset_t, data.frame(sequence_names = names))
 
   seqs <- c(seqs, "ACTGC")
   names <- c(names, "seq5")
@@ -1202,7 +1353,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   tree <- dataset_t$get_sequence_tree()
 
-  expect_equal(sort(get_sequence_names(dataset_t)), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
   expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
   expect_equal(
@@ -1244,14 +1395,14 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
 
   tree <- dataset_t$get_sample_tree()
 
-  expect_equal(sort(dataset_t$get_samples()), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "samples")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
 
-  remove_samples(dataset_t, c("F3D1", "F3D141"))
+  xdev_remove_samples(dataset_t, c("F3D1", "F3D141"))
 
   tree <- dataset_t$get_sample_tree()
 
-  expect_equal(sort(dataset_t$get_samples()), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "samples")), sort(tree$tip.label))
 
   # add tree with all groups, prune tree on add
   dataset_t$add_sample_tree(sample_tree)
@@ -1259,7 +1410,7 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
   tree <- dataset_t$get_sample_tree()
 
   # confirm pruning
-  expect_equal(sort(dataset_t$get_samples()), sort(tree$tip.label))
+  expect_equal(sort(names(dataset_t, "samples")), sort(tree$tip.label))
 })
 
 test_that("dataset - assign_treatments", {
@@ -1280,20 +1431,23 @@ test_that("dataset - assign_treatments", {
     show_col_types = FALSE
   )
 
-  expect_equal(dataset_t$get_num_samples(), 19)
-  expect_equal(dataset_t$get_num_treatments(), 0)
+  expect_equal(count(dataset_t, "samples"), 19)
+  expect_equal(count(dataset_t, "treatments"), 0)
 
-  expect_error(dataset_t$assign_treatments(design_table, samples = "group"))
-  expect_error(dataset_t$assign_treatments(design_table, treaments = "time"))
-  expect_error(dataset_t$assign_treatments())
-  expect_error(dataset_t$assign_treatments(data = NULL, samples = "not_valid"))
-  expect_error(dataset_t$assign_treatments("not_a_data.frame"))
+  expect_error(assign(
+    data = dataset_t, table = design_table,
+    type = "treatments",
+    table_names = list(sample = "group")
+  ))
+  expect_error(xdev_assign_treatments(dataset_t))
+  expect_error(xdev_assign_treatments(data = dataset_t, samples = "not_valid"))
+  expect_error(xdev_assign_treatments(dataset_t, "not_a_data.frame"))
 
   # test with data.frame
-  assign_treatments(dataset_t, design_table)
+  assign(data = dataset_t, table = design_table, type = "treatments")
 
-  expect_equal(dataset_t$get_num_samples(), 19)
-  expect_equal(dataset_t$get_num_treatments(), 2)
+  expect_equal(count(dataset_t, "samples"), 19)
+  expect_equal(count(dataset_t, "treatments"), 2)
 
   dataset_t <- read_mothur(
     fasta = rdataset_example("final.fasta"),
@@ -1304,14 +1458,14 @@ test_that("dataset - assign_treatments", {
     dataset_name = "miseq_sop"
   )
 
-  expect_equal(dataset_t$get_num_samples(), 19)
-  expect_equal(dataset_t$get_num_treatments(), 0)
+  expect_equal(count(dataset_t, "samples"), 19)
+  expect_equal(count(dataset_t, "treatments"), 0)
 
   # test with samples and treatments
-  assign_treatments(dataset_t, design_table)
+  assign(data = dataset_t, table = design_table, type = "treatments")
 
-  expect_equal(dataset_t$get_num_samples(), 19)
-  expect_equal(dataset_t$get_num_treatments(), 2)
+  expect_equal(count(dataset_t, "samples"), 19)
+  expect_equal(count(dataset_t, "treatments"), 2)
 })
 
 test_that("dataset - assign_sequence_taxonomy", {
@@ -1326,24 +1480,24 @@ test_that("dataset - assign_sequence_taxonomy", {
   tax_table <- read_mothur_taxonomy(rdataset_example("final.taxonomy"))
 
   # no taxonomies yet
-  expect_equal(get_sequence_taxonomy_report(dataset_t), data.frame())
+  expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
 
-  expect_error(assign_sequence_taxonomy(
-    dataset_t, tax_table, NULL,
-    "not_valid"
+  expect_error(xdev_assign_sequence_taxonomy(
+    data = dataset_t, table = tax_table,
+    sequence_name = "not_valid"
   ))
-  expect_error(assign_sequence_taxonomy(
-    dataset_t, tax_table, NULL,
-    "sequence_names", "not_valid"
+  expect_error(xdev_assign_sequence_taxonomy(
+    data = dataset_t, table = tax_table,
+    sequence_name = "sequence_names", taxonomy = "not_valid"
   ))
-  expect_error(assign_sequence_taxonomy(dataset_t))
+  expect_error(xdev_assign_sequence_taxonomy(dataset_t))
 
   # test with data.frame
-  assign_sequence_taxonomy(dataset_t, tax_table)
+  xdev_assign_sequence_taxonomy(data = dataset_t, table = tax_table)
 
-  report <- get_sequence_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "sequence_taxonomy")
 
-  expect_equal(nrow(get_sequence_taxonomy_report(dataset_t)), 14550)
+  expect_equal(nrow(report(dataset_t, "sequence_taxonomy")), 14550)
 
   dataset_t <- read_mothur(
     fasta = rdataset_example("final.fasta"),
@@ -1352,14 +1506,14 @@ test_that("dataset - assign_sequence_taxonomy", {
     dataset_name = "miseq_sop"
   )
 
-  expect_equal(get_sequence_taxonomy_report(dataset_t), data.frame())
+  expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
 
   # test with samples and treatments
-  assign_sequence_taxonomy(dataset_t, tax_table)
+  xdev_assign_sequence_taxonomy(dataset_t, tax_table)
 
-  report <- get_sequence_taxonomy_report(dataset_t)
+  report <- report(dataset_t, "sequence_taxonomy")
 
-  expect_equal(nrow(get_sequence_taxonomy_report(dataset_t)), 14550)
+  expect_equal(nrow(report), 14550)
 })
 
 test_that("dataset - export,", {
@@ -1374,7 +1528,7 @@ test_that("dataset - export,", {
     "asv_bin_data",
     "asv_sequence_bin_assignments", "phylotype_bin_data",
     "phylotype_sequence_bin_assignments", "references", "metadata",
-    "sequence_tree", "sample_tree"
+    "contigs_report", "sequence_tree", "sample_tree"
   )
 
   sequence_data_names <- c(
@@ -1423,7 +1577,10 @@ test_that("dataset - export,", {
 
   expect_equal(names(miseq_table$sequence_data), sequence_data_names)
   expect_equal(names(miseq_table$sequence_report), sequence_report_names)
-  expect_equal(names(miseq_table$sequence_abundance_table), sequence_at_names)
+  expect_equal(
+    names(miseq_table$sequence_abundance_table),
+    sequence_at_names
+  )
 
   expect_equal(names(miseq_table$otu_bin_data), bin_data_names)
   expect_equal(names(miseq_table$asv_bin_data), bin_data_names)
@@ -1447,11 +1604,11 @@ test_that("dataset - export,", {
 
   expect_equal(
     miseq_table$sequence_data$sequence_names,
-    get_sequence_names(miseq)
+    names(miseq, "sequences")
   )
   expect_equal(
     miseq_table$sequence_data$sequences,
-    get_sequences(miseq)
+    xdev_get_sequences(miseq)
   )
 })
 
@@ -1465,23 +1622,25 @@ test_that("dataset - assign_bin_representative_sequences", {
   )
 
   # select first 531 seqs to be the representatives
-  num_bins <- dataset_t$get_num_bins()
-  rep_names <- get_sequence_names(dataset_t)[1:num_bins]
-  bin_names <- dataset_t$get_bin_names()
+  num_bins <- count(dataset_t, "bins")
+  rep_names <- names(dataset_t, "sequences")[1:num_bins]
+  bin_names <- names(dataset_t, "bins")
 
-  assign_bin_representative_sequences(
-    dataset_t,
-    data.frame(
+  assign(
+    data = dataset_t,
+    table = data.frame(
       bin_names = bin_names,
       sequence_names = rep_names
-    )
+    ),
+    type = "bin_representatives",
+    bin_type = "otu"
   )
 
-  df <- get_bin_representative_sequences(dataset_t)
+  df <- report(dataset_t, "bin_representatives")
 
   expect_equal(df[[1]], bin_names)
   expect_equal(df[[2]], rep_names)
-  expect_equal(df[[3]], get_sequences(dataset_t)[1:num_bins])
+  expect_equal(df[[3]], xdev_get_sequences(dataset_t)[1:num_bins])
 
   # create dataset only shared data, this forces assign_bin_reps to add seqs
   dataset_t <- read_mothur(
@@ -1489,20 +1648,22 @@ test_that("dataset - assign_bin_representative_sequences", {
     dataset_name = "miseq_sop"
   )
 
-  assign_bin_representative_sequences(
-    dataset_t,
-    data.frame(
+  assign(
+    data = dataset_t,
+    table = data.frame(
       bin_names = bin_names,
       sequence_names = rep_names
-    )
+    ),
+    type = "bin_representatives",
+    bin_type = "otu"
   )
 
-  df <- get_bin_representative_sequences(dataset_t)
+  df <- report(dataset_t, "bin_representatives")
   expect_equal(df[[1]], bin_names)
   expect_equal(df[[2]], rep_names)
   expect_equal(df[, 3], rep("", num_bins))
 
-  expect_error(assign_bin_representative_sequences(
+  expect_error(xdev_assign_bin_representative_sequences(
     dataset_t,
     data.frame(
       bin_names = bin_names,
@@ -1511,12 +1672,12 @@ test_that("dataset - assign_bin_representative_sequences", {
   ))
 
   d <- dataset$new()
-  expect_equal(get_bin_representative_sequences(d), data.frame())
-  expect_equal(get_sample_treatment_assignments(d), data.frame())
+  expect_equal(report(d, "bin_representatives"), data.frame())
+  expect_equal(report(d, "sample_assignments"), data.frame())
 
   dataset_t <- read_mothur(
     count = rdataset_example("final.count_table"),
     dataset_name = "miseq_sop"
   )
-  expect_equal(get_sample_treatment_assignments(dataset_t), data.frame())
+  expect_equal(report(dataset_t, "sample_assignments"), data.frame())
 })

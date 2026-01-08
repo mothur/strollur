@@ -22,7 +22,7 @@ write_mothur_shared <- function(data, file_root = NULL) {
   }
 
   if (is.null(file_root)) {
-    file_root <- data$get_dataset_name()
+    file_root <- names(data, "dataset")
     if (file_root == "") {
       .abort_no_name()
     }
@@ -32,7 +32,10 @@ write_mothur_shared <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- data$get_bin_assignments(type)
+    df <- abundance(
+      data = data, type = "bins",
+      bin_type = type, by_sample = TRUE
+    )
 
     if (nrow(df) != 0) {
       num_cols <- ncol(df)
@@ -50,7 +53,7 @@ write_mothur_shared <- function(data, file_root = NULL) {
         col_names <- names(df)
 
         # create lines for samples
-        df <- df %>%
+        df <- df |>
           pivot_wider(
             names_from = col_names[1],
             values_from = col_names[2],
@@ -62,18 +65,18 @@ write_mothur_shared <- function(data, file_root = NULL) {
         num_samples <- nrow(df)
 
         # add label column before samples
-        df <- df %>%
-          mutate(label = rep(1, num_samples)) %>%
+        df <- df |>
+          mutate(label = rep(1, num_samples)) |>
           relocate(label, .before = samples)
 
         # add numotus column after samples
-        df <- df %>%
-          mutate(num_bins = rep(number_of_bins, num_samples)) %>%
+        df <- df |>
+          mutate(num_bins = rep(number_of_bins, num_samples)) |>
           relocate(num_bins, .after = samples)
 
         readr::write_tsv(df, output_file)
       }
     }
   }
-  return(outputs)
+  outputs
 }

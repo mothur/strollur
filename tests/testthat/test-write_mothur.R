@@ -21,20 +21,24 @@ test_that("write_mothur - miseq", {
     otu_list = outputs[5],
     asv_list = outputs[6],
     phylo_list = outputs[7],
-    sample_tree = outputs[16],
-    sequence_tree = outputs[17],
+    sample_tree = outputs[18],
+    sequence_tree = outputs[19],
     dataset_name = "miseq_sop"
   )
 
-  add_references(data, readr::read_tsv(outputs[15],
+  xdev_add_references(data, readr::read_tsv(outputs[17],
     col_names = TRUE,
     show_col_types = FALSE
   ))
 
-  add_metadata(data, readr::read_tsv(outputs[14],
-    col_names = TRUE,
-    show_col_types = FALSE
-  ))
+  xdev_add_report(
+    data,
+    readr::read_tsv(outputs[14],
+      col_names = TRUE,
+      show_col_types = FALSE
+    ),
+    "metadata"
+  )
 
   for (output in outputs) {
     remove_file(output)
@@ -42,16 +46,16 @@ test_that("write_mothur - miseq", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(data$get_dataset_name(), "miseq_sop")
-  expect_equal(data$get_num_sequences(TRUE), 2425)
-  expect_equal(data$get_num_sequences(), 113963)
-  expect_equal(data$get_num_treatments(), 2)
-  expect_equal(data$get_num_samples(), 19)
-  expect_equal(data$get_num_bins("otu"), 531)
-  expect_equal(data$get_num_bins("asv"), 2425)
-  expect_equal(data$get_num_bins("phylotype"), 63)
-  expect_equal(data$get_metadata_table(), miseq$get_metadata_table())
-  expect_equal(get_references(data), get_references(miseq))
+  expect_equal(names(data, "dataset"), "miseq_sop")
+  expect_equal(count(data, "sequences", distinct = TRUE), 2425)
+  expect_equal(count(data, "sequences"), 113963)
+  expect_equal(count(data, "treatments"), 2)
+  expect_equal(count(data, "samples"), 19)
+  expect_equal(count(data, "bins", "otu"), 531)
+  expect_equal(count(data, "bins", "asv"), 2425)
+  expect_equal(count(data, "bins", "phylotype"), 63)
+  expect_equal(report(data, "metadata"), report(miseq, "metadata"))
+  expect_equal(report(data, "references"), report(miseq, "references"))
 })
 
 test_that("write_mothur - bin_data only", {
@@ -81,25 +85,25 @@ test_that("write_mothur - bin_data only", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(data$get_dataset_name(), "miseq_sop")
-  expect_equal(data$get_num_sequences(TRUE), 2425)
-  expect_equal(data$get_num_sequences(), 113963)
-  expect_equal(data$get_num_treatments(), 2)
-  expect_equal(data$get_num_samples(), 19)
-  expect_equal(data$get_num_bins("otu"), 531)
-  expect_equal(data$get_num_bins("asv"), 2425)
-  expect_equal(data$get_num_bins("phylotype"), 63)
+  expect_equal(names(data, "dataset"), "miseq_sop")
+  expect_equal(count(data, "sequences", distinct = TRUE), 2425)
+  expect_equal(count(data, "sequences"), 113963)
+  expect_equal(count(data, "treatments"), 2)
+  expect_equal(count(data, "samples"), 19)
+  expect_equal(count(data, "bins", "otu"), 531)
+  expect_equal(count(data, "bins", "asv"), 2425)
+  expect_equal(count(data, "bins", "phylotype"), 63)
 })
 
 test_that("write_mothur - report_data only", {
   data <- dataset$new()
 
-  add_report(data, readr::read_tsv(
+  xdev_add_report(data, readr::read_tsv(
     rdataset_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   ), "alignment_report", "QueryName")
 
-  add_report(data, readr::read_tsv(
+  xdev_add_report(data, readr::read_tsv(
     rdataset_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   ), "contigs_report", "Name")
@@ -121,7 +125,7 @@ test_that("write_mothur - report_data only", {
   for (output in outputs) {
     extension <- tail(strsplit(output, "\\.")[[1]], 1)
 
-    add_report(data2, readr::read_tsv(
+    xdev_add_report(data2, readr::read_tsv(
       output,
       col_names = TRUE, show_col_types = FALSE
     ), extension, seq_col[[output]])
@@ -133,21 +137,21 @@ test_that("write_mothur - report_data only", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(data$get_dataset_name(), "")
-  expect_equal(data$get_num_sequences(TRUE), 5)
-  expect_equal(data$get_num_sequences(), 5)
+  expect_equal(names(data, "dataset"), "")
+  expect_equal(count(data, "sequences", distinct = TRUE), 5)
+  expect_equal(count(data, "sequences"), 5)
   expect_equal(
-    get_reports(data)[["contigs_report"]],
-    get_reports(data2)[["contigs_report"]]
+    report(data, "contigs_report"),
+    report(data2, "contigs_report")
   )
   expect_equal(
-    get_reports(data)[["alignment_report"]],
-    get_reports(data2)[["alignment_report"]]
+    report(data, "alignment_report"),
+    report(data2, "alignment_report")
   )
 
   data <- dataset$new()
 
-  add_report(data, readr::read_tsv(
+  xdev_add_report(data, readr::read_tsv(
     rdataset_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
   ), "chimera_report", "Query")
@@ -163,7 +167,7 @@ test_that("write_mothur - report_data only", {
 
   data2 <- dataset$new()
 
-  add_report(data2, readr::read_tsv(
+  xdev_add_report(data2, readr::read_tsv(
     outputs[2],
     col_names = TRUE, show_col_types = FALSE
   ), "chimera_report", "Query")
@@ -174,11 +178,11 @@ test_that("write_mothur - report_data only", {
   remove_file(zip_file)
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
-  expect_equal(data$get_dataset_name(), "")
-  expect_equal(data$get_num_sequences(TRUE), 71)
-  expect_equal(data$get_num_sequences(), 71)
+  expect_equal(names(data, "dataset"), "")
+  expect_equal(count(data, "sequences", distinct = TRUE), 71)
+  expect_equal(count(data, "sequences"), 71)
   expect_equal(
-    get_reports(data)[["chimera_report"]],
-    get_reports(data2)[["chimera_report"]]
+    report(data, "chimera_report"),
+    report(data2, "chimera_report")
   )
 })

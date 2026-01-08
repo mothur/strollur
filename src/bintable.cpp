@@ -34,6 +34,7 @@ BinTable::BinTable(const BinTable& binTable) {
     taxonomies = binTable.taxonomies;
     repSequences = binTable.repSequences;
     runClassify = binTable.runClassify;
+    originalBinAbunds = binTable.originalBinAbunds;
 
     binList = binTable.binList;
     seqBins = binTable.seqBins;
@@ -67,6 +68,7 @@ void BinTable::clear(string tag) {
         taxonomies.clear();
         binCount.clear();
         repSequences.clear();
+        originalBinAbunds.clear();
 
     }else if (tag == "taxonomy") {
         hasBinTaxonomy = false;
@@ -89,6 +91,7 @@ void BinTable::clone(const BinTable& binTable) {
     taxonomies = binTable.taxonomies;
     repSequences = binTable.repSequences;
     runClassify = binTable.runClassify;
+    originalBinAbunds = binTable.originalBinAbunds;
 
     binList = binTable.binList;
     seqBins = binTable.seqBins;
@@ -222,6 +225,8 @@ double BinTable::assignAbundance(vector<string> binIds,
             runClassify = true;
         }
     }
+
+    originalBinAbunds = binCount.getTotalAbundances(getGoodIndexes());
 
     return otusAssigned;
 }
@@ -494,8 +499,71 @@ const Rcpp::DataFrame BinTable::getList(const vector<string>& seqNames){
 }
 /******************************************************************************/
 // names of OTUs
-const vector<string> BinTable::getIds(){
-    return select(binNames, tableBins);
+const vector<string> BinTable::getIds(vector<string> samples, bool distinct){
+
+    vector<string> results;
+
+    // no sample given, return all "good" bin names
+    if (samples.empty()) {
+        return select(binNames, tableBins);
+    }else {
+        // index of sample we are looking for
+        vector<int> sampleIndexes(samples.size(), -1);
+        if (distinct) {
+            vector<string> sampleNames = getSamples();
+            int next = 0;
+            for (int i = 0; i < sampleNames.size(); i++) {
+                // is this sample in the samples requested
+                if (vectorContains(samples, sampleNames[i])) {
+                    sampleIndexes[next] = i;
+                    next++;
+                }
+            }
+        }
+
+        // for every bin
+        for (int i = 0; i < binNames.size(); i++) {
+
+            auto it = binIndex.find(binNames[i]);
+
+            if (it != binIndex.end()) {
+
+                // if this is a "good" bin
+                if (tableBins[it->second]) {
+
+                    int numSamplesFound = 0;
+                    for (string sample : samples) {
+                        vector<string> s; s.push_back(sample);
+                        if (binCount.getAbundance(it->second, s) != 0) {
+                            numSamplesFound++;
+                        }
+                    }
+
+                    // includes ONLY sequences from these samples
+                    if (distinct) {
+                        const vector<float> sampleAbunds = binCount.getAbundances(it->second);
+
+                        float theseSamples = 0;
+                        for (int index : sampleIndexes) {
+                            theseSamples += sampleAbunds[index];
+                        }
+                        // if all the sequences come from this sample, save name
+                        if (isEqual(sum(sampleAbunds), theseSamples) &&
+                                    (numSamplesFound == samples.size())) {
+                            results.push_back(binNames[i]);
+                        }
+                    }else {
+                        // all samples requested are present
+                        if (numSamplesFound == samples.size()) {
+                            results.push_back(binNames[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    return results;
 }
 /******************************************************************************/
 // 3 column dataframe - bin_id, abundance, sample
@@ -604,7 +672,11 @@ const float BinTable::getAbundance(const string binId, const string sample){
     if (it != binIndex.end()) {
         // if this is a "good" bin
         if (tableBins[it->second]) {
-            return binCount.getAbundance(it->second, sample);
+            vector<string> s;
+            if (sample != "") {
+                s.push_back(sample);
+            }
+            return binCount.getAbundance(it->second, s);
         }
     }
 
@@ -625,7 +697,13 @@ const vector<float> BinTable::getAbundances(const string binId){
     return nullFloatVector;
 }
 /******************************************************************************/
-const int BinTable::getNumBins() {
+const int BinTable::getNumBins(vector<string> samples,
+                               bool distinct) {
+    if (!samples.empty()) {
+        return getIds(samples, distinct).size();
+    }
+
+    // all "good" bins
     return accumulate(tableBins.begin(), tableBins.end(), 0);
 }
 /******************************************************************************/
@@ -720,31 +798,37 @@ const Rcpp::DataFrame BinTable::getScrapReport() {
     return empty;
 }
 /******************************************************************************/
-// trashCode, binCount, abundanceCount
+// type, trashCode, binCount, abundanceCount
 const Rcpp::DataFrame BinTable::getScrapSummary() {
 
+    vector<string> types, codes;
+    vector<float> uniqueCounts, totalCounts;
+
     if (badAccnos.size() != 0) {
-        vector<string> codes(badAccnos.size(), "");
-        vector<float> uniqueCounts(badAccnos.size(), 0);
-        vector<float> totalCounts(badAccnos.size(), 0);
+        types.resize(badAccnos.size());
+        codes.resize(badAccnos.size());
+        uniqueCounts.resize(badAccnos.size());
+        totalCounts.resize(badAccnos.size());
 
         int index = 0;
         for (auto it = badAccnos.begin(); it != badAccnos.end(); it++) {
             codes[index] = it->first;
             uniqueCounts[index] = it->second[0];
             totalCounts[index] = it->second[1];
+            types[index] = label;
             index++;
         }
-        string tag = label + "_count";
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("trash_code") = codes,
-            Rcpp::_[tag] = uniqueCounts,
-            Rcpp::_["total_abundance"] = totalCounts);
-
-        return df;
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+
+    if (!types.empty()) {
+        return Rcpp::DataFrame::create(
+            Rcpp::Named("type") = types,
+            Rcpp::_["trash_code"] = codes,
+            Rcpp::_["unique"] = uniqueCounts,
+            Rcpp::_["total"] = totalCounts);
+    }
+
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 const bool BinTable::hasSample(const string sample){
@@ -761,8 +845,11 @@ const vector<double> BinTable::getTreatmentTotals(){
 }
 /******************************************************************************/
 // total number of sequences
-const double BinTable::getTotal(const string sample){
-    return binCount.getTotal(sample);
+const double BinTable::getTotal(vector<string> samples){
+    if (!samples.empty()) {
+        return getIds(samples).size();
+    }
+    return binCount.getTotal();
 }
 /******************************************************************************/
 const bool BinTable::okToMerge(const vector<int>& seqIds) {
@@ -835,16 +922,14 @@ void BinTable::remove(const int seqId, AbundTable& count,
 
             // remove bin, if empty
             if (binList[index].size() == 0) {
+
                 // remove from tableBins and add trashCode
                 tableBins[index] = false;
                 trashCodes[index] += reason;
 
                 // remove from counts
-                float abund = 1;
                 if (update) {
-                    abund = binCount.remove(index);
-                }else{
-                    abund = binCount.getAbundance(index);
+                    binCount.remove(index);
                 }
 
                 auto itBad = badAccnos.find(reason);
@@ -852,10 +937,11 @@ void BinTable::remove(const int seqId, AbundTable& count,
                 if (itBad != badAccnos.end()) {
                     // update counts of trashCode
                     itBad->second[0]++;
+                    itBad->second[1] += originalBinAbunds[index];
                 }else{
                     // add new trashCode
                     vector<double> badAbunds(2, 1);
-                    badAbunds[1] = abund;
+                    badAbunds[1] = originalBinAbunds[index];
                     badAccnos[reason] = badAbunds;
                 }
 
@@ -865,7 +951,7 @@ void BinTable::remove(const int seqId, AbundTable& count,
             }else{
                 // update bin counts using count table
                 if (update) {
-                    if (binCount.hasSamples()) {
+                    if (binCount.hasSamplesData()) {
 
                         vector<float> seqAbunds = count.getAbundances(seqId);
                         vector<string> seqSamples = count.getSamples();
@@ -874,8 +960,8 @@ void BinTable::remove(const int seqId, AbundTable& count,
 
                             if (!isZero(seqAbunds[i]) &&
                                 binCount.hasSample(seqSamples[i])) {
-
-                                float orig = binCount.getAbundance(index, seqSamples[i]);
+                                vector<string> s; s.push_back(seqSamples[i]);
+                                float orig = binCount.getAbundance(index, s);
                                 binCount.setAbundance(index,
                                                        (orig-seqAbunds[i]),
                                                        seqSamples[i]);
@@ -902,17 +988,19 @@ void BinTable::remove(const int seqId, AbundTable& count,
 }
 /******************************************************************************/
 void BinTable::removeSamples(const vector<string>& samples) {
-   binCount.removeSamples(samples);
+   AbundTable dupBinCount(binCount);
+   dupBinCount.removeSamples(samples);
 
    // remove any bins only assigned to these samples
    for (int i = 0; i < binNames.size(); i++) {
        // included bin
        if (tableBins[i]) {
-           if (isZero(sum(binCount.getAbundances(i)))) {
+           if (isZero(sum(dupBinCount.getAbundances(i)))) {
                remove(binNames[i], "removedSamples", true);
            }
        }
    }
+   binCount.removeSamples(samples);
 }
 /******************************************************************************/
 // remove given outID, returns seqs removed
@@ -935,11 +1023,8 @@ vector<int> BinTable::remove(string binID, string reason, bool update){
     trashCodes[index] += reason;
 
     // remove from counts
-    float abund = 1;
     if (update) {
-        abund = binCount.remove(index);
-    }else{
-        abund = binCount.getAbundance(index);
+        binCount.remove(index);
     }
 
     auto itBad = badAccnos.find(reason);
@@ -947,10 +1032,11 @@ vector<int> BinTable::remove(string binID, string reason, bool update){
     if (itBad != badAccnos.end()) {
         // update counts of trashCode
         itBad->second[0]++;
+        itBad->second[1] += originalBinAbunds[index];
     }else{
         // add new trashCode
         vector<double> badAbunds(2, 1);
-        badAbunds[1] = abund;
+        badAbunds[1] = originalBinAbunds[index];
         badAccnos[reason] = badAbunds;
     }
 

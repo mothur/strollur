@@ -246,25 +246,28 @@ double AbundTable::assignTreatments(const vector<string>& s,
 /******************************************************************************/
 // total abundance for sequence.
 // If sample provided, then abundance for sequence in sample
-const float AbundTable::getAbundance(const int name, const string sample) {
+const float AbundTable::getAbundance(const int name, vector<string> samples) {
 
     float abund = 0;
 
-    if (sample == "") {
+    if (samples.empty()) {
         if (hasSampleData) {
             vector<float> abunds = getAbundances(name);
             abund = sum(abunds);
         }else{
             abund = counts[name].abunds[0];
         }
-    }else if (hasSample(sample)) {
-        int gIndex = sampleIndex[sample];
+    }else if (hasSamples(samples)) {
 
-        // if the sequence does not have this sample, -1 returned
-        int thisSamplesIndex = getSparseIndex(name, gIndex);
+        for (string sample : samples) {
+            int gIndex = sampleIndex[sample];
 
-        if (thisSamplesIndex != -1) {
-            abund = counts[name].abunds[thisSamplesIndex];
+            // if the sequence does not have this sample, -1 returned
+            int thisSamplesIndex = getSparseIndex(name, gIndex);
+
+            if (thisSamplesIndex != -1) {
+                abund += counts[name].abunds[thisSamplesIndex];
+            }
         }
     }
 
@@ -306,12 +309,23 @@ const vector<vector<float>> AbundTable::getAbundances(const vector<int>& ids) {
     return results;
 }
 /******************************************************************************/
-const vector<string> AbundTable::getSamples() {
+const vector<string> AbundTable::getSamples(const int name) {
     vector<string> samples;
 
     if (hasSampleData) {
+
         // want all "good" samples
-        return select(sampleNames, tableSamples);
+        if (name == -1) {
+            return select(sampleNames, tableSamples);
+        }else {
+            vector<int> sampleIndexes = counts[name].sampleIndex;
+            for (int index : sampleIndexes) {
+                // only count "good" samples
+                if (tableSamples[index]) {
+                    samples.push_back(sampleNames[index]);
+                }
+            }
+        }
     }
 
     return samples;
@@ -356,9 +370,21 @@ const map<string, string> AbundTable::getSampleTreatmentAssignments() {
     return results;
 }
 /******************************************************************************/
-const int AbundTable::getNumSamples() {
+const int AbundTable::getNumSamples(const int name) {
     if (hasSampleData) {
-        return numSamples;
+        if (name == -1) {
+           return numSamples;
+        }else {
+           vector<int> sampleIndexes = counts[name].sampleIndex;
+           int num = 0;
+           for (int index : sampleIndexes) {
+               // only count "good" samples
+               if (tableSamples[index]) {
+                   num++;
+               }
+           }
+           return num;
+        }
     }
     return 0;
 }
@@ -483,6 +509,11 @@ const Rcpp::DataFrame AbundTable::getAbundanceTable(const vector<string>& output
 const int AbundTable::getSparseIndex(int name, int sample) {
     int index = -1;
 
+    // if this is a removed sample
+    if (!tableSamples[sample]) {
+        return index;
+    }
+
     for (int i = 0; i < counts[name].sampleIndex.size(); i++) {
         if (counts[name].sampleIndex[i] == sample) { return i; }
     }
@@ -550,6 +581,17 @@ const bool AbundTable::hasSample(const string sample, const int name) {
     }
 
     return false;
+}
+/******************************************************************************/
+const bool AbundTable::hasSamples(const vector<string> samples, const int name) {
+
+    // must have all samples asked for
+    for (string sample : samples) {
+        if (!hasSample(sample, name)) {
+            return false;
+        }
+    }
+    return true;
 }
 /******************************************************************************/
 // adds sequences counts of idsToMerge[1-n] into idsToMerge[0]

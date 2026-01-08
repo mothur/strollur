@@ -12,14 +12,24 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// get_available_processors
+int get_available_processors();
+RcppExport SEXP _rdataset_get_available_processors() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(get_available_processors());
+    return rcpp_result_gen;
+END_RCPP
+}
 // new_dataset
-Rcpp::Environment new_dataset(string dataset_name, int processors);
+Rcpp::Environment new_dataset(string dataset_name, Rcpp::Nullable<int> processors);
 RcppExport SEXP _rdataset_new_dataset(SEXP dataset_nameSEXP, SEXP processorsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< string >::type dataset_name(dataset_nameSEXP);
-    Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<int> >::type processors(processorsSEXP);
     rcpp_result_gen = Rcpp::wrap(new_dataset(dataset_name, processors));
     return rcpp_result_gen;
 END_RCPP
@@ -50,158 +60,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// add_metadata
-void add_metadata(Rcpp::Environment data, Rcpp::DataFrame metadata);
-RcppExport SEXP _rdataset_add_metadata(SEXP dataSEXP, SEXP metadataSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type metadata(metadataSEXP);
-    add_metadata(data, metadata);
-    return R_NilValue;
-END_RCPP
-}
-// add_report
-void add_report(Rcpp::Environment data, Rcpp::DataFrame table, string type, string sequence_name);
-RcppExport SEXP _rdataset_add_report(SEXP dataSEXP, SEXP tableSEXP, SEXP typeSEXP, SEXP sequence_nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
-    add_report(data, table, type, sequence_name);
-    return R_NilValue;
-END_RCPP
-}
-// add_references
-double add_references(Rcpp::Environment data, Rcpp::DataFrame table, string reference_name, string reference_version, string reference_usage, string reference_note, string reference_url);
-RcppExport SEXP _rdataset_add_references(SEXP dataSEXP, SEXP tableSEXP, SEXP reference_nameSEXP, SEXP reference_versionSEXP, SEXP reference_usageSEXP, SEXP reference_noteSEXP, SEXP reference_urlSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< string >::type reference_name(reference_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type reference_version(reference_versionSEXP);
-    Rcpp::traits::input_parameter< string >::type reference_usage(reference_usageSEXP);
-    Rcpp::traits::input_parameter< string >::type reference_note(reference_noteSEXP);
-    Rcpp::traits::input_parameter< string >::type reference_url(reference_urlSEXP);
-    rcpp_result_gen = Rcpp::wrap(add_references(data, table, reference_name, reference_version, reference_usage, reference_note, reference_url));
-    return rcpp_result_gen;
-END_RCPP
-}
-// add_sequences
-double add_sequences(Rcpp::Environment data, Rcpp::DataFrame table, Rcpp::Nullable<Rcpp::List> reference, string sequence_name, string sequence, string comment);
-RcppExport SEXP _rdataset_add_sequences(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP sequence_nameSEXP, SEXP sequenceSEXP, SEXP commentSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
-    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type sequence(sequenceSEXP);
-    Rcpp::traits::input_parameter< string >::type comment(commentSEXP);
-    rcpp_result_gen = Rcpp::wrap(add_sequences(data, table, reference, sequence_name, sequence, comment));
-    return rcpp_result_gen;
-END_RCPP
-}
-// assign_bins
-double assign_bins(Rcpp::Environment data, Rcpp::DataFrame table, string type, Rcpp::Nullable<Rcpp::List> reference, string bin_name, string abundance, string sample, string sequence_name);
-RcppExport SEXP _rdataset_assign_bins(SEXP dataSEXP, SEXP tableSEXP, SEXP typeSEXP, SEXP referenceSEXP, SEXP bin_nameSEXP, SEXP abundanceSEXP, SEXP sampleSEXP, SEXP sequence_nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type abundance(abundanceSEXP);
-    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
-    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(assign_bins(data, table, type, reference, bin_name, abundance, sample, sequence_name));
-    return rcpp_result_gen;
-END_RCPP
-}
-// assign_bin_representative_sequences
-double assign_bin_representative_sequences(Rcpp::Environment data, Rcpp::DataFrame table, string type, Rcpp::Nullable<Rcpp::List> reference, string bin_name, string sequence_name);
-RcppExport SEXP _rdataset_assign_bin_representative_sequences(SEXP dataSEXP, SEXP tableSEXP, SEXP typeSEXP, SEXP referenceSEXP, SEXP bin_nameSEXP, SEXP sequence_nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(assign_bin_representative_sequences(data, table, type, reference, bin_name, sequence_name));
-    return rcpp_result_gen;
-END_RCPP
-}
-// assign_bin_taxonomy
-double assign_bin_taxonomy(Rcpp::Environment data, Rcpp::DataFrame table, string type, Rcpp::Nullable<Rcpp::List> reference, string bin_name, string taxonomy);
-RcppExport SEXP _rdataset_assign_bin_taxonomy(SEXP dataSEXP, SEXP tableSEXP, SEXP typeSEXP, SEXP referenceSEXP, SEXP bin_nameSEXP, SEXP taxonomySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type taxonomy(taxonomySEXP);
-    rcpp_result_gen = Rcpp::wrap(assign_bin_taxonomy(data, table, type, reference, bin_name, taxonomy));
-    return rcpp_result_gen;
-END_RCPP
-}
-// assign_sequence_abundance
-double assign_sequence_abundance(Rcpp::Environment data, Rcpp::DataFrame table, string sequence_name, string abundance, string sample, string treatment);
-RcppExport SEXP _rdataset_assign_sequence_abundance(SEXP dataSEXP, SEXP tableSEXP, SEXP sequence_nameSEXP, SEXP abundanceSEXP, SEXP sampleSEXP, SEXP treatmentSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type abundance(abundanceSEXP);
-    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
-    Rcpp::traits::input_parameter< string >::type treatment(treatmentSEXP);
-    rcpp_result_gen = Rcpp::wrap(assign_sequence_abundance(data, table, sequence_name, abundance, sample, treatment));
-    return rcpp_result_gen;
-END_RCPP
-}
-// assign_sequence_taxonomy
-double assign_sequence_taxonomy(Rcpp::Environment data, Rcpp::DataFrame table, Rcpp::Nullable<Rcpp::List> reference, string sequence_name, string taxonomy);
-RcppExport SEXP _rdataset_assign_sequence_taxonomy(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP sequence_nameSEXP, SEXP taxonomySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
-    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type taxonomy(taxonomySEXP);
-    rcpp_result_gen = Rcpp::wrap(assign_sequence_taxonomy(data, table, reference, sequence_name, taxonomy));
-    return rcpp_result_gen;
-END_RCPP
-}
-// assign_treatments
-double assign_treatments(Rcpp::Environment data, Rcpp::DataFrame table, string sample, string treatment);
-RcppExport SEXP _rdataset_assign_treatments(SEXP dataSEXP, SEXP tableSEXP, SEXP sampleSEXP, SEXP treatmentSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
-    Rcpp::traits::input_parameter< string >::type treatment(treatmentSEXP);
-    rcpp_result_gen = Rcpp::wrap(assign_treatments(data, table, sample, treatment));
-    return rcpp_result_gen;
-END_RCPP
-}
 // clear
 void clear(Rcpp::Environment data, Rcpp::CharacterVector tags);
 RcppExport SEXP _rdataset_clear(SEXP dataSEXP, SEXP tagsSEXP) {
@@ -225,81 +83,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// get_bin
-string get_bin(Rcpp::Environment data, string bin_name, string type);
-RcppExport SEXP _rdataset_get_bin(SEXP dataSEXP, SEXP bin_nameSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin(data, bin_name, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_bin_abundance
-double get_bin_abundance(Rcpp::Environment data, string bin_name, string type);
-RcppExport SEXP _rdataset_get_bin_abundance(SEXP dataSEXP, SEXP bin_nameSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin_abundance(data, bin_name, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_bin_abundances
-vector<float> get_bin_abundances(Rcpp::Environment data, string bin_name, string type);
-RcppExport SEXP _rdataset_get_bin_abundances(SEXP dataSEXP, SEXP bin_nameSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin_abundances(data, bin_name, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_bin_names
-vector<string> get_bin_names(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_bin_names(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin_names(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_bin_representative_sequences
-Rcpp::DataFrame get_bin_representative_sequences(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_bin_representative_sequences(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin_representative_sequences(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_bin_taxonomy_report
-Rcpp::DataFrame get_bin_taxonomy_report(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_bin_taxonomy_report(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin_taxonomy_report(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
 // get_bin_types
 vector<string> get_bin_types(Rcpp::Environment data);
 RcppExport SEXP _rdataset_get_bin_types(SEXP dataSEXP) {
@@ -308,361 +91,6 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
     rcpp_result_gen = Rcpp::wrap(get_bin_types(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_dataset_name
-string get_dataset_name(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_dataset_name(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_dataset_name(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_list
-Rcpp::DataFrame get_list(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_list(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_list(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_list_vector
-vector<string> get_list_vector(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_list_vector(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_list_vector(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_metadata
-const Rcpp::DataFrame get_metadata(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_metadata(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_metadata(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_num_processors
-int get_num_processors(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_num_processors(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_num_processors(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_num_bins
-int get_num_bins(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_num_bins(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_num_bins(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_num_samples
-int get_num_samples(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_num_samples(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_num_samples(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_num_sequences
-double get_num_sequences(Rcpp::Environment data, bool distinct, string sample);
-RcppExport SEXP _rdataset_get_num_sequences(SEXP dataSEXP, SEXP distinctSEXP, SEXP sampleSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< bool >::type distinct(distinctSEXP);
-    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_num_sequences(data, distinct, sample));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_num_treatments
-int get_num_treatments(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_num_treatments(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_num_treatments(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_rabund
-Rcpp::DataFrame get_rabund(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_rabund(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_rabund(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_rabund_vector
-vector<float> get_rabund_vector(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_rabund_vector(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_rabund_vector(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_references
-Rcpp::DataFrame get_references(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_references(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_references(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_reports
-Rcpp::List get_reports(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_reports(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_reports(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_samples
-vector<string> get_samples(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_samples(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_samples(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sample_treatment_assignments
-Rcpp::DataFrame get_sample_treatment_assignments(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sample_treatment_assignments(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sample_treatment_assignments(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sample_totals
-vector<double> get_sample_totals(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sample_totals(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sample_totals(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_scrap_report
-Rcpp::DataFrame get_scrap_report(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_scrap_report(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_scrap_report(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_abundances
-vector<float> get_sequence_abundances(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_abundances(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_abundances(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_abundances_by_sample
-vector<vector<float> > get_sequence_abundances_by_sample(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_abundances_by_sample(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_abundances_by_sample(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_abundance_table
-Rcpp::DataFrame get_sequence_abundance_table(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_abundance_table(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_abundance_table(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_names
-vector<string> get_sequence_names(Rcpp::Environment data, string sample);
-RcppExport SEXP _rdataset_get_sequence_names(SEXP dataSEXP, SEXP sampleSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_names(data, sample));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_names_by_sample
-vector<vector<string> > get_sequence_names_by_sample(Rcpp::Environment data, Rcpp::CharacterVector samples);
-RcppExport SEXP _rdataset_get_sequence_names_by_sample(SEXP dataSEXP, SEXP samplesSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type samples(samplesSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_names_by_sample(data, samples));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequences
-vector<string> get_sequences(Rcpp::Environment data, string sample);
-RcppExport SEXP _rdataset_get_sequences(SEXP dataSEXP, SEXP sampleSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequences(data, sample));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequences_by_sample
-vector<vector<string> > get_sequences_by_sample(Rcpp::Environment data, Rcpp::CharacterVector samples);
-RcppExport SEXP _rdataset_get_sequences_by_sample(SEXP dataSEXP, SEXP samplesSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type samples(samplesSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequences_by_sample(data, samples));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_report
-Rcpp::DataFrame get_sequence_report(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_report(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_report(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_summary
-Rcpp::List get_sequence_summary(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_summary(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_summary(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_sequence_taxonomy_report
-Rcpp::DataFrame get_sequence_taxonomy_report(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_sequence_taxonomy_report(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_sequence_taxonomy_report(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_bin_assignments
-Rcpp::DataFrame get_bin_assignments(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_bin_assignments(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_bin_assignments(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_shared_vector
-vector<vector<float> > get_shared_vector(Rcpp::Environment data, string type);
-RcppExport SEXP _rdataset_get_shared_vector(SEXP dataSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_shared_vector(data, type));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_treatments
-vector<string> get_treatments(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_treatments(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_treatments(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_treatment_totals
-vector<double> get_treatment_totals(Rcpp::Environment data);
-RcppExport SEXP _rdataset_get_treatment_totals(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_treatment_totals(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -689,168 +117,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// merge_bins
-void merge_bins(Rcpp::Environment data, vector<string> bin_names, string reason, string type);
-RcppExport SEXP _rdataset_merge_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP reasonSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    merge_bins(data, bin_names, reason, type);
-    return R_NilValue;
-END_RCPP
-}
-// merge_sequences
-void merge_sequences(Rcpp::Environment data, vector<string> sequence_names, string reason);
-RcppExport SEXP _rdataset_merge_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    merge_sequences(data, sequence_names, reason);
-    return R_NilValue;
-END_RCPP
-}
-// remove_bins
-void remove_bins(Rcpp::Environment data, vector<string> bin_names, vector<string> trash_tags, string type);
-RcppExport SEXP _rdataset_remove_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP trash_tagsSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type trash_tags(trash_tagsSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    remove_bins(data, bin_names, trash_tags, type);
-    return R_NilValue;
-END_RCPP
-}
-// remove_lineages
-void remove_lineages(Rcpp::Environment data, vector<string> contaminants, string trash_tag);
-RcppExport SEXP _rdataset_remove_lineages(SEXP dataSEXP, SEXP contaminantsSEXP, SEXP trash_tagSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type contaminants(contaminantsSEXP);
-    Rcpp::traits::input_parameter< string >::type trash_tag(trash_tagSEXP);
-    remove_lineages(data, contaminants, trash_tag);
-    return R_NilValue;
-END_RCPP
-}
-// remove_samples
-void remove_samples(Rcpp::Environment data, vector<string> samples);
-RcppExport SEXP _rdataset_remove_samples(SEXP dataSEXP, SEXP samplesSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type samples(samplesSEXP);
-    remove_samples(data, samples);
-    return R_NilValue;
-END_RCPP
-}
-// remove_sequences
-void remove_sequences(Rcpp::Environment data, vector<string> sequence_names, vector<string> trash_tags);
-RcppExport SEXP _rdataset_remove_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP trash_tagsSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type trash_tags(trash_tagsSEXP);
-    remove_sequences(data, sequence_names, trash_tags);
-    return R_NilValue;
-END_RCPP
-}
-// set_abundance
-void set_abundance(Rcpp::Environment data, vector<string> sequence_names, vector<float> sequence_abundances, string reason);
-RcppExport SEXP _rdataset_set_abundance(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequence_abundancesSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< vector<float> >::type sequence_abundances(sequence_abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    set_abundance(data, sequence_names, sequence_abundances, reason);
-    return R_NilValue;
-END_RCPP
-}
-// set_abundances
-void set_abundances(Rcpp::Environment data, vector<string> sequence_names, vector<vector<float>> abundances, string reason);
-RcppExport SEXP _rdataset_set_abundances(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP abundancesSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< vector<vector<float>> >::type abundances(abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    set_abundances(data, sequence_names, abundances, reason);
-    return R_NilValue;
-END_RCPP
-}
-// set_bin_abundance
-void set_bin_abundance(Rcpp::Environment data, vector<string> bin_names, vector<float> abundances, string type, string reason);
-RcppExport SEXP _rdataset_set_bin_abundance(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< vector<float> >::type abundances(abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    set_bin_abundance(data, bin_names, abundances, type, reason);
-    return R_NilValue;
-END_RCPP
-}
-// set_bin_abundances
-void set_bin_abundances(Rcpp::Environment data, vector<string> bin_names, vector<vector<float>> abundances, string type, string reason);
-RcppExport SEXP _rdataset_set_bin_abundances(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< vector<vector<float>> >::type abundances(abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    set_bin_abundances(data, bin_names, abundances, type, reason);
-    return R_NilValue;
-END_RCPP
-}
-// set_sequences
-void set_sequences(Rcpp::Environment data, vector<string> sequence_names, vector<string> sequences, Rcpp::CharacterVector comments);
-RcppExport SEXP _rdataset_set_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequencesSEXP, SEXP commentsSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type sequences(sequencesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type comments(commentsSEXP);
-    set_sequences(data, sequence_names, sequences, comments);
-    return R_NilValue;
-END_RCPP
-}
-// set_dataset_name
-void set_dataset_name(Rcpp::Environment data, string dataset_name);
-RcppExport SEXP _rdataset_set_dataset_name(SEXP dataSEXP, SEXP dataset_nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< string >::type dataset_name(dataset_nameSEXP);
-    set_dataset_name(data, dataset_name);
-    return R_NilValue;
-END_RCPP
-}
-// set_num_processors
-void set_num_processors(Rcpp::Environment data, int processors);
-RcppExport SEXP _rdataset_set_num_processors(SEXP dataSEXP, SEXP processorsSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
-    set_num_processors(data, processors);
-    return R_NilValue;
-END_RCPP
-}
 // is_aligned
 bool is_aligned(Rcpp::Environment data);
 RcppExport SEXP _rdataset_is_aligned(SEXP dataSEXP) {
@@ -862,56 +128,465 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// new_pointer
-Rcpp::XPtr<Dataset> new_pointer(string dataset_name, int processors);
-RcppExport SEXP _rdataset_new_pointer(SEXP dataset_nameSEXP, SEXP processorsSEXP) {
+// report
+Rcpp::DataFrame report(Rcpp::Environment data, string type, string bin_type);
+RcppExport SEXP _rdataset_report(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(report(data, type, bin_type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_abundance
+Rcpp::DataFrame xdev_abundance(Rcpp::Environment data, string type, string bin_type, bool by_sample);
+RcppExport SEXP _rdataset_xdev_abundance(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP, SEXP by_sampleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< bool >::type by_sample(by_sampleSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_abundance(data, type, bin_type, by_sample));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_add_references
+double xdev_add_references(Rcpp::Environment data, Rcpp::DataFrame table, string reference_name, string reference_version, string reference_usage, string reference_note, string reference_url, bool verbose);
+RcppExport SEXP _rdataset_xdev_add_references(SEXP dataSEXP, SEXP tableSEXP, SEXP reference_nameSEXP, SEXP reference_versionSEXP, SEXP reference_usageSEXP, SEXP reference_noteSEXP, SEXP reference_urlSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< string >::type reference_name(reference_nameSEXP);
+    Rcpp::traits::input_parameter< string >::type reference_version(reference_versionSEXP);
+    Rcpp::traits::input_parameter< string >::type reference_usage(reference_usageSEXP);
+    Rcpp::traits::input_parameter< string >::type reference_note(reference_noteSEXP);
+    Rcpp::traits::input_parameter< string >::type reference_url(reference_urlSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_add_references(data, table, reference_name, reference_version, reference_usage, reference_note, reference_url, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_add_report
+void xdev_add_report(Rcpp::Environment data, Rcpp::DataFrame table, string type, string sequence_name, bool verbose);
+RcppExport SEXP _rdataset_xdev_add_report(SEXP dataSEXP, SEXP tableSEXP, SEXP typeSEXP, SEXP sequence_nameSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    xdev_add_report(data, table, type, sequence_name, verbose);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_add_sequences
+double xdev_add_sequences(Rcpp::Environment data, Rcpp::DataFrame table, Rcpp::Nullable<Rcpp::List> reference, string sequence_name, string sequence, string comment, bool verbose);
+RcppExport SEXP _rdataset_xdev_add_sequences(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP sequence_nameSEXP, SEXP sequenceSEXP, SEXP commentSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
+    Rcpp::traits::input_parameter< string >::type sequence(sequenceSEXP);
+    Rcpp::traits::input_parameter< string >::type comment(commentSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_add_sequences(data, table, reference, sequence_name, sequence, comment, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_assign_bins
+double xdev_assign_bins(Rcpp::Environment data, Rcpp::DataFrame table, string bin_type, Rcpp::Nullable<Rcpp::List> reference, string bin_name, string abundance, string sample, string sequence_name, bool verbose);
+RcppExport SEXP _rdataset_xdev_assign_bins(SEXP dataSEXP, SEXP tableSEXP, SEXP bin_typeSEXP, SEXP referenceSEXP, SEXP bin_nameSEXP, SEXP abundanceSEXP, SEXP sampleSEXP, SEXP sequence_nameSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
+    Rcpp::traits::input_parameter< string >::type abundance(abundanceSEXP);
+    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
+    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_assign_bins(data, table, bin_type, reference, bin_name, abundance, sample, sequence_name, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_assign_bin_representative_sequences
+double xdev_assign_bin_representative_sequences(Rcpp::Environment data, Rcpp::DataFrame table, string bin_type, Rcpp::Nullable<Rcpp::List> reference, string bin_name, string sequence_name, bool verbose);
+RcppExport SEXP _rdataset_xdev_assign_bin_representative_sequences(SEXP dataSEXP, SEXP tableSEXP, SEXP bin_typeSEXP, SEXP referenceSEXP, SEXP bin_nameSEXP, SEXP sequence_nameSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
+    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_assign_bin_representative_sequences(data, table, bin_type, reference, bin_name, sequence_name, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_assign_bin_taxonomy
+double xdev_assign_bin_taxonomy(Rcpp::Environment data, Rcpp::DataFrame table, string bin_type, Rcpp::Nullable<Rcpp::List> reference, string bin_name, string taxonomy, bool verbose);
+RcppExport SEXP _rdataset_xdev_assign_bin_taxonomy(SEXP dataSEXP, SEXP tableSEXP, SEXP bin_typeSEXP, SEXP referenceSEXP, SEXP bin_nameSEXP, SEXP taxonomySEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_name(bin_nameSEXP);
+    Rcpp::traits::input_parameter< string >::type taxonomy(taxonomySEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_assign_bin_taxonomy(data, table, bin_type, reference, bin_name, taxonomy, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_assign_sequence_taxonomy
+double xdev_assign_sequence_taxonomy(Rcpp::Environment data, Rcpp::DataFrame table, Rcpp::Nullable<Rcpp::List> reference, string sequence_name, string taxonomy, bool verbose);
+RcppExport SEXP _rdataset_xdev_assign_sequence_taxonomy(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP sequence_nameSEXP, SEXP taxonomySEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
+    Rcpp::traits::input_parameter< string >::type taxonomy(taxonomySEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_assign_sequence_taxonomy(data, table, reference, sequence_name, taxonomy, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_assign_sequence_abundance
+double xdev_assign_sequence_abundance(Rcpp::Environment data, Rcpp::DataFrame table, string sequence_name, string abundance, string sample, string treatment, bool verbose);
+RcppExport SEXP _rdataset_xdev_assign_sequence_abundance(SEXP dataSEXP, SEXP tableSEXP, SEXP sequence_nameSEXP, SEXP abundanceSEXP, SEXP sampleSEXP, SEXP treatmentSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< string >::type sequence_name(sequence_nameSEXP);
+    Rcpp::traits::input_parameter< string >::type abundance(abundanceSEXP);
+    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
+    Rcpp::traits::input_parameter< string >::type treatment(treatmentSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_assign_sequence_abundance(data, table, sequence_name, abundance, sample, treatment, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_assign_treatments
+double xdev_assign_treatments(Rcpp::Environment data, Rcpp::DataFrame table, string sample, string treatment, bool verbose);
+RcppExport SEXP _rdataset_xdev_assign_treatments(SEXP dataSEXP, SEXP tableSEXP, SEXP sampleSEXP, SEXP treatmentSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
+    Rcpp::traits::input_parameter< string >::type treatment(treatmentSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_assign_treatments(data, table, sample, treatment, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_count
+double xdev_count(Rcpp::Environment data, string type, string bin_type, Rcpp::Nullable<Rcpp::List> samples, bool distinct);
+RcppExport SEXP _rdataset_xdev_count(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP, SEXP samplesSEXP, SEXP distinctSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type samples(samplesSEXP);
+    Rcpp::traits::input_parameter< bool >::type distinct(distinctSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_count(data, type, bin_type, samples, distinct));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_get_list_vector
+vector<string> xdev_get_list_vector(Rcpp::Environment data, string type);
+RcppExport SEXP _rdataset_xdev_get_list_vector(SEXP dataSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_get_list_vector(data, type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_get_by_sample
+vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data, string type, Rcpp::CharacterVector samples);
+RcppExport SEXP _rdataset_xdev_get_by_sample(SEXP dataSEXP, SEXP typeSEXP, SEXP samplesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type samples(samplesSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_get_by_sample(data, type, samples));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_get_sequences
+vector<string> xdev_get_sequences(Rcpp::Environment data, string sample);
+RcppExport SEXP _rdataset_xdev_get_sequences(SEXP dataSEXP, SEXP sampleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_get_sequences(data, sample));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_merge_bins
+void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names, string reason, string type);
+RcppExport SEXP _rdataset_xdev_merge_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP reasonSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    xdev_merge_bins(data, bin_names, reason, type);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_merge_sequences
+void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names, string reason);
+RcppExport SEXP _rdataset_xdev_merge_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_merge_sequences(data, sequence_names, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_names
+const vector<string> xdev_names(Rcpp::Environment data, string type, string bin_type, Rcpp::Nullable<Rcpp::List> samples, bool distinct);
+RcppExport SEXP _rdataset_xdev_names(SEXP dataSEXP, SEXP typeSEXP, SEXP bin_typeSEXP, SEXP samplesSEXP, SEXP distinctSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type samples(samplesSEXP);
+    Rcpp::traits::input_parameter< bool >::type distinct(distinctSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_names(data, type, bin_type, samples, distinct));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_remove_bins
+void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names, vector<string> trash_tags, string type);
+RcppExport SEXP _rdataset_xdev_remove_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP trash_tagsSEXP, SEXP typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type trash_tags(trash_tagsSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    xdev_remove_bins(data, bin_names, trash_tags, type);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_remove_lineages
+void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants, string trash_tag);
+RcppExport SEXP _rdataset_xdev_remove_lineages(SEXP dataSEXP, SEXP contaminantsSEXP, SEXP trash_tagSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type contaminants(contaminantsSEXP);
+    Rcpp::traits::input_parameter< string >::type trash_tag(trash_tagSEXP);
+    xdev_remove_lineages(data, contaminants, trash_tag);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_remove_samples
+void xdev_remove_samples(Rcpp::Environment data, vector<string> samples);
+RcppExport SEXP _rdataset_xdev_remove_samples(SEXP dataSEXP, SEXP samplesSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type samples(samplesSEXP);
+    xdev_remove_samples(data, samples);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_remove_sequences
+void xdev_remove_sequences(Rcpp::Environment data, vector<string> sequence_names, vector<string> trash_tags);
+RcppExport SEXP _rdataset_xdev_remove_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP trash_tagsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type trash_tags(trash_tagsSEXP);
+    xdev_remove_sequences(data, sequence_names, trash_tags);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_abundance
+void xdev_set_abundance(Rcpp::Environment data, vector<string> sequence_names, vector<float> sequence_abundances, string reason);
+RcppExport SEXP _rdataset_xdev_set_abundance(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequence_abundancesSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< vector<float> >::type sequence_abundances(sequence_abundancesSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_set_abundance(data, sequence_names, sequence_abundances, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_abundances
+void xdev_set_abundances(Rcpp::Environment data, vector<string> sequence_names, vector<vector<float>> abundances, string reason);
+RcppExport SEXP _rdataset_xdev_set_abundances(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP abundancesSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< vector<vector<float>> >::type abundances(abundancesSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_set_abundances(data, sequence_names, abundances, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_bin_abundance
+void xdev_set_bin_abundance(Rcpp::Environment data, vector<string> bin_names, vector<float> abundances, string type, string reason);
+RcppExport SEXP _rdataset_xdev_set_bin_abundance(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
+    Rcpp::traits::input_parameter< vector<float> >::type abundances(abundancesSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_set_bin_abundance(data, bin_names, abundances, type, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_bin_abundances
+void xdev_set_bin_abundances(Rcpp::Environment data, vector<string> bin_names, vector<vector<float>> abundances, string type, string reason);
+RcppExport SEXP _rdataset_xdev_set_bin_abundances(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
+    Rcpp::traits::input_parameter< vector<vector<float>> >::type abundances(abundancesSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
+    xdev_set_bin_abundances(data, bin_names, abundances, type, reason);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_sequences
+void xdev_set_sequences(Rcpp::Environment data, vector<string> sequence_names, vector<string> sequences, Rcpp::CharacterVector comments);
+RcppExport SEXP _rdataset_xdev_set_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequencesSEXP, SEXP commentsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequence_names(sequence_namesSEXP);
+    Rcpp::traits::input_parameter< vector<string> >::type sequences(sequencesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type comments(commentsSEXP);
+    xdev_set_sequences(data, sequence_names, sequences, comments);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_dataset_name
+void xdev_set_dataset_name(Rcpp::Environment data, string dataset_name);
+RcppExport SEXP _rdataset_xdev_set_dataset_name(SEXP dataSEXP, SEXP dataset_nameSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type dataset_name(dataset_nameSEXP);
+    xdev_set_dataset_name(data, dataset_name);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_set_num_processors
+void xdev_set_num_processors(Rcpp::Environment data, int processors);
+RcppExport SEXP _rdataset_xdev_set_num_processors(SEXP dataSEXP, SEXP processorsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
+    xdev_set_num_processors(data, processors);
+    return R_NilValue;
+END_RCPP
+}
+// xdev_summarize
+Rcpp::DataFrame xdev_summarize(Rcpp::Environment data, string type, Rcpp::Nullable<Rcpp::CharacterVector> report_type);
+RcppExport SEXP _rdataset_xdev_summarize(SEXP dataSEXP, SEXP typeSEXP, SEXP report_typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::CharacterVector> >::type report_type(report_typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_summarize(data, type, report_type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xint_copy_pointer
+Rcpp::XPtr<Dataset> xint_copy_pointer(Rcpp::Environment data);
+RcppExport SEXP _rdataset_xint_copy_pointer(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(xint_copy_pointer(data));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xint_new_pointer
+Rcpp::XPtr<Dataset> xint_new_pointer(string dataset_name, int processors);
+RcppExport SEXP _rdataset_xint_new_pointer(SEXP dataset_nameSEXP, SEXP processorsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< string >::type dataset_name(dataset_nameSEXP);
     Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
-    rcpp_result_gen = Rcpp::wrap(new_pointer(dataset_name, processors));
+    rcpp_result_gen = Rcpp::wrap(xint_new_pointer(dataset_name, processors));
     return rcpp_result_gen;
 END_RCPP
 }
-// copy_pointer
-Rcpp::XPtr<Dataset> copy_pointer(Rcpp::Environment data);
-RcppExport SEXP _rdataset_copy_pointer(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(copy_pointer(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_available_processors
-int get_available_processors();
-RcppExport SEXP _rdataset_get_available_processors() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(get_available_processors());
-    return rcpp_result_gen;
-END_RCPP
-}
-// deserialize_dobject
-void deserialize_dobject(Rcpp::Environment data);
-RcppExport SEXP _rdataset_deserialize_dobject(SEXP dataSEXP) {
+// xint_deserialize_dobject
+void xint_deserialize_dobject(Rcpp::Environment data);
+RcppExport SEXP _rdataset_xint_deserialize_dobject(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    deserialize_dobject(data);
+    xint_deserialize_dobject(data);
     return R_NilValue;
 END_RCPP
 }
-// serialize_dobject
-void serialize_dobject(Rcpp::Environment data);
-RcppExport SEXP _rdataset_serialize_dobject(SEXP dataSEXP) {
+// xint_serialize_dobject
+void xint_serialize_dobject(Rcpp::Environment data);
+RcppExport SEXP _rdataset_xint_serialize_dobject(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    serialize_dobject(data);
+    xint_serialize_dobject(data);
     return R_NilValue;
 END_RCPP
 }
@@ -919,80 +594,50 @@ END_RCPP
 RcppExport SEXP run_testthat_tests(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_rdataset_get_available_processors", (DL_FUNC) &_rdataset_get_available_processors, 0},
     {"_rdataset_new_dataset", (DL_FUNC) &_rdataset_new_dataset, 2},
     {"_rdataset_new_reference", (DL_FUNC) &_rdataset_new_reference, 5},
     {"_rdataset_copy_dataset", (DL_FUNC) &_rdataset_copy_dataset, 1},
-    {"_rdataset_add_metadata", (DL_FUNC) &_rdataset_add_metadata, 2},
-    {"_rdataset_add_report", (DL_FUNC) &_rdataset_add_report, 4},
-    {"_rdataset_add_references", (DL_FUNC) &_rdataset_add_references, 7},
-    {"_rdataset_add_sequences", (DL_FUNC) &_rdataset_add_sequences, 6},
-    {"_rdataset_assign_bins", (DL_FUNC) &_rdataset_assign_bins, 8},
-    {"_rdataset_assign_bin_representative_sequences", (DL_FUNC) &_rdataset_assign_bin_representative_sequences, 6},
-    {"_rdataset_assign_bin_taxonomy", (DL_FUNC) &_rdataset_assign_bin_taxonomy, 6},
-    {"_rdataset_assign_sequence_abundance", (DL_FUNC) &_rdataset_assign_sequence_abundance, 6},
-    {"_rdataset_assign_sequence_taxonomy", (DL_FUNC) &_rdataset_assign_sequence_taxonomy, 5},
-    {"_rdataset_assign_treatments", (DL_FUNC) &_rdataset_assign_treatments, 4},
     {"_rdataset_clear", (DL_FUNC) &_rdataset_clear, 2},
     {"_rdataset_export_dataset", (DL_FUNC) &_rdataset_export_dataset, 2},
-    {"_rdataset_get_bin", (DL_FUNC) &_rdataset_get_bin, 3},
-    {"_rdataset_get_bin_abundance", (DL_FUNC) &_rdataset_get_bin_abundance, 3},
-    {"_rdataset_get_bin_abundances", (DL_FUNC) &_rdataset_get_bin_abundances, 3},
-    {"_rdataset_get_bin_names", (DL_FUNC) &_rdataset_get_bin_names, 2},
-    {"_rdataset_get_bin_representative_sequences", (DL_FUNC) &_rdataset_get_bin_representative_sequences, 2},
-    {"_rdataset_get_bin_taxonomy_report", (DL_FUNC) &_rdataset_get_bin_taxonomy_report, 2},
     {"_rdataset_get_bin_types", (DL_FUNC) &_rdataset_get_bin_types, 1},
-    {"_rdataset_get_dataset_name", (DL_FUNC) &_rdataset_get_dataset_name, 1},
-    {"_rdataset_get_list", (DL_FUNC) &_rdataset_get_list, 2},
-    {"_rdataset_get_list_vector", (DL_FUNC) &_rdataset_get_list_vector, 2},
-    {"_rdataset_get_metadata", (DL_FUNC) &_rdataset_get_metadata, 1},
-    {"_rdataset_get_num_processors", (DL_FUNC) &_rdataset_get_num_processors, 1},
-    {"_rdataset_get_num_bins", (DL_FUNC) &_rdataset_get_num_bins, 2},
-    {"_rdataset_get_num_samples", (DL_FUNC) &_rdataset_get_num_samples, 1},
-    {"_rdataset_get_num_sequences", (DL_FUNC) &_rdataset_get_num_sequences, 3},
-    {"_rdataset_get_num_treatments", (DL_FUNC) &_rdataset_get_num_treatments, 1},
-    {"_rdataset_get_rabund", (DL_FUNC) &_rdataset_get_rabund, 2},
-    {"_rdataset_get_rabund_vector", (DL_FUNC) &_rdataset_get_rabund_vector, 2},
-    {"_rdataset_get_references", (DL_FUNC) &_rdataset_get_references, 1},
-    {"_rdataset_get_reports", (DL_FUNC) &_rdataset_get_reports, 1},
-    {"_rdataset_get_samples", (DL_FUNC) &_rdataset_get_samples, 1},
-    {"_rdataset_get_sample_treatment_assignments", (DL_FUNC) &_rdataset_get_sample_treatment_assignments, 1},
-    {"_rdataset_get_sample_totals", (DL_FUNC) &_rdataset_get_sample_totals, 1},
-    {"_rdataset_get_scrap_report", (DL_FUNC) &_rdataset_get_scrap_report, 2},
-    {"_rdataset_get_sequence_abundances", (DL_FUNC) &_rdataset_get_sequence_abundances, 1},
-    {"_rdataset_get_sequence_abundances_by_sample", (DL_FUNC) &_rdataset_get_sequence_abundances_by_sample, 1},
-    {"_rdataset_get_sequence_abundance_table", (DL_FUNC) &_rdataset_get_sequence_abundance_table, 1},
-    {"_rdataset_get_sequence_names", (DL_FUNC) &_rdataset_get_sequence_names, 2},
-    {"_rdataset_get_sequence_names_by_sample", (DL_FUNC) &_rdataset_get_sequence_names_by_sample, 2},
-    {"_rdataset_get_sequences", (DL_FUNC) &_rdataset_get_sequences, 2},
-    {"_rdataset_get_sequences_by_sample", (DL_FUNC) &_rdataset_get_sequences_by_sample, 2},
-    {"_rdataset_get_sequence_report", (DL_FUNC) &_rdataset_get_sequence_report, 1},
-    {"_rdataset_get_sequence_summary", (DL_FUNC) &_rdataset_get_sequence_summary, 1},
-    {"_rdataset_get_sequence_taxonomy_report", (DL_FUNC) &_rdataset_get_sequence_taxonomy_report, 1},
-    {"_rdataset_get_bin_assignments", (DL_FUNC) &_rdataset_get_bin_assignments, 2},
-    {"_rdataset_get_shared_vector", (DL_FUNC) &_rdataset_get_shared_vector, 2},
-    {"_rdataset_get_treatments", (DL_FUNC) &_rdataset_get_treatments, 1},
-    {"_rdataset_get_treatment_totals", (DL_FUNC) &_rdataset_get_treatment_totals, 1},
     {"_rdataset_has_sample", (DL_FUNC) &_rdataset_has_sample, 2},
     {"_rdataset_has_sequence_strings", (DL_FUNC) &_rdataset_has_sequence_strings, 1},
-    {"_rdataset_merge_bins", (DL_FUNC) &_rdataset_merge_bins, 4},
-    {"_rdataset_merge_sequences", (DL_FUNC) &_rdataset_merge_sequences, 3},
-    {"_rdataset_remove_bins", (DL_FUNC) &_rdataset_remove_bins, 4},
-    {"_rdataset_remove_lineages", (DL_FUNC) &_rdataset_remove_lineages, 3},
-    {"_rdataset_remove_samples", (DL_FUNC) &_rdataset_remove_samples, 2},
-    {"_rdataset_remove_sequences", (DL_FUNC) &_rdataset_remove_sequences, 3},
-    {"_rdataset_set_abundance", (DL_FUNC) &_rdataset_set_abundance, 4},
-    {"_rdataset_set_abundances", (DL_FUNC) &_rdataset_set_abundances, 4},
-    {"_rdataset_set_bin_abundance", (DL_FUNC) &_rdataset_set_bin_abundance, 5},
-    {"_rdataset_set_bin_abundances", (DL_FUNC) &_rdataset_set_bin_abundances, 5},
-    {"_rdataset_set_sequences", (DL_FUNC) &_rdataset_set_sequences, 4},
-    {"_rdataset_set_dataset_name", (DL_FUNC) &_rdataset_set_dataset_name, 2},
-    {"_rdataset_set_num_processors", (DL_FUNC) &_rdataset_set_num_processors, 2},
     {"_rdataset_is_aligned", (DL_FUNC) &_rdataset_is_aligned, 1},
-    {"_rdataset_new_pointer", (DL_FUNC) &_rdataset_new_pointer, 2},
-    {"_rdataset_copy_pointer", (DL_FUNC) &_rdataset_copy_pointer, 1},
-    {"_rdataset_get_available_processors", (DL_FUNC) &_rdataset_get_available_processors, 0},
-    {"_rdataset_deserialize_dobject", (DL_FUNC) &_rdataset_deserialize_dobject, 1},
-    {"_rdataset_serialize_dobject", (DL_FUNC) &_rdataset_serialize_dobject, 1},
+    {"_rdataset_report", (DL_FUNC) &_rdataset_report, 3},
+    {"_rdataset_xdev_abundance", (DL_FUNC) &_rdataset_xdev_abundance, 4},
+    {"_rdataset_xdev_add_references", (DL_FUNC) &_rdataset_xdev_add_references, 8},
+    {"_rdataset_xdev_add_report", (DL_FUNC) &_rdataset_xdev_add_report, 5},
+    {"_rdataset_xdev_add_sequences", (DL_FUNC) &_rdataset_xdev_add_sequences, 7},
+    {"_rdataset_xdev_assign_bins", (DL_FUNC) &_rdataset_xdev_assign_bins, 9},
+    {"_rdataset_xdev_assign_bin_representative_sequences", (DL_FUNC) &_rdataset_xdev_assign_bin_representative_sequences, 7},
+    {"_rdataset_xdev_assign_bin_taxonomy", (DL_FUNC) &_rdataset_xdev_assign_bin_taxonomy, 7},
+    {"_rdataset_xdev_assign_sequence_taxonomy", (DL_FUNC) &_rdataset_xdev_assign_sequence_taxonomy, 6},
+    {"_rdataset_xdev_assign_sequence_abundance", (DL_FUNC) &_rdataset_xdev_assign_sequence_abundance, 7},
+    {"_rdataset_xdev_assign_treatments", (DL_FUNC) &_rdataset_xdev_assign_treatments, 5},
+    {"_rdataset_xdev_count", (DL_FUNC) &_rdataset_xdev_count, 5},
+    {"_rdataset_xdev_get_list_vector", (DL_FUNC) &_rdataset_xdev_get_list_vector, 2},
+    {"_rdataset_xdev_get_by_sample", (DL_FUNC) &_rdataset_xdev_get_by_sample, 3},
+    {"_rdataset_xdev_get_sequences", (DL_FUNC) &_rdataset_xdev_get_sequences, 2},
+    {"_rdataset_xdev_merge_bins", (DL_FUNC) &_rdataset_xdev_merge_bins, 4},
+    {"_rdataset_xdev_merge_sequences", (DL_FUNC) &_rdataset_xdev_merge_sequences, 3},
+    {"_rdataset_xdev_names", (DL_FUNC) &_rdataset_xdev_names, 5},
+    {"_rdataset_xdev_remove_bins", (DL_FUNC) &_rdataset_xdev_remove_bins, 4},
+    {"_rdataset_xdev_remove_lineages", (DL_FUNC) &_rdataset_xdev_remove_lineages, 3},
+    {"_rdataset_xdev_remove_samples", (DL_FUNC) &_rdataset_xdev_remove_samples, 2},
+    {"_rdataset_xdev_remove_sequences", (DL_FUNC) &_rdataset_xdev_remove_sequences, 3},
+    {"_rdataset_xdev_set_abundance", (DL_FUNC) &_rdataset_xdev_set_abundance, 4},
+    {"_rdataset_xdev_set_abundances", (DL_FUNC) &_rdataset_xdev_set_abundances, 4},
+    {"_rdataset_xdev_set_bin_abundance", (DL_FUNC) &_rdataset_xdev_set_bin_abundance, 5},
+    {"_rdataset_xdev_set_bin_abundances", (DL_FUNC) &_rdataset_xdev_set_bin_abundances, 5},
+    {"_rdataset_xdev_set_sequences", (DL_FUNC) &_rdataset_xdev_set_sequences, 4},
+    {"_rdataset_xdev_set_dataset_name", (DL_FUNC) &_rdataset_xdev_set_dataset_name, 2},
+    {"_rdataset_xdev_set_num_processors", (DL_FUNC) &_rdataset_xdev_set_num_processors, 2},
+    {"_rdataset_xdev_summarize", (DL_FUNC) &_rdataset_xdev_summarize, 3},
+    {"_rdataset_xint_copy_pointer", (DL_FUNC) &_rdataset_xint_copy_pointer, 1},
+    {"_rdataset_xint_new_pointer", (DL_FUNC) &_rdataset_xint_new_pointer, 2},
+    {"_rdataset_xint_deserialize_dobject", (DL_FUNC) &_rdataset_xint_deserialize_dobject, 1},
+    {"_rdataset_xint_serialize_dobject", (DL_FUNC) &_rdataset_xint_serialize_dobject, 1},
     {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
     {NULL, NULL, 0}
 };

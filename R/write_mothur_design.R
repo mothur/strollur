@@ -21,14 +21,14 @@ write_mothur_design <- function(data, filename = NULL) {
   }
 
   if (is.null(filename)) {
-    filename <- get_dataset_name(data)
+    filename <- names(data, "dataset")
     if (filename == "") {
       .abort_no_name()
     }
     filename <- paste0(filename, ".design")
   }
 
-  df <- get_sample_treatment_assignments(data)
+  df <- report(data, "sample_assignments")
 
   if (nrow(df) != 0) {
     # write table
@@ -36,5 +36,5 @@ write_mothur_design <- function(data, filename = NULL) {
     return(filename)
   }
 
-  return("no_design_data")
+  "no_design_data"
 }

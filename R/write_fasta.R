@@ -22,18 +22,18 @@ write_fasta <- function(data, filename = NULL) {
   }
 
   if (is.null(filename)) {
-    filename <- get_dataset_name(data)
+    filename <- names(data, "dataset")
     if (filename == "") {
       .abort_no_name()
     }
     filename <- paste0(filename, ".fasta")
   }
 
-  sequence_names <- get_sequence_names(data)
+  sequence_names <- names(data, "sequences")
 
   # data contains sequences
   if (length(sequence_names) != 0) {
-    sequences <- get_sequences(data)
+    sequences <- xdev_get_sequences(data)
 
     # make sure they aren't blank
     if (!any(sequences == "")) {
@@ -47,5 +47,5 @@ write_fasta <- function(data, filename = NULL) {
     }
   }
 
-  return("no_sequence_data")
+  "no_sequence_data"
 }

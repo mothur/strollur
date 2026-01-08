@@ -44,5 +44,5 @@ reference <- new_reference("silva.bacteria.fasta",
 
 }
 \seealso{
-[add_references()]
+[add()]
 }

@@ -15,7 +15,7 @@ test_that("write_taxonomy", {
 
   remove_file(output)
 
-  expect_equal(df[[1]], get_sequence_names(miseq))
+  expect_equal(df[[1]], names(miseq, "sequences"))
   tax1 <- paste0(
     "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);",
     "Lachnospiraceae(85);Lachnospiraceae_unclassified(85);"

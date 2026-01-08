@@ -2,12 +2,15 @@
 #' @description
 #' The import_dataset function will create a \link{dataset} object from the
 #' exported table of a \link{dataset} object.
+#'
 #' @param table a table containing the data from a \link{dataset} object. You
 #' can create the table using 'export(dataset)'.
+#'
 #' @param tags a vector of strings containing the items you wish to export.
 #' Options are 'sequence_data', 'bin_data', 'metadata',
 #' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
 #' By default, everything is imported.
+#'
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
@@ -142,11 +145,14 @@ import_dataset <- function(table, tags = NULL) {
     sequence_data_names <- names(table$sequence_data)
 
     # "sequence_names", "sequences", "comments"
-    add_sequences(data, table$sequence_data)
+    add(data = data, table = table$sequence_data, type = "sequences")
 
     # "sequence_names", "taxonomies"
     if ("taxonomies" %in% sequence_data_names) {
-      assign_sequence_taxonomy(data, table$sequence_data)
+      assign(
+        data = data, table = table$sequence_data,
+        type = "sequence_taxonomy"
+      )
     }
 
     # look at sequence_abundance_table
@@ -162,7 +168,7 @@ import_dataset <- function(table, tags = NULL) {
 
 
       # "sequence_names", "abundances", "samples", "treatments"
-      assign_sequence_abundance(data, table$sequence_abundance_table)
+      xdev_assign_sequence_abundance(data, table$sequence_abundance_table)
     }
   }
 
@@ -198,10 +204,16 @@ import_dataset <- function(table, tags = NULL) {
             table[[bin_type]]$bin_names[m_indices]
 
           # bin_id, abund, sample(optional), treatment(optional)
-          assign_bins(data, table[[otu_bin_abund_table]], type = type)
+          assign(
+            data = data, table = table[[otu_bin_abund_table]],
+            type = "bins", bin_type = type
+          )
 
           if ("treatments" %in% otu_bin_abund_names) {
-            assign_treatments(data, table[[otu_bin_abund_table]])
+            assign(
+              data = data, table = table[[otu_bin_abund_table]],
+              type = "treatments"
+            )
           }
         } else if ((sequence_bin_assignments %in% names) && has_sequence_data) {
           # requested sequence_data and has sequence_data
@@ -224,10 +236,16 @@ import_dataset <- function(table, tags = NULL) {
           table[[sequence_bin_assignments]]$sequence_names <-
             table$sequence_data$sequence_names[m_indices]
 
-          assign_bins(data, table[[sequence_bin_assignments]], type = type)
+          assign(
+            data = data, table = table[[sequence_bin_assignments]],
+            type = "bins", bin_type = type
+          )
         } else {
           # does not want sequence data, just bins and abundances
-          assign_bins(data, table[[bin_type]], type = type)
+          assign(
+            data = data, table = table[[bin_type]],
+            type = "bins", bin_type = type
+          )
         }
 
         otu_bin_rep_table <- paste0(type, "_bin_representative_sequences")
@@ -250,15 +268,18 @@ import_dataset <- function(table, tags = NULL) {
           table[[otu_bin_rep_table]]$sequence_names <-
             table$sequence_data$sequence_names[m_indices]
 
-          assign_bin_representative_sequences(
+          xdev_assign_bin_representative_sequences(
             data,
             table[[otu_bin_rep_table]],
-            type = type
+            bin_type = type
           )
         }
 
         if ("taxonomies" %in% bin_data_names) {
-          assign_bin_taxonomy(data, table[[bin_type]], type)
+          assign(
+            data = data, table = table[[bin_type]], type = "bin_taxonomy",
+            bin_type = type
+          )
         }
       }
     }
@@ -266,14 +287,14 @@ import_dataset <- function(table, tags = NULL) {
 
   # add metadata
   if (("metadata" %in% names) && (!ht || ("metadata" %in% tags))) {
-    add_metadata(data, table$metadata)
+    add(data = data, table = table$metadata, type = "metadata")
   } else if (("metadata" %in% tags) && !("metadata" %in% names)) {
     .abort_missing_tag_alert("metadata")
   }
 
   # add references
   if (("references" %in% names) && (!ht || ("references" %in% tags))) {
-    add_references(data, table$references)
+    add(data = data, table = table$references, type = "references")
   } else if (("references" %in% tags) && !("references" %in% names)) {
     .abort_missing_tag_alert("references")
   }
@@ -283,7 +304,10 @@ import_dataset <- function(table, tags = NULL) {
 
     for (name in report_names) {
       name_col <- attr(table$reports[[name]], "sequence_name")
-      add_report(data, table$reports[[name]], name, name_col)
+      add(
+        data = data, table = table$reports[[name]], type = "reports",
+        report_type = name, table_names = list(sequence_name = name_col)
+      )
     }
   } else if (("reports" %in% tags) && !("reports" %in% names)) {
     .abort_missing_tag_alert("reports")

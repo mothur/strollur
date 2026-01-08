@@ -21,14 +21,14 @@ write_mothur_count <- function(data, filename = NULL) {
   }
 
   if (is.null(filename)) {
-    filename <- get_dataset_name(data)
+    filename <- names(data, "dataset")
     if (filename == "") {
       .abort_no_name()
     }
     filename <- paste0(filename, ".count_table")
   }
 
-  df <- get_sequence_abundance_table(data)
+  df <- abundance(data, type = "sequences", by_sample = TRUE)
 
   if (nrow(df) != 0) {
     # treatment assignments, remove treatment column
@@ -72,8 +72,8 @@ write_mothur_count <- function(data, filename = NULL) {
       )
 
       # Group by 'ids' and summarize the 'sample_index' and 'abunds'
-      df <- df %>%
-        group_by(sequence_names) %>%
+      df <- df |>
+        group_by(sequence_names) |>
         summarise(
           total = sum(abundances),
           sample_abund = paste0(sample_index, ",", abundances,
@@ -93,5 +93,5 @@ write_mothur_count <- function(data, filename = NULL) {
     return(filename)
   }
 
-  return("no_sequence_data")
+  "no_sequence_data"
 }
