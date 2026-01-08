@@ -6,8 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/SchlossLab/rdataset/graph/badge.svg)](https://app.codecov.io/gh/SchlossLab/rdataset)
+[![test-coverage](https://github.com/SchlossLab/rdataset/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/SchlossLab/rdataset/actions/workflows/test-coverage.yaml)
+[![pkgdown](https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml)
 <!-- badges: end -->
 
 The ‘rdataset’ package stores the data associated with your microbial
@@ -36,18 +36,9 @@ You can install the development version of rdataset from
 devtools::install_github("SchlossLab/rdataset")
 ```
 
-## Data Tranfer Functions
-
-- ‘read_mothur()’ : Create a ‘dataset’ object from mothur’s output
-  files.
-- ‘read_dada2()’ : Create a ‘dataset’ object from dada2’s outputs.
-- ‘read_qiime2()’ : Create a ‘dataset’ object from qiime2’s .qza output
-  files.
-- ‘read_phyloseq()’ : Create a ‘dataset’ object from phyloseq’s outputs.
-
 ## Get started
 
-See the [Getting Started](TODO) page to get started.
+See the [Getting Started](Getting-Started.html) page to get started.
 
 ## Getting help
 
