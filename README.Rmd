@@ -5,6 +5,7 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
+library(rdataset)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -42,7 +43,7 @@ devtools::install_github("SchlossLab/rdataset")
 
 ## Get started
 
-See the [Getting Started](Getting-Started.html) 
+See the [Getting Started](vignettes/Getting-Started.html) 
 page to get started.
 
 ## Getting help

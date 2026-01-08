@@ -37,6 +37,6 @@ library(rdataset)
 
 ## Importing Data
 
-* [Importing data from mothur](Importing_from_mothur.html)
-* [Importing data from qiime2](Importing_from_qiime2.html)
+* [Importing data from mothur](vignettes/Importing_from_mothur.html)
+* [Importing data from qiime2](vignettes/Importing_from_qiime2.html)
 

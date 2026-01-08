@@ -38,7 +38,8 @@ devtools::install_github("SchlossLab/rdataset")
 
 ## Get started
 
-See the [Getting Started](Getting-Started.html) page to get started.
+See the [Getting Started](vignettes/Getting-Started.html) page to get
+started.
 
 ## Getting help
 
