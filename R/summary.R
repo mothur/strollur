@@ -51,7 +51,7 @@ summary <- function(data, type = "sequences",
     if (verbose) {
       print(dataset_summary)
     }
-    return(dataset_summary)
+    dataset_summary
   } else {
     base::summary(data)
   }

@@ -456,7 +456,7 @@ dataset <- R6Class("dataset",
         }
       }
 
-      return(results)
+      results
     },
 
     #' @description

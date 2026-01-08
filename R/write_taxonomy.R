@@ -46,5 +46,5 @@ write_taxonomy <- function(data, filename = NULL) {
     return(filename)
   }
 
-  return("no_sequence_taxonomy")
+  "no_sequence_taxonomy"
 }

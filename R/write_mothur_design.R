@@ -36,5 +36,5 @@ write_mothur_design <- function(data, filename = NULL) {
     return(filename)
   }
 
-  return("no_design_data")
+  "no_design_data"
 }

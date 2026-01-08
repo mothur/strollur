@@ -47,5 +47,5 @@ write_fasta <- function(data, filename = NULL) {
     }
   }
 
-  return("no_sequence_data")
+  "no_sequence_data"
 }

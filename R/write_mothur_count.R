@@ -72,8 +72,8 @@ write_mothur_count <- function(data, filename = NULL) {
       )
 
       # Group by 'ids' and summarize the 'sample_index' and 'abunds'
-      df <- df %>%
-        group_by(sequence_names) %>%
+      df <- df |>
+        group_by(sequence_names) |>
         summarise(
           total = sum(abundances),
           sample_abund = paste0(sample_index, ",", abundances,
@@ -93,5 +93,5 @@ write_mothur_count <- function(data, filename = NULL) {
     return(filename)
   }
 
-  return("no_sequence_data")
+  "no_sequence_data"
 }

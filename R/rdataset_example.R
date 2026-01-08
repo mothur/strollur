@@ -21,5 +21,5 @@ rdataset_example <- function(file = NULL) {
       mustWork = TRUE
     )
   }
-  return(path)
+  path
 }

@@ -50,8 +50,8 @@ test_that("import - miseq_sop_example", {
 
   for (otu in dfm[[1]]) {
     expect_equal(
-      dfd %>% filter(otu_names == otu),
-      dfm %>% filter(otu_names == otu)
+      dfd |> filter(otu_names == otu),
+      dfm |> filter(otu_names == otu)
     )
   }
 
