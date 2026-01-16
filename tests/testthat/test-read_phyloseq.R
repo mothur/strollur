@@ -17,5 +17,4 @@ test_that("test read_phyloseq", {
   expect_true(rdata_set_data[52, 3] == row_data[[4]])
   expect_true(rdata_set_data[53, 3] == row_data[[5]])
   expect_true(rdata_set_data[54, 3] == row_data[[6]])
-
 })
