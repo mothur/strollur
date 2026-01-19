@@ -1,7 +1,6 @@
 write_phyloseq <- function(dataset) {
-  dataset <- eso
 
-  ab <- abundance(data = data1, type = "sequences")
+  phyloseq_parameter_list <- vector("list", 3)
   if(nrow(abundance(data = dataset, type = "sequences")) > 0) {
     abundances <- abundance(data = dataset, type = "sequences", by_sample = TRUE) 
     sequence_names <- names(data = dataset, type = "samples")
@@ -13,33 +12,33 @@ write_phyloseq <- function(dataset) {
     colnames(abundances) <- sub(".*\\.", "", colnames(abundances))
     otu_table <- as.matrix(abundances[,2:ncol(abundances)])
     rownames(otu_table) <- abundances$sequence_names
+    phyloseq_parameter_list[[1]] <- otu_table(otu_table, TRUE)
   }
   
 
   # taxonomies
-  
-  taxas <- 
-    reshape(report(data = dataset, type = "sequence_taxonomy"),
-            direction = "wide",
-            timevar = "level",
-            idvar = "id",
-    )
+  if(nrow(report(data = dataset, type = "sequence_taxonomy")) > 0) { 
+    taxas <- 
+      reshape(report(data = dataset, type = "sequence_taxonomy"),
+              direction = "wide",
+              timevar = "level",
+              idvar = "id",
+      )
 
-  colnames(taxas) <- c("id", paste("level_", seq(1, ncol(taxas) - 1), sep=""))
-  rownames(taxas) <- taxas$id  
-  taxas <- as.matrix(taxas[, colnames(taxas) != "id"])
-  return(phyloseq(otu_table(otu_table, T), tax_table(taxas), phy_tree(dataset$get_sequence_tree())))
-
+    colnames(taxas) <- c("id", paste("level_", seq(1, ncol(taxas) - 1), sep=""))
+    rownames(taxas) <- taxas$id  
+    taxas <- as.matrix(taxas[, colnames(taxas) != "id"])
+     phyloseq_parameter_list[[2]] <- tax_table(taxas)
   }
 
-# dataset <- read_phyloseq(GlobalPatterns)
-# phylo_test <- write_phyloseq(dataset)
-# # data(GlobalPatterns)
-# library(phyloseq)
-# a <- read_phyloseq(GlobalPatterns)  
+  if(!is.null(dataset$get_sequence_tree())) {
+     phyloseq_parameter_list[[3]] <- phy_tree(dataset$get_sequence_tree())
+  }
 
-# data(esophagus)
-
-# obj <- c()
-
-# s <- sample_data(GlobalPatterns)
+  indexes <- which(!sapply(phyloseq_parameter_list, is.null))
+  if(length(indexes) <= 0) {
+    stop("You have an empty object that cannot become a phyloseq object.")
+  }
+  return(do.call(phyloseq::phyloseq,
+     phyloseq_parameter_list[indexes]))  
+}
