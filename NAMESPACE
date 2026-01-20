@@ -41,11 +41,5 @@ importFrom(microseq, writeFasta)
 importFrom(yaml, read_yaml)
 importFrom(rbiom, read_biom)
 
-#Phyloseq
-importFrom(phyloseq, import_mothur)
-importFrom(phyloseq, get_sample)
-importFrom(phyloseq, phy_tree)
-importFrom(phyloseq, tax_table)
-
 # paralellized code
 importFrom(parallelly, availableCores)

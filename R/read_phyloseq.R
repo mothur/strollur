@@ -1,8 +1,12 @@
 read_phyloseq <- function(phyloseq_object, dataset_name = "") {
+  if(!requireNamespace("phyloseq", quietly = TRUE)) {
+    stop("To use this functionality you have to install the phyloseq package")
+  }
+
   rdaset_object <- dataset$new(dataset_name)
   if(!is.null(phyloseq_object@otu_table)) {
     shared_table <- data.frame(create_shared_table(phyloseq_object))
-    sample_df <- get_sample(phyloseq_object)
+    sample_df <- phyloseq::get_sample(phyloseq_object)
     xdev_add_sequences(rdaset_object, data.frame(
     sequence_names =
       unique(rownames(sample_df))
@@ -16,7 +20,7 @@ read_phyloseq <- function(phyloseq_object, dataset_name = "") {
 
   # taxonomy table
   if(!is.null(phyloseq_object@tax_table)) {
-    tax_table_phylo <- tax_table(phyloseq_object)@.Data
+    tax_table_phylo <- phyloseq::tax_table(phyloseq_object)@.Data
     taxas <- apply(tax_table_phylo, 1, paste, collapse = ";")
     taxas <- data.frame(sequence_names = names(taxas), taxonomies = taxas)
     rownames(taxas) <- NULL
@@ -24,14 +28,14 @@ read_phyloseq <- function(phyloseq_object, dataset_name = "") {
   }
   
   if(!is.null(phyloseq_object@phy_tree)) {
-    rdaset_object$add_sequence_tree(phy_tree(phyloseq_object))
+    rdaset_object$add_sequence_tree(phyloseq::phy_tree(phyloseq_object))
   }
   rdaset_object
 }
 
 
 create_shared_table <- function(phyloseq_object){
-  otu_data <- otu_table(phyloseq_object)
+  otu_data <- phyloseq::otu_table(phyloseq_object)
   sample_size <- ncol(otu_data)
   size <- sample_size * nrow(otu_data)
   shared_data <- vector("numeric", size)
