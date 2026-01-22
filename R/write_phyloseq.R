@@ -1,5 +1,4 @@
 write_phyloseq <- function(dataset) {
-
   if(!requireNamespace("phyloseq", quietly = TRUE)) {
     stop("To use this functionality you have to install the phyloseq package")
   }
@@ -7,12 +6,18 @@ write_phyloseq <- function(dataset) {
   phyloseq_parameter_list <- vector("list", 3)
   if(nrow(abundance(data = dataset, type = "sequences")) > 0) {
     abundances <- abundance(data = dataset, type = "sequences", by_sample = TRUE) 
+    treatments <- NULL
+    if(any(colnames(abundances) == "treatments")) {
+      treatments <- abundances$treatments
+      abundances <- abundances[, -which(colnames(abundances) == "treatments")]
+    }
     sequence_names <- names(data = dataset, type = "samples")
     abundances <- reshape(abundances,
             direction = "wide",
             timevar = "samples",
             idvar = "sequence_names",
     )
+    abundances[is.na(abundances)] <- 0
     colnames(abundances) <- sub(".*\\.", "", colnames(abundances))
     otu_table <- as.matrix(abundances[,2:ncol(abundances)])
     rownames(otu_table) <- abundances$sequence_names
@@ -22,8 +27,14 @@ write_phyloseq <- function(dataset) {
 
   # taxonomies
   if(nrow(report(data = dataset, type = "sequence_taxonomy")) > 0) { 
+    df <- report(data = dataset, type = "sequence_taxonomy")
+    
+    if(any(colnames(df) == "confidence")) {
+      df$taxon <- paste0(df$taxon, "(", df$confidence, ")")
+      df$confidence <- NULL
+    }
     taxas <- 
-      reshape(report(data = dataset, type = "sequence_taxonomy"),
+      reshape(df,
               direction = "wide",
               timevar = "level",
               idvar = "id",
@@ -32,7 +43,7 @@ write_phyloseq <- function(dataset) {
     colnames(taxas) <- c("id", paste("level_", seq(1, ncol(taxas) - 1), sep=""))
     rownames(taxas) <- taxas$id  
     taxas <- as.matrix(taxas[, colnames(taxas) != "id"])
-     phyloseq_parameter_list[[2]] <- phyloseq::tax_table(taxas)
+    phyloseq_parameter_list[[2]] <- phyloseq::tax_table(taxas)
   }
 
   if(!is.null(dataset$get_sequence_tree())) {
