@@ -26,6 +26,17 @@ read_phyloseq <- function(phyloseq_object, dataset_name = "") {
     rownames(taxas) <- NULL
     xdev_assign_sequence_taxonomy(rdaset_object, taxas)
   }
+  if(!is.null(phyloseq_object@sam_data)) {
+    df <- data.frame(sample_data(phyloseq_object)@.Data)
+    df <- data.frame(apply(df, 2, as.character)) # only works as a character (report.cpp line 36)
+    colnames(df) <- sample_data(phyloseq_object)@names
+    df$rownames <- sample_names(phyloseq_object)
+    add(
+        data = rdaset_object,
+        table = df,
+        type = "metadata"
+      )
+  }
   
   if(!is.null(phyloseq_object@phy_tree)) {
     rdaset_object$add_sequence_tree(phyloseq::phy_tree(phyloseq_object))

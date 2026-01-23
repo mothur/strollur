@@ -1,17 +1,17 @@
-write_phyloseq <- function(dataset) {
+write_phyloseq <- function(data) {
   if(!requireNamespace("phyloseq", quietly = TRUE)) {
     stop("To use this functionality you have to install the phyloseq package")
   }
 
-  phyloseq_parameter_list <- vector("list", 3)
-  if(nrow(abundance(data = dataset, type = "sequences")) > 0) {
-    abundances <- abundance(data = dataset, type = "sequences", by_sample = TRUE) 
+  phyloseq_parameter_list <- vector("list", 4)
+  if(nrow(abundance(data = data, type = "sequences")) > 0) {
+    abundances <- abundance(data = data, type = "sequences", by_sample = TRUE) 
     treatments <- NULL
     if(any(colnames(abundances) == "treatments")) {
       treatments <- abundances$treatments
       abundances <- abundances[, -which(colnames(abundances) == "treatments")]
     }
-    sequence_names <- names(data = dataset, type = "samples")
+    sequence_names <- names(data = data, type = "samples")
     abundances <- reshape(abundances,
             direction = "wide",
             timevar = "samples",
@@ -26,8 +26,8 @@ write_phyloseq <- function(dataset) {
   
 
   # taxonomies
-  if(nrow(report(data = dataset, type = "sequence_taxonomy")) > 0) { 
-    df <- report(data = dataset, type = "sequence_taxonomy")
+  if(nrow(report(data = data, type = "sequence_taxonomy")) > 0) { 
+    df <- report(data = data, type = "sequence_taxonomy")
     
     if(any(colnames(df) == "confidence")) {
       df$taxon <- paste0(df$taxon, "(", df$confidence, ")")
@@ -45,15 +45,42 @@ write_phyloseq <- function(dataset) {
     taxas <- as.matrix(taxas[, colnames(taxas) != "id"])
     phyloseq_parameter_list[[2]] <- phyloseq::tax_table(taxas)
   }
-
-  if(!is.null(dataset$get_sequence_tree())) {
-     phyloseq_parameter_list[[3]] <- phyloseq::phy_tree(dataset$get_sequence_tree())
+  
+  if(!is.null(data$get_sequence_tree())) {
+     phyloseq_parameter_list[[3]] <- phyloseq::phy_tree(data$get_sequence_tree())
   }
+
+  if(!is.null(report(data, "metadata"))) {
+    df <- report(data, "metadata")
+    rownames(df) <- df$rownames
+    df$rownames <- NULL
+    phyloseq_parameter_list[[4]] <- phyloseq::sample_data(df)
+  } 
 
   indexes <- which(!sapply(phyloseq_parameter_list, is.null))
   if(length(indexes) <= 0) {
     stop("You have an empty object that cannot become a phyloseq object.")
   }
+
   return(do.call(phyloseq::phyloseq,
      phyloseq_parameter_list[indexes]))  
 }
+# library(phyloseq)
+# data(GlobalPatterns)
+
+# dat <- read_phyloseq(GlobalPatterns)
+# phylo <- write_phyloseq(dat)
+# # x <- function() {
+# # #   browser()
+# # #   tax_table(df)
+# # # }
+
+# # # sample_data(df)
+# # # x()
+# # names(data = dat, type = "samples")
+# sam <- report(dat, "metadata")
+# # phylo <- 
+#  df <- report(dat, "metadata")
+#     rownames(df) <- df$rownames
+#     df$rownames <- NULL
+# d <- phyloseq::sample_data(df)
