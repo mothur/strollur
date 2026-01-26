@@ -56,5 +56,5 @@ test_that("count - sequences", {
   )
 
   data <- read_mothur(otu_shared = rdataset_example("final.opti_mcc.shared"))
-  expect_error(count(data, samples = c("F3D0", "F3D1")))
+  expect_equal(count(data, samples = c("F3D0", "F3D1")), 10351)
 })

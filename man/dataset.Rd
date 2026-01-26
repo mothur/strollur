@@ -256,21 +256,11 @@ Add phylo tree relating the sequences in your dataset
 \if{html}{\out{<a id="method-dataset-clear"></a>}}
 \if{latex}{\out{\hypertarget{method-dataset-clear}{}}}
 \subsection{Method \code{clear()}}{
-Remove 'sample_tree', or 'sequence_tree' data from your dataset.
+Clear data from datasest
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$clear(tags = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{dataset$clear()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{tags}}{a vector of strings containing the items you wish to clear.
-Options are 'metadata', 'references', 'sequence_tree', 'sample_tree',
-'alignment_report', 'contigs_assembly_report' and '"'chimera_report'.
-By default, everything is cleared.}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-dataset-get_bin_types"></a>}}

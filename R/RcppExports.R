@@ -93,29 +93,21 @@ copy_dataset <- function(data) {
 #' Clear data from a \link{dataset} object
 #'
 #' @param data, a \link{dataset} object
-#' @param tags a vector of strings containing the items you wish to clear.
-#' Options are 'sequence_data', 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree' and 'reports'. By default,
-#' everything is cleared.
 #'
 #' @examples
 #'
 #' data <- miseq_sop_example()
 #' clear(data)
 #'
-clear <- function(data, tags = as.character( c())) {
-    invisible(.Call(`_rdataset_clear`, data, tags))
+clear <- function(data) {
+    invisible(.Call(`_rdataset_clear`, data))
 }
 
 #' @title export_dataset
 #' @description
-#' Export all data from an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param tags a vector of strings containing the items you wish to export.
-#' Options are 'sequence_data' and 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
-#' By default, everything is exported.
+#' Export all data from a \link{dataset} object.
+#'
+#' @param data, a \link{dataset} object
 #'
 #' @examples
 #'
@@ -123,8 +115,8 @@ clear <- function(data, tags = as.character( c())) {
 #' export_dataset(dataset)
 #'
 #' @return Rcpp::List, containing the data in the 'Dataset
-export_dataset <- function(data, tags = as.character( c())) {
-    .Call(`_rdataset_export_dataset`, data, tags)
+export_dataset <- function(data) {
+    .Call(`_rdataset_export_dataset`, data)
 }
 
 #' @title get_bin_types
@@ -1212,99 +1204,6 @@ xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason
 #'
 xdev_set_abundances <- function(data, sequence_names, abundances, reason = "update") {
     invisible(.Call(`_rdataset_xdev_set_abundances`, data, sequence_names, abundances, reason))
-}
-
-#' @title xdev_set_bin_abundance
-#' @description
-#' Designed with package integration in mind, the set bin abundance function
-#' allows you to change the abundances of bins in a \link{dataset} object
-#' without sample data.
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param bin_names, a vector strings containing of bin names to set the
-#' abundances for.
-#' @param abundances, vector containing the abundances of each bin.
-#' @param type, a string indicating the type of clusters. Default = "otu".
-#' @param reason, a string containing the trash tag to be applied to any bins
-#'  set to 0 abundance. Default = "update".
-#'
-#' @examples
-#'   # For example sake, let's create a dataset with 3 bins:
-#'
-#'   data <- new_dataset(dataset_name = "my_dataset")
-#'
-#'   bin_ids <- c("bin1", "bin2", "bin3")
-#'   abundances <- c(110, 525, 80)
-#'
-#'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
-#'                                               abundances = abundances))
-#'
-#'   abundance(data, type = "bins")
-#'
-#'   # Now we can use set_bin_abundance to change the abundances of bin1 and
-#'   # bin2
-#'
-#'   bins <- c("bin1", "bin2")
-#'   new_abunds <- c(300, 250)
-#'
-#'   xdev_set_bin_abundance(data = data,
-#'                          bin_names = bins,
-#'                          abundances = new_abunds)
-#'
-#'   abundance(data, type = "bins")
-#'
-xdev_set_bin_abundance <- function(data, bin_names, abundances, type = "otu", reason = "update") {
-    invisible(.Call(`_rdataset_xdev_set_bin_abundance`, data, bin_names, abundances, type, reason))
-}
-
-#' @title xdev_set_bin_abundances
-#' @description
-#' Designed with package integration in mind, the set bin abundances function
-#' allows you to change the abundances of bins in a \link{dataset} object
-#' with sample data.
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param bin_names, a vector strings containing of bin names to set the
-#' abundances for.
-#' @param abundances, 2D vector ([num_seqs][num_samples]) containing the
-#' abundances of each bin parsed by sample.
-#' @param type a string indicating the type of clusters. Default = "otu".
-#' @param reason, a string containing the trash tag to be applied to any bins
-#'  set to 0 abundance. Default = "update".
-#'
-#' @examples
-#'
-#'   # For example sake, let's create a dataset with 3 bins:
-#'
-#'   data <- new_dataset(dataset_name = "my_dataset")
-#'
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
-#'                "sample1")
-#'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#'
-#'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
-#'                                               abundances = sample_abundances,
-#'                                               samples = samples))
-#'
-#'   # You can see bin1's abundances parsed by sample using abundance:
-#'   abundance(data, type = "bins", by_sample = TRUE)
-#'
-#'   # You can change bin1's abundances as follows:
-#'
-#'   new_bin1_abunds <- list(c(10,50,0,0))
-#'   bins <- c("bin1")
-#'
-#'   xdev_set_bin_abundances(data = data,
-#'                           bin_names = bins,
-#'                           abundances = new_bin1_abunds)
-#'
-#'   abundance(data, type = "bins", by_sample = TRUE)
-#'
-xdev_set_bin_abundances <- function(data, bin_names, abundances, type = "otu", reason = "update") {
-    invisible(.Call(`_rdataset_xdev_set_bin_abundances`, data, bin_names, abundances, type, reason))
 }
 
 #' @title xdev_set_sequences

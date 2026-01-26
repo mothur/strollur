@@ -308,8 +308,7 @@ double xdev_assign_bins(Rcpp::Environment data,
     Rcpp::XPtr<Dataset> d = data["data"];
 
     // if you have list assignments, don't allow setting bin abundances
-    if (d.get()->hasListAssignments(bin_type) && ((abundances.size() != 0) ||
-        (samples.size() != 0))) {
+    if (d.get()->hasListAssignments() && ((abundances.size() != 0) || (samples.size() != 0))) {
         string message = "[ERROR]: You cannot assign abundance and sample data";
         message += " to bins that have sequence assignments. This could cause ";
         message += "inconsistencies.";
@@ -571,7 +570,7 @@ double xdev_assign_treatments(Rcpp::Environment data,
 
     // make sure every sample in dataset is assigned a treatment
     if (!identical(d.get()->getSamples(), unique(samples))) {
-        string message = "[ERROR]: You must provide treatment assignments for";
+        string message = "You must provide treatment assignments for";
         message += " all samples in your dataset.";
         RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
@@ -803,53 +802,6 @@ void xdev_set_abundances(Rcpp::Environment data,
          message += "Try 'set_abundance' instead of 'set_abundances'.";
          RcppThread::Rcerr << endl << message << endl;
          throw Rcpp::exception(message.c_str());
-     }
-}
-/******************************************************************************/
-void xdev_set_bin_abundance(Rcpp::Environment data,
-                             vector<string> bin_names,
-                             vector<float> abundances,
-                             string type, string reason) {
-
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-     if (d.get()->hasListAssignments(type)) {
-         string message = "[ERROR]: You cannot set the bin abundance for bin ";
-         message += "clusters with sequence assignments.";
-         RcppThread::Rcerr << endl << message << endl;
-         throw Rcpp::exception(message.c_str());
-
-     }else if (d.get()->getNumSamples() != 0) {
-         string message = "[ERROR]: You cannot set the total bin abundance";
-         message += " for bins whose abundances are parsed by sample. ";
-         message += "Try 'set_bin_abundances' instead of 'set_bin_abundance'.";
-         RcppThread::Rcerr << endl << message << endl;
-         throw Rcpp::exception(message.c_str());
-     }else{
-         d.get()->setBinAbundance(bin_names, abundances, reason, type);
-     }
-}
-/******************************************************************************/
-void xdev_set_bin_abundances(Rcpp::Environment data,
-                              vector<string> bin_names,
-                              vector<vector<float>> abundances,
-                              string type, string reason) {
-
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-     if (d.get()->hasListAssignments(type)) {
-         string message = "[ERROR]: You cannot set the bin abundance for bin ";
-         message += "clusters with sequence assignments.";
-         RcppThread::Rcerr << endl << message << endl;
-         throw Rcpp::exception(message.c_str());
-     }else if (d.get()->getNumSamples() == 0) {
-         string message = "[ERROR]: You cannot set parsed bin abundances ";
-         message += "when your dataset does not include sample data. ";
-         message += "Try 'set_bin_abundance' instead of 'set_bin_abundances'.";
-         RcppThread::Rcerr << endl << message << endl;
-         throw Rcpp::exception(message.c_str());
-     }else{
-         d.get()->setBinAbundances(bin_names, abundances, reason, type);
      }
 }
 /******************************************************************************/

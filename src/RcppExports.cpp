@@ -61,25 +61,23 @@ BEGIN_RCPP
 END_RCPP
 }
 // clear
-void clear(Rcpp::Environment data, Rcpp::CharacterVector tags);
-RcppExport SEXP _rdataset_clear(SEXP dataSEXP, SEXP tagsSEXP) {
+void clear(Rcpp::Environment data);
+RcppExport SEXP _rdataset_clear(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type tags(tagsSEXP);
-    clear(data, tags);
+    clear(data);
     return R_NilValue;
 END_RCPP
 }
 // export_dataset
-Rcpp::List export_dataset(Rcpp::Environment data, Rcpp::CharacterVector tags);
-RcppExport SEXP _rdataset_export_dataset(SEXP dataSEXP, SEXP tagsSEXP) {
+Rcpp::List export_dataset(Rcpp::Environment data);
+RcppExport SEXP _rdataset_export_dataset(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type tags(tagsSEXP);
-    rcpp_result_gen = Rcpp::wrap(export_dataset(data, tags));
+    rcpp_result_gen = Rcpp::wrap(export_dataset(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -471,34 +469,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// xdev_set_bin_abundance
-void xdev_set_bin_abundance(Rcpp::Environment data, vector<string> bin_names, vector<float> abundances, string type, string reason);
-RcppExport SEXP _rdataset_xdev_set_bin_abundance(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< vector<float> >::type abundances(abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    xdev_set_bin_abundance(data, bin_names, abundances, type, reason);
-    return R_NilValue;
-END_RCPP
-}
-// xdev_set_bin_abundances
-void xdev_set_bin_abundances(Rcpp::Environment data, vector<string> bin_names, vector<vector<float>> abundances, string type, string reason);
-RcppExport SEXP _rdataset_xdev_set_bin_abundances(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP abundancesSEXP, SEXP typeSEXP, SEXP reasonSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< vector<string> >::type bin_names(bin_namesSEXP);
-    Rcpp::traits::input_parameter< vector<vector<float>> >::type abundances(abundancesSEXP);
-    Rcpp::traits::input_parameter< string >::type type(typeSEXP);
-    Rcpp::traits::input_parameter< string >::type reason(reasonSEXP);
-    xdev_set_bin_abundances(data, bin_names, abundances, type, reason);
-    return R_NilValue;
-END_RCPP
-}
 // xdev_set_sequences
 void xdev_set_sequences(Rcpp::Environment data, vector<string> sequence_names, vector<string> sequences, Rcpp::CharacterVector comments);
 RcppExport SEXP _rdataset_xdev_set_sequences(SEXP dataSEXP, SEXP sequence_namesSEXP, SEXP sequencesSEXP, SEXP commentsSEXP) {
@@ -598,8 +568,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_new_dataset", (DL_FUNC) &_rdataset_new_dataset, 2},
     {"_rdataset_new_reference", (DL_FUNC) &_rdataset_new_reference, 5},
     {"_rdataset_copy_dataset", (DL_FUNC) &_rdataset_copy_dataset, 1},
-    {"_rdataset_clear", (DL_FUNC) &_rdataset_clear, 2},
-    {"_rdataset_export_dataset", (DL_FUNC) &_rdataset_export_dataset, 2},
+    {"_rdataset_clear", (DL_FUNC) &_rdataset_clear, 1},
+    {"_rdataset_export_dataset", (DL_FUNC) &_rdataset_export_dataset, 1},
     {"_rdataset_get_bin_types", (DL_FUNC) &_rdataset_get_bin_types, 1},
     {"_rdataset_has_sample", (DL_FUNC) &_rdataset_has_sample, 2},
     {"_rdataset_has_sequence_strings", (DL_FUNC) &_rdataset_has_sequence_strings, 1},
@@ -628,8 +598,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdataset_xdev_remove_sequences", (DL_FUNC) &_rdataset_xdev_remove_sequences, 3},
     {"_rdataset_xdev_set_abundance", (DL_FUNC) &_rdataset_xdev_set_abundance, 4},
     {"_rdataset_xdev_set_abundances", (DL_FUNC) &_rdataset_xdev_set_abundances, 4},
-    {"_rdataset_xdev_set_bin_abundance", (DL_FUNC) &_rdataset_xdev_set_bin_abundance, 5},
-    {"_rdataset_xdev_set_bin_abundances", (DL_FUNC) &_rdataset_xdev_set_bin_abundances, 5},
     {"_rdataset_xdev_set_sequences", (DL_FUNC) &_rdataset_xdev_set_sequences, 4},
     {"_rdataset_xdev_set_dataset_name", (DL_FUNC) &_rdataset_xdev_set_dataset_name, 2},
     {"_rdataset_xdev_set_num_processors", (DL_FUNC) &_rdataset_xdev_set_num_processors, 2},

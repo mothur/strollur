@@ -100,6 +100,18 @@ read_mothur <- function(fasta = NULL, count = NULL,
                         otu_shared = NULL, asv_shared = NULL,
                         phylo_shared = NULL, sample_tree = NULL,
                         sequence_tree = NULL, dataset_name = "") {
+  if (!is.null(otu_list) && !is.null(otu_shared)) {
+    cli_abort("You can provide a list or shared file, not both.")
+  }
+
+  if (!is.null(asv_list) && !is.null(asv_shared)) {
+    cli_abort("You can provide a list or shared file, not both.")
+  }
+
+  if (!is.null(phylo_list) && !is.null(phylo_shared)) {
+    cli_abort("You can provide a list or shared file, not both.")
+  }
+
   # create new blank dataset
   data <- dataset$new(dataset_name)
 

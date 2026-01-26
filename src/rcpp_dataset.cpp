@@ -145,10 +145,6 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 //' Clear data from a \link{dataset} object
 //'
 //' @param data, a \link{dataset} object
-//' @param tags a vector of strings containing the items you wish to clear.
-//' Options are 'sequence_data', 'bin_data', 'metadata',
-//' 'references', 'sequence_tree', 'sample_tree' and 'reports'. By default,
-//' everything is cleared.
 //'
 //' @examples
 //'
@@ -156,42 +152,19 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 //' clear(data)
 //'
 //[[Rcpp::export]]
-void clear(Rcpp::Environment data,
-           Rcpp::CharacterVector tags = Rcpp::CharacterVector::create()) {
+void clear(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
     data["raw"] = R_NilValue;
-
-    vector<string> t = Rcpp::as<vector<string>>(tags);
-    bool hasTags = false;
-    if (t.size() > 0) { hasTags = true; }
-
-    d.get()->clear(t);
-
-    Rcpp::Function clear = data["clear"];
-    if (!hasTags) {
-        clear();
-    }else {
-        // remove tags for c++ back end
-        vector<string> goodTags;
-        for (string tag : t) {
-            if ((tag != "references") && (tag != "sequence_data") &&
-                (tag != "bin_data")) {
-                goodTags.push_back(tag);
-            }
-        }
-        if (goodTags.size() != 0) { clear(goodTags); }
-    }
+    data["sequence_tree"] = R_NilValue;
+    data["sample_tree"] = R_NilValue;
+    d.get()->clear();
 }
 /******************************************************************************/
 //' @title export_dataset
 //' @description
-//' Export all data from an instance of the 'Dataset' class.
-//' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-//'  'Dataset' c++ class.
-//' @param tags a vector of strings containing the items you wish to export.
-//' Options are 'sequence_data' and 'bin_data', 'metadata',
-//' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
-//' By default, everything is exported.
+//' Export all data from a \link{dataset} object.
+//'
+//' @param data, a \link{dataset} object
 //'
 //' @examples
 //'
@@ -200,37 +173,26 @@ void clear(Rcpp::Environment data,
 //'
 //' @return Rcpp::List, containing the data in the 'Dataset
 //[[Rcpp::export]]
-Rcpp::List export_dataset(Rcpp::Environment data,
-                          Rcpp::CharacterVector tags = Rcpp::CharacterVector::create()) {
-
-    vector<string> t = Rcpp::as<vector<string>>(tags);
-    bool hasTags = false;
-    if (t.size() > 0) { hasTags = true; }
+Rcpp::List export_dataset(Rcpp::Environment data) {
 
     Rcpp::XPtr<Dataset> d = data["data"];
-    Rcpp::List results = d.get()->exportDataset(t);
+    Rcpp::List results = d.get()->exportDataset();
     vector<string> resultNames = results.names();
 
-    if ((!hasTags) || (vectorContains(t, "sequence_tree"))) {
+    Rcpp::Function get = data["get_sequence_tree"];
+    Rcpp::List sequence_tree = get();
 
-        Rcpp::Function get = data["get_sequence_tree"];
-        Rcpp::List sequence_tree = get();
-
-        if (sequence_tree.size() != 0) {
-            results.push_back(sequence_tree);
-            resultNames.push_back("sequence_tree");
-        }
+    if (sequence_tree.size() != 0) {
+        results.push_back(sequence_tree);
+        resultNames.push_back("sequence_tree");
     }
 
-    if ((!hasTags) || (vectorContains(t, "sample_tree"))) {
+    get = data["get_sample_tree"];
+    Rcpp::List sample_tree = get();
 
-        Rcpp::Function get = data["get_sample_tree"];
-        Rcpp::List sample_tree = get();
-
-        if (sample_tree.size() != 0) {
-            results.push_back(sample_tree);
-            resultNames.push_back("sample_tree");
-        }
+    if (sample_tree.size() != 0) {
+        results.push_back(sample_tree);
+        resultNames.push_back("sample_tree");
     }
 
     results.attr("names") = resultNames;
