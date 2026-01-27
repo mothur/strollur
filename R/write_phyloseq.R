@@ -43,6 +43,7 @@ write_phyloseq <- function(data) {
     colnames(taxas) <- c("id", paste("level_", seq(1, ncol(taxas) - 1), sep=""))
     rownames(taxas) <- taxas$id  
     taxas <- as.matrix(taxas[, colnames(taxas) != "id"])
+    taxas[which(taxas == "NA")] <- NA
     phyloseq_parameter_list[[2]] <- phyloseq::tax_table(taxas)
   }
   
@@ -50,11 +51,11 @@ write_phyloseq <- function(data) {
      phyloseq_parameter_list[[3]] <- phyloseq::phy_tree(data$get_sequence_tree())
   }
 
-  if(!is.null(report(data, "metadata"))) {
-    df <- report(data, "metadata")
-    rownames(df) <- df$rownames
-    df$rownames <- NULL
-    phyloseq_parameter_list[[4]] <- phyloseq::sample_data(df)
+  metadata <- report(data, "metadata")
+  if(!is.null(metadata) && nrow(metadata) > 0) {
+    rownames(metadata) <- metadata$rownames
+    metadata$rownames <- NULL
+    phyloseq_parameter_list[[4]] <- phyloseq::sample_data(metadata)
   } 
 
   indexes <- which(!sapply(phyloseq_parameter_list, is.null))
