@@ -678,9 +678,9 @@ vector<string> xdev_get_sequences(Rcpp::Environment data, string sample) {
 }
 /******************************************************************************/
 void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
-                      string reason, string type) {
+                      string reason, string bin_type) {
      Rcpp::XPtr<Dataset> d = data["data"];
-     d.get()->mergeBins(bin_names, reason, type);
+     d.get()->mergeBins(bin_names, reason, bin_type);
 }
 /******************************************************************************/
 void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
@@ -745,20 +745,21 @@ const vector<string> xdev_names(Rcpp::Environment data,
 }
 /******************************************************************************/
 void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
-                       vector<string> trash_tags, string type) {
+                       vector<string> trash_tags, string bin_type) {
      Rcpp::XPtr<Dataset> d = data["data"];
-     d.get()->removeBins(bin_names, trash_tags, type);
+     d.get()->removeBins(bin_names, trash_tags, bin_type);
 }
 /******************************************************************************/
 void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants,
-                           string trash_tag) {
+                           string reason) {
      Rcpp::XPtr<Dataset> d = data["data"];
-     d.get()->removeLineages(contaminants, trash_tag);
+     d.get()->removeLineages(contaminants, reason);
 }
 /******************************************************************************/
-void xdev_remove_samples(Rcpp::Environment data, vector<string> samples) {
+void xdev_remove_samples(Rcpp::Environment data, vector<string> samples,
+                         string reason) {
      Rcpp::XPtr<Dataset> d = data["data"];
-     d.get()->removeSamples(samples);
+     d.get()->removeSamples(samples, reason);
 }
 /******************************************************************************/
 void xdev_remove_sequences(Rcpp::Environment data,
@@ -767,6 +768,64 @@ void xdev_remove_sequences(Rcpp::Environment data,
 
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeSequences(sequence_names, trash_tags);
+}
+/******************************************************************************/
+Rcpp::DataFrame xdev_report(Rcpp::Environment data, string type,
+                            string bin_type) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    // sequence_data reports contain the starts, ends, ambigs,...
+    if (type == "sequences") {
+        return d.get()->getSequenceReport();
+    }
+    // sequence fasta data
+    else if (type == "fasta") {
+        return d.get()->getFastaReport();
+    }
+    // sequence bin assignments report
+    else if (type == "sequence_bin_assignments") {
+        return d.get()->getList(bin_type);
+    }
+    // sample treatment assignments report
+    else if (type == "sample_assignments") {
+        return d.get()->getSampleTreatmentAssignments();
+    }
+    // representative sequences assignments report
+    else if (type == "bin_representatives") {
+        return d.get()->getBinRepresentativeSequences(bin_type);
+    }
+    // sequence classification report
+    else if (type == "sequence_taxonomy") {
+        return d.get()->getSequenceTaxonomyReport();
+    }
+    // bin classification report
+    else if (type == "bin_taxonomy") {
+        return d.get()->getBinTaxonomyReport(bin_type);
+    }
+    // sequence_scrap report
+    else if (type == "sequence_scrap") {
+        return d.get()->getScrapReport("sequence");
+    }
+    // bin_scrap report
+    else if (type == "bin_scrap") {
+        return d.get()->getScrapReport(bin_type);
+    }
+    // metadata
+    else if (type == "metadata") {
+        return d.get()->getMetadata();
+    }
+    // references
+    else if (type == "references") {
+        return d.get()->getReferences();
+    }
+    else {
+        // custom reports like alignreport, contigs report and chimera reports
+        return d.get()->getReports(type);
+    }
+
+    // empty report
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 void xdev_set_abundance(Rcpp::Environment data,

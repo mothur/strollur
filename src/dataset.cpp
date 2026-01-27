@@ -548,15 +548,13 @@ Rcpp::DataFrame Dataset::fillTaxReport(string mode) {
             // no sequence or bin taxonomy
             if ((allBlank(taxonomies)) &&
                 (!binTables[binTableIndex].hasBinTaxonomy)) {
-                Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-                return empty;
+                return Rcpp::DataFrame::create();
             }else {
                 ids = binTables[binTableIndex].getIds(count);
                 taxes = binTables[binTableIndex].getTaxonomies(taxonomies, count);
             }
         }else{
-            Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-            return empty;
+            return Rcpp::DataFrame::create();
         }
     }else {
         ids = getSequenceNames();
@@ -646,6 +644,39 @@ int Dataset::getAlignedLength() {
         alignmentLength = -1;
     }
     return alignmentLength;
+}
+/******************************************************************************/
+// fasta data.frame 2 or 3 columns, sequence_names, sequences, comments
+const Rcpp::DataFrame Dataset::getFastaReport() {
+    vector<string> n(numUnique, "");
+    vector<string> s(numUnique, "");
+    vector<string> c(numUnique, "");
+
+    int index = 0;
+    for (int i = 0; i < tableSeqs.size(); i++) {
+        if (tableSeqs[i]) {
+            n[index] = names[i];
+            s[index] = seqs[i];
+            c[index] = comments[i];
+            index++;
+        }
+    }
+
+    if (allBlank(c)) {
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("sequence_names") = n,
+            Rcpp::_["sequences"] = s);
+
+        return df;
+    }else{
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("sequence_names") = n,
+            Rcpp::_["sequences"] = s,
+            Rcpp::_["comments"] = c);
+
+        return df;
+    }
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 // returns indexes of "good" seqs in table
@@ -1308,7 +1339,7 @@ void Dataset::mergeSequences(const vector<string>& ids, string reason){
 void Dataset::mergeBins(const vector<string>& ids, string reason, string type){
     if (ids.size() != 1) {
         if (hasBinTable(type)) {
-            binTables[getBinTableIndex(type)].merge(ids);
+            binTables[getBinTableIndex(type)].merge(ids, reason);
         }
     }
 }
@@ -1427,7 +1458,7 @@ void Dataset::removeBins(const vector<string>& namesToRemove,
     }
 }
 /******************************************************************************/
-void Dataset::removeSamples(const vector<string>& samples) {
+void Dataset::removeSamples(const vector<string>& samples, string reason) {
     AbundTable dupCount(count);
 
     dupCount.removeSamples(samples);
@@ -1438,18 +1469,17 @@ void Dataset::removeSamples(const vector<string>& samples) {
         // included seq
         if (tableSeqs[i]) {
             if (sum(dupCount.getAbundances(i)) == 0) {
-                removeSequence(i, "removedSamples", true, false);
+                removeSequence(i, reason, true, false);
 
                 // remove from list otus
                 for (int j = 0; j < binTables.size(); j++) {
-                    binTables[j].removeSeq(i, "removedSamples");
+                    binTables[j].removeSeq(i, reason);
                 }
             }
         }
     }
 
     count.removeSamples(samples);
-    count.updateTotals();
 }
 /******************************************************************************/
 void Dataset::removeSequence(const int index, const string reasons,

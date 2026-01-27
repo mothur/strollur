@@ -258,8 +258,11 @@ static bool inline isTrue(vector<bool> c) {
 
     if (c.size() == 1) { return c[0]; }
 
-    if (toSet(c).size() > 1) {
+    set<bool> x = toSet(c);
+    if (x.size() > 1) {
         return false;
+    }else if (x.size() == 1) {
+        return (*x.begin() == true);
     }
     return true;
 }
@@ -268,8 +271,12 @@ static bool inline isFalse(vector<bool> c) {
 
     if (c.size() == 1) { return (c[0] == false); }
 
-    if (toSet(c).size() > 1) {
+    set<bool> x = toSet(c);
+
+    if (x.size() > 1) {
         return false;
+    }else if (x.size() == 1) {
+        return (*x.begin() == false);
     }
     return true;
 }

@@ -22,16 +22,32 @@ allows you to merge sequences in a \link{dataset} object.
 }
 \examples{
 
-data <- miseq_sop_example()
+sequence_names <- c("seq1", "seq2", "seq3", "seq3",
+               "seq4", "seq4", "seq5", "seq6",
+               "seq7", "seq8", "seq9", "seq9",
+               "seq10", "seq10", "seq10", "seq10")
 
-count(data = data, type = "sequences")
+samples <- c("sample1", "sample2", "sample4", "sample5",
+             "sample1", "sample2", "sample1", "sample1",
+             "sample2", "sample4", "sample4", "sample5",
+             "sample1", "sample3", "sample5", "sample6")
 
-# For the sake of example let's merge the first 3 sequences from
-# miseq_sop_example:
+abundances <- c(10, 10, 5, 5, 5, 5,
+                10, 10, 10, 10, 5, 5,
+                1, 2, 3, 4)
 
-seqs_to_merge <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
-                   "M00967_43_000000000-A3JHG_1_1113_12711_3318",
-                   "M00967_43_000000000-A3JHG_1_2108_14707_9807")
+data <- new_dataset("my_data")
+
+
+assign(data = data,
+       table = data.frame(sequence_names = sequence_names,
+                          abundances = abundances,
+                          samples = samples),
+       type = "sequence_abundance")
+
+# For the sake of example let's merge the first 3 sequences.
+
+seqs_to_merge <- c("seq1", "seq2", "seq3")
 
 xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 

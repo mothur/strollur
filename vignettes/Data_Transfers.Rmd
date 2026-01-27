@@ -1,8 +1,8 @@
 ---
-title: "Data_Transfers"
+title: "Data Transfers"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data_Transfers}
+  %\VignetteIndexEntry{Data Transfers}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

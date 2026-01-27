@@ -940,7 +940,6 @@ vector<int> BinTable::remove(int index, string reason){
     tableBins[index] = false;
     trashCodes[index] += reason;
 
-
     auto itBad = badAccnos.find(reason);
 
     if (itBad != badAccnos.end()) {

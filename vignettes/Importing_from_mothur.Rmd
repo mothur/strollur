@@ -1,8 +1,8 @@
 ---
-title: "Importing_from_mothur"
+title: "Importing from mothur"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Importing_from_mothur}
+  %\VignetteIndexEntry{Importing from mothur}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

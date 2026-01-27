@@ -380,6 +380,7 @@ dataset <- R6Class("dataset",
       if (nrow(df) != 0) {
         results[["scrap_summary"]] <- df
         if (!silent) {
+          cat("scrap_summary:\n")
           print(results[["scrap_summary"]])
         }
       }

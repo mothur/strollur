@@ -517,7 +517,7 @@ public:
     double assignTreatments(const vector<string>& samples,
                             const vector<string>& treatments);
 
-    //const string getBin(const string binID, string type = "otu");
+
     // names of bins
     const vector<string> getBinIds(string type = "otu",
                                    vector<string> samples = nullVector,
@@ -528,6 +528,9 @@ public:
     const Rcpp::DataFrame getBinRepresentativeSequences(string type = "otu");
     // 2 column dataframe - bin_id, seq_id
     const vector<string> getBinTypes();
+    // fasta data.frame 2 or 3 columns, sequence_names, sequences, comments
+    const Rcpp::DataFrame getFastaReport();
+
     const Rcpp::DataFrame getList(string type = "otu");
     const vector<string> getListVector(string type = "otu");
     const int getNumBins(string type = "otu",
@@ -585,7 +588,8 @@ public:
                     string type = "otu");
     void removeLineages(const vector<string>& taxonomies,
                         string trashTag = "contaminant");
-    void removeSamples(const vector<string>& samples);
+    void removeSamples(const vector<string>& samples,
+                       string reason = "remove_samples");
     void removeSequences(const vector<string>& names,
                          const vector<string>& trashTags);
 

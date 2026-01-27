@@ -9,6 +9,7 @@ vignette: >
 
 ```{r, include = FALSE}
 library(rdataset)
+set.seed(19760620)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -19,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Setting functions
 
-Over the course of an analysis your package may want to change the abundances of sequences or bins, modify sequence nucleotide strings due to alignment, screening or filtering, and change the dataset name. Let's take a close look at functions you will need to do so using the `miseq_sop_example()' dataset. 
+Over the course of an analysis your package may want to change the abundances of sequences, modify sequence nucleotide strings due to alignment, screening or filtering, and change the dataset name. Let's take a close look at functions you will need to do so using the `miseq_sop_example()' dataset. 
 
 ```{r}
 miseq <- miseq_sop_example()
@@ -38,52 +39,171 @@ names(data = miseq, type = "dataset")
 
 ### Setting nucleotide sequence strings
 
-The miseq example dataset is already aligned, filtered and screened, but for the sake of example let's set the nucleotide strings of sample 'F3D0' to 'NNNN'. First we will get the names of the sequences in sample 'F3D0' and look at the original sequence strings.
+The miseq example dataset is already aligned, filtered and screened, but for the sake of example let's set the nucleotide strings of sequences *exclusive* to sample 'F3D0' to 'NNNN'. First we will get the names of the sequences only present in sample 'F3D0'.
 
 ```{r}
-sample_f3d0_names <- xdev_get_by_sample(
-  data = miseq,
-  type = "sequence_names",
-  samples = c("F3D0")
-)
-head(sample_f3d0_names[[1]], 5)
-sample_f3d0_sequences <- xdev_get_by_sample(
+f3d0_names <- names(
   data = miseq,
   type = "sequences",
-  samples = c("F3D0")
+  samples = c("F3D0"),
+  distinct = TRUE
 )
-head(sample_f3d0_sequences[[1]], 5)
+length(f3d0_names)
 ```
 
-Now we will assign nucleotide strings of the sequences in sample 'F3D0' to 'NNNN':
+Now we will assign nucleotide strings of the sequences *exclusive* to sample 'F3D0' to 'NNNN'. Then we can use the `xdev_get_by_sample()` get all the sequences in present in sample 'F3D0' for closer inspection.
 
 ```{r}
-nnnn_neucleotides <- rep("NNNN", length(sample_f3d0_names[[1]]))
-comments <- rep("example_set_sequences", length(sample_f3d0_names[[1]]))
+nnnn_neucleotides <- rep("NNNN", length(f3d0_names))
+comments <- rep("example_set_sequences", length(f3d0_names))
 
 xdev_set_sequences(
-  data = miseq, sequence_names = sample_f3d0_names[[1]],
+  data = miseq, sequence_names = f3d0_names,
   sequences = nnnn_neucleotides, comments = comments
 )
 
-xdev_get_by_sample(data = miseq,
-                   type = "sequences", samples = c("F3D0"))[[1]] |> head(5)
+f3d0_sequences <- xdev_get_by_sample(
+  data = miseq,
+  type = "sequences", samples = c("F3D0")
+)
+f3d0_sequences[[1]][300:305]
 ```
-
 
 ### Setting sequence abundances
 
-Now that we know how to set sequence strings, let's learn how to set sequence abundances. In most cases you can use the `assign()` function to set sequence abundances, but there may be cases where you want more flexibility. The assign function requires abundances to be provided for each sequence. If you have parallelized code using the dataset, you may want to allow each thread to update a set of sequences. There are two functions to that allow you to do that, `xdev_set_abundances()` and `xdev_set_abundance()`. *xdev_set_abundances* is used with datasets that include samples, *xdev_set_abundance* is used for datasets without samples. Let's set the abundances of all sequences in sample F3D0 to 0:
+Now that we know how to set sequence strings, let's learn how to set sequence abundances. In most cases you can use the `assign()` function to set sequence abundances, but there may be cases where you want more flexibility. The assign function requires abundances to be provided for each sequence. If you only need to update a subset of the sequences, there are two functions to that allow you to do that, `xdev_set_abundances()` and `xdev_set_abundance()`. *xdev_set_abundances* is used with datasets that include samples, *xdev_set_abundance* is used for datasets without samples. Let's set the abundances of all sequences *exclusive* to sample F3D0 to 0, in essense removing them. First we will get the abundance table for the whole dataset and create the inputs for `xdev_set_abundances()`.
 
 ```{r}
+abundance_table <- abundance(
+  data = miseq,
+  type = "sequences", by_sample = TRUE
+)
+head(abundance_table, n = 10)
+
 num_samples <- count(data = miseq, type = "samples")
-new_abunds <- rep(list(rep(0, num_samples)), length(sample_f3d0_names[[1]]))
+new_abunds <- rep(list(rep(0, num_samples)), length(f3d0_names))
+
 xdev_set_abundances(
   data = miseq,
-  sequence_names = sample_f3d0_names[[1]],
-  abundances = new_abunds
+  sequence_names = f3d0_names,
+  abundances = new_abunds,
+  reason = "F3D0_exclusive_sequences"
+)
+miseq
+```
+
+You can see that not all of the sequences in 'F3D0' are removed. That is because the majority of sequences in the dataset are present in multiple samples. mothur2 uses xdev_set_abundances when running the pre_cluster() function, sequences are clustered by sample, and the abundances are set accordingly.
+
+## Merging Functions
+
+In the course of analyzing your data, there may be times when you want to merge sequence abundances. When sequence neucleotide string are identical you can save time processing by merging the identical read's abundances. mothur2 merges sequences abundances in the unique_seqs function. The miseq example includes merged sequences that have been assigned to bins. In practice, you would would not merge sequences after assigning them to bins. Note, the code below is set to 'eval=FALSE' because you can only merge sequences assigned to the same bin and it will throw errors accordingly. Let's take a look at how to use the `xdev_merge_sequences()` function for your reference. 
+
+```{r, eval=FALSE}
+random_sequence_names <- sample(names(data = miseq),
+  size = 100, replace = FALSE
+)
+
+xdev_merge_sequences(
+  data = miseq,
+  sequence_names = random_sequence_names,
+  reason = "merge_sequences_example"
 )
 ```
 
+Similarly, you may want to merge bins and the `xdev_merge_bins()` function will allow you to do so. For this example we will randomly select 100 'otu' bins to merge.
 
-### Setting bin abundances
+```{r}
+random_bin_names <- sample(
+  names(
+    data = miseq,
+    type = "bins",
+    bin_type = "otu"
+  ),
+  size = 100, replace = FALSE
+)
+
+xdev_merge_bins(
+  data = miseq,
+  bin_names = random_bin_names,
+  reason = "merge_bins_example",
+  bin_type = "otu"
+)
+miseq
+```
+
+You can see that the sample totals, total sequence and unique sequences remain the same but the number of otu bins is reduced by 99. 
+
+## Removing Functions
+
+Over the course of your analysis, you may want to remove sequences, bins, samples or contaminants. rdataset has several functions to help with that, namely `xdev_remove_sequences()`, `xdev_remove_bins()`, `xdev_remove_samples()`, and `xdev_remove_lineages()`. 
+
+### Removing Sequences
+
+There are several reasons you may want to remove sequences including removing chimeras, removing sequence without good overlap and removing sequences with ambiguous bases. The `xdev_remove_sequences()` function allows you to easily do that. The `miseq_sop_example()` has already been screened for chimeras, overlap, sequence length and ambiguous bases, so let's randomly select 100 sequences to remove.
+
+```{r}
+random_sequence_names <- sample(names(data = miseq),
+  size = 100, replace = FALSE
+)
+xdev_remove_sequences(
+  data = miseq,
+  sequence_names = random_sequence_names,
+  trash_tags = rep("remove_sequences_example", 100)
+)
+miseq
+```
+
+Note, sequences can also be removed by setting their abundance to 0. 
+
+### Removing Bins
+
+Simiarly, lets randomly select and remove 10 phylotype bins with the `xdev_remove_bins()` function. Note, removing the bins also removes sequences. The removal of the sequences from the dataset also effects the bins in the 'otu' and 'asv' clusters.
+
+```{r}
+random_bin_names <- sample(
+  names(
+    data = miseq,
+    type = "bins", bin_type = "phylotype"
+  ),
+  size = 10, replace = FALSE
+)
+xdev_remove_bins(
+  data = miseq,
+  bin_names = random_bin_names,
+  trash_tags = rep("remove_bins_example", 10),
+  bin_type = "phylotype"
+)
+miseq
+```
+
+Looking closer at the scrap summary we can see that removing 10 phylotype bins, removed 851 unique sequences that represented 21948 reads. After the removal of the 851 unique sequences the 'otu' cluster removed 134 bins and the 'asv' cluster removed 851 bins.
+
+### Removing Samples
+
+If you included a mock community in your dataset, you will want to remove it after assessing your error rates in preparation for the rest of your analysis. The `miseq_sop_example()` already has the mock community removed so for the sake of example we will remove sample 'F3D142'. 
+
+```{r}
+xdev_remove_samples(
+  data = miseq,
+  samples = c("F3D142"), reason = "remove_samples_example"
+)
+miseq
+```
+
+Lastly, we can remove contaminants from the dataset using the `xdev_remove_lineages()` function. The miseq example has already had the contaminants removed after classification and before bin assignment. For the sake of example we will remove all sequences assigned to 'Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;'.
+
+```{r}
+bad_tax <- paste0(
+  "Bacteria;Firmicutes;Clostridia;Clostridiales;",
+  "Clostridiales_unclassified;"
+)
+
+xdev_remove_lineages(
+  data = miseq,
+  contaminants = c(bad_tax),
+  reason = "remove_contaminants_example"
+)
+miseq
+```
+
+Thanks for following along. To explore more *xdev_* functions you can look at the rcpp_xint_xdev_functions.h and rcpp_xint_xdev_functions.cpp files located in the src folder of the package.
