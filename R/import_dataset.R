@@ -37,7 +37,7 @@ import_dataset <- function(table) {
   # extract bin assignment types, ie 'otu', 'asv'
   bin_data_names <- names[grepl("_bin_data", names)]
 
-  # its in the table and you requested it to be imported
+  # its in the table
   if ("sequence_data" %in% names) {
     has_sequence_data <- TRUE
 
@@ -280,13 +280,15 @@ import_dataset <- function(table) {
     add(data = data, table = table$references, type = "references")
   }
 
-  if ("reports" %in% names) {
-    report_names <- names(table$reports)
+  # list all report names
+  report_names <- names[grepl("_report", names)]
+  report_names <- report_names[!report_names %in% "sequence_report"]
 
+  if (length(report_names) != 0) {
     for (name in report_names) {
-      name_col <- attr(table$reports[[name]], "sequence_name")
+      name_col <- attr(table[[name]], "sequence_name")
       add(
-        data = data, table = table$reports[[name]], type = "reports",
+        data = data, table = table[[name]], type = "reports",
         report_type = name, table_names = list(sequence_name = name_col)
       )
     }
