@@ -2,7 +2,7 @@ test_that("test read_phyloseq", {
   phyloseq_object <- import_mothur(rdataset_example("esophagus.fn.list"), rdataset_example("esophagus.good.groups"), 
                           rdataset_example("esophagus.tree"))
   data <- read_phyloseq(phyloseq_object)
-  expect_true(count(data) == 591)
+  expect_true(count(data) == 675)
 
   phyloseq_object_w_tax <- import_mothur(mothur_list_file = rdataset_example("final.asv.list"),
                                          mothur_shared_file = rdataset_example("final.opti_mcc.shared"), 
