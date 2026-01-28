@@ -878,7 +878,7 @@ const vector<string> Dataset::getReportTypes() {
     vector<string> reportTypes = getKeys(reports);
 
     if (hasSeqs()) {
-        reportTypes.push_back("sequence_data");
+        //reportTypes.push_back("sequence_data");
 
         if (badAccnos.size() != 0) {
             reportTypes.push_back("sequence_scrap");

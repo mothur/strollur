@@ -349,7 +349,7 @@ dataset <- R6Class("dataset",
         }
       }
 
-      exclude <- c("sequence_data", "sequence_scrap", "bin_scrap")
+      exclude <- c("sequence_scrap", "bin_scrap")
       report_names <- names(data = self, type = "reports")
       report_names <- report_names[!report_names %in% exclude]
 
