@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Setting functions
 
-Over the course of an analysis your package may want to change the abundances of sequences, modify sequence nucleotide strings due to alignment, screening or filtering, and change the data set name. Let's take a close look at functions you will need to do so using the `miseq_sop_example()' data set. 
+Over the course of an analysis your package may want to change the abundances of sequences, modify sequence nucleotide strings due to alignment, screening or filtering, and change the data set name. Let's take a close look at functions you will need to do so using the `miseq_sop_example()` data set. 
 
 ```{r}
 miseq <- miseq_sop_example()

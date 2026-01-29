@@ -501,6 +501,9 @@ rdataset allows you to include trees relating the sequences and samples within y
 miseq_sequence_tree <- miseq$get_sequence_tree()
 miseq_sample_tree <- miseq$get_sample_tree()
 
+#| fig.alt: >
+#|   Plot of Miseq_SOP's sample relationship tree
+
 plot(miseq_sample_tree,
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"
