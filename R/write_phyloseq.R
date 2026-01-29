@@ -66,22 +66,3 @@ write_phyloseq <- function(data) {
   return(do.call(phyloseq::phyloseq,
      phyloseq_parameter_list[indexes]))  
 }
-# library(phyloseq)
-# data(GlobalPatterns)
-
-# dat <- read_phyloseq(GlobalPatterns)
-# phylo <- write_phyloseq(dat)
-# # x <- function() {
-# # #   browser()
-# # #   tax_table(df)
-# # # }
-
-# # # sample_data(df)
-# # # x()
-# # names(data = dat, type = "samples")
-# sam <- report(dat, "metadata")
-# # phylo <- 
-#  df <- report(dat, "metadata")
-#     rownames(df) <- df$rownames
-#     df$rownames <- NULL
-# d <- phyloseq::sample_data(df)
