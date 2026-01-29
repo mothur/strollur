@@ -185,6 +185,8 @@ public:
     void setAbundance(const int name, const vector<float>& abunds);
     // set abundance, assumes no samples if sample is blank
     void setAbundance(const int name, const float abund, const string sample = "");
+    // index -> (sampleName -> abundance)
+    void setAbundances(const map<int, map<string, float>>& binAbunds);
 
     // removes id, returns abund. Be sure to run updateTotals after.
     // totals are not updated in function for time savings when removing multiple
@@ -261,12 +263,13 @@ private:
 
     friend class cereal::access; // Grants Cereal access
 
+    // 14 items
     template<class Archive>
     void serialize(Archive& ar) {
-        ar(counts, total, numSamples, numTreatments,
-           sampleIndex, sampleNames, sampleTotals, tableSamples,
-           treatmentIndex, treatmentTotals, tableTreatments,
-           sampleTreatment, hasSampleData, hasTreatments);
+        ar(counts, numSamples, numTreatments, total,
+           sampleIndex, tableSamples, sampleNames, sampleTotals,
+           sampleTreatment, treatmentIndex, treatmentTotals, tableTreatments,
+           hasSampleData, hasTreatments);
     }
 };
 /******************************************************************************/
@@ -307,11 +310,12 @@ private:
 
     friend class cereal::access; // Grants Cereal access
 
+    // 14
     template<class Archive>
     void serialize(Archive& ar) {
-        ar(columnNames, sequence_name, hasStr, hasInt, hasNum, hasLog,
-           hasColumnNames, strColumns, intColumns, numColumns, logColumns,
-           sequence_name_col, numRows, hasReport);
+        ar(hasReport, columnNames, sequence_name, sequence_name_col, numRows,
+           hasStr, hasInt, hasNum, hasLog, hasColumnNames,
+           strColumns, intColumns, numColumns, logColumns);
     }
 };
 /******************************************************************************/
@@ -329,94 +333,59 @@ public:
     ~BinTable();
 
     string label;
-    bool hasListAssignments, hasBinTaxonomy, runClassify, hasBinReps;
+    bool hasBinTaxonomy, hasBinReps, runClassify;
 
-    // ids, abundances, samples(optional)
-    double assignAbundance(vector<string> ids,
-                           const vector<float>& abundance,
-                           const vector<string>& samples,
-                           const vector<int>& seqIds,
-                           AbundTable& count, bool update = false);
+    // ids, seqids
+    double assignBins(AbundTable& count, vector<string> ids,
+                           const vector<int>& seqIds);
     double assignRepresentativeSequences(const vector<string>& binNames,
                                             const vector<int>& repNames);
 
     double assignTaxonomy(const vector<string>& ids,
                           const vector<string>& taxonomies);
 
-    double assignTreatments(const vector<string>& samples,
-                            const vector<string>& treatments);
-
-    void clear(string tag = "");
+    void clear();
     void clone(const BinTable& binTable);
 
     // id, bin_name, seq_id, abundance, sample, treatment, taxonomy, trashCode
-    Rcpp::List exportBinTable();
+    Rcpp::List exportBinTable(AbundTable& count);
 
-    // string containing seqs in bin, comma separated
-    const string get(const string binName, const vector<string>& seqNames);
-    // total abundance for a given binId, optional sample
-    const float getAbundance(const string binId, const string sample = "");
-    // abundances for given binId broken down by sample
-    const vector<float> getAbundances(const string binId);
+    // names of bins
+    const vector<string> getIds(AbundTable& count,
+                                vector<string> sample = nullVector,
+                                bool distinct = false);
     const vector<string> getListVector(const vector<string>& seqNames);
     // 2 column dataframe - bin_id, seq_id
     const Rcpp::DataFrame getList(const vector<string>& seqNames);
-    // names of bins
-    const vector<string> getIds(vector<string> sample = nullVector,
-                                bool distinct = false);
-    const int getNumBins(vector<string> samples = nullVector,
+
+    const int getNumBins(AbundTable& count,
+                         vector<string> samples = nullVector,
                          bool distinct = false);
     // 2 column dataframe - bin_id, abundance
-    const Rcpp::DataFrame getRAbund();
+    const Rcpp::DataFrame getRAbund(AbundTable& count);
     // vector of total abundances for each binId
-    const vector<float> getRAbundVector();
+    const vector<float> getRAbundVector(AbundTable& count);
     // 3 column dataframe - bin_id, abundance, sample
     const Rcpp::DataFrame getRepresentativeSequences(const vector<string>& seqNames,
                                                      const vector<string>& seqs);
-    const Rcpp::DataFrame getShared();
+    const Rcpp::DataFrame getScrapReport();
+    // type, trashCode, binCount, abundanceCount
+    const Rcpp::DataFrame getScrapSummary();
+
+    const Rcpp::DataFrame getShared(AbundTable& count);
     // abundances for each bin broken down by sample
-    const vector<vector<float> > getSharedVector();
+    const vector<vector<float> > getSharedVector(AbundTable& count);
     // classifications of bins
     vector<string> getTaxonomies(const vector<string>& tax,
                                  AbundTable& count);
 
-    // sample functions
-    const int getNumSamples();
-    const int getNumTreatments();
-    const vector<string> getSamples();
-    const vector<double> getSampleTotals();
-    const map<string, string> getSampleTreatmentAssignments();
-    const Rcpp::DataFrame getScrapReport();
-    // type, trashCode, binCount, abundanceCount
-    const Rcpp::DataFrame getScrapSummary();
-    const vector<string> getTreatments();
-    // vector containing total abundance for each treatment
-    const vector<double> getTreatmentTotals();
-    // total number of sequences
-    const double getTotal(vector<string> samples = nullVector);
-    const bool hasSample(const string sample);
-
     void merge(vector<string> binIds, string reason = "merged");
     // returns false if seqs are in different bins
     const bool okToMerge(const vector<int>& seqIds);
-    void remove(const int seqId,
-                AbundTable& count,
-                const string reason, bool update = true);
 
     // remove given binId, return seqs removed
-    vector<int> remove(const string binId, const string reason, bool update = true);
-    void removeSamples(const vector<string>& samples);
-
-    // for datasets without samples, return seqs removed by binRemoval
-    vector<int> setAbundance(const vector<string>& binIds,
-                             const vector<float>& abunds,
-                             string reason = "merged");
-
-    // for datasets with samples, return seqs removed by binRemoval
-    vector<int> setAbundances(const vector<string>& binIds,
-                              const vector<vector<float>>& abunds,
-                              string reason = "merged");
-    void updateTotals();
+    vector<int> remove(const string binId, const string reason);
+    void removeSeq(const int seqId, const string reason);
 
 private:
 
@@ -424,6 +393,8 @@ private:
     map<string, int> binIndex;
     // filter for "good" bins
     vector<bool> tableBins;
+    // used for when a bin is removed to indicate how many sequences were in
+    // original otu
     vector<float> originalBinAbunds;
     vector<string> binNames, trashCodes, taxonomies;
 
@@ -445,36 +416,50 @@ private:
     map<string, vector<double> > badAccnos;
     double uniqueBad;
 
-    // count table data
-    // bin abundances, parsed by sample
-    AbundTable binCount;
-
-    const vector<int> getGoodIndexes();
-    const vector<int> getIndexes(vector<string>&);
     void classify(const vector<string>& taxs,
                   AbundTable& count);
     string classifyBin(const int binIndex,
                        const vector<string>& tax,
                        AbundTable& count);
-    void updateBinAbunds(map<int, map<string, float>>& binAbunds,
-                         AbundTable& count,
-                         const int bIndex, const int seqIndex,
-                         const vector<string>& allSamples,
-                         bool firstTimeSeq = true);
-    double updateBins(map<int, map<string, float>>& binAbunds,
-                      AbundTable& count,
-                      bool hasSamples);
+
+    // string containing seqs in bin, comma separated
+    const string get(const string binName, const vector<string>& seqNames);
+    // total abundance for a given bin
+    const float getAbundance(AbundTable& count,
+                             const string binName,
+                             vector<string> samples = nullVector);
+    // total abundance for a given bin
+    const float getAbundance(AbundTable& count,
+                             const int binId,
+                             vector<string> samples = nullVector);
+    // abundances for given binId broken down by sample
+    const vector<float> getAbundances(AbundTable& count, const string binName);
+    // abundances for given binId broken down by sample
+    const vector<float> getAbundances(AbundTable& count, const int binId);
+    // total abundance for each bin
+    const vector<float> getAbundances(AbundTable& count, bool onlyGood = true);
+    // 2, 3 or 4 columns: id, abundance, sample (optional -
+    //                                   added when table includes sample data),
+    //                                   treatment (optional -
+    //                                   added when table includes treatment data),
+    // used to export BinTable and Shared functions
+    const Rcpp::DataFrame getAbundanceTable(AbundTable& count,
+                                            const bool useNames = true);
+
+    const vector<int> getGoodIndexes(AbundTable& count);
+    const vector<int> getIndexes(vector<string>&);
+    vector<int> remove(const int binId, const string reason);
 
     friend class cereal::access; // Grants Cereal access
 
+    // 15
     template<class Archive>
     void serialize(Archive& ar) {
-        ar(label, hasListAssignments, hasBinTaxonomy, repSequences, hasBinReps,
-           binIndex, tableBins, binNames, trashCodes, taxonomies,
-           runClassify, binList, seqBins, badAccnos, uniqueBad, binCount,
-           originalBinAbunds);
+        ar(label, hasBinTaxonomy, hasBinReps, runClassify,
+           binIndex, tableBins, originalBinAbunds, binList,
+           binNames, trashCodes, taxonomies, repSequences,
+           seqBins, badAccnos, uniqueBad);
     }
-
 };
 /******************************************************************************/
 /*
@@ -496,7 +481,7 @@ public:
     bool isAligned, hasSequenceData, hasSequenceTaxonomy;
     double numUnique;
 
-    void clear(const vector<string> tags = nullVector);
+    void clear();
     Rcpp::List exportDataset(const vector<string> tags = nullVector);
 
     // add seqs
@@ -532,7 +517,7 @@ public:
     double assignTreatments(const vector<string>& samples,
                             const vector<string>& treatments);
 
-    //const string getBin(const string binID, string type = "otu");
+
     // names of bins
     const vector<string> getBinIds(string type = "otu",
                                    vector<string> samples = nullVector,
@@ -543,6 +528,9 @@ public:
     const Rcpp::DataFrame getBinRepresentativeSequences(string type = "otu");
     // 2 column dataframe - bin_id, seq_id
     const vector<string> getBinTypes();
+    // fasta data.frame 2 or 3 columns, sequence_names, sequences, comments
+    const Rcpp::DataFrame getFastaReport();
+
     const Rcpp::DataFrame getList(string type = "otu");
     const vector<string> getListVector(string type = "otu");
     const int getNumBins(string type = "otu",
@@ -588,7 +576,7 @@ public:
 
     const bool hasSample(string sample);
     const bool hasSamples(vector<string> samples = nullVector);
-    const bool hasListAssignments(string type = "otu");
+    const bool hasListAssignments() { return hasList; }
     const bool hasSeqs();
 
     void mergeBins(const vector<string>& binIDS, string reason = "merged",
@@ -600,7 +588,8 @@ public:
                     string type = "otu");
     void removeLineages(const vector<string>& taxonomies,
                         string trashTag = "contaminant");
-    void removeSamples(const vector<string>& samples);
+    void removeSamples(const vector<string>& samples,
+                       string reason = "remove_samples");
     void removeSequences(const vector<string>& names,
                          const vector<string>& trashTags);
 
@@ -612,14 +601,6 @@ public:
     void setAbundances(const vector<string>& names,
                        const vector<vector<float>>& abunds,
                        string reason = "update");
-    // for datasets without samples
-    void setBinAbundance(const vector<string>& binIDS,
-                         const vector<float>& abunds,
-                         string reason = "update", string type = "otu");
-    // for datasets with samples
-    void setBinAbundances(const vector<string>& binIDS,
-                          const vector<vector<float>>& abunds,
-                          string reason = "update", string type = "otu");
 
     // set sequence string and optionally comments
     void setSequences(const vector<string>& names,
@@ -638,7 +619,6 @@ private:
 
     // sequence taxonomy assignments
     vector<string> taxonomies;
-
     vector<Reference> references;
 
     // boolean indicating if sequences is "good"
@@ -652,6 +632,7 @@ private:
     // sequences that represented 230 total sequences.
     map<string, vector<double> > badAccnos;
     double uniqueBad;
+    bool hasList;
 
     // count table data
     AbundTable count;
@@ -679,14 +660,15 @@ private:
 
     friend class cereal::access; // Grants Cereal access
 
+    // 28
     template<class Archive>
     void serialize(Archive& ar) {
-        ar(names, seqs, comments, trashCodes, references,
-           starts, ends, lengths, ambigs, polymers, numns, taxonomies,
-           tableSeqs, seqIndex, badAccnos, uniqueBad, count, binTables,
-           datasetName, alignmentLength, isAligned,
-           hasSequenceData, hasSequenceTaxonomy, numUnique, processors,
-           reports, metadata);
+        ar(datasetName, processors, alignmentLength, isAligned, hasSequenceData,
+           hasSequenceTaxonomy, numUnique, taxonomies, references, tableSeqs,
+           starts, ends, lengths, ambigs, polymers,
+           numns, names, seqs, comments, trashCodes,
+           seqIndex, badAccnos, uniqueBad, hasList, count,
+           binTables, reports, metadata);
     }
 };
 

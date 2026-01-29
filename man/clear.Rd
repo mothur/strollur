@@ -4,15 +4,10 @@
 \alias{clear}
 \title{clear}
 \usage{
-clear(data, tags = as.character(c()))
+clear(data)
 }
 \arguments{
 \item{data, }{a \link{dataset} object}
-
-\item{tags}{a vector of strings containing the items you wish to clear.
-Options are 'sequence_data', 'bin_data', 'metadata',
-'references', 'sequence_tree', 'sample_tree' and 'reports'. By default,
-everything is cleared.}
 }
 \description{
 Clear data from a \link{dataset} object

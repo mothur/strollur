@@ -4,13 +4,16 @@
 \alias{xdev_remove_samples}
 \title{xdev_remove_samples}
 \usage{
-xdev_remove_samples(data, samples)
+xdev_remove_samples(data, samples, reason = "remove_samples")
 }
 \arguments{
 \item{data, }{a \link{dataset} object.}
 
 \item{samples, }{vector of strings containing the names of the samples to
 remove.}
+
+\item{reason, }{string containing the reason for removal.
+Default = "remove_samples".}
 }
 \description{
 Designed with package integration in mind, the remove samples function allows

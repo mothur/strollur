@@ -4,7 +4,7 @@
 \alias{xdev_remove_lineages}
 \title{xdev_remove_lineages}
 \usage{
-xdev_remove_lineages(data, contaminants, trash_tag = "contaminant")
+xdev_remove_lineages(data, contaminants, reason = "contaminant")
 }
 \arguments{
 \item{data, }{a \link{dataset} object.}
@@ -12,7 +12,7 @@ xdev_remove_lineages(data, contaminants, trash_tag = "contaminant")
 \item{contaminants, }{vector of strings containing the taxonomies you would
 like to remove}
 
-\item{trash_tag, }{a string containing reason you are removing the lineages.
+\item{reason, }{a string containing reason you are removing the lineages.
 Default = "contaminant".}
 }
 \description{

@@ -1,37 +1,92 @@
 ---
-title: "Data_Transfers"
+title: "Data Transfers"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Data_Transfers}
+  %\VignetteIndexEntry{Data Transfers}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
+library(rdataset)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-The *rdataset* package stores the data associated with your microbial DNA analysis. This tutorial will explain how to save, load, copy, export, and import your dataset object. If you haven't reviewed the [Getting Started](Getting-Started.html) tuturial, we recommend you start there. First let's load the rdataset package.
+The *rdataset* package stores the data associated with your microbial DNA analysis. This tutorial will explain how to save, load, copy, export, and import your dataset object. If you haven't reviewed the [Getting Started](Getting-Started.html) tuturial, we recommend you start there. 
 
-```{r setup}
-library(rdataset)
-```
-We can use the **miseq_sop_example** function to create a dataset object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
+Let's use the `miseq_sop_example()` function to create a dataset object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
 
 ```{r}
 miseq <- miseq_sop_example()
 miseq
 ```
 
-## Save
+## Saving and Loading
 
-## Load
+The rdataset package has a function to save a dataset object as an *.rds* file, `save_dataset()`, and a function to create a dataset from an *.rds* file, `load_dataset()`. Let's use the miseq data object to learn how to do that.
+
+
+```{r}
+save_dataset(data = miseq, file = "miseq_sop.rds")
+
+miseq_from_rds <- load_dataset(file = "miseq_sop.rds")
+miseq_from_rds
+unlink("miseq_sop.rds")
+```
+
+We can see that the summaries of miseq and miseq_from_rds are identical. Let's modify miseq_from_rds to verify they are not referring to the same object. We will add clusters created by [mothur](https://mothur.org) using [vsearch's](https://github.com/torognes/vsearch) distance-based greedy clustering (dgc) algorithm. 
+
+```{r}
+dgc_data <- read_mothur_list(list = rdataset_example("final.dgc.list"))
+
+assign(data = miseq_from_rds, table = dgc_data, bin_type = "dgc")
+miseq_from_rds
+miseq
+```
+
+We can see from the summary that 361 'dgc' bins were added to miseq_from_rds and not to miseq.
+
+## Export and Import
+
+The *.rds* file is in binary format and is not human readable. You can use the `export_dataset()` to see a human readable form of the raw data stored in the dataset. Let's export *miseq* and look at the table created.
+
+```{r}
+table <- export_dataset(data = miseq)
+str(table)
+```
+
+Similarly to `load_dataset()`, you can use the `import_dataset()` function to create a new dataset object from the exported table. 
+
+```{r}
+miseq_import <- import_dataset(table = table)
+miseq_import
+```
+
+Again, we can see that the summary of miseq_import is identical to the summary of miseq.
 
 ## Copy
 
-## Export
+Lastly, you can make a deep copy of your dataset using the `copy_dataset()` function. Note, if you use an assignment operator to copy it's a shallow copy. The dataset object is an R6 object to keep the memory usage low. First let's learn how to use the `copy_dataset()` function, then we will take a closer look at how deep and shallow copying differ.
 
-## Import
+```{r}
+miseq_deep_copy <- copy_dataset(data = miseq)
+
+miseq_shallow_copy <- miseq
+```
+
+Let's add the dgc_data to miseq_shallow_copy and then compare miseq, miseq_deep_copy, and mise_shallow_copy.
+
+```{r}
+assign(data = miseq_shallow_copy, table = dgc_data, bin_type = "dgc")
+
+miseq
+
+miseq_shallow_copy
+
+miseq_deep_copy
+```
+
+You can see from the summaries that the dgc_data was added to both miseq and miseq_shallow_copy because they actually reference the same object, but miseq_deep_copy was not modified.

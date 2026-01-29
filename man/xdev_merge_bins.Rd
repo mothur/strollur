@@ -4,7 +4,7 @@
 \alias{xdev_merge_bins}
 \title{xdev_merge_bins}
 \usage{
-xdev_merge_bins(data, bin_names, reason = "merged", type = "otu")
+xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 }
 \arguments{
 \item{data, }{a \link{dataset} object.}
@@ -16,7 +16,8 @@ bin_id in the vector.}
 \item{reason, }{a string indicating why you are merging bins. Default =
 "merged".}
 
-\item{type, }{a string indicating the type of bin clusters. Default = "otu"}
+\item{bin_type, }{a string indicating the type of bin clusters.
+Default = "otu"}
 }
 \description{
 Designed with package integration in mind, the merge bins function allows

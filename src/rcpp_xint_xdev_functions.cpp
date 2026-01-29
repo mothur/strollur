@@ -308,8 +308,7 @@ double xdev_assign_bins(Rcpp::Environment data,
     Rcpp::XPtr<Dataset> d = data["data"];
 
     // if you have list assignments, don't allow setting bin abundances
-    if (d.get()->hasListAssignments(bin_type) && ((abundances.size() != 0) ||
-        (samples.size() != 0))) {
+    if (d.get()->hasListAssignments() && ((abundances.size() != 0) || (samples.size() != 0))) {
         string message = "[ERROR]: You cannot assign abundance and sample data";
         message += " to bins that have sequence assignments. This could cause ";
         message += "inconsistencies.";
@@ -571,7 +570,7 @@ double xdev_assign_treatments(Rcpp::Environment data,
 
     // make sure every sample in dataset is assigned a treatment
     if (!identical(d.get()->getSamples(), unique(samples))) {
-        string message = "[ERROR]: You must provide treatment assignments for";
+        string message = "You must provide treatment assignments for";
         message += " all samples in your dataset.";
         RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
@@ -679,9 +678,9 @@ vector<string> xdev_get_sequences(Rcpp::Environment data, string sample) {
 }
 /******************************************************************************/
 void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
-                      string reason, string type) {
+                      string reason, string bin_type) {
      Rcpp::XPtr<Dataset> d = data["data"];
-     d.get()->mergeBins(bin_names, reason, type);
+     d.get()->mergeBins(bin_names, reason, bin_type);
 }
 /******************************************************************************/
 void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
@@ -746,20 +745,21 @@ const vector<string> xdev_names(Rcpp::Environment data,
 }
 /******************************************************************************/
 void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
-                       vector<string> trash_tags, string type) {
+                       vector<string> trash_tags, string bin_type) {
      Rcpp::XPtr<Dataset> d = data["data"];
-     d.get()->removeBins(bin_names, trash_tags, type);
+     d.get()->removeBins(bin_names, trash_tags, bin_type);
 }
 /******************************************************************************/
 void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants,
-                           string trash_tag) {
+                           string reason) {
      Rcpp::XPtr<Dataset> d = data["data"];
-     d.get()->removeLineages(contaminants, trash_tag);
+     d.get()->removeLineages(contaminants, reason);
 }
 /******************************************************************************/
-void xdev_remove_samples(Rcpp::Environment data, vector<string> samples) {
+void xdev_remove_samples(Rcpp::Environment data, vector<string> samples,
+                         string reason) {
      Rcpp::XPtr<Dataset> d = data["data"];
-     d.get()->removeSamples(samples);
+     d.get()->removeSamples(samples, reason);
 }
 /******************************************************************************/
 void xdev_remove_sequences(Rcpp::Environment data,
@@ -768,6 +768,64 @@ void xdev_remove_sequences(Rcpp::Environment data,
 
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeSequences(sequence_names, trash_tags);
+}
+/******************************************************************************/
+Rcpp::DataFrame xdev_report(Rcpp::Environment data, string type,
+                            string bin_type) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    // sequence_data reports contain the starts, ends, ambigs,...
+    if (type == "sequences") {
+        return d.get()->getSequenceReport();
+    }
+    // sequence fasta data
+    else if (type == "fasta") {
+        return d.get()->getFastaReport();
+    }
+    // sequence bin assignments report
+    else if (type == "sequence_bin_assignments") {
+        return d.get()->getList(bin_type);
+    }
+    // sample treatment assignments report
+    else if (type == "sample_assignments") {
+        return d.get()->getSampleTreatmentAssignments();
+    }
+    // representative sequences assignments report
+    else if (type == "bin_representatives") {
+        return d.get()->getBinRepresentativeSequences(bin_type);
+    }
+    // sequence classification report
+    else if (type == "sequence_taxonomy") {
+        return d.get()->getSequenceTaxonomyReport();
+    }
+    // bin classification report
+    else if (type == "bin_taxonomy") {
+        return d.get()->getBinTaxonomyReport(bin_type);
+    }
+    // sequence_scrap report
+    else if (type == "sequence_scrap") {
+        return d.get()->getScrapReport("sequence");
+    }
+    // bin_scrap report
+    else if (type == "bin_scrap") {
+        return d.get()->getScrapReport(bin_type);
+    }
+    // metadata
+    else if (type == "metadata") {
+        return d.get()->getMetadata();
+    }
+    // references
+    else if (type == "references") {
+        return d.get()->getReferences();
+    }
+    else {
+        // custom reports like alignreport, contigs report and chimera reports
+        return d.get()->getReports(type);
+    }
+
+    // empty report
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 void xdev_set_abundance(Rcpp::Environment data,
@@ -803,53 +861,6 @@ void xdev_set_abundances(Rcpp::Environment data,
          message += "Try 'set_abundance' instead of 'set_abundances'.";
          RcppThread::Rcerr << endl << message << endl;
          throw Rcpp::exception(message.c_str());
-     }
-}
-/******************************************************************************/
-void xdev_set_bin_abundance(Rcpp::Environment data,
-                             vector<string> bin_names,
-                             vector<float> abundances,
-                             string type, string reason) {
-
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-     if (d.get()->hasListAssignments(type)) {
-         string message = "[ERROR]: You cannot set the bin abundance for bin ";
-         message += "clusters with sequence assignments.";
-         RcppThread::Rcerr << endl << message << endl;
-         throw Rcpp::exception(message.c_str());
-
-     }else if (d.get()->getNumSamples() != 0) {
-         string message = "[ERROR]: You cannot set the total bin abundance";
-         message += " for bins whose abundances are parsed by sample. ";
-         message += "Try 'set_bin_abundances' instead of 'set_bin_abundance'.";
-         RcppThread::Rcerr << endl << message << endl;
-         throw Rcpp::exception(message.c_str());
-     }else{
-         d.get()->setBinAbundance(bin_names, abundances, reason, type);
-     }
-}
-/******************************************************************************/
-void xdev_set_bin_abundances(Rcpp::Environment data,
-                              vector<string> bin_names,
-                              vector<vector<float>> abundances,
-                              string type, string reason) {
-
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-     if (d.get()->hasListAssignments(type)) {
-         string message = "[ERROR]: You cannot set the bin abundance for bin ";
-         message += "clusters with sequence assignments.";
-         RcppThread::Rcerr << endl << message << endl;
-         throw Rcpp::exception(message.c_str());
-     }else if (d.get()->getNumSamples() == 0) {
-         string message = "[ERROR]: You cannot set parsed bin abundances ";
-         message += "when your dataset does not include sample data. ";
-         message += "Try 'set_bin_abundance' instead of 'set_bin_abundances'.";
-         RcppThread::Rcerr << endl << message << endl;
-         throw Rcpp::exception(message.c_str());
-     }else{
-         d.get()->setBinAbundances(bin_names, abundances, reason, type);
      }
 }
 /******************************************************************************/

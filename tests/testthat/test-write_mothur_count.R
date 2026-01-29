@@ -33,13 +33,6 @@ test_that("write_mothur_count - with sample data", {
   rownames(expected) <- NULL
 
   expect_equal(expected, actual)
-
-  data <- read_mothur(
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
-    dataset_name = "data"
-  )
-
-  expect_equal(write_mothur_count(data), "no_sequence_data")
 })
 
 test_that("write_mothur_count - without sample data", {
