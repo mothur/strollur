@@ -301,6 +301,9 @@ sequence_tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
 data$add_sample_tree(sample_tree)
 data$add_sequence_tree(sequence_tree)
 
+#| fig.alt: >
+#|   Plot of Miseq_SOP's sample relationship tree
+#|
 plot(data$get_sample_tree(),
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"

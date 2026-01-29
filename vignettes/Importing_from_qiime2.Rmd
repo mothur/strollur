@@ -15,7 +15,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Importing Data From Qiime2
 
 *rdataset* includes the function `read_qiime2()` as well as several functions to read [qiime2](https://qiime2.org) output files individually. To create a dataset from the outputs of the [qiime2 moving-pictures example](https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html), run the following:
 
@@ -39,6 +38,13 @@ To view a summary of data:
 ```{r}
 data
 ```
+
+## Reading Individual Files
+
+* `unpack_qiime2_artifact()` unpacks qiime2 *qza* files and returns an artifact
+* `read_qiime2_feature_table()` reads a qiime2 *qza* file containing bin data
+* `read_qiime2_taxonomy()` reads a qiime2 *qza* file containing containing taxonomy data
+* `read_qiime2_metadata()` read qiime2 *tsv* table containing metadata
 
 To create a dataset and read the individual files, you can use the functions below. First let's create a dataset named my_data.
 
@@ -65,8 +71,11 @@ fasta_data <- read_fasta(fasta = fasta_file)
 fasta_data is a data.frame containing sequence names, sequence nucleotide strings, and comments if provided. You can add the FASTA sequences to your dataset using the `add()` function:
 
 ```{r}
-add(data = my_data, table = fasta_data, type = "sequences")
-my_data
+add(
+  data = my_data,
+  table = fasta_data,
+  type = "sequences"
+)
 ```
 
 You can remove the fasta_artifact using the unlink function:
@@ -75,88 +84,42 @@ You can remove the fasta_artifact using the unlink function:
 unlink(file.path(getwd(), "rep_seqs"), recursive = TRUE)
 ```
 
-Now that we have added the FASTA sequences, let's unpack the abundance data found in the table.qza file.
+Now that we have added the FASTA sequences, let's read the abundance data found in the table.qza file. Since we know that the sequences are in fact features, we will assign the abundances to the sequences and then we can assign the sequences to bins to create [Amplicon Sequence Variant](https://en.wikipedia.org/wiki/Amplicon_sequence_variant) *asv* clusters. Let's use the `read_qiime2_feature_table()` function to extract the abundance table.
 
 ```{r}
-abundance_artifact <- unpack_qiime2_artifact(
-  qza =
-    rdataset_example("table.qza")
+abundance <- read_qiime2_feature_table(rdataset_example("table.qza"))
+
+assign(
+  data = my_data,
+  table = abundance$data,
+  type = "sequence_abundance",
+  table_names = list(sequence_name = "bin_names")
 )
-```
 
-To read the abundance data you can use the `rbiom::`read_biom()` function:
-
-```{r}
-biom_file <- file.path(
-  getwd(), "table", abundance_artifact$uuid, "data",
-  "feature-table.biom"
+assign(
+  data = my_data,
+  table = abundance$data,
+  type = "bins",
+  bin_type = "asv",
+  table_names = list(sequence_name = "bin_names")
 )
-biom_table <- rbiom::read_biom(biom_file)
-abundance_data <- data.frame(
-  sequence_names = biom_table$otus[biom_table$counts$i],
-  abundances = biom_table$counts$v,
-  samples = biom_table$samples[biom_table$counts$j]
-)
-```
 
-abundance_data is a data.frame containing sequence_names, samples, and abundances. You can add the sequence abundance data to your dataset as follows:
-
-```{r}
-assign(data = my_data, table = abundance_data, type = "sequence_abundance")
 my_data
 ```
 
-You can remove the abundance_artifact using the following:
+Now that we have added the abundance data and assigned the sequences to bins, let's take a look at the taxonomic classifications provided in the taxonomy.qza file. We will use the `read_qiime2_taxonomy()` function to extract the feature classification table.
 
 ```{r}
-unlink(file.path(getwd(), "table"), recursive = TRUE)
-```
+taxonomy <- read_qiime2_taxonomy(rdataset_example("taxonomy.qza"))
 
-Since we know that the sequences are in fact features, we can assign the sequences to bins to create asv clusters. 
-
-```{r}
 assign(
-  data = my_data, table = fasta_data, type = "bins", bin_type = "asv",
-  table_names = list(
-    sequence_name = "sequence_names",
-    bin_name = "sequence_names"
-  )
+  data = my_data,
+  table = taxonomy$data,
+  type = "sequence_taxonomy",
+  table_names = list(sequence_name = "bin_names")
 )
 ```
 
-Now that we have added the abundance data and assigned the sequences to bins, let's take a look at the taxonomic classifications provided in the taxonomy.qza file.
-
-```{r}
-taxonomy_artifact <- unpack_qiime2_artifact(qza = rdataset_example(
-  "taxonomy.qza"
-))
-```
-
-To read the sequence classification data you can use the `read_table()` function:
-
-```{r}
-taxonomy_file <- file.path(
-  getwd(), "taxonomy", taxonomy_artifact$uuid, "data",
-  "taxonomy.tsv"
-)
-taxonomy_table <- read.table(taxonomy_file,
-  sep = "\t", header = TRUE,
-  quote = ""
-)
-names(taxonomy_table) <- c("sequence_names", "taxonomies", "confidences")
-```
-
-To add the classification data to your dataset, you can use the `assign()` function.
-
-```{r}
-assign(data = my_data, table = taxonomy_table, type = "sequence_taxonomy")
-```
-
-You can remove the taxonomy_artifact using the following:
-
-```{r}
-unlink(file.path(getwd(), "taxonomy"), recursive = TRUE)
-```
 
 Now, lets add a tree that shows the relationships between the sequences (features).
 

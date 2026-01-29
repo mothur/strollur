@@ -727,7 +727,7 @@ xdev_get_list_vector <- function(data, type = "otu") {
 #' xdev_get_by_sample(data, "sequence_names")
 #'
 #' # To get the sequence nucleotide strings parsed by sample
-#' xdev_get_by_sample(data, "sequences")
+#' parsed_sequences <- xdev_get_by_sample(data, "sequences")
 #'
 #' @return 2D vector of strings ([num_seqs][num_samples]) containing data
 #' requested parsed by sample.
