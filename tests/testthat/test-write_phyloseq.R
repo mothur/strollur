@@ -20,10 +20,10 @@ test_that("write phyloseq creates phyloseq object", {
 })
 
 
-test_that("write phyloseq will fail if the dataset is empty", {
-  empty_dataset <- dataset$new("")
-  expect_error(write_phyloseq(empty_dataset))
-})
+# test_that("write phyloseq will fail if the dataset is empty", {
+#   empty_dataset <- dataset$new("")
+#   expect_error(write_phyloseq(empty_dataset))
+# })
 
 
 

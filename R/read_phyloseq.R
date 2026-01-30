@@ -5,7 +5,6 @@ read_phyloseq <- function(phyloseq_object, dataset_name = "") {
 
   rdaset_object <- dataset$new(dataset_name)
 
-
   #samples
   if(!is.null(phyloseq::get_sample(phyloseq_object))) {
     sample_df <- phyloseq::get_sample(phyloseq_object)
@@ -29,7 +28,7 @@ read_phyloseq <- function(phyloseq_object, dataset_name = "") {
       times = colnames(shaped)[-1],
       timevar = "samples",
     )
-    shared_table$abundances <- as.integer(shared_table$abundances)
+    shared_table$abundances <- as.numeric(shared_table$abundances)
     xdev_assign_sequence_abundance(
         rdaset_object,
         shared_table[ ,c("sequence_names", "abundances", "samples")]
@@ -50,7 +49,6 @@ read_phyloseq <- function(phyloseq_object, dataset_name = "") {
     df <- data.frame(phyloseq::sample_data(phyloseq_object)@.Data)
     df <- data.frame(apply(df, 2, as.character)) # only works as a character (report.cpp line 36)
     colnames(df) <- phyloseq::sample_data(phyloseq_object)@names
-    df$rownames <- phyloseq::sample_names(phyloseq_object)
     add(
         data = rdaset_object,
         table = df,

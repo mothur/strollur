@@ -2,7 +2,7 @@ write_phyloseq <- function(data) {
   if(!requireNamespace("phyloseq", quietly = TRUE)) {
     stop("To use this functionality you have to install the phyloseq package")
   }
-  
+
   phyloseq_parameter_list <- vector("list", 4)
   if(nrow(abundance(data = data, type = "sequences")) > 0) {
     abundances <- abundance(data = data, type = "sequences", by_sample = TRUE) 
@@ -18,7 +18,7 @@ write_phyloseq <- function(data) {
             idvar = "sequence_names",
     )
     abundances[is.na(abundances)] <- 0
-    colnames(abundances) <- sub(".*\\.", "", colnames(abundances))
+    colnames(abundances) <- sub("[^.]+\\.", "", colnames(abundances))
     otu_table <- as.matrix(abundances[,2:ncol(abundances)])
     rownames(otu_table) <- abundances$sequence_names
     phyloseq_parameter_list[[1]] <- phyloseq::otu_table(otu_table, TRUE)
@@ -41,9 +41,10 @@ write_phyloseq <- function(data) {
       )
 
     colnames(taxas) <- c("id", paste("level_", seq(1, ncol(taxas) - 1), sep=""))
-    rownames(taxas) <- taxas$id  
+    sequence_names <- taxas$id  
     taxas <- as.matrix(taxas[, colnames(taxas) != "id"])
     taxas[which(taxas == "NA")] <- NA
+    rownames(taxas) <- sequence_names
     phyloseq_parameter_list[[2]] <- phyloseq::tax_table(taxas)
   }
   
@@ -53,8 +54,7 @@ write_phyloseq <- function(data) {
 
   metadata <- report(data, "metadata")
   if(!is.null(metadata) && nrow(metadata) > 0) {
-    rownames(metadata) <- metadata$rownames
-    metadata$rownames <- NULL
+    rownames(metadata) <- colnames(otu_table)
     phyloseq_parameter_list[[4]] <- phyloseq::sample_data(metadata)
   } 
 
