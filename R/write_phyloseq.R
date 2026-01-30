@@ -2,7 +2,7 @@ write_phyloseq <- function(data) {
   if(!requireNamespace("phyloseq", quietly = TRUE)) {
     stop("To use this functionality you have to install the phyloseq package")
   }
-
+  
   phyloseq_parameter_list <- vector("list", 4)
   if(nrow(abundance(data = data, type = "sequences")) > 0) {
     abundances <- abundance(data = data, type = "sequences", by_sample = TRUE) 
