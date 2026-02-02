@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# rdataset
+# rdataset <img src="man/figures/logo.png" align="right" height="136" alt="" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml)
