@@ -755,7 +755,7 @@ test_that("dataset - ", {
   tax3 <- "Bacteria;Firmicutes;Bacilli;"
   tax4 <- "Bacteria;Proteobacteria;Gammaproteobacteria;"
   taxonomies <- c(tax1, tax2, tax3, tax4)
-
+  #---------------------------------------------------------#
   dataset_t <- dataset$new("my_dataset")
   assign(data = dataset_t, table = data.frame(
     sequence_names = names,
@@ -776,7 +776,7 @@ test_that("dataset - ", {
   tax3 <- "Bacteria;Firmicutes;Bacilli;Lactobacillales;Streptococcaceae;"
   tax4 <- "Bacteria;Proteobacteria;"
   taxonomies <- c(tax1, tax2, tax3, tax4)
-
+  #---------------------------------------------------------#
   dataset_t <- dataset$new("my_dataset")
   xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
@@ -818,7 +818,7 @@ test_that("dataset - ", {
   tax3 <- paste0(tax3, "Streptococcaceae(85)")
   tax4 <- "Bacteria(100);Proteobacteria(95);"
   taxonomies <- c(tax1, tax2, tax3, tax4)
-
+  #---------------------------------------------------------#
   dataset_t <- dataset$new("my_dataset")
   xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
@@ -885,7 +885,7 @@ test_that("dataset - ", {
     "Proteobacteria_unclassified"
   ), report$taxon)
   expect_equal(report$confidence, c(100, 34, 34, 34, 100, 100, 100, 100))
-
+  #---------------------------------------------------------#
   clear(dataset_t)
   bin_ids <- c("bin1", "bin2", "bin3", "bin4")
   taxonomies <- c(
@@ -988,7 +988,7 @@ test_that("dataset - ", {
   ))
 
   expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
-
+  #---------------------------------------------------------#
   clear(dataset_t)
 
   table <- readr::read_tsv(rdataset_example("final.cons.taxonomy"),
@@ -1051,10 +1051,6 @@ test_that("dataset - add_metadata, get_metadata", {
   expect_equal(metadata[[8, 3]], "left palm")
   expect_equal(metadata[[2, 3]], "gut")
   expect_equal(metadata[[3, 7]], "subject-1")
-
-  clear(dataset_t, "metadata")
-  metadata <- report(dataset_t, "metadata")
-  expect_equal(nrow(metadata), 0)
 })
 
 test_that("dataset - add_references, get_references", {
@@ -1119,12 +1115,6 @@ test_that("dataset - add_references, get_references", {
   expect_equal(references[[2, 2]], "NA")
   expect_equal(references[[3, 2]], "1.38.1")
   expect_equal(references[[1, 4]], "This is my mothur note")
-
-  dataset_t$clear("bad_type")
-  expect_equal(nrow(report(dataset_t, "references")), 3)
-
-  clear(dataset_t, c("references"))
-  expect_equal(nrow(report(dataset_t, "references")), 0)
 })
 
 test_that("dataset - add_alignment_report, get_alignment_report", {
@@ -1153,7 +1143,7 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
   expect_equal(align_report[[5, 8]], 1)
   expect_equal(align_report[[4, 4]], 292)
 
-  clear(dataset_t, "reports")
+  clear(dataset_t)
   expect_equal(report(dataset_t, "align_report"), data.frame())
 
   # no report added because of missing entries
@@ -1183,9 +1173,7 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   expect_equal(round(report[[5, 8]], digits = 4), 0.0257)
   expect_equal(report[[4, 4]], 2)
 
-  clear(dataset_t, "reports")
-  expect_equal(length(report(dataset_t, "contigs_report")), 0)
-  expect_equal(count(dataset_t, "sequences"), 5)
+  clear(dataset_t)
   xdev_add_report(dataset_t, report, "contigs_report", "Name")
 
   report <- report(dataset_t, "contigs_report")
@@ -1219,9 +1207,8 @@ test_that("dataset - add / get _chimera_report,", {
   expect_equal(report[[8, 17]], "N")
   expect_equal(report[[67, 17]], "Y")
 
-  clear(dataset_t, "reports")
+  clear(dataset_t)
   expect_equal(length(report(dataset_t, "chimera_report")), 0)
-  expect_equal(count(dataset_t, "sequences"), 71)
   xdev_add_report(dataset_t, report, "chimera_report", "Query")
 
   report <- report(dataset_t, "chimera_report")
@@ -1232,12 +1219,6 @@ test_that("dataset - add / get _chimera_report,", {
   chimera_summary <- dataset_t$get_summary()[["chimera_report"]]
 
   expect_equal(ncol(chimera_summary), 13)
-
-  # no report added because of missing entries
-  clear(dataset_t, "reports")
-  xdev_add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
-  xdev_add_report(dataset_t, report, "chimera_report", "Query")
-  expect_equal(length(report(dataset_t, "chimera_report")), 0)
 })
 
 test_that("dataset - get_sequence_summary,", {
@@ -1613,11 +1594,11 @@ test_that("dataset - export,", {
 })
 
 test_that("dataset - assign_bin_representative_sequences", {
-  # create dataset sequences and shared data
+  # create dataset
   dataset_t <- read_mothur(
     fasta = rdataset_example("final.fasta"),
     count = rdataset_example("final.count_table"),
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
+    otu_list = rdataset_example("final.opti_mcc.list"),
     dataset_name = "miseq_sop"
   )
 
@@ -1641,35 +1622,6 @@ test_that("dataset - assign_bin_representative_sequences", {
   expect_equal(df[[1]], bin_names)
   expect_equal(df[[2]], rep_names)
   expect_equal(df[[3]], xdev_get_sequences(dataset_t)[1:num_bins])
-
-  # create dataset only shared data, this forces assign_bin_reps to add seqs
-  dataset_t <- read_mothur(
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
-    dataset_name = "miseq_sop"
-  )
-
-  assign(
-    data = dataset_t,
-    table = data.frame(
-      bin_names = bin_names,
-      sequence_names = rep_names
-    ),
-    type = "bin_representatives",
-    bin_type = "otu"
-  )
-
-  df <- report(dataset_t, "bin_representatives")
-  expect_equal(df[[1]], bin_names)
-  expect_equal(df[[2]], rep_names)
-  expect_equal(df[, 3], rep("", num_bins))
-
-  expect_error(xdev_assign_bin_representative_sequences(
-    dataset_t,
-    data.frame(
-      bin_names = bin_names,
-      sequence_names = c("not", "enough", "sequence", "names")
-    )
-  ))
 
   d <- dataset$new()
   expect_equal(report(d, "bin_representatives"), data.frame())

@@ -93,29 +93,21 @@ copy_dataset <- function(data) {
 #' Clear data from a \link{dataset} object
 #'
 #' @param data, a \link{dataset} object
-#' @param tags a vector of strings containing the items you wish to clear.
-#' Options are 'sequence_data', 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree' and 'reports'. By default,
-#' everything is cleared.
 #'
 #' @examples
 #'
 #' data <- miseq_sop_example()
 #' clear(data)
 #'
-clear <- function(data, tags = as.character( c())) {
-    invisible(.Call(`_rdataset_clear`, data, tags))
+clear <- function(data) {
+    invisible(.Call(`_rdataset_clear`, data))
 }
 
 #' @title export_dataset
 #' @description
-#' Export all data from an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param tags a vector of strings containing the items you wish to export.
-#' Options are 'sequence_data' and 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
-#' By default, everything is exported.
+#' Export all data from a \link{dataset} object.
+#'
+#' @param data, a \link{dataset} object
 #'
 #' @examples
 #'
@@ -123,8 +115,8 @@ clear <- function(data, tags = as.character( c())) {
 #' export_dataset(dataset)
 #'
 #' @return Rcpp::List, containing the data in the 'Dataset
-export_dataset <- function(data, tags = as.character( c())) {
-    .Call(`_rdataset_export_dataset`, data, tags)
+export_dataset <- function(data) {
+    .Call(`_rdataset_export_dataset`, data)
 }
 
 #' @title get_bin_types
@@ -188,106 +180,6 @@ has_sequence_strings <- function(data) {
 #' @return Boolean
 is_aligned <- function(data) {
     .Call(`_rdataset_is_aligned`, data)
-}
-
-#' @title report
-#' @description
-#' Get a data.frame containing the given report in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type, string containing the type of report you would like. Options
-#' include: "sequences", "sequence_bin_assignments", "sequence_taxonomy",
-#' "bin_taxonomy", "bin_representatives","sample_assignments", "metadata",
-#' "references", "sequence_scrap", "bin_scrap". If you have added custom
-#' reports for alignment, contigs_assembly or chimeras, you can get those as well.
-#'  Default = "sequences".
-#'
-#' @param bin_type, string containing the bin type you would like a bin_taxonomy
-#' report for. Default = "otu".
-#'
-#' @examples
-#'
-#' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
-#'
-#' miseq <- miseq_sop_example()
-#'
-#' # To get a report about the FASTA data
-#'
-#' sequence_report <- report(data = miseq, type = "sequences")
-#' head(sequence_report, n = 10)
-#'
-#' # To get the sequence bin assignments
-#'
-#' bin_assignments <- report(data = miseq, type = "sequence_bin_assignments",
-#'                           bin_type = "otu")
-#' head(bin_assignments, n = 10)
-#'
-#' # To get the sample treatment assignments
-#'
-#' report(data = miseq, type = "sample_assignments")
-#'
-#' # To get a report about sequence classifications
-#'
-#' sequence_taxonomy_report <- report(data = miseq,
-#'                                        type = "sequence_taxonomy")
-#' head(sequence_taxonomy_report, n = 10)
-#'
-#' # To get a report about bin classifications for 'otu' data
-#'
-#' otu_taxonomy_report <- report(data = miseq,
-#'                                        type = "bin_taxonomy",
-#'                                        bin_type = "otu")
-#' head(otu_taxonomy_report, n = 10)
-#'
-#' # To get a report about bin classifications for 'asv' data
-#'
-#' asv_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-#'                               bin_type = "asv")
-#' head(asv_taxonomy_report, n = 10)
-#'
-#' # To get a report about bin classifications for 'phylotype' data
-#'
-#' phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-#'                                     bin_type = "phylotype")
-#' head(phylotype_taxonomy_report, n = 10)
-#'
-#' # To get the 'otu' bin representative sequences
-#'
-#' otu_bin_reps <- report(data = miseq, type = "bin_representatives",
-#'                        bin_type = "otu")
-#' head(otu_bin_reps, n = 10)
-#'
-#' # To get a report about the sequences removed during your analysis:
-#'
-#' scrapped_sequence_report <- report(data = miseq, type = "sequence_scrap")
-#'
-#' # To get a report about the "otu" bins removed during your analysis:
-#'
-#' scrapped_otu_report <- report(data = miseq, type = "bin_scrap",
-#'                               bin_type = "otu")
-#'
-#' # To get a report about the "phylotype" bins removed during your analysis:
-#'
-#' scrapped_phylotype_report <- report(data = miseq, type = "bin_scrap",
-#'                                     bin_type = "phylotype")
-#'
-#' # To get the metadata associated with your data:
-#'
-#' metadata <- report(data = miseq, type = "metadata")
-#'
-#' # To get the resource references associated with your data:
-#'
-#' references <- report(data = miseq, type = "references")
-#'
-#' # To get our custom report containing the contigs assembly data:
-#'
-#' contigs_report <- report(data = miseq, type = "contigs_report")
-#' head(contigs_report, n = 10)
-#'
-#' @return data.frame
-report <- function(data, type = "sequences", bin_type = "otu") {
-    .Call(`_rdataset_report`, data, type, bin_type)
 }
 
 #' @title xdev_abundance
@@ -835,7 +727,7 @@ xdev_get_list_vector <- function(data, type = "otu") {
 #' xdev_get_by_sample(data, "sequence_names")
 #'
 #' # To get the sequence nucleotide strings parsed by sample
-#' xdev_get_by_sample(data, "sequences")
+#' parsed_sequences <- xdev_get_by_sample(data, "sequences")
 #'
 #' @return 2D vector of strings ([num_seqs][num_samples]) containing data
 #' requested parsed by sample.
@@ -874,7 +766,8 @@ xdev_get_sequences <- function(data, sample = "") {
 #' bin_id in the vector.
 #' @param reason, a string indicating why you are merging bins. Default =
 #' "merged".
-#' @param type, a string indicating the type of bin clusters. Default = "otu"
+#' @param bin_type, a string indicating the type of bin clusters.
+#'  Default = "otu"
 #'
 #' @examples
 #'
@@ -891,8 +784,8 @@ xdev_get_sequences <- function(data, sample = "") {
 #'
 #'  report(data = data, type = "bin_scrap")
 #'
-xdev_merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
-    invisible(.Call(`_rdataset_xdev_merge_bins`, data, bin_names, reason, type))
+xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu") {
+    invisible(.Call(`_rdataset_xdev_merge_bins`, data, bin_names, reason, bin_type))
 }
 
 #' @title xdev_merge_sequences
@@ -910,16 +803,32 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 #'
 #' @examples
 #'
-#' data <- miseq_sop_example()
+#' sequence_names <- c("seq1", "seq2", "seq3", "seq3",
+#'                "seq4", "seq4", "seq5", "seq6",
+#'                "seq7", "seq8", "seq9", "seq9",
+#'                "seq10", "seq10", "seq10", "seq10")
 #'
-#' count(data = data, type = "sequences")
+#' samples <- c("sample1", "sample2", "sample4", "sample5",
+#'              "sample1", "sample2", "sample1", "sample1",
+#'              "sample2", "sample4", "sample4", "sample5",
+#'              "sample1", "sample3", "sample5", "sample6")
 #'
-#' # For the sake of example let's merge the first 3 sequences from
-#' # miseq_sop_example:
+#' abundances <- c(10, 10, 5, 5, 5, 5,
+#'                 10, 10, 10, 10, 5, 5,
+#'                 1, 2, 3, 4)
 #'
-#' seqs_to_merge <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
-#'                    "M00967_43_000000000-A3JHG_1_1113_12711_3318",
-#'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
+#' data <- new_dataset("my_data")
+#'
+#'
+#' assign(data = data,
+#'        table = data.frame(sequence_names = sequence_names,
+#'                           abundances = abundances,
+#'                           samples = samples),
+#'        type = "sequence_abundance")
+#'
+#' # For the sake of example let's merge the first 3 sequences.
+#'
+#' seqs_to_merge <- c("seq1", "seq2", "seq3")
 #'
 #' xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 #'
@@ -1013,7 +922,7 @@ xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #' would like removed.
 #' @param trash_tags, a vector of strings containing the reasons you are
 #' removing each bin
-#' @param type a string indicating the type of clusters.
+#' @param bin_type a string indicating the type of clusters.
 #' @examples
 #'
 #'   data <- new_dataset(dataset_name = "my_dataset")
@@ -1035,8 +944,8 @@ xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #'
 #'   count(data = data, type = "bins", bin_type = "otu")
 #'
-xdev_remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
-    invisible(.Call(`_rdataset_xdev_remove_bins`, data, bin_names, trash_tags, type))
+xdev_remove_bins <- function(data, bin_names, trash_tags, bin_type = "otu") {
+    invisible(.Call(`_rdataset_xdev_remove_bins`, data, bin_names, trash_tags, bin_type))
 }
 
 #' @title xdev_remove_lineages
@@ -1048,7 +957,7 @@ xdev_remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
 #'
 #' @param contaminants, vector of strings containing the taxonomies you would
 #' like to remove
-#' @param trash_tag, a string containing reason you are removing the lineages.
+#' @param reason, a string containing reason you are removing the lineages.
 #' Default = "contaminant".
 #'
 #' @examples
@@ -1064,8 +973,8 @@ xdev_remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
 #'
 #' xdev_remove_lineages(data = data, contaminants = contaminants)
 #'
-xdev_remove_lineages <- function(data, contaminants, trash_tag = "contaminant") {
-    invisible(.Call(`_rdataset_xdev_remove_lineages`, data, contaminants, trash_tag))
+xdev_remove_lineages <- function(data, contaminants, reason = "contaminant") {
+    invisible(.Call(`_rdataset_xdev_remove_lineages`, data, contaminants, reason))
 }
 
 #' @title xdev_remove_samples
@@ -1077,6 +986,9 @@ xdev_remove_lineages <- function(data, contaminants, trash_tag = "contaminant") 
 #'
 #' @param samples, vector of strings containing the names of the samples to
 #' remove.
+#'
+#' @param reason, string containing the reason for removal.
+#'  Default = "remove_samples".
 #'
 #' @examples
 #'
@@ -1090,8 +1002,8 @@ xdev_remove_lineages <- function(data, contaminants, trash_tag = "contaminant") 
 #'
 #' count(data = data, type = "samples")
 #'
-xdev_remove_samples <- function(data, samples) {
-    invisible(.Call(`_rdataset_xdev_remove_samples`, data, samples))
+xdev_remove_samples <- function(data, samples, reason = "remove_samples") {
+    invisible(.Call(`_rdataset_xdev_remove_samples`, data, samples, reason))
 }
 
 #' @title xdev_remove_sequences
@@ -1135,6 +1047,112 @@ xdev_remove_samples <- function(data, samples) {
 #'
 xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
     invisible(.Call(`_rdataset_xdev_remove_sequences`, data, sequence_names, trash_tags))
+}
+
+#' @title xdev_report
+#' @description
+#' Get a data.frame containing the given report in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of report you would like. Options
+#' include: "fasta", "sequences", "sequence_bin_assignments",
+#' "sequence_taxonomy", "bin_taxonomy", "bin_representatives",
+#'  "sample_assignments", "metadata", "references", "sequence_scrap",
+#' "bin_scrap". If you have added custom reports for alignment,
+#' contigs_assembly or chimeras, you can get those as well.
+#'  Default = "sequences".
+#'
+#' @param bin_type, string containing the bin type you would like a bin_taxonomy
+#' report for. Default = "otu".
+#'
+#' @examples
+#'
+#' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' # To get the FASTA data
+#'
+#' fasta <- xdev_report(data = miseq, type = "fasta")
+#' head(fasta, n = 10)
+#'
+#' # To get a report about the FASTA data
+#'
+#' sequence_report <- xdev_report(data = miseq, type = "sequences")
+#' head(sequence_report, n = 10)
+#'
+#' # To get the sequence bin assignments
+#'
+#' bin_assignments <- xdev_report(data = miseq, type = "sequence_bin_assignments",
+#'                           bin_type = "otu")
+#' head(bin_assignments, n = 10)
+#'
+#' # To get the sample treatment assignments
+#'
+#' xdev_report(data = miseq, type = "sample_assignments")
+#'
+#' # To get a report about sequence classifications
+#'
+#' sequence_taxonomy_report <- xdev_report(data = miseq,
+#'                                        type = "sequence_taxonomy")
+#' head(sequence_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'otu' data
+#'
+#' otu_taxonomy_report <- xdev_report(data = miseq,
+#'                                        type = "bin_taxonomy",
+#'                                        bin_type = "otu")
+#' head(otu_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'asv' data
+#'
+#' asv_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
+#'                               bin_type = "asv")
+#' head(asv_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'phylotype' data
+#'
+#' phylotype_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
+#'                                     bin_type = "phylotype")
+#' head(phylotype_taxonomy_report, n = 10)
+#'
+#' # To get the 'otu' bin representative sequences
+#'
+#' otu_bin_reps <- xdev_report(data = miseq, type = "bin_representatives",
+#'                        bin_type = "otu")
+#' head(otu_bin_reps, n = 10)
+#'
+#' # To get a report about the sequences removed during your analysis:
+#'
+#' scrapped_sequence_report <- xdev_report(data = miseq, type = "sequence_scrap")
+#'
+#' # To get a report about the "otu" bins removed during your analysis:
+#'
+#' scrapped_otu_report <- xdev_report(data = miseq, type = "bin_scrap",
+#'                               bin_type = "otu")
+#'
+#' # To get a report about the "phylotype" bins removed during your analysis:
+#'
+#' scrapped_phylotype_report <- xdev_report(data = miseq, type = "bin_scrap",
+#'                                     bin_type = "phylotype")
+#'
+#' # To get the metadata associated with your data:
+#'
+#' metadata <- xdev_report(data = miseq, type = "metadata")
+#'
+#' # To get the resource references associated with your data:
+#'
+#' references <- xdev_report(data = miseq, type = "references")
+#'
+#' # To get our custom report containing the contigs assembly data:
+#'
+#' contigs_report <- xdev_report(data = miseq, type = "contigs_report")
+#' head(contigs_report, n = 10)
+#'
+#' @return data.frame
+xdev_report <- function(data, type = "sequences", bin_type = "otu") {
+    .Call(`_rdataset_xdev_report`, data, type, bin_type)
 }
 
 #' @title xdev_set_abundance
@@ -1212,99 +1230,6 @@ xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason
 #'
 xdev_set_abundances <- function(data, sequence_names, abundances, reason = "update") {
     invisible(.Call(`_rdataset_xdev_set_abundances`, data, sequence_names, abundances, reason))
-}
-
-#' @title xdev_set_bin_abundance
-#' @description
-#' Designed with package integration in mind, the set bin abundance function
-#' allows you to change the abundances of bins in a \link{dataset} object
-#' without sample data.
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param bin_names, a vector strings containing of bin names to set the
-#' abundances for.
-#' @param abundances, vector containing the abundances of each bin.
-#' @param type, a string indicating the type of clusters. Default = "otu".
-#' @param reason, a string containing the trash tag to be applied to any bins
-#'  set to 0 abundance. Default = "update".
-#'
-#' @examples
-#'   # For example sake, let's create a dataset with 3 bins:
-#'
-#'   data <- new_dataset(dataset_name = "my_dataset")
-#'
-#'   bin_ids <- c("bin1", "bin2", "bin3")
-#'   abundances <- c(110, 525, 80)
-#'
-#'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
-#'                                               abundances = abundances))
-#'
-#'   abundance(data, type = "bins")
-#'
-#'   # Now we can use set_bin_abundance to change the abundances of bin1 and
-#'   # bin2
-#'
-#'   bins <- c("bin1", "bin2")
-#'   new_abunds <- c(300, 250)
-#'
-#'   xdev_set_bin_abundance(data = data,
-#'                          bin_names = bins,
-#'                          abundances = new_abunds)
-#'
-#'   abundance(data, type = "bins")
-#'
-xdev_set_bin_abundance <- function(data, bin_names, abundances, type = "otu", reason = "update") {
-    invisible(.Call(`_rdataset_xdev_set_bin_abundance`, data, bin_names, abundances, type, reason))
-}
-
-#' @title xdev_set_bin_abundances
-#' @description
-#' Designed with package integration in mind, the set bin abundances function
-#' allows you to change the abundances of bins in a \link{dataset} object
-#' with sample data.
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param bin_names, a vector strings containing of bin names to set the
-#' abundances for.
-#' @param abundances, 2D vector ([num_seqs][num_samples]) containing the
-#' abundances of each bin parsed by sample.
-#' @param type a string indicating the type of clusters. Default = "otu".
-#' @param reason, a string containing the trash tag to be applied to any bins
-#'  set to 0 abundance. Default = "update".
-#'
-#' @examples
-#'
-#'   # For example sake, let's create a dataset with 3 bins:
-#'
-#'   data <- new_dataset(dataset_name = "my_dataset")
-#'
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
-#'                "sample1")
-#'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#'
-#'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
-#'                                               abundances = sample_abundances,
-#'                                               samples = samples))
-#'
-#'   # You can see bin1's abundances parsed by sample using abundance:
-#'   abundance(data, type = "bins", by_sample = TRUE)
-#'
-#'   # You can change bin1's abundances as follows:
-#'
-#'   new_bin1_abunds <- list(c(10,50,0,0))
-#'   bins <- c("bin1")
-#'
-#'   xdev_set_bin_abundances(data = data,
-#'                           bin_names = bins,
-#'                           abundances = new_bin1_abunds)
-#'
-#'   abundance(data, type = "bins", by_sample = TRUE)
-#'
-xdev_set_bin_abundances <- function(data, bin_names, abundances, type = "otu", reason = "update") {
-    invisible(.Call(`_rdataset_xdev_set_bin_abundances`, data, bin_names, abundances, type, reason))
 }
 
 #' @title xdev_set_sequences

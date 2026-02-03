@@ -30,6 +30,6 @@ data <- miseq_sop_example()
 xdev_get_by_sample(data, "sequence_names")
 
 # To get the sequence nucleotide strings parsed by sample
-xdev_get_by_sample(data, "sequences")
+parsed_sequences <- xdev_get_by_sample(data, "sequences")
 
 }

@@ -1,0 +1,92 @@
+#' @title report
+#' @description
+#' Get a data.frame containing the given report in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of report you would like. Options
+#' include: "fasta", "sequences", "sequence_bin_assignments",
+#' "sequence_taxonomy", "bin_taxonomy", "bin_representatives",
+#'  "sample_assignments", "metadata", "references", "sequence_scrap",
+#' "bin_scrap". If you have added custom reports for alignment,
+#' contigs_assembly or chimeras, you can get those as well.
+#'  Default = "sequences".
+#'
+#' @param bin_type, string containing the bin type you would like a bin_taxonomy
+#' report for. Default = "otu".
+#'
+#' @examples
+#'
+# nolint start
+#' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
+# nolint end
+#' miseq <- miseq_sop_example()
+#'
+#' # To get the FASTA data
+#'
+#' fasta <- report(data = miseq, type = "fasta")
+#' head(fasta, n = 10)
+#'
+#' # To get a report about the FASTA data
+#'
+#' sequence_report <- report(data = miseq, type = "sequences")
+#' head(sequence_report, n = 10)
+#'
+#' # To get the sequence bin assignments
+#'
+#' bin_assignments <- report(
+#'   data = miseq, type = "sequence_bin_assignments",
+#'   bin_type = "otu"
+#' )
+#' head(bin_assignments, n = 10)
+#'
+#' # To get the sample treatment assignments
+#'
+#' report(data = miseq, type = "sample_assignments")
+#'
+#' # To get a report about sequence classifications
+#'
+#' sequence_taxonomy_report <- report(data = miseq, type = "sequence_taxonomy")
+#' head(sequence_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'otu' data
+#'
+#' otu_taxonomy_report <- report(
+#'   data = miseq, type = "bin_taxonomy",
+#'   bin_type = "otu"
+#' )
+#' head(otu_taxonomy_report, n = 10)
+#'
+#' # To get the 'otu' bin representative sequences
+#'
+#' otu_bin_reps <- report(
+#'   data = miseq, type = "bin_representatives",
+#'   bin_type = "otu"
+#' )
+#' head(otu_bin_reps, n = 10)
+#'
+#' # To get a report about the sequences removed during your analysis:
+#'
+#' report(data = miseq, type = "sequence_scrap")
+#'
+#' # To get a report about the "otu" bins removed during your analysis:
+#'
+#' report(data = miseq, type = "bin_scrap", bin_type = "otu")
+#'
+#' # To get the metadata associated with your data:
+#'
+#' metadata <- report(data = miseq, type = "metadata")
+#'
+#' # To get the resource references associated with your data:
+#'
+#' references <- report(data = miseq, type = "references")
+#'
+#' # To get our custom report containing the contigs assembly data:
+#'
+#' contigs_report <- report(data = miseq, type = "contigs_report")
+#' head(contigs_report, n = 10)
+#'
+#' @return data.frame
+report <- function(data, type = "sequences", bin_type = "otu") {
+  xdev_report(data, type, bin_type)
+}

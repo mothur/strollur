@@ -1,8 +1,8 @@
 ---
-title: "Getting-Started"
+title: "Getting Started"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting-Started}
+  %\VignetteIndexEntry{Getting Started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -31,12 +31,19 @@ You can install the development version of *rdataset* from [GitHub](https://gith
 devtools::install_github("SchlossLab/rdataset")
 ```
 
-```{r setup}
-library(rdataset)
-```
 
 ## Importing Data
 
-* [Importing data from mothur](Importing_from_mothur.html)
-* [Importing data from qiime2](Importing_from_qiime2.html)
+* `vignette("General_Importing")`
+* `vignette("Importing_from_mothur")`
+* `vignette("Importing_from_qiime")`
+
+## Accessing Data
+
+* `vignette("Using_Dataset")`
+
+## Transfering Data
+
+* `vignette("Data_Transfers")`
+
 

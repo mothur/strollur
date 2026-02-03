@@ -1,0 +1,160 @@
+---
+title: "Importing from mothur"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Importing from mothur}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+library(rdataset)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+*rdataset* includes the function `read_mothur()` as well as several functions to read [mothur](https://mothur.org) output files individually. To create a data set from the outputs of the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/), run the following:
+
+## Using `read_mothur()`
+
+```{r}
+data <- read_mothur(
+  fasta = rdataset_example("final.fasta"),
+  count = rdataset_example("final.count_table"),
+  taxonomy = rdataset_example("final.taxonomy"),
+  design = rdataset_example("mouse.time.design"),
+  otu_list = rdataset_example("final.opti_mcc.list"),
+  asv_list = rdataset_example("final.asv.list"),
+  phylo_list = rdataset_example("final.tx.list"),
+  sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+  dataset_name = "miseq_sop"
+)
+```
+
+To view a summary of data:
+
+```{r}
+data
+```
+
+
+## Importing Individual Files
+
+* `read_fasta()` read a [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) formatted sequence file
+* `read_mothur_count()` read a mothur formatted [count file](https://mothur.org/wiki/count_file/)
+* `read_mothur_taxonomy()` read a mothur formatted
+ [taxonomy file](https://mothur.org/wiki/taxonomy_file/)
+* `read_mothur_cons_taxonomy()` read a mothur formatted
+ [cons_taxonomy file](https://mothur.org/wiki/constaxonomy_file/)
+* `read_mothur_list()` read a mothur formatted
+ [list file](https://mothur.org/wiki/list_file/)
+* `read_mothur_shared()` read a mothur formatted
+ [shared file](https://mothur.org/wiki/shared_file/)
+* `read_mothur_rabund()` read a mothur formatted
+ [rabund file](https://mothur.org/wiki/rabund_file/)
+
+
+To create a data set and read the individual file types, you can use the functions below. First let's create a data set named my_data.
+
+```{r}
+my_data <- new_dataset(dataset_name = "my_data")
+```
+
+To add [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data to your data set you can use the `read_fasta()` function:
+
+```{r}
+fasta_data <- read_fasta(fasta = rdataset_example("final.fasta"))
+```
+
+fasta_data is a data.frame containing sequence names, sequence nucleotide strings, and comments if provided. You can add the FASTA sequences to your data set using the `add()` function:
+
+```{r}
+add(data = my_data, table = fasta_data, type = "sequences")
+my_data
+```
+
+To add your sequence abundance data, you can read a [mothur count file](https://mothur.org/wiki/count_file/) file using the `read_mothur_count()` function:
+
+```{r}
+sample_table <- read_mothur_count(
+  filename = rdataset_example("final.count_table")
+)
+```
+
+sample_table is a data.frame containing sequence_names, samples, and abundances. You can add the sequence abundance data to your data set using the `assign()` function:
+
+```{r}
+assign(data = my_data, table = sample_table, type = "sequence_abundance")
+my_data
+```
+
+To add sequence taxonomy assignments, you can read a [taxonomy file](https://mothur.org/wiki/taxonomy_file/) file using the `read_mothur_taxonomy()` function:
+
+```{r}
+classification_data <- read_mothur_taxonomy(
+  taxonomy = rdataset_example("final.taxonomy")
+)
+```
+
+classification_data is a data.frame containing sequence names and taxonomies. You can add the sequence classification data to your data set as follows:
+
+```{r}
+assign(data = my_data, table = classification_data, type = "sequence_taxonomy")
+```
+
+To assign sequences to bins, you can read a [mothur list file](https://mothur.org/wiki/list_file/) file using the `read_mothur_list()` function:
+
+```{r}
+otu_data <- read_mothur_list(list = rdataset_example("final.opti_mcc.list"))
+asv_data <- read_mothur_list(list = rdataset_example("final.asv.list"))
+phylotype_data <- read_mothur_list(list = rdataset_example("final.tx.list"))
+```
+
+otu_data, asv_data and phylotype_data are data.frames containing bin names and sequence names. You can add the bin data to your data set as follows:
+
+```{r}
+assign(data = my_data, table = otu_data, type = "bins", bin_type = "otu")
+assign(data = my_data, table = asv_data, type = "bins", bin_type = "asv")
+assign(
+  data = my_data, table = phylotype_data,
+  type = "bins", bin_type = "phylotype"
+)
+my_data
+```
+
+When you assign bins to sequences with taxonomic assignments the data set object will find the consensus taxonomy of the bins automatically. If you wish to assign the bin taxonomy separately, you can read a [mothur cons_taxonomy file](https://mothur.org/wiki/constaxonomy_file/) file using the `read_mothur_cons_taxonomy()` function:
+
+```{r}
+otu_taxonomy_data <- read_mothur_cons_taxonomy(
+  taxonomy =
+    rdataset_example("final.cons.taxonomy")
+)
+```
+
+otu_taxonomy_data is a data.frame containing bin names, abundances and taxonomies. You can add the bin taxonomic data to your data set as follows:
+
+```{r}
+assign(data = my_data, table = otu_taxonomy_data, type = "bin_taxonomy")
+```
+
+## Writing mothur formatted file types
+
+
+* `write_mothur()` write mothur formatted files for all data
+* `write_fasta()` read a [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) formatted sequence file
+* `write_mothur_count()` write a mothur formatted
+ [count file](https://mothur.org/wiki/count_file/)
+* `write_mothur_design()` write a mothur formatted
+ [design file](https://mothur.org/wiki/design_file/)
+* `write_taxonomy()` write a mothur formatted
+ [taxonomy file](https://mothur.org/wiki/taxonomy_file/)
+* `write_mothur_cons_taxonomy()` write a mothur formatted
+ [cons_taxonomy file](https://mothur.org/wiki/constaxonomy_file/)
+* `write_mothur_list()` write a mothur formatted
+ [list file](https://mothur.org/wiki/list_file/)
+* `write_mothur_shared()` write a mothur formatted
+ [shared file](https://mothur.org/wiki/shared_file/)
+* `write_mothur_rabund()` write a mothur formatted
+ [rabund file](https://mothur.org/wiki/rabund_file/)

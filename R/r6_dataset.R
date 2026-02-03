@@ -242,35 +242,9 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
-    #' Remove 'sample_tree', or 'sequence_tree' data from your dataset.
-    #' @param tags a vector of strings containing the items you wish to clear.
-    #' Options are 'metadata', 'references', 'sequence_tree', 'sample_tree',
-    #' 'alignment_report', 'contigs_assembly_report' and '"'chimera_report'.
-    #' By default, everything is cleared.
-    clear = function(tags = NULL) {
-      if (is.null(tags)) {
-        tags <- ""
-      }
-
-      if (tags == "") {
-        self$sequence_tree <- NULL
-        self$sample_tree <- NULL
-      }
-
-      valid_tags <- c("sequence_tree", "sample_tree")
-
-      for (tag in tags) {
-        if (!(tag %in% valid_tags)) {
-          cli_alert("{.var {tag}} is not a valid item to clear, ignoring.")
-        }
-      }
-
-      if ("sequence_tree" %in% tags) {
-        self$sequence_tree <- NULL
-      }
-      if ("sample_tree" %in% tags) {
-        self$sample_tree <- NULL
-      }
+    #' Clear data from datasest
+    clear = function() {
+      clear(self)
 
       invisible(self)
     },
@@ -347,7 +321,7 @@ dataset <- R6Class("dataset",
     #' length of longest homopolymer, and the number of N's.
     #' @return data.frame
     get_sequence_report = function() {
-      report(self, "sequence_data")
+      report(self, "sequences")
     },
 
     #' @description
@@ -375,7 +349,7 @@ dataset <- R6Class("dataset",
         }
       }
 
-      exclude <- c("sequence_data", "sequence_scrap", "bin_scrap")
+      exclude <- c("sequence_scrap", "bin_scrap")
       report_names <- names(data = self, type = "reports")
       report_names <- report_names[!report_names %in% exclude]
 
@@ -406,17 +380,8 @@ dataset <- R6Class("dataset",
       if (nrow(df) != 0) {
         results[["scrap_summary"]] <- df
         if (!silent) {
+          cat("scrap_summary:\n")
           print(results[["scrap_summary"]])
-          # cat("\nType    Trash_code   Unique    Total:\n")
-          # for (i in seq_along(results$scrap_summary$trash_code)) {
-          #   cat(paste(
-          #     results$scrap_summary$type[i],
-          #     results$scrap_summary$trash_code[i],
-          #     results$scrap_summary$unique[i],
-          #     results$scrap_summary$total[i],
-          #     sep = "\t"
-          #   ), "\n")
-          # }
         }
       }
 
