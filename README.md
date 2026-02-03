@@ -9,6 +9,8 @@
 [![Codecov test
 coverage](https://codecov.io/gh/SchlossLab/rdataset/branch/main/graph/badge.svg)](https://app.codecov.io/gh/SchlossLab/rdataset?branch=main)
 [![pkgdown](https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/rdataset)](https://CRAN.R-project.org/package=rdataset)
 <!-- badges: end -->
 
 ## Overview
