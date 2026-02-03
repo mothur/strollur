@@ -24,7 +24,7 @@ You can install the CRAN version with:
 install.packages("rdataset")
 ```
 
-You can install the development version of *rdataset* from [GitHub](https://github.com/SchlossLab/rdataset) with:
+You can install the development version of *rdataset* from [GitHub](https://github.com/mothur/rdataset) with:
 
 ```{r, eval = FALSE}
 # install.packages("devtools")

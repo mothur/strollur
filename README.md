@@ -1,14 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rdataset <img src="man/figures/logo.png" align="right" height="136" alt="" />
+# rdataset <img src="man/figures/logo.png" align="right" height="136" alt="rdataset website" />
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/mothur/rdataset/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mothur/rdataset/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/SchlossLab/rdataset/branch/main/graph/badge.svg)](https://app.codecov.io/gh/SchlossLab/rdataset?branch=main)
-[![pkgdown](https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml)
+[![pkgdown](https://github.com/mothur/rdataset/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/mothur/rdataset/actions/workflows/pkgdown.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rdataset)](https://CRAN.R-project.org/package=rdataset)
 <!-- badges: end -->
@@ -52,7 +52,7 @@ install.packages("rdataset")
 ### Development version
 
 You can install the development version of rdataset from
-[GitHub](https://github.com/SchlossLab/rdataset) with:
+[GitHub](https://github.com/mothur/rdataset) with:
 
 ``` r
 # install.packages("devtools")
@@ -170,11 +170,11 @@ data
 ## Getting help
 
 If you encounter an issue, please file an issue on
-[GitHub](https://github.com/SchlossLab/rdataset/issues). Please include
-a minimal reproducible example with your issue.
+[GitHub](https://github.com/mothur/rdataset/issues). Please include a
+minimal reproducible example with your issue.
 
 ## Contributing
 
 Is there a feature you’d like to see included, please let us know! Pull
 requests are welcome on
-[GitHub](https://github.com/SchlossLab/rdataset/pulls).
+[GitHub](https://github.com/mothur/rdataset/pulls).
