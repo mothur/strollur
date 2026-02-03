@@ -12,16 +12,16 @@
 #' @export
 miseq_sop_example <- function() {
   data <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    taxonomy = rdataset_example("final.taxonomy.gz"),
     cons_taxonomy = rdataset_example("final.cons.taxonomy"),
     design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    asv_list = rdataset_example("final.asv.list"),
-    phylo_list = rdataset_example("final.tx.list"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
+    asv_list = rdataset_example("final.asv.list.gz"),
+    phylo_list = rdataset_example("final.tx.list.gz"),
     sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
-    sequence_tree = rdataset_example("final.phylip.tre"),
+    sequence_tree = rdataset_example("final.phylip.tre.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -44,7 +44,7 @@ miseq_sop_example <- function() {
   )
   xdev_add_references(data, reference)
 
-  contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+  contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report.gz"),
     col_names = TRUE, show_col_types = FALSE
   )
   add(

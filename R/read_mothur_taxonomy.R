@@ -12,7 +12,7 @@
 #'
 #' # read mothur's taxonomy file into a data.frame
 #' classification_data <- read_mothur_taxonomy(rdataset_example(
-#'   "final.taxonomy"
+#'   "final.taxonomy.gz"
 #' ))
 #'
 #' # create a new empty dataset

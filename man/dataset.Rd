@@ -43,7 +43,7 @@ data <- new_dataset("soil")
 
 
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
 
 
@@ -95,7 +95,7 @@ data$get_bin_types()
 
 
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
  data$get_sequence_tree()
 
@@ -243,7 +243,7 @@ Add phylo tree relating the sequences in your dataset
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
 
 }
@@ -394,7 +394,7 @@ Get phylo tree relating the sequences in your dataset.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
  data$get_sequence_tree()
 

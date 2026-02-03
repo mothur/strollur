@@ -40,7 +40,7 @@ unlink("miseq_sop.rds")
 We can see that the summaries of miseq and miseq_from_rds are identical. Let's modify miseq_from_rds to verify they are not referring to the same object. We will add clusters created by [mothur](https://mothur.org) using [vsearch's](https://github.com/torognes/vsearch) distance-based greedy clustering (dgc) algorithm. 
 
 ```{r}
-dgc_data <- read_mothur_list(list = rdataset_example("final.dgc.list"))
+dgc_data <- read_mothur_list(list = rdataset_example("final.dgc.list.gz"))
 
 assign(data = miseq_from_rds, table = dgc_data, bin_type = "dgc")
 miseq_from_rds

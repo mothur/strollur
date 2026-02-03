@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 ## Overview 
 
 The **rdataset** package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, sequence bin assignments, 
-metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to import from [mothur](https://mothur.org), mothur2, [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
+metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to import from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 
 * `add()` add sequences, reports, metadata, and resource references
 * `assign()` assign abundances, classifications, bins, samples and treatments and more
@@ -62,7 +62,7 @@ library(rdataset)
 
 data <- new_dataset(dataset_name = "microbial RNA example")
 
-fasta_data <- read_fasta(rdataset_example("final.fasta"))
+fasta_data <- read_fasta(rdataset_example("final.fasta.gz"))
 
 add(
   data = data,
@@ -70,7 +70,7 @@ add(
   type = "sequences"
 )
 
-abundance_table <- readr::read_tsv(rdataset_example("mothur2_count_table.tsv"),
+abundance_table <- readr::read_tsv(rdataset_example("mothur2_count_table.tsv.gz"),
   show_col_types = FALSE
 )
 assign(
@@ -82,7 +82,7 @@ assign(
 
 bin_table <- readr::read_tsv(
   rdataset_example(
-    "mothur2_bin_assignments_list.tsv"
+    "mothur2_bin_assignments_list.tsv.gz"
   ),
   show_col_types = FALSE
 )
@@ -96,7 +96,7 @@ assign(
 )
 
 sequence_classification_data <- read_mothur_taxonomy(
-  taxonomy = rdataset_example("final.taxonomy")
+  taxonomy = rdataset_example("final.taxonomy.gz")
 )
 
 assign(

@@ -3,11 +3,11 @@
 test_that("test read_mothur", {
   # test complete dataset
   dataset <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    taxonomy = rdataset_example("final.taxonomy.gz"),
     design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -78,7 +78,7 @@ test_that("test read taxonomy files", {
   expect_error(read_mothur_cons_taxonomy(taxonomy = "bad_parameter"))
 
   data <- read_mothur_taxonomy(rdataset_example(
-    "final.taxonomy"
+    "final.taxonomy.gz"
   ))
 
   expect_equal(nrow(data), 2425)
@@ -87,15 +87,15 @@ test_that("test read taxonomy files", {
 
 test_that("test read taxonomy files", {
   dataset <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    taxonomy = rdataset_example("final.taxonomy.gz"),
     design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    asv_list = rdataset_example("final.asv.list"),
-    phylo_list = rdataset_example("final.tx.list"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
+    asv_list = rdataset_example("final.asv.list.gz"),
+    phylo_list = rdataset_example("final.tx.list.gz"),
     sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
-    sequence_tree = rdataset_example("final.phylip.tre"),
+    sequence_tree = rdataset_example("final.phylip.tre.gz"),
     dataset_name = "miseq_sop"
   )
 

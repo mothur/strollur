@@ -46,7 +46,7 @@ Assign sequence abundance and optionally assign sample and treatment data to
 
 data <- new_dataset("my_dataset")
 sequence_abundance <- readr::read_tsv(rdataset_example(
-                                      "mothur2_count_table.tsv"),
+                                      "mothur2_count_table.tsv.gz"),
                                       show_col_types = FALSE)
 
 xdev_assign_sequence_abundance(data = data, table = sequence_abundance,

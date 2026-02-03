@@ -22,7 +22,7 @@ test_that("write_mothur_design", {
   expect_equal(count(data, "samples"), 19)
 
   data <- read_mothur(
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
     dataset_name = "data"
   )
 

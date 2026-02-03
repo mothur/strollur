@@ -8,7 +8,7 @@
 #' @param file Name of file.
 #' @examples
 #' rdataset_example()
-#' rdataset_example("final.fasta")
+#' rdataset_example("final.fasta.gz")
 #' @export
 rdataset_example <- function(file = NULL) {
   path <- ""

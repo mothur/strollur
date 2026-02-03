@@ -8,11 +8,11 @@
 #' @examples
 #'
 #' dataset <- read_mothur(
-#'   fasta = rdataset_example("final.fasta"),
-#'   count = rdataset_example("final.count_table"),
-#'   taxonomy = rdataset_example("final.taxonomy"),
+#'   fasta = rdataset_example("final.fasta.gz"),
+#'   count = rdataset_example("final.count_table.gz"),
+#'   taxonomy = rdataset_example("final.taxonomy.gz"),
 #'   design = rdataset_example("mouse.time.design"),
-#'   otu_list = rdataset_example("final.opti_mcc.list"),
+#'   otu_list = rdataset_example("final.opti_mcc.list.gz"),
 #'   dataset_name = "miseq_sop"
 #' )
 #'

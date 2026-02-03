@@ -122,11 +122,11 @@ test_that("import - no sequence data", {
 test_that("import - no bin data", {
   # just shared and constax dataset
   just_seqs <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    taxonomy = rdataset_example("final.taxonomy.gz"),
     design = rdataset_example("mouse.time.design"),
-    sequence_tree = rdataset_example("final.phylip.tre"),
+    sequence_tree = rdataset_example("final.phylip.tre.gz"),
     dataset_name = "just_seqs"
   )
 

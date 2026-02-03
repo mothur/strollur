@@ -18,5 +18,5 @@ Get path to rdataset example
 }
 \examples{
 rdataset_example()
-rdataset_example("final.fasta")
+rdataset_example("final.fasta.gz")
 }

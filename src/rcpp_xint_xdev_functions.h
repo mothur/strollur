@@ -136,7 +136,7 @@ double xdev_add_references(Rcpp::Environment data,
 //' # To add a custom report including your contigs assembly data
 //'
 //' data <- new_dataset("just for fun", 2)
-//' contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+//' contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report.gz"),
 //'    col_names = TRUE, show_col_types = FALSE)
 //'
 //' xdev_add_report(data, contigs_report, "contigs_report", "Name")
@@ -180,13 +180,13 @@ void xdev_add_report(Rcpp::Environment data,
 //' @examples
 //'
 //'  data <- new_dataset("miseq_sop", 2)
-//'  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+//'  fasta_data <- read_fasta(rdataset_example("final.fasta.gz"))
 //'  xdev_add_sequences(data, fasta_data)
 //'
 //' # With the additional parameters to add information about the reference
 //'
 //'  data <- new_dataset("miseq_sop", 2)
-//'  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+//'  fasta_data <- read_fasta(rdataset_example("final.fasta.gz"))
 //'
 //'  xdev_add_sequences(data, fasta_data,
 //'                new_reference("silva.bacteria.fasta",
@@ -237,7 +237,7 @@ double xdev_add_sequences(Rcpp::Environment data,
 //'   # To assign sequences to bins:
 //'
 //'   data <- new_dataset(dataset_name = "miseq_sop")
-//'   otu_data <- read_mothur_list(list = rdataset_example("final.opti_mcc.list"))
+//'   otu_data <- read_mothur_list(list = rdataset_example("final.opti_mcc.list.gz"))
 //'
 //'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 //'
@@ -252,7 +252,7 @@ double xdev_add_sequences(Rcpp::Environment data,
 //'
 //'   data <- new_dataset(dataset_name = "miseq_sop")
 //'   otu_data <- readr::read_tsv(rdataset_example(
-//'                                 "mothur2_bin_assignments_shared.tsv"))
+//'                                 "mothur2_bin_assignments_shared.tsv.gz"))
 //'
 //'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 //'
@@ -381,7 +381,7 @@ double xdev_assign_bin_taxonomy(Rcpp::Environment data,
 //' @examples
 //'
 //' sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-//'                         "final.taxonomy"))
+//'                         "final.taxonomy.gz"))
 //'
 //' data <- new_dataset("my_dataset", 2)
 //'
@@ -433,7 +433,7 @@ double xdev_assign_sequence_taxonomy(Rcpp::Environment data,
 //'
 //' data <- new_dataset("my_dataset")
 //' sequence_abundance <- readr::read_tsv(rdataset_example(
-//'                                       "mothur2_count_table.tsv"),
+//'                                       "mothur2_count_table.tsv.gz"),
 //'                                       show_col_types = FALSE)
 //'
 //' xdev_assign_sequence_abundance(data = data, table = sequence_abundance,
@@ -469,7 +469,7 @@ double xdev_assign_sequence_abundance(Rcpp::Environment data,
 //'
 //' data <- new_dataset("my_dataset")
 //' sequence_abundance <- readr::read_tsv(rdataset_example(
-//'                                       "mothur2_count_table.tsv"),
+//'                                       "mothur2_count_table.tsv.gz"),
 //'                                       show_col_types = FALSE)
 //'
 //' xdev_assign_sequence_abundance(data, sequence_abundance, "names")
@@ -852,11 +852,11 @@ void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
 //' Default = "contaminant".
 //'
 //' @examples
-//' data <- read_mothur(fasta = rdataset_example("final.fasta"),
-//'                        count = rdataset_example("final.count_table"),
-//'                        taxonomy = rdataset_example("final.taxonomy"),
+//' data <- read_mothur(fasta = rdataset_example("final.fasta.gz"),
+//'                        count = rdataset_example("final.count_table.gz"),
+//'                        taxonomy = rdataset_example("final.taxonomy.gz"),
 //'                        design = rdataset_example("mouse.time.design"),
-//'                        otu_list = rdataset_example("final.opti_mcc.list"),
+//'                        otu_list = rdataset_example("final.opti_mcc.list.gz"),
 //'                        dataset_name = "miseq_sop")
 //'
 //' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",

@@ -2,13 +2,13 @@
 
 test_that("dataset - intialize from read_mothur / print", {
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    taxonomy = rdataset_example("final.taxonomy.gz"),
     design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    asv_list = rdataset_example("final.asv.list"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
+    phylo_list = rdataset_example("final.tx.list.gz"),
+    asv_list = rdataset_example("final.asv.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -160,13 +160,13 @@ test_that("dataset - intialize from read_mothur / print", {
 
 test_that("dataset - intialize from dataset object", {
   temp <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    taxonomy = rdataset_example("final.taxonomy.gz"),
     design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    asv_list = rdataset_example("final.asv.list"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
+    phylo_list = rdataset_example("final.tx.list.gz"),
+    asv_list = rdataset_example("final.asv.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -199,7 +199,7 @@ test_that("dataset - addSeqs, assign samples", {
   # missing data and names
   expect_error(xdev_add_sequences(data))
 
-  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+  fasta_data <- read_fasta(rdataset_example("final.fasta.gz"))
   names(fasta_data) <- c("myNameTag", "mySeqTag")
 
   expect_error(xdev_add_sequences(data, fasta_data, NULL, "names", "mySeqTag"))
@@ -405,7 +405,7 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
   expect_error(xdev_assign_sequence_abundance(data))
 
   sequence_abundance <- readr::read_tsv(rdataset_example(
-    "mothur2_count_table.tsv"
+    "mothur2_count_table.tsv.gz"
   ), show_col_types = FALSE)
 
 
@@ -662,7 +662,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
   clear(dataset_t)
 
   bin_table <- readr::read_tsv(rdataset_example(
-    "mothur2_bin_assignments_shared.tsv"
+    "mothur2_bin_assignments_shared.tsv.gz"
   ), show_col_types = FALSE)
 
   expect_error(assign(
@@ -679,7 +679,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
   clear(dataset_t)
 
   bin_table <- readr::read_tsv(rdataset_example(
-    "mothur2_bin_assignments_list.tsv"
+    "mothur2_bin_assignments_list.tsv.gz"
   ), show_col_types = FALSE)
 
   assign(
@@ -995,7 +995,7 @@ test_that("dataset - ", {
     show_col_types = FALSE
   )
   bin_table <- readr::read_tsv(rdataset_example(
-    "mothur2_bin_assignments_list.tsv"
+    "mothur2_bin_assignments_list.tsv.gz"
   ), show_col_types = FALSE)
 
   assign(
@@ -1309,7 +1309,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   # add tree from file
   dataset_t <- dataset$new()
-  dataset_t$add_sequence_tree(read.tree(rdataset_example("final.phylip.tre")))
+  dataset_t$add_sequence_tree(read.tree(rdataset_example("final.phylip.tre.gz")))
   tree <- dataset_t$get_sequence_tree()
 
   expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
@@ -1356,17 +1356,17 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
   expect_null(dataset_t$get_sample_tree())
 
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    taxonomy = rdataset_example("final.taxonomy.gz"),
     design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
   expect_error(dataset_t$add_sample_tree(tree = c("bad_type")))
 
-  sequence_tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+  sequence_tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
 
   # should report missing samples since this is a sequence tree and not save
   dataset_t$add_sample_tree(sequence_tree)
@@ -1397,11 +1397,11 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
 test_that("dataset - assign_treatments", {
   # create dataset without treatment assignments
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    asv_list = rdataset_example("final.asv.list"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
+    phylo_list = rdataset_example("final.tx.list.gz"),
+    asv_list = rdataset_example("final.asv.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -1431,11 +1431,11 @@ test_that("dataset - assign_treatments", {
   expect_equal(count(dataset_t, "treatments"), 2)
 
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    asv_list = rdataset_example("final.asv.list"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
+    phylo_list = rdataset_example("final.tx.list.gz"),
+    asv_list = rdataset_example("final.asv.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -1452,13 +1452,13 @@ test_that("dataset - assign_treatments", {
 test_that("dataset - assign_sequence_taxonomy", {
   # create dataset without taxonomy assignments
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
-  tax_table <- read_mothur_taxonomy(rdataset_example("final.taxonomy"))
+  tax_table <- read_mothur_taxonomy(rdataset_example("final.taxonomy.gz"))
 
   # no taxonomies yet
   expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
@@ -1481,9 +1481,9 @@ test_that("dataset - assign_sequence_taxonomy", {
   expect_equal(nrow(report(dataset_t, "sequence_taxonomy")), 14550)
 
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -1596,9 +1596,9 @@ test_that("dataset - export,", {
 test_that("dataset - assign_bin_representative_sequences", {
   # create dataset
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    fasta = rdataset_example("final.fasta.gz"),
+    count = rdataset_example("final.count_table.gz"),
+    otu_list = rdataset_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -1628,7 +1628,7 @@ test_that("dataset - assign_bin_representative_sequences", {
   expect_equal(report(d, "sample_assignments"), data.frame())
 
   dataset_t <- read_mothur(
-    count = rdataset_example("final.count_table"),
+    count = rdataset_example("final.count_table.gz"),
     dataset_name = "miseq_sop"
   )
   expect_equal(report(dataset_t, "sample_assignments"), data.frame())

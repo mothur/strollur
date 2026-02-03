@@ -68,7 +68,7 @@
 #' data <- new_dataset(dataset_name = "example_dataset")
 #'
 #' # Read FASTA data into data.frame
-#' fasta_data <- read_fasta(fasta = rdataset_example("final.fasta"))
+#' fasta_data <- read_fasta(fasta = rdataset_example("final.fasta.gz"))
 #'
 #' # Add FASTA sequence data
 #' add(data = data, table = fasta_data, type = "sequences")
@@ -100,7 +100,7 @@
 #'
 #' # Add contigs assembly report with a 'sequence_name' column named 'Name'
 #'
-#' contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+#' contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report.gz"),
 #'   col_names = TRUE, show_col_types = FALSE
 #' )
 #'

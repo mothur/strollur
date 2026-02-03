@@ -185,7 +185,7 @@ dataset <- R6Class("dataset",
     #' @examples
     #'
     #'  data <- dataset$new("my_dataset")
-    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'
     add_sequence_tree = function(tree) {
@@ -429,7 +429,7 @@ dataset <- R6Class("dataset",
     #' @examples
     #'
     #'  data <- dataset$new("my_dataset")
-    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'  data$get_sequence_tree()
     #'

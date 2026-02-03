@@ -81,7 +81,7 @@ representative sequences, bin classifications or treatments to a
 data <- new_dataset(dataset_name = "example_dataset")
 
 sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-  "final.taxonomy"
+  "final.taxonomy.gz"
 ))
 
 assign(
@@ -93,17 +93,17 @@ assign(
 
 # read mothur's otu list file into data.frame
 otu_data <- read_mothur_list(list = rdataset_example(
-  "final.opti_mcc.list"
+  "final.opti_mcc.list.gz"
 ))
 
 # read mothur's asv list file into data.frame
 asv_data <- read_mothur_list(list = rdataset_example(
-  "final.asv.list"
+  "final.asv.list.gz"
 ))
 
 # read mothur's phylotype list file into data.frame
 phylo_data <- read_mothur_list(list = rdataset_example(
-  "final.tx.list"
+  "final.tx.list.gz"
 ))
 
 # read otu bin representative sequences into a data.frame
