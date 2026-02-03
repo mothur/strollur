@@ -3031,5 +3031,5 @@ xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = FALSE)
 
 # To get the names of the reports in the dataset
 xdev_names(data = miseq, type = "reports")
-#> [1] "contigs_report" "sequence_data" 
+#> [1] "contigs_report"
 ```

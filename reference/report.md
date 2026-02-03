@@ -18,8 +18,8 @@ report(data, type = "sequences", bin_type = "otu")
 - type, :
 
   string containing the type of report you would like. Options include:
-  "sequences", "sequence_bin_assignments", "sequence_taxonomy",
-  "bin_taxonomy", "bin_representatives","sample_assignments",
+  "fasta", "sequences", "sequence_bin_assignments", "sequence_taxonomy",
+  "bin_taxonomy", "bin_representatives", "sample_assignments",
   "metadata", "references", "sequence_scrap", "bin_scrap". If you have
   added custom reports for alignment, contigs_assembly or chimeras, you
   can get those as well. Default = "sequences".
@@ -37,7 +37,6 @@ data.frame
 
 ``` r
 # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
-
 miseq <- miseq_sop_example()
 #> ℹ Added 2425 sequences.
 #> ℹ Assigned 2425 sequence abundances.
@@ -51,6 +50,33 @@ miseq <- miseq_sop_example()
 #> ℹ Added metadata.
 #> ℹ Added 2 resource references.
 #> ℹ Added a contigs_report.
+
+# To get the FASTA data
+
+fasta <- report(data = miseq, type = "fasta")
+head(fasta, n = 10)
+#>                                  sequence_names
+#> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783
+#> 2   M00967_43_000000000-A3JHG_1_1113_12711_3318
+#> 3   M00967_43_000000000-A3JHG_1_2108_14707_9807
+#> 4   M00967_43_000000000-A3JHG_1_1110_4126_16552
+#> 5   M00967_43_000000000-A3JHG_1_2102_8408_13436
+#> 6  M00967_43_000000000-A3JHG_1_1107_22580_21773
+#> 7  M00967_43_000000000-A3JHG_1_1108_14299_17220
+#> 8   M00967_43_000000000-A3JHG_1_1114_8059_18290
+#> 9    M00967_43_000000000-A3JHG_1_2112_9811_9982
+#> 10  M00967_43_000000000-A3JHG_1_2103_25452_6018
+#>                                                                                                                                                                                                                                                                                                                                                                                  sequences
+#> 1  TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-C-A-G-C-G-G--TA-A-AA-TT-G-A-GA-GG--CT-C-AA-C-C-T-C-T-T-C--CC-G-C-CGTT-GAAAC-TG-A-TTGTC-TTGA-GT-GG-GC-GA-G-A---AG-T-A-TGTGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-A-ACTGACG-CTGA-AGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG
+#> 2  TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-AC-C-C-GG-GG--CT-C-AA-C---C-C-TGG-G-AGT-G-C-TTTT-GAAAC-TG-T-GCGGC-TAGA-GT-GT-CG-GA-G-G---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-GA-T-G-ACTGACG-CTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG
+#> 3  TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GC-C-C-GT-GG--CT-C-AA-C-C-G-C-G-G-A-ACC-G-C-TTTG-GAAAC-TG-C-GAGGC-TGGA-GT-GC-TG-GA-G-A---GG-T-A-AGCGGAATTCCTGGTGT-AGCGGT-GAAATGCGTAG-AT-A-TC-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTTA-CTG-G-AC-AG-T-G-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-GAACAGG
+#> 4  TAC--GG-AG-GAT--TCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-G-CT-G-T-T-AA-G-T-C-A-G-C-G-G--TC-A-AA-TG-T-C-GG-GG--CT-C-AA-C-C-C-C-G-G-C--CT-G-C-CGTT-GAAAC-TG-G-CGGCC-TCGA-GT-GG-GC-GA-G-A---AG-T-A-TGCGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-T-ACTGACG-CTGA-GGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG
+#> 5  TAC--GG-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-AG-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-GC-C-C-AA-GG--CT-C-AA-C---C-A-TGG-G-ACT-G-C-TTTT-GAAAC-TG-T-ACAGC-TAGA-TT-GC-AG-GA-G-A---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-AATGACG-CTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG
+#> 6  TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CCG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-G-AT-G-C-C-AA-G-T-C-A-G-C-G-G--TA-A-AA-AT-G-C-GG-TG--CT-C-AA-C-G-C-C-G-T-C--GA-G-C-CGTT-GAAAC-TG-G-CGTTC-TTGA-GT-GG-GC-GA-G-A---AG-T-A-TGCGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-AC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-T-ACTGACG-CTGA-GGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG
+#> 7  TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-TG-C-C-GG-GG--CT-C-AA-C-C-C-C-G-G-A-ACT-G-C-TTTG-GAAAC-TG-T-ACAGC-TAGA-GT-GC-AG-GA-G-G---GG-T-G-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTCA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG
+#> 8  GAC--GGAGG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-TC-G-T-T-AA-G-T-C-A-G-T-G-G--TC-A-AA-TT-G-A-GG-GG--CT-C-AA-C-C-C-C-T-T-C--CC-G-C-CATT-GAAAC-TG-G-CGATC-TTGA-GT-GG-AA-GA-G-A---AG-T-A-TGCGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACCCCGAT-TGCGAAGGCA------GCATG-CCG-G-CT-TC-C-T-ACTGACG-CTGA-AGCA-CGAAA-GCG-TGGGG-ATC-GAACAGG
+#> 9  TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--GT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GC-GT-G-CA-GCC-G-G-G-AA-G-A-C-AA-G-T-C-A-G-A-T-G--TG-A-AA-TC-C-C-GC-GG--CT-C-AA-C-C-G-C-G-G-A-ACT-G-C-ATTC-GAAAC-TG-T-TTTTC-TTGA-GT-AC-CG-GA-G-A---GG-T-C-ATCGGAATTCCTTGTGT-AGCGGT-GAAATGCGTAG-AT-A-TA-AT-GA-AG-AACACCAGT-GGCGAAGGCG------GATGA-CTG-G-AC-GG-C-A-ACTGACG-GTGA-GGCG-CGAAA-GCG-TGGGG-AGC-AAACAGG
+#> 10 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GTGGC-G-CA-GGC-G-G-G-AT-G-C-C--A-G-T-C-A-G-C-G-G--TC-A-AA-TT-T-C-GG-GG--CT-C-AA-C-C-C-C-G-A-C--CT-G-C-CGTT-GAAAC-TG-G-TGTCC-TAGA-GT-GG-GC-GA-G-A---AG-T-A-TGCGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-G-ACTGACG-CTCA-TGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG
 
 # To get a report about the FASTA data
 
@@ -81,8 +107,10 @@ head(sequence_report, n = 10)
 
 # To get the sequence bin assignments
 
-bin_assignments <- report(data = miseq, type = "sequence_bin_assignments",
-                          bin_type = "otu")
+bin_assignments <- report(
+  data = miseq, type = "sequence_bin_assignments",
+  bin_type = "otu"
+)
 head(bin_assignments, n = 10)
 #>    otu_id                                       seq_id
 #> 1  Otu001  M00967_43_000000000-A3JHG_1_1111_20933_6700
@@ -122,8 +150,7 @@ report(data = miseq, type = "sample_assignments")
 
 # To get a report about sequence classifications
 
-sequence_taxonomy_report <- report(data = miseq,
-                                       type = "sequence_taxonomy")
+sequence_taxonomy_report <- report(data = miseq, type = "sequence_taxonomy")
 head(sequence_taxonomy_report, n = 10)
 #>                                              id level
 #> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783     1
@@ -150,9 +177,10 @@ head(sequence_taxonomy_report, n = 10)
 
 # To get a report about bin classifications for 'otu' data
 
-otu_taxonomy_report <- report(data = miseq,
-                                       type = "bin_taxonomy",
-                                       bin_type = "otu")
+otu_taxonomy_report <- report(
+  data = miseq, type = "bin_taxonomy",
+  bin_type = "otu"
+)
 head(otu_taxonomy_report, n = 10)
 #>        id level                             taxon confidence
 #> 1  Otu001     1                          Bacteria        100
@@ -166,44 +194,12 @@ head(otu_taxonomy_report, n = 10)
 #> 9  Otu002     3                     "Bacteroidia"        100
 #> 10 Otu002     4                   "Bacteroidales"        100
 
-# To get a report about bin classifications for 'asv' data
-
-asv_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-                              bin_type = "asv")
-head(asv_taxonomy_report, n = 10)
-#>         id level                             taxon confidence
-#> 1  Asv0001     1                          Bacteria        100
-#> 2  Asv0001     2                   "Bacteroidetes"        100
-#> 3  Asv0001     3                     "Bacteroidia"        100
-#> 4  Asv0001     4                   "Bacteroidales"        100
-#> 5  Asv0001     5              "Porphyromonadaceae"        100
-#> 6  Asv0001     6 "Porphyromonadaceae"_unclassified        100
-#> 7  Asv0002     1                          Bacteria        100
-#> 8  Asv0002     2                   "Bacteroidetes"        100
-#> 9  Asv0002     3                     "Bacteroidia"        100
-#> 10 Asv0002     4                   "Bacteroidales"        100
-
-# To get a report about bin classifications for 'phylotype' data
-
-phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-                                    bin_type = "phylotype")
-head(phylotype_taxonomy_report, n = 10)
-#>         id level                        taxon confidence
-#> 1  Phylo01     1                     Bacteria        100
-#> 2  Phylo01     2                   Firmicutes        100
-#> 3  Phylo01     3                   Clostridia        100
-#> 4  Phylo01     4                Clostridiales        100
-#> 5  Phylo01     5              Lachnospiraceae        100
-#> 6  Phylo01     6 Lachnospiraceae_unclassified        100
-#> 7  Phylo02     1                     Bacteria        100
-#> 8  Phylo02     2              "Bacteroidetes"        100
-#> 9  Phylo02     3                "Bacteroidia"        100
-#> 10 Phylo02     4              "Bacteroidales"        100
-
 # To get the 'otu' bin representative sequences
 
-otu_bin_reps <- report(data = miseq, type = "bin_representatives",
-                       bin_type = "otu")
+otu_bin_reps <- report(
+  data = miseq, type = "bin_representatives",
+  bin_type = "otu"
+)
 head(otu_bin_reps, n = 10)
 #>    otu_names                         representative_names
 #> 1     Otu001 M00967_43_000000000-A3JHG_1_1108_14299_17220
@@ -230,17 +226,13 @@ head(otu_bin_reps, n = 10)
 
 # To get a report about the sequences removed during your analysis:
 
-scrapped_sequence_report <- report(data = miseq, type = "sequence_scrap")
+report(data = miseq, type = "sequence_scrap")
+#> data frame with 0 columns and 0 rows
 
 # To get a report about the "otu" bins removed during your analysis:
 
-scrapped_otu_report <- report(data = miseq, type = "bin_scrap",
-                              bin_type = "otu")
-
-# To get a report about the "phylotype" bins removed during your analysis:
-
-scrapped_phylotype_report <- report(data = miseq, type = "bin_scrap",
-                                    bin_type = "phylotype")
+report(data = miseq, type = "bin_scrap", bin_type = "otu")
+#> data frame with 0 columns and 0 rows
 
 # To get the metadata associated with your data:
 

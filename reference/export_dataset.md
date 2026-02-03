@@ -1,26 +1,18 @@
 # export_dataset
 
-Export all data from an instance of the 'Dataset' class.
+Export all data from a [dataset](dataset.md) object.
 
 ## Usage
 
 ``` r
-export_dataset(data, tags = as.character(c()))
+export_dataset(data)
 ```
 
 ## Arguments
 
-- data:
+- data, :
 
-  an Rcpp::XPtr\<Dataset\> pointer to an instance of the 'Dataset' c++
-  class.
-
-- tags:
-
-  a vector of strings containing the items you wish to export. Options
-  are 'sequence_data' and 'bin_data', 'metadata', 'references',
-  'sequence_tree', 'sample_tree', and 'reports'. By default, everything
-  is exported.
+  a [dataset](dataset.md) object
 
 ## Value
 

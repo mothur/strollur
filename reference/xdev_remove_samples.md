@@ -6,7 +6,7 @@ allows you to remove samples from a [dataset](dataset.md) object
 ## Usage
 
 ``` r
-xdev_remove_samples(data, samples)
+xdev_remove_samples(data, samples, reason = "remove_samples")
 ```
 
 ## Arguments
@@ -18,6 +18,10 @@ xdev_remove_samples(data, samples)
 - samples, :
 
   vector of strings containing the names of the samples to remove.
+
+- reason, :
+
+  string containing the reason for removal. Default = "remove_samples".
 
 ## Examples
 

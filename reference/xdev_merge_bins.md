@@ -6,7 +6,7 @@ allows you to merge bins in a [dataset](dataset.md) object
 ## Usage
 
 ``` r
-xdev_merge_bins(data, bin_names, reason = "merged", type = "otu")
+xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 ```
 
 ## Arguments
@@ -25,7 +25,7 @@ xdev_merge_bins(data, bin_names, reason = "merged", type = "otu")
 
   a string indicating why you are merging bins. Default = "merged".
 
-- type, :
+- bin_type, :
 
   a string indicating the type of bin clusters. Default = "otu"
 

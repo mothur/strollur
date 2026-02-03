@@ -160,20 +160,11 @@ Add phylo tree relating the sequences in your dataset
 
 ### Method [`clear()`](clear.md)
 
-Remove 'sample_tree', or 'sequence_tree' data from your dataset.
+Clear data from datasest
 
 #### Usage
 
-    dataset$clear(tags = NULL)
-
-#### Arguments
-
-- `tags`:
-
-  a vector of strings containing the items you wish to clear. Options
-  are 'metadata', 'references', 'sequence_tree', 'sample_tree',
-  'alignment_report', 'contigs_assembly_report' and '"'chimera_report'.
-  By default, everything is cleared.
+    dataset$clear()
 
 ------------------------------------------------------------------------
 
@@ -299,7 +290,7 @@ Get phylo tree relating the sequences in your dataset.
 
 ------------------------------------------------------------------------
 
-### Method [`clone()`](clone.md)
+### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

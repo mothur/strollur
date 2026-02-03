@@ -1,33 +1,19 @@
-# A short title line describing what the package does
+# Store and transfer data used in the analysis of microbial DNA
 
-A more detailed description of what the package does. A length of about
-one to five lines is recommended.
+The 'rdataset' package stores the data associated with your microbial
+DNA analysis. This includes nucleotide sequences, abundance, sample and
+treatment assignments, taxonomic classifications, asv, otu and phylotype
+clusters, metadata, trees and various reports. It is designed to
+facilitate data analysis across multiple R packages with utility
+functions to import from mothur, qiime2, DADA2 and phyloseq.
 
 ## Details
 
-This section should provide a more detailed overview of how to use the
-package, including the most important functions.
+Get started by taking a look at our most frequently used functions:
+new_dataset(), add(), assign(), names(), count(), abundance(), report()
+and summary().
 
 ## Author
 
-Your Name, email optional.
-
-Maintainer: Your Name \<your@email.com\>
-
-## References
-
-This optional section can contain literature or other references for
-background information.
-
-## See also
-
-Optional links to other man pages
-
-## Examples
-
-``` r
-  if (FALSE) { # \dontrun{
-     ## Optional simple examples of the most important functions
-     ## These can be in \dontrun{} and \donttest{} blocks.   
-  } # }
-```
+Sarah Westcott, Schloss Lab, University of Michigan Maintainer: Sarah
+Westcott \<swestcot@umich.edu\>

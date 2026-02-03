@@ -6,7 +6,7 @@ from the exported table of a [dataset](dataset.md) object.
 ## Usage
 
 ``` r
-import_dataset(table, tags = NULL)
+import_dataset(table)
 ```
 
 ## Arguments
@@ -15,13 +15,6 @@ import_dataset(table, tags = NULL)
 
   a table containing the data from a [dataset](dataset.md) object. You
   can create the table using 'export(dataset)'.
-
-- tags:
-
-  a vector of strings containing the items you wish to export. Options
-  are 'sequence_data', 'bin_data', 'metadata', 'references',
-  'sequence_tree', 'sample_tree', and 'reports'. By default, everything
-  is imported.
 
 ## Value
 
@@ -60,6 +53,7 @@ data <- import_dataset(export_dataset(miseq))
 #> ℹ Assigned 63 phylotype bin taxonomies.
 #> ℹ Added metadata.
 #> ℹ Added 2 resource references.
+#> ℹ Added a contigs_report.
 data
 #> miseq_sop:
 #> 
@@ -75,6 +69,29 @@ data
 #> Mean:            1  375 252.4472      0 4.368699     0      0.000
 #> Unique seqs:  2425 
 #> Total seqs:   113963 
+#> 
+#> contigs_report :
+#>             Expected_Errors   Length MisMatches Num_Ns Overlap_End
+#> Minimum:       0.0000452496 250.0000   0.000000      0    248.0000
+#> 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000
+#> 25%-tile:      0.0028177700 252.0000   0.000000      0    251.0000
+#> Median:        0.0062948698 252.0000   2.000000      0    251.0000
+#> 75%-tile:      0.0264780000 253.0000   4.000000      0    251.0000
+#> 97.5%-tile:    1.1412299871 253.0000  76.000000      0    252.0000
+#> Maximum:       3.0126200000 270.0000 120.000000      0    256.0000
+#> Mean:          0.0984788569 252.5128   7.534147      0    251.0762
+#>             Overlap_Length Overlap_Start
+#> Minimum:          232.0000      0.000000
+#> 2.5%-tile:        248.0000      1.000000
+#> 25%-tile:         249.0000      2.000000
+#> Median:           249.0000      2.000000
+#> 75%-tile:         249.0000      2.000000
+#> 97.5%-tile:       251.0000      3.000000
+#> Maximum:          255.0000     22.000000
+#> Mean:             249.2136      1.862692
+#> Unique seqs:  2425 
+#> Total seqs:   113963 
+#> 
 #> 
 #> Sample   Total:
 #> F3D0 6191 

@@ -5,7 +5,7 @@ Clear data from a [dataset](dataset.md) object
 ## Usage
 
 ``` r
-clear(data, tags = as.character(c()))
+clear(data)
 ```
 
 ## Arguments
@@ -13,13 +13,6 @@ clear(data, tags = as.character(c()))
 - data, :
 
   a [dataset](dataset.md) object
-
-- tags:
-
-  a vector of strings containing the items you wish to clear. Options
-  are 'sequence_data', 'bin_data', 'metadata', 'references',
-  'sequence_tree', 'sample_tree' and 'reports'. By default, everything
-  is cleared.
 
 ## Examples
 
@@ -38,5 +31,4 @@ data <- miseq_sop_example()
 #> ℹ Added 2 resource references.
 #> ℹ Added a contigs_report.
 clear(data)
-#> → `` is not a valid item to clear, ignoring.
 ```

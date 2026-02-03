@@ -1,14 +1,34 @@
 # rdataset
 
-The ‘rdataset’ package stores the data associated with your microbial
-DNA anaylsis. This includes nucleotide sequences, abundance, sample and
+## Overview
+
+The **rdataset** package stores the data associated with your microbial
+DNA analysis. This includes nucleotide sequences, abundance, sample and
 treatment assignments, taxonomic classifications, sequence bin
 assignments, metadata, trees and various reports. It is designed to
 facilitate data analysis across multiple R packages with utility
-functions to read and write from [mothur](https://mothur.org), mothur2,
+functions to import from [mothur](https://mothur.org), mothur2,
 [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/)
 and
 [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
+
+- [`add()`](reference/add.md) add sequences, reports, metadata, and
+  resource references
+- [`assign()`](reference/assign.md) assign abundances, classifications,
+  bins, samples and treatments and more
+- [`names()`](reference/names.md) get the names of sequences, bins,
+  samples, treatments and reports
+- [`count()`](reference/count.md) get the number of sequences, bins,
+  samples and treatments
+- [`abundance()`](reference/abundance.md) get the abundances for
+  sequences, bins, samples, and treatments
+- [`report()`](reference/report.md) get
+  [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequences,
+  sequence and classification reports, bin assignments, sample
+  assignments, metadata, sequence data reports, custom reports, resource
+  references and scrapped data reports.
+- [`summary()`](reference/summary.md) summarize sequences, your custom
+  reports, and scrapped data
 
 ## Installation
 
@@ -18,6 +38,8 @@ You can install the CRAN version with:
 install.packages("rdataset")
 ```
 
+### Development version
+
 You can install the development version of rdataset from
 [GitHub](https://github.com/SchlossLab/rdataset) with:
 
@@ -26,18 +48,113 @@ You can install the development version of rdataset from
 devtools::install_github("SchlossLab/rdataset")
 ```
 
-## Data Tranfer Functions
+## Usage
 
-- ‘read_mothur()’ : Create a ‘dataset’ object from mothur’s output
-  files.
-- ‘read_dada2()’ : Create a ‘dataset’ object from dada2’s outputs.
-- ‘read_qiime2()’ : Create a ‘dataset’ object from qiime2’s .qza output
-  files.
-- ‘read_phyloseq()’ : Create a ‘dataset’ object from phyloseq’s outputs.
+The example below adds
+[FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequence
+data, assigns sequence abundance, samples and treatments, as well as
+assigning bins and taxonomic data.
 
-## Get started
+``` r
+library(rdataset)
 
-See the [Getting Started](TODO) page to get started.
+data <- new_dataset(dataset_name = "microbial RNA example")
+
+fasta_data <- read_fasta(rdataset_example("final.fasta"))
+
+add(
+  data = data,
+  table = fasta_data,
+  type = "sequences"
+)
+#> ℹ Added 2425 sequences.
+#> [1] 2425
+
+abundance_table <- readr::read_tsv(rdataset_example("mothur2_count_table.tsv"),
+  show_col_types = FALSE
+)
+assign(
+  data = data,
+  table = abundance_table,
+  type = "sequence_abundance",
+  table_names = list(sequence_name = "names")
+)
+#> ℹ Assigned 2425 sequence abundances.
+#> [1] 2425
+
+bin_table <- readr::read_tsv(
+  rdataset_example(
+    "mothur2_bin_assignments_list.tsv"
+  ),
+  show_col_types = FALSE
+)
+
+assign(
+  data = data,
+  table = bin_table,
+  type = "bins",
+  bin_type = "otu",
+  table_names = list(bin_name = "otu_id", sequence_name = "seq_id")
+)
+#> ℹ Assigned 531 otu bins.
+#> [1] 531
+
+sequence_classification_data <- read_mothur_taxonomy(
+  taxonomy = rdataset_example("final.taxonomy")
+)
+
+assign(
+  data = data,
+  table = sequence_classification_data,
+  type = "sequence_taxonomy"
+)
+#> ℹ Assigned 2425 sequence taxonomies.
+#> [1] 2425
+data
+#> microbial RNA example:
+#> 
+#> sequence_summary:
+#>             starts ends   nbases ambigs polymers numns    numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0      1.000
+#> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
+#> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750
+#> Median:          1  375 252.0000      0 4.000000     0  56982.500
+#> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250
+#> 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925
+#> Maximum:         1  375 256.0000      0 6.000000     0 113963.000
+#> Mean:            1  375 252.4472      0 4.368699     0      0.000
+#> Unique seqs:  2425 
+#> Total seqs:   113963 
+#> 
+#> Sample   Total:
+#> F3D0 6191 
+#> F3D1 4652 
+#> F3D141   4656 
+#> F3D142   2423 
+#> F3D143   2403 
+#> F3D144   3449 
+#> F3D145   5532 
+#> F3D146   3831 
+#> F3D147   12430 
+#> F3D148   9465 
+#> F3D149   10014 
+#> F3D150   4126 
+#> F3D2 15686 
+#> F3D3 5199 
+#> F3D5 3469 
+#> F3D6 6394 
+#> F3D7 4055 
+#> F3D8 4253 
+#> F3D9 5735 
+#> 
+#> Treatment   Total:
+#> Early    55634 
+#> Late 58329 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> Total number of otus: 531
+```
 
 ## Getting help
 
@@ -53,36 +170,28 @@ requests are welcome on
 
 # Package index
 
-## All functions
+## Getting Started
 
-- [`abundance()`](abundance.md) : abundance
+Adding and accessing data
+
 - [`add()`](add.md) : add
-- [`added_message()`](added_message.md) : added_message
 - [`assign()`](assign.md) : assign
-- [`assigned_message()`](assigned_message.md) : assigned_message
-- [`clear()`](clear.md) : clear
-- [`clone()`](clone.md) : clone
-- [`copy_dataset()`](copy_dataset.md) : copy_dataset
-- [`count()`](count.md) : count
-- [`dataset`](dataset.md) : dataset
-- [`export_dataset()`](export_dataset.md) : export_dataset
-- [`get_available_processors()`](get_available_processors.md) :
-  get_available_processors
-- [`get_bin_types()`](get_bin_types.md) : get_bin_types
-- [`has_sample()`](has_sample.md) : has_sample
-- [`has_sequence_strings()`](has_sequence_strings.md) :
-  has_sequence_strings
-- [`import_dataset()`](import_dataset.md) : import_dataset
-- [`is_aligned()`](is_aligned.md) : is_aligned
-- [`load_dataset()`](load_dataset.md) : load_dataset
-- [`miseq_sop_example()`](miseq_sop_example.md) : miseq_sop_example
 - [`names()`](names.md) : names
-- [`new_dataset()`](new_dataset.md) : new_dataset
-- [`new_reference()`](new_reference.md) : new_reference
+- [`count()`](count.md) : count
+- [`abundance()`](abundance.md) : abundance
+- [`report()`](report.md) : report
+- [`summary()`](summary.md) : summary
+- [`dataset`](dataset.md) : dataset
 - [`rdataset-package`](rdataset-package.md)
-  [`rdataset`](rdataset-package.md) : A short title line describing what
-  the package does
-- [`rdataset_example()`](rdataset_example.md) : rdataset_example
+  [`rdataset`](rdataset-package.md) : Store and transfer data used in
+  the analysis of microbial DNA
+- [`get_bin_types()`](get_bin_types.md) : get_bin_types
+
+## Importing Data
+
+Importing from other software tools namely: mothur, qiime2, phyloseq and
+DADA2
+
 - [`read_dada2()`](read_dada2.md) : read_dada2
 - [`read_fasta()`](read_fasta.md) : read_fasta
 - [`read_mothur()`](read_mothur.md) : read_mothur
@@ -101,13 +210,29 @@ requests are welcome on
   read_qiime2_metadata
 - [`read_qiime2_taxonomy()`](read_qiime2_taxonomy.md) :
   read_qiime2_taxonomy
-- [`remove_file()`](remove_file.md) : remove_file
-- [`report()`](report.md) : report
-- [`save_dataset()`](save_dataset.md) : save_dataset
-- [`sort_dataframe()`](sort_dataframe.md) : sort_dataframe
-- [`summary()`](summary.md) : summary
 - [`unpack_qiime2_artifact()`](unpack_qiime2_artifact.md) :
   unpack_qiime2_artifact
+
+## General
+
+Create datasets and references, clear data
+
+- [`miseq_sop_example()`](miseq_sop_example.md) : miseq_sop_example
+- [`new_dataset()`](new_dataset.md) : new_dataset
+- [`new_reference()`](new_reference.md) : new_reference
+- [`clear()`](clear.md) : clear
+- [`is_aligned()`](is_aligned.md) : is_aligned
+- [`has_sample()`](has_sample.md) : has_sample
+
+## Data Transfers
+
+Save, copy, load, import, export and write to file
+
+- [`save_dataset()`](save_dataset.md) : save_dataset
+- [`load_dataset()`](load_dataset.md) : load_dataset
+- [`export_dataset()`](export_dataset.md) : export_dataset
+- [`import_dataset()`](import_dataset.md) : import_dataset
+- [`copy_dataset()`](copy_dataset.md) : copy_dataset
 - [`write_fasta()`](write_fasta.md) : write_fasta
 - [`write_mothur()`](write_mothur.md) : write_mothur
 - [`write_mothur_cons_taxonomy()`](write_mothur_cons_taxonomy.md) :
@@ -121,6 +246,21 @@ requests are welcome on
 - [`write_mothur_shared()`](write_mothur_shared.md) :
   write_mothur_shared
 - [`write_taxonomy()`](write_taxonomy.md) : write_taxonomy
+
+## Functions for Package Developers
+
+Want to create and modify dataset objects from your package? Check out
+these functions
+
+- [`rdataset_example()`](rdataset_example.md) : rdataset_example
+- [`get_available_processors()`](get_available_processors.md) :
+  get_available_processors
+- [`has_sequence_strings()`](has_sequence_strings.md) :
+  has_sequence_strings
+- [`added_message()`](added_message.md) : added_message
+- [`assigned_message()`](assigned_message.md) : assigned_message
+- [`remove_file()`](remove_file.md) : remove_file
+- [`sort_dataframe()`](sort_dataframe.md) : sort_dataframe
 - [`xdev_abundance()`](xdev_abundance.md) : xdev_abundance
 - [`xdev_add_references()`](xdev_add_references.md) :
   xdev_add_references
@@ -153,13 +293,10 @@ requests are welcome on
   xdev_remove_samples
 - [`xdev_remove_sequences()`](xdev_remove_sequences.md) :
   xdev_remove_sequences
+- [`xdev_report()`](xdev_report.md) : xdev_report
 - [`xdev_set_abundance()`](xdev_set_abundance.md) : xdev_set_abundance
 - [`xdev_set_abundances()`](xdev_set_abundances.md) :
   xdev_set_abundances
-- [`xdev_set_bin_abundance()`](xdev_set_bin_abundance.md) :
-  xdev_set_bin_abundance
-- [`xdev_set_bin_abundances()`](xdev_set_bin_abundances.md) :
-  xdev_set_bin_abundances
 - [`xdev_set_dataset_name()`](xdev_set_dataset_name.md) :
   xdev_set_dataset_name
 - [`xdev_set_num_processors()`](xdev_set_num_processors.md) :
@@ -175,7 +312,11 @@ requests are welcome on
 
 ### All vignettes
 
-- [Data_Transfers](Data_Transfers.md):
-- [Functions_for_Package_Developers](Functions_for_Package_Developers.md):
-- [Getting-Started](Getting-Started.md):
-- [Using_Dataset](Using_Dataset.md):
+- [Accessing Data](Accessing_Dataset.md):
+- [Data Transfers](Data_Transfers.md):
+- [Functions for package
+  developers](Functions_for_Package_Developers.md):
+- [General Importing](General_Importing.md):
+- [Getting Started](Getting-Started.md):
+- [Importing from mothur](Importing_from_mothur.md):
+- [Importing from qiime2](Importing_from_qiime2.md):

@@ -2387,6 +2387,7 @@ data
 #> L6S68    6022 
 #> L6S93    7025 
 #> 
+#> Number of unique seqs: 759 
 #> Total number of seqs: 157298 
 #> Total number of otus: 759 
 #> 

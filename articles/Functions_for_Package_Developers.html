@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Functions_for_Package_Developers • rdataset</title>
+<title>Functions for package developers • rdataset</title>
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Functions_for_Package_Developers">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Functions for package developers">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -33,12 +33,16 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Data_Transfers.html">Data_Transfers</a></li>
-    <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions_for_Package_Developers</a></li>
-    <li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting-Started</a></li>
-    <li><a class="dropdown-item" href="../articles/Using_Dataset.html">Using_Dataset</a></li>
+<li><a class="dropdown-item" href="../articles/Accessing_Dataset.html">Accessing Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Data_Transfers.html">Data Transfers</a></li>
+    <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
+    <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
+    <li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting Started</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -65,8 +69,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Functions_for_Package_Developers</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>Functions for package developers</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/SchlossLab/rdataset/blob/main/vignettes/Functions_for_Package_Developers.Rmd" class="external-link"><code>vignettes/Functions_for_Package_Developers.Rmd</code></a></small>
@@ -75,18 +78,839 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SchlossLab/rdataset" class="external-link">rdataset</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'rdataset'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     assign, names, summary</span></span></code></pre></div>
+<p><em>rdataset</em> includes several functions designed for package
+developers. These functions provide additional access to the back end
+data and allow developers to merge, remove and set data directly. The
+function names begin with <em>‘xdev_’</em> or <em>‘xint_’</em> to
+clearly indicate that they are designed for development or for internal
+use, and not for the general user.</p>
 <div class="section level2">
-<h2 id="todo">TODO<a class="anchor" aria-label="anchor" href="#todo"></a>
+<h2 id="setting-functions">Setting functions<a class="anchor" aria-label="anchor" href="#setting-functions"></a>
 </h2>
+<p>Over the course of an analysis your package may want to change the
+abundances of sequences, modify sequence nucleotide strings due to
+alignment, screening or filtering, and change the data set name. Let’s
+take a close look at functions you will need to do so using the
+<code><a href="../reference/miseq_sop_example.html">miseq_sop_example()</a></code> data set.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added metadata.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span></span>
+<span><span class="va">miseq</span></span>
+<span><span class="co">#&gt; miseq_sop:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; sequence_summary:</span></span>
+<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns    numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0      1.000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750</span></span>
+<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0  56982.500</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925</span></span>
+<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 113963.000</span></span>
+<span><span class="co">#&gt; Mean:            1  375 252.4472      0 4.368699     0      0.000</span></span>
+<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
+<span><span class="co">#&gt; Total seqs:   113963 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; contigs_report :</span></span>
+<span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
+<span><span class="co">#&gt; Minimum:       0.0000452496 250.0000   0.000000      0    248.0000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 25%-tile:      0.0028177700 252.0000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; Median:        0.0062948698 252.0000   2.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 75%-tile:      0.0264780000 253.0000   4.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:    1.1412299871 253.0000  76.000000      0    252.0000</span></span>
+<span><span class="co">#&gt; Maximum:       3.0126200000 270.0000 120.000000      0    256.0000</span></span>
+<span><span class="co">#&gt; Mean:          0.0984788569 252.5128   7.534147      0    251.0762</span></span>
+<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
+<span><span class="co">#&gt; Minimum:          232.0000      0.000000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:        248.0000      1.000000</span></span>
+<span><span class="co">#&gt; 25%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; Median:           249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 75%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:       251.0000      3.000000</span></span>
+<span><span class="co">#&gt; Maximum:          255.0000     22.000000</span></span>
+<span><span class="co">#&gt; Mean:             249.2136      1.862692</span></span>
+<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
+<span><span class="co">#&gt; Total seqs:   113963 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sample   Total:</span></span>
+<span><span class="co">#&gt; F3D0 6191 </span></span>
+<span><span class="co">#&gt; F3D1 4652 </span></span>
+<span><span class="co">#&gt; F3D141   4656 </span></span>
+<span><span class="co">#&gt; F3D142   2423 </span></span>
+<span><span class="co">#&gt; F3D143   2403 </span></span>
+<span><span class="co">#&gt; F3D144   3449 </span></span>
+<span><span class="co">#&gt; F3D145   5532 </span></span>
+<span><span class="co">#&gt; F3D146   3831 </span></span>
+<span><span class="co">#&gt; F3D147   12430 </span></span>
+<span><span class="co">#&gt; F3D148   9465 </span></span>
+<span><span class="co">#&gt; F3D149   10014 </span></span>
+<span><span class="co">#&gt; F3D150   4126 </span></span>
+<span><span class="co">#&gt; F3D2 15686 </span></span>
+<span><span class="co">#&gt; F3D3 5199 </span></span>
+<span><span class="co">#&gt; F3D5 3469 </span></span>
+<span><span class="co">#&gt; F3D6 6394 </span></span>
+<span><span class="co">#&gt; F3D7 4055 </span></span>
+<span><span class="co">#&gt; F3D8 4253 </span></span>
+<span><span class="co">#&gt; F3D9 5735 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment   Total:</span></span>
+<span><span class="co">#&gt; Early    55634 </span></span>
+<span><span class="co">#&gt; Late 58329 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
+<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
+<span><span class="co">#&gt; Total number of otus: 531 </span></span>
+<span><span class="co">#&gt; Total number of asvs: 2425 </span></span>
+<span><span class="co">#&gt; Total number of phylotypes: 63</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="setting-the-dataset-name">Setting the dataset name<a class="anchor" aria-label="anchor" href="#setting-the-dataset-name"></a>
+</h3>
+<p>To change the data set name you can use the
+<code><a href="../reference/xdev_set_dataset_name.html">xdev_set_dataset_name()</a></code> function.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "miseq_sop"</span></span>
+<span><span class="fu"><a href="../reference/xdev_set_dataset_name.html">xdev_set_dataset_name</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, dataset_name <span class="op">=</span> <span class="st">"modified_miseq"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "modified_miseq"</span></span></code></pre></div>
 </div>
-  </main>
+<div class="section level3">
+<h3 id="setting-nucleotide-sequence-strings">Setting nucleotide sequence strings<a class="anchor" aria-label="anchor" href="#setting-nucleotide-sequence-strings"></a>
+</h3>
+<p>The miseq example data set is already aligned, filtered and screened,
+but for the sake of example let’s set the nucleotide strings of
+sequences <em>exclusive</em> to sample ‘F3D0’ to ‘NNNN’. First we will
+get the names of the sequences only present in sample ‘F3D0’.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f3d0_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
+<span>  distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">f3d0_names</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 101</span></span></code></pre></div>
+<p>Now we will assign nucleotide strings of the sequences
+<em>exclusive</em> to sample ‘F3D0’ to ‘NNNN’. Then we can use the
+<code><a href="../reference/xdev_get_by_sample.html">xdev_get_by_sample()</a></code> get all the sequences in present in
+sample ‘F3D0’ for closer inspection.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">nnnn_neucleotides</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"NNNN"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">f3d0_names</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">comments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"example_set_sequences"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">f3d0_names</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/xdev_set_sequences.html">xdev_set_sequences</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>, sequence_names <span class="op">=</span> <span class="va">f3d0_names</span>,</span>
+<span>  sequences <span class="op">=</span> <span class="va">nnnn_neucleotides</span>, comments <span class="op">=</span> <span class="va">comments</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">f3d0_sequences</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/xdev_get_by_sample.html">xdev_get_by_sample</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">f3d0_sequences</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">300</span><span class="op">:</span><span class="fl">305</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-T-TA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-GC-C-C-AA-AG--CT-C-AA-C-T-T-C-G-G-G-ACT-G-C-TTTT-GAAAC-TG-T-GTAAC-TAGA-GT-GC-AG-GA-G-G---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGC-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG"</span></span>
+<span><span class="co">#&gt; [2] "NNNN"                                                                                                                                                                                                                                                                                                                                                                                   </span></span>
+<span><span class="co">#&gt; [3] "TAC--GG-AG-GGT--GCA-A-G-C-G-T-T--AA-T-CGG-AA--TT-A-C-T--GG-GC--GT-A-AA-GC-GC-AC-G-CA-GGC-G-G-T-TT-G-T-T-AA-G-T-C-A-G-A-T-G--TG-A-AA-TC-C-C-CG-GG--CT-C-AA-C-C-T-G-G-G-A-ACT-G-C-ATCT-GATAC-TG-G-CAAGC-TTGA-GT-CT-CG-TA-G-A---GG-G-G-GGTAGAATTCCAGGTGT-AGCGGT-GAAATGCGTAG-AG-A-TC-TG-GA-GG-AATACCGGT-GGCGAAGGCG------GCCCC-CTG-G-AC-GA-A-G-ACTGACG-CTCA-GGTG-CGAAA-GCG-TGGGG-AGC-AAACAGG"</span></span>
+<span><span class="co">#&gt; [4] "NNNN"                                                                                                                                                                                                                                                                                                                                                                                   </span></span>
+<span><span class="co">#&gt; [5] "TAC--GT-AG-GGA--GCG-A-G-C-G-T-T--GT-C-CGG-AA--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-G-AT-T-G-C-AA-G-T-T-G-G-A-T-G--TG-A-AA-AC-T-G-CG-GG--CT-C-AA-C-C-C-G-G-A-G-AGT-G-C-ATTC-AAAAC-TG-C-GATTC-TTGA-GT-GA-AG-TA-G-A---GG-C-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTG-CTG-G-GC-TT-T-T-ACTGACG-CTGA-GGCT-CGAAA-GTG-TGGGG-AGC-AAACAGG"</span></span>
+<span><span class="co">#&gt; [6] "TAC--GT-AG-GGG--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GT-C-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GC-C-C-GT-GG--CT-C-AA-C-C-G-C-G-G-A-ACC-G-C-TTTG-GAAAC-TG-C-GAGGC-TGGA-GT-GC-TG-GA-G-A---GG-T-A-AGCGGAATTCCTGGTGT-AGCGGT-GAAATGCGTAG-AT-A-TC-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTTA-CTG-G-AC-AG-T-G-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-GAACAGG"</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="setting-sequence-abundances">Setting sequence abundances<a class="anchor" aria-label="anchor" href="#setting-sequence-abundances"></a>
+</h3>
+<p>Now that we know how to set sequence strings, let’s learn how to set
+sequence abundances. In most cases you can use the <code><a href="../reference/assign.html">assign()</a></code>
+function to set sequence abundances, but there may be cases where you
+want more flexibility. The assign function requires abundances to be
+provided for each sequence. If you only need to update a subset of the
+sequences, there are two functions to that allow you to do that,
+<code><a href="../reference/xdev_set_abundances.html">xdev_set_abundances()</a></code> and
+<code><a href="../reference/xdev_set_abundance.html">xdev_set_abundance()</a></code>. <em>xdev_set_abundances</em> is used
+with data sets that include samples, <em>xdev_set_abundance</em> is used
+for data sets without samples. Let’s set the abundances of all sequences
+<em>exclusive</em> to sample F3D0 to 0, in essence removing them. First
+we will get the abundance table for the whole data set and create the
+inputs for <code><a href="../reference/xdev_set_abundances.html">xdev_set_abundances()</a></code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequences"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">abundance_table</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                  sequence_names abundances samples treatments</span></span>
+<span><span class="co">#&gt; 1  M00967_43_000000000-A3JHG_1_2101_16474_12783          1  F3D150       Late</span></span>
+<span><span class="co">#&gt; 2   M00967_43_000000000-A3JHG_1_1113_12711_3318          1  F3D142       Late</span></span>
+<span><span class="co">#&gt; 3   M00967_43_000000000-A3JHG_1_2108_14707_9807          1    F3D3      Early</span></span>
+<span><span class="co">#&gt; 4   M00967_43_000000000-A3JHG_1_1110_4126_16552          1    F3D8      Early</span></span>
+<span><span class="co">#&gt; 5   M00967_43_000000000-A3JHG_1_2102_8408_13436          1    F3D7      Early</span></span>
+<span><span class="co">#&gt; 6  M00967_43_000000000-A3JHG_1_1107_22580_21773          1    F3D3      Early</span></span>
+<span><span class="co">#&gt; 7  M00967_43_000000000-A3JHG_1_1108_14299_17220         22  F3D146       Late</span></span>
+<span><span class="co">#&gt; 8  M00967_43_000000000-A3JHG_1_1108_14299_17220         19  F3D147       Late</span></span>
+<span><span class="co">#&gt; 9  M00967_43_000000000-A3JHG_1_1108_14299_17220         12  F3D148       Late</span></span>
+<span><span class="co">#&gt; 10 M00967_43_000000000-A3JHG_1_1108_14299_17220          9  F3D149       Late</span></span>
+<span></span>
+<span><span class="va">num_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span>
+<span><span class="va">new_abunds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">num_samples</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">f3d0_names</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/xdev_set_abundances.html">xdev_set_abundances</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  sequence_names <span class="op">=</span> <span class="va">f3d0_names</span>,</span>
+<span>  abundances <span class="op">=</span> <span class="va">new_abunds</span>,</span>
+<span>  reason <span class="op">=</span> <span class="st">"F3D0_exclusive_sequences"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">miseq</span></span>
+<span><span class="co">#&gt; modified_miseq:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; sequence_summary:</span></span>
+<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns   numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0   2847.35</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  28464.50</span></span>
+<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0  56928.00</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0  85391.50</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 111008.65</span></span>
+<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 113854.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375 252.4468      0 4.368533     0      0.00</span></span>
+<span><span class="co">#&gt; Unique seqs:  2324 </span></span>
+<span><span class="co">#&gt; Total seqs:   113854 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; contigs_report :</span></span>
+<span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
+<span><span class="co">#&gt; Minimum:       0.0000452496 250.0000   0.000000      0    248.0000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 25%-tile:      0.0028177700 252.0000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; Median:        0.0062948698 252.0000   2.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 75%-tile:      0.0261963997 253.0000   4.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:    1.1412299871 253.0000  76.000000      0    252.0000</span></span>
+<span><span class="co">#&gt; Maximum:       3.0126200000 270.0000 120.000000      0    256.0000</span></span>
+<span><span class="co">#&gt; Mean:          0.0985028379 252.5124   7.536301      0    251.0762</span></span>
+<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
+<span><span class="co">#&gt; Minimum:          232.0000      0.000000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:        248.0000      1.000000</span></span>
+<span><span class="co">#&gt; 25%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; Median:           249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 75%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:       251.0000      3.000000</span></span>
+<span><span class="co">#&gt; Maximum:          255.0000     22.000000</span></span>
+<span><span class="co">#&gt; Mean:             249.2138      1.862447</span></span>
+<span><span class="co">#&gt; Unique seqs:  2324 </span></span>
+<span><span class="co">#&gt; Total seqs:   113854 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; scrap_summary:</span></span>
+<span><span class="co">#&gt;        type                trash_code unique total</span></span>
+<span><span class="co">#&gt; 1  sequence  F3D0_exclusive_sequences    101   109</span></span>
+<span><span class="co">#&gt; 2       otu F3D0_exclusive_sequences,     14    14</span></span>
+<span><span class="co">#&gt; 3       asv F3D0_exclusive_sequences,    101   109</span></span>
+<span><span class="co">#&gt; 4 phylotype F3D0_exclusive_sequences,      2     2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sample   Total:</span></span>
+<span><span class="co">#&gt; F3D0 6082 </span></span>
+<span><span class="co">#&gt; F3D1 4652 </span></span>
+<span><span class="co">#&gt; F3D141   4656 </span></span>
+<span><span class="co">#&gt; F3D142   2423 </span></span>
+<span><span class="co">#&gt; F3D143   2403 </span></span>
+<span><span class="co">#&gt; F3D144   3449 </span></span>
+<span><span class="co">#&gt; F3D145   5532 </span></span>
+<span><span class="co">#&gt; F3D146   3831 </span></span>
+<span><span class="co">#&gt; F3D147   12430 </span></span>
+<span><span class="co">#&gt; F3D148   9465 </span></span>
+<span><span class="co">#&gt; F3D149   10014 </span></span>
+<span><span class="co">#&gt; F3D150   4126 </span></span>
+<span><span class="co">#&gt; F3D2 15686 </span></span>
+<span><span class="co">#&gt; F3D3 5199 </span></span>
+<span><span class="co">#&gt; F3D5 3469 </span></span>
+<span><span class="co">#&gt; F3D6 6394 </span></span>
+<span><span class="co">#&gt; F3D7 4055 </span></span>
+<span><span class="co">#&gt; F3D8 4253 </span></span>
+<span><span class="co">#&gt; F3D9 5735 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment   Total:</span></span>
+<span><span class="co">#&gt; Early    55525 </span></span>
+<span><span class="co">#&gt; Late 58329 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of unique seqs: 2324 </span></span>
+<span><span class="co">#&gt; Total number of seqs: 113854 </span></span>
+<span><span class="co">#&gt; Total number of otus: 517 </span></span>
+<span><span class="co">#&gt; Total number of asvs: 2324 </span></span>
+<span><span class="co">#&gt; Total number of phylotypes: 61</span></span></code></pre></div>
+<p>You can see that not all of the sequences in ‘F3D0’ are removed. That
+is because the majority of sequences in the data set are present in
+multiple samples. mothur2 uses xdev_set_abundances when running the
+pre_cluster() function, sequences are clustered by sample, and the
+abundances are set accordingly.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="merging-functions">Merging Functions<a class="anchor" aria-label="anchor" href="#merging-functions"></a>
+</h2>
+<p>In the course of analyzing your data, there may be times when you
+want to merge sequence abundances. When sequence nucleotide string are
+identical you can save time processing by merging the identical read’s
+abundances. mothur2 merges sequences abundances in the unique_seqs
+function. The miseq example includes merged sequences that have been
+assigned to bins. In practice, you would would not merge sequences after
+assigning them to bins. Note, the code below is set to ‘eval=FALSE’
+because you can only merge sequences assigned to the same bin and it
+will throw errors accordingly. Let’s take a look at how to use the
+<code><a href="../reference/xdev_merge_sequences.html">xdev_merge_sequences()</a></code> function for your reference.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">random_sequence_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span><span class="op">)</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/xdev_merge_sequences.html">xdev_merge_sequences</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  sequence_names <span class="op">=</span> <span class="va">random_sequence_names</span>,</span>
+<span>  reason <span class="op">=</span> <span class="st">"merge_sequences_example"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Similarly, you may want to merge bins and the
+<code><a href="../reference/xdev_merge_bins.html">xdev_merge_bins()</a></code> function will allow you to do so. For
+this example we will randomly select 100 ‘otu’ bins to merge.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">random_bin_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>    type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>    bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/xdev_merge_bins.html">xdev_merge_bins</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  bin_names <span class="op">=</span> <span class="va">random_bin_names</span>,</span>
+<span>  reason <span class="op">=</span> <span class="st">"merge_bins_example"</span>,</span>
+<span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">miseq</span></span>
+<span><span class="co">#&gt; modified_miseq:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; sequence_summary:</span></span>
+<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns   numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0   2847.35</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  28464.50</span></span>
+<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0  56928.00</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0  85391.50</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 111008.65</span></span>
+<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 113854.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375 252.4468      0 4.368533     0      0.00</span></span>
+<span><span class="co">#&gt; Unique seqs:  2324 </span></span>
+<span><span class="co">#&gt; Total seqs:   113854 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; contigs_report :</span></span>
+<span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
+<span><span class="co">#&gt; Minimum:       0.0000452496 250.0000   0.000000      0    248.0000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 25%-tile:      0.0028177700 252.0000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; Median:        0.0062948698 252.0000   2.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 75%-tile:      0.0261963997 253.0000   4.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:    1.1412299871 253.0000  76.000000      0    252.0000</span></span>
+<span><span class="co">#&gt; Maximum:       3.0126200000 270.0000 120.000000      0    256.0000</span></span>
+<span><span class="co">#&gt; Mean:          0.0985028379 252.5124   7.536301      0    251.0762</span></span>
+<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
+<span><span class="co">#&gt; Minimum:          232.0000      0.000000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:        248.0000      1.000000</span></span>
+<span><span class="co">#&gt; 25%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; Median:           249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 75%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:       251.0000      3.000000</span></span>
+<span><span class="co">#&gt; Maximum:          255.0000     22.000000</span></span>
+<span><span class="co">#&gt; Mean:             249.2138      1.862447</span></span>
+<span><span class="co">#&gt; Unique seqs:  2324 </span></span>
+<span><span class="co">#&gt; Total seqs:   113854 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; scrap_summary:</span></span>
+<span><span class="co">#&gt;        type                trash_code unique total</span></span>
+<span><span class="co">#&gt; 1  sequence  F3D0_exclusive_sequences    101   109</span></span>
+<span><span class="co">#&gt; 2       otu F3D0_exclusive_sequences,     14    14</span></span>
+<span><span class="co">#&gt; 3       otu        merge_bins_example     99  6674</span></span>
+<span><span class="co">#&gt; 4       asv F3D0_exclusive_sequences,    101   109</span></span>
+<span><span class="co">#&gt; 5 phylotype F3D0_exclusive_sequences,      2     2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sample   Total:</span></span>
+<span><span class="co">#&gt; F3D0 6082 </span></span>
+<span><span class="co">#&gt; F3D1 4652 </span></span>
+<span><span class="co">#&gt; F3D141   4656 </span></span>
+<span><span class="co">#&gt; F3D142   2423 </span></span>
+<span><span class="co">#&gt; F3D143   2403 </span></span>
+<span><span class="co">#&gt; F3D144   3449 </span></span>
+<span><span class="co">#&gt; F3D145   5532 </span></span>
+<span><span class="co">#&gt; F3D146   3831 </span></span>
+<span><span class="co">#&gt; F3D147   12430 </span></span>
+<span><span class="co">#&gt; F3D148   9465 </span></span>
+<span><span class="co">#&gt; F3D149   10014 </span></span>
+<span><span class="co">#&gt; F3D150   4126 </span></span>
+<span><span class="co">#&gt; F3D2 15686 </span></span>
+<span><span class="co">#&gt; F3D3 5199 </span></span>
+<span><span class="co">#&gt; F3D5 3469 </span></span>
+<span><span class="co">#&gt; F3D6 6394 </span></span>
+<span><span class="co">#&gt; F3D7 4055 </span></span>
+<span><span class="co">#&gt; F3D8 4253 </span></span>
+<span><span class="co">#&gt; F3D9 5735 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment   Total:</span></span>
+<span><span class="co">#&gt; Early    55525 </span></span>
+<span><span class="co">#&gt; Late 58329 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of unique seqs: 2324 </span></span>
+<span><span class="co">#&gt; Total number of seqs: 113854 </span></span>
+<span><span class="co">#&gt; Total number of otus: 418 </span></span>
+<span><span class="co">#&gt; Total number of asvs: 2324 </span></span>
+<span><span class="co">#&gt; Total number of phylotypes: 61</span></span></code></pre></div>
+<p>You can see that the sample totals, total sequence and unique
+sequences remain the same but the number of otu bins is reduced by
+99.</p>
+</div>
+<div class="section level2">
+<h2 id="removing-functions">Removing Functions<a class="anchor" aria-label="anchor" href="#removing-functions"></a>
+</h2>
+<p>Over the course of your analysis, you may want to remove sequences,
+bins, samples or contaminants. rdataset has several functions to help
+with that, namely <code><a href="../reference/xdev_remove_sequences.html">xdev_remove_sequences()</a></code>,
+<code><a href="../reference/xdev_remove_bins.html">xdev_remove_bins()</a></code>, <code><a href="../reference/xdev_remove_samples.html">xdev_remove_samples()</a></code>, and
+<code><a href="../reference/xdev_remove_lineages.html">xdev_remove_lineages()</a></code>.</p>
+<div class="section level3">
+<h3 id="removing-sequences">Removing Sequences<a class="anchor" aria-label="anchor" href="#removing-sequences"></a>
+</h3>
+<p>There are several reasons you may want to remove sequences including
+removing chimeras, removing sequence without good overlap and removing
+sequences with ambiguous bases. The <code><a href="../reference/xdev_remove_sequences.html">xdev_remove_sequences()</a></code>
+function allows you to easily do that. The
+<code><a href="../reference/miseq_sop_example.html">miseq_sop_example()</a></code> has already been screened for chimeras,
+overlap, sequence length and ambiguous bases, so let’s randomly select
+100 sequences to remove.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">random_sequence_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span><span class="op">)</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/xdev_remove_sequences.html">xdev_remove_sequences</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  sequence_names <span class="op">=</span> <span class="va">random_sequence_names</span>,</span>
+<span>  trash_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"remove_sequences_example"</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">miseq</span></span>
+<span><span class="co">#&gt; modified_miseq:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; sequence_summary:</span></span>
+<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns  numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0      1.0</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0   2529.6</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  25287.0</span></span>
+<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0  50573.0</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0  75859.0</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0  98616.4</span></span>
+<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 101144.0</span></span>
+<span><span class="co">#&gt; Mean:            1  375 252.4739      0 4.400399     0      0.0</span></span>
+<span><span class="co">#&gt; Unique seqs:  2224 </span></span>
+<span><span class="co">#&gt; Total seqs:   101144 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; contigs_report :</span></span>
+<span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
+<span><span class="co">#&gt; Minimum:       0.0000452496 250.0000   0.000000      0    248.0000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 25%-tile:      0.0025611699 252.0000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; Median:        0.0077774799 253.0000   2.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 75%-tile:      0.0276404992 253.0000   4.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:    1.1412299871 253.0000  76.000000      0    252.0000</span></span>
+<span><span class="co">#&gt; Maximum:       3.0126200000 270.0000 120.000000      0    256.0000</span></span>
+<span><span class="co">#&gt; Mean:          0.1093153473 252.5478   8.078799      0    251.0886</span></span>
+<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
+<span><span class="co">#&gt; Minimum:          232.0000      0.000000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:        248.0000      1.000000</span></span>
+<span><span class="co">#&gt; 25%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; Median:           249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 75%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:       251.0000      3.000000</span></span>
+<span><span class="co">#&gt; Maximum:          255.0000     22.000000</span></span>
+<span><span class="co">#&gt; Mean:             249.1741      1.914419</span></span>
+<span><span class="co">#&gt; Unique seqs:  2224 </span></span>
+<span><span class="co">#&gt; Total seqs:   101144 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; scrap_summary:</span></span>
+<span><span class="co">#&gt;        type                trash_code unique total</span></span>
+<span><span class="co">#&gt; 1  sequence  F3D0_exclusive_sequences    101   109</span></span>
+<span><span class="co">#&gt; 2  sequence  remove_sequences_example    100 12710</span></span>
+<span><span class="co">#&gt; 3       otu F3D0_exclusive_sequences,     14    14</span></span>
+<span><span class="co">#&gt; 4       otu        merge_bins_example     99  6674</span></span>
+<span><span class="co">#&gt; 5       otu  remove_sequences_example      9   157</span></span>
+<span><span class="co">#&gt; 6       asv F3D0_exclusive_sequences,    101   109</span></span>
+<span><span class="co">#&gt; 7       asv  remove_sequences_example    100 12710</span></span>
+<span><span class="co">#&gt; 8 phylotype F3D0_exclusive_sequences,      2     2</span></span>
+<span><span class="co">#&gt; 9 phylotype  remove_sequences_example      1     1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sample   Total:</span></span>
+<span><span class="co">#&gt; F3D0 5576 </span></span>
+<span><span class="co">#&gt; F3D1 4094 </span></span>
+<span><span class="co">#&gt; F3D141   4114 </span></span>
+<span><span class="co">#&gt; F3D142   2067 </span></span>
+<span><span class="co">#&gt; F3D143   2174 </span></span>
+<span><span class="co">#&gt; F3D144   3103 </span></span>
+<span><span class="co">#&gt; F3D145   4860 </span></span>
+<span><span class="co">#&gt; F3D146   3472 </span></span>
+<span><span class="co">#&gt; F3D147   10785 </span></span>
+<span><span class="co">#&gt; F3D148   8454 </span></span>
+<span><span class="co">#&gt; F3D149   8937 </span></span>
+<span><span class="co">#&gt; F3D150   3729 </span></span>
+<span><span class="co">#&gt; F3D2 13925 </span></span>
+<span><span class="co">#&gt; F3D3 4543 </span></span>
+<span><span class="co">#&gt; F3D5 3093 </span></span>
+<span><span class="co">#&gt; F3D6 5655 </span></span>
+<span><span class="co">#&gt; F3D7 3522 </span></span>
+<span><span class="co">#&gt; F3D8 3841 </span></span>
+<span><span class="co">#&gt; F3D9 5200 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment   Total:</span></span>
+<span><span class="co">#&gt; Early    49449 </span></span>
+<span><span class="co">#&gt; Late 51695 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of unique seqs: 2224 </span></span>
+<span><span class="co">#&gt; Total number of seqs: 101144 </span></span>
+<span><span class="co">#&gt; Total number of otus: 409 </span></span>
+<span><span class="co">#&gt; Total number of asvs: 2224 </span></span>
+<span><span class="co">#&gt; Total number of phylotypes: 60</span></span></code></pre></div>
+<p>Note, sequences can also be removed by setting their abundance to
+0.</p>
+</div>
+<div class="section level3">
+<h3 id="removing-bins">Removing Bins<a class="anchor" aria-label="anchor" href="#removing-bins"></a>
+</h3>
+<p>Similarly, lets randomly select and remove 10 phylotype bins with the
+<code><a href="../reference/xdev_remove_bins.html">xdev_remove_bins()</a></code> function. Note, removing the bins also
+removes sequences. The removal of the sequences from the data set also
+effects the bins in the ‘otu’ and ‘asv’ clusters.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">random_bin_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>    type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  size <span class="op">=</span> <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/xdev_remove_bins.html">xdev_remove_bins</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  bin_names <span class="op">=</span> <span class="va">random_bin_names</span>,</span>
+<span>  trash_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"remove_bins_example"</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>  bin_type <span class="op">=</span> <span class="st">"phylotype"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">miseq</span></span>
+<span><span class="co">#&gt; modified_miseq:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; sequence_summary:</span></span>
+<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0     1.0</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0  1980.9</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0 19800.0</span></span>
+<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0 39599.0</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 4.000000     0 59398.0</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 77217.1</span></span>
+<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 79196.0</span></span>
+<span><span class="co">#&gt; Mean:            1  375 252.3263      0 4.272842     0     0.0</span></span>
+<span><span class="co">#&gt; Unique seqs:  1373 </span></span>
+<span><span class="co">#&gt; Total seqs:   79196 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; contigs_report :</span></span>
+<span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
+<span><span class="co">#&gt; Minimum:       0.0000452496 250.0000   0.000000      0     248.000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:     0.0014405299 252.0000   0.000000      0     251.000</span></span>
+<span><span class="co">#&gt; 25%-tile:      0.0028177700 252.0000   0.000000      0     251.000</span></span>
+<span><span class="co">#&gt; Median:        0.0077774799 252.0000   2.000000      0     251.000</span></span>
+<span><span class="co">#&gt; 75%-tile:      0.0276404992 253.0000   7.000000      0     251.000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:    1.1412299871 253.0000  76.000000      0     252.000</span></span>
+<span><span class="co">#&gt; Maximum:       3.0126200000 270.0000 120.000000      0     256.000</span></span>
+<span><span class="co">#&gt; Mean:          0.1339895157 252.4207   9.832542      0     251.097</span></span>
+<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
+<span><span class="co">#&gt; Minimum:           232.000      0.000000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:         249.000      1.000000</span></span>
+<span><span class="co">#&gt; 25%-tile:          249.000      2.000000</span></span>
+<span><span class="co">#&gt; Median:            249.000      2.000000</span></span>
+<span><span class="co">#&gt; 75%-tile:          249.000      2.000000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:        251.000      2.000000</span></span>
+<span><span class="co">#&gt; Maximum:           255.000     22.000000</span></span>
+<span><span class="co">#&gt; Mean:              249.252      1.845043</span></span>
+<span><span class="co">#&gt; Unique seqs:  1373 </span></span>
+<span><span class="co">#&gt; Total seqs:   79196 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; scrap_summary:</span></span>
+<span><span class="co">#&gt;         type                trash_code unique total</span></span>
+<span><span class="co">#&gt; 1   sequence  F3D0_exclusive_sequences    101   109</span></span>
+<span><span class="co">#&gt; 2   sequence       remove_bins_example    851 21948</span></span>
+<span><span class="co">#&gt; 3   sequence  remove_sequences_example    100 12710</span></span>
+<span><span class="co">#&gt; 4        otu F3D0_exclusive_sequences,     14    14</span></span>
+<span><span class="co">#&gt; 5        otu        merge_bins_example     99  6674</span></span>
+<span><span class="co">#&gt; 6        otu       remove_bins_example    134 15766</span></span>
+<span><span class="co">#&gt; 7        otu  remove_sequences_example      9   157</span></span>
+<span><span class="co">#&gt; 8        asv F3D0_exclusive_sequences,    101   109</span></span>
+<span><span class="co">#&gt; 9        asv       remove_bins_example    851 21948</span></span>
+<span><span class="co">#&gt; 10       asv  remove_sequences_example    100 12710</span></span>
+<span><span class="co">#&gt; 11 phylotype F3D0_exclusive_sequences,      2     2</span></span>
+<span><span class="co">#&gt; 12 phylotype       remove_bins_example     10 23530</span></span>
+<span><span class="co">#&gt; 13 phylotype  remove_sequences_example      1     1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sample   Total:</span></span>
+<span><span class="co">#&gt; F3D0 3984 </span></span>
+<span><span class="co">#&gt; F3D1 2323 </span></span>
+<span><span class="co">#&gt; F3D141   3284 </span></span>
+<span><span class="co">#&gt; F3D142   1784 </span></span>
+<span><span class="co">#&gt; F3D143   1741 </span></span>
+<span><span class="co">#&gt; F3D144   2718 </span></span>
+<span><span class="co">#&gt; F3D145   4410 </span></span>
+<span><span class="co">#&gt; F3D146   2619 </span></span>
+<span><span class="co">#&gt; F3D147   9428 </span></span>
+<span><span class="co">#&gt; F3D148   7186 </span></span>
+<span><span class="co">#&gt; F3D149   7076 </span></span>
+<span><span class="co">#&gt; F3D150   2827 </span></span>
+<span><span class="co">#&gt; F3D2 10106 </span></span>
+<span><span class="co">#&gt; F3D3 4083 </span></span>
+<span><span class="co">#&gt; F3D5 1986 </span></span>
+<span><span class="co">#&gt; F3D6 4391 </span></span>
+<span><span class="co">#&gt; F3D7 3072 </span></span>
+<span><span class="co">#&gt; F3D8 2643 </span></span>
+<span><span class="co">#&gt; F3D9 3535 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment   Total:</span></span>
+<span><span class="co">#&gt; Early    36123 </span></span>
+<span><span class="co">#&gt; Late 43073 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of unique seqs: 1373 </span></span>
+<span><span class="co">#&gt; Total number of seqs: 79196 </span></span>
+<span><span class="co">#&gt; Total number of otus: 275 </span></span>
+<span><span class="co">#&gt; Total number of asvs: 1373 </span></span>
+<span><span class="co">#&gt; Total number of phylotypes: 50</span></span></code></pre></div>
+<p>Looking closer at the scrap summary we can see that removing 10
+phylotype bins, removed 851 unique sequences that represented 21948
+reads. After the removal of the 851 unique sequences the ‘otu’ cluster
+removed 134 bins and the ‘asv’ cluster removed 851 bins.</p>
+</div>
+<div class="section level3">
+<h3 id="removing-samples">Removing Samples<a class="anchor" aria-label="anchor" href="#removing-samples"></a>
+</h3>
+<p>If you included a mock community in your data set, you will want to
+remove it after assessing your error rates in preparation for the rest
+of your analysis. The <code><a href="../reference/miseq_sop_example.html">miseq_sop_example()</a></code> already has the
+mock community removed so for the sake of example we will remove sample
+‘F3D142’.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/xdev_remove_samples.html">xdev_remove_samples</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D142"</span><span class="op">)</span>, reason <span class="op">=</span> <span class="st">"remove_samples_example"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">miseq</span></span>
+<span><span class="co">#&gt; modified_miseq:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; sequence_summary:</span></span>
+<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375 249.0000      0  3.00000     0     1.0</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0  3.00000     0  1936.3</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0  4.00000     0 19354.0</span></span>
+<span><span class="co">#&gt; Median:          1  375 252.0000      0  4.00000     0 38707.0</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0  4.00000     0 58060.0</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0  6.00000     0 75477.7</span></span>
+<span><span class="co">#&gt; Maximum:         1  375 256.0000      0  6.00000     0 77412.0</span></span>
+<span><span class="co">#&gt; Mean:            1  375 252.3263      0  4.27196     0     0.0</span></span>
+<span><span class="co">#&gt; Unique seqs:  1335 </span></span>
+<span><span class="co">#&gt; Total seqs:   77412 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; contigs_report :</span></span>
+<span><span class="co">#&gt;             Expected_Errors  Length MisMatches Num_Ns Overlap_End</span></span>
+<span><span class="co">#&gt; Minimum:       0.0000452496 250.000   0.000000      0    248.0000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:     0.0014405299 252.000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 25%-tile:      0.0028177700 252.000   0.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; Median:        0.0077774799 252.000   2.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 75%-tile:      0.0276404992 253.000   7.000000      0    251.0000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:    1.1412299871 253.000  76.000000      0    252.0000</span></span>
+<span><span class="co">#&gt; Maximum:       3.0126200000 270.000 120.000000      0    256.0000</span></span>
+<span><span class="co">#&gt; Mean:          0.1343094619 252.421   9.853434      0    251.0969</span></span>
+<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
+<span><span class="co">#&gt; Minimum:          232.0000       0.00000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:        249.0000       1.00000</span></span>
+<span><span class="co">#&gt; 25%-tile:         249.0000       2.00000</span></span>
+<span><span class="co">#&gt; Median:           249.0000       2.00000</span></span>
+<span><span class="co">#&gt; 75%-tile:         249.0000       2.00000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:       251.0000       2.00000</span></span>
+<span><span class="co">#&gt; Maximum:          255.0000      22.00000</span></span>
+<span><span class="co">#&gt; Mean:             249.2524       1.84452</span></span>
+<span><span class="co">#&gt; Unique seqs:  1335 </span></span>
+<span><span class="co">#&gt; Total seqs:   77412 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; scrap_summary:</span></span>
+<span><span class="co">#&gt;         type                trash_code unique total</span></span>
+<span><span class="co">#&gt; 1   sequence  F3D0_exclusive_sequences    101   109</span></span>
+<span><span class="co">#&gt; 2   sequence       remove_bins_example    851 21948</span></span>
+<span><span class="co">#&gt; 3   sequence    remove_samples_example     38    42</span></span>
+<span><span class="co">#&gt; 4   sequence  remove_sequences_example    100 12710</span></span>
+<span><span class="co">#&gt; 5        otu F3D0_exclusive_sequences,     14    14</span></span>
+<span><span class="co">#&gt; 6        otu        merge_bins_example     99  6674</span></span>
+<span><span class="co">#&gt; 7        otu       remove_bins_example    134 15766</span></span>
+<span><span class="co">#&gt; 8        otu    remove_samples_example      9    15</span></span>
+<span><span class="co">#&gt; 9        otu  remove_sequences_example      9   157</span></span>
+<span><span class="co">#&gt; 10       asv F3D0_exclusive_sequences,    101   109</span></span>
+<span><span class="co">#&gt; 11       asv       remove_bins_example    851 21948</span></span>
+<span><span class="co">#&gt; 12       asv    remove_samples_example     38    42</span></span>
+<span><span class="co">#&gt; 13       asv  remove_sequences_example    100 12710</span></span>
+<span><span class="co">#&gt; 14 phylotype F3D0_exclusive_sequences,      2     2</span></span>
+<span><span class="co">#&gt; 15 phylotype       remove_bins_example     10 23530</span></span>
+<span><span class="co">#&gt; 16 phylotype    remove_samples_example      1     1</span></span>
+<span><span class="co">#&gt; 17 phylotype  remove_sequences_example      1     1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sample   Total:</span></span>
+<span><span class="co">#&gt; F3D0 3984 </span></span>
+<span><span class="co">#&gt; F3D1 2323 </span></span>
+<span><span class="co">#&gt; F3D141   3284 </span></span>
+<span><span class="co">#&gt; F3D143   1741 </span></span>
+<span><span class="co">#&gt; F3D144   2718 </span></span>
+<span><span class="co">#&gt; F3D145   4410 </span></span>
+<span><span class="co">#&gt; F3D146   2619 </span></span>
+<span><span class="co">#&gt; F3D147   9428 </span></span>
+<span><span class="co">#&gt; F3D148   7186 </span></span>
+<span><span class="co">#&gt; F3D149   7076 </span></span>
+<span><span class="co">#&gt; F3D150   2827 </span></span>
+<span><span class="co">#&gt; F3D2 10106 </span></span>
+<span><span class="co">#&gt; F3D3 4083 </span></span>
+<span><span class="co">#&gt; F3D5 1986 </span></span>
+<span><span class="co">#&gt; F3D6 4391 </span></span>
+<span><span class="co">#&gt; F3D7 3072 </span></span>
+<span><span class="co">#&gt; F3D8 2643 </span></span>
+<span><span class="co">#&gt; F3D9 3535 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment   Total:</span></span>
+<span><span class="co">#&gt; Early    36123 </span></span>
+<span><span class="co">#&gt; Late 41289 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of unique seqs: 1335 </span></span>
+<span><span class="co">#&gt; Total number of seqs: 77412 </span></span>
+<span><span class="co">#&gt; Total number of otus: 266 </span></span>
+<span><span class="co">#&gt; Total number of asvs: 1335 </span></span>
+<span><span class="co">#&gt; Total number of phylotypes: 49</span></span></code></pre></div>
+<p>Lastly, we can remove contaminants from the data set using the
+<code><a href="../reference/xdev_remove_lineages.html">xdev_remove_lineages()</a></code> function. The miseq example has
+already had the contaminants removed after classification and before bin
+assignment. For the sake of example we will remove all sequences
+assigned to
+‘Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;’.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bad_tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Bacteria;Firmicutes;Clostridia;Clostridiales;"</span>,</span>
+<span>  <span class="st">"Clostridiales_unclassified;"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/xdev_remove_lineages.html">xdev_remove_lineages</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">miseq</span>,</span>
+<span>  contaminants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bad_tax</span><span class="op">)</span>,</span>
+<span>  reason <span class="op">=</span> <span class="st">"remove_contaminants_example"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">miseq</span></span>
+<span><span class="co">#&gt; modified_miseq:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; sequence_summary:</span></span>
+<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns  numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0     1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0  1893.25</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0 18923.50</span></span>
+<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0 37846.00</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 4.000000     0 56768.50</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 73798.75</span></span>
+<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 75690.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375 252.3107      0 4.258555     0     0.00</span></span>
+<span><span class="co">#&gt; Unique seqs:  1221 </span></span>
+<span><span class="co">#&gt; Total seqs:   75690 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; contigs_report :</span></span>
+<span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
+<span><span class="co">#&gt; Minimum:       0.0000452496 250.0000    0.00000      0    248.0000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:     0.0014405299 252.0000    0.00000      0    251.0000</span></span>
+<span><span class="co">#&gt; 25%-tile:      0.0028177700 252.0000    0.00000      0    251.0000</span></span>
+<span><span class="co">#&gt; Median:        0.0077774799 252.0000    2.00000      0    251.0000</span></span>
+<span><span class="co">#&gt; 75%-tile:      0.0276404992 253.0000    7.00000      0    251.0000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:    1.1412299871 253.0000   76.00000      0    252.0000</span></span>
+<span><span class="co">#&gt; Maximum:       3.0126200000 270.0000  120.00000      0    256.0000</span></span>
+<span><span class="co">#&gt; Mean:          0.1372073502 252.4075   10.05614      0    251.1045</span></span>
+<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
+<span><span class="co">#&gt; Minimum:          232.0000      0.000000</span></span>
+<span><span class="co">#&gt; 2.5%-tile:        249.0000      1.000000</span></span>
+<span><span class="co">#&gt; 25%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; Median:           249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 75%-tile:         249.0000      2.000000</span></span>
+<span><span class="co">#&gt; 97.5%-tile:       251.0000      2.000000</span></span>
+<span><span class="co">#&gt; Maximum:          255.0000     22.000000</span></span>
+<span><span class="co">#&gt; Mean:             249.2658      1.838711</span></span>
+<span><span class="co">#&gt; Unique seqs:  1221 </span></span>
+<span><span class="co">#&gt; Total seqs:   75690 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; scrap_summary:</span></span>
+<span><span class="co">#&gt;         type                  trash_code unique total</span></span>
+<span><span class="co">#&gt; 1   sequence    F3D0_exclusive_sequences    101   109</span></span>
+<span><span class="co">#&gt; 2   sequence         remove_bins_example    851 21948</span></span>
+<span><span class="co">#&gt; 3   sequence remove_contaminants_example    114  1722</span></span>
+<span><span class="co">#&gt; 4   sequence      remove_samples_example     38    42</span></span>
+<span><span class="co">#&gt; 5   sequence    remove_sequences_example    100 12710</span></span>
+<span><span class="co">#&gt; 6        otu   F3D0_exclusive_sequences,     14    14</span></span>
+<span><span class="co">#&gt; 7        otu          merge_bins_example     99  6674</span></span>
+<span><span class="co">#&gt; 8        otu         remove_bins_example    134 15766</span></span>
+<span><span class="co">#&gt; 9        otu remove_contaminants_example     37  4428</span></span>
+<span><span class="co">#&gt; 10       otu      remove_samples_example      9    15</span></span>
+<span><span class="co">#&gt; 11       otu    remove_sequences_example      9   157</span></span>
+<span><span class="co">#&gt; 12       asv   F3D0_exclusive_sequences,    101   109</span></span>
+<span><span class="co">#&gt; 13       asv         remove_bins_example    851 21948</span></span>
+<span><span class="co">#&gt; 14       asv remove_contaminants_example    114  1752</span></span>
+<span><span class="co">#&gt; 15       asv      remove_samples_example     38    42</span></span>
+<span><span class="co">#&gt; 16       asv    remove_sequences_example    100 12710</span></span>
+<span><span class="co">#&gt; 17 phylotype   F3D0_exclusive_sequences,      2     2</span></span>
+<span><span class="co">#&gt; 18 phylotype         remove_bins_example     10 23530</span></span>
+<span><span class="co">#&gt; 19 phylotype remove_contaminants_example      1  1773</span></span>
+<span><span class="co">#&gt; 20 phylotype      remove_samples_example      1     1</span></span>
+<span><span class="co">#&gt; 21 phylotype    remove_sequences_example      1     1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sample   Total:</span></span>
+<span><span class="co">#&gt; F3D0 3859 </span></span>
+<span><span class="co">#&gt; F3D1 2224 </span></span>
+<span><span class="co">#&gt; F3D141   3191 </span></span>
+<span><span class="co">#&gt; F3D143   1719 </span></span>
+<span><span class="co">#&gt; F3D144   2683 </span></span>
+<span><span class="co">#&gt; F3D145   4355 </span></span>
+<span><span class="co">#&gt; F3D146   2551 </span></span>
+<span><span class="co">#&gt; F3D147   9266 </span></span>
+<span><span class="co">#&gt; F3D148   6977 </span></span>
+<span><span class="co">#&gt; F3D149   6877 </span></span>
+<span><span class="co">#&gt; F3D150   2725 </span></span>
+<span><span class="co">#&gt; F3D2 9935 </span></span>
+<span><span class="co">#&gt; F3D3 4018 </span></span>
+<span><span class="co">#&gt; F3D5 1926 </span></span>
+<span><span class="co">#&gt; F3D6 4331 </span></span>
+<span><span class="co">#&gt; F3D7 3019 </span></span>
+<span><span class="co">#&gt; F3D8 2586 </span></span>
+<span><span class="co">#&gt; F3D9 3448 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Treatment   Total:</span></span>
+<span><span class="co">#&gt; Early    35346 </span></span>
+<span><span class="co">#&gt; Late 40344 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of unique seqs: 1221 </span></span>
+<span><span class="co">#&gt; Total number of seqs: 75690 </span></span>
+<span><span class="co">#&gt; Total number of otus: 229 </span></span>
+<span><span class="co">#&gt; Total number of asvs: 1221 </span></span>
+<span><span class="co">#&gt; Total number of phylotypes: 48</span></span></code></pre></div>
+<p>Thanks for following along. To explore more <em>xdev_</em> functions
+you can look at the rcpp_xint_xdev_functions.h and
+rcpp_xint_xdev_functions.cpp files located in the src folder of the
+package.</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

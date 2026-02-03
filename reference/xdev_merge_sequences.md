@@ -28,29 +28,34 @@ xdev_merge_sequences(data, sequence_names, reason = "merged")
 ## Examples
 
 ``` r
-data <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+sequence_names <- c("seq1", "seq2", "seq3", "seq3",
+               "seq4", "seq4", "seq5", "seq6",
+               "seq7", "seq8", "seq9", "seq9",
+               "seq10", "seq10", "seq10", "seq10")
 
-count(data = data, type = "sequences")
-#> [1] 113963
+samples <- c("sample1", "sample2", "sample4", "sample5",
+             "sample1", "sample2", "sample1", "sample1",
+             "sample2", "sample4", "sample4", "sample5",
+             "sample1", "sample3", "sample5", "sample6")
 
-# For the sake of example let's merge the first 3 sequences from
-# miseq_sop_example:
+abundances <- c(10, 10, 5, 5, 5, 5,
+                10, 10, 10, 10, 5, 5,
+                1, 2, 3, 4)
 
-seqs_to_merge <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
-                   "M00967_43_000000000-A3JHG_1_1113_12711_3318",
-                   "M00967_43_000000000-A3JHG_1_2108_14707_9807")
+data <- new_dataset("my_data")
+
+
+assign(data = data,
+       table = data.frame(sequence_names = sequence_names,
+                          abundances = abundances,
+                          samples = samples),
+       type = "sequence_abundance")
+#> ℹ Assigned 10 sequence abundances.
+#> [1] 10
+
+# For the sake of example let's merge the first 3 sequences.
+
+seqs_to_merge <- c("seq1", "seq2", "seq3")
 
 xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 
@@ -58,13 +63,13 @@ xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 # names, listed with the trash code set to "merged".
 
 report(data = data, type = "sequence_scrap")
-#>                                            id trash_code
-#> 1 M00967_43_000000000-A3JHG_1_1113_12711_3318     merged
-#> 2 M00967_43_000000000-A3JHG_1_2108_14707_9807     merged
+#>     id trash_code
+#> 1 seq2     merged
+#> 2 seq3     merged
 
 # You can see from the get_num_sequences function that the merged sequence's
 # abundances are added to the first sequence.
 
 count(data = data, type = "sequences")
-#> [1] 113963
+#> [1] 100
 ```

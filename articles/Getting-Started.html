@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Getting-Started • rdataset</title>
+<title>Getting Started • rdataset</title>
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting-Started">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -33,12 +33,16 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Data_Transfers.html">Data_Transfers</a></li>
-    <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions_for_Package_Developers</a></li>
-    <li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting-Started</a></li>
-    <li><a class="dropdown-item" href="../articles/Using_Dataset.html">Using_Dataset</a></li>
+<li><a class="dropdown-item" href="../articles/Accessing_Dataset.html">Accessing Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Data_Transfers.html">Data Transfers</a></li>
+    <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
+    <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
+    <li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting Started</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -65,8 +69,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Getting-Started</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>Getting Started</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/SchlossLab/rdataset/blob/main/vignettes/Getting-Started.Rmd" class="external-link"><code>vignettes/Getting-Started.Rmd</code></a></small>
@@ -92,22 +95,28 @@ utility functions to read from <a href="https://mothur.org" class="external-link
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SchlossLab/rdataset"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SchlossLab/rdataset" class="external-link">rdataset</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'rdataset'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     assign, names, summary</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="importing-data">Importing Data<a class="anchor" aria-label="anchor" href="#importing-data"></a>
 </h2>
 <ul>
-<li><a href="Importing_from_mothur.html">Importing data from
-mothur</a></li>
-<li><a href="Importing_from_qiime2.html">Importing data from
-qiime2</a></li>
+<li><code><a href="../articles/General_Importing.html">vignette("General_Importing")</a></code></li>
+<li><code><a href="../articles/Importing_from_mothur.html">vignette("Importing_from_mothur")</a></code></li>
+<li><code>vignette("Importing_from_qiime")</code></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="accessing-data">Accessing Data<a class="anchor" aria-label="anchor" href="#accessing-data"></a>
+</h2>
+<ul>
+<li><code>vignette("Using_Dataset")</code></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="transfering-data">Transfering Data<a class="anchor" aria-label="anchor" href="#transfering-data"></a>
+</h2>
+<ul>
+<li><code><a href="../articles/Data_Transfers.html">vignette("Data_Transfers")</a></code></li>
 </ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

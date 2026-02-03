@@ -2,8 +2,11 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  Accessing_Dataset: Accessing_Dataset.html
   Data_Transfers: Data_Transfers.html
   Functions_for_Package_Developers: Functions_for_Package_Developers.html
+  General_Importing: General_Importing.html
   Getting-Started: Getting-Started.html
-  Using_Dataset: Using_Dataset.html
-last_built: 2026-01-08T18:35Z
+  Importing_from_mothur: Importing_from_mothur.html
+  Importing_from_qiime2: Importing_from_qiime2.html
+last_built: 2026-02-03T18:10Z

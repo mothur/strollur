@@ -6,7 +6,7 @@ allows you to remove contaminents from a [dataset](dataset.md)
 ## Usage
 
 ``` r
-xdev_remove_lineages(data, contaminants, trash_tag = "contaminant")
+xdev_remove_lineages(data, contaminants, reason = "contaminant")
 ```
 
 ## Arguments
@@ -19,7 +19,7 @@ xdev_remove_lineages(data, contaminants, trash_tag = "contaminant")
 
   vector of strings containing the taxonomies you would like to remove
 
-- trash_tag, :
+- reason, :
 
   a string containing reason you are removing the lineages. Default =
   "contaminant".

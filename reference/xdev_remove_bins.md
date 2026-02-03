@@ -6,7 +6,7 @@ allows you to remove bins from a [dataset](dataset.md) object
 ## Usage
 
 ``` r
-xdev_remove_bins(data, bin_names, trash_tags, type = "otu")
+xdev_remove_bins(data, bin_names, trash_tags, bin_type = "otu")
 ```
 
 ## Arguments
@@ -24,7 +24,7 @@ xdev_remove_bins(data, bin_names, trash_tags, type = "otu")
 
   a vector of strings containing the reasons you are removing each bin
 
-- type:
+- bin_type:
 
   a string indicating the type of clusters.
 

@@ -1,4 +1,4 @@
-# Getting-Started
+# Getting Started
 
 The *rdataset* package stores the data associated with your microbial
 DNA analysis. This includes nucleotide sequences, abundance, sample and
@@ -26,16 +26,16 @@ You can install the development version of *rdataset* from
 devtools::install_github("SchlossLab/rdataset")
 ```
 
-``` r
-library(rdataset)
-#> 
-#> Attaching package: 'rdataset'
-#> The following objects are masked from 'package:base':
-#> 
-#>     assign, names, summary
-```
-
 ## Importing Data
 
-- [Importing data from mothur](Importing_from_mothur.md)
-- [Importing data from qiime2](Importing_from_qiime2.md)
+- [`vignette("General_Importing")`](../articles/General_Importing.md)
+- [`vignette("Importing_from_mothur")`](../articles/Importing_from_mothur.md)
+- `vignette("Importing_from_qiime")`
+
+## Accessing Data
+
+- `vignette("Using_Dataset")`
+
+## Transfering Data
+
+- [`vignette("Data_Transfers")`](../articles/Data_Transfers.md)

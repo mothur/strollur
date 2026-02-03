@@ -140,13 +140,13 @@ summary(data = miseq, type = "sequences")
 # sequences and bins scrapped by removing the sample "F3D0"
 summary(data = miseq, type = "scrap")
 #>        type     trash_code unique total
-#> 1  sequence removedSamples    101   109
-#> 2       otu removedSamples     14    14
-#> 3       asv removedSamples    101   109
-#> 4 phylotype removedSamples      2     2
+#> 1  sequence remove_samples    101   109
+#> 2       otu remove_samples     14    14
+#> 3       asv remove_samples    101   109
+#> 4 phylotype remove_samples      2     2
 #>        type     trash_code unique total
-#> 1  sequence removedSamples    101   109
-#> 2       otu removedSamples     14    14
-#> 3       asv removedSamples    101   109
-#> 4 phylotype removedSamples      2     2
+#> 1  sequence remove_samples    101   109
+#> 2       otu remove_samples     14    14
+#> 3       asv remove_samples    101   109
+#> 4 phylotype remove_samples      2     2
 ```
