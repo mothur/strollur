@@ -8,14 +8,14 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-library(rdataset)
+library(strollur)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-The rdataset package stores data associated with your microbial DNA analysis. This tutorial will familiarize you some of with the functions available in the rdataset package. If you haven’t reviewed the “Getting Started” tutorial, we recommend you start there.
+The strollur package stores data associated with your microbial DNA analysis. This tutorial will familiarize you some of with the functions available in the strollur package. If you haven’t reviewed the “Getting Started” tutorial, we recommend you start there.
 
 ## Creating a new dataset
 
@@ -27,7 +27,7 @@ data <- new_dataset(dataset_name = "my_data")
 
 ## Importing Data
 
-The *rdataset* package includes two functions to allow you to add microbial data.
+The *strollur* package includes two functions to allow you to add microbial data.
 
 `add()` - The add function allows you to add sequences, reports, metadata, and resource references to your data set.
 
@@ -47,10 +47,10 @@ The add function allows you to add sequences, reports, metadata, and resource re
     
 #### Adding FASTA sequences
 
-First, let's add some [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data. rdataset has a function for reading FASTA files named `read_fasta()`. We will use it to read the sequence data into a data.frame.
+First, let's add some [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data. strollur has a function for reading FASTA files named `read_fasta()`. We will use it to read the sequence data into a data.frame.
 
 ```{r}
-fasta_data <- read_fasta(rdataset_example("final.fasta"))
+fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
 add(
   data = data,
@@ -60,7 +60,7 @@ add(
 data
 ```
 
-If you want to include a resource reference about your fasta data you can use the `new_reference` function and the reference parameter. rdataset does not allow you to add sequences with the same name, so let's use the `clear()` function to remove all data from our data set.
+If you want to include a resource reference about your fasta data you can use the `new_reference` function and the reference parameter. strollur does not allow you to add sequences with the same name, so let's use the `clear()` function to remove all data from our data set.
 
 ```{r}
 clear(data)
@@ -88,10 +88,10 @@ data
 
 You may want to add custom reports to your data set such as an contigs assembly report, chimera report or alignment report. You can do so by setting type = "reports". You must also provide a report_type. 
 
-This is also a good time to explain what the table_names parameter does for you. rdataset expects the columns in custom reports to have specific names. If your table's names differ from what rdataset is expecting, you will see an error like that below.
+This is also a good time to explain what the table_names parameter does for you. strollur expects the columns in custom reports to have specific names. If your table's names differ from what strollur is expecting, you will see an error like that below.
 
 ```{r, eval=FALSE} 
-contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -109,10 +109,10 @@ add(
 #    sequence_name = table_names[["sequence_name"]], verbose)
 ```
 
-You can use the table_names parameter to tell rdataset what the specific column is called in your custom report table. In the contigs_report the *sequence_name* column is called *Name*, so we will add one more line to the add function.
+You can use the table_names parameter to tell strollur what the specific column is called in your custom report table. In the contigs_report the *sequence_name* column is called *Name*, so we will add one more line to the add function.
 
 ```{r} 
-contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -132,7 +132,7 @@ data
 Now that we have added our custom contigs assembly report, let's learn how to add metadata. We can add metadata to our data set by setting the type = "metadata".
 
 ```{r}
-metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -149,7 +149,7 @@ add(
 We can add additional resource references to our data set by setting the type = "references".
 
 ```{r}
-reference <- readr::read_csv(rdataset_example("references.csv"),
+reference <- readr::read_csv(strollur_example("references.csv"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -180,7 +180,10 @@ The `assign()` function allows assign sequence abundances, sequence classificati
 After adding your FASTA sequences, you can assign abundance and sample data using the assign function with the type = "sequence_abundance".    
     
 ```{r}
-abundance_table <- readr::read_tsv(rdataset_example("mothur2_count_table.tsv"),
+abundance_table <- readr::read_tsv(
+  strollur_example(
+    "mothur2_count_table.tsv.gz"
+  ),
   show_col_types = FALSE
 )
 assign(
@@ -199,8 +202,8 @@ As you can see we now have abundances, samples and treatments added to the data 
 
 ```{r}
 bin_table <- readr::read_tsv(
-  rdataset_example(
-    "mothur2_bin_assignments_list.tsv"
+  strollur_example(
+    "mothur2_bin_assignments_list.tsv.gz"
   ),
   show_col_types = FALSE
 )
@@ -226,7 +229,7 @@ Now that we have assigned our sequences to bins, let's assign taxonomy to our se
 
 ```{r}
 sequence_classification_data <- read_mothur_taxonomy(
-  taxonomy = rdataset_example("final.taxonomy")
+  taxonomy = strollur_example("final.taxonomy.gz")
 )
 
 assign(
@@ -236,10 +239,10 @@ assign(
 )
 ```
 
-Note, when you assign taxonomy to sequences that are assigned to bins, rdataset will automatically assign the bin taxonomies to be the consensus taxonomy of the sequences in the bins. You can also set bin taxonomies independently by setting the type = "bin_taxonomy".
+Note, when you assign taxonomy to sequences that are assigned to bins, strollur will automatically assign the bin taxonomies to be the consensus taxonomy of the sequences in the bins. You can also set bin taxonomies independently by setting the type = "bin_taxonomy".
 
 ```{r}
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+otu_data <- read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 
@@ -254,11 +257,11 @@ assign(
 
 #### Assigning Bin Representatives
 
-rdataset allows you to assign a bin representative sequences to the bins in your clusters. Let's assign bin representatives to our *otu* bins.
+strollur allows you to assign a bin representative sequences to the bins in your clusters. Let's assign bin representatives to our *otu* bins.
 
 ```{r}
 bin_representatives <- readr::read_tsv(
-  rdataset_example(
+  strollur_example(
     "otu_representative_sequences.tsv"
   ),
   show_col_types = FALSE
@@ -278,7 +281,7 @@ In our case the abundance_table included treatment assignments, but you can also
 
 ```{r}
 sample_assignments <- readr::read_table(
-  rdataset_example("mouse.time.design"),
+  strollur_example("mouse.time.design"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -292,11 +295,11 @@ assign(
 
 ## Sample Trees and Sequence Trees
 
-Lastly, rdataset allows you to add tree that relate your samples or sequences. Let's look at some examples together.
+Lastly, strollur allows you to add tree that relate your samples or sequences. Let's look at some examples together.
 
 ```{r}
-sample_tree <- ape::read.tree(rdataset_example("final.opti_mcc.jclass.ave.tre"))
-sequence_tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+sample_tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
+sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 
 data$add_sample_tree(sample_tree)
 data$add_sequence_tree(sequence_tree)
@@ -310,4 +313,4 @@ plot(data$get_sample_tree(),
 )
 ```
 
-Thanks for following along. To learn more about the functions used to access the data in your data set, take a look at the [Accessing Data](vignettes/Using_Dataset.html) tutorial.
+Thanks for following along. To learn more about the functions used to access the data in your data set, take a look at the [Accessing Data](vignettes/Accessing_Dataset.html) tutorial.

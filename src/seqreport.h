@@ -1,7 +1,7 @@
 //
 //  seqreport.h
 //
-//  rdataset package
+//  strollur package
 //
 //  Created by Sarah Westcott on 5/15/25.
 //  Copyright © 2025 Schloss Lab. All rights reserved.

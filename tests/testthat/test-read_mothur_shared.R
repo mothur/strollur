@@ -5,7 +5,7 @@ test_that("test read_mothur_shared - errors", {
 })
 
 test_that("test read_mothur_shared", {
-  shared_data <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+  shared_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
   data <- dataset$new()
   assign(data = data, table = shared_data, type = "bins")

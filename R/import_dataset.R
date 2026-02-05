@@ -16,15 +16,15 @@
 #' @seealso [dataset$export()]
 #' @export
 import_dataset <- function(table) {
-  table_version <- attributes(table)$rdataset_version
+  table_version <- attributes(table)$strollur_version
 
   # check attributes for valid version
-  if (utils::packageVersion("rdataset") != table_version) {
+  if (utils::packageVersion("strollur") != table_version) {
     message <- paste0(
       "[ERROR]: Unable to create 'dataset' object. ",
-      "The table was created with rdataset version ",
-      table_version, " and you are running rdataset version ",
-      utils::packageVersion("rdataset"), "."
+      "The table was created with strollur version ",
+      table_version, " and you are running strollur version ",
+      utils::packageVersion("strollur"), "."
     )
     cli::cli_abort(message)
   }

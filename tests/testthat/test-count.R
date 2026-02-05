@@ -55,6 +55,6 @@ test_that("count - sequences", {
     2
   )
 
-  data <- read_mothur(otu_shared = rdataset_example("final.opti_mcc.shared"))
+  data <- read_mothur(otu_shared = strollur_example("final.opti_mcc.shared"))
   expect_equal(count(data, samples = c("F3D0", "F3D1")), 10351)
 })

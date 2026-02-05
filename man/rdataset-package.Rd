@@ -1,12 +1,12 @@
-\name{rdataset-package}
-\alias{rdataset-package}
-\alias{rdataset}
+\name{strollur-package}
+\alias{strollur-package}
+\alias{strollur}
 \docType{package}
 \title{
   Store and transfer data used in the analysis of microbial DNA
 }
 \description{
-  The 'rdataset' package stores the data associated with your microbial DNA
+  The 'strollur' package stores the data associated with your microbial DNA
   analysis. This includes nucleotide sequences, abundance, sample and treatment
   assignments, taxonomic classifications, asv, otu and phylotype clusters,
   metadata, trees and various reports. It is designed to facilitate data

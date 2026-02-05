@@ -53,7 +53,7 @@ Add resource references to a \link{dataset} object
 \examples{
 
 data <- new_dataset("just for fun", 2)
-reference_table <- readr::read_csv(rdataset_example("references.csv"),
+reference_table <- readr::read_csv(strollur_example("references.csv"),
                              col_names = TRUE, show_col_types = FALSE)
 xdev_add_references(data, reference_table)
 

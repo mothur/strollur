@@ -26,7 +26,7 @@ To generate the various input files you can follow \href{https://amplicon-docs.q
 # Using the example files from moving-pictures
 
 artifact <- unpack_qiime2_artifact(
-  qza = rdataset_example("table.qza"),
+  qza = strollur_example("table.qza"),
 )
 
 }

@@ -3,14 +3,14 @@
 test_that("test read_qiime2_feature_table - errors", {
   expect_error(read_qiime2_feature_table("non_existant_filename"))
   expect_error(read_qiime2_feature_table(
-    rdataset_example("taxonomy.qza"),
+    strollur_example("taxonomy.qza"),
     file_root <- get_full_name("test-qiime2")
   ))
   unlink(get_full_name("test-qiime2"), recursive = TRUE)
 })
 
 test_that("test read_qiime2_feature_table", {
-  bin_data <- read_qiime2_feature_table(rdataset_example("table.qza"))
+  bin_data <- read_qiime2_feature_table(strollur_example("table.qza"))
 
   expect_equal(nrow(bin_data$data), 2290)
   expect_equal(ncol(bin_data$data), 3)

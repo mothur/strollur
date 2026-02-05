@@ -43,7 +43,7 @@ Assign representative sequences to bins.
 
   miseq <- miseq_sop_example()
 
-  bin_reps <- readr::read_tsv(rdataset_example(
+  bin_reps <- readr::read_tsv(strollur_example(
                                       "otu_representative_sequences.tsv"),
                                       show_col_types = FALSE)
 

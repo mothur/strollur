@@ -11,8 +11,8 @@
 #' # using the following:
 #'
 #' # read mothur's taxonomy file into a data.frame
-#' classification_data <- read_mothur_taxonomy(rdataset_example(
-#'   "final.taxonomy"
+#' classification_data <- read_mothur_taxonomy(strollur_example(
+#'   "final.taxonomy.gz"
 #' ))
 #'
 #' # create a new empty dataset

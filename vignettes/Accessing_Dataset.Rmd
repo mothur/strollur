@@ -8,7 +8,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-library(rdataset)
+library(strollur)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The *rdataset* package stores data associated with your microbial DNA analysis. This tutorial will familiarize you with some of the functions available in the *rdataset* package. If you haven't reviewed the "Getting Started" tuturial, we recommend you start there. 
+The *strollur* package stores data associated with your microbial DNA analysis. This tutorial will familiarize you with some of the functions available in the *strollur* package. If you haven't reviewed the "Getting Started" tuturial, we recommend you start there. 
 
 ## Loading the example dataset
 
@@ -33,9 +33,9 @@ To print a summary of the miseq dataset, run the following:
 miseq
 ```
 
-## Accessing Data
+## Accessing Your Data
 
-The *rdataset* package includes several functions to access your microbial data.
+The *strollur* package includes several functions to access your microbial data.
 
 `names()` - The names function is an extension of base R's names function. It allows you to get the name of your dataset or the names of the sequences, bins, samples, treatments and reports in your dataset.
 
@@ -51,15 +51,6 @@ The *rdataset* package includes several functions to access your microbial data.
 ### names
 
 The `names()` function allows you to get the names of sequences, bins, samples, treatments and reports. Let's take a closer look at how use it.
-
-* **Parameters:** 
-    + *data* - a dataset object
-    + *type* - string containing the type of data you would like.
-    + *bin_type* - string containing the bin type you would like data for.
-    + *samples* - vector of strings containing sample names. 
-    + *distinct* - boolean, indicating whether you want names exclusive to the samples or present in the samples.
-    
-Note: *samples* and *distinct* are only used when type = sequences or type = bins.
 
 To get the name of the dataset, set the type parameter to 'dataset':
 
@@ -165,18 +156,9 @@ To get the names of the custom reports
 names(data = miseq, type = "reports")
 ```
 
-## count
+### count
 
 The `count()` function allows you to get the number of sequences, bins, samples and treatments in your dataset. 
-
-* **Parameters:** 
-    + *data* - a dataset object
-    + *type* - string containing the type of data you would like.
-    + *bin_type* - string containing the bin type you would like data for.
-    + *samples* - vector of strings containing sample names. 
-    + *distinct* - boolean, indicating whether you want count to be '*unique / exclusive*' or '*total / present*'.
-    
-Note: *samples* and *distinct* are only used when type = sequences or type = bins.
 
 To find the *total* number of sequences in the dataset, run the following:
 ```{r}
@@ -269,12 +251,6 @@ count(data = miseq, type = "treatments")
 
 Now that we are familiar with the `names()` and `count()` functions. Let's learn how we can use the `abundance()` function. The abundance function can be used to access the abundance data for sequences, bins, samples, and treatments. It returns a data.frame containing the requested abundance data.
 
-* **Parameters:** 
-    + *data* - a dataset object
-    + *type* - a string containing the type of data you would like
-    + *bin_type* - a string containing the bin type you would like data for
-    + *by_sample* - a boolean indicating if you want the results parsed by sample
-
 To the total abundance for each sequence, set the type = 'sequences'. This will return a 2 column data.frame containing sequence_names and abundances.
 ```{r}
 sequence_abundance <- abundance(
@@ -339,11 +315,6 @@ abundance(data = miseq, type = "treatments")
 ### report
 
 The `report()` function allows you access you to access FASTA sequences, sequence and classification reports, bin assignments, sample assignments, metadata, sequence data reports, custom reports, resource references and scrapped data reports. It returns a data.frame containing the requested report data. Let's look at some examples together.
-
-* **Parameters:** 
-    + *data* - a dataset object
-    + *type* - a string containing the type of data you would like
-    + *bin_type* - a string containing the bin type you would like data for
 
 To get a report containing the sequences [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data, set the type = "fasta". This will be a 2 or 3 column data.frame containing sequence names, sequence nucleotide strings, and comments (if provided).
 
@@ -466,11 +437,6 @@ report(
 
 The `summary()` function allows you to summarize sequences, custom reports, and scrapped data. 
 
-* **Parameters:** 
-    + *data* - a dataset object
-    + *type* - a string containing the type of data you would like to summarize
-    + *report_type* - a string containing the report type you would to summarize
-
 To get a summary for our custom reports, first let's find the report names.
 
 ```{r}
@@ -495,7 +461,7 @@ summary(data = miseq, type = "scrap")
 
 ## Sample Trees and Sequence Trees
 
-rdataset allows you to include trees relating the sequences and samples within your dataset. You can access and plot them using the following functions.
+strollur allows you to include trees relating the sequences and samples within your dataset. You can access and plot them using the following functions.
 
 ```{r}
 miseq_sequence_tree <- miseq$get_sequence_tree()

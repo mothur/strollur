@@ -83,10 +83,10 @@ test_that("import - miseq_sop_example", {
 test_that("import - no sequence data", {
   # just shared and constax dataset
   just_bins <- read_mothur(
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
-    cons_taxonomy = rdataset_example("final.cons.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+    otu_shared = strollur_example("final.opti_mcc.shared"),
+    cons_taxonomy = strollur_example("final.cons.taxonomy"),
+    design = strollur_example("mouse.time.design"),
+    sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
     dataset_name = "just_bins"
   )
 
@@ -115,18 +115,18 @@ test_that("import - no sequence data", {
   expect_error(import_dataset(table, c("references")))
   expect_error(import_dataset(table, c("sequence_tree")))
 
-  attr(table, "rdataset_version") <- "0.2.1"
+  attr(table, "strollur_version") <- "0.2.1"
   expect_error(import_dataset(table))
 })
 
 test_that("import - no bin data", {
   # just shared and constax dataset
   just_seqs <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    sequence_tree = rdataset_example("final.phylip.tre"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    taxonomy = strollur_example("final.taxonomy.gz"),
+    design = strollur_example("mouse.time.design"),
+    sequence_tree = strollur_example("final.phylip.tre.gz"),
     dataset_name = "just_seqs"
   )
 
@@ -155,10 +155,10 @@ test_that("import - no bin data", {
 
 test_that("import - errors and warnings", {
   just_bins <- read_mothur(
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
-    cons_taxonomy = rdataset_example("final.cons.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+    otu_shared = strollur_example("final.opti_mcc.shared"),
+    cons_taxonomy = strollur_example("final.cons.taxonomy"),
+    design = strollur_example("mouse.time.design"),
+    sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
     dataset_name = "just_bins"
   )
 

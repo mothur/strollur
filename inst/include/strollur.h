@@ -1,5 +1,5 @@
-#ifndef RCPP_rdataset_H_GEN_
-#define RCPP_rdataset_H_GEN_
+#ifndef RCPP_strollur_H_GEN_
+#define RCPP_strollur_H_GEN_
 
 // io libraries
 #include <string.h>

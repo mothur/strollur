@@ -55,20 +55,4 @@ summary <- function(data, type = "sequences",
   } else {
     base::summary(data)
   }
-  # report <- report(miseq)
-  # abunds <- abundance(miseq)
-  # report <- cbind(report, abundance = abunds)
-  #
-  # desired_quantiles <- c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1)
-  #
-  # report_multi_summary <- report %>%
-  #     reframe(stat = c("Minimum:", "2.5%-tile:", "25%-tile:", "Median:",
-  #                      "75%-tile:", "97.5%-tile:", "Maximum:", "Mean:"),
-  #             across(
-  #                 where(is.numeric),
-  #                 ~ c(quantile(.x, probs = desired_quantiles, na.rm = TRUE),
-  #                     mean(.x, na.rm = TRUE)),
-  #                 .names = "{.col}"
-  #             )
-  #     )
 }
