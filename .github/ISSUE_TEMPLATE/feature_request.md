@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Let us know how we can improve rdataset
+about: Let us know how we can improve strollur
 title: ''
 labels: ''
 assignees: ''

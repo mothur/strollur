@@ -12,21 +12,21 @@
 #' @export
 miseq_sop_example <- function() {
   data <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
-    cons_taxonomy = rdataset_example("final.cons.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    asv_list = rdataset_example("final.asv.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
-    sequence_tree = rdataset_example("final.phylip.tre"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    taxonomy = strollur_example("final.taxonomy.gz"),
+    cons_taxonomy = strollur_example("final.cons.taxonomy"),
+    design = strollur_example("mouse.time.design"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    asv_list = strollur_example("final.asv.list.gz"),
+    phylo_list = strollur_example("final.tx.list.gz"),
+    sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
+    sequence_tree = strollur_example("final.phylip.tre.gz"),
     dataset_name = "miseq_sop"
   )
 
   representative_seqs <- readr::read_tsv(
-    rdataset_example("otu_representative_sequences.tsv"),
+    strollur_example("otu_representative_sequences.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
   assign(
@@ -34,17 +34,17 @@ miseq_sop_example <- function() {
     type = "bin_representatives"
   )
 
-  metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+  metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
     col_names = TRUE, show_col_types = FALSE
   )
   xdev_add_report(data, metadata, "metadata")
 
-  reference <- readr::read_csv(rdataset_example("references.csv"),
+  reference <- readr::read_csv(strollur_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE
   )
   xdev_add_references(data, reference)
 
-  contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+  contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
     col_names = TRUE, show_col_types = FALSE
   )
   add(

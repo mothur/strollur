@@ -6,7 +6,7 @@ test_that("unpack_qiime2_artifact - errors", {
 
 test_that("unpack_qiime2_artifact", {
   artifact <- unpack_qiime2_artifact(
-    rdataset_example("table.qza"),
+    strollur_example("table.qza"),
     file_root <- get_full_name("test-qiime2")
   )
 

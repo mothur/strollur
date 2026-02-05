@@ -18,7 +18,7 @@ Read a \href{https://qiime2.org}{qiime2} .tsv table containing metadata.
 }
 \examples{
 
-metadata <- read_qiime2_metadata(rdataset_example(
+metadata <- read_qiime2_metadata(strollur_example(
   "sample_metadata.tsv"
 ))
 

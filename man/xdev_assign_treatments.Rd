@@ -35,13 +35,13 @@ Assign samples to treatments in a \link{dataset} object
 \examples{
 
 data <- new_dataset("my_dataset")
-sequence_abundance <- readr::read_tsv(rdataset_example(
-                                      "mothur2_count_table.tsv"),
+sequence_abundance <- readr::read_tsv(strollur_example(
+                                      "mothur2_count_table.tsv.gz"),
                                       show_col_types = FALSE)
 
 xdev_assign_sequence_abundance(data, sequence_abundance, "names")
 
-sample_assignments <- readr::read_table(file = rdataset_example("mouse.time.design"),
+sample_assignments <- readr::read_table(file = strollur_example("mouse.time.design"),
                              col_names = TRUE, show_col_types = FALSE)
 
 xdev_assign_treatments(data, sample_assignments)

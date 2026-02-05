@@ -30,7 +30,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   dataset_name <- names(data, "dataset")
 
   if (dataset_name == "") {
-    dataset_name <- paste0("rdataset.", as.integer(Sys.time()),
+    dataset_name <- paste0("strollur.", as.integer(Sys.time()),
       collapse = ""
     )
   }

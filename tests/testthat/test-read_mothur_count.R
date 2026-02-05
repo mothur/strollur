@@ -2,7 +2,7 @@
 
 test_that("test read_mothur_count compressed with samples", {
   # read compressed count file with samples
-  results <- read_mothur_count(rdataset_example("test.count_table"))
+  results <- read_mothur_count(strollur_example("test.count_table"))
 
   expect_equal(c("sequence_names", "samples", "abundances"), colnames(results))
 
@@ -35,7 +35,7 @@ test_that("test read_mothur_count compressed with samples", {
 
 test_that("test read_mothur_count uncompressed with samples", {
   # read uncompressed count file with samples
-  results <- read_mothur_count(rdataset_example("test.full.count_table"))
+  results <- read_mothur_count(strollur_example("test.full.count_table"))
 
   expect_equal(c("sequence_names", "samples", "abundances"), colnames(results))
 
@@ -69,7 +69,7 @@ test_that("test read_mothur_count uncompressed with samples", {
 test_that("test read_mothur_count uncompressed NO samples", {
   # read uncompressed count file without samples
   results <- read_mothur_count(
-    rdataset_example("test_nogroups.count_table")
+    strollur_example("test_nogroups.count_table")
   )
 
   expect_equal(c("sequence_names", "abundances"), colnames(results))

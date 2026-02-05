@@ -1,26 +1,26 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rdataset <img src="man/figures/logo.png" align="right" height="136" alt="" />
+# strollur <a href="https://mothur.org/strollur/"><img src="man/figures/logo.png" align="right" height="136" alt="strollur website" />
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/mothur/strollur/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mothur/strollur/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/SchlossLab/rdataset/branch/main/graph/badge.svg)](https://app.codecov.io/gh/SchlossLab/rdataset?branch=main)
-[![pkgdown](https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml)
+coverage](https://codecov.io/gh/mothur/strollur/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mothur/strollur?branch=main)
+[![pkgdown](https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/rdataset)](https://CRAN.R-project.org/package=rdataset)
+status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.org/package=strollur)
 <!-- badges: end -->
 
 ## Overview
 
-The **rdataset** package stores the data associated with your microbial
+The **strollur** package stores the data associated with your microbial
 DNA analysis. This includes nucleotide sequences, abundance, sample and
 treatment assignments, taxonomic classifications, sequence bin
 assignments, metadata, trees and various reports. It is designed to
 facilitate data analysis across multiple R packages with utility
-functions to import from [mothur](https://mothur.org), mothur2,
+functions to import from [mothur](https://mothur.org),
 [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/)
 and
 [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
@@ -46,17 +46,17 @@ and
 You can install the CRAN version with:
 
 ``` r
-install.packages("rdataset")
+install.packages("strollur")
 ```
 
 ### Development version
 
-You can install the development version of rdataset from
-[GitHub](https://github.com/SchlossLab/rdataset) with:
+You can install the development version of strollur from
+[GitHub](https://github.com/mothur/strollur) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SchlossLab/rdataset")
+devtools::install_github("mothur/strollur")
 ```
 
 ## Usage
@@ -67,11 +67,11 @@ data, assigns sequence abundance, samples and treatments, as well as
 assigning bins and taxonomic data.
 
 ``` r
-library(rdataset)
+library(strollur)
 
 data <- new_dataset(dataset_name = "microbial RNA example")
 
-fasta_data <- read_fasta(rdataset_example("final.fasta"))
+fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
 add(
   data = data,
@@ -81,7 +81,7 @@ add(
 #> ℹ Added 2425 sequences.
 #> [1] 2425
 
-abundance_table <- readr::read_tsv(rdataset_example("mothur2_count_table.tsv"),
+abundance_table <- readr::read_tsv(strollur_example("mothur2_count_table.tsv.gz"),
   show_col_types = FALSE
 )
 assign(
@@ -94,8 +94,8 @@ assign(
 #> [1] 2425
 
 bin_table <- readr::read_tsv(
-  rdataset_example(
-    "mothur2_bin_assignments_list.tsv"
+  strollur_example(
+    "mothur2_bin_assignments_list.tsv.gz"
   ),
   show_col_types = FALSE
 )
@@ -111,7 +111,7 @@ assign(
 #> [1] 531
 
 sequence_classification_data <- read_mothur_taxonomy(
-  taxonomy = rdataset_example("final.taxonomy")
+  taxonomy = strollur_example("final.taxonomy.gz")
 )
 
 assign(
@@ -170,11 +170,11 @@ data
 ## Getting help
 
 If you encounter an issue, please file an issue on
-[GitHub](https://github.com/SchlossLab/rdataset/issues). Please include
-a minimal reproducible example with your issue.
+[GitHub](https://github.com/mothur/strollur/issues). Please include a
+minimal reproducible example with your issue.
 
 ## Contributing
 
 Is there a feature you’d like to see included, please let us know! Pull
 requests are welcome on
-[GitHub](https://github.com/SchlossLab/rdataset/pulls).
+[GitHub](https://github.com/mothur/strollur/pulls).

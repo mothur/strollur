@@ -8,7 +8,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-library(rdataset)
+library(strollur)
 set.seed(19760620)
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-*rdataset* includes several functions designed for package developers. These functions provide additional access to the back end data and allow developers to merge, remove and set data directly. The function names begin with *'xdev_'* or *'xint_'* to clearly indicate that they are designed for development or for internal use, and not for the general user. 
+*strollur* includes several functions designed for package developers. These functions provide additional access to the back end data and allow developers to merge, remove and set data directly. The function names begin with *'xdev_'* or *'xint_'* to clearly indicate that they are designed for development or for internal use, and not for the general user. 
 
 ## Setting functions
 
@@ -135,7 +135,7 @@ You can see that the sample totals, total sequence and unique sequences remain t
 
 ## Removing Functions
 
-Over the course of your analysis, you may want to remove sequences, bins, samples or contaminants. rdataset has several functions to help with that, namely `xdev_remove_sequences()`, `xdev_remove_bins()`, `xdev_remove_samples()`, and `xdev_remove_lineages()`. 
+Over the course of your analysis, you may want to remove sequences, bins, samples or contaminants. strollur has several functions to help with that, namely `xdev_remove_sequences()`, `xdev_remove_bins()`, `xdev_remove_samples()`, and `xdev_remove_lineages()`. 
 
 ### Removing Sequences
 

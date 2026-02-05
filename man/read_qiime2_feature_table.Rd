@@ -31,7 +31,7 @@ To generate the various input files you can follow \href{https://amplicon-docs.q
 }
 \examples{
 
-artifact <- read_qiime2_feature_table(rdataset_example(
+artifact <- read_qiime2_feature_table(strollur_example(
   "table.qza"
 ))
 
