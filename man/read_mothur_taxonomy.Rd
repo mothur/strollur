@@ -24,7 +24,7 @@ Read a mothur formatted
 # using the following:
 
 # read mothur's taxonomy file into a data.frame
-classification_data <- read_mothur_taxonomy(rdataset_example(
+classification_data <- read_mothur_taxonomy(strollur_example(
   "final.taxonomy.gz"
 ))
 

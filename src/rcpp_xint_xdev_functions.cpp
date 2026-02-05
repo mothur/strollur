@@ -143,8 +143,8 @@ double xdev_add_references(Rcpp::Environment data,
     double numAdded = d.get()->addReferences(refs);
 
     if (verbose) {
-        Rcpp::Environment rdataset_env("package:rdataset");
-        Rcpp::Function message = rdataset_env["added_message"];
+        Rcpp::Environment strollur_env("package:strollur");
+        Rcpp::Function message = strollur_env["added_message"];
         message(numAdded, "resource references");
     }
 
@@ -162,8 +162,8 @@ void xdev_add_report(Rcpp::Environment data,
     if (type == "metadata") {
         d.get()->addMetadata(table);
         if (verbose) {
-            Rcpp::Environment rdataset_env("package:rdataset");
-            Rcpp::Function message = rdataset_env["added_message"];
+            Rcpp::Environment strollur_env("package:strollur");
+            Rcpp::Function message = strollur_env["added_message"];
             message(R_NilValue, type);
         }
     }
@@ -199,8 +199,8 @@ void xdev_add_report(Rcpp::Environment data,
 
                 if (missingSeqs.size() == 0) {
                     // preserve order of dataset
-                    Rcpp::Environment rdataset_env("package:rdataset");
-                    Rcpp::Function sort = rdataset_env["sort_dataframe"];
+                    Rcpp::Environment strollur_env("package:strollur");
+                    Rcpp::Function sort = strollur_env["sort_dataframe"];
 
                     table = sort(table, datasetSeqNames, sequence_name);
                 }else {
@@ -218,8 +218,8 @@ void xdev_add_report(Rcpp::Environment data,
             d.get()->addReport(table, type);
 
             if (verbose) {
-                Rcpp::Environment rdataset_env("package:rdataset");
-                Rcpp::Function message = rdataset_env["added_message"];
+                Rcpp::Environment strollur_env("package:strollur");
+                Rcpp::Function message = strollur_env["added_message"];
                 message(R_NilValue, "a " + type);
             }
         }
@@ -262,8 +262,8 @@ double xdev_add_sequences(Rcpp::Environment data,
                             sequences, comments, ref);
 
     if (verbose) {
-        Rcpp::Environment rdataset_env("package:rdataset");
-        Rcpp::Function message = rdataset_env["added_message"];
+        Rcpp::Environment strollur_env("package:strollur");
+        Rcpp::Function message = strollur_env["added_message"];
         message(numAdded);
     }
 
@@ -321,8 +321,8 @@ double xdev_assign_bins(Rcpp::Environment data,
 
     if (verbose) {
         string tag = " " + bin_type +" bins.";
-        Rcpp::Environment rdataset_env("package:rdataset");
-        Rcpp::Function message = rdataset_env["assigned_message"];
+        Rcpp::Environment strollur_env("package:strollur");
+        Rcpp::Function message = strollur_env["assigned_message"];
         message(numBinsAssigned, tag);
     }
 
@@ -366,8 +366,8 @@ double xdev_assign_bin_representative_sequences(Rcpp::Environment data,
 
     if (verbose) {
         string tag = " " + bin_type +" bin representative sequences.";
-        Rcpp::Environment rdataset_env("package:rdataset");
-        Rcpp::Function message = rdataset_env["assigned_message"];
+        Rcpp::Environment strollur_env("package:strollur");
+        Rcpp::Function message = strollur_env["assigned_message"];
         message(numAssigned, tag);
     }
 
@@ -419,8 +419,8 @@ double xdev_assign_bin_taxonomy(Rcpp::Environment data,
 
     if (verbose) {
         string tag = " " + bin_type +" bin taxonomies.";
-        Rcpp::Environment rdataset_env("package:rdataset");
-        Rcpp::Function message = rdataset_env["assigned_message"];
+        Rcpp::Environment strollur_env("package:strollur");
+        Rcpp::Function message = strollur_env["assigned_message"];
         message(numAssigned, tag);
     }
 
@@ -497,8 +497,8 @@ double xdev_assign_sequence_abundance(Rcpp::Environment data,
 
     if (verbose) {
         string tag = " sequence abundances.";
-        Rcpp::Environment rdataset_env("package:rdataset");
-        Rcpp::Function message = rdataset_env["assigned_message"];
+        Rcpp::Environment strollur_env("package:strollur");
+        Rcpp::Function message = strollur_env["assigned_message"];
         message(numAssigned, tag);
     }
 
@@ -523,8 +523,8 @@ double xdev_assign_sequence_taxonomy(Rcpp::Environment data,
                                taxonomies);
 
     if (verbose) {
-        Rcpp::Environment rdataset_env("package:rdataset");
-        Rcpp::Function message = rdataset_env["assigned_message"];
+        Rcpp::Environment strollur_env("package:strollur");
+        Rcpp::Function message = strollur_env["assigned_message"];
         message(numAssigned, " sequence taxonomies.");
     }
 
@@ -579,8 +579,8 @@ double xdev_assign_treatments(Rcpp::Environment data,
     double numAssigned = d.get()->assignTreatments(samples, treatments);
 
     if (verbose) {
-        Rcpp::Environment rdataset_env("package:rdataset");
-        Rcpp::Function message = rdataset_env["assigned_message"];
+        Rcpp::Environment strollur_env("package:strollur");
+        Rcpp::Function message = strollur_env["assigned_message"];
         message(numAssigned, " samples to treatments.");
     }
 

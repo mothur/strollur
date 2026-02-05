@@ -8,14 +8,14 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-library(rdataset)
+library(strollur)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-The *rdataset* package stores the data associated with your microbial DNA analysis. This tutorial will explain how to save, load, copy, export, and import your dataset object. If you haven't reviewed the [Getting Started](Getting-Started.html) tuturial, we recommend you start there. 
+The *strollur* package stores the data associated with your microbial DNA analysis. This tutorial will explain how to save, load, copy, export, and import your dataset object. If you haven't reviewed the [Getting Started](Getting-Started.html) tuturial, we recommend you start there. 
 
 Let's use the `miseq_sop_example()` function to create a dataset object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
 
@@ -26,7 +26,7 @@ miseq
 
 ## Saving and Loading
 
-The rdataset package has a function to save a dataset object as an *.rds* file, `save_dataset()`, and a function to create a dataset from an *.rds* file, `load_dataset()`. Let's use the miseq data object to learn how to do that.
+The strollur package has a function to save a dataset object as an *.rds* file, `save_dataset()`, and a function to create a dataset from an *.rds* file, `load_dataset()`. Let's use the miseq data object to learn how to do that.
 
 
 ```{r}
@@ -40,7 +40,7 @@ unlink("miseq_sop.rds")
 We can see that the summaries of miseq and miseq_from_rds are identical. Let's modify miseq_from_rds to verify they are not referring to the same object. We will add clusters created by [mothur](https://mothur.org) using [vsearch's](https://github.com/torognes/vsearch) distance-based greedy clustering (dgc) algorithm. 
 
 ```{r}
-dgc_data <- read_mothur_list(list = rdataset_example("final.dgc.list.gz"))
+dgc_data <- read_mothur_list(list = strollur_example("final.dgc.list.gz"))
 
 assign(data = miseq_from_rds, table = dgc_data, bin_type = "dgc")
 miseq_from_rds

@@ -35,14 +35,14 @@ Add a report to a \link{dataset} object
 # To add a custom report including your contigs assembly data
 
 data <- new_dataset("just for fun", 2)
-contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report.gz"),
+contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
    col_names = TRUE, show_col_types = FALSE)
 
 xdev_add_report(data, contigs_report, "contigs_report", "Name")
 
 # To add metadata related to your study
 
-metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
                             col_names = TRUE, show_col_types = FALSE)
 
 xdev_add_report(data, metadata, "metadata")

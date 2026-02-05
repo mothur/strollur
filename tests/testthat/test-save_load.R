@@ -2,13 +2,13 @@
 
 test_that("clone - deep copy of dataset object", {
   temp <- read_mothur(
-    fasta = rdataset_example("final.fasta.gz"),
-    count = rdataset_example("final.count_table.gz"),
-    taxonomy = rdataset_example("final.taxonomy.gz"),
-    design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list.gz"),
-    phylo_list = rdataset_example("final.tx.list.gz"),
-    asv_list = rdataset_example("final.asv.list.gz"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    taxonomy = strollur_example("final.taxonomy.gz"),
+    design = strollur_example("mouse.time.design"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    phylo_list = strollur_example("final.tx.list.gz"),
+    asv_list = strollur_example("final.asv.list.gz"),
     dataset_name = "miseq_sop"
   )
 

@@ -8,7 +8,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-library(rdataset)
+library(strollur)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -16,19 +16,19 @@ knitr::opts_chunk$set(
 ```
 
 
-*rdataset* includes the function `read_qiime2()` as well as several functions to read [qiime2](https://qiime2.org) output files individually. To create a dataset from the outputs of the [qiime2 moving-pictures example](https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html), run the following:
+*strollur* includes the function `read_qiime2()` as well as several functions to read [qiime2](https://qiime2.org) output files individually. To create a dataset from the outputs of the [qiime2 moving-pictures example](https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html), run the following:
 
 ```{r}
 qza_files <- c(
-  rdataset_example("rep_seqs.qza"),
-  rdataset_example("table.qza"),
-  rdataset_example("taxonomy.qza"),
-  rdataset_example("rooted-tree.qza")
+  strollur_example("rep_seqs.qza"),
+  strollur_example("table.qza"),
+  strollur_example("taxonomy.qza"),
+  strollur_example("rooted-tree.qza")
 )
 
 data <- read_qiime2(
   qza = qza_files,
-  metadata = rdataset_example("sample_metadata.tsv"),
+  metadata = strollur_example("sample_metadata.tsv"),
   dataset_name = "qiime_moving_pictures"
 )
 ```
@@ -55,10 +55,10 @@ my_data <- new_dataset(dataset_name = "my_data")
 To decompress the individual qza files, you can use the `unpack_qiime2_artifact()`. unpack_qiime2_artifact will extract a folder containing the data, versioning and provenance information. Let's take a look at the rep_seqs.qza file first.
 
 ```{r}
-fasta_artifact <- unpack_qiime2_artifact(qza = rdataset_example("rep_seqs.qza"))
+fasta_artifact <- unpack_qiime2_artifact(qza = strollur_example("rep_seqs.qza"))
 ```
 
-fasta_artifact is list. To add the [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data to your dataset you can use the `read_fasta()` function:
+fasta_artifact is a list. To add the [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data to your dataset you can use the `read_fasta()` function:
 
 ```{r}
 fasta_file <- file.path(
@@ -87,7 +87,7 @@ unlink(file.path(getwd(), "rep_seqs"), recursive = TRUE)
 Now that we have added the FASTA sequences, let's read the abundance data found in the table.qza file. Since we know that the sequences are in fact features, we will assign the abundances to the sequences and then we can assign the sequences to bins to create [Amplicon Sequence Variant](https://en.wikipedia.org/wiki/Amplicon_sequence_variant) *asv* clusters. Let's use the `read_qiime2_feature_table()` function to extract the abundance table.
 
 ```{r}
-abundance <- read_qiime2_feature_table(rdataset_example("table.qza"))
+abundance <- read_qiime2_feature_table(strollur_example("table.qza"))
 
 assign(
   data = my_data,
@@ -110,7 +110,7 @@ my_data
 Now that we have added the abundance data and assigned the sequences to bins, let's take a look at the taxonomic classifications provided in the taxonomy.qza file. We will use the `read_qiime2_taxonomy()` function to extract the feature classification table.
 
 ```{r}
-taxonomy <- read_qiime2_taxonomy(rdataset_example("taxonomy.qza"))
+taxonomy <- read_qiime2_taxonomy(strollur_example("taxonomy.qza"))
 
 assign(
   data = my_data,
@@ -126,7 +126,7 @@ Now, lets add a tree that shows the relationships between the sequences (feature
 ```{r}
 tree_artifact <- unpack_qiime2_artifact(
   qza =
-    rdataset_example("rooted-tree.qza")
+    strollur_example("rooted-tree.qza")
 )
 ```
 
@@ -157,7 +157,7 @@ Lastly, let's read the metadata provided by qiime2 using the `read_qiime2_metada
 ```{r}
 metadata <- read_qiime2_metadata(
   metadata =
-    rdataset_example("sample_metadata.tsv")
+    strollur_example("sample_metadata.tsv")
 )
 ```
 

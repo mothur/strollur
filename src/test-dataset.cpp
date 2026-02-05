@@ -1,5 +1,5 @@
 #include <testthat.h>
-#include "../inst/include/rdataset.h"
+#include "../inst/include/strollur.h"
 #include "dataset.h"
 
  context("Dataset class C++ unit tests") {

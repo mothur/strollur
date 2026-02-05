@@ -48,7 +48,7 @@ test_that("write_fasta", {
   expect_equal(df[[2]][50], seq3)
 
   data <- read_mothur(
-    otu_list = rdataset_example("final.opti_mcc.list.gz"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
     dataset_name = "data"
   )
 

@@ -2,7 +2,7 @@
 
 test_that("summary tests", {
   # test non dataset type
-  contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report.gz"),
+  contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
     col_names = TRUE, show_col_types = FALSE
   )
   expect_equal(class(summary(contigs_report)), "table")
@@ -73,7 +73,7 @@ test_that("summary tests", {
 })
 
 test_that("add, assign, abundance error tests", {
-  contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report.gz"),
+  contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
     col_names = TRUE, show_col_types = FALSE
   )
 

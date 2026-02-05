@@ -14,7 +14,7 @@
 #'
 #' @examples
 #'
-#' artifact <- read_qiime2_feature_table(rdataset_example(
+#' artifact <- read_qiime2_feature_table(strollur_example(
 #'   "table.qza"
 #' ))
 #'

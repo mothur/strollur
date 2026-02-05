@@ -117,10 +117,10 @@ dataset <- R6Class("dataset",
     #'
     #'  data <- dataset$new("my_dataset")
     #'
-    #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+    #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
     #'
-    #'  tree <- ape::read.tree(rdataset_example(
+    #'  tree <- ape::read.tree(strollur_example(
     #'  "final.opti_mcc.jclass.ave.tre"))
     #'
     #'  data$add_sample_tree(tree)
@@ -185,7 +185,7 @@ dataset <- R6Class("dataset",
     #' @examples
     #'
     #'  data <- dataset$new("my_dataset")
-    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
+    #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'
     add_sequence_tree = function(tree) {
@@ -266,7 +266,7 @@ dataset <- R6Class("dataset",
     #' @examples
     #'   data <- dataset$new("my_dataset")
     #'
-    #'   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+    #'   metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
     #'
     #'   add(data = data, table = metadata, type = "metadata")
@@ -282,10 +282,10 @@ dataset <- R6Class("dataset",
     #' Get phylo tree relating the samples in your dataset.
     #' @examples
     #'
-    #'  tree <- ape::read.tree(rdataset_example(
+    #'  tree <- ape::read.tree(strollur_example(
     #'   "final.opti_mcc.jclass.ave.tre"))
     #'
-    #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+    #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'
     #'  data <- dataset$new("my_dataset")
     #'
@@ -415,10 +415,6 @@ dataset <- R6Class("dataset",
             }
           }
         }
-      } else {
-        if (!silent) {
-          cli::cli_alert("Your dataset does not include sample data, ignoring.")
-        }
       }
 
       results
@@ -429,7 +425,7 @@ dataset <- R6Class("dataset",
     #' @examples
     #'
     #'  data <- dataset$new("my_dataset")
-    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
+    #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'  data$get_sequence_tree()
     #'

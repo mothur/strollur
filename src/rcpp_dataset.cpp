@@ -2,7 +2,7 @@
 #define SRC_RCPP_DATASET
 
 #include <Rcpp.h>
-#include "../inst/include/rdataset.h"
+#include "../inst/include/strollur.h"
 #include "rcpp_xint_xdev_functions.h"
 #include "dataset.h"
 
@@ -50,8 +50,8 @@ Rcpp::Environment new_dataset(string dataset_name = "",
                               Rcpp::Nullable<int> processors = R_NilValue) {
 
     // dataset$new()
-    Rcpp::Environment rdataset_env("package:rdataset");
-    Rcpp::Environment dataset_class_env = rdataset_env["dataset"];
+    Rcpp::Environment strollur_env("package:strollur");
+    Rcpp::Environment dataset_class_env = strollur_env["dataset"];
     Rcpp::Function constructor = dataset_class_env["new"];
 
     int num_proc = 1;
@@ -128,8 +128,8 @@ Rcpp::List new_reference(string reference_name,
 Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 
     // dataset$new()
-    Rcpp::Environment rdataset_env("package:rdataset");
-    Rcpp::Environment dataset_class_env = rdataset_env["dataset"];
+    Rcpp::Environment strollur_env("package:strollur");
+    Rcpp::Environment dataset_class_env = strollur_env["dataset"];
     Rcpp::Function constructor = dataset_class_env["new"];
     Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -196,7 +196,7 @@ Rcpp::List export_dataset(Rcpp::Environment data) {
     }
 
     results.attr("names") = resultNames;
-    results.attr("rdataset_version") = "1.0.0";
+    results.attr("strollur_version") = "1.0.0";
     results.attr("dataset_name") = d.get()->datasetName;
 
     return results;

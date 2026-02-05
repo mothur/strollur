@@ -80,7 +80,7 @@ representative sequences, bin classifications or treatments to a
 # create a new empty dataset named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
-sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+sequence_classifications <- read_mothur_taxonomy(strollur_example(
   "final.taxonomy.gz"
 ))
 
@@ -92,23 +92,23 @@ assign(
 # Assigning bins
 
 # read mothur's otu list file into data.frame
-otu_data <- read_mothur_list(list = rdataset_example(
+otu_data <- read_mothur_list(list = strollur_example(
   "final.opti_mcc.list.gz"
 ))
 
 # read mothur's asv list file into data.frame
-asv_data <- read_mothur_list(list = rdataset_example(
+asv_data <- read_mothur_list(list = strollur_example(
   "final.asv.list.gz"
 ))
 
 # read mothur's phylotype list file into data.frame
-phylo_data <- read_mothur_list(list = rdataset_example(
+phylo_data <- read_mothur_list(list = strollur_example(
   "final.tx.list.gz"
 ))
 
 # read otu bin representative sequences into a data.frame
 bin_reps <- readr::read_tsv(
-  rdataset_example(
+  strollur_example(
     "otu_representative_sequences.tsv"
   ),
   show_col_types = FALSE
@@ -132,7 +132,7 @@ assign(data = data, table = bin_reps, type = "bin_representatives")
 data <- new_dataset(dataset_name = "example_dataset")
 
 # read mothur's shared file
-otu_data <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
 # assign abundance only otus parsed by sample
 assign(data = data, table = otu_data, bin_type = "otu")
@@ -140,7 +140,7 @@ assign(data = data, table = otu_data, bin_type = "otu")
 # Assigning bin classifications
 
 # read bin taxonomies
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+otu_data <- read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 
@@ -153,7 +153,7 @@ assign(
 # Assign treatments
 
 sample_assignments <- readr::read_table(
-  rdataset_example("mouse.time.design"),
+  strollur_example("mouse.time.design"),
   col_names = TRUE, show_col_types = FALSE
 )
 

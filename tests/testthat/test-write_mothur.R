@@ -99,12 +99,12 @@ test_that("write_mothur - report_data only", {
   data <- dataset$new()
 
   xdev_add_report(data, readr::read_tsv(
-    rdataset_example("alignment_data.tsv"),
+    strollur_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   ), "alignment_report", "QueryName")
 
   xdev_add_report(data, readr::read_tsv(
-    rdataset_example("contigs_data.tsv"),
+    strollur_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   ), "contigs_report", "Name")
 
@@ -152,7 +152,7 @@ test_that("write_mothur - report_data only", {
   data <- dataset$new()
 
   xdev_add_report(data, readr::read_tsv(
-    rdataset_example("chimera_report.tsv"),
+    strollur_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
   ), "chimera_report", "Query")
 

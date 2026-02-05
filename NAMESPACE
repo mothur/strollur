@@ -1,7 +1,7 @@
 # exports
 export(dataset)
 
-useDynLib(rdataset, .registration=TRUE)
+useDynLib(strollur, .registration=TRUE)
 exportPattern("^[[:alpha:]]+")
 
 # general

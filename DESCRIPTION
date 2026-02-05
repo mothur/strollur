@@ -1,4 +1,4 @@
-Package: rdataset
+Package: strollur
 Type: Package
 Title: Store and transfer data used in the analysis of microbial RNA
 Version: 1.0.0
@@ -6,9 +6,9 @@ Date: 2025-05-09
 Authors@R: c(person("Sarah", "Westcott", role = c("aut", "cre"), 
   email = "swestcot@umich.edu"))
 Maintainer: Schloss Lab <pschloss@umich.edu>
-Description: The 'rdataset' package stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
-URL: https://github.com/mothur/rdataset, 
-BugReports: https://github.com/mothur/rdataset/issues
+Description: The 'strollur' package stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
+URL: https://github.com/mothur/strollur, https://mothur.org/strollur/
+BugReports: https://github.com/mothur/strollur/issues
 License: GPL (>= 3)
 RoxygenNote: 7.3.3
 biocViews:

@@ -40,7 +40,7 @@ Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 }
 \examples{
 
-sequence_classifications <- read_mothur_taxonomy(rdataset_example(
+sequence_classifications <- read_mothur_taxonomy(strollur_example(
                         "final.taxonomy.gz"))
 
 data <- new_dataset("my_dataset", 2)

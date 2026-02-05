@@ -8,27 +8,27 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-library(rdataset)
+library(strollur)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-*rdataset* includes the function `read_mothur()` as well as several functions to read [mothur](https://mothur.org) output files individually. To create a data set from the outputs of the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/), run the following:
+*strollur* includes the function `read_mothur()` as well as several functions to read [mothur](https://mothur.org) output files individually. To create a data set from the outputs of the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/), run the following:
 
 ## Using `read_mothur()`
 
 ```{r}
 data <- read_mothur(
-  fasta = rdataset_example("final.fasta.gz"),
-  count = rdataset_example("final.count_table.gz"),
-  taxonomy = rdataset_example("final.taxonomy.gz"),
-  design = rdataset_example("mouse.time.design"),
-  otu_list = rdataset_example("final.opti_mcc.list.gz"),
-  asv_list = rdataset_example("final.asv.list.gz"),
-  phylo_list = rdataset_example("final.tx.list.gz"),
-  sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+  fasta = strollur_example("final.fasta.gz"),
+  count = strollur_example("final.count_table.gz"),
+  taxonomy = strollur_example("final.taxonomy.gz"),
+  design = strollur_example("mouse.time.design"),
+  otu_list = strollur_example("final.opti_mcc.list.gz"),
+  asv_list = strollur_example("final.asv.list.gz"),
+  phylo_list = strollur_example("final.tx.list.gz"),
+  sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
   dataset_name = "miseq_sop"
 )
 ```
@@ -65,7 +65,7 @@ my_data <- new_dataset(dataset_name = "my_data")
 To add [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data to your data set you can use the `read_fasta()` function:
 
 ```{r}
-fasta_data <- read_fasta(fasta = rdataset_example("final.fasta.gz"))
+fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
 ```
 
 fasta_data is a data.frame containing sequence names, sequence nucleotide strings, and comments if provided. You can add the FASTA sequences to your data set using the `add()` function:
@@ -79,7 +79,7 @@ To add your sequence abundance data, you can read a [mothur count file](https://
 
 ```{r}
 sample_table <- read_mothur_count(
-  filename = rdataset_example("final.count_table.gz")
+  filename = strollur_example("final.count_table.gz")
 )
 ```
 
@@ -94,7 +94,7 @@ To add sequence taxonomy assignments, you can read a [taxonomy file](https://mot
 
 ```{r}
 classification_data <- read_mothur_taxonomy(
-  taxonomy = rdataset_example("final.taxonomy.gz")
+  taxonomy = strollur_example("final.taxonomy.gz")
 )
 ```
 
@@ -107,9 +107,9 @@ assign(data = my_data, table = classification_data, type = "sequence_taxonomy")
 To assign sequences to bins, you can read a [mothur list file](https://mothur.org/wiki/list_file/) file using the `read_mothur_list()` function:
 
 ```{r}
-otu_data <- read_mothur_list(list = rdataset_example("final.opti_mcc.list.gz"))
-asv_data <- read_mothur_list(list = rdataset_example("final.asv.list.gz"))
-phylotype_data <- read_mothur_list(list = rdataset_example("final.tx.list.gz"))
+otu_data <- read_mothur_list(list = strollur_example("final.opti_mcc.list.gz"))
+asv_data <- read_mothur_list(list = strollur_example("final.asv.list.gz"))
+phylotype_data <- read_mothur_list(list = strollur_example("final.tx.list.gz"))
 ```
 
 otu_data, asv_data and phylotype_data are data.frames containing bin names and sequence names. You can add the bin data to your data set as follows:
@@ -129,7 +129,7 @@ When you assign bins to sequences with taxonomic assignments the data set object
 ```{r}
 otu_taxonomy_data <- read_mothur_cons_taxonomy(
   taxonomy =
-    rdataset_example("final.cons.taxonomy")
+    strollur_example("final.cons.taxonomy")
 )
 ```
 

@@ -3,14 +3,14 @@
 test_that("test read_qiime2_taxonomy - errors", {
   expect_error(read_qiime2_taxonomy("non_existant_filename"))
   expect_error(read_qiime2_taxonomy(
-    rdataset_example("table.qza"),
+    strollur_example("table.qza"),
     file_root <- get_full_name("test-qiime2")
   ))
   unlink(get_full_name("test-qiime2"), recursive = TRUE)
 })
 
 test_that("test read_qiime2_taxonomy", {
-  tax_data <- read_qiime2_taxonomy(rdataset_example("taxonomy.qza"))
+  tax_data <- read_qiime2_taxonomy(strollur_example("taxonomy.qza"))
 
   expect_equal(nrow(tax_data$data), 759)
   expect_equal(ncol(tax_data$data), 3)

@@ -36,7 +36,7 @@ test_that("write_mothur_count - with sample data", {
 })
 
 test_that("write_mothur_count - without sample data", {
-  data2 <- read_mothur(count = rdataset_example("test_nogroups.count_table"))
+  data2 <- read_mothur(count = strollur_example("test_nogroups.count_table"))
 
   output <- write_mothur_count(data2, get_full_name("data2.taxonomy"))
 

@@ -12,7 +12,7 @@ test_that("write_mothur_design", {
   output <- write_mothur_design(miseq, get_full_name("miseq.design"))
 
   data <- read_mothur(
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
+    otu_shared = strollur_example("final.opti_mcc.shared"),
     design = output
   )
 
@@ -22,7 +22,7 @@ test_that("write_mothur_design", {
   expect_equal(count(data, "samples"), 19)
 
   data <- read_mothur(
-    otu_list = rdataset_example("final.opti_mcc.list.gz"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
     dataset_name = "data"
   )
 

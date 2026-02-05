@@ -39,7 +39,7 @@ Read a mothur formatted
 #  9:   seq4 sample4         4
 
 # read a count file with samples
-sample_table <- read_mothur_count(rdataset_example("final.count_table.gz"))
+sample_table <- read_mothur_count(strollur_example("final.count_table.gz"))
 
 # You can add your sequence abundance data to your dataset as follows:
 

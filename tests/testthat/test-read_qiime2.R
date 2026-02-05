@@ -3,7 +3,7 @@
 test_that("test read_qiime2 - errors", {
   expect_error(read_qiime2("non_existant_filename"))
   expect_error(read_qiime2(
-    rdataset_example("table.qza"),
+    strollur_example("table.qza"),
     file_root <- get_full_name("test-qiime2")
   ))
   unlink(get_full_name("test-qiime2"), recursive = TRUE)
@@ -11,15 +11,15 @@ test_that("test read_qiime2 - errors", {
 
 test_that("test read_qiime2", {
   qza_files <- c(
-    rdataset_example("rep_seqs.qza"),
-    rdataset_example("table.qza"),
-    rdataset_example("taxonomy.qza"),
-    rdataset_example("rooted-tree.qza")
+    strollur_example("rep_seqs.qza"),
+    strollur_example("table.qza"),
+    strollur_example("taxonomy.qza"),
+    strollur_example("rooted-tree.qza")
   )
 
   data <- read_qiime2(
     qza = qza_files,
-    metadata = rdataset_example("sample_metadata.tsv"),
+    metadata = strollur_example("sample_metadata.tsv"),
     dataset_name = "qiime_moving_pictures"
   )
 

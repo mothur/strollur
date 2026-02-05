@@ -5,7 +5,7 @@ test_that("test read_mothur_rabund - errors", {
 })
 
 test_that("test read_mothur_rabund", {
-  table <- read_mothur_rabund(rdataset_example("final.opti_mcc.rabund"))
+  table <- read_mothur_rabund(strollur_example("final.opti_mcc.rabund"))
 
   data <- dataset$new()
   assign(data = data, table = table, type = "bins")

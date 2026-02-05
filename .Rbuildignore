@@ -9,3 +9,5 @@
 ^pkgdown$
 ^cran-comments\.md$
 ^LICENSE\.md$
+^doc$
+^Meta$

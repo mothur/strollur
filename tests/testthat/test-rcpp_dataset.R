@@ -17,7 +17,7 @@ test_that("rcpp_dataset - new_dataset, copy_dataset", {
 test_that("rcpp_dataset - add_sequences", {
   data <- new_dataset("miseq_sop", 2)
 
-  sequences <- read_fasta(rdataset_example("final.fasta.gz"))
+  sequences <- read_fasta(strollur_example("final.fasta.gz"))
   sequences$comments <- rep("my comments", length(sequences$sequence_names))
 
   # add with all 3 parameters
@@ -528,8 +528,8 @@ test_that("rcpp_dataset - misc ", {
 test_that("dataset - xdev_set_abundances, xdev_set_sequences", {
   # create dataset sequences and shared data
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta.gz"),
-    count = rdataset_example("final.count_table.gz"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
     dataset_name = "miseq_sop"
   )
 

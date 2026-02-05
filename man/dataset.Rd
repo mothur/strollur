@@ -28,10 +28,10 @@ data <- new_dataset("soil")
 
  data <- dataset$new("my_dataset")
 
- df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+ df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
  assign(data = data, table = df, type = "bins", bin_type = "otu")
 
- tree <- ape::read.tree(rdataset_example(
+ tree <- ape::read.tree(strollur_example(
  "final.opti_mcc.jclass.ave.tre"))
 
  data$add_sample_tree(tree)
@@ -43,7 +43,7 @@ data <- new_dataset("soil")
 
 
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
+ tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
 
 
@@ -62,7 +62,7 @@ data$get_bin_types()
 
   data <- dataset$new("my_dataset")
 
-  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+  metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
 
   add(data = data, table = metadata, type = "metadata")
@@ -75,10 +75,10 @@ data$get_bin_types()
 ## ------------------------------------------------
 
 
- tree <- ape::read.tree(rdataset_example(
+ tree <- ape::read.tree(strollur_example(
   "final.opti_mcc.jclass.ave.tre"))
 
- df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+ df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
  data <- dataset$new("my_dataset")
 
@@ -95,7 +95,7 @@ data$get_bin_types()
 
 
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
+ tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
  data$get_sequence_tree()
 
@@ -209,10 +209,10 @@ Add phylo tree relating the samples in your dataset
 \preformatted{
  data <- dataset$new("my_dataset")
 
- df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+ df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
  assign(data = data, table = df, type = "bins", bin_type = "otu")
 
- tree <- ape::read.tree(rdataset_example(
+ tree <- ape::read.tree(strollur_example(
  "final.opti_mcc.jclass.ave.tre"))
 
  data$add_sample_tree(tree)
@@ -243,7 +243,7 @@ Add phylo tree relating the sequences in your dataset
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
+ tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
 
 }
@@ -302,7 +302,7 @@ data.frame()
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{  data <- dataset$new("my_dataset")
 
-  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+  metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
 
   add(data = data, table = metadata, type = "metadata")
@@ -327,10 +327,10 @@ Get phylo tree relating the samples in your dataset.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
- tree <- ape::read.tree(rdataset_example(
+ tree <- ape::read.tree(strollur_example(
   "final.opti_mcc.jclass.ave.tre"))
 
- df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+ df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
  data <- dataset$new("my_dataset")
 
@@ -394,7 +394,7 @@ Get phylo tree relating the sequences in your dataset.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre.gz"))
+ tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
  data$get_sequence_tree()
 
