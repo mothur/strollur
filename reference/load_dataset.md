@@ -1,7 +1,8 @@
 # load_dataset
 
-The load_dataset function will create a [dataset](dataset.md) object
-from an RDS file.
+The load_dataset function will create a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object from
+an RDS file.
 
 ## Usage
 
@@ -17,12 +18,12 @@ load_dataset(file)
 
 ## Value
 
-a [dataset](dataset.md) object
+a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Examples
 
 ``` r
-data <- load_dataset(rdataset_example("miseq_sop.rds"))
+data <- load_dataset(strollur_example("miseq_sop.rds"))
 data
 #> miseq_sop:
 #> 

@@ -2,9 +2,9 @@
 
 Designed with package integration in mind, the set sequences function
 allows you to change the nucleotide strings of sequences in a
-[dataset](dataset.md) object. For example, set_sequences may be used
-after alignment to overwrite the unaligned sequences with aligned
-sequences.
+[dataset](https://mothur.org/strollur/reference/dataset.md) object. For
+example, set_sequences may be used after alignment to overwrite the
+unaligned sequences with aligned sequences.
 
 ## Usage
 
@@ -21,7 +21,7 @@ xdev_set_sequences(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - sequence_names, :
 

@@ -1,6 +1,7 @@
 # new_dataset
 
-Create a new [dataset](dataset.md) object
+Create a new [dataset](https://mothur.org/strollur/reference/dataset.md)
+object
 
 ## Usage
 
@@ -21,11 +22,12 @@ new_dataset(dataset_name = "", processors = NULL)
 
 ## Value
 
-a [dataset](dataset.md) object
+a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## See also
 
-The 'new' method in the [dataset](dataset.md) class
+The 'new' method in the
+[dataset](https://mothur.org/strollur/reference/dataset.md) class
 
 ## Examples
 

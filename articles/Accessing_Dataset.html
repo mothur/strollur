@@ -5,7 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Accessing Data • rdataset</title>
+<title>Accessing Data • strollur</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -18,7 +23,7 @@
 
     <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../index.html">rdataset</a>
+    <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
@@ -29,6 +34,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/strollur.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -37,7 +43,6 @@
     <li><a class="dropdown-item" href="../articles/Data_Transfers.html">Data Transfers</a></li>
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
-    <li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
@@ -48,7 +53,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/SchlossLab/rdataset/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/mothur/strollur/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -72,7 +77,7 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Accessing Data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/SchlossLab/rdataset/blob/main/vignettes/Accessing_Dataset.Rmd" class="external-link"><code>vignettes/Accessing_Dataset.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mothur/strollur/blob/main/vignettes/Accessing_Dataset.Rmd" class="external-link"><code>vignettes/Accessing_Dataset.Rmd</code></a></small>
       <div class="d-none name"><code>Accessing_Dataset.Rmd</code></div>
     </div>
 
@@ -81,9 +86,9 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <em>rdataset</em> package stores data associated with your
+<p>The <em>strollur</em> package stores data associated with your
 microbial DNA analysis. This tutorial will familiarize you with some of
-the functions available in the <em>rdataset</em> package. If you haven’t
+the functions available in the <em>strollur</em> package. If you haven’t
 reviewed the “Getting Started” tuturial, we recommend you start
 there.</p>
 </div>
@@ -179,9 +184,9 @@ dataset object from the <a href="https://mothur.org/wiki/miseq_sop/" class="exte
 <span><span class="co">#&gt; Total number of phylotypes: 63</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="accessing-data">Accessing Data<a class="anchor" aria-label="anchor" href="#accessing-data"></a>
+<h2 id="accessing-your-data">Accessing Your Data<a class="anchor" aria-label="anchor" href="#accessing-your-data"></a>
 </h2>
-<p>The <em>rdataset</em> package includes several functions to access
+<p>The <em>strollur</em> package includes several functions to access
 your microbial data.</p>
 <p><code><a href="../reference/names.html">names()</a></code> - The names function is an extension of base R’s
 names function. It allows you to get the name of your dataset or the
@@ -202,28 +207,6 @@ sequences, your custom reports, and scrapped data.</p>
 <p>The <code><a href="../reference/names.html">names()</a></code> function allows you to get the names of
 sequences, bins, samples, treatments and reports. Let’s take a closer
 look at how use it.</p>
-<ul>
-<li>
-<strong>Parameters:</strong>
-<ul>
-<li>
-<em>data</em> - a dataset object</li>
-<li>
-<em>type</em> - string containing the type of data you would
-like.</li>
-<li>
-<em>bin_type</em> - string containing the bin type you would like
-data for.</li>
-<li>
-<em>samples</em> - vector of strings containing sample names.</li>
-<li>
-<em>distinct</em> - boolean, indicating whether you want names
-exclusive to the samples or present in the samples.</li>
-</ul>
-</li>
-</ul>
-<p>Note: <em>samples</em> and <em>distinct</em> are only used when type
-= sequences or type = bins.</p>
 <p>To get the name of the dataset, set the type parameter to
 ‘dataset’:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -334,34 +317,11 @@ sample ‘F3D0’:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"reports"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "contigs_report"</span></span></code></pre></div>
 </div>
-</div>
-<div class="section level2">
-<h2 id="count">count<a class="anchor" aria-label="anchor" href="#count"></a>
-</h2>
+<div class="section level3">
+<h3 id="count">count<a class="anchor" aria-label="anchor" href="#count"></a>
+</h3>
 <p>The <code><a href="../reference/count.html">count()</a></code> function allows you to get the number of
 sequences, bins, samples and treatments in your dataset.</p>
-<ul>
-<li>
-<strong>Parameters:</strong>
-<ul>
-<li>
-<em>data</em> - a dataset object</li>
-<li>
-<em>type</em> - string containing the type of data you would
-like.</li>
-<li>
-<em>bin_type</em> - string containing the bin type you would like
-data for.</li>
-<li>
-<em>samples</em> - vector of strings containing sample names.</li>
-<li>
-<em>distinct</em> - boolean, indicating whether you want count to be
-‘<em>unique / exclusive</em>’ or ‘<em>total / present</em>’.</li>
-</ul>
-</li>
-</ul>
-<p>Note: <em>samples</em> and <em>distinct</em> are only used when type
-= sequences or type = bins.</p>
 <p>To find the <em>total</em> number of sequences in the dataset, run
 the following:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -445,6 +405,7 @@ NO other samples </em> <em>will be present in the bins.</em></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2</span></span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="abundance">abundance<a class="anchor" aria-label="anchor" href="#abundance"></a>
 </h3>
@@ -453,24 +414,6 @@ NO other samples </em> <em>will be present in the bins.</em></p>
 <code><a href="../reference/abundance.html">abundance()</a></code> function. The abundance function can be used to
 access the abundance data for sequences, bins, samples, and treatments.
 It returns a data.frame containing the requested abundance data.</p>
-<ul>
-<li>
-<strong>Parameters:</strong>
-<ul>
-<li>
-<em>data</em> - a dataset object</li>
-<li>
-<em>type</em> - a string containing the type of data you would
-like</li>
-<li>
-<em>bin_type</em> - a string containing the bin type you would like
-data for</li>
-<li>
-<em>by_sample</em> - a boolean indicating if you want the results
-parsed by sample</li>
-</ul>
-</li>
-</ul>
 <p>To the total abundance for each sequence, set the type = ‘sequences’.
 This will return a 2 column data.frame containing sequence_names and
 abundances.</p>
@@ -605,21 +548,6 @@ sample assignments, metadata, sequence data reports, custom reports,
 resource references and scrapped data reports. It returns a data.frame
 containing the requested report data. Let’s look at some examples
 together.</p>
-<ul>
-<li>
-<strong>Parameters:</strong>
-<ul>
-<li>
-<em>data</em> - a dataset object</li>
-<li>
-<em>type</em> - a string containing the type of data you would
-like</li>
-<li>
-<em>bin_type</em> - a string containing the bin type you would like
-data for</li>
-</ul>
-</li>
-</ul>
 <p>To get a report containing the sequences <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> data,
 set the type = “fasta”. This will be a 2 or 3 column data.frame
 containing sequence names, sequence nucleotide strings, and comments (if
@@ -853,21 +781,6 @@ include scrapped data, but let’s take a look at how to access it.</p>
 </h3>
 <p>The <code><a href="../reference/summary.html">summary()</a></code> function allows you to summarize
 sequences, custom reports, and scrapped data.</p>
-<ul>
-<li>
-<strong>Parameters:</strong>
-<ul>
-<li>
-<em>data</em> - a dataset object</li>
-<li>
-<em>type</em> - a string containing the type of data you would like
-to summarize</li>
-<li>
-<em>report_type</em> - a string containing the report type you would
-to summarize</li>
-</ul>
-</li>
-</ul>
 <p>To get a summary for our custom reports, first let’s find the report
 names.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
@@ -930,7 +843,7 @@ let’s take a look at how to access it.</p>
 <div class="section level2">
 <h2 id="sample-trees-and-sequence-trees">Sample Trees and Sequence Trees<a class="anchor" aria-label="anchor" href="#sample-trees-and-sequence-trees"></a>
 </h2>
-<p>rdataset allows you to include trees relating the sequences and
+<p>strollur allows you to include trees relating the sequences and
 samples within your dataset. You can access and plot them using the
 following functions.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">

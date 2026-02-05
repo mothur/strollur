@@ -5,7 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Functions for package developers • rdataset</title>
+<title>Functions for package developers • strollur</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -18,7 +23,7 @@
 
     <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../index.html">rdataset</a>
+    <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
@@ -29,6 +34,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/strollur.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -37,7 +43,6 @@
     <li><a class="dropdown-item" href="../articles/Data_Transfers.html">Data Transfers</a></li>
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
-    <li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
@@ -48,7 +53,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/SchlossLab/rdataset/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/mothur/strollur/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -72,13 +77,13 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Functions for package developers</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/SchlossLab/rdataset/blob/main/vignettes/Functions_for_Package_Developers.Rmd" class="external-link"><code>vignettes/Functions_for_Package_Developers.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mothur/strollur/blob/main/vignettes/Functions_for_Package_Developers.Rmd" class="external-link"><code>vignettes/Functions_for_Package_Developers.Rmd</code></a></small>
       <div class="d-none name"><code>Functions_for_Package_Developers.Rmd</code></div>
     </div>
 
     
     
-<p><em>rdataset</em> includes several functions designed for package
+<p><em>strollur</em> includes several functions designed for package
 developers. These functions provide additional access to the back end
 data and allow developers to merge, remove and set data directly. The
 function names begin with <em>‘xdev_’</em> or <em>‘xint_’</em> to
@@ -479,7 +484,7 @@ sequences remain the same but the number of otu bins is reduced by
 <h2 id="removing-functions">Removing Functions<a class="anchor" aria-label="anchor" href="#removing-functions"></a>
 </h2>
 <p>Over the course of your analysis, you may want to remove sequences,
-bins, samples or contaminants. rdataset has several functions to help
+bins, samples or contaminants. strollur has several functions to help
 with that, namely <code><a href="../reference/xdev_remove_sequences.html">xdev_remove_sequences()</a></code>,
 <code><a href="../reference/xdev_remove_bins.html">xdev_remove_bins()</a></code>, <code><a href="../reference/xdev_remove_samples.html">xdev_remove_samples()</a></code>, and
 <code><a href="../reference/xdev_remove_lineages.html">xdev_remove_lineages()</a></code>.</p>

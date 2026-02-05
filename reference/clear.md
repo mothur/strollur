@@ -1,6 +1,7 @@
 # clear
 
-Clear data from a [dataset](dataset.md) object
+Clear data from a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -12,7 +13,7 @@ clear(data)
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Examples
 

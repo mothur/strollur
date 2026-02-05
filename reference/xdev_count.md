@@ -1,7 +1,8 @@
 # xdev_count
 
 Find the number of sequences, samples, treatments or bins of a given
-type in a [dataset](dataset.md) object
+type in a [dataset](https://mothur.org/strollur/reference/dataset.md)
+object
 
 ## Usage
 
@@ -19,7 +20,7 @@ xdev_count(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - type, :
 

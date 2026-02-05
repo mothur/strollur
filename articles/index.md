@@ -2,11 +2,16 @@
 
 ### All vignettes
 
-- [Accessing Data](Accessing_Dataset.md):
-- [Data Transfers](Data_Transfers.md):
+- [Accessing
+  Data](https://mothur.org/strollur/articles/Accessing_Dataset.md):
+- [Data
+  Transfers](https://mothur.org/strollur/articles/Data_Transfers.md):
 - [Functions for package
-  developers](Functions_for_Package_Developers.md):
-- [General Importing](General_Importing.md):
-- [Getting Started](Getting-Started.md):
-- [Importing from mothur](Importing_from_mothur.md):
-- [Importing from qiime2](Importing_from_qiime2.md):
+  developers](https://mothur.org/strollur/articles/Functions_for_Package_Developers.md):
+- [General
+  Importing](https://mothur.org/strollur/articles/General_Importing.md):
+- [Importing from
+  mothur](https://mothur.org/strollur/articles/Importing_from_mothur.md):
+- [Importing from
+  qiime2](https://mothur.org/strollur/articles/Importing_from_qiime2.md):
+- [Getting Started](https://mothur.org/strollur/articles/strollur.md):

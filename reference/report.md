@@ -1,7 +1,7 @@
 # report
 
-Get a data.frame containing the given report in a [dataset](dataset.md)
-object
+Get a data.frame containing the given report in a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -13,7 +13,7 @@ report(data, type = "sequences", bin_type = "otu")
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - type, :
 

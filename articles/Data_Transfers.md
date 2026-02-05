@@ -1,12 +1,14 @@
 # Data Transfers
 
-The *rdataset* package stores the data associated with your microbial
+The *strollur* package stores the data associated with your microbial
 DNA analysis. This tutorial will explain how to save, load, copy,
 export, and import your dataset object. If you haven’t reviewed the
-[Getting Started](Getting-Started.md) tuturial, we recommend you start
-there.
+[Getting
+Started](https://mothur.org/strollur/articles/Getting-Started.md)
+tuturial, we recommend you start there.
 
-Let’s use the [`miseq_sop_example()`](../reference/miseq_sop_example.md)
+Let’s use the
+[`miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
 function to create a dataset object from the [Miseq SOP
 Example](https://mothur.org/wiki/miseq_sop/).
 
@@ -97,11 +99,12 @@ miseq
 
 ## Saving and Loading
 
-The rdataset package has a function to save a dataset object as an
-*.rds* file, [`save_dataset()`](../reference/save_dataset.md), and a
-function to create a dataset from an *.rds* file,
-[`load_dataset()`](../reference/load_dataset.md). Let’s use the miseq
-data object to learn how to do that.
+The strollur package has a function to save a dataset object as an
+*.rds* file,
+[`save_dataset()`](https://mothur.org/strollur/reference/save_dataset.md),
+and a function to create a dataset from an *.rds* file,
+[`load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md).
+Let’s use the miseq data object to learn how to do that.
 
 ``` r
 save_dataset(data = miseq, file = "miseq_sop.rds")
@@ -187,7 +190,7 @@ using [vsearch’s](https://github.com/torognes/vsearch) distance-based
 greedy clustering (dgc) algorithm.
 
 ``` r
-dgc_data <- read_mothur_list(list = rdataset_example("final.dgc.list"))
+dgc_data <- read_mothur_list(list = strollur_example("final.dgc.list.gz"))
 
 assign(data = miseq_from_rds, table = dgc_data, bin_type = "dgc")
 #> ℹ Assigned 361 dgc bins.
@@ -339,9 +342,10 @@ miseq_from_rds and not to miseq.
 ## Export and Import
 
 The *.rds* file is in binary format and is not human readable. You can
-use the [`export_dataset()`](../reference/export_dataset.md) to see a
-human readable form of the raw data stored in the dataset. Let’s export
-*miseq* and look at the table created.
+use the
+[`export_dataset()`](https://mothur.org/strollur/reference/export_dataset.md)
+to see a human readable form of the raw data stored in the dataset.
+Let’s export *miseq* and look at the table created.
 
 ``` r
 table <- export_dataset(data = miseq)
@@ -430,13 +434,15 @@ str(table)
 #>   ..$ root.edge  : num 0.221
 #>   ..- attr(*, "class")= chr "phylo"
 #>   ..- attr(*, "order")= chr "cladewise"
-#>  - attr(*, "rdataset_version")= chr "1.0.0"
+#>  - attr(*, "strollur_version")= chr "1.0.0"
 #>  - attr(*, "dataset_name")= chr "miseq_sop"
 ```
 
-Similarly to [`load_dataset()`](../reference/load_dataset.md), you can
-use the [`import_dataset()`](../reference/import_dataset.md) function to
-create a new dataset object from the exported table.
+Similarly to
+[`load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md),
+you can use the
+[`import_dataset()`](https://mothur.org/strollur/reference/import_dataset.md)
+function to create a new dataset object from the exported table.
 
 ``` r
 miseq_import <- import_dataset(table = table)
@@ -530,10 +536,11 @@ summary of miseq.
 ## Copy
 
 Lastly, you can make a deep copy of your dataset using the
-[`copy_dataset()`](../reference/copy_dataset.md) function. Note, if you
-use an assignment operator to copy it’s a shallow copy. The dataset
-object is an R6 object to keep the memory usage low. First let’s learn
-how to use the [`copy_dataset()`](../reference/copy_dataset.md)
+[`copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
+function. Note, if you use an assignment operator to copy it’s a shallow
+copy. The dataset object is an R6 object to keep the memory usage low.
+First let’s learn how to use the
+[`copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
 function, then we will take a closer look at how deep and shallow
 copying differ.
 

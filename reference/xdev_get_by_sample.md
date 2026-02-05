@@ -1,7 +1,8 @@
 # xdev_get_by_sample
 
-Get the requested data in a [dataset](dataset.md) object parsed by
-sample
+Get the requested data in a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
+parsed by sample
 
 ## Usage
 
@@ -13,7 +14,7 @@ xdev_get_by_sample(data, type = "sequence_names", samples = as.character(c()))
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - type, :
 

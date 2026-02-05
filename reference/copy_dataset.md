@@ -1,6 +1,7 @@
 # copy_dataset
 
-Create a new [dataset](dataset.md) object from an existing dataset.
+Create a new [dataset](https://mothur.org/strollur/reference/dataset.md)
+object from an existing dataset.
 
 ## Usage
 
@@ -12,15 +13,16 @@ copy_dataset(data)
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Value
 
-a [dataset](dataset.md) object
+a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## See also
 
-The 'new' method in the [dataset](dataset.md) class
+The 'new' method in the
+[dataset](https://mothur.org/strollur/reference/dataset.md) class
 
 ## Examples
 

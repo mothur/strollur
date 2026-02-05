@@ -1,7 +1,8 @@
 # xdev_set_num_processors
 
 Designed with package integration in mind, set the number of processors
-used to summarize a [dataset](dataset.md) object
+used to summarize a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -13,7 +14,7 @@ xdev_set_num_processors(data, processors)
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - processors, :
 

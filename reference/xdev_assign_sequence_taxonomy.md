@@ -1,6 +1,7 @@
 # xdev_assign_sequence_taxonomy
 
-Assign sequence classifications to a [dataset](dataset.md) object
+Assign sequence classifications to a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 Note, if you assign sequence taxonomies and assign bins, 'Dataset' will
 find the consensus taxonomy for each bin for you.
@@ -22,7 +23,7 @@ xdev_assign_sequence_taxonomy(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - table, :
 
@@ -53,8 +54,8 @@ double containing the number of sequence assigned
 ## Examples
 
 ``` r
-sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-                        "final.taxonomy"))
+sequence_classifications <- read_mothur_taxonomy(strollur_example(
+                        "final.taxonomy.gz"))
 
 data <- new_dataset("my_dataset", 2)
 

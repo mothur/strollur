@@ -1,6 +1,7 @@
 # xdev_names
 
-Get the names of a given type of data in a [dataset](dataset.md) object
+Get the names of a given type of data in a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -18,7 +19,7 @@ xdev_names(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - type, :
 

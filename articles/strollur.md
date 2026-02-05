@@ -1,0 +1,40 @@
+# Getting Started
+
+The *strollur* package stores the data associated with your microbial
+DNA analysis. This includes nucleotide sequences, abundance, sample and
+treatment assignments, taxonomic classifications, asv, otu and phylotype
+clusters, metadata, trees and various reports. It is designed to
+facilitate data analysis across multiple R packages with utility
+functions to read from [mothur](https://mothur.org),
+[qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/)
+and
+[phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
+
+## Installing strollur
+
+You can install the CRAN version with:
+
+``` r
+install.packages("strollur")
+```
+
+You can install the development version of *strollur* from
+[GitHub](https://github.com/mothur/strollur) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("mothur/strollur")
+```
+
+## Importing, Accessing and Transfering Data
+
+- [General
+  Importing](https://mothur.org/strollur/articles/vignettes/General_Importing.md)
+- [Importing data from
+  mothur](https://mothur.org/strollur/articles/vignettes/Importing_from_mothur.md)
+- [Importing data from
+  qiime2](https://mothur.org/strollur/articles/vignettes/Importing_from_qiime2.md)
+- [Accessing
+  Data](https://mothur.org/strollur/articles/vignettes/Accessing_Dataset.md)
+- [Data
+  Transfers](https://mothur.org/strollur/articles/vignettes/Data_Transfers2.md)

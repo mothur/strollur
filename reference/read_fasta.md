@@ -22,7 +22,7 @@ A data.frame containing the FASTA sequence data
 ## Examples
 
 ``` r
-fasta_data <- read_fasta(rdataset_example("final.fasta"))
+fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
 # fasta_data is a data.frame.
 # To access the names of the sequences in the file, run the following:

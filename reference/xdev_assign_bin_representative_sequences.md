@@ -20,7 +20,7 @@ xdev_assign_bin_representative_sequences(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - table, :
 
@@ -69,7 +69,7 @@ double containing the number of representative sequences assigned
 #> ℹ Added 2 resource references.
 #> ℹ Added a contigs_report.
 
-  bin_reps <- readr::read_tsv(rdataset_example(
+  bin_reps <- readr::read_tsv(strollur_example(
                                       "otu_representative_sequences.tsv"),
                                       show_col_types = FALSE)
 

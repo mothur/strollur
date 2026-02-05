@@ -1,7 +1,8 @@
 # has_sequence_strings
 
-Determine if a [dataset](dataset.md) object contains sequence nucleotide
-strings.
+Determine if a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
+contains sequence nucleotide strings.
 
 ## Usage
 
@@ -13,7 +14,7 @@ has_sequence_strings(data)
 
 - data, :
 
-  a [dataset](dataset.md) object.
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object.
 
 ## Value
 

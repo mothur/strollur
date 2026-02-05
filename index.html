@@ -5,15 +5,20 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Store and transfer data used in the analysis of microbial DNA • rdataset</title>
+<title>Store and transfer data used in the analysis of microbial RNA • strollur</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Store and transfer data used in the analysis of microbial DNA">
-<meta name="description" content="The rdataset package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), mothur2, [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
-<meta property="og:description" content="The rdataset package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), mothur2, [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
-<meta property="og:image" content="/logo.svg">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Store and transfer data used in the analysis of microbial RNA">
+<meta name="description" content="The strollur package stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
+<meta property="og:description" content="The strollur package stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
+<meta property="og:image" content="https://mothur.org/strollur/logo.svg">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -21,7 +26,7 @@
 
     <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="index.html">rdataset</a>
+    <a class="navbar-brand me-2" href="index.html">strollur</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
@@ -32,6 +37,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/strollur.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -40,7 +46,6 @@
     <li><a class="dropdown-item" href="articles/Data_Transfers.html">Data Transfers</a></li>
     <li><a class="dropdown-item" href="articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="articles/General_Importing.html">General Importing</a></li>
-    <li><a class="dropdown-item" href="articles/Getting-Started.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="articles/Importing_from_mothur.html">Importing from mothur</a></li>
     <li><a class="dropdown-item" href="articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
@@ -51,7 +56,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/SchlossLab/rdataset/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/mothur/strollur/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -69,7 +74,8 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.svg" class="logo" alt=""><h1 id="rdataset-">rdataset <a class="anchor" aria-label="anchor" href="#rdataset-"></a>
+<img src="logo.svg" class="logo" alt=""><h1 id="strollur-">strollur 
+<a class="anchor" aria-label="anchor" href="#strollur-"></a>
 </h1>
 </div>
 <!-- badges: start -->
@@ -77,7 +83,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <strong>rdataset</strong> package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, sequence bin assignments, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to import from <a href="https://mothur.org" class="external-link">mothur</a>, mothur2, <a href="https://qiime2.org" class="external-link">qiime2</a>, <a href="https://benjjneb.github.io/dada2/" class="external-link">dada2</a> and <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link">phyloseq</a>.</p>
+<p>The <strong>strollur</strong> package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, sequence bin assignments, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to import from <a href="https://mothur.org" class="external-link">mothur</a>, <a href="https://qiime2.org" class="external-link">qiime2</a>, <a href="https://benjjneb.github.io/dada2/" class="external-link">dada2</a> and <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link">phyloseq</a>.</p>
 <ul>
 <li>
 <code><a href="reference/add.html">add()</a></code> add sequences, reports, metadata, and resource references</li>
@@ -100,14 +106,14 @@
 </h2>
 <p>You can install the CRAN version with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rdataset"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"strollur"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="development-version">Development version<a class="anchor" aria-label="anchor" href="#development-version"></a>
 </h3>
-<p>You can install the development version of rdataset from <a href="https://github.com/SchlossLab/rdataset" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of strollur from <a href="https://github.com/mothur/strollur" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"SchlossLab/rdataset"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mothur/strollur"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -115,11 +121,11 @@
 </h2>
 <p>The example below adds <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> sequence data, assigns sequence abundance, samples and treatments, as well as assigning bins and taxonomic data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SchlossLab/rdataset" class="external-link">rdataset</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mothur/strollur" class="external-link">strollur</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"microbial RNA example"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.fasta"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
@@ -129,7 +135,7 @@
 <span><span class="co">#&gt; ℹ Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span></span>
-<span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"mothur2_count_table.tsv"</span><span class="op">)</span>,</span>
+<span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"mothur2_count_table.tsv.gz"</span><span class="op">)</span>,</span>
 <span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span></span>
@@ -142,8 +148,8 @@
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span></span>
 <span><span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span></span>
-<span>    <span class="st">"mothur2_bin_assignments_list.tsv"</span></span>
+<span>  <span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
+<span>    <span class="st">"mothur2_bin_assignments_list.tsv.gz"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -159,7 +165,7 @@
 <span><span class="co">#&gt; [1] 531</span></span>
 <span></span>
 <span><span class="va">sequence_classification_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span></span>
-<span>  taxonomy <span class="op">=</span> <span class="fu"><a href="reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.taxonomy"</span><span class="op">)</span></span>
+<span>  taxonomy <span class="op">=</span> <span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span></span>
@@ -217,19 +223,19 @@
 <div class="section level2">
 <h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h2>
-<p>If you encounter an issue, please file an issue on <a href="https://github.com/SchlossLab/rdataset/issues" class="external-link">GitHub</a>. Please include a minimal reproducible example with your issue.</p>
+<p>If you encounter an issue, please file an issue on <a href="https://github.com/mothur/strollur/issues" class="external-link">GitHub</a>. Please include a minimal reproducible example with your issue.</p>
 </div>
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
 </h2>
-<p>Is there a feature you’d like to see included, please let us know! Pull requests are welcome on <a href="https://github.com/SchlossLab/rdataset/pulls" class="external-link">GitHub</a>.</p>
+<p>Is there a feature you’d like to see included, please let us know! Pull requests are welcome on <a href="https://github.com/mothur/strollur/pulls" class="external-link">GitHub</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/SchlossLab/rdataset/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/SchlossLab/rdataset/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/mothur/strollur/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/mothur/strollur/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -245,7 +251,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing rdataset</a></li>
+<li><a href="authors.html#citation">Citing strollur</a></li>
 </ul>
 </div>
 
@@ -259,10 +265,10 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/SchlossLab/rdataset/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/SchlossLab/rdataset?branch=main" class="external-link"><img src="https://codecov.io/gh/SchlossLab/rdataset/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml" class="external-link"><img src="https://github.com/SchlossLab/rdataset/actions/workflows/pkgdown.yaml/badge.svg" alt="pkgdown"></a></li>
-<li><a href="https://CRAN.R-project.org/package=rdataset" class="external-link"><img src="https://www.r-pkg.org/badges/version/rdataset" alt="CRAN status"></a></li>
+<li><a href="https://github.com/mothur/strollur/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/mothur/strollur/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/mothur/strollur?branch=main" class="external-link"><img src="https://codecov.io/gh/mothur/strollur/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml" class="external-link"><img src="https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml/badge.svg" alt="pkgdown"></a></li>
+<li><a href="https://CRAN.R-project.org/package=strollur" class="external-link"><img src="https://www.r-pkg.org/badges/version/strollur" alt="CRAN status"></a></li>
 </ul>
 </div>
 

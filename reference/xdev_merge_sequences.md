@@ -1,7 +1,8 @@
 # xdev_merge_sequences
 
 Designed with package integration in mind, the merge sequences function
-allows you to merge sequences in a [dataset](dataset.md) object.
+allows you to merge sequences in a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object.
 
 ## Usage
 
@@ -13,7 +14,7 @@ xdev_merge_sequences(data, sequence_names, reason = "merged")
 
 - data, :
 
-  a [dataset](dataset.md) object.
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object.
 
 - sequence_names, :
 

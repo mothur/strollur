@@ -1,7 +1,8 @@
 # xdev_remove_sequences
 
 Designed with package integration in mind, the remove sequences function
-allows you to remove sequences from a [dataset](dataset.md) object
+allows you to remove sequences from a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -13,7 +14,7 @@ xdev_remove_sequences(data, sequence_names, trash_tags)
 
 - data, :
 
-  a [dataset](dataset.md) object.
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object.
 
 - sequence_names, :
 

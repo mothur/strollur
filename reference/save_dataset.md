@@ -1,6 +1,7 @@
 # save_dataset
 
-The save_dataset function will save the [dataset](dataset.md) object to
+The save_dataset function will save the
+[dataset](https://mothur.org/strollur/reference/dataset.md) object to
 file.
 
 ## Usage
@@ -13,7 +14,7 @@ save_dataset(dataset, file)
 
 - dataset:
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - file:
 
@@ -27,11 +28,11 @@ A file containing the 'dataset' object
 
 ``` r
 dataset <- read_mothur(
-  fasta = rdataset_example("final.fasta"),
-  count = rdataset_example("final.count_table"),
-  taxonomy = rdataset_example("final.taxonomy"),
-  design = rdataset_example("mouse.time.design"),
-  otu_list = rdataset_example("final.opti_mcc.list"),
+  fasta = strollur_example("final.fasta.gz"),
+  count = strollur_example("final.count_table.gz"),
+  taxonomy = strollur_example("final.taxonomy.gz"),
+  design = strollur_example("mouse.time.design"),
+  otu_list = strollur_example("final.opti_mcc.list.gz"),
   dataset_name = "miseq_sop"
 )
 #> ℹ Added 2425 sequences.

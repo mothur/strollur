@@ -25,7 +25,7 @@ A data.frame containing the sequence otu assignments
 # You can add your otu assignments to the your data set using the following:
 
 # read mothur shared file into data.frame
-otu_data <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
 # create a new empty dataset
 data <- new_dataset()

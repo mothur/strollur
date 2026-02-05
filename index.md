@@ -1,51 +1,51 @@
-# rdataset
+# strollur
 
 ## Overview
 
-The **rdataset** package stores the data associated with your microbial
+The **strollur** package stores the data associated with your microbial
 DNA analysis. This includes nucleotide sequences, abundance, sample and
 treatment assignments, taxonomic classifications, sequence bin
 assignments, metadata, trees and various reports. It is designed to
 facilitate data analysis across multiple R packages with utility
-functions to import from [mothur](https://mothur.org), mothur2,
+functions to import from [mothur](https://mothur.org),
 [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/)
 and
 [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 
-- [`add()`](reference/add.md) add sequences, reports, metadata, and
-  resource references
-- [`assign()`](reference/assign.md) assign abundances, classifications,
-  bins, samples and treatments and more
-- [`names()`](reference/names.md) get the names of sequences, bins,
-  samples, treatments and reports
-- [`count()`](reference/count.md) get the number of sequences, bins,
-  samples and treatments
-- [`abundance()`](reference/abundance.md) get the abundances for
-  sequences, bins, samples, and treatments
-- [`report()`](reference/report.md) get
+- [`add()`](https://mothur.org/strollur/reference/add.md) add sequences,
+  reports, metadata, and resource references
+- [`assign()`](https://mothur.org/strollur/reference/assign.md) assign
+  abundances, classifications, bins, samples and treatments and more
+- [`names()`](https://mothur.org/strollur/reference/names.md) get the
+  names of sequences, bins, samples, treatments and reports
+- [`count()`](https://mothur.org/strollur/reference/count.md) get the
+  number of sequences, bins, samples and treatments
+- [`abundance()`](https://mothur.org/strollur/reference/abundance.md)
+  get the abundances for sequences, bins, samples, and treatments
+- [`report()`](https://mothur.org/strollur/reference/report.md) get
   [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequences,
   sequence and classification reports, bin assignments, sample
   assignments, metadata, sequence data reports, custom reports, resource
   references and scrapped data reports.
-- [`summary()`](reference/summary.md) summarize sequences, your custom
-  reports, and scrapped data
+- [`summary()`](https://mothur.org/strollur/reference/summary.md)
+  summarize sequences, your custom reports, and scrapped data
 
 ## Installation
 
 You can install the CRAN version with:
 
 ``` r
-install.packages("rdataset")
+install.packages("strollur")
 ```
 
 ### Development version
 
-You can install the development version of rdataset from
-[GitHub](https://github.com/SchlossLab/rdataset) with:
+You can install the development version of strollur from
+[GitHub](https://github.com/mothur/strollur) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("SchlossLab/rdataset")
+devtools::install_github("mothur/strollur")
 ```
 
 ## Usage
@@ -56,11 +56,11 @@ data, assigns sequence abundance, samples and treatments, as well as
 assigning bins and taxonomic data.
 
 ``` r
-library(rdataset)
+library(strollur)
 
 data <- new_dataset(dataset_name = "microbial RNA example")
 
-fasta_data <- read_fasta(rdataset_example("final.fasta"))
+fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
 add(
   data = data,
@@ -70,7 +70,7 @@ add(
 #> ℹ Added 2425 sequences.
 #> [1] 2425
 
-abundance_table <- readr::read_tsv(rdataset_example("mothur2_count_table.tsv"),
+abundance_table <- readr::read_tsv(strollur_example("mothur2_count_table.tsv.gz"),
   show_col_types = FALSE
 )
 assign(
@@ -83,8 +83,8 @@ assign(
 #> [1] 2425
 
 bin_table <- readr::read_tsv(
-  rdataset_example(
-    "mothur2_bin_assignments_list.tsv"
+  strollur_example(
+    "mothur2_bin_assignments_list.tsv.gz"
   ),
   show_col_types = FALSE
 )
@@ -100,7 +100,7 @@ assign(
 #> [1] 531
 
 sequence_classification_data <- read_mothur_taxonomy(
-  taxonomy = rdataset_example("final.taxonomy")
+  taxonomy = strollur_example("final.taxonomy.gz")
 )
 
 assign(
@@ -159,11 +159,11 @@ data
 ## Getting help
 
 If you encounter an issue, please file an issue on
-[GitHub](https://github.com/SchlossLab/rdataset/issues). Please include
-a minimal reproducible example with your issue.
+[GitHub](https://github.com/mothur/strollur/issues). Please include a
+minimal reproducible example with your issue.
 
 ## Contributing
 
 Is there a feature you’d like to see included, please let us know! Pull
 requests are welcome on
-[GitHub](https://github.com/SchlossLab/rdataset/pulls).
+[GitHub](https://github.com/mothur/strollur/pulls).

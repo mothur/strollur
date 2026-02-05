@@ -29,7 +29,7 @@ A data.frame containing the sequence otu assignments
 # You can add your otu assignments to the your data set using the following:
 
 # read mothur's list file into data.frame
-otu_data <- read_mothur_list(rdataset_example("final.opti_mcc.list"))
+otu_data <- read_mothur_list(strollur_example("final.opti_mcc.list.gz"))
 
 # create a new empty dataset
 data <- new_dataset()

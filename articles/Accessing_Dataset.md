@@ -2,16 +2,16 @@
 
 ## Overview
 
-The *rdataset* package stores data associated with your microbial DNA
+The *strollur* package stores data associated with your microbial DNA
 analysis. This tutorial will familiarize you with some of the functions
-available in the *rdataset* package. If you haven’t reviewed the
+available in the *strollur* package. If you haven’t reviewed the
 “Getting Started” tuturial, we recommend you start there.
 
 ## Loading the example dataset
 
 We can use the
-[`miseq_sop_example()`](../reference/miseq_sop_example.md) function to
-create a dataset object from the [Miseq SOP
+[`miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
+function to create a dataset object from the [Miseq SOP
 Example](https://mothur.org/wiki/miseq_sop/).
 
 ``` r
@@ -104,46 +104,37 @@ miseq
 #> Total number of phylotypes: 63
 ```
 
-## Accessing Data
+## Accessing Your Data
 
-The *rdataset* package includes several functions to access your
+The *strollur* package includes several functions to access your
 microbial data.
 
-[`names()`](../reference/names.md) - The names function is an extension
-of base R’s names function. It allows you to get the name of your
-dataset or the names of the sequences, bins, samples, treatments and
-reports in your dataset.
+[`names()`](https://mothur.org/strollur/reference/names.md) - The names
+function is an extension of base R’s names function. It allows you to
+get the name of your dataset or the names of the sequences, bins,
+samples, treatments and reports in your dataset.
 
-[`count()`](../reference/count.md) - The count function allows you to
-get the number of sequences, bins, samples and treatments in your
-dataset.
+[`count()`](https://mothur.org/strollur/reference/count.md) - The count
+function allows you to get the number of sequences, bins, samples and
+treatments in your dataset.
 
-[`abundance()`](../reference/abundance.md) - The abundance function can
-be used to access the abundance data for sequences, bins, samples, and
-treatments.
+[`abundance()`](https://mothur.org/strollur/reference/abundance.md) -
+The abundance function can be used to access the abundance data for
+sequences, bins, samples, and treatments.
 
-[`report()`](../reference/report.md) - The report function can be used
-to access the various data associated with your dataset.
+[`report()`](https://mothur.org/strollur/reference/report.md) - The
+report function can be used to access the various data associated with
+your dataset.
 
-[`summary()`](../reference/summary.md) - The summary function allows you
-to summarize sequences, your custom reports, and scrapped data.
+[`summary()`](https://mothur.org/strollur/reference/summary.md) - The
+summary function allows you to summarize sequences, your custom reports,
+and scrapped data.
 
 ### names
 
-The [`names()`](../reference/names.md) function allows you to get the
-names of sequences, bins, samples, treatments and reports. Let’s take a
-closer look at how use it.
-
-- **Parameters:**
-  - *data* - a dataset object
-  - *type* - string containing the type of data you would like.
-  - *bin_type* - string containing the bin type you would like data for.
-  - *samples* - vector of strings containing sample names.
-  - *distinct* - boolean, indicating whether you want names exclusive to
-    the samples or present in the samples.
-
-Note: *samples* and *distinct* are only used when type = sequences or
-type = bins.
+The [`names()`](https://mothur.org/strollur/reference/names.md) function
+allows you to get the names of sequences, bins, samples, treatments and
+reports. Let’s take a closer look at how use it.
 
 To get the name of the dataset, set the type parameter to ‘dataset’:
 
@@ -280,21 +271,11 @@ names(data = miseq, type = "reports")
 #> [1] "contigs_report"
 ```
 
-## count
+### count
 
-The [`count()`](../reference/count.md) function allows you to get the
-number of sequences, bins, samples and treatments in your dataset.
-
-- **Parameters:**
-  - *data* - a dataset object
-  - *type* - string containing the type of data you would like.
-  - *bin_type* - string containing the bin type you would like data for.
-  - *samples* - vector of strings containing sample names.
-  - *distinct* - boolean, indicating whether you want count to be
-    ‘*unique / exclusive*’ or ‘*total / present*’.
-
-Note: *samples* and *distinct* are only used when type = sequences or
-type = bins.
+The [`count()`](https://mothur.org/strollur/reference/count.md) function
+allows you to get the number of sequences, bins, samples and treatments
+in your dataset.
 
 To find the *total* number of sequences in the dataset, run the
 following:
@@ -405,20 +386,14 @@ count(data = miseq, type = "treatments")
 
 ### abundance
 
-Now that we are familiar with the [`names()`](../reference/names.md) and
-[`count()`](../reference/count.md) functions. Let’s learn how we can use
-the [`abundance()`](../reference/abundance.md) function. The abundance
-function can be used to access the abundance data for sequences, bins,
-samples, and treatments. It returns a data.frame containing the
-requested abundance data.
-
-- **Parameters:**
-  - *data* - a dataset object
-  - *type* - a string containing the type of data you would like
-  - *bin_type* - a string containing the bin type you would like data
-    for
-  - *by_sample* - a boolean indicating if you want the results parsed by
-    sample
+Now that we are familiar with the
+[`names()`](https://mothur.org/strollur/reference/names.md) and
+[`count()`](https://mothur.org/strollur/reference/count.md) functions.
+Let’s learn how we can use the
+[`abundance()`](https://mothur.org/strollur/reference/abundance.md)
+function. The abundance function can be used to access the abundance
+data for sequences, bins, samples, and treatments. It returns a
+data.frame containing the requested abundance data.
 
 To the total abundance for each sequence, set the type = ‘sequences’.
 This will return a 2 column data.frame containing sequence_names and
@@ -564,18 +539,12 @@ abundance(data = miseq, type = "treatments")
 
 ### report
 
-The [`report()`](../reference/report.md) function allows you access you
-to access FASTA sequences, sequence and classification reports, bin
-assignments, sample assignments, metadata, sequence data reports, custom
-reports, resource references and scrapped data reports. It returns a
-data.frame containing the requested report data. Let’s look at some
-examples together.
-
-- **Parameters:**
-  - *data* - a dataset object
-  - *type* - a string containing the type of data you would like
-  - *bin_type* - a string containing the bin type you would like data
-    for
+The [`report()`](https://mothur.org/strollur/reference/report.md)
+function allows you access you to access FASTA sequences, sequence and
+classification reports, bin assignments, sample assignments, metadata,
+sequence data reports, custom reports, resource references and scrapped
+data reports. It returns a data.frame containing the requested report
+data. Let’s look at some examples together.
 
 To get a report containing the sequences
 [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data, set the
@@ -840,15 +809,9 @@ report(
 
 ### summary
 
-The [`summary()`](../reference/summary.md) function allows you to
-summarize sequences, custom reports, and scrapped data.
-
-- **Parameters:**
-  - *data* - a dataset object
-  - *type* - a string containing the type of data you would like to
-    summarize
-  - *report_type* - a string containing the report type you would to
-    summarize
+The [`summary()`](https://mothur.org/strollur/reference/summary.md)
+function allows you to summarize sequences, custom reports, and scrapped
+data.
 
 To get a summary for our custom reports, first let’s find the report
 names.
@@ -918,7 +881,7 @@ summary(data = miseq, type = "scrap")
 
 ## Sample Trees and Sequence Trees
 
-rdataset allows you to include trees relating the sequences and samples
+strollur allows you to include trees relating the sequences and samples
 within your dataset. You can access and plot them using the following
 functions.
 
@@ -940,6 +903,9 @@ plot(miseq_sample_tree,
 Thanks for following along. Next, find out how to import your own data
 using the links below:
 
-- [General Importing](vignettes/General_Importing.md)
-- [Importing data from qiime2](vignettes/Importing_from_qiime2.md)
-- [Importing data from mothur](vignettes/Importing_from_mothur.md)
+- [General
+  Importing](https://mothur.org/strollur/articles/vignettes/General_Importing.md)
+- [Importing data from
+  qiime2](https://mothur.org/strollur/articles/vignettes/Importing_from_qiime2.md)
+- [Importing data from
+  mothur](https://mothur.org/strollur/articles/vignettes/Importing_from_mothur.md)

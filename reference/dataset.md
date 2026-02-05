@@ -126,10 +126,10 @@ Add phylo tree relating the samples in your dataset
 
      data <- dataset$new("my_dataset")
 
-     df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+     df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
      assign(data = data, table = df, type = "bins", bin_type = "otu")
 
-     tree <- ape::read.tree(rdataset_example(
+     tree <- ape::read.tree(strollur_example(
      "final.opti_mcc.jclass.ave.tre"))
 
      data$add_sample_tree(tree)
@@ -153,12 +153,12 @@ Add phylo tree relating the sequences in your dataset
 #### Examples
 
      data <- dataset$new("my_dataset")
-     tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+     tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
      data$add_sequence_tree(tree)
 
 ------------------------------------------------------------------------
 
-### Method [`clear()`](clear.md)
+### Method [`clear()`](https://mothur.org/strollur/reference/clear.md)
 
 Clear data from datasest
 
@@ -168,7 +168,7 @@ Clear data from datasest
 
 ------------------------------------------------------------------------
 
-### Method [`get_bin_types()`](get_bin_types.md)
+### Method [`get_bin_types()`](https://mothur.org/strollur/reference/get_bin_types.md)
 
 Get bin table types
 
@@ -203,7 +203,7 @@ data.frame()
 
       data <- dataset$new("my_dataset")
 
-      metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+      metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
        col_names = TRUE, show_col_types = FALSE)
 
       add(data = data, table = metadata, type = "metadata")
@@ -222,10 +222,10 @@ Get phylo tree relating the samples in your dataset.
 
 #### Examples
 
-     tree <- ape::read.tree(rdataset_example(
+     tree <- ape::read.tree(strollur_example(
       "final.opti_mcc.jclass.ave.tre"))
 
-     df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+     df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
      data <- dataset$new("my_dataset")
 
@@ -284,7 +284,7 @@ Get phylo tree relating the sequences in your dataset.
 #### Examples
 
      data <- dataset$new("my_dataset")
-     tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+     tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
      data$add_sequence_tree(tree)
      data$get_sequence_tree()
 
@@ -324,12 +324,12 @@ data <- new_dataset("soil")
 
  data <- dataset$new("my_dataset")
 
- df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+ df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
  assign(data = data, table = df, type = "bins", bin_type = "otu")
 #> ℹ Assigned 531 otu bins.
 #> [1] 531
 
- tree <- ape::read.tree(rdataset_example(
+ tree <- ape::read.tree(strollur_example(
  "final.opti_mcc.jclass.ave.tre"))
 
  data$add_sample_tree(tree)
@@ -341,7 +341,7 @@ data <- new_dataset("soil")
 
 
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
 #> ℹ Added 2425 sequences.
 
@@ -374,7 +374,7 @@ data$get_bin_types()
 
   data <- dataset$new("my_dataset")
 
-  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+  metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
    col_names = TRUE, show_col_types = FALSE)
 
   add(data = data, table = metadata, type = "metadata")
@@ -459,10 +459,10 @@ data$get_bin_types()
 ## ------------------------------------------------
 
 
- tree <- ape::read.tree(rdataset_example(
+ tree <- ape::read.tree(strollur_example(
   "final.opti_mcc.jclass.ave.tre"))
 
- df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+ df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
  data <- dataset$new("my_dataset")
 
@@ -488,7 +488,7 @@ data$get_bin_types()
 
 
  data <- dataset$new("my_dataset")
- tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+ tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
 #> ℹ Added 2425 sequences.
  data$get_sequence_tree()

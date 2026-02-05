@@ -1,7 +1,7 @@
 # abundance
 
 Get the abundance data for sequences, bins, samples, and treatments in a
-[dataset](dataset.md) object
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -13,7 +13,7 @@ abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - type, :
 

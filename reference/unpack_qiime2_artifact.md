@@ -33,6 +33,6 @@ A unpacked qza artifact
 # Using the example files from moving-pictures
 
 artifact <- unpack_qiime2_artifact(
-  qza = rdataset_example("table.qza"),
+  qza = strollur_example("table.qza"),
 )
 ```

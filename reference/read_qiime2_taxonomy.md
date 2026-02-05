@@ -36,7 +36,7 @@ A list containing artifact
 ## Examples
 
 ``` r
-artifact <- read_qiime2_taxonomy(rdataset_example(
+artifact <- read_qiime2_taxonomy(strollur_example(
   "taxonomy.qza"
 ))
 

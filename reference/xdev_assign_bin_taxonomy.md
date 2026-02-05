@@ -1,6 +1,7 @@
 # xdev_assign_bin_taxonomy
 
-Assign bin classifications to a [dataset](dataset.md) object
+Assign bin classifications to a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 Note, if you assign sequence taxonomies and assign bins, 'Dataset' will
 find the concensus taxonomy for each bin for you.
@@ -23,7 +24,7 @@ xdev_assign_bin_taxonomy(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - table, :
 
@@ -58,7 +59,7 @@ double containing the number of bins assigned
 ## Examples
 
 ``` r
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+otu_data <- read_mothur_cons_taxonomy(strollur_example(
                         "final.cons.taxonomy"))
 
 data <- new_dataset(dataset_name = "my_dataset")

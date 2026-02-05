@@ -13,4 +13,4 @@ xint_deserialize_dobject(data)
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object

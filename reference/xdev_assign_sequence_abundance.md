@@ -1,7 +1,8 @@
 # xdev_assign_sequence_abundance
 
 Assign sequence abundance and optionally assign sample and treatment
-data to a [dataset](dataset.md) object
+data to a [dataset](https://mothur.org/strollur/reference/dataset.md)
+object
 
 ## Usage
 
@@ -21,7 +22,7 @@ xdev_assign_sequence_abundance(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - table, :
 
@@ -59,8 +60,8 @@ double containing the number of sequences assigned
 
 ``` r
 data <- new_dataset("my_dataset")
-sequence_abundance <- readr::read_tsv(rdataset_example(
-                                      "mothur2_count_table.tsv"),
+sequence_abundance <- readr::read_tsv(strollur_example(
+                                      "mothur2_count_table.tsv.gz"),
                                       show_col_types = FALSE)
 
 xdev_assign_sequence_abundance(data = data, table = sequence_abundance,

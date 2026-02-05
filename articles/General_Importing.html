@@ -5,7 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>General Importing • rdataset</title>
+<title>General Importing • strollur</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -18,7 +23,7 @@
 
     <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../index.html">rdataset</a>
+    <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
@@ -29,6 +34,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/strollur.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -37,7 +43,6 @@
     <li><a class="dropdown-item" href="../articles/Data_Transfers.html">Data Transfers</a></li>
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
-    <li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
@@ -48,7 +53,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/SchlossLab/rdataset/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/mothur/strollur/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -72,15 +77,15 @@
       <img src="../logo.svg" class="logo" alt=""><h1>General Importing</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/SchlossLab/rdataset/blob/main/vignettes/General_Importing.Rmd" class="external-link"><code>vignettes/General_Importing.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mothur/strollur/blob/main/vignettes/General_Importing.Rmd" class="external-link"><code>vignettes/General_Importing.Rmd</code></a></small>
       <div class="d-none name"><code>General_Importing.Rmd</code></div>
     </div>
 
     
     
-<p>The rdataset package stores data associated with your microbial DNA
+<p>The strollur package stores data associated with your microbial DNA
 analysis. This tutorial will familiarize you some of with the functions
-available in the rdataset package. If you haven’t reviewed the “Getting
+available in the strollur package. If you haven’t reviewed the “Getting
 Started” tutorial, we recommend you start there.</p>
 <div class="section level2">
 <h2 id="creating-a-new-dataset">Creating a new dataset<a class="anchor" aria-label="anchor" href="#creating-a-new-dataset"></a>
@@ -92,7 +97,7 @@ Started” tutorial, we recommend you start there.</p>
 <div class="section level2">
 <h2 id="importing-data">Importing Data<a class="anchor" aria-label="anchor" href="#importing-data"></a>
 </h2>
-<p>The <em>rdataset</em> package includes two functions to allow you to
+<p>The <em>strollur</em> package includes two functions to allow you to
 add microbial data.</p>
 <p><code><a href="../reference/add.html">add()</a></code> - The add function allows you to add sequences,
 reports, metadata, and resource references to your data set.</p>
@@ -136,11 +141,11 @@ about what is being added</li>
 <h4 id="adding-fasta-sequences">Adding FASTA sequences<a class="anchor" aria-label="anchor" href="#adding-fasta-sequences"></a>
 </h4>
 <p>First, let’s add some <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> data.
-rdataset has a function for reading FASTA files named
+strollur has a function for reading FASTA files named
 <code><a href="../reference/read_fasta.html">read_fasta()</a></code>. We will use it to read the sequence data into
 a data.frame.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.fasta"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data</span>,</span>
@@ -163,14 +168,13 @@ a data.frame.</p>
 <span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 2425.000</span></span>
 <span><span class="co">#&gt; Mean:            1  375 252.7406      0 4.496082     0    0.000</span></span>
 <span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   2425</span></span>
-<span><span class="co">#&gt; → Your dataset does not include sample data, ignoring.</span></span>
+<span><span class="co">#&gt; Total seqs:   2425 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 2425</span></span></code></pre></div>
 <p>If you want to include a resource reference about your fasta data you
 can use the <code>new_reference</code> function and the reference
-parameter. rdataset does not allow you to add sequences with the same
+parameter. strollur does not allow you to add sequences with the same
 name, so let’s use the <code><a href="../reference/clear.html">clear()</a></code> function to remove all data
 from our data set.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -208,8 +212,7 @@ from our data set.</p>
 <span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 2425.000</span></span>
 <span><span class="co">#&gt; Mean:            1  375 252.7406      0 4.496082     0    0.000</span></span>
 <span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   2425</span></span>
-<span><span class="co">#&gt; → Your dataset does not include sample data, ignoring.</span></span>
+<span><span class="co">#&gt; Total seqs:   2425 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 2425</span></span></code></pre></div>
@@ -221,11 +224,11 @@ from our data set.</p>
 contigs assembly report, chimera report or alignment report. You can do
 so by setting type = “reports”. You must also provide a report_type.</p>
 <p>This is also a good time to explain what the table_names parameter
-does for you. rdataset expects the columns in custom reports to have
-specific names. If your table’s names differ from what rdataset is
+does for you. strollur expects the columns in custom reports to have
+specific names. If your table’s names differ from what strollur is
 expecting, you will see an error like that below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.contigs_report"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.contigs_report.gz"</span><span class="op">)</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -241,12 +244,12 @@ expecting, you will see an error like that below.</p>
 <span></span>
 <span><span class="co"># Called from: xdev_add_report(data = data, table = table, type = report_type,</span></span>
 <span><span class="co">#    sequence_name = table_names[["sequence_name"]], verbose)</span></span></code></pre></div>
-<p>You can use the table_names parameter to tell rdataset what the
+<p>You can use the table_names parameter to tell strollur what the
 specific column is called in your custom report table. In the
 contigs_report the <em>sequence_name</em> column is called
 <em>Name</em>, so we will add one more line to the add function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.contigs_report"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.contigs_report.gz"</span><span class="op">)</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -295,8 +298,8 @@ contigs_report the <em>sequence_name</em> column is called
 <span><span class="co">#&gt; Maximum:          255.0000     22.000000</span></span>
 <span><span class="co">#&gt; Mean:             249.1501      2.005361</span></span>
 <span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   2425</span></span>
-<span><span class="co">#&gt; → Your dataset does not include sample data, ignoring.</span></span>
+<span><span class="co">#&gt; Total seqs:   2425 </span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 2425</span></span></code></pre></div>
@@ -308,7 +311,7 @@ contigs_report the <em>sequence_name</em> column is called
 learn how to add metadata. We can add metadata to our data set by
 setting the type = “metadata”.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"mouse.dpw.metadata"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"mouse.dpw.metadata"</span><span class="op">)</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -326,7 +329,7 @@ setting the type = “metadata”.</p>
 <p>We can add additional resource references to our data set by setting
 the type = “references”.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">reference</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"references.csv"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">reference</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"references.csv"</span><span class="op">)</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -379,7 +382,10 @@ about what is being added</li>
 sample data using the assign function with the type =
 “sequence_abundance”.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"mothur2_count_table.tsv"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
+<span>    <span class="st">"mothur2_count_table.tsv.gz"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
@@ -468,8 +474,8 @@ reference the bin clusters you are adding. Let’s add some <a href="https://en.
 Taxonomic Unit</a> clusters and set the bin_type = “otu”.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span></span>
-<span>    <span class="st">"mothur2_bin_assignments_list.tsv"</span></span>
+<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
+<span>    <span class="st">"mothur2_bin_assignments_list.tsv.gz"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -564,7 +570,7 @@ Sequence Variant</a> clusters or <em>asv</em> bins.</p>
 taxonomy to our sequences.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sequence_classification_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span></span>
-<span>  taxonomy <span class="op">=</span> <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.taxonomy"</span><span class="op">)</span></span>
+<span>  taxonomy <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
@@ -575,11 +581,11 @@ taxonomy to our sequences.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span></code></pre></div>
 <p>Note, when you assign taxonomy to sequences that are assigned to
-bins, rdataset will automatically assign the bin taxonomies to be the
+bins, strollur will automatically assign the bin taxonomies to be the
 consensus taxonomy of the sequences in the bins. You can also set bin
 taxonomies independently by setting the type = “bin_taxonomy”.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">otu_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">otu_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
 <span>  <span class="st">"final.cons.taxonomy"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -595,12 +601,12 @@ taxonomies independently by setting the type = “bin_taxonomy”.</p>
 <div class="section level4">
 <h4 id="assigning-bin-representatives">Assigning Bin Representatives<a class="anchor" aria-label="anchor" href="#assigning-bin-representatives"></a>
 </h4>
-<p>rdataset allows you to assign a bin representative sequences to the
+<p>strollur allows you to assign a bin representative sequences to the
 bins in your clusters. Let’s assign bin representatives to our
 <em>otu</em> bins.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bin_representatives</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
 <span>    <span class="st">"otu_representative_sequences.tsv"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -622,7 +628,7 @@ you can also assign samples to treatments by setting type =
 “treatments”.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample_assignments</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html" class="external-link">read_table</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"mouse.time.design"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"mouse.time.design"</span><span class="op">)</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -639,11 +645,11 @@ you can also assign samples to treatments by setting type =
 <div class="section level2">
 <h2 id="sample-trees-and-sequence-trees">Sample Trees and Sequence Trees<a class="anchor" aria-label="anchor" href="#sample-trees-and-sequence-trees"></a>
 </h2>
-<p>Lastly, rdataset allows you to add tree that relate your samples or
+<p>Lastly, strollur allows you to add tree that relate your samples or
 sequences. Let’s look at some examples together.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sample_tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.jclass.ave.tre"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">sequence_tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sample_tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.jclass.ave.tre"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">sequence_tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="fu">add_sample_tree</span><span class="op">(</span><span class="va">sample_tree</span><span class="op">)</span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="fu">add_sequence_tree</span><span class="op">(</span><span class="va">sequence_tree</span><span class="op">)</span></span>
@@ -657,7 +663,7 @@ sequences. Let’s look at some examples together.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="General_Importing_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="700"></p>
 <p>Thanks for following along. To learn more about the functions used to
-access the data in your data set, take a look at the <a href="vignettes/Using_Dataset.html">Accessing Data</a> tutorial.</p>
+access the data in your data set, take a look at the <a href="vignettes/Accessing_Dataset.html">Accessing Data</a> tutorial.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

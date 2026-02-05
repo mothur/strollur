@@ -1,7 +1,7 @@
 # xdev_get_sequences
 
-Get the nucleotide strings for each sequence in a [dataset](dataset.md)
-object
+Get the nucleotide strings for each sequence in a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -13,7 +13,7 @@ xdev_get_sequences(data, sample = "")
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - sample, :
 
@@ -23,7 +23,7 @@ xdev_get_sequences(data, sample = "")
 ## Value
 
 vector of string containing nucleotide strings of the sequences in a
-[dataset](dataset.md) object
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Examples
 

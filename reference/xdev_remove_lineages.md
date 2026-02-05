@@ -1,7 +1,8 @@
 # xdev_remove_lineages
 
 Designed with package integration in mind, the remove lineages function
-allows you to remove contaminents from a [dataset](dataset.md)
+allows you to remove contaminents from a
+[dataset](https://mothur.org/strollur/reference/dataset.md)
 
 ## Usage
 
@@ -13,7 +14,7 @@ xdev_remove_lineages(data, contaminants, reason = "contaminant")
 
 - data, :
 
-  a [dataset](dataset.md) object.
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object.
 
 - contaminants, :
 
@@ -27,11 +28,11 @@ xdev_remove_lineages(data, contaminants, reason = "contaminant")
 ## Examples
 
 ``` r
-data <- read_mothur(fasta = rdataset_example("final.fasta"),
-                       count = rdataset_example("final.count_table"),
-                       taxonomy = rdataset_example("final.taxonomy"),
-                       design = rdataset_example("mouse.time.design"),
-                       otu_list = rdataset_example("final.opti_mcc.list"),
+data <- read_mothur(fasta = strollur_example("final.fasta.gz"),
+                       count = strollur_example("final.count_table.gz"),
+                       taxonomy = strollur_example("final.taxonomy.gz"),
+                       design = strollur_example("mouse.time.design"),
+                       otu_list = strollur_example("final.opti_mcc.list.gz"),
                        dataset_name = "miseq_sop")
 #> ℹ Added 2425 sequences.
 #> ℹ Assigned 2425 sequence abundances.

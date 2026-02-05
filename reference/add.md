@@ -1,7 +1,7 @@
 # add
 
 Add sequences, reports, metadata or resource references to a
-[dataset](dataset.md) object
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -24,7 +24,7 @@ add(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - table, :
 
@@ -105,7 +105,7 @@ double - The number of items added
 data <- new_dataset(dataset_name = "example_dataset")
 
 # Read FASTA data into data.frame
-fasta_data <- read_fasta(fasta = rdataset_example("final.fasta"))
+fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
 
 # Add FASTA sequence data
 add(data = data, table = fasta_data, type = "sequences")
@@ -141,7 +141,7 @@ add(
 
 # Add contigs assembly report with a 'sequence_name' column named 'Name'
 
-contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -154,7 +154,7 @@ add(
 
 # To add metadata related to your study
 
-metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
   col_names = TRUE, show_col_types = FALSE
 )
 

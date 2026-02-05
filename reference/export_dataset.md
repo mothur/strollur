@@ -1,6 +1,7 @@
 # export_dataset
 
-Export all data from a [dataset](dataset.md) object.
+Export all data from a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object.
 
 ## Usage
 
@@ -12,7 +13,7 @@ export_dataset(data)
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Value
 
@@ -24,7 +25,7 @@ Rcpp::List, containing the data in the 'Dataset
 dataset <- new_dataset("my_dataset", 2)
 export_dataset(dataset)
 #> named list()
-#> attr(,"rdataset_version")
+#> attr(,"strollur_version")
 #> [1] "1.0.0"
 #> attr(,"dataset_name")
 #> [1] "my_dataset"

@@ -5,7 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Importing from qiime2 • rdataset</title>
+<title>Importing from qiime2 • strollur</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -18,7 +23,7 @@
 
     <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
-    <a class="navbar-brand me-2" href="../index.html">rdataset</a>
+    <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
@@ -29,6 +34,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/strollur.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -37,7 +43,6 @@
     <li><a class="dropdown-item" href="../articles/Data_Transfers.html">Data Transfers</a></li>
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
-    <li><a class="dropdown-item" href="../articles/Getting-Started.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
@@ -48,7 +53,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/SchlossLab/rdataset/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/mothur/strollur/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -72,27 +77,27 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Importing from qiime2</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/SchlossLab/rdataset/blob/main/vignettes/Importing_from_qiime2.Rmd" class="external-link"><code>vignettes/Importing_from_qiime2.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mothur/strollur/blob/main/vignettes/Importing_from_qiime2.Rmd" class="external-link"><code>vignettes/Importing_from_qiime2.Rmd</code></a></small>
       <div class="d-none name"><code>Importing_from_qiime2.Rmd</code></div>
     </div>
 
     
     
-<p><em>rdataset</em> includes the function <code><a href="../reference/read_qiime2.html">read_qiime2()</a></code> as
+<p><em>strollur</em> includes the function <code><a href="../reference/read_qiime2.html">read_qiime2()</a></code> as
 well as several functions to read <a href="https://qiime2.org" class="external-link">qiime2</a> output files individually. To
 create a dataset from the outputs of the <a href="https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html" class="external-link">qiime2
 moving-pictures example</a>, run the following:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qza_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"rep_seqs.qza"</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"table.qza"</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"taxonomy.qza"</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"rooted-tree.qza"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"rep_seqs.qza"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"table.qza"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"taxonomy.qza"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"rooted-tree.qza"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_qiime2.html">read_qiime2</a></span><span class="op">(</span></span>
 <span>  qza <span class="op">=</span> <span class="va">qza_files</span>,</span>
-<span>  metadata <span class="op">=</span> <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"sample_metadata.tsv"</span><span class="op">)</span>,</span>
+<span>  metadata <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"sample_metadata.tsv"</span><span class="op">)</span>,</span>
 <span>  dataset_name <span class="op">=</span> <span class="st">"qiime_moving_pictures"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added metadata.</span></span>
@@ -183,8 +188,8 @@ functions below. First let’s create a dataset named my_data.</p>
 extract a folder containing the data, versioning and provenance
 information. Let’s take a look at the rep_seqs.qza file first.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fasta_artifact</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unpack_qiime2_artifact.html">unpack_qiime2_artifact</a></span><span class="op">(</span>qza <span class="op">=</span> <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"rep_seqs.qza"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>fasta_artifact is list. To add the <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> data
+<code class="sourceCode R"><span><span class="va">fasta_artifact</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unpack_qiime2_artifact.html">unpack_qiime2_artifact</a></span><span class="op">(</span>qza <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"rep_seqs.qza"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>fasta_artifact is a list. To add the <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> data
 to your dataset you can use the <code><a href="../reference/read_fasta.html">read_fasta()</a></code> function:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fasta_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
@@ -214,7 +219,7 @@ Sequence Variant</a> <em>asv</em> clusters. Let’s use the
 <code><a href="../reference/read_qiime2_feature_table.html">read_qiime2_feature_table()</a></code> function to extract the
 abundance table.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">abundance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_qiime2_feature_table.html">read_qiime2_feature_table</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"table.qza"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">abundance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_qiime2_feature_table.html">read_qiime2_feature_table</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"table.qza"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">my_data</span>,</span>
@@ -296,7 +301,7 @@ the taxonomy.qza file. We will use the
 <code><a href="../reference/read_qiime2_taxonomy.html">read_qiime2_taxonomy()</a></code> function to extract the feature
 classification table.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">taxonomy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_qiime2_taxonomy.html">read_qiime2_taxonomy</a></span><span class="op">(</span><span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"taxonomy.qza"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">taxonomy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_qiime2_taxonomy.html">read_qiime2_taxonomy</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"taxonomy.qza"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">my_data</span>,</span>
@@ -311,7 +316,7 @@ sequences (features).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_artifact</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unpack_qiime2_artifact.html">unpack_qiime2_artifact</a></span><span class="op">(</span></span>
 <span>  qza <span class="op">=</span></span>
-<span>    <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"rooted-tree.qza"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"rooted-tree.qza"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We can read the tree using the <code><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">ape::read.tree()</a></code>
 function.</p>
@@ -332,7 +337,7 @@ function.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_qiime2_metadata.html">read_qiime2_metadata</a></span><span class="op">(</span></span>
 <span>  metadata <span class="op">=</span></span>
-<span>    <span class="fu"><a href="../reference/rdataset_example.html">rdataset_example</a></span><span class="op">(</span><span class="st">"sample_metadata.tsv"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"sample_metadata.tsv"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>To add the metadata to the my_data dataset, run the following:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">

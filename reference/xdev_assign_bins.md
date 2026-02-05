@@ -1,6 +1,7 @@
 # xdev_assign_bins
 
-Add bin assignments to a [dataset](dataset.md) object
+Add bin assignments to a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -22,7 +23,7 @@ xdev_assign_bins(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - table, :
 
@@ -73,7 +74,7 @@ double containing the number of bins assigned
   # To assign sequences to bins:
 
   data <- new_dataset(dataset_name = "miseq_sop")
-  otu_data <- read_mothur_list(list = rdataset_example("final.opti_mcc.list"))
+  otu_data <- read_mothur_list(list = strollur_example("final.opti_mcc.list.gz"))
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #> ℹ Assigned 531 otu bins.
@@ -82,7 +83,7 @@ double containing the number of bins assigned
   # To add abundance only bin assignments:
 
   data <- new_dataset(dataset_name = "miseq_sop")
-  otu_data <- read_mothur_rabund(rabund = rdataset_example("final.opti_mcc.rabund"))
+  otu_data <- read_mothur_rabund(rabund = strollur_example("final.opti_mcc.rabund"))
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #> ℹ Assigned 531 otu bins.
@@ -91,8 +92,8 @@ double containing the number of bins assigned
   # To add abundance bin assignments parsed by sample:
 
   data <- new_dataset(dataset_name = "miseq_sop")
-  otu_data <- readr::read_tsv(rdataset_example(
-                                "mothur2_bin_assignments_shared.tsv"))
+  otu_data <- readr::read_tsv(strollur_example(
+                                "mothur2_bin_assignments_shared.tsv.gz"))
 #> Rows: 3431 Columns: 4
 #> ── Column specification ────────────────────────────────────────────────────────
 #> Delimiter: "\t"

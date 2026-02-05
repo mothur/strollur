@@ -1,6 +1,7 @@
 # get_bin_types
 
-Get bin table types of a [dataset](dataset.md) object
+Get bin table types of a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -12,7 +13,7 @@ get_bin_types(data)
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Value
 

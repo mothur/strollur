@@ -1,8 +1,8 @@
 # General Importing
 
-The rdataset package stores data associated with your microbial DNA
+The strollur package stores data associated with your microbial DNA
 analysis. This tutorial will familiarize you some of with the functions
-available in the rdataset package. If you haven’t reviewed the “Getting
+available in the strollur package. If you haven’t reviewed the “Getting
 Started” tutorial, we recommend you start there.
 
 ## Creating a new dataset
@@ -15,15 +15,17 @@ data <- new_dataset(dataset_name = "my_data")
 
 ## Importing Data
 
-The *rdataset* package includes two functions to allow you to add
+The *strollur* package includes two functions to allow you to add
 microbial data.
 
-[`add()`](../reference/add.md) - The add function allows you to add
-sequences, reports, metadata, and resource references to your data set.
+[`add()`](https://mothur.org/strollur/reference/add.md) - The add
+function allows you to add sequences, reports, metadata, and resource
+references to your data set.
 
-[`assign()`](../reference/assign.md) - The assign function allows assign
-sequence abundances, sequence classifications, bins, bin representative
-sequences, bin classifications, samples and treatments to your data set.
+[`assign()`](https://mothur.org/strollur/reference/assign.md) - The
+assign function allows assign sequence abundances, sequence
+classifications, bins, bin representative sequences, bin
+classifications, samples and treatments to your data set.
 
 ### add
 
@@ -39,7 +41,8 @@ resource references to your data set.
   - *table_names* - a named list used to indicate the names of the
     columns in the table
   - *reference* - a list created by the
-    [`new_reference()`](../reference/new_reference.md) function
+    [`new_reference()`](https://mothur.org/strollur/reference/new_reference.md)
+    function
   - *verbose* - Boolean, indicating whether you want outputs about what
     is being added
 
@@ -47,12 +50,12 @@ resource references to your data set.
 
 First, let’s add some
 [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data.
-rdataset has a function for reading FASTA files named
-[`read_fasta()`](../reference/read_fasta.md). We will use it to read the
-sequence data into a data.frame.
+strollur has a function for reading FASTA files named
+[`read_fasta()`](https://mothur.org/strollur/reference/read_fasta.md).
+We will use it to read the sequence data into a data.frame.
 
 ``` r
-fasta_data <- read_fasta(rdataset_example("final.fasta"))
+fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
 add(
   data = data,
@@ -75,8 +78,7 @@ data
 #> Maximum:         1  375 256.0000      0 6.000000     0 2425.000
 #> Mean:            1  375 252.7406      0 4.496082     0    0.000
 #> Unique seqs:  2425 
-#> Total seqs:   2425
-#> → Your dataset does not include sample data, ignoring.
+#> Total seqs:   2425 
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 2425
@@ -84,9 +86,10 @@ data
 
 If you want to include a resource reference about your fasta data you
 can use the `new_reference` function and the reference parameter.
-rdataset does not allow you to add sequences with the same name, so
-let’s use the [`clear()`](../reference/clear.md) function to remove all
-data from our data set.
+strollur does not allow you to add sequences with the same name, so
+let’s use the
+[`clear()`](https://mothur.org/strollur/reference/clear.md) function to
+remove all data from our data set.
 
 ``` r
 clear(data)
@@ -123,8 +126,7 @@ data
 #> Maximum:         1  375 256.0000      0 6.000000     0 2425.000
 #> Mean:            1  375 252.7406      0 4.496082     0    0.000
 #> Unique seqs:  2425 
-#> Total seqs:   2425
-#> → Your dataset does not include sample data, ignoring.
+#> Total seqs:   2425 
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 2425
@@ -137,12 +139,12 @@ assembly report, chimera report or alignment report. You can do so by
 setting type = “reports”. You must also provide a report_type.
 
 This is also a good time to explain what the table_names parameter does
-for you. rdataset expects the columns in custom reports to have specific
-names. If your table’s names differ from what rdataset is expecting, you
+for you. strollur expects the columns in custom reports to have specific
+names. If your table’s names differ from what strollur is expecting, you
 will see an error like that below.
 
 ``` r
-contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -160,13 +162,13 @@ add(
 #    sequence_name = table_names[["sequence_name"]], verbose)
 ```
 
-You can use the table_names parameter to tell rdataset what the specific
+You can use the table_names parameter to tell strollur what the specific
 column is called in your custom report table. In the contigs_report the
 *sequence_name* column is called *Name*, so we will add one more line to
 the add function.
 
 ``` r
-contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -215,8 +217,8 @@ data
 #> Maximum:          255.0000     22.000000
 #> Mean:             249.1501      2.005361
 #> Unique seqs:  2425 
-#> Total seqs:   2425
-#> → Your dataset does not include sample data, ignoring.
+#> Total seqs:   2425 
+#> 
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 2425
@@ -229,7 +231,7 @@ how to add metadata. We can add metadata to our data set by setting the
 type = “metadata”.
 
 ``` r
-metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -248,7 +250,7 @@ We can add additional resource references to our data set by setting the
 type = “references”.
 
 ``` r
-reference <- readr::read_csv(rdataset_example("references.csv"),
+reference <- readr::read_csv(strollur_example("references.csv"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -263,9 +265,10 @@ add(
 
 ### assign
 
-The [`assign()`](../reference/assign.md) function allows assign sequence
-abundances, sequence classifications, bins, bin representative
-sequences, bin classifications, samples and treatments to your data set.
+The [`assign()`](https://mothur.org/strollur/reference/assign.md)
+function allows assign sequence abundances, sequence classifications,
+bins, bin representative sequences, bin classifications, samples and
+treatments to your data set.
 
 - **Parameters:**
   - *data* - a data set object
@@ -275,7 +278,8 @@ sequences, bin classifications, samples and treatments to your data set.
   - *table_names* - a named list used to indicate the names of the
     columns in the table
   - *reference* - a list created by the
-    [`new_reference()`](../reference/new_reference.md) function
+    [`new_reference()`](https://mothur.org/strollur/reference/new_reference.md)
+    function
   - *verbose* - boolean, indicating whether you want outputs about what
     is being added
 
@@ -285,7 +289,10 @@ After adding your FASTA sequences, you can assign abundance and sample
 data using the assign function with the type = “sequence_abundance”.
 
 ``` r
-abundance_table <- readr::read_tsv(rdataset_example("mothur2_count_table.tsv"),
+abundance_table <- readr::read_tsv(
+  strollur_example(
+    "mothur2_count_table.tsv.gz"
+  ),
   show_col_types = FALSE
 )
 assign(
@@ -376,8 +383,8 @@ and set the bin_type = “otu”.
 
 ``` r
 bin_table <- readr::read_tsv(
-  rdataset_example(
-    "mothur2_bin_assignments_list.tsv"
+  strollur_example(
+    "mothur2_bin_assignments_list.tsv.gz"
   ),
   show_col_types = FALSE
 )
@@ -476,7 +483,7 @@ to our sequences.
 
 ``` r
 sequence_classification_data <- read_mothur_taxonomy(
-  taxonomy = rdataset_example("final.taxonomy")
+  taxonomy = strollur_example("final.taxonomy.gz")
 )
 
 assign(
@@ -489,12 +496,12 @@ assign(
 ```
 
 Note, when you assign taxonomy to sequences that are assigned to bins,
-rdataset will automatically assign the bin taxonomies to be the
+strollur will automatically assign the bin taxonomies to be the
 consensus taxonomy of the sequences in the bins. You can also set bin
 taxonomies independently by setting the type = “bin_taxonomy”.
 
 ``` r
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+otu_data <- read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 
@@ -510,12 +517,12 @@ assign(
 
 #### Assigning Bin Representatives
 
-rdataset allows you to assign a bin representative sequences to the bins
+strollur allows you to assign a bin representative sequences to the bins
 in your clusters. Let’s assign bin representatives to our *otu* bins.
 
 ``` r
 bin_representatives <- readr::read_tsv(
-  rdataset_example(
+  strollur_example(
     "otu_representative_sequences.tsv"
   ),
   show_col_types = FALSE
@@ -537,7 +544,7 @@ can also assign samples to treatments by setting type = “treatments”.
 
 ``` r
 sample_assignments <- readr::read_table(
-  rdataset_example("mouse.time.design"),
+  strollur_example("mouse.time.design"),
   col_names = TRUE, show_col_types = FALSE
 )
 
@@ -552,12 +559,12 @@ assign(
 
 ## Sample Trees and Sequence Trees
 
-Lastly, rdataset allows you to add tree that relate your samples or
+Lastly, strollur allows you to add tree that relate your samples or
 sequences. Let’s look at some examples together.
 
 ``` r
-sample_tree <- ape::read.tree(rdataset_example("final.opti_mcc.jclass.ave.tre"))
-sequence_tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+sample_tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
+sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 
 data$add_sample_tree(sample_tree)
 data$add_sequence_tree(sequence_tree)
@@ -575,4 +582,5 @@ plot(data$get_sample_tree(),
 
 Thanks for following along. To learn more about the functions used to
 access the data in your data set, take a look at the [Accessing
-Data](vignettes/Using_Dataset.md) tutorial.
+Data](https://mothur.org/strollur/articles/vignettes/Accessing_Dataset.md)
+tutorial.

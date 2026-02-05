@@ -6,7 +6,10 @@ articles:
   Data_Transfers: Data_Transfers.html
   Functions_for_Package_Developers: Functions_for_Package_Developers.html
   General_Importing: General_Importing.html
-  Getting-Started: Getting-Started.html
   Importing_from_mothur: Importing_from_mothur.html
   Importing_from_qiime2: Importing_from_qiime2.html
-last_built: 2026-02-03T18:10Z
+  strollur: strollur.html
+last_built: 2026-02-05T19:56Z
+urls:
+  reference: https://mothur.org/strollur/reference
+  article: https://mothur.org/strollur/articles

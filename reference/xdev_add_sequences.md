@@ -1,6 +1,7 @@
 # xdev_add_sequences
 
-Add sequence data to a [dataset](dataset.md) object
+Add sequence data to a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -20,7 +21,7 @@ xdev_add_sequences(
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - table, :
 
@@ -58,7 +59,7 @@ double containing the number of sequences added
 
 ``` r
  data <- new_dataset("miseq_sop", 2)
- fasta_data <- read_fasta(rdataset_example("final.fasta"))
+ fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
  xdev_add_sequences(data, fasta_data)
 #> ℹ Added 2425 sequences.
 #> [1] 2425
@@ -66,7 +67,7 @@ double containing the number of sequences added
 # With the additional parameters to add information about the reference
 
  data <- new_dataset("miseq_sop", 2)
- fasta_data <- read_fasta(rdataset_example("final.fasta"))
+ fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
  xdev_add_sequences(data, fasta_data,
                new_reference("silva.bacteria.fasta",

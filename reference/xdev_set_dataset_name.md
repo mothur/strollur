@@ -1,7 +1,7 @@
 # xdev_set_dataset_name
 
 Designed with package integration in mind, set the name of a
-[dataset](dataset.md) object.
+[dataset](https://mothur.org/strollur/reference/dataset.md) object.
 
 ## Usage
 
@@ -13,7 +13,7 @@ xdev_set_dataset_name(data, dataset_name)
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 - dataset_name, :
 

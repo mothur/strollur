@@ -1,6 +1,7 @@
 # has_sample
 
-Determine if a given sample is in a [dataset](dataset.md) object
+Determine if a given sample is in a
+[dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Usage
 
@@ -12,7 +13,7 @@ has_sample(data, sample)
 
 - data, :
 
-  a [dataset](dataset.md) object.
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object.
 
 - sample:
 

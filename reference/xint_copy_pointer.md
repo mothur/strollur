@@ -12,7 +12,7 @@ xint_copy_pointer(data)
 
 - data, :
 
-  a [dataset](dataset.md) object
+  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
 
 ## Value
 
