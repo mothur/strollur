@@ -180,7 +180,10 @@ The `assign()` function allows assign sequence abundances, sequence classificati
 After adding your FASTA sequences, you can assign abundance and sample data using the assign function with the type = "sequence_abundance".    
     
 ```{r}
-abundance_table <- readr::read_tsv(strollur_example("mothur2_count_table.tsv.gz"),
+abundance_table <- readr::read_tsv(
+  strollur_example(
+    "mothur2_count_table.tsv.gz"
+  ),
   show_col_types = FALSE
 )
 assign(

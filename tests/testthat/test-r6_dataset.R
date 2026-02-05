@@ -1309,7 +1309,9 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   # add tree from file
   dataset_t <- dataset$new()
-  dataset_t$add_sequence_tree(read.tree(strollur_example("final.phylip.tre.gz")))
+  dataset_t$add_sequence_tree(read.tree(
+    strollur_example("final.phylip.tre.gz")
+  ))
   tree <- dataset_t$get_sequence_tree()
 
   expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
