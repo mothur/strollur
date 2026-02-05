@@ -28,6 +28,7 @@ Imports: Rcpp (>= 1.1.0),
     yaml,
     rbiom,
     rhdf5
+    data.table
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
 Depends: R (>= 4.4.0)
 Suggests: 
