@@ -41,7 +41,7 @@ write_fasta <- function(data, filename = NULL) {
         Header = sequence_names,
         Sequence = sequences
       )
-      writeFasta(df, out.file = filename, width = 80)
+      microseq::writeFasta(df, out.file = filename, width = 80)
 
       return(filename)
     }
