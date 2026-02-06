@@ -14,7 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-# strollur <a href="https://mothur.org/strollur/"><img src="man/figures/logo.png" align="right" height="136" alt="strollur website" />
+# strollur <a href="https://mothur.org/strollur/"><img src="man/figures/logo.png" align="right" height="139" alt="strollur website" /></a>
+
+<!-- # strollur <a href="https://mothur.org/strollur/"><img src="man/figures/logo.png" align="right" height="200" style="float:right; height:200px;" alt="strollur website"> -->
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/mothur/strollur/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mothur/strollur/actions/workflows/R-CMD-check.yaml)
