@@ -19,7 +19,7 @@ A unpacked qza artifact
 The unpack_qiime2_artifact function reads .qza files created by
 \href{https://qiime2.org}{qiime2}, and returns the artifact.
 
-To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime moving-pictures}.
+To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
 }
 \examples{
 

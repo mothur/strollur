@@ -538,6 +538,7 @@ public:
                          bool distinct = false);
     const int getNumSamples();
     const int getNumTreatments();
+    const int getNumResourceReferences();
 
     const Rcpp::DataFrame getMetadata();
     const Rcpp::DataFrame getReferences();
