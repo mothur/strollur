@@ -1,9 +1,9 @@
-read_phyloseq <- function(phyloseq_object, dataset_name = "") {
+read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL, dataset_name = "") {
   if(!requireNamespace("phyloseq", quietly = TRUE)) {
     stop("To use this functionality you have to install the phyloseq package")
   }
-
-  rdaset_object <- dataset$new(dataset_name)
+  
+  rdaset_object <- dataset$new("dataset_name")
 
   #samples
   if(!is.null(phyloseq::get_sample(phyloseq_object))) {
@@ -44,11 +44,15 @@ read_phyloseq <- function(phyloseq_object, dataset_name = "") {
     rownames(taxas) <- NULL
     xdev_assign_sequence_taxonomy(rdaset_object, taxas)
   }
+
   #sample data
   if(!is.null(phyloseq_object@sam_data)) {
     df <- data.frame(phyloseq::sample_data(phyloseq_object)@.Data)
     df <- data.frame(apply(df, 2, as.character)) # only works as a character (report.cpp line 36)
     colnames(df) <- phyloseq::sample_data(phyloseq_object)@names
+    if(!is.null(treatment_column_name)) {
+      df <- df[, which(colnames(df) != treatment_column_name)]
+    }
     add(
         data = rdaset_object,
         table = df,
@@ -59,6 +63,19 @@ read_phyloseq <- function(phyloseq_object, dataset_name = "") {
   #phy tree
   if(!is.null(phyloseq_object@phy_tree)) {
     rdaset_object$add_sequence_tree(phyloseq::phy_tree(phyloseq_object))
+  }
+
+  #Treatments
+  if(!is.null(treatment_column_name)) {
+    if(any(phyloseq::sample_variables(phyloseq_object) == treatment_column_name)) {
+      treatment_df <- data.frame(
+        cbind(phyloseq::sample_names(phyloseq_object),
+              as.character(phyloseq::get_variable(phyloseq_object)[[treatment_column_name]]))
+        )
+      colnames(treatment_df) <- c("samples", treatment_column_name)
+      xdev_assign_treatments(data = rdaset_object, table = treatment_df,
+         treatment = treatment_column_name)
+    }
   }
   rdaset_object
 }

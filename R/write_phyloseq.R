@@ -52,11 +52,16 @@ write_phyloseq <- function(data) {
      phyloseq_parameter_list[[3]] <- phyloseq::phy_tree(data$get_sequence_tree())
   }
 
+  sample_assignments <- report(data, "sample_assignments")
   metadata <- report(data, "metadata")
   if(!is.null(metadata) && nrow(metadata) > 0) {
     rownames(metadata) <- colnames(otu_table)
+    if(!is.null(sample_assignments) && nrow(sample_assignments) > 0) {
+      metadata <- rbind(metadata, treatments = df$treatments)
+    }
     phyloseq_parameter_list[[4]] <- phyloseq::sample_data(metadata)
   } 
+ 
 
   indexes <- which(!sapply(phyloseq_parameter_list, is.null))
   if(length(indexes) <= 0) {

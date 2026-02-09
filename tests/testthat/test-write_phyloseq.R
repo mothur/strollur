@@ -20,10 +20,22 @@ test_that("write phyloseq creates phyloseq object", {
 })
 
 
-# test_that("write phyloseq will fail if the dataset is empty", {
-#   empty_dataset <- dataset$new("")
-#   expect_error(write_phyloseq(empty_dataset))
-# })
+test_that("write phyloseq creates phyloseq object", {
 
+  miseq <- miseq_sop_example()
+  phylo <- write_phyloseq(miseq)
+})
+
+
+
+test_that("write phyloseq will fail if the dataset is empty", {
+  empty_dataset <- dataset$new("")
+  expect_error(write_phyloseq(empty_dataset))
+})
+
+data(GlobalPatterns)
+data(esophagus)
+data(enterotype)
+data(soilrep) 
 
 
