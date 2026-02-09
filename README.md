@@ -27,20 +27,20 @@ functions to import from [mothur](https://mothur.org),
 and
 [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 
-- `add()` add sequences, reports, metadata, and resource references
-- `assign()` assign abundances, classifications, bins, samples and
+- `add()` adds sequences, reports, metadata, and resource references
+- `assign()` assigns abundances, classifications, bins, samples and
   treatments and more
-- `names()` get the names of sequences, bins, samples, treatments and
+- `names()` gets the names of sequences, bins, samples, treatments and
   reports
-- `count()` get the number of sequences, bins, samples and treatments
-- `abundance()` get the abundances for sequences, bins, samples, and
+- `count()` gets the number of sequences, bins, samples and treatments
+- `abundance()` gets the abundances for sequences, bins, samples, and
   treatments
-- `report()` get
+- `report()` gets
   [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequences,
   sequence and classification reports, bin assignments, sample
   assignments, metadata, sequence data reports, custom reports, resource
   references and scrapped data reports.
-- `summary()` summarize sequences, your custom reports, and scrapped
+- `summary()` summarizes sequences, your custom reports, and scrapped
   data
 
 ## Installation

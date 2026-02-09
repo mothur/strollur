@@ -72,7 +72,7 @@ fasta_data is a data.frame containing sequence names, sequence nucleotide string
 
 ```{r}
 add(
-  data = my_data,
+  my_data,
   table = fasta_data,
   type = "sequences"
 )
@@ -90,14 +90,14 @@ Now that we have added the FASTA sequences, let's read the abundance data found 
 abundance <- read_qiime2_feature_table(strollur_example("table.qza"))
 
 assign(
-  data = my_data,
+  my_data,
   table = abundance$data,
   type = "sequence_abundance",
   table_names = list(sequence_name = "bin_names")
 )
 
 assign(
-  data = my_data,
+  my_data,
   table = abundance$data,
   type = "bins",
   bin_type = "asv",
@@ -113,7 +113,7 @@ Now that we have added the abundance data and assigned the sequences to bins, le
 taxonomy <- read_qiime2_taxonomy(strollur_example("taxonomy.qza"))
 
 assign(
-  data = my_data,
+  my_data,
   table = taxonomy$data,
   type = "sequence_taxonomy",
   table_names = list(sequence_name = "bin_names")
@@ -164,7 +164,7 @@ metadata <- read_qiime2_metadata(
 To add the metadata to the my_data dataset, run the following:
 
 ```{r}
-add(data = my_data, table = metadata, type = "metadata")
+add(my_data, table = metadata, type = "metadata")
 ```
 
 To view a summary of your imported dataset, 'my_data', run the following:

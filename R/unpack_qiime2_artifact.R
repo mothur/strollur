@@ -4,7 +4,7 @@
 #' \href{https://qiime2.org}{qiime2}, and returns the artifact.
 #'
 # nolint start
-#' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime moving-pictures}.
+#' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
 # nolint end
 #'
 #' @param qza filename, a .qza file containing artifact

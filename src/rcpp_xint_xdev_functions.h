@@ -495,8 +495,8 @@ double xdev_assign_treatments(Rcpp::Environment data,
 //' @param data, a \link{dataset} object
 //'
 //' @param type, string containing the type of data you want the number of.
-//' Options include: "sequences", "samples", "treatments", "bins".
-//' Default = "sequences".
+//' Options include: "sequences", "samples", "treatments", "bins" and
+//' "references". Default = "sequences".
 //'
 //' @param bin_type, string containing the bin type you would like the number of
 //' bins for. Default = "otu".

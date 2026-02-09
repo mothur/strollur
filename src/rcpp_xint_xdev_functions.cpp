@@ -637,6 +637,9 @@ double xdev_count(Rcpp::Environment data,
         }else {
             return d.get()->getNumBins(bin_type);
         }
+    }
+    else if (type == "references") {
+        return d.get()->getNumResourceReferences();
     }else{
         string message = "Invalid type. Types include: 'sequences', 'samples'";
         message += ", 'treatments' and 'bins'";
