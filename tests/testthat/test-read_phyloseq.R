@@ -23,3 +23,10 @@ test_that("test read_phyloseq", {
   expect_true(rdata_set_data[54, 3] == row_data[[6]])
 
 })
+
+test_that("read phyloseq fails if not given an phyloseq object", {
+  empty <- c()
+  expect_error(read_phyloseq(empty), 
+               "phyloseq_object has to an object created using the phyloseq package.")
+})
+

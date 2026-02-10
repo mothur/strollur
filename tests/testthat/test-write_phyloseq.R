@@ -28,10 +28,10 @@ test_that("write phyloseq creates phyloseq object", {
 })
 
 
-test_that("write phyloseq creates phyloseq object", {
-
-  miseq <- miseq_sop_example()
-  phylo <- write_phyloseq(miseq)
+test_that("write phyloseq fails if not given a dataset object", {
+  miseq <- c()
+  expect_error(write_phyloseq(miseq), 
+               "The data parameter must be an object of type `dataset`.")
 })
 
 
