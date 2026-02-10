@@ -86,8 +86,7 @@ add(
 abundance_table <- readr::read_tsv(strollur_example("mothur2_count_table.tsv.gz"),
   show_col_types = FALSE
 )
-assign(
-  data = data,
+assign(data,
   table = abundance_table,
   type = "sequence_abundance",
   table_names = list(sequence_name = "names")
@@ -102,8 +101,7 @@ bin_table <- readr::read_tsv(
   show_col_types = FALSE
 )
 
-assign(
-  data = data,
+assign(data,
   table = bin_table,
   type = "bins",
   bin_type = "otu",
@@ -116,8 +114,7 @@ sequence_classification_data <- read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
 
-assign(
-  data = data,
+assign(data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
 )
