@@ -3,6 +3,11 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL, dataset
     stop("To use this functionality you have to install the phyloseq package")
   }
   
+  if(!inherits(phyloseq_object, "phyloseq")) {
+    stop("phyloseq_object has to an object created using the phyloseq package.")
+  }
+
+  phyloseq_object <- recreated_phylo_object
   rdaset_object <- dataset$new("dataset_name")
 
   #samples
@@ -72,10 +77,16 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL, dataset
         cbind(phyloseq::sample_names(phyloseq_object),
               as.character(phyloseq::get_variable(phyloseq_object)[[treatment_column_name]]))
         )
-      colnames(treatment_df) <- c("samples", treatment_column_name)
-      xdev_assign_treatments(data = rdaset_object, table = treatment_df,
-         treatment = treatment_column_name)
+      colnames(treatment_df) <- c("samples", "treatments")
+      assign(data = rdaset_object, table = treatment_df, type = "treatments")
     }
   }
   rdaset_object
 }
+
+x <- function() {
+  browser()
+     assign(data = rdaset_object, table = treatment_df, type = "treatments")
+}
+
+x()

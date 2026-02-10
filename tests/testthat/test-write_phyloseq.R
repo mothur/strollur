@@ -17,6 +17,13 @@ test_that("write phyloseq creates phyloseq object", {
   expect_true(all(phyloseq::tax_table(dat) == phyloseq::tax_table(recreated_phylo_object), na.rm = TRUE))
   expect_true(all(phyloseq::otu_table(dat) == phyloseq::otu_table(recreated_phylo_object)))
   expect_true(length(phyloseq::phy_tree(dat)$edge) == length(phyloseq::phy_tree(recreated_phylo_object)$edge))
+
+
+  miseq <- miseq_sop_example()
+  recreated_phylo_object <- write_phyloseq(miseq)
+  dataset <- read_phyloseq(recreated_phylo_object, treatment_column_name = "treatments")
+  a <- report(dataset, "sample_assignments")
+  b <- report(miseq, "sample_assignments")
 })
 
 
