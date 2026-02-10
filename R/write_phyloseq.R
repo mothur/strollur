@@ -3,8 +3,6 @@ write_phyloseq <- function(data) {
     stop("To use this functionality you have to install the phyloseq package")
   }
 
-  # data <- miseq
-  
   phyloseq_parameter_list <- vector("list", 4)
   if(nrow(abundance(data = data, type = "sequences")) > 0) {
     abundances <- abundance(data = data, type = "sequences", by_sample = TRUE) 
@@ -54,14 +52,16 @@ write_phyloseq <- function(data) {
      phyloseq_parameter_list[[3]] <- phyloseq::phy_tree(data$get_sequence_tree())
   }
 
-  sample_assignments <- report(data, "sample_assignments")
-  colnames(sample_assignments)[1] <- "sample"
+  
   metadata <- report(data, "metadata")
   if(!is.null(metadata) && nrow(metadata) > 0) {
+    sample_assignments <- report(data, "sample_assignments")
     if(!is.null(sample_assignments) && nrow(sample_assignments) > 0) {
+      colnames(sample_assignments)[1] <- "sample"
       metadata <-  merge(metadata, sample_assignments, by = "sample")
     }
-    rownames(metadata) <- colnames(otu_table)
+    rownames(metadata) <- metadata$sample
+    metadata$sample <- NULL
     phyloseq_parameter_list[[4]] <- phyloseq::sample_data(metadata)
   } 
  

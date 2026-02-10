@@ -7,8 +7,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL, dataset
     stop("phyloseq_object has to an object created using the phyloseq package.")
   }
 
-  phyloseq_object <- recreated_phylo_object
-  rdaset_object <- dataset$new("dataset_name")
+  rdaset_object <- dataset$new(dataset_name)
 
   #samples
   if(!is.null(phyloseq::get_sample(phyloseq_object))) {
@@ -55,6 +54,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL, dataset
     df <- data.frame(phyloseq::sample_data(phyloseq_object)@.Data)
     df <- data.frame(apply(df, 2, as.character)) # only works as a character (report.cpp line 36)
     colnames(df) <- phyloseq::sample_data(phyloseq_object)@names
+    df <- cbind(sample = phyloseq::sample_names(phyloseq_object), df)
     if(!is.null(treatment_column_name)) {
       df <- df[, which(colnames(df) != treatment_column_name)]
     }
@@ -83,10 +83,3 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL, dataset
   }
   rdaset_object
 }
-
-x <- function() {
-  browser()
-     assign(data = rdaset_object, table = treatment_df, type = "treatments")
-}
-
-x()
