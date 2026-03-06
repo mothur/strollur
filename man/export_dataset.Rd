@@ -4,22 +4,16 @@
 \alias{export_dataset}
 \title{export_dataset}
 \usage{
-export_dataset(data, tags = as.character(c()))
+export_dataset(data)
 }
 \arguments{
-\item{data}{an Rcpp::XPtr<Dataset> pointer to an instance of the
-'Dataset' c++ class.}
-
-\item{tags}{a vector of strings containing the items you wish to export.
-Options are 'sequence_data' and 'bin_data', 'metadata',
-'references', 'sequence_tree', 'sample_tree', and 'reports'.
-By default, everything is exported.}
+\item{data, }{a \link{dataset} object}
 }
 \value{
 Rcpp::List, containing the data in the 'Dataset
 }
 \description{
-Export all data from an instance of the 'Dataset' class.
+Export all data from a \link{dataset} object.
 }
 \examples{
 

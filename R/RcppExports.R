@@ -6,7 +6,7 @@
 #' @description
 #' Get the number of available cores
 get_available_processors <- function() {
-    .Call(`_rdataset_get_available_processors`)
+    .Call(`_strollur_get_available_processors`)
 }
 
 #' @title new_dataset
@@ -34,7 +34,7 @@ get_available_processors <- function() {
 #' @returns a \link{dataset} object
 #' @seealso The 'new' method in the \link{dataset} class
 new_dataset <- function(dataset_name = "", processors = NULL) {
-    .Call(`_rdataset_new_dataset`, dataset_name, processors)
+    .Call(`_strollur_new_dataset`, dataset_name, processors)
 }
 
 #' @title new_reference
@@ -66,7 +66,7 @@ new_dataset <- function(dataset_name = "", processors = NULL) {
 #' @returns a list
 #' @seealso [add()]
 new_reference <- function(reference_name, reference_version = "", reference_usage = "", reference_note = "", reference_url = "") {
-    .Call(`_rdataset_new_reference`, reference_name, reference_version, reference_usage, reference_note, reference_url)
+    .Call(`_strollur_new_reference`, reference_name, reference_version, reference_usage, reference_note, reference_url)
 }
 
 #' @title copy_dataset
@@ -85,7 +85,7 @@ new_reference <- function(reference_name, reference_version = "", reference_usag
 #' @returns a \link{dataset} object
 #' @seealso The 'new' method in the \link{dataset} class
 copy_dataset <- function(data) {
-    .Call(`_rdataset_copy_dataset`, data)
+    .Call(`_strollur_copy_dataset`, data)
 }
 
 #' @title clear
@@ -93,29 +93,21 @@ copy_dataset <- function(data) {
 #' Clear data from a \link{dataset} object
 #'
 #' @param data, a \link{dataset} object
-#' @param tags a vector of strings containing the items you wish to clear.
-#' Options are 'sequence_data', 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree' and 'reports'. By default,
-#' everything is cleared.
 #'
 #' @examples
 #'
 #' data <- miseq_sop_example()
 #' clear(data)
 #'
-clear <- function(data, tags = as.character( c())) {
-    invisible(.Call(`_rdataset_clear`, data, tags))
+clear <- function(data) {
+    invisible(.Call(`_strollur_clear`, data))
 }
 
 #' @title export_dataset
 #' @description
-#' Export all data from an instance of the 'Dataset' class.
-#' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-#'  'Dataset' c++ class.
-#' @param tags a vector of strings containing the items you wish to export.
-#' Options are 'sequence_data' and 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
-#' By default, everything is exported.
+#' Export all data from a \link{dataset} object.
+#'
+#' @param data, a \link{dataset} object
 #'
 #' @examples
 #'
@@ -123,8 +115,8 @@ clear <- function(data, tags = as.character( c())) {
 #' export_dataset(dataset)
 #'
 #' @return Rcpp::List, containing the data in the 'Dataset
-export_dataset <- function(data, tags = as.character( c())) {
-    .Call(`_rdataset_export_dataset`, data, tags)
+export_dataset <- function(data) {
+    .Call(`_strollur_export_dataset`, data)
 }
 
 #' @title get_bin_types
@@ -139,7 +131,7 @@ export_dataset <- function(data, tags = as.character( c())) {
 #'
 #' @return vector of strings
 get_bin_types <- function(data) {
-    .Call(`_rdataset_get_bin_types`, data)
+    .Call(`_strollur_get_bin_types`, data)
 }
 
 #' @title has_sample
@@ -156,7 +148,7 @@ get_bin_types <- function(data) {
 #'
 #' @return boolean indicating whether the dataset has a given sample
 has_sample <- function(data, sample) {
-    .Call(`_rdataset_has_sample`, data, sample)
+    .Call(`_strollur_has_sample`, data, sample)
 }
 
 #' @title has_sequence_strings
@@ -172,7 +164,7 @@ has_sample <- function(data, sample) {
 #' @return boolean indicating whether the dataset has sequence nucleotide
 #' strings.
 has_sequence_strings <- function(data) {
-    .Call(`_rdataset_has_sequence_strings`, data)
+    .Call(`_strollur_has_sequence_strings`, data)
 }
 
 #' @title is_aligned
@@ -187,107 +179,7 @@ has_sequence_strings <- function(data) {
 #'
 #' @return Boolean
 is_aligned <- function(data) {
-    .Call(`_rdataset_is_aligned`, data)
-}
-
-#' @title report
-#' @description
-#' Get a data.frame containing the given report in a \link{dataset} object
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param type, string containing the type of report you would like. Options
-#' include: "sequences", "sequence_bin_assignments", "sequence_taxonomy",
-#' "bin_taxonomy", "bin_representatives","sample_assignments", "metadata",
-#' "references", "sequence_scrap", "bin_scrap". If you have added custom
-#' reports for alignment, contigs_assembly or chimeras, you can get those as well.
-#'  Default = "sequences".
-#'
-#' @param bin_type, string containing the bin type you would like a bin_taxonomy
-#' report for. Default = "otu".
-#'
-#' @examples
-#'
-#' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
-#'
-#' miseq <- miseq_sop_example()
-#'
-#' # To get a report about the FASTA data
-#'
-#' sequence_report <- report(data = miseq, type = "sequences")
-#' head(sequence_report, n = 10)
-#'
-#' # To get the sequence bin assignments
-#'
-#' bin_assignments <- report(data = miseq, type = "sequence_bin_assignments",
-#'                           bin_type = "otu")
-#' head(bin_assignments, n = 10)
-#'
-#' # To get the sample treatment assignments
-#'
-#' report(data = miseq, type = "sample_assignments")
-#'
-#' # To get a report about sequence classifications
-#'
-#' sequence_taxonomy_report <- report(data = miseq,
-#'                                        type = "sequence_taxonomy")
-#' head(sequence_taxonomy_report, n = 10)
-#'
-#' # To get a report about bin classifications for 'otu' data
-#'
-#' otu_taxonomy_report <- report(data = miseq,
-#'                                        type = "bin_taxonomy",
-#'                                        bin_type = "otu")
-#' head(otu_taxonomy_report, n = 10)
-#'
-#' # To get a report about bin classifications for 'asv' data
-#'
-#' asv_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-#'                               bin_type = "asv")
-#' head(asv_taxonomy_report, n = 10)
-#'
-#' # To get a report about bin classifications for 'phylotype' data
-#'
-#' phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-#'                                     bin_type = "phylotype")
-#' head(phylotype_taxonomy_report, n = 10)
-#'
-#' # To get the 'otu' bin representative sequences
-#'
-#' otu_bin_reps <- report(data = miseq, type = "bin_representatives",
-#'                        bin_type = "otu")
-#' head(otu_bin_reps, n = 10)
-#'
-#' # To get a report about the sequences removed during your analysis:
-#'
-#' scrapped_sequence_report <- report(data = miseq, type = "sequence_scrap")
-#'
-#' # To get a report about the "otu" bins removed during your analysis:
-#'
-#' scrapped_otu_report <- report(data = miseq, type = "bin_scrap",
-#'                               bin_type = "otu")
-#'
-#' # To get a report about the "phylotype" bins removed during your analysis:
-#'
-#' scrapped_phylotype_report <- report(data = miseq, type = "bin_scrap",
-#'                                     bin_type = "phylotype")
-#'
-#' # To get the metadata associated with your data:
-#'
-#' metadata <- report(data = miseq, type = "metadata")
-#'
-#' # To get the resource references associated with your data:
-#'
-#' references <- report(data = miseq, type = "references")
-#'
-#' # To get our custom report containing the contigs assembly data:
-#'
-#' contigs_report <- report(data = miseq, type = "contigs_report")
-#' head(contigs_report, n = 10)
-#'
-#' @return data.frame
-report <- function(data, type = "sequences", bin_type = "otu") {
-    .Call(`_rdataset_report`, data, type, bin_type)
+    .Call(`_strollur_is_aligned`, data)
 }
 
 #' @title xdev_abundance
@@ -337,7 +229,7 @@ report <- function(data, type = "sequences", bin_type = "otu") {
 #'
 #' @return data.frame
 xdev_abundance <- function(data, type = "sequence", bin_type = "otu", by_sample = FALSE) {
-    .Call(`_rdataset_xdev_abundance`, data, type, bin_type, by_sample)
+    .Call(`_strollur_xdev_abundance`, data, type, bin_type, by_sample)
 }
 
 #' @title xdev_add_references
@@ -371,13 +263,13 @@ xdev_abundance <- function(data, type = "sequence", bin_type = "otu", by_sample 
 #' @examples
 #'
 #' data <- new_dataset("just for fun", 2)
-#' reference_table <- readr::read_csv(rdataset_example("references.csv"),
+#' reference_table <- readr::read_csv(strollur_example("references.csv"),
 #'                              col_names = TRUE, show_col_types = FALSE)
 #' xdev_add_references(data, reference_table)
 #'
 #' @return double containing the number of references added
 xdev_add_references <- function(data, table, reference_name = "reference_names", reference_version = "reference_versions", reference_usage = "reference_usages", reference_note = "reference_notes", reference_url = "reference_urls", verbose = TRUE) {
-    .Call(`_rdataset_xdev_add_references`, data, table, reference_name, reference_version, reference_usage, reference_note, reference_url, verbose)
+    .Call(`_strollur_xdev_add_references`, data, table, reference_name, reference_version, reference_usage, reference_note, reference_url, verbose)
 }
 
 #' @title xdev_add_report
@@ -403,20 +295,20 @@ xdev_add_references <- function(data, table, reference_name = "reference_names",
 #' # To add a custom report including your contigs assembly data
 #'
 #' data <- new_dataset("just for fun", 2)
-#' contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+#' contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
 #'    col_names = TRUE, show_col_types = FALSE)
 #'
 #' xdev_add_report(data, contigs_report, "contigs_report", "Name")
 #'
 #' # To add metadata related to your study
 #'
-#' metadata <- readr::read_tsv(rdataset_example("mouse.dpw.metadata"),
+#' metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
 #'                             col_names = TRUE, show_col_types = FALSE)
 #'
 #' xdev_add_report(data, metadata, "metadata")
 #'
 xdev_add_report <- function(data, table, type = "metadata", sequence_name = "sequence_names", verbose = TRUE) {
-    invisible(.Call(`_rdataset_xdev_add_report`, data, table, type, sequence_name, verbose))
+    invisible(.Call(`_strollur_xdev_add_report`, data, table, type, sequence_name, verbose))
 }
 
 #' @title xdev_add_sequences
@@ -444,13 +336,13 @@ xdev_add_report <- function(data, table, type = "metadata", sequence_name = "seq
 #' @examples
 #'
 #'  data <- new_dataset("miseq_sop", 2)
-#'  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+#'  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 #'  xdev_add_sequences(data, fasta_data)
 #'
 #' # With the additional parameters to add information about the reference
 #'
 #'  data <- new_dataset("miseq_sop", 2)
-#'  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+#'  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 #'
 #'  xdev_add_sequences(data, fasta_data,
 #'                new_reference("silva.bacteria.fasta",
@@ -462,7 +354,7 @@ xdev_add_report <- function(data, table, type = "metadata", sequence_name = "seq
 #'
 #' @return double containing the number of sequences added
 xdev_add_sequences <- function(data, table, reference = NULL, sequence_name = "sequence_names", sequence = "sequences", comment = "comments", verbose = TRUE) {
-    .Call(`_rdataset_xdev_add_sequences`, data, table, reference, sequence_name, sequence, comment, verbose)
+    .Call(`_strollur_xdev_add_sequences`, data, table, reference, sequence_name, sequence, comment, verbose)
 }
 
 #' @title xdev_assign_bins
@@ -496,28 +388,28 @@ xdev_add_sequences <- function(data, table, reference = NULL, sequence_name = "s
 #'   # To assign sequences to bins:
 #'
 #'   data <- new_dataset(dataset_name = "miseq_sop")
-#'   otu_data <- read_mothur_list(list = rdataset_example("final.opti_mcc.list"))
+#'   otu_data <- read_mothur_list(list = strollur_example("final.opti_mcc.list.gz"))
 #'
 #'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #'
 #'   # To add abundance only bin assignments:
 #'
 #'   data <- new_dataset(dataset_name = "miseq_sop")
-#'   otu_data <- read_mothur_rabund(rabund = rdataset_example("final.opti_mcc.rabund"))
+#'   otu_data <- read_mothur_rabund(rabund = strollur_example("final.opti_mcc.rabund"))
 #'
 #'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #'
 #'   # To add abundance bin assignments parsed by sample:
 #'
 #'   data <- new_dataset(dataset_name = "miseq_sop")
-#'   otu_data <- readr::read_tsv(rdataset_example(
-#'                                 "mothur2_bin_assignments_shared.tsv"))
+#'   otu_data <- readr::read_tsv(strollur_example(
+#'                                 "mothur2_bin_assignments_shared.tsv.gz"))
 #'
 #'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #'
 #' @return double containing the number of bins assigned
 xdev_assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_names", abundance = "abundances", sample = "samples", sequence_name = "sequence_names", verbose = TRUE) {
-    .Call(`_rdataset_xdev_assign_bins`, data, table, bin_type, reference, bin_name, abundance, sample, sequence_name, verbose)
+    .Call(`_strollur_xdev_assign_bins`, data, table, bin_type, reference, bin_name, abundance, sample, sequence_name, verbose)
 }
 
 #' @title xdev_assign_bin_representative_sequences
@@ -545,7 +437,7 @@ xdev_assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bi
 #'
 #'   miseq <- miseq_sop_example()
 #'
-#'   bin_reps <- readr::read_tsv(rdataset_example(
+#'   bin_reps <- readr::read_tsv(strollur_example(
 #'                                       "otu_representative_sequences.tsv"),
 #'                                       show_col_types = FALSE)
 #'
@@ -555,7 +447,7 @@ xdev_assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bi
 #'
 #' @return double containing the number of representative sequences assigned
 xdev_assign_bin_representative_sequences <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_names", sequence_name = "sequence_names", verbose = TRUE) {
-    .Call(`_rdataset_xdev_assign_bin_representative_sequences`, data, table, bin_type, reference, bin_name, sequence_name, verbose)
+    .Call(`_strollur_xdev_assign_bin_representative_sequences`, data, table, bin_type, reference, bin_name, sequence_name, verbose)
 }
 
 #' @title xdev_assign_bin_taxonomy
@@ -582,7 +474,7 @@ xdev_assign_bin_representative_sequences <- function(data, table, bin_type = "ot
 #'
 #' @examples
 #'
-#' otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+#' otu_data <- read_mothur_cons_taxonomy(strollur_example(
 #'                         "final.cons.taxonomy"))
 #'
 #' data <- new_dataset(dataset_name = "my_dataset")
@@ -596,7 +488,7 @@ xdev_assign_bin_representative_sequences <- function(data, table, bin_type = "ot
 #'
 #' @return double containing the number of bins assigned
 xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_names", taxonomy = "taxonomies", verbose = TRUE) {
-    .Call(`_rdataset_xdev_assign_bin_taxonomy`, data, table, bin_type, reference, bin_name, taxonomy, verbose)
+    .Call(`_strollur_xdev_assign_bin_taxonomy`, data, table, bin_type, reference, bin_name, taxonomy, verbose)
 }
 
 #' @title xdev_assign_sequence_taxonomy
@@ -622,8 +514,8 @@ xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = 
 #'
 #' @examples
 #'
-#' sequence_classifications <- read_mothur_taxonomy(rdataset_example(
-#'                         "final.taxonomy"))
+#' sequence_classifications <- read_mothur_taxonomy(strollur_example(
+#'                         "final.taxonomy.gz"))
 #'
 #' data <- new_dataset("my_dataset", 2)
 #'
@@ -641,7 +533,7 @@ xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = 
 #'
 #' @return double containing the number of sequence assigned
 xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequence_name = "sequence_names", taxonomy = "taxonomies", verbose = TRUE) {
-    .Call(`_rdataset_xdev_assign_sequence_taxonomy`, data, table, reference, sequence_name, taxonomy, verbose)
+    .Call(`_strollur_xdev_assign_sequence_taxonomy`, data, table, reference, sequence_name, taxonomy, verbose)
 }
 
 #' @title xdev_assign_sequence_abundance
@@ -669,8 +561,8 @@ xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequenc
 #' @examples
 #'
 #' data <- new_dataset("my_dataset")
-#' sequence_abundance <- readr::read_tsv(rdataset_example(
-#'                                       "mothur2_count_table.tsv"),
+#' sequence_abundance <- readr::read_tsv(strollur_example(
+#'                                       "mothur2_count_table.tsv.gz"),
 #'                                       show_col_types = FALSE)
 #'
 #' xdev_assign_sequence_abundance(data = data, table = sequence_abundance,
@@ -678,7 +570,7 @@ xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequenc
 #'
 #' @return double containing the number of sequences assigned
 xdev_assign_sequence_abundance <- function(data, table, sequence_name = "sequence_names", abundance = "abundances", sample = "samples", treatment = "treatments", verbose = TRUE) {
-    .Call(`_rdataset_xdev_assign_sequence_abundance`, data, table, sequence_name, abundance, sample, treatment, verbose)
+    .Call(`_strollur_xdev_assign_sequence_abundance`, data, table, sequence_name, abundance, sample, treatment, verbose)
 }
 
 #' @title xdev_assign_treatments
@@ -700,20 +592,20 @@ xdev_assign_sequence_abundance <- function(data, table, sequence_name = "sequenc
 #' @examples
 #'
 #' data <- new_dataset("my_dataset")
-#' sequence_abundance <- readr::read_tsv(rdataset_example(
-#'                                       "mothur2_count_table.tsv"),
+#' sequence_abundance <- readr::read_tsv(strollur_example(
+#'                                       "mothur2_count_table.tsv.gz"),
 #'                                       show_col_types = FALSE)
 #'
 #' xdev_assign_sequence_abundance(data, sequence_abundance, "names")
 #'
-#' sample_assignments <- readr::read_table(file = rdataset_example("mouse.time.design"),
+#' sample_assignments <- readr::read_table(file = strollur_example("mouse.time.design"),
 #'                              col_names = TRUE, show_col_types = FALSE)
 #'
 #' xdev_assign_treatments(data, sample_assignments)
 #'
 #' @return double containing the number of samples assigned to treatments
 xdev_assign_treatments <- function(data, table, sample = "samples", treatment = "treatments", verbose = TRUE) {
-    .Call(`_rdataset_xdev_assign_treatments`, data, table, sample, treatment, verbose)
+    .Call(`_strollur_xdev_assign_treatments`, data, table, sample, treatment, verbose)
 }
 
 #' @title xdev_count
@@ -724,8 +616,8 @@ xdev_assign_treatments <- function(data, table, sample = "samples", treatment = 
 #' @param data, a \link{dataset} object
 #'
 #' @param type, string containing the type of data you want the number of.
-#' Options include: "sequences", "samples", "treatments", "bins".
-#' Default = "sequences".
+#' Options include: "sequences", "samples", "treatments", "bins" and
+#' "references". Default = "sequences".
 #'
 #' @param bin_type, string containing the bin type you would like the number of
 #' bins for. Default = "otu".
@@ -795,7 +687,7 @@ xdev_assign_treatments <- function(data, table, sample = "samples", treatment = 
 #'
 #' @return double
 xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NULL, distinct = FALSE) {
-    .Call(`_rdataset_xdev_count`, data, type, bin_type, samples, distinct)
+    .Call(`_strollur_xdev_count`, data, type, bin_type, samples, distinct)
 }
 
 #' @title xdev_get_list_vector
@@ -813,7 +705,7 @@ xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #' @return vector of strings containing the names of the sequences in each bin
 #' separated by commas
 xdev_get_list_vector <- function(data, type = "otu") {
-    .Call(`_rdataset_xdev_get_list_vector`, data, type)
+    .Call(`_strollur_xdev_get_list_vector`, data, type)
 }
 
 #' @title xdev_get_by_sample
@@ -835,12 +727,12 @@ xdev_get_list_vector <- function(data, type = "otu") {
 #' xdev_get_by_sample(data, "sequence_names")
 #'
 #' # To get the sequence nucleotide strings parsed by sample
-#' xdev_get_by_sample(data, "sequences")
+#' parsed_sequences <- xdev_get_by_sample(data, "sequences")
 #'
 #' @return 2D vector of strings ([num_seqs][num_samples]) containing data
 #' requested parsed by sample.
 xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.character( c())) {
-    .Call(`_rdataset_xdev_get_by_sample`, data, type, samples)
+    .Call(`_strollur_xdev_get_by_sample`, data, type, samples)
 }
 
 #' @title xdev_get_sequences
@@ -859,7 +751,7 @@ xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.chara
 #' @return vector of string containing nucleotide strings of the sequences in
 #' a \link{dataset} object
 xdev_get_sequences <- function(data, sample = "") {
-    .Call(`_rdataset_xdev_get_sequences`, data, sample)
+    .Call(`_strollur_xdev_get_sequences`, data, sample)
 }
 
 #' @title xdev_merge_bins
@@ -874,7 +766,8 @@ xdev_get_sequences <- function(data, sample = "") {
 #' bin_id in the vector.
 #' @param reason, a string indicating why you are merging bins. Default =
 #' "merged".
-#' @param type, a string indicating the type of bin clusters. Default = "otu"
+#' @param bin_type, a string indicating the type of bin clusters.
+#'  Default = "otu"
 #'
 #' @examples
 #'
@@ -891,8 +784,8 @@ xdev_get_sequences <- function(data, sample = "") {
 #'
 #'  report(data = data, type = "bin_scrap")
 #'
-xdev_merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
-    invisible(.Call(`_rdataset_xdev_merge_bins`, data, bin_names, reason, type))
+xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu") {
+    invisible(.Call(`_strollur_xdev_merge_bins`, data, bin_names, reason, bin_type))
 }
 
 #' @title xdev_merge_sequences
@@ -910,16 +803,32 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 #'
 #' @examples
 #'
-#' data <- miseq_sop_example()
+#' sequence_names <- c("seq1", "seq2", "seq3", "seq3",
+#'                "seq4", "seq4", "seq5", "seq6",
+#'                "seq7", "seq8", "seq9", "seq9",
+#'                "seq10", "seq10", "seq10", "seq10")
 #'
-#' count(data = data, type = "sequences")
+#' samples <- c("sample1", "sample2", "sample4", "sample5",
+#'              "sample1", "sample2", "sample1", "sample1",
+#'              "sample2", "sample4", "sample4", "sample5",
+#'              "sample1", "sample3", "sample5", "sample6")
 #'
-#' # For the sake of example let's merge the first 3 sequences from
-#' # miseq_sop_example:
+#' abundances <- c(10, 10, 5, 5, 5, 5,
+#'                 10, 10, 10, 10, 5, 5,
+#'                 1, 2, 3, 4)
 #'
-#' seqs_to_merge <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
-#'                    "M00967_43_000000000-A3JHG_1_1113_12711_3318",
-#'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
+#' data <- new_dataset("my_data")
+#'
+#'
+#' assign(data = data,
+#'        table = data.frame(sequence_names = sequence_names,
+#'                           abundances = abundances,
+#'                           samples = samples),
+#'        type = "sequence_abundance")
+#'
+#' # For the sake of example let's merge the first 3 sequences.
+#'
+#' seqs_to_merge <- c("seq1", "seq2", "seq3")
 #'
 #' xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 #'
@@ -934,7 +843,7 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", type = "otu") {
 #' count(data = data, type = "sequences")
 #'
 xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
-    invisible(.Call(`_rdataset_xdev_merge_sequences`, data, sequence_names, reason))
+    invisible(.Call(`_strollur_xdev_merge_sequences`, data, sequence_names, reason))
 }
 
 #' @title xdev_names
@@ -999,7 +908,7 @@ xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
 #'
 #' @return vector of strings, containing the names requested
 xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NULL, distinct = FALSE) {
-    .Call(`_rdataset_xdev_names`, data, type, bin_type, samples, distinct)
+    .Call(`_strollur_xdev_names`, data, type, bin_type, samples, distinct)
 }
 
 #' @title xdev_remove_bins
@@ -1013,7 +922,7 @@ xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #' would like removed.
 #' @param trash_tags, a vector of strings containing the reasons you are
 #' removing each bin
-#' @param type a string indicating the type of clusters.
+#' @param bin_type a string indicating the type of clusters.
 #' @examples
 #'
 #'   data <- new_dataset(dataset_name = "my_dataset")
@@ -1035,8 +944,8 @@ xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #'
 #'   count(data = data, type = "bins", bin_type = "otu")
 #'
-xdev_remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
-    invisible(.Call(`_rdataset_xdev_remove_bins`, data, bin_names, trash_tags, type))
+xdev_remove_bins <- function(data, bin_names, trash_tags, bin_type = "otu") {
+    invisible(.Call(`_strollur_xdev_remove_bins`, data, bin_names, trash_tags, bin_type))
 }
 
 #' @title xdev_remove_lineages
@@ -1048,15 +957,15 @@ xdev_remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
 #'
 #' @param contaminants, vector of strings containing the taxonomies you would
 #' like to remove
-#' @param trash_tag, a string containing reason you are removing the lineages.
+#' @param reason, a string containing reason you are removing the lineages.
 #' Default = "contaminant".
 #'
 #' @examples
-#' data <- read_mothur(fasta = rdataset_example("final.fasta"),
-#'                        count = rdataset_example("final.count_table"),
-#'                        taxonomy = rdataset_example("final.taxonomy"),
-#'                        design = rdataset_example("mouse.time.design"),
-#'                        otu_list = rdataset_example("final.opti_mcc.list"),
+#' data <- read_mothur(fasta = strollur_example("final.fasta.gz"),
+#'                        count = strollur_example("final.count_table.gz"),
+#'                        taxonomy = strollur_example("final.taxonomy.gz"),
+#'                        design = strollur_example("mouse.time.design"),
+#'                        otu_list = strollur_example("final.opti_mcc.list.gz"),
 #'                        dataset_name = "miseq_sop")
 #'
 #' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
@@ -1064,8 +973,8 @@ xdev_remove_bins <- function(data, bin_names, trash_tags, type = "otu") {
 #'
 #' xdev_remove_lineages(data = data, contaminants = contaminants)
 #'
-xdev_remove_lineages <- function(data, contaminants, trash_tag = "contaminant") {
-    invisible(.Call(`_rdataset_xdev_remove_lineages`, data, contaminants, trash_tag))
+xdev_remove_lineages <- function(data, contaminants, reason = "contaminant") {
+    invisible(.Call(`_strollur_xdev_remove_lineages`, data, contaminants, reason))
 }
 
 #' @title xdev_remove_samples
@@ -1077,6 +986,9 @@ xdev_remove_lineages <- function(data, contaminants, trash_tag = "contaminant") 
 #'
 #' @param samples, vector of strings containing the names of the samples to
 #' remove.
+#'
+#' @param reason, string containing the reason for removal.
+#'  Default = "remove_samples".
 #'
 #' @examples
 #'
@@ -1090,8 +1002,8 @@ xdev_remove_lineages <- function(data, contaminants, trash_tag = "contaminant") 
 #'
 #' count(data = data, type = "samples")
 #'
-xdev_remove_samples <- function(data, samples) {
-    invisible(.Call(`_rdataset_xdev_remove_samples`, data, samples))
+xdev_remove_samples <- function(data, samples, reason = "remove_samples") {
+    invisible(.Call(`_strollur_xdev_remove_samples`, data, samples, reason))
 }
 
 #' @title xdev_remove_sequences
@@ -1134,7 +1046,113 @@ xdev_remove_samples <- function(data, samples) {
 #' count(data = data, type = "sequences")
 #'
 xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
-    invisible(.Call(`_rdataset_xdev_remove_sequences`, data, sequence_names, trash_tags))
+    invisible(.Call(`_strollur_xdev_remove_sequences`, data, sequence_names, trash_tags))
+}
+
+#' @title xdev_report
+#' @description
+#' Get a data.frame containing the given report in a \link{dataset} object
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param type, string containing the type of report you would like. Options
+#' include: "fasta", "sequences", "sequence_bin_assignments",
+#' "sequence_taxonomy", "bin_taxonomy", "bin_representatives",
+#'  "sample_assignments", "metadata", "references", "sequence_scrap",
+#' "bin_scrap". If you have added custom reports for alignment,
+#' contigs_assembly or chimeras, you can get those as well.
+#'  Default = "sequences".
+#'
+#' @param bin_type, string containing the bin type you would like a bin_taxonomy
+#' report for. Default = "otu".
+#'
+#' @examples
+#'
+#' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' # To get the FASTA data
+#'
+#' fasta <- xdev_report(data = miseq, type = "fasta")
+#' head(fasta, n = 10)
+#'
+#' # To get a report about the FASTA data
+#'
+#' sequence_report <- xdev_report(data = miseq, type = "sequences")
+#' head(sequence_report, n = 10)
+#'
+#' # To get the sequence bin assignments
+#'
+#' bin_assignments <- xdev_report(data = miseq, type = "sequence_bin_assignments",
+#'                           bin_type = "otu")
+#' head(bin_assignments, n = 10)
+#'
+#' # To get the sample treatment assignments
+#'
+#' xdev_report(data = miseq, type = "sample_assignments")
+#'
+#' # To get a report about sequence classifications
+#'
+#' sequence_taxonomy_report <- xdev_report(data = miseq,
+#'                                        type = "sequence_taxonomy")
+#' head(sequence_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'otu' data
+#'
+#' otu_taxonomy_report <- xdev_report(data = miseq,
+#'                                        type = "bin_taxonomy",
+#'                                        bin_type = "otu")
+#' head(otu_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'asv' data
+#'
+#' asv_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
+#'                               bin_type = "asv")
+#' head(asv_taxonomy_report, n = 10)
+#'
+#' # To get a report about bin classifications for 'phylotype' data
+#'
+#' phylotype_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
+#'                                     bin_type = "phylotype")
+#' head(phylotype_taxonomy_report, n = 10)
+#'
+#' # To get the 'otu' bin representative sequences
+#'
+#' otu_bin_reps <- xdev_report(data = miseq, type = "bin_representatives",
+#'                        bin_type = "otu")
+#' head(otu_bin_reps, n = 10)
+#'
+#' # To get a report about the sequences removed during your analysis:
+#'
+#' scrapped_sequence_report <- xdev_report(data = miseq, type = "sequence_scrap")
+#'
+#' # To get a report about the "otu" bins removed during your analysis:
+#'
+#' scrapped_otu_report <- xdev_report(data = miseq, type = "bin_scrap",
+#'                               bin_type = "otu")
+#'
+#' # To get a report about the "phylotype" bins removed during your analysis:
+#'
+#' scrapped_phylotype_report <- xdev_report(data = miseq, type = "bin_scrap",
+#'                                     bin_type = "phylotype")
+#'
+#' # To get the metadata associated with your data:
+#'
+#' metadata <- xdev_report(data = miseq, type = "metadata")
+#'
+#' # To get the resource references associated with your data:
+#'
+#' references <- xdev_report(data = miseq, type = "references")
+#'
+#' # To get our custom report containing the contigs assembly data:
+#'
+#' contigs_report <- xdev_report(data = miseq, type = "contigs_report")
+#' head(contigs_report, n = 10)
+#'
+#' @return data.frame
+xdev_report <- function(data, type = "sequences", bin_type = "otu") {
+    .Call(`_strollur_xdev_report`, data, type, bin_type)
 }
 
 #' @title xdev_set_abundance
@@ -1172,7 +1190,7 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #' abundance(data = data, type = "sequences")
 #'
 xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason = "update") {
-    invisible(.Call(`_rdataset_xdev_set_abundance`, data, sequence_names, sequence_abundances, reason))
+    invisible(.Call(`_strollur_xdev_set_abundance`, data, sequence_names, sequence_abundances, reason))
 }
 
 #' @title xdev_set_abundances
@@ -1211,100 +1229,7 @@ xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason
 #'                     abundances = new_abunds)
 #'
 xdev_set_abundances <- function(data, sequence_names, abundances, reason = "update") {
-    invisible(.Call(`_rdataset_xdev_set_abundances`, data, sequence_names, abundances, reason))
-}
-
-#' @title xdev_set_bin_abundance
-#' @description
-#' Designed with package integration in mind, the set bin abundance function
-#' allows you to change the abundances of bins in a \link{dataset} object
-#' without sample data.
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param bin_names, a vector strings containing of bin names to set the
-#' abundances for.
-#' @param abundances, vector containing the abundances of each bin.
-#' @param type, a string indicating the type of clusters. Default = "otu".
-#' @param reason, a string containing the trash tag to be applied to any bins
-#'  set to 0 abundance. Default = "update".
-#'
-#' @examples
-#'   # For example sake, let's create a dataset with 3 bins:
-#'
-#'   data <- new_dataset(dataset_name = "my_dataset")
-#'
-#'   bin_ids <- c("bin1", "bin2", "bin3")
-#'   abundances <- c(110, 525, 80)
-#'
-#'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
-#'                                               abundances = abundances))
-#'
-#'   abundance(data, type = "bins")
-#'
-#'   # Now we can use set_bin_abundance to change the abundances of bin1 and
-#'   # bin2
-#'
-#'   bins <- c("bin1", "bin2")
-#'   new_abunds <- c(300, 250)
-#'
-#'   xdev_set_bin_abundance(data = data,
-#'                          bin_names = bins,
-#'                          abundances = new_abunds)
-#'
-#'   abundance(data, type = "bins")
-#'
-xdev_set_bin_abundance <- function(data, bin_names, abundances, type = "otu", reason = "update") {
-    invisible(.Call(`_rdataset_xdev_set_bin_abundance`, data, bin_names, abundances, type, reason))
-}
-
-#' @title xdev_set_bin_abundances
-#' @description
-#' Designed with package integration in mind, the set bin abundances function
-#' allows you to change the abundances of bins in a \link{dataset} object
-#' with sample data.
-#'
-#' @param data, a \link{dataset} object
-#'
-#' @param bin_names, a vector strings containing of bin names to set the
-#' abundances for.
-#' @param abundances, 2D vector ([num_seqs][num_samples]) containing the
-#' abundances of each bin parsed by sample.
-#' @param type a string indicating the type of clusters. Default = "otu".
-#' @param reason, a string containing the trash tag to be applied to any bins
-#'  set to 0 abundance. Default = "update".
-#'
-#' @examples
-#'
-#'   # For example sake, let's create a dataset with 3 bins:
-#'
-#'   data <- new_dataset(dataset_name = "my_dataset")
-#'
-#'   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
-#'   samples <- c("sample1", "sample2", "sample5", "sample1", "sample3",
-#'                "sample1")
-#'   sample_abundances <- c(10, 100, 1, 500, 25, 80)
-#'
-#'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_ids,
-#'                                               abundances = sample_abundances,
-#'                                               samples = samples))
-#'
-#'   # You can see bin1's abundances parsed by sample using abundance:
-#'   abundance(data, type = "bins", by_sample = TRUE)
-#'
-#'   # You can change bin1's abundances as follows:
-#'
-#'   new_bin1_abunds <- list(c(10,50,0,0))
-#'   bins <- c("bin1")
-#'
-#'   xdev_set_bin_abundances(data = data,
-#'                           bin_names = bins,
-#'                           abundances = new_bin1_abunds)
-#'
-#'   abundance(data, type = "bins", by_sample = TRUE)
-#'
-xdev_set_bin_abundances <- function(data, bin_names, abundances, type = "otu", reason = "update") {
-    invisible(.Call(`_rdataset_xdev_set_bin_abundances`, data, bin_names, abundances, type, reason))
+    invisible(.Call(`_strollur_xdev_set_abundances`, data, sequence_names, abundances, reason))
 }
 
 #' @title xdev_set_sequences
@@ -1333,7 +1258,7 @@ xdev_set_bin_abundances <- function(data, bin_names, abundances, type = "otu", r
 #'                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 #'
 xdev_set_sequences <- function(data, sequence_names, sequences, comments = as.character( c())) {
-    invisible(.Call(`_rdataset_xdev_set_sequences`, data, sequence_names, sequences, comments))
+    invisible(.Call(`_strollur_xdev_set_sequences`, data, sequence_names, sequences, comments))
 }
 
 #' @title xdev_set_dataset_name
@@ -1349,7 +1274,7 @@ xdev_set_sequences <- function(data, sequence_names, sequences, comments = as.ch
 #' xdev_set_dataset_name(data = data, dataset_name = "new_dataset_name")
 #'
 xdev_set_dataset_name <- function(data, dataset_name) {
-    invisible(.Call(`_rdataset_xdev_set_dataset_name`, data, dataset_name))
+    invisible(.Call(`_strollur_xdev_set_dataset_name`, data, dataset_name))
 }
 
 #' @title xdev_set_num_processors
@@ -1365,7 +1290,7 @@ xdev_set_dataset_name <- function(data, dataset_name) {
 #' xdev_set_num_processors(data = data, processors = 1)
 #'
 xdev_set_num_processors <- function(data, processors) {
-    invisible(.Call(`_rdataset_xdev_set_num_processors`, data, processors))
+    invisible(.Call(`_strollur_xdev_set_num_processors`, data, processors))
 }
 
 #' @title xdev_summarize
@@ -1404,7 +1329,7 @@ xdev_set_num_processors <- function(data, processors) {
 #'
 #' @return data.frame()
 xdev_summarize <- function(data, type = "sequences", report_type = NULL) {
-    .Call(`_rdataset_xdev_summarize`, data, type, report_type)
+    .Call(`_strollur_xdev_summarize`, data, type, report_type)
 }
 
 #' @title xint_copy_pointer
@@ -1415,7 +1340,7 @@ xdev_summarize <- function(data, type = "sequences", report_type = NULL) {
 #' @return pointer to an instance of the C++ 'Dataset' class.
 #' @keywords internal
 xint_copy_pointer <- function(data) {
-    .Call(`_rdataset_xint_copy_pointer`, data)
+    .Call(`_strollur_xint_copy_pointer`, data)
 }
 
 #' @title xint_new_pointer
@@ -1427,7 +1352,7 @@ xint_copy_pointer <- function(data) {
 #' @return pointer to an instance of the C++ 'Dataset' class.
 #' @keywords internal
 xint_new_pointer <- function(dataset_name, processors) {
-    .Call(`_rdataset_xint_new_pointer`, dataset_name, processors)
+    .Call(`_strollur_xint_new_pointer`, dataset_name, processors)
 }
 
 #' @title xint_deserialize_dobject
@@ -1437,7 +1362,7 @@ xint_new_pointer <- function(dataset_name, processors) {
 #'  class.
 #' @param data, a \link{dataset} object
 xint_deserialize_dobject <- function(data) {
-    invisible(.Call(`_rdataset_xint_deserialize_dobject`, data))
+    invisible(.Call(`_strollur_xint_deserialize_dobject`, data))
 }
 
 #' @title xint_serialize_dobject
@@ -1447,6 +1372,6 @@ xint_deserialize_dobject <- function(data) {
 #' class.
 #' @param data, a \link{dataset} object
 xint_serialize_dobject <- function(data) {
-    invisible(.Call(`_rdataset_xint_serialize_dobject`, data))
+    invisible(.Call(`_strollur_xint_serialize_dobject`, data))
 }
 

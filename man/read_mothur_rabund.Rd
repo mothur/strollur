@@ -23,7 +23,7 @@ Read a mothur formatted
 # read rabund file into data.frame
 otu_data <- read_mothur_rabund(
   rabund =
-    rdataset_example("final.opti_mcc.rabund")
+    strollur_example("final.opti_mcc.rabund")
 )
 
 data <- new_dataset()

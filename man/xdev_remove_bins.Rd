@@ -4,7 +4,7 @@
 \alias{xdev_remove_bins}
 \title{xdev_remove_bins}
 \usage{
-xdev_remove_bins(data, bin_names, trash_tags, type = "otu")
+xdev_remove_bins(data, bin_names, trash_tags, bin_type = "otu")
 }
 \arguments{
 \item{data, }{a \link{dataset} object.}
@@ -15,7 +15,7 @@ would like removed.}
 \item{trash_tags, }{a vector of strings containing the reasons you are
 removing each bin}
 
-\item{type}{a string indicating the type of clusters.}
+\item{bin_type}{a string indicating the type of clusters.}
 }
 \description{
 Designed with package integration in mind, the remove bins function allows

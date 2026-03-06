@@ -2,13 +2,13 @@
 
 test_that("dataset - intialize from read_mothur / print", {
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    asv_list = rdataset_example("final.asv.list"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    taxonomy = strollur_example("final.taxonomy.gz"),
+    design = strollur_example("mouse.time.design"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    phylo_list = strollur_example("final.tx.list.gz"),
+    asv_list = strollur_example("final.asv.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -160,13 +160,13 @@ test_that("dataset - intialize from read_mothur / print", {
 
 test_that("dataset - intialize from dataset object", {
   temp <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    asv_list = rdataset_example("final.asv.list"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    taxonomy = strollur_example("final.taxonomy.gz"),
+    design = strollur_example("mouse.time.design"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    phylo_list = strollur_example("final.tx.list.gz"),
+    asv_list = strollur_example("final.asv.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -199,7 +199,7 @@ test_that("dataset - addSeqs, assign samples", {
   # missing data and names
   expect_error(xdev_add_sequences(data))
 
-  fasta_data <- read_fasta(rdataset_example("final.fasta"))
+  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
   names(fasta_data) <- c("myNameTag", "mySeqTag")
 
   expect_error(xdev_add_sequences(data, fasta_data, NULL, "names", "mySeqTag"))
@@ -368,8 +368,8 @@ test_that("dataset - addSeqs, assign samples", {
   expect_equal(names(data, "treatments"), c("early", "late"))
   expect_equal(names(data, "samples"), c("sample2", "sample3", "sample4"))
 
-  sample_summary <- data$get_summary(TRUE)$sample_summary
-  treatment_summary <- data$get_summary(TRUE)$treatment_summary
+  sample_summary <- data$get_summary()$sample_summary
+  treatment_summary <- data$get_summary()$treatment_summary
 
   expect_equal(treatment_summary$abundances, c(766, 554))
   expect_equal(sample_summary$abundances, c(301, 465, 554))
@@ -404,8 +404,8 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
   # missing data and names
   expect_error(xdev_assign_sequence_abundance(data))
 
-  sequence_abundance <- readr::read_tsv(rdataset_example(
-    "mothur2_count_table.tsv"
+  sequence_abundance <- readr::read_tsv(strollur_example(
+    "mothur2_count_table.tsv.gz"
   ), show_col_types = FALSE)
 
 
@@ -655,14 +655,14 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
   expect_equal(count(dataset_t, "bins"), 3)
   expect_equal(count(dataset_t, "samples"), 6)
   expect_equal(
-    dataset_t$get_summary(TRUE)[["sample_summary"]]$abundances,
+    dataset_t$get_summary()[["sample_summary"]]$abundances,
     c(36, 25, 2, 20, 13, 4)
   )
 
   clear(dataset_t)
 
-  bin_table <- readr::read_tsv(rdataset_example(
-    "mothur2_bin_assignments_shared.tsv"
+  bin_table <- readr::read_tsv(strollur_example(
+    "mothur2_bin_assignments_shared.tsv.gz"
   ), show_col_types = FALSE)
 
   expect_error(assign(
@@ -678,8 +678,8 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
 
   clear(dataset_t)
 
-  bin_table <- readr::read_tsv(rdataset_example(
-    "mothur2_bin_assignments_list.tsv"
+  bin_table <- readr::read_tsv(strollur_example(
+    "mothur2_bin_assignments_list.tsv.gz"
   ), show_col_types = FALSE)
 
   assign(
@@ -755,7 +755,7 @@ test_that("dataset - ", {
   tax3 <- "Bacteria;Firmicutes;Bacilli;"
   tax4 <- "Bacteria;Proteobacteria;Gammaproteobacteria;"
   taxonomies <- c(tax1, tax2, tax3, tax4)
-
+  #---------------------------------------------------------#
   dataset_t <- dataset$new("my_dataset")
   assign(data = dataset_t, table = data.frame(
     sequence_names = names,
@@ -776,7 +776,7 @@ test_that("dataset - ", {
   tax3 <- "Bacteria;Firmicutes;Bacilli;Lactobacillales;Streptococcaceae;"
   tax4 <- "Bacteria;Proteobacteria;"
   taxonomies <- c(tax1, tax2, tax3, tax4)
-
+  #---------------------------------------------------------#
   dataset_t <- dataset$new("my_dataset")
   xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
@@ -818,7 +818,7 @@ test_that("dataset - ", {
   tax3 <- paste0(tax3, "Streptococcaceae(85)")
   tax4 <- "Bacteria(100);Proteobacteria(95);"
   taxonomies <- c(tax1, tax2, tax3, tax4)
-
+  #---------------------------------------------------------#
   dataset_t <- dataset$new("my_dataset")
   xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
@@ -885,7 +885,7 @@ test_that("dataset - ", {
     "Proteobacteria_unclassified"
   ), report$taxon)
   expect_equal(report$confidence, c(100, 34, 34, 34, 100, 100, 100, 100))
-
+  #---------------------------------------------------------#
   clear(dataset_t)
   bin_ids <- c("bin1", "bin2", "bin3", "bin4")
   taxonomies <- c(
@@ -988,14 +988,14 @@ test_that("dataset - ", {
   ))
 
   expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
-
+  #---------------------------------------------------------#
   clear(dataset_t)
 
-  table <- readr::read_tsv(rdataset_example("final.cons.taxonomy"),
+  table <- readr::read_tsv(strollur_example("final.cons.taxonomy"),
     show_col_types = FALSE
   )
-  bin_table <- readr::read_tsv(rdataset_example(
-    "mothur2_bin_assignments_list.tsv"
+  bin_table <- readr::read_tsv(strollur_example(
+    "mothur2_bin_assignments_list.tsv.gz"
   ), show_col_types = FALSE)
 
   assign(
@@ -1031,7 +1031,7 @@ test_that("dataset - add_metadata, get_metadata", {
 
   expect_equal(report(dataset_t, "metadata"), data.frame())
 
-  metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+  metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
 
@@ -1051,10 +1051,6 @@ test_that("dataset - add_metadata, get_metadata", {
   expect_equal(metadata[[8, 3]], "left palm")
   expect_equal(metadata[[2, 3]], "gut")
   expect_equal(metadata[[3, 7]], "subject-1")
-
-  clear(dataset_t, "metadata")
-  metadata <- report(dataset_t, "metadata")
-  expect_equal(nrow(metadata), 0)
 })
 
 test_that("dataset - add_references, get_references", {
@@ -1068,7 +1064,7 @@ test_that("dataset - add_references, get_references", {
   references <- report(dataset_t, "references")
   expect_equal(nrow(references), 0)
 
-  reference <- readr::read_csv(rdataset_example("references.csv"),
+  reference <- readr::read_csv(strollur_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE
   )
 
@@ -1119,18 +1115,12 @@ test_that("dataset - add_references, get_references", {
   expect_equal(references[[2, 2]], "NA")
   expect_equal(references[[3, 2]], "1.38.1")
   expect_equal(references[[1, 4]], "This is my mothur note")
-
-  dataset_t$clear("bad_type")
-  expect_equal(nrow(report(dataset_t, "references")), 3)
-
-  clear(dataset_t, c("references"))
-  expect_equal(nrow(report(dataset_t, "references")), 0)
 })
 
 test_that("dataset - add_alignment_report, get_alignment_report", {
   dataset_t <- dataset$new("my_dataset")
 
-  align_report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+  align_report <- readr::read_tsv(strollur_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
 
@@ -1153,7 +1143,7 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
   expect_equal(align_report[[5, 8]], 1)
   expect_equal(align_report[[4, 4]], 292)
 
-  clear(dataset_t, "reports")
+  clear(dataset_t)
   expect_equal(report(dataset_t, "align_report"), data.frame())
 
   # no report added because of missing entries
@@ -1165,7 +1155,7 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
 test_that("dataset - add / get _contigs_assembly_report,", {
   dataset_t <- dataset$new("my_dataset")
 
-  report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+  report <- readr::read_tsv(strollur_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
   expect_error(xdev_add_report(dataset_t, report, "contigs_report", "badName"))
@@ -1183,9 +1173,7 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   expect_equal(round(report[[5, 8]], digits = 4), 0.0257)
   expect_equal(report[[4, 4]], 2)
 
-  clear(dataset_t, "reports")
-  expect_equal(length(report(dataset_t, "contigs_report")), 0)
-  expect_equal(count(dataset_t, "sequences"), 5)
+  clear(dataset_t)
   xdev_add_report(dataset_t, report, "contigs_report", "Name")
 
   report <- report(dataset_t, "contigs_report")
@@ -1203,7 +1191,7 @@ test_that("dataset - add / get _contigs_assembly_report,", {
 test_that("dataset - add / get _chimera_report,", {
   dataset_t <- dataset$new("my_dataset")
 
-  report <- readr::read_tsv(rdataset_example("chimera_report.tsv"),
+  report <- readr::read_tsv(strollur_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
   expect_error(xdev_add_report(dataset_t, report, "chimera_report", "badName"))
@@ -1219,9 +1207,8 @@ test_that("dataset - add / get _chimera_report,", {
   expect_equal(report[[8, 17]], "N")
   expect_equal(report[[67, 17]], "Y")
 
-  clear(dataset_t, "reports")
+  clear(dataset_t)
   expect_equal(length(report(dataset_t, "chimera_report")), 0)
-  expect_equal(count(dataset_t, "sequences"), 71)
   xdev_add_report(dataset_t, report, "chimera_report", "Query")
 
   report <- report(dataset_t, "chimera_report")
@@ -1232,23 +1219,17 @@ test_that("dataset - add / get _chimera_report,", {
   chimera_summary <- dataset_t$get_summary()[["chimera_report"]]
 
   expect_equal(ncol(chimera_summary), 13)
-
-  # no report added because of missing entries
-  clear(dataset_t, "reports")
-  xdev_add_sequences(dataset_t, data.frame(sequence_names = c("seq6", "seq7")))
-  xdev_add_report(dataset_t, report, "chimera_report", "Query")
-  expect_equal(length(report(dataset_t, "chimera_report")), 0)
 })
 
 test_that("dataset - get_sequence_summary,", {
   dataset_t <- dataset$new("my_dataset")
 
-  report <- readr::read_tsv(rdataset_example("contigs_data.tsv"),
+  report <- readr::read_tsv(strollur_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
   xdev_add_report(dataset_t, report, "contigs_report", "Name")
 
-  report <- readr::read_tsv(rdataset_example("alignment_data.tsv"),
+  report <- readr::read_tsv(strollur_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
   xdev_add_report(dataset_t, report, "alignment_report", "QueryName")
@@ -1328,7 +1309,9 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   # add tree from file
   dataset_t <- dataset$new()
-  dataset_t$add_sequence_tree(read.tree(rdataset_example("final.phylip.tre")))
+  dataset_t$add_sequence_tree(read.tree(
+    strollur_example("final.phylip.tre.gz")
+  ))
   tree <- dataset_t$get_sequence_tree()
 
   expect_equal(sort(names(dataset_t, "sequences")), sort(tree$tip.label))
@@ -1367,7 +1350,7 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
   expect_null(dataset_t$get_sample_tree())
 
   sample_tree <- ape::read.tree(
-    rdataset_example("final.opti_mcc.jclass.ave.tre")
+    strollur_example("final.opti_mcc.jclass.ave.tre")
   )
 
   # should report no samples and not save
@@ -1375,17 +1358,17 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
   expect_null(dataset_t$get_sample_tree())
 
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    taxonomy = strollur_example("final.taxonomy.gz"),
+    design = strollur_example("mouse.time.design"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
   expect_error(dataset_t$add_sample_tree(tree = c("bad_type")))
 
-  sequence_tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+  sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 
   # should report missing samples since this is a sequence tree and not save
   dataset_t$add_sample_tree(sequence_tree)
@@ -1416,16 +1399,16 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
 test_that("dataset - assign_treatments", {
   # create dataset without treatment assignments
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    asv_list = rdataset_example("final.asv.list"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    phylo_list = strollur_example("final.tx.list.gz"),
+    asv_list = strollur_example("final.asv.list.gz"),
     dataset_name = "miseq_sop"
   )
 
   design_table <- readr::read_tsv(
-    rdataset_example(
+    strollur_example(
       "mouse.time.design"
     ),
     show_col_types = FALSE
@@ -1450,11 +1433,11 @@ test_that("dataset - assign_treatments", {
   expect_equal(count(dataset_t, "treatments"), 2)
 
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    asv_list = rdataset_example("final.asv.list"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    phylo_list = strollur_example("final.tx.list.gz"),
+    asv_list = strollur_example("final.asv.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -1471,13 +1454,13 @@ test_that("dataset - assign_treatments", {
 test_that("dataset - assign_sequence_taxonomy", {
   # create dataset without taxonomy assignments
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
-  tax_table <- read_mothur_taxonomy(rdataset_example("final.taxonomy"))
+  tax_table <- read_mothur_taxonomy(strollur_example("final.taxonomy.gz"))
 
   # no taxonomies yet
   expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
@@ -1500,9 +1483,9 @@ test_that("dataset - assign_sequence_taxonomy", {
   expect_equal(nrow(report(dataset_t, "sequence_taxonomy")), 14550)
 
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -1613,11 +1596,11 @@ test_that("dataset - export,", {
 })
 
 test_that("dataset - assign_bin_representative_sequences", {
-  # create dataset sequences and shared data
+  # create dataset
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -1642,41 +1625,12 @@ test_that("dataset - assign_bin_representative_sequences", {
   expect_equal(df[[2]], rep_names)
   expect_equal(df[[3]], xdev_get_sequences(dataset_t)[1:num_bins])
 
-  # create dataset only shared data, this forces assign_bin_reps to add seqs
-  dataset_t <- read_mothur(
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
-    dataset_name = "miseq_sop"
-  )
-
-  assign(
-    data = dataset_t,
-    table = data.frame(
-      bin_names = bin_names,
-      sequence_names = rep_names
-    ),
-    type = "bin_representatives",
-    bin_type = "otu"
-  )
-
-  df <- report(dataset_t, "bin_representatives")
-  expect_equal(df[[1]], bin_names)
-  expect_equal(df[[2]], rep_names)
-  expect_equal(df[, 3], rep("", num_bins))
-
-  expect_error(xdev_assign_bin_representative_sequences(
-    dataset_t,
-    data.frame(
-      bin_names = bin_names,
-      sequence_names = c("not", "enough", "sequence", "names")
-    )
-  ))
-
   d <- dataset$new()
   expect_equal(report(d, "bin_representatives"), data.frame())
   expect_equal(report(d, "sample_assignments"), data.frame())
 
   dataset_t <- read_mothur(
-    count = rdataset_example("final.count_table"),
+    count = strollur_example("final.count_table.gz"),
     dataset_name = "miseq_sop"
   )
   expect_equal(report(dataset_t, "sample_assignments"), data.frame())

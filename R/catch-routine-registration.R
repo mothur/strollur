@@ -11,5 +11,5 @@
   #'  symbol. It allows for testing using c++ unit tests.
   #'
   #' @keywords internal
-  .Call("run_testthat_tests", FALSE, PACKAGE = "rdataset")
+  .Call("run_testthat_tests", FALSE, PACKAGE = "strollur")
 })

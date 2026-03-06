@@ -5,7 +5,7 @@
 #' @param file a string containing the .rds file name.
 #' @examples
 #'
-#' data <- load_dataset(rdataset_example("miseq_sop.rds"))
+#' data <- load_dataset(strollur_example("miseq_sop.rds"))
 #' data
 #'
 #' @return a \link{dataset} object

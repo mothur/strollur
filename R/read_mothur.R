@@ -69,26 +69,26 @@
 #' # For dataset's including sequence data:
 #'
 #' data <- read_mothur(
-#'   fasta = rdataset_example("final.fasta"),
-#'   count = rdataset_example("final.count_table"),
-#'   taxonomy = rdataset_example("final.taxonomy"),
-#'   design = rdataset_example("mouse.time.design"),
-#'   otu_list = rdataset_example("final.opti_mcc.list"),
-#'   asv_list = rdataset_example("final.asv.list"),
-#'   phylo_list = rdataset_example("final.tx.list"),
-#'   sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+#'   fasta = strollur_example("final.fasta.gz"),
+#'   count = strollur_example("final.count_table.gz"),
+#'   taxonomy = strollur_example("final.taxonomy.gz"),
+#'   design = strollur_example("mouse.time.design"),
+#'   otu_list = strollur_example("final.opti_mcc.list.gz"),
+#'   asv_list = strollur_example("final.asv.list.gz"),
+#'   phylo_list = strollur_example("final.tx.list.gz"),
+#'   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
 #'   dataset_name = "miseq_sop"
 #' )
 #'
 #' # For dataset's with only otu data:
 #'
 #' data <- read_mothur(
-#'   otu_shared = rdataset_example("final.opti_mcc.shared"),
-#'   cons_taxonomy = rdataset_example(
+#'   otu_shared = strollur_example("final.opti_mcc.shared"),
+#'   cons_taxonomy = strollur_example(
 #'     "final.cons.taxonomy"
 #'   ),
-#'   design = rdataset_example("mouse.time.design"),
-#'   sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+#'   design = strollur_example("mouse.time.design"),
+#'   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
 #'   dataset_name = "miseq_sop"
 #' )
 #'
@@ -100,6 +100,18 @@ read_mothur <- function(fasta = NULL, count = NULL,
                         otu_shared = NULL, asv_shared = NULL,
                         phylo_shared = NULL, sample_tree = NULL,
                         sequence_tree = NULL, dataset_name = "") {
+  if (!is.null(otu_list) && !is.null(otu_shared)) {
+    cli_abort("You can provide a list or shared file, not both.")
+  }
+
+  if (!is.null(asv_list) && !is.null(asv_shared)) {
+    cli_abort("You can provide a list or shared file, not both.")
+  }
+
+  if (!is.null(phylo_list) && !is.null(phylo_shared)) {
+    cli_abort("You can provide a list or shared file, not both.")
+  }
+
   # create new blank dataset
   data <- dataset$new(dataset_name)
 

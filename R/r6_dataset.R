@@ -75,7 +75,30 @@ dataset <- R6Class("dataset",
         cat(names(self, type = "dataset")[1])
         cat(":\n\n")
       }
-      self$get_summary()
+
+      # get dataset summaries
+      results <- self$get_summary()
+
+      results_names <- names(results)
+
+      # print sequence summary - converting to ints
+      if ("sequence_summary" %in% results_names) {
+        for (x in 1:6) {
+          results[["sequence_summary"]][, x] <- as.integer(
+            results[["sequence_summary"]][, x]
+          )
+        }
+        results[["sequence_summary"]]$numseqs <- sprintf(
+          "%.2f", results[["sequence_summary"]]$numseqs
+        )
+        print(results[["sequence_summary"]])
+      }
+
+      if ("scrap_summary" %in% results_names) {
+        cat("scrap_summary:\n")
+        print(results[["scrap_summary"]])
+      }
+
       if (count(data = self, type = "sequences", distinct = TRUE) != 0) {
         cat(
           paste("\nNumber of unique seqs:", count(
@@ -90,11 +113,26 @@ dataset <- R6Class("dataset",
       }
       cat(
         paste("Total number of seqs:", count(data = self, type = "sequences")),
-        "\n"
+        "\n\n"
       )
 
-      bin_types <- get_bin_types(self)
+      # print number of samples
+      if (count(data = self, type = "samples") != 0) {
+        cat(paste0(
+          "Total number of samples: ",
+          count(data = self, type = "samples")
+        ), "\n")
+      }
+      # print number of treatments
+      if (count(data = self, type = "treatments") != 0) {
+        cat(paste0(
+          "Total number of treatments: ",
+          count(data = self, type = "treatments")
+        ), "\n")
+      }
 
+      # print number of each bin type
+      bin_types <- get_bin_types(self)
       for (bin_type in bin_types) {
         if (count(data = self, type = "bins", bin_type = bin_type) != 0) {
           cat(
@@ -105,6 +143,27 @@ dataset <- R6Class("dataset",
             "\n"
           )
         }
+      }
+      # print number of resource references
+      if (count(data = self, type = "references") != 0) {
+        cat(paste0(
+          "Total number of resource references: ",
+          count(data = self, type = "references")
+        ), "\n")
+      }
+
+      exclude <- c("sequence_scrap", "bin_scrap")
+      report_names <- names(data = self, type = "reports")
+      custom_report_names <- report_names[!report_names %in% exclude]
+
+      if (length(custom_report_names) != 0) {
+        cat(paste0(
+          "Total number of custom reports: ",
+          length(custom_report_names)
+        ), "\n")
+      }
+      if (nrow(report(self, type = "metadata")) != 0) {
+        cat(paste0("Your dataset includes metadata"), "\n")
       }
       cat("\n")
     },
@@ -117,10 +176,10 @@ dataset <- R6Class("dataset",
     #'
     #'  data <- dataset$new("my_dataset")
     #'
-    #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+    #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
     #'
-    #'  tree <- ape::read.tree(rdataset_example(
+    #'  tree <- ape::read.tree(strollur_example(
     #'  "final.opti_mcc.jclass.ave.tre"))
     #'
     #'  data$add_sample_tree(tree)
@@ -185,7 +244,7 @@ dataset <- R6Class("dataset",
     #' @examples
     #'
     #'  data <- dataset$new("my_dataset")
-    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+    #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'
     add_sequence_tree = function(tree) {
@@ -242,35 +301,9 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
-    #' Remove 'sample_tree', or 'sequence_tree' data from your dataset.
-    #' @param tags a vector of strings containing the items you wish to clear.
-    #' Options are 'metadata', 'references', 'sequence_tree', 'sample_tree',
-    #' 'alignment_report', 'contigs_assembly_report' and '"'chimera_report'.
-    #' By default, everything is cleared.
-    clear = function(tags = NULL) {
-      if (is.null(tags)) {
-        tags <- ""
-      }
-
-      if (tags == "") {
-        self$sequence_tree <- NULL
-        self$sample_tree <- NULL
-      }
-
-      valid_tags <- c("sequence_tree", "sample_tree")
-
-      for (tag in tags) {
-        if (!(tag %in% valid_tags)) {
-          cli_alert("{.var {tag}} is not a valid item to clear, ignoring.")
-        }
-      }
-
-      if ("sequence_tree" %in% tags) {
-        self$sequence_tree <- NULL
-      }
-      if ("sample_tree" %in% tags) {
-        self$sample_tree <- NULL
-      }
+    #' Clear data from datasest
+    clear = function() {
+      clear(self)
 
       invisible(self)
     },
@@ -292,7 +325,7 @@ dataset <- R6Class("dataset",
     #' @examples
     #'   data <- dataset$new("my_dataset")
     #'
-    #'   metadata <- readr::read_tsv(rdataset_example("sample-metadata.tsv"),
+    #'   metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
     #'
     #'   add(data = data, table = metadata, type = "metadata")
@@ -308,10 +341,10 @@ dataset <- R6Class("dataset",
     #' Get phylo tree relating the samples in your dataset.
     #' @examples
     #'
-    #'  tree <- ape::read.tree(rdataset_example(
+    #'  tree <- ape::read.tree(strollur_example(
     #'   "final.opti_mcc.jclass.ave.tre"))
     #'
-    #'  df <- read_mothur_shared(rdataset_example("final.opti_mcc.shared"))
+    #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'
     #'  data <- dataset$new("my_dataset")
     #'
@@ -347,55 +380,35 @@ dataset <- R6Class("dataset",
     #' length of longest homopolymer, and the number of N's.
     #' @return data.frame
     get_sequence_report = function() {
-      report(self, "sequence_data")
+      report(self, "sequences")
     },
 
     #' @description
     #' Get summary of the sequence reports
-    #' @param silent Default = FALSE, meaning print summaries
     #' @return list of data.frames
-    get_summary = function(silent = FALSE) {
+    get_summary = function() {
       results <- list()
 
       # if you have summary results to print
-      if (!all(xdev_get_sequences(self) == "") && (!silent)) {
+      if (!all(xdev_get_sequences(self) == "")) {
         # if you have summary results to print
         results[["sequence_summary"]] <- xdev_summarize(
           data = self,
           type = "sequences"
         )
-        if (!silent) {
-          cat("sequence_summary:\n")
-          print(results[["sequence_summary"]])
-          cat("Unique seqs:\t", count(
-            data = self,
-            type = "sequences", distinct = TRUE
-          ), "\n")
-          cat("Total seqs:\t", count(data = self, type = "sequences"), "\n")
-        }
       }
 
-      exclude <- c("sequence_data", "sequence_scrap", "bin_scrap")
+      exclude <- c("sequence_scrap", "bin_scrap")
       report_names <- names(data = self, type = "reports")
       report_names <- report_names[!report_names %in% exclude]
 
       if (length(report_names) != 0) {
-        if (!silent) {
-          cat("\n")
-          for (name in report_names) {
-            results[[name]] <- xdev_summarize(
-              data = self,
-              type = "reports",
-              report_type = name
-            )
-            cat(name, ":\n")
-            print(results[[name]])
-            cat("Unique seqs:\t", count(
-              data = self,
-              type = "sequences", distinct = TRUE
-            ), "\n")
-            cat("Total seqs:\t", count(data = self, type = "sequences"), "\n\n")
-          }
+        for (name in report_names) {
+          results[[name]] <- xdev_summarize(
+            data = self,
+            type = "reports",
+            report_type = name
+          )
         }
       }
 
@@ -405,54 +418,13 @@ dataset <- R6Class("dataset",
       )
       if (nrow(df) != 0) {
         results[["scrap_summary"]] <- df
-        if (!silent) {
-          print(results[["scrap_summary"]])
-          # cat("\nType    Trash_code   Unique    Total:\n")
-          # for (i in seq_along(results$scrap_summary$trash_code)) {
-          #   cat(paste(
-          #     results$scrap_summary$type[i],
-          #     results$scrap_summary$trash_code[i],
-          #     results$scrap_summary$unique[i],
-          #     results$scrap_summary$total[i],
-          #     sep = "\t"
-          #   ), "\n")
-          # }
-        }
       }
 
       if (count(self, type = "samples") != 0) {
         results[["sample_summary"]] <- abundance(self, type = "samples")
 
-        if (!silent) {
-          cat("\nSample   Total:\n")
-          sample_names <- results[["sample_summary"]]$samples
-          sample_totals <- results[["sample_summary"]]$abundances
-
-          for (i in seq_along(sample_names)) {
-            cat(paste(sample_names[i], sample_totals[i], sep = "\t"), "\n")
-          }
-        }
-
         if (count(self, "treatments") != 0) {
           results[["treatment_summary"]] <- abundance(self, type = "treatments")
-
-          if (!silent) {
-            treatment_names <- results[["treatment_summary"]]$treatments
-            treatment_totals <- results[["treatment_summary"]]$abundances
-            cat("\n")
-            cat("Treatment   Total:\n")
-            for (i in seq_along(treatment_names)) {
-              cat(
-                paste(treatment_names[i], treatment_totals[i],
-                  sep = "\t"
-                ), "\n"
-              )
-            }
-          }
-        }
-      } else {
-        if (!silent) {
-          cli::cli_alert("Your dataset does not include sample data, ignoring.")
         }
       }
 
@@ -464,7 +436,7 @@ dataset <- R6Class("dataset",
     #' @examples
     #'
     #'  data <- dataset$new("my_dataset")
-    #'  tree <- ape::read.tree(rdataset_example("final.phylip.tre"))
+    #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'  data$get_sequence_tree()
     #'

@@ -3,11 +3,11 @@
 test_that("test read_mothur", {
   # test complete dataset
   dataset <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    taxonomy = strollur_example("final.taxonomy.gz"),
+    design = strollur_example("mouse.time.design"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -19,7 +19,7 @@ test_that("test read_mothur", {
   expect_equal(count(dataset, type = "bins", bin_type = "otu"), 531)
 
   # test count table only, no samples
-  dataset <- read_mothur(count = rdataset_example(
+  dataset <- read_mothur(count = strollur_example(
     "test_nogroups.count_table"
   ))
 
@@ -31,8 +31,8 @@ test_that("test read_mothur", {
 
   # test shared file and cons_tax
   dataset <- read_mothur(
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
-    cons_taxonomy = rdataset_example(
+    otu_shared = strollur_example("final.opti_mcc.shared"),
+    cons_taxonomy = strollur_example(
       "final.cons.taxonomy"
     )
   )
@@ -60,8 +60,8 @@ test_that("test read_mothur", {
 test_that("test read_mothur shared", {
   # test complete dataset
   dataset <- read_mothur(
-    asv_shared = rdataset_example("final.opti_mcc.shared"),
-    phylo_shared = rdataset_example("final.opti_mcc.shared"),
+    asv_shared = strollur_example("final.opti_mcc.shared"),
+    phylo_shared = strollur_example("final.opti_mcc.shared"),
     dataset_name = "miseq_sop"
   )
 
@@ -70,15 +70,15 @@ test_that("test read_mothur shared", {
 })
 
 test_that("test read taxonomy files", {
-  data <- read_mothur_cons_taxonomy(rdataset_example(
+  data <- read_mothur_cons_taxonomy(strollur_example(
     "final.cons.taxonomy"
   ))
 
   expect_equal(nrow(data), 531)
   expect_error(read_mothur_cons_taxonomy(taxonomy = "bad_parameter"))
 
-  data <- read_mothur_taxonomy(rdataset_example(
-    "final.taxonomy"
+  data <- read_mothur_taxonomy(strollur_example(
+    "final.taxonomy.gz"
   ))
 
   expect_equal(nrow(data), 2425)
@@ -87,15 +87,15 @@ test_that("test read taxonomy files", {
 
 test_that("test read taxonomy files", {
   dataset <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    otu_list = rdataset_example("final.opti_mcc.list"),
-    asv_list = rdataset_example("final.asv.list"),
-    phylo_list = rdataset_example("final.tx.list"),
-    sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
-    sequence_tree = rdataset_example("final.phylip.tre"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    taxonomy = strollur_example("final.taxonomy.gz"),
+    design = strollur_example("mouse.time.design"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    asv_list = strollur_example("final.asv.list.gz"),
+    phylo_list = strollur_example("final.tx.list.gz"),
+    sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
+    sequence_tree = strollur_example("final.phylip.tre.gz"),
     dataset_name = "miseq_sop"
   )
 

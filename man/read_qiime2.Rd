@@ -29,10 +29,10 @@ and temporary directories will be removed. Default = TRUE.}
 A 'dataset' object
 }
 \description{
-The read_qiime function reads various types of .qza files created by
+The read_qiime2 function reads various types of .qza files created by
 \href{https://qiime2.org}{qiime2}, and creates a 'dataset' object.
 
-To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime moving-pictures}.
+To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
 }
 \examples{
 
@@ -41,16 +41,16 @@ To generate the various input files you can follow \href{https://amplicon-docs.q
 # metadata.
 
 qza_files <- c(
-  rdataset_example("rep_seqs.qza"),
-  rdataset_example("table.qza"),
-  rdataset_example("taxonomy.qza"),
-  rdataset_example("rooted-tree.qza")
+  strollur_example("rep_seqs.qza"),
+  strollur_example("table.qza"),
+  strollur_example("taxonomy.qza"),
+  strollur_example("rooted-tree.qza")
 )
 
 data <- read_qiime2(
   qza = qza_files,
-  metadata = rdataset_example("sample_metadata.tsv"),
-  dataset_name = "qiime_moving_pictures"
+  metadata = strollur_example("sample_metadata.tsv"),
+  dataset_name = "qiime2_moving_pictures"
 )
 data
 

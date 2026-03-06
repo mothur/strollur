@@ -26,7 +26,7 @@ Read a mothur formatted
 # using the following:
 
 # read mothur's consensus taxonomy file into a data.frame
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+otu_data <- read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 

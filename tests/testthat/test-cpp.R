@@ -1,1 +1,1 @@
-run_cpp_tests("rdataset")
+run_cpp_tests("strollur")

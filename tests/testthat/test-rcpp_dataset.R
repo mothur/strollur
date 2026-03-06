@@ -17,7 +17,7 @@ test_that("rcpp_dataset - new_dataset, copy_dataset", {
 test_that("rcpp_dataset - add_sequences", {
   data <- new_dataset("miseq_sop", 2)
 
-  sequences <- read_fasta(rdataset_example("final.fasta"))
+  sequences <- read_fasta(strollur_example("final.fasta.gz"))
   sequences$comments <- rep("my comments", length(sequences$sequence_names))
 
   # add with all 3 parameters
@@ -508,104 +508,6 @@ test_that("rcpp_dataset - xdev_merge_bins / xdev_merge_seqs", {
   expect_true(grepl("non_existent_seq", message))
 })
 
-test_that("xdev_set_bin_abundance / xdev_set_bin_abundances", {
-  data <- new_dataset("miseq_sop")
-
-  # test with no samples bins
-  xdev_assign_bins(
-    data, data.frame(
-      bin_names = c("bin1", "bin2", "bin3"),
-      abundances = c(10, 20, 30)
-    )
-  )
-
-  expect_equal(abundance(
-    data = data, type = "bins",
-    bin_type = "otu"
-  )[[2]][[1]], 10)
-  expect_equal(count(data, "sequences"), 60)
-
-  message <- capture_output(xdev_set_bin_abundance(
-    data,
-    c("bin1", "non_existent_bin"),
-    c(100, 20)
-  ))
-  # set bin1, ignore non_existent_bin
-  expect_equal(abundance(
-    data = data, type = "bins",
-    bin_type = "otu"
-  )[[2]][[1]], 100)
-  expect_equal(count(data, "sequences"), 150)
-  expect_true(grepl("non_existent_bin", message))
-
-  expect_error(xdev_set_bin_abundances(
-    data,
-    c("bin1"), list(c(100, 20))
-  ))
-
-  clear(data)
-
-  # test with samples bins
-  xdev_assign_bins(
-    data, data.frame(
-      bin_names = c("bin1", "bin1", "bin2", "bin3", "bin3"),
-      abundances = c(10, 20, 30, 40, 50), samples = c(
-        "sample1", "sample2", "sample1",
-        "sample1", "sample2"
-      )
-    )
-  )
-
-  expect_equal(
-    abundance(
-      data = data, type = "bins",
-      bin_type = "otu", by_sample = TRUE
-    )[[2]][1:2],
-    c(10, 20)
-  )
-  expect_equal(count(data, "sequences"), 150)
-  expect_equal(abundance(data, "samples")$abundances, c(80, 70))
-
-  message <- capture_output(xdev_set_bin_abundances(
-    data,
-    c("bin1", "non_existent_bin"),
-    list(c(100, 20), c(10, 0))
-  ))
-  expect_equal(count(data, "sequences"), 240)
-  expect_equal(abundance(data, "samples")$abundances, c(170, 70))
-  expect_true(grepl("non_existent_bin", message))
-  expect_error(xdev_set_bin_abundance(
-    data,
-    c("bin1"), c(100)
-  ))
-
-  # remove samples that will force bin2 removal
-  xdev_remove_samples(data, c("sample1"))
-
-  expect_equal(count(data, "bins"), 2)
-  expect_equal(abundance(
-    data = data, type = "bins",
-    bin_type = "otu"
-  )[[2]], c(20, 50))
-  expect_equal(count(data, "samples"), 1)
-  expect_equal(count(data, "sequences"), 70)
-
-  expect_error(xdev_remove_bins(data, c("bin1"), c("trash_tag", "extra_one")))
-
-  clear(data, "")
-
-  # test with samples bins
-  xdev_assign_bins(
-    data, data.frame(
-      bin_names = c("bin1", "bin1", "bin2", "bin3", "bin3"),
-      sequence_names = c("seq1", "seq2", "seq3", "seq4", "seq5")
-    )
-  )
-
-  expect_error(xdev_set_bin_abundance(data, c("bin1"), c(11)))
-  expect_error(xdev_set_bin_abundances(data, c("bin1"), list(c(11))))
-})
-
 test_that("rcpp_dataset - misc ", {
   data <- new_dataset("miseq_sop", 2)
 
@@ -626,9 +528,8 @@ test_that("rcpp_dataset - misc ", {
 test_that("dataset - xdev_set_abundances, xdev_set_sequences", {
   # create dataset sequences and shared data
   dataset_t <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
     dataset_name = "miseq_sop"
   )
 
@@ -643,9 +544,58 @@ test_that("dataset - xdev_set_abundances, xdev_set_sequences", {
 
   # abund = 191
   seqs_to_update <- c("M00967_43_000000000-A3JHG_1_1108_14299_17220")
-  new_abunds <- list(rep(0, 19))
+})
 
-  # this will remove the sequence
-  xdev_set_abundances(dataset_t, seqs_to_update, new_abunds)
-  # expect_equal(get_num_sequences(dataset_t), 113772)
+test_that("Tests assignSequenceTaxonomy forces reclassify", {
+  data <- new_dataset()
+
+  otus <- c("otu1", "otu2", "otu3", "otu3")
+  seqs <- c("seq1", "seq2", "seq3", "seq4")
+  taxs <- c(
+    "Bacteria(90);",
+    "Bacteria(100);",
+    "Bacteria(100);Bacteroidetes(95);Bacteroidia(90);",
+    "Bacteria(100);Bacteroidetes(93);"
+  )
+  taxs2 <- c(
+    "Bacteria(100);Proteobacteria(89);Betaproteobacteria(85);",
+    "Bacteria(100);Firmicutes(99);Bacilli(90);",
+    "Bacteria(100);Proteobacteria(90);",
+    "Bacteria(100);Bacteroidetes(93);"
+  )
+
+  assign(
+    data,
+    data.frame(sequence_names = seqs, taxonomies = taxs),
+    "sequence_taxonomy"
+  )
+  assign(
+    data,
+    data.frame(sequence_names = seqs, bin_names = otus),
+    "bins"
+  )
+
+  report <- report(data, "bin_taxonomy")
+
+  expected <- c(
+    "Bacteria", "Bacteria_unclassified", "Bacteria_unclassified",
+    "Bacteria", "Bacteria_unclassified", "Bacteria_unclassified",
+    "Bacteria", "Bacteroidetes", "Bacteroidia"
+  )
+  expect_equal(report[["taxon"]], expected)
+
+  assign(
+    data,
+    data.frame(sequence_names = seqs, taxonomies = taxs2),
+    "sequence_taxonomy"
+  )
+
+  report <- report(data, "bin_taxonomy")
+  expected <- c(
+    "Bacteria", "Proteobacteria", "Betaproteobacteria",
+    "Bacteria", "Firmicutes", "Bacilli",
+    "Bacteria", "Bacteroidetes", "Bacteroidetes_unclassified"
+  )
+
+  expect_equal(report[["taxon"]], expected)
 })

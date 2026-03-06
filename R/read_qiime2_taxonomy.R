@@ -3,7 +3,7 @@
 #' Read a \href{https://qiime2.org}{qiime2} qza containing taxonomy data
 #'
 #' # nolint start
-#' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime moving-pictures}.
+#' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
 #' # nolint end
 #'
 #' @param qza file name, a qiime2 .qza file containing taxonomy data.
@@ -14,7 +14,7 @@
 #'
 #' @examples
 #'
-#' artifact <- read_qiime2_taxonomy(rdataset_example(
+#' artifact <- read_qiime2_taxonomy(strollur_example(
 #'   "taxonomy.qza"
 #' ))
 #'

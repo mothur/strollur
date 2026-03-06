@@ -7,7 +7,7 @@
 #'
 #' @examples
 #'
-#' metadata <- read_qiime2_metadata(rdataset_example(
+#' metadata <- read_qiime2_metadata(strollur_example(
 #'   "sample_metadata.tsv"
 #' ))
 #'

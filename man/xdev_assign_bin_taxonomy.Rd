@@ -43,7 +43,7 @@ Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 }
 \examples{
 
-otu_data <- read_mothur_cons_taxonomy(rdataset_example(
+otu_data <- read_mothur_cons_taxonomy(strollur_example(
                         "final.cons.taxonomy"))
 
 data <- new_dataset(dataset_name = "my_dataset")

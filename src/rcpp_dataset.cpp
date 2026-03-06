@@ -2,7 +2,7 @@
 #define SRC_RCPP_DATASET
 
 #include <Rcpp.h>
-#include "../inst/include/rdataset.h"
+#include "../inst/include/strollur.h"
 #include "rcpp_xint_xdev_functions.h"
 #include "dataset.h"
 
@@ -50,8 +50,8 @@ Rcpp::Environment new_dataset(string dataset_name = "",
                               Rcpp::Nullable<int> processors = R_NilValue) {
 
     // dataset$new()
-    Rcpp::Environment rdataset_env("package:rdataset");
-    Rcpp::Environment dataset_class_env = rdataset_env["dataset"];
+    Rcpp::Environment strollur_env("package:strollur");
+    Rcpp::Environment dataset_class_env = strollur_env["dataset"];
     Rcpp::Function constructor = dataset_class_env["new"];
 
     int num_proc = 1;
@@ -128,8 +128,8 @@ Rcpp::List new_reference(string reference_name,
 Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 
     // dataset$new()
-    Rcpp::Environment rdataset_env("package:rdataset");
-    Rcpp::Environment dataset_class_env = rdataset_env["dataset"];
+    Rcpp::Environment strollur_env("package:strollur");
+    Rcpp::Environment dataset_class_env = strollur_env["dataset"];
     Rcpp::Function constructor = dataset_class_env["new"];
     Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -145,10 +145,6 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 //' Clear data from a \link{dataset} object
 //'
 //' @param data, a \link{dataset} object
-//' @param tags a vector of strings containing the items you wish to clear.
-//' Options are 'sequence_data', 'bin_data', 'metadata',
-//' 'references', 'sequence_tree', 'sample_tree' and 'reports'. By default,
-//' everything is cleared.
 //'
 //' @examples
 //'
@@ -156,42 +152,19 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 //' clear(data)
 //'
 //[[Rcpp::export]]
-void clear(Rcpp::Environment data,
-           Rcpp::CharacterVector tags = Rcpp::CharacterVector::create()) {
+void clear(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
     data["raw"] = R_NilValue;
-
-    vector<string> t = Rcpp::as<vector<string>>(tags);
-    bool hasTags = false;
-    if (t.size() > 0) { hasTags = true; }
-
-    d.get()->clear(t);
-
-    Rcpp::Function clear = data["clear"];
-    if (!hasTags) {
-        clear();
-    }else {
-        // remove tags for c++ back end
-        vector<string> goodTags;
-        for (string tag : t) {
-            if ((tag != "references") && (tag != "sequence_data") &&
-                (tag != "bin_data")) {
-                goodTags.push_back(tag);
-            }
-        }
-        if (goodTags.size() != 0) { clear(goodTags); }
-    }
+    data["sequence_tree"] = R_NilValue;
+    data["sample_tree"] = R_NilValue;
+    d.get()->clear();
 }
 /******************************************************************************/
 //' @title export_dataset
 //' @description
-//' Export all data from an instance of the 'Dataset' class.
-//' @param data an Rcpp::XPtr<Dataset> pointer to an instance of the
-//'  'Dataset' c++ class.
-//' @param tags a vector of strings containing the items you wish to export.
-//' Options are 'sequence_data' and 'bin_data', 'metadata',
-//' 'references', 'sequence_tree', 'sample_tree', and 'reports'.
-//' By default, everything is exported.
+//' Export all data from a \link{dataset} object.
+//'
+//' @param data, a \link{dataset} object
 //'
 //' @examples
 //'
@@ -200,41 +173,30 @@ void clear(Rcpp::Environment data,
 //'
 //' @return Rcpp::List, containing the data in the 'Dataset
 //[[Rcpp::export]]
-Rcpp::List export_dataset(Rcpp::Environment data,
-                          Rcpp::CharacterVector tags = Rcpp::CharacterVector::create()) {
-
-    vector<string> t = Rcpp::as<vector<string>>(tags);
-    bool hasTags = false;
-    if (t.size() > 0) { hasTags = true; }
+Rcpp::List export_dataset(Rcpp::Environment data) {
 
     Rcpp::XPtr<Dataset> d = data["data"];
-    Rcpp::List results = d.get()->exportDataset(t);
+    Rcpp::List results = d.get()->exportDataset();
     vector<string> resultNames = results.names();
 
-    if ((!hasTags) || (vectorContains(t, "sequence_tree"))) {
+    Rcpp::Function get = data["get_sequence_tree"];
+    Rcpp::List sequence_tree = get();
 
-        Rcpp::Function get = data["get_sequence_tree"];
-        Rcpp::List sequence_tree = get();
-
-        if (sequence_tree.size() != 0) {
-            results.push_back(sequence_tree);
-            resultNames.push_back("sequence_tree");
-        }
+    if (sequence_tree.size() != 0) {
+        results.push_back(sequence_tree);
+        resultNames.push_back("sequence_tree");
     }
 
-    if ((!hasTags) || (vectorContains(t, "sample_tree"))) {
+    get = data["get_sample_tree"];
+    Rcpp::List sample_tree = get();
 
-        Rcpp::Function get = data["get_sample_tree"];
-        Rcpp::List sample_tree = get();
-
-        if (sample_tree.size() != 0) {
-            results.push_back(sample_tree);
-            resultNames.push_back("sample_tree");
-        }
+    if (sample_tree.size() != 0) {
+        results.push_back(sample_tree);
+        resultNames.push_back("sample_tree");
     }
 
     results.attr("names") = resultNames;
-    results.attr("rdataset_version") = "1.0.0";
+    results.attr("strollur_version") = "1.0.0";
     results.attr("dataset_name") = d.get()->datasetName;
 
     return results;
@@ -309,157 +271,6 @@ bool has_sequence_strings(Rcpp::Environment data) {
 bool is_aligned(Rcpp::Environment data) {
      Rcpp::XPtr<Dataset> d = data["data"];
      return d.get()->isAligned;
-}
-/******************************************************************************/
-//' @title report
-//' @description
-//' Get a data.frame containing the given report in a \link{dataset} object
-//'
-//' @param data, a \link{dataset} object
-//'
-//' @param type, string containing the type of report you would like. Options
-//' include: "sequences", "sequence_bin_assignments", "sequence_taxonomy",
-//' "bin_taxonomy", "bin_representatives","sample_assignments", "metadata",
-//' "references", "sequence_scrap", "bin_scrap". If you have added custom
-//' reports for alignment, contigs_assembly or chimeras, you can get those as well.
-//'  Default = "sequences".
-//'
-//' @param bin_type, string containing the bin type you would like a bin_taxonomy
-//' report for. Default = "otu".
-//'
-//' @examples
-//'
-//' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
-//'
-//' miseq <- miseq_sop_example()
-//'
-//' # To get a report about the FASTA data
-//'
-//' sequence_report <- report(data = miseq, type = "sequences")
-//' head(sequence_report, n = 10)
-//'
-//' # To get the sequence bin assignments
-//'
-//' bin_assignments <- report(data = miseq, type = "sequence_bin_assignments",
-//'                           bin_type = "otu")
-//' head(bin_assignments, n = 10)
-//'
-//' # To get the sample treatment assignments
-//'
-//' report(data = miseq, type = "sample_assignments")
-//'
-//' # To get a report about sequence classifications
-//'
-//' sequence_taxonomy_report <- report(data = miseq,
-//'                                        type = "sequence_taxonomy")
-//' head(sequence_taxonomy_report, n = 10)
-//'
-//' # To get a report about bin classifications for 'otu' data
-//'
-//' otu_taxonomy_report <- report(data = miseq,
-//'                                        type = "bin_taxonomy",
-//'                                        bin_type = "otu")
-//' head(otu_taxonomy_report, n = 10)
-//'
-//' # To get a report about bin classifications for 'asv' data
-//'
-//' asv_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-//'                               bin_type = "asv")
-//' head(asv_taxonomy_report, n = 10)
-//'
-//' # To get a report about bin classifications for 'phylotype' data
-//'
-//' phylotype_taxonomy_report <- report(data = miseq, type = "bin_taxonomy",
-//'                                     bin_type = "phylotype")
-//' head(phylotype_taxonomy_report, n = 10)
-//'
-//' # To get the 'otu' bin representative sequences
-//'
-//' otu_bin_reps <- report(data = miseq, type = "bin_representatives",
-//'                        bin_type = "otu")
-//' head(otu_bin_reps, n = 10)
-//'
-//' # To get a report about the sequences removed during your analysis:
-//'
-//' scrapped_sequence_report <- report(data = miseq, type = "sequence_scrap")
-//'
-//' # To get a report about the "otu" bins removed during your analysis:
-//'
-//' scrapped_otu_report <- report(data = miseq, type = "bin_scrap",
-//'                               bin_type = "otu")
-//'
-//' # To get a report about the "phylotype" bins removed during your analysis:
-//'
-//' scrapped_phylotype_report <- report(data = miseq, type = "bin_scrap",
-//'                                     bin_type = "phylotype")
-//'
-//' # To get the metadata associated with your data:
-//'
-//' metadata <- report(data = miseq, type = "metadata")
-//'
-//' # To get the resource references associated with your data:
-//'
-//' references <- report(data = miseq, type = "references")
-//'
-//' # To get our custom report containing the contigs assembly data:
-//'
-//' contigs_report <- report(data = miseq, type = "contigs_report")
-//' head(contigs_report, n = 10)
-//'
-//' @return data.frame
-//[[Rcpp::export]]
-Rcpp::DataFrame report(Rcpp::Environment data, string type = "sequences",
-                       string bin_type = "otu") {
-
-     Rcpp::XPtr<Dataset> d = data["data"];
-
-     // sequence_data reports contain the starts, ends, ambigs,...
-     if (type == "sequences") {
-        return d.get()->getSequenceReport();
-     }
-     // sequence bin assignments report
-     else if (type == "sequence_bin_assignments") {
-         return d.get()->getList(bin_type);
-     }
-     // sample treatment assignments report
-     else if (type == "sample_assignments") {
-         return d.get()->getSampleTreatmentAssignments();
-     }
-     // representative sequences assignments report
-     else if (type == "bin_representatives") {
-         return d.get()->getBinRepresentativeSequences(bin_type);
-     }
-     // sequence classification report
-     else if (type == "sequence_taxonomy") {
-        return d.get()->getSequenceTaxonomyReport();
-     }
-     // bin classification report
-     else if (type == "bin_taxonomy") {
-        return d.get()->getBinTaxonomyReport(bin_type);
-     }
-     // sequence_scrap report
-     else if (type == "sequence_scrap") {
-         return d.get()->getScrapReport("sequence");
-     }
-     // bin_scrap report
-     else if (type == "bin_scrap") {
-         return d.get()->getScrapReport(bin_type);
-     }
-     // metadata
-     else if (type == "metadata") {
-         return d.get()->getMetadata();
-     }
-     // references
-     else if (type == "references") {
-         return d.get()->getReferences();
-     }
-     else {
-         // custom reports like alignreport, contigs report and chimera reports
-        return d.get()->getReports(type);
-     }
-
-     // empty report
-     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 #endif

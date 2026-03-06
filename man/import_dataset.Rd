@@ -4,16 +4,11 @@
 \alias{import_dataset}
 \title{import_dataset}
 \usage{
-import_dataset(table, tags = NULL)
+import_dataset(table)
 }
 \arguments{
 \item{table}{a table containing the data from a \link{dataset} object. You
 can create the table using 'export(dataset)'.}
-
-\item{tags}{a vector of strings containing the items you wish to export.
-Options are 'sequence_data', 'bin_data', 'metadata',
-'references', 'sequence_tree', 'sample_tree', and 'reports'.
-By default, everything is imported.}
 }
 \value{
 a \link{dataset} object

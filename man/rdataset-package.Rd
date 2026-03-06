@@ -1,34 +1,25 @@
-\name{rdataset-package}
-\alias{rdataset-package}
-\alias{rdataset}
+\name{strollur-package}
+\alias{strollur-package}
+\alias{strollur}
 \docType{package}
 \title{
-  A short title line describing what the package does
+  Store and transfer data used in the analysis of microbial DNA
 }
 \description{
-  A more detailed description of what the package does. A length
-  of about one to five lines is recommended.
+  The 'strollur' package stores the data associated with your microbial DNA
+  analysis. This includes nucleotide sequences, abundance, sample and treatment
+  assignments, taxonomic classifications, asv, otu and phylotype clusters,
+  metadata, trees and various reports. It is designed to facilitate data
+  analysis across multiple R packages with utility functions to import
+  from mothur, qiime2, DADA2 and phyloseq.
 }
 \details{
-  This section should provide a more detailed overview of how to use the
-  package, including the most important functions.
+  Get started by taking a look at our most frequently used functions:
+  new_dataset(), add(), assign(), names(), count(), abundance(), report() and
+  summary().
 }
 \author{
-Your Name, email optional.
-
-Maintainer: Your Name <your@email.com>
-}
-\references{
-  This optional section can contain literature or other references for
-  background information.
+Sarah Westcott, Schloss Lab, University of Michigan
+Maintainer: Sarah Westcott <swestcot@umich.edu>
 }
 \keyword{ package }
-\seealso{
-  Optional links to other man pages
-}
-\examples{
-  \dontrun{
-     ## Optional simple examples of the most important functions
-     ## These can be in \dontrun{} and \donttest{} blocks.   
-  }
-}

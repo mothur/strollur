@@ -1,7 +1,7 @@
 //
 //  summary.h
 //
-//  rdataset pacakge
+//  strollur pacakge
 //
 //  Modified by Sarah Westcott on 5/14/25.
 //  Copyright © 2025 Schloss Lab. All rights reserved.
@@ -11,7 +11,7 @@
 #define summary_hpp
 
 #include "dataset.h"
-#include "../inst/include/rdataset.h"
+#include "../inst/include/strollur.h"
 
 class Summary {
 

@@ -18,7 +18,7 @@ file.
 }
 \examples{
 
-data <- load_dataset(rdataset_example("miseq_sop.rds"))
+data <- load_dataset(strollur_example("miseq_sop.rds"))
 data
 
 }

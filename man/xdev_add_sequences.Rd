@@ -45,13 +45,13 @@ Add sequence data to a \link{dataset} object
 \examples{
 
  data <- new_dataset("miseq_sop", 2)
- fasta_data <- read_fasta(rdataset_example("final.fasta"))
+ fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
  xdev_add_sequences(data, fasta_data)
 
 # With the additional parameters to add information about the reference
 
  data <- new_dataset("miseq_sop", 2)
- fasta_data <- read_fasta(rdataset_example("final.fasta"))
+ fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
  xdev_add_sequences(data, fasta_data,
                new_reference("silva.bacteria.fasta",

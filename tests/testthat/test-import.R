@@ -55,49 +55,17 @@ test_that("import - miseq_sop_example", {
     )
   }
 
-  # only import bin data no sequences
-  dataset_t <- import_dataset(exported_miseq, c("bin_data"))
-
-  # abundances reflect the total abundance of the sequence in bin
-  abundance(dataset_t,
-    type = "bins", bin_type = "asv"
-  )[[2]][1:3]
-  expect_equal(
-    abundance(dataset_t, type = "bins", bin_type = "asv")[[2]][1:3],
-    c(7436, 6285, 5207)
-  )
-  # no list, since no sequences
-  expect_equal(
-    report(dataset_t, "sequence_bin_assignments", "asv"),
-    data.frame()
-  )
-  expect_equal(report(dataset_t, "sequence_taxonomy"), data.frame())
-  # 303 bins x 6 tax levels
-  expect_equal(nrow(report(dataset_t, "bin_taxonomy")), 1818)
-
   data <- dataset$new()
   abunds <- c(1, 10, 100)
   bins <- c("otu1", "otu2", "otu3")
-  xdev_add_report(
-    data,
-    readr::read_tsv(rdataset_example("alignment_data.tsv"),
-      col_names = TRUE, show_col_types = FALSE
-    ), "alignment_report",
-    "QueryName"
-  )
-  xdev_add_report(
-    data,
-    readr::read_tsv(rdataset_example("contigs_data.tsv"),
-      col_names = TRUE, show_col_types = FALSE
-    ), "contigs_report", "Name"
-  )
+
   xdev_assign_bins(
     data = data,
     table = data.frame(bin_names = bins, abundances = abunds)
   )
 
   expect_equal(count(data, "bins"), 3)
-  expect_equal(count(data, distinct = TRUE), 5)
+  expect_equal(count(data, distinct = TRUE), 3)
   expect_equal(count(data), 111)
   expect_equal(count(data, "samples"), 0)
   expect_equal(count(data, "treatments"), 0)
@@ -106,7 +74,7 @@ test_that("import - miseq_sop_example", {
   dataset2 <- import_dataset(table)
 
   expect_equal(count(dataset2, "bins"), 3)
-  expect_equal(count(dataset2, distinct = TRUE), 5)
+  expect_equal(count(dataset2, distinct = TRUE), 3)
   expect_equal(count(dataset2), 111)
   expect_equal(count(dataset2, "samples"), 0)
   expect_equal(count(dataset2, "treatments"), 0)
@@ -115,10 +83,10 @@ test_that("import - miseq_sop_example", {
 test_that("import - no sequence data", {
   # just shared and constax dataset
   just_bins <- read_mothur(
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
-    cons_taxonomy = rdataset_example("final.cons.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+    otu_shared = strollur_example("final.opti_mcc.shared"),
+    cons_taxonomy = strollur_example("final.cons.taxonomy"),
+    design = strollur_example("mouse.time.design"),
+    sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
     dataset_name = "just_bins"
   )
 
@@ -140,25 +108,25 @@ test_that("import - no sequence data", {
   expect_equal(count(dataset), count(just_bins))
   expect_equal(count(dataset, "treatments"), count(just_bins, "treatments"))
   expect_equal(count(dataset, "samples"), count(just_bins, "samples"))
-  expect_equal(length(names(dataset, "sequences")), 0)
+  expect_equal(length(names(dataset, "sequences")), 531)
 
   expect_error(import_dataset(table, c("sequence_data")))
   expect_error(import_dataset(table, c("metadata")))
   expect_error(import_dataset(table, c("references")))
   expect_error(import_dataset(table, c("sequence_tree")))
 
-  attr(table, "rdataset_version") <- "0.2.1"
+  attr(table, "strollur_version") <- "0.2.1"
   expect_error(import_dataset(table))
 })
 
 test_that("import - no bin data", {
   # just shared and constax dataset
   just_seqs <- read_mothur(
-    fasta = rdataset_example("final.fasta"),
-    count = rdataset_example("final.count_table"),
-    taxonomy = rdataset_example("final.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    sequence_tree = rdataset_example("final.phylip.tre"),
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    taxonomy = strollur_example("final.taxonomy.gz"),
+    design = strollur_example("mouse.time.design"),
+    sequence_tree = strollur_example("final.phylip.tre.gz"),
     dataset_name = "just_seqs"
   )
 
@@ -187,10 +155,10 @@ test_that("import - no bin data", {
 
 test_that("import - errors and warnings", {
   just_bins <- read_mothur(
-    otu_shared = rdataset_example("final.opti_mcc.shared"),
-    cons_taxonomy = rdataset_example("final.cons.taxonomy"),
-    design = rdataset_example("mouse.time.design"),
-    sample_tree = rdataset_example("final.opti_mcc.jclass.ave.tre"),
+    otu_shared = strollur_example("final.opti_mcc.shared"),
+    cons_taxonomy = strollur_example("final.cons.taxonomy"),
+    design = strollur_example("mouse.time.design"),
+    sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
     dataset_name = "just_bins"
   )
 
@@ -209,34 +177,10 @@ test_that("import - errors and warnings", {
   expect_equal(count(data), count(just_bins))
   expect_equal(count(data, "treatments"), count(just_bins, "treatments"))
   expect_equal(count(data, "samples"), count(just_bins, "samples"))
-  expect_equal(length(names(data)), 0)
+  expect_equal(length(names(data)), 531)
 
   data <- dataset$new()
 
-  table <- export_dataset(data, c("sequence_data", "bin_data"))
+  table <- export_dataset(data)
   expect_equal(length(table), 0)
-})
-
-test_that("import - with tags", {
-  miseq <- miseq_sop_example()
-
-  expect_equal(count(miseq, "bins", "otu"), 531)
-  expect_equal(count(miseq), 113963)
-  expect_equal(count(miseq, distinct = TRUE), 2425)
-  expect_equal(nrow(report(miseq, "bin_representatives")), 531)
-
-  # just export bin data, no sequence data
-  table <- export_dataset(miseq)
-
-  just_bins <- import_dataset(table, c("bin_data"))
-
-  expect_equal(count(just_bins, "bins", "otu"), 531)
-  expect_equal(count(just_bins), 113963)
-  expect_equal(count(just_bins, distinct = TRUE), 0)
-
-  expect_equal(names(miseq, "dataset"), names(just_bins, "dataset"))
-  expect_equal(count(just_bins, "treatments"), 0)
-  expect_equal(count(just_bins, "samples"), 0)
-  expect_equal(length(names(just_bins)), 0)
-  expect_equal(nrow(report(just_bins, "bin_representatives")), 0)
 })

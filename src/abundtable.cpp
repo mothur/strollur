@@ -1,4 +1,4 @@
-#include "../inst/include/rdataset.h"
+#include "../inst/include/strollur.h"
 #include "dataset.h"
 
 /******************************************************************************/
@@ -217,7 +217,7 @@ double AbundTable::assignTreatments(const vector<string>& s,
                sampleTreatment[itSample->second] = t[i];
                numTreatmentsAssigned++;
            }else {
-               string message = "[WARNING]: The dataset does not contain sample ,";
+               string message = "[WARNING]: The dataset does not contain sample, '";
                message += s[i] + "'. Ignoring '" + s[i] + "'.";
                RcppThread::Rcout << endl << message << endl;
            }
@@ -362,8 +362,11 @@ const map<string, string> AbundTable::getSampleTreatmentAssignments() {
 
     if (hasTreatments) {
         for (int i = 0; i < sampleNames.size(); i++) {
-            string treatmentName = sampleTreatment[sampleIndex[sampleNames[i]]];
-            results[sampleNames[i]] = treatmentName;
+            int index = sampleIndex[sampleNames[i]];
+            if (tableSamples[index]) {
+                string treatmentName = sampleTreatment[index];
+                results[sampleNames[i]] = treatmentName;
+            }
         }
     }
 
@@ -667,7 +670,7 @@ void AbundTable::removeSamples(const vector<string>& samples) {
     }
 }
 /******************************************************************************/
-// set abundance parsed by sample - for datasets with samples
+// set abundance
 void AbundTable::setAbundance(const int name, const vector<float>& abunds) {
 
     vector<float> origAbunds = getAbundances(name);
@@ -695,7 +698,7 @@ void AbundTable::setAbundance(const int name, const vector<float>& abunds) {
     }
 }
 /******************************************************************************/
-// set abundance - for datasets without samples
+// set abundance - for single sample
 void AbundTable::setAbundance(int name, float abund, string sample) {
 
     if (!hasSampleData && (sample == "")) {
@@ -734,6 +737,37 @@ void AbundTable::setAbundance(int name, float abund, string sample) {
             }
         }
     }
+}
+/******************************************************************************/
+void AbundTable::setAbundances(const map<int, map<string, float>>& binAbunds) {
+
+    // just abunds no parse by sample
+    if (hasSampleData) {
+        for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
+
+            vector<float> abunds(numSamples, 0);
+            for (auto itSample = it->second.begin();
+                 itSample != it->second.end(); itSample++) {
+
+                 // valid sample
+                 auto itIndex = sampleIndex.find(itSample->first);
+
+                if (itIndex != sampleIndex.end()) {
+                    int index = itIndex->second;
+
+                    abunds[index] = itSample->second;
+                }
+            }
+
+            setAbundance(it->first, abunds);
+        }
+    }else{
+        for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
+            setAbundance(it->first, it->second.begin()->second);
+        }
+    }
+
+    updateTotals();
 }
 /******************************************************************************/
 void AbundTable::updateTotals() {

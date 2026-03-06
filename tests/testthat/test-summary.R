@@ -2,7 +2,7 @@
 
 test_that("summary tests", {
   # test non dataset type
-  contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+  contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
     col_names = TRUE, show_col_types = FALSE
   )
   expect_equal(class(summary(contigs_report)), "table")
@@ -67,13 +67,13 @@ test_that("summary tests", {
 
   expect_equal(names(df), c("type", "trash_code", "unique", "total"))
   expect_equal(df[[1]], c("sequence", "otu", "asv", "phylotype"))
-  expect_equal(df[[2]], rep("removedSamples", 4))
+  expect_equal(df[[2]], rep("remove_samples", 4))
   expect_equal(df[[3]], c(101, 14, 101, 2))
   expect_equal(df[[4]], c(109, 14, 109, 2))
 })
 
 test_that("add, assign, abundance error tests", {
-  contigs_report <- readr::read_tsv(rdataset_example("final.contigs_report"),
+  contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
     col_names = TRUE, show_col_types = FALSE
   )
 
