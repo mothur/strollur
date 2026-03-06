@@ -1,12 +1,24 @@
 test_that("test read_phyloseq", {
-  phyloseq_object <- phyloseq::import_mothur(rdataset_example("esophagus.fn.list"), rdataset_example("esophagus.good.groups"), 
-                          rdataset_example("esophagus.tree"))
+  list_file <- strollur_example("esophagus.fn.list")
+  groups_file <- strollur_example("esophagus.good.groups")
+  tree_file <- strollur_example("esophagus.tree")
+
+  phyloseq_object <- phyloseq::import_mothur(list_file,
+                                             groups_file,
+                                             tree_file)
   data <- read_phyloseq(phyloseq_object)
   expect_true(count(data) == 675)
 
-  phyloseq_object_w_tax <- phyloseq::import_mothur(mothur_list_file = rdataset_example("final.asv.list"),
-                                         mothur_shared_file = rdataset_example("final.opti_mcc.shared"), 
-                                         mothur_constaxonomy_file = rdataset_example("final.cons.taxonomy"))
+  list_file <- strollur_example("final.asv.list.gz")
+  shared_file <- strollur_example("final.opti_mcc.shared")
+  constaxonomy_file <- strollur_example("final.cons.taxonomy")
+
+  phyloseq_object_w_tax <- phyloseq::import_mothur(mothur_list_file = list_file,
+                                                   mothur_shared_file =
+                                                     shared_file,
+                                                   mothur_constaxonomy_file =
+                                                     constaxonomy_file)
+
   data <- read_phyloseq(phyloseq_object_w_tax)
   row_data <- phyloseq::tax_table(phyloseq_object_w_tax)[9, ]
   rdata_set_data <- report(data, type = "sequence_taxonomy")
@@ -26,7 +38,7 @@ test_that("test read_phyloseq", {
 
 test_that("read phyloseq fails if not given an phyloseq object", {
   empty <- c()
-  expect_error(read_phyloseq(empty), 
-               "phyloseq_object has to an object created using the phyloseq package.")
+  expect_error(read_phyloseq(empty),
+               paste0("phyloseq_object has to an object created using ",
+                      "the phyloseq package."))
 })
-

@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(rdataset)
+library(strollur)
 library(phyloseq)
 ```
 
@@ -31,8 +31,8 @@ rdata_object
 Now that are phyloseq object is converted into a rdataset object, we can utilize functions like `count()`, `abundance()`, and `names()` to inspect the data. 
 ```{r rdataset_functions}
 count(rdata_object, "samples")
-names(rdata_object, "sequences")
-abundance(rdata_object, "sequences")
+head(names(rdata_object, "sequences"))
+head(abundance(rdata_object, "sequences"))
 ```
 
 Furthermore, we can output rdataset objects as phyloseq objects using the `write_phyloseq()` function.
@@ -46,9 +46,5 @@ phyloseq_object
 miseq <- miseq_sop_example()
 miseq_phyloseq <- write_phyloseq(miseq)
 miseq_phyloseq
-
 ```
-
-
-
 

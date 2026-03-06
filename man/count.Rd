@@ -16,8 +16,8 @@ count(
 \item{data, }{a \link{dataset} object}
 
 \item{type, }{string containing the type of data you want the number of.
-Options include: "sequences", "samples", "treatments", "bins".
-Default = "sequences".}
+Options include: "sequences", "samples", "treatments", "bins", and
+ "references". Default = "sequences".}
 
 \item{bin_type, }{string containing the bin type you would like the number of
 bins for. Default = "otu".}

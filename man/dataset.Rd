@@ -367,16 +367,9 @@ data.frame
 \subsection{Method \code{get_summary()}}{
 Get summary of the sequence reports
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataset$get_summary(silent = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{dataset$get_summary()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{silent}}{Default = FALSE, meaning print summaries}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
 list of data.frames
 }
