@@ -1,4 +1,4 @@
-#' @title read_phyloseq 
+#' @title read_phyloseq
 #' @export
 read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
                           dataset_name = "") {

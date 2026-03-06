@@ -1,4 +1,4 @@
-#' @title write_phyloseq 
+#' @title write_phyloseq
 #' @export
 write_phyloseq <- function(data) {
   if (!requireNamespace("phyloseq", quietly = TRUE)) {
