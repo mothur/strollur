@@ -23,8 +23,8 @@ rdataset includes functionality for the reading and writing of phyloseq objects.
 
 ```{r}
 # Using the phyloseq example data
-data(GlobalPatterns)
-rdata_object <- read_phyloseq(GlobalPatterns)
+phylo_object <- readRDS(strollur_example("GlobalPatterns.RDS"))
+rdata_object <- read_phyloseq(phylo_object)
 rdata_object
 ```
 

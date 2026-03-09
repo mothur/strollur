@@ -29,6 +29,7 @@ Imports:
     rbiom,
     rhdf5,
     data.table,
+    parallelly,
     R.utils
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
 Depends: R (>= 4.4.0)
