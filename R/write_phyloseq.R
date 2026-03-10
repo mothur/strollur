@@ -1,4 +1,14 @@
 #' @title write_phyloseq
+#' @description
+#' The `write_phyloseq()` function will take any strollur object and
+#' return it as a "phyloseq" object.
+#' @param data the strollur object you created using one of the many 
+#' read functions in this package.
+#' @return returns a "phyloseq" object.¬
+#' @examples
+#'  miseq <- miseq_sop_example()
+#'  phylo_obj <- write_phyloseq(miseq)
+#' 
 #' @export
 write_phyloseq <- function(data) {
   if (!requireNamespace("phyloseq", quietly = TRUE)) {

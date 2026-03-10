@@ -30,7 +30,8 @@ Imports:
     rhdf5,
     data.table,
     parallelly,
-    R.utils
+    R.utils,
+    stats
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
 Depends: R (>= 4.4.0)
 Suggests: 
