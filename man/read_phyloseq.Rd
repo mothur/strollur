@@ -20,8 +20,8 @@ be a character. Defaults to NULL.}
 a strollur object.
 }
 \description{
-The `read_phyloseq()` function reads phyloseq objects created from 
-the phyloseq package 
+The `read_phyloseq()` function reads phyloseq objects created from
+the phyloseq package
 (https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html)
 and converts it into a strollur object.
 }
@@ -29,5 +29,4 @@ and converts it into a strollur object.
  miseq <- miseq_sop_example()
  phylo_obj <- write_phyloseq(miseq)
  miseq_re_read <- read_phyloseq(phylo_obj)
-
 }

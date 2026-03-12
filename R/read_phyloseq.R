@@ -1,8 +1,8 @@
 #' @importFrom stats reshape
 #' @title read_phyloseq
 #' @description
-#' The `read_phyloseq()` function reads phyloseq objects created from 
-#' the phyloseq package 
+#' The `read_phyloseq()` function reads phyloseq objects created from
+#' the phyloseq package
 #' (https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html)
 #' and converts it into a strollur object.
 #' @param phyloseq_object the phyloseq object that is returned when using
@@ -10,13 +10,12 @@
 #' @param treatment_column_name the column name inside your phyloseq object
 #' within your sample data that is used to descrbe treatments. It must
 #' be a character. Defaults to NULL.
-#' @param dataset_name A string containing a name for your dataset. 
+#' @param dataset_name A string containing a name for your dataset.
 #' @return a strollur object.
 #' @examples
 #'  miseq <- miseq_sop_example()
 #'  phylo_obj <- write_phyloseq(miseq)
 #'  miseq_re_read <- read_phyloseq(phylo_obj)
-#' 
 #' @export
 read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
                           dataset_name = "") {

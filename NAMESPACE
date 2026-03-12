@@ -13,6 +13,7 @@ import(RcppThread)
 import(rhdf5)
 
 importFrom(stats, na.omit)
+importFrom(stats, reshape)
 importFrom(utils, zip)
 importFrom(utils, unzip)
 importFrom(utils, read.table)
