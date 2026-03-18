@@ -31,8 +31,8 @@ importFrom(Rcpp, evalCpp)
 #importFrom(Rcpp, loadModule)
 
 # R6 classes
-importFrom(R6, R6Class)
 importFrom(methods, new)
+importFrom(R6, R6Class)
 importFrom(waldo, compare)
 
 # reads

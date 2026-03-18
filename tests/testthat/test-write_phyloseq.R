@@ -53,3 +53,9 @@ test_that("write phyloseq will fail if the dataset is empty", {
   empty_dataset <- dataset$new("")
   expect_error(write_phyloseq(empty_dataset))
 })
+
+test_that("Will error if phyloseq is not installed", {
+  local_mocked_bindings(require_namespace = function(...) FALSE)
+  expect_error(write_phyloseq(c()),
+               "To use this functionality")
+})

@@ -10,8 +10,8 @@
 #'  phylo_obj <- write_phyloseq(miseq)
 #' @export
 write_phyloseq <- function(data) {
-  if (!requireNamespace("phyloseq", quietly = TRUE)) {
-    stop("To use this functionality you have to install the phyloseq package")
+  if (!require_namespace("phyloseq")) {
+    stop("To use this functionality you have to install the phyloseq package.")
   }
 
   if (!inherits(data, "dataset")) {

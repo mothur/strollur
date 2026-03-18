@@ -41,3 +41,7 @@ sort_dataframe <- function(data, order, named_col) {
   unlist(words)
 }
 # =========================================================================== #
+require_namespace <- function(package_name) {
+  requireNamespace(package_name, quietly = TRUE)
+}
+# =========================================================================== #

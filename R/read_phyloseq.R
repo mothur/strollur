@@ -19,8 +19,8 @@
 #' @export
 read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
                           dataset_name = "") {
-  if (!requireNamespace("phyloseq", quietly = TRUE)) {
-    stop("To use this functionality you have to install the phyloseq package")
+  if (!require_namespace("phyloseq")) {
+    stop("To use this functionality you have to install the phyloseq package.")
   }
 
   if (!inherits(phyloseq_object, "phyloseq")) {

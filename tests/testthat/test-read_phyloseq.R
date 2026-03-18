@@ -42,3 +42,9 @@ test_that("read phyloseq fails if not given an phyloseq object", {
                paste0("phyloseq_object has to an object created using ",
                       "the phyloseq package."))
 })
+
+test_that("Will error if phyloseq is not installed", {
+  local_mocked_bindings(require_namespace = function(...) FALSE)
+  expect_error(read_phyloseq(c()),
+               "To use this functionality")
+})
