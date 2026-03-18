@@ -41,7 +41,15 @@ sort_dataframe <- function(data, order, named_col) {
   unlist(words)
 }
 # =========================================================================== #
+#' @title require_namespace
+#' @description a wrapper for `requireNamespace`. Allowing us to more
+#' easily create mock test for this functionality.
+#' @param package_name the name of the package.
+#' @returns A logical TRUE or FALSE boolean depending on whether the
+#' package was added to the search path.
+#' @keywords internal
 require_namespace <- function(package_name) {
   requireNamespace(package_name, quietly = TRUE)
 }
+
 # =========================================================================== #
