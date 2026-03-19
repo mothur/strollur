@@ -11,6 +11,7 @@
 //' @name get_available_processors
 //' @description
 //' Get the number of available cores
+//' @export
 // [[Rcpp::export]]
 int get_available_processors() {
      // Use Rcpp::Environment and Rcpp::Function to call R code from C++.
@@ -44,6 +45,7 @@ int get_available_processors() {
 //' data <- new_dataset(dataset_name = "soil", processors = 2)
 //'
 //' @returns a \link{dataset} object
+//' @export
 //' @seealso The 'new' method in the \link{dataset} class
 //[[Rcpp::export]]
 Rcpp::Environment new_dataset(string dataset_name = "",
@@ -92,6 +94,7 @@ Rcpp::Environment new_dataset(string dataset_name = "",
 //'                            "https://mothur.org/wiki/silva_reference_files/")
 //'
 //' @returns a list
+//' @export
 //' @seealso [add()]
 //[[Rcpp::export]]
 Rcpp::List new_reference(string reference_name,
@@ -124,6 +127,7 @@ Rcpp::List new_reference(string reference_name,
 //'
 //' @returns a \link{dataset} object
 //' @seealso The 'new' method in the \link{dataset} class
+//' @export
 //[[Rcpp::export]]
 Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 
@@ -151,6 +155,7 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 //' data <- miseq_sop_example()
 //' clear(data)
 //'
+//' @export
 //[[Rcpp::export]]
 void clear(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
@@ -172,6 +177,7 @@ void clear(Rcpp::Environment data) {
 //' export_dataset(dataset)
 //'
 //' @return Rcpp::List, containing the data in the 'Dataset
+//' @export
 //[[Rcpp::export]]
 Rcpp::List export_dataset(Rcpp::Environment data) {
 
@@ -213,6 +219,7 @@ Rcpp::List export_dataset(Rcpp::Environment data) {
 //' get_bin_types(data)
 //'
 //' @return vector of strings
+//' @export
 //[[Rcpp::export]]
 vector<string> get_bin_types(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
@@ -232,6 +239,7 @@ vector<string> get_bin_types(Rcpp::Environment data) {
 //' has_sample(data, "not a valid sample")
 //'
 //' @return boolean indicating whether the dataset has a given sample
+//' @export
 //[[Rcpp::export]]
 bool has_sample(Rcpp::Environment data, string sample) {
      Rcpp::XPtr<Dataset> d = data["data"];
@@ -250,6 +258,7 @@ bool has_sample(Rcpp::Environment data, string sample) {
 //'
 //' @return boolean indicating whether the dataset has sequence nucleotide
 //' strings.
+//' @export
 //[[Rcpp::export]]
 bool has_sequence_strings(Rcpp::Environment data) {
      Rcpp::XPtr<Dataset> d = data["data"];
@@ -267,6 +276,7 @@ bool has_sequence_strings(Rcpp::Environment data) {
 //' is_aligned(dataset)
 //'
 //' @return Boolean
+//' @export
 //[[Rcpp::export]]
 bool is_aligned(Rcpp::Environment data) {
      Rcpp::XPtr<Dataset> d = data["data"];

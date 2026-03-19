@@ -13,7 +13,7 @@ License: GPL (>= 3)
 RoxygenNote: 7.3.3
 biocViews:
 Imports: 
-    Rcpp (>= 1.1.0),
+    Rcpp,
     RcppThread,
     cli,
     methods,
@@ -31,7 +31,8 @@ Imports:
     data.table,
     parallelly,
     R.utils,
-    stats
+    stats,
+    utils
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
 Depends: R (>= 4.4.0)
 Suggests: 

@@ -19,7 +19,7 @@ library(strollur)
 library(phyloseq)
 ```
 
-rdataset includes functionality for the reading and writing of phyloseq objects. To covnert a phyloseq object to a rdataset object, you need to run the `read_phyloseq()` function. 
+rdataset includes functionality for the reading and writing of phyloseq objects. To convert a phyloseq object to a rdataset object, you need to run the `read_phyloseq()` function. 
 
 ```{r}
 # Using the phyloseq example data

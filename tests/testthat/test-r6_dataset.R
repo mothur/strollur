@@ -1252,6 +1252,7 @@ test_that("dataset - get_sequence_summary,", {
 
 test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   # create tree from sequences
+
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
   dataset_t <- dataset$new()

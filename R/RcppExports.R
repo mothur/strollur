@@ -5,6 +5,7 @@
 #' @name get_available_processors
 #' @description
 #' Get the number of available cores
+#' @export
 get_available_processors <- function() {
     .Call(`_strollur_get_available_processors`)
 }
@@ -32,6 +33,7 @@ get_available_processors <- function() {
 #' data <- new_dataset(dataset_name = "soil", processors = 2)
 #'
 #' @returns a \link{dataset} object
+#' @export
 #' @seealso The 'new' method in the \link{dataset} class
 new_dataset <- function(dataset_name = "", processors = NULL) {
     .Call(`_strollur_new_dataset`, dataset_name, processors)
@@ -64,6 +66,7 @@ new_dataset <- function(dataset_name = "", processors = NULL) {
 #'                            "https://mothur.org/wiki/silva_reference_files/")
 #'
 #' @returns a list
+#' @export
 #' @seealso [add()]
 new_reference <- function(reference_name, reference_version = "", reference_usage = "", reference_note = "", reference_url = "") {
     .Call(`_strollur_new_reference`, reference_name, reference_version, reference_usage, reference_note, reference_url)
@@ -84,6 +87,7 @@ new_reference <- function(reference_name, reference_version = "", reference_usag
 #'
 #' @returns a \link{dataset} object
 #' @seealso The 'new' method in the \link{dataset} class
+#' @export
 copy_dataset <- function(data) {
     .Call(`_strollur_copy_dataset`, data)
 }
@@ -99,6 +103,7 @@ copy_dataset <- function(data) {
 #' data <- miseq_sop_example()
 #' clear(data)
 #'
+#' @export
 clear <- function(data) {
     invisible(.Call(`_strollur_clear`, data))
 }
@@ -115,6 +120,7 @@ clear <- function(data) {
 #' export_dataset(dataset)
 #'
 #' @return Rcpp::List, containing the data in the 'Dataset
+#' @export
 export_dataset <- function(data) {
     .Call(`_strollur_export_dataset`, data)
 }
@@ -130,6 +136,7 @@ export_dataset <- function(data) {
 #' get_bin_types(data)
 #'
 #' @return vector of strings
+#' @export
 get_bin_types <- function(data) {
     .Call(`_strollur_get_bin_types`, data)
 }
@@ -147,6 +154,7 @@ get_bin_types <- function(data) {
 #' has_sample(data, "not a valid sample")
 #'
 #' @return boolean indicating whether the dataset has a given sample
+#' @export
 has_sample <- function(data, sample) {
     .Call(`_strollur_has_sample`, data, sample)
 }
@@ -163,6 +171,7 @@ has_sample <- function(data, sample) {
 #'
 #' @return boolean indicating whether the dataset has sequence nucleotide
 #' strings.
+#' @export
 has_sequence_strings <- function(data) {
     .Call(`_strollur_has_sequence_strings`, data)
 }
@@ -178,6 +187,7 @@ has_sequence_strings <- function(data) {
 #' is_aligned(dataset)
 #'
 #' @return Boolean
+#' @export
 is_aligned <- function(data) {
     .Call(`_strollur_is_aligned`, data)
 }
@@ -228,6 +238,7 @@ is_aligned <- function(data) {
 #' xdev_abundance(data = miseq, type = "treatments")
 #'
 #' @return data.frame
+#' @export
 xdev_abundance <- function(data, type = "sequence", bin_type = "otu", by_sample = FALSE) {
     .Call(`_strollur_xdev_abundance`, data, type, bin_type, by_sample)
 }
@@ -268,6 +279,7 @@ xdev_abundance <- function(data, type = "sequence", bin_type = "otu", by_sample 
 #' xdev_add_references(data, reference_table)
 #'
 #' @return double containing the number of references added
+#' @export
 xdev_add_references <- function(data, table, reference_name = "reference_names", reference_version = "reference_versions", reference_usage = "reference_usages", reference_note = "reference_notes", reference_url = "reference_urls", verbose = TRUE) {
     .Call(`_strollur_xdev_add_references`, data, table, reference_name, reference_version, reference_usage, reference_note, reference_url, verbose)
 }
@@ -307,6 +319,7 @@ xdev_add_references <- function(data, table, reference_name = "reference_names",
 #'
 #' xdev_add_report(data, metadata, "metadata")
 #'
+#' @export
 xdev_add_report <- function(data, table, type = "metadata", sequence_name = "sequence_names", verbose = TRUE) {
     invisible(.Call(`_strollur_xdev_add_report`, data, table, type, sequence_name, verbose))
 }
@@ -353,6 +366,7 @@ xdev_add_report <- function(data, table, type = "metadata", sequence_name = "seq
 #' # You can also add references using the 'add_references' function.
 #'
 #' @return double containing the number of sequences added
+#' @export
 xdev_add_sequences <- function(data, table, reference = NULL, sequence_name = "sequence_names", sequence = "sequences", comment = "comments", verbose = TRUE) {
     .Call(`_strollur_xdev_add_sequences`, data, table, reference, sequence_name, sequence, comment, verbose)
 }
@@ -408,6 +422,7 @@ xdev_add_sequences <- function(data, table, reference = NULL, sequence_name = "s
 #'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #'
 #' @return double containing the number of bins assigned
+#' @export
 xdev_assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_names", abundance = "abundances", sample = "samples", sequence_name = "sequence_names", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_bins`, data, table, bin_type, reference, bin_name, abundance, sample, sequence_name, verbose)
 }
@@ -446,6 +461,7 @@ xdev_assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bi
 #'                                       bin_type = "otu")
 #'
 #' @return double containing the number of representative sequences assigned
+#' @export
 xdev_assign_bin_representative_sequences <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_names", sequence_name = "sequence_names", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_bin_representative_sequences`, data, table, bin_type, reference, bin_name, sequence_name, verbose)
 }
@@ -487,6 +503,7 @@ xdev_assign_bin_representative_sequences <- function(data, table, bin_type = "ot
 #'                          bin_type = "otu")
 #'
 #' @return double containing the number of bins assigned
+#' @export
 xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_names", taxonomy = "taxonomies", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_bin_taxonomy`, data, table, bin_type, reference, bin_name, taxonomy, verbose)
 }
@@ -532,6 +549,7 @@ xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = 
 #' xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
 #'
 #' @return double containing the number of sequence assigned
+#' @export
 xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequence_name = "sequence_names", taxonomy = "taxonomies", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_sequence_taxonomy`, data, table, reference, sequence_name, taxonomy, verbose)
 }
@@ -569,6 +587,7 @@ xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequenc
 #'                                sequence_name = "names")
 #'
 #' @return double containing the number of sequences assigned
+#' @export
 xdev_assign_sequence_abundance <- function(data, table, sequence_name = "sequence_names", abundance = "abundances", sample = "samples", treatment = "treatments", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_sequence_abundance`, data, table, sequence_name, abundance, sample, treatment, verbose)
 }
@@ -604,6 +623,7 @@ xdev_assign_sequence_abundance <- function(data, table, sequence_name = "sequenc
 #' xdev_assign_treatments(data, sample_assignments)
 #'
 #' @return double containing the number of samples assigned to treatments
+#' @export
 xdev_assign_treatments <- function(data, table, sample = "samples", treatment = "treatments", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_treatments`, data, table, sample, treatment, verbose)
 }
@@ -686,6 +706,7 @@ xdev_assign_treatments <- function(data, table, sample = "samples", treatment = 
 #' distinct = TRUE)
 #'
 #' @return double
+#' @export
 xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NULL, distinct = FALSE) {
     .Call(`_strollur_xdev_count`, data, type, bin_type, samples, distinct)
 }
@@ -704,6 +725,7 @@ xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #'
 #' @return vector of strings containing the names of the sequences in each bin
 #' separated by commas
+#' @export
 xdev_get_list_vector <- function(data, type = "otu") {
     .Call(`_strollur_xdev_get_list_vector`, data, type)
 }
@@ -731,6 +753,7 @@ xdev_get_list_vector <- function(data, type = "otu") {
 #'
 #' @return 2D vector of strings ([num_seqs][num_samples]) containing data
 #' requested parsed by sample.
+#' @export
 xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.character( c())) {
     .Call(`_strollur_xdev_get_by_sample`, data, type, samples)
 }
@@ -750,6 +773,7 @@ xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.chara
 #'
 #' @return vector of string containing nucleotide strings of the sequences in
 #' a \link{dataset} object
+#' @export
 xdev_get_sequences <- function(data, sample = "") {
     .Call(`_strollur_xdev_get_sequences`, data, sample)
 }
@@ -784,6 +808,7 @@ xdev_get_sequences <- function(data, sample = "") {
 #'
 #'  report(data = data, type = "bin_scrap")
 #'
+#' @export
 xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu") {
     invisible(.Call(`_strollur_xdev_merge_bins`, data, bin_names, reason, bin_type))
 }
@@ -842,6 +867,7 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu"
 #'
 #' count(data = data, type = "sequences")
 #'
+#' @export
 xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
     invisible(.Call(`_strollur_xdev_merge_sequences`, data, sequence_names, reason))
 }
@@ -907,6 +933,7 @@ xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
 #' xdev_names(data = miseq, type = "reports")
 #'
 #' @return vector of strings, containing the names requested
+#' @export
 xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NULL, distinct = FALSE) {
     .Call(`_strollur_xdev_names`, data, type, bin_type, samples, distinct)
 }
@@ -944,6 +971,7 @@ xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #'
 #'   count(data = data, type = "bins", bin_type = "otu")
 #'
+#' @export
 xdev_remove_bins <- function(data, bin_names, trash_tags, bin_type = "otu") {
     invisible(.Call(`_strollur_xdev_remove_bins`, data, bin_names, trash_tags, bin_type))
 }
@@ -973,6 +1001,7 @@ xdev_remove_bins <- function(data, bin_names, trash_tags, bin_type = "otu") {
 #'
 #' xdev_remove_lineages(data = data, contaminants = contaminants)
 #'
+#' @export
 xdev_remove_lineages <- function(data, contaminants, reason = "contaminant") {
     invisible(.Call(`_strollur_xdev_remove_lineages`, data, contaminants, reason))
 }
@@ -1002,6 +1031,7 @@ xdev_remove_lineages <- function(data, contaminants, reason = "contaminant") {
 #'
 #' count(data = data, type = "samples")
 #'
+#' @export
 xdev_remove_samples <- function(data, samples, reason = "remove_samples") {
     invisible(.Call(`_strollur_xdev_remove_samples`, data, samples, reason))
 }
@@ -1045,6 +1075,7 @@ xdev_remove_samples <- function(data, samples, reason = "remove_samples") {
 #'
 #' count(data = data, type = "sequences")
 #'
+#' @export
 xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
     invisible(.Call(`_strollur_xdev_remove_sequences`, data, sequence_names, trash_tags))
 }
@@ -1151,6 +1182,7 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #' head(contigs_report, n = 10)
 #'
 #' @return data.frame
+#' @export
 xdev_report <- function(data, type = "sequences", bin_type = "otu") {
     .Call(`_strollur_xdev_report`, data, type, bin_type)
 }
@@ -1189,6 +1221,7 @@ xdev_report <- function(data, type = "sequences", bin_type = "otu") {
 #'
 #' abundance(data = data, type = "sequences")
 #'
+#' @export
 xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason = "update") {
     invisible(.Call(`_strollur_xdev_set_abundance`, data, sequence_names, sequence_abundances, reason))
 }
@@ -1228,6 +1261,7 @@ xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason
 #'                     sequence_names = seqs_to_update,
 #'                     abundances = new_abunds)
 #'
+#' @export
 xdev_set_abundances <- function(data, sequence_names, abundances, reason = "update") {
     invisible(.Call(`_strollur_xdev_set_abundances`, data, sequence_names, abundances, reason))
 }
@@ -1257,6 +1291,7 @@ xdev_set_abundances <- function(data, sequence_names, abundances, reason = "upda
 #'                    sequence_names = c("seq1", "seq2","seq3", "seq4"),
 #'                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 #'
+#' @export
 xdev_set_sequences <- function(data, sequence_names, sequences, comments = as.character( c())) {
     invisible(.Call(`_strollur_xdev_set_sequences`, data, sequence_names, sequences, comments))
 }
@@ -1273,6 +1308,7 @@ xdev_set_sequences <- function(data, sequence_names, sequences, comments = as.ch
 #' data <- new_dataset(dataset_name = "my_dataset")
 #' xdev_set_dataset_name(data = data, dataset_name = "new_dataset_name")
 #'
+#' @export
 xdev_set_dataset_name <- function(data, dataset_name) {
     invisible(.Call(`_strollur_xdev_set_dataset_name`, data, dataset_name))
 }
@@ -1289,6 +1325,7 @@ xdev_set_dataset_name <- function(data, dataset_name) {
 #' data <- new_dataset(dataset_name = "my_dataset")
 #' xdev_set_num_processors(data = data, processors = 1)
 #'
+#' @export
 xdev_set_num_processors <- function(data, processors) {
     invisible(.Call(`_strollur_xdev_set_num_processors`, data, processors))
 }
@@ -1328,6 +1365,7 @@ xdev_set_num_processors <- function(data, processors) {
 #'  xdev_summarize(data = data, type = "scrap")
 #'
 #' @return data.frame()
+#' @export
 xdev_summarize <- function(data, type = "sequences", report_type = NULL) {
     .Call(`_strollur_xdev_summarize`, data, type, report_type)
 }
