@@ -309,6 +309,36 @@ const vector<vector<float>> AbundTable::getAbundances(const vector<int>& ids) {
     return results;
 }
 /******************************************************************************/
+const vector<vector<float>> AbundTable::getAbundanceBySample(const vector<int>& ids,
+                                                 vector<string> samplesToSelect) {
+
+    if (samplesToSelect.empty()) {
+        samplesToSelect = getSamples();
+    }
+
+    vector<vector<float>> results(samplesToSelect.size());
+
+    if (!hasSampleData) { return results; }
+
+    for (int id : ids) {
+        sampleAbunds data = counts[id];
+
+        // data -> sampleIndex(2,5), abunds(100, 50)
+        // becomes abunds(0,0,100,0,0,50)
+        for (int i = 0; i < data.sampleIndex.size(); i++) {
+
+            // this is a "good" sample
+            if (tableSamples[data.sampleIndex[i]]) {
+                // samplesIndexInResults -> sampleNames[data.sampleIndex[i]]]
+                results[sampleIndex[sampleNames[data.sampleIndex[i]]]].push_back(data.abunds[i]);
+            }
+        }
+    }
+
+    return results;
+
+}
+/******************************************************************************/
 const vector<string> AbundTable::getSamples(const int name) {
     vector<string> samples;
 

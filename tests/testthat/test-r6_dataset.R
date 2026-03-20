@@ -368,8 +368,8 @@ test_that("dataset - addSeqs, assign samples", {
   expect_equal(names(data, "treatments"), c("early", "late"))
   expect_equal(names(data, "samples"), c("sample2", "sample3", "sample4"))
 
-  sample_summary <- data$get_summary(TRUE)$sample_summary
-  treatment_summary <- data$get_summary(TRUE)$treatment_summary
+  sample_summary <- data$get_summary()$sample_summary
+  treatment_summary <- data$get_summary()$treatment_summary
 
   expect_equal(treatment_summary$abundances, c(766, 554))
   expect_equal(sample_summary$abundances, c(301, 465, 554))
@@ -655,7 +655,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
   expect_equal(count(dataset_t, "bins"), 3)
   expect_equal(count(dataset_t, "samples"), 6)
   expect_equal(
-    dataset_t$get_summary(TRUE)[["sample_summary"]]$abundances,
+    dataset_t$get_summary()[["sample_summary"]]$abundances,
     c(36, 25, 2, 20, 13, 4)
   )
 
@@ -1252,6 +1252,7 @@ test_that("dataset - get_sequence_summary,", {
 
 test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   # create tree from sequences
+
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
   dataset_t <- dataset$new()

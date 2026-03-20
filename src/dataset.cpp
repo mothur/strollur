@@ -799,6 +799,10 @@ const int Dataset::getNumTreatments() {
     return count.getNumTreatments();
 }
 /******************************************************************************/
+const int Dataset::getNumResourceReferences() {
+    return references.size();
+}
+/******************************************************************************/
 // TODO document in module_exports.R
 const int Dataset::getNumBins(string type, vector<string> samples,
                               bool distinct) {
@@ -1055,6 +1059,11 @@ const Rcpp::DataFrame Dataset::getSequenceAbundances(bool bySample){
     // ids, abundances, sample(optional), treatment(optional)
     return count.getAbundanceTable(select(names, tableSeqs),
                                     getIncludedNamesIndexes());
+}
+/******************************************************************************/
+const vector<vector<float> > Dataset::getSequenceAbundanceBySample(vector<string> samples) {
+    vector<int> ids = getIncludedNamesIndexes();
+    return count.getAbundanceBySample(ids, samples);
 }
 /******************************************************************************/
 const Rcpp::DataFrame Dataset::getSequenceTable(string sample) {
@@ -1566,8 +1575,6 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
         throw Rcpp::exception(message.c_str());
     }
 
-    reason += ",";
-
     for (int i = 0; i < n.size(); i++) {
         auto it = seqIndex.find(n[i]);
 
@@ -1601,8 +1608,6 @@ void Dataset::setAbundances(const vector<string>& n,
         RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
-
-    reason += ",";
 
     for (int i = 0; i < n.size(); i++) {
         auto it = seqIndex.find(n[i]);

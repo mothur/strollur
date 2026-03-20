@@ -8,7 +8,7 @@
 #'
 #' @importFrom R6 R6Class
 #' @importFrom methods new
-#' @importFrom parallelly, availableCores
+#' @importFrom parallelly availableCores
 #' @importFrom waldo compare
 #' @import cli
 #' @export
@@ -75,7 +75,30 @@ dataset <- R6Class("dataset",
         cat(names(self, type = "dataset")[1])
         cat(":\n\n")
       }
-      self$get_summary()
+
+      # get dataset summaries
+      results <- self$get_summary()
+
+      results_names <- names(results)
+
+      # print sequence summary - converting to ints
+      if ("sequence_summary" %in% results_names) {
+        for (x in 1:6) {
+          results[["sequence_summary"]][, x] <- as.integer(
+            results[["sequence_summary"]][, x]
+          )
+        }
+        results[["sequence_summary"]]$numseqs <- sprintf(
+          "%.2f", results[["sequence_summary"]]$numseqs
+        )
+        print(results[["sequence_summary"]])
+      }
+
+      if ("scrap_summary" %in% results_names) {
+        cat("scrap_summary:\n")
+        print(results[["scrap_summary"]])
+      }
+
       if (count(data = self, type = "sequences", distinct = TRUE) != 0) {
         cat(
           paste("\nNumber of unique seqs:", count(
@@ -90,11 +113,26 @@ dataset <- R6Class("dataset",
       }
       cat(
         paste("Total number of seqs:", count(data = self, type = "sequences")),
-        "\n"
+        "\n\n"
       )
 
-      bin_types <- get_bin_types(self)
+      # print number of samples
+      if (count(data = self, type = "samples") != 0) {
+        cat(paste0(
+          "Total number of samples: ",
+          count(data = self, type = "samples")
+        ), "\n")
+      }
+      # print number of treatments
+      if (count(data = self, type = "treatments") != 0) {
+        cat(paste0(
+          "Total number of treatments: ",
+          count(data = self, type = "treatments")
+        ), "\n")
+      }
 
+      # print number of each bin type
+      bin_types <- get_bin_types(self)
       for (bin_type in bin_types) {
         if (count(data = self, type = "bins", bin_type = bin_type) != 0) {
           cat(
@@ -105,6 +143,27 @@ dataset <- R6Class("dataset",
             "\n"
           )
         }
+      }
+      # print number of resource references
+      if (count(data = self, type = "references") != 0) {
+        cat(paste0(
+          "Total number of resource references: ",
+          count(data = self, type = "references")
+        ), "\n")
+      }
+
+      exclude <- c("sequence_scrap", "bin_scrap")
+      report_names <- names(data = self, type = "reports")
+      custom_report_names <- report_names[!report_names %in% exclude]
+
+      if (length(custom_report_names) != 0) {
+        cat(paste0(
+          "Total number of custom reports: ",
+          length(custom_report_names)
+        ), "\n")
+      }
+      if (nrow(report(self, type = "metadata")) != 0) {
+        cat(paste0("Your dataset includes metadata"), "\n")
       }
       cat("\n")
     },
@@ -326,27 +385,17 @@ dataset <- R6Class("dataset",
 
     #' @description
     #' Get summary of the sequence reports
-    #' @param silent Default = FALSE, meaning print summaries
     #' @return list of data.frames
-    get_summary = function(silent = FALSE) {
+    get_summary = function() {
       results <- list()
 
       # if you have summary results to print
-      if (!all(xdev_get_sequences(self) == "") && (!silent)) {
+      if (!all(xdev_get_sequences(self) == "")) {
         # if you have summary results to print
         results[["sequence_summary"]] <- xdev_summarize(
           data = self,
           type = "sequences"
         )
-        if (!silent) {
-          cat("sequence_summary:\n")
-          print(results[["sequence_summary"]])
-          cat("Unique seqs:\t", count(
-            data = self,
-            type = "sequences", distinct = TRUE
-          ), "\n")
-          cat("Total seqs:\t", count(data = self, type = "sequences"), "\n")
-        }
       }
 
       exclude <- c("sequence_scrap", "bin_scrap")
@@ -354,22 +403,12 @@ dataset <- R6Class("dataset",
       report_names <- report_names[!report_names %in% exclude]
 
       if (length(report_names) != 0) {
-        if (!silent) {
-          cat("\n")
-          for (name in report_names) {
-            results[[name]] <- xdev_summarize(
-              data = self,
-              type = "reports",
-              report_type = name
-            )
-            cat(name, ":\n")
-            print(results[[name]])
-            cat("Unique seqs:\t", count(
-              data = self,
-              type = "sequences", distinct = TRUE
-            ), "\n")
-            cat("Total seqs:\t", count(data = self, type = "sequences"), "\n\n")
-          }
+        for (name in report_names) {
+          results[[name]] <- xdev_summarize(
+            data = self,
+            type = "reports",
+            report_type = name
+          )
         }
       }
 
@@ -379,41 +418,13 @@ dataset <- R6Class("dataset",
       )
       if (nrow(df) != 0) {
         results[["scrap_summary"]] <- df
-        if (!silent) {
-          cat("scrap_summary:\n")
-          print(results[["scrap_summary"]])
-        }
       }
 
       if (count(self, type = "samples") != 0) {
         results[["sample_summary"]] <- abundance(self, type = "samples")
 
-        if (!silent) {
-          cat("\nSample   Total:\n")
-          sample_names <- results[["sample_summary"]]$samples
-          sample_totals <- results[["sample_summary"]]$abundances
-
-          for (i in seq_along(sample_names)) {
-            cat(paste(sample_names[i], sample_totals[i], sep = "\t"), "\n")
-          }
-        }
-
         if (count(self, "treatments") != 0) {
           results[["treatment_summary"]] <- abundance(self, type = "treatments")
-
-          if (!silent) {
-            treatment_names <- results[["treatment_summary"]]$treatments
-            treatment_totals <- results[["treatment_summary"]]$abundances
-            cat("\n")
-            cat("Treatment   Total:\n")
-            for (i in seq_along(treatment_names)) {
-              cat(
-                paste(treatment_names[i], treatment_totals[i],
-                  sep = "\t"
-                ), "\n"
-              )
-            }
-          }
         }
       }
 

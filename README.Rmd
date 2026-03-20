@@ -30,13 +30,13 @@ knitr::opts_chunk$set(
 The **strollur** package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, sequence bin assignments, 
 metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to import from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 
-* `add()` add sequences, reports, metadata, and resource references
-* `assign()` assign abundances, classifications, bins, samples and treatments and more
-* `names()` get the names of sequences, bins, samples, treatments and reports
-* `count()` get the number of sequences, bins, samples and treatments
-* `abundance()` get the abundances for sequences, bins, samples, and treatments
-* `report()` get [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequences, sequence and classification reports, bin assignments, sample assignments, metadata, sequence data reports, custom reports, resource references and scrapped data reports.
-* `summary()` summarize sequences, your custom reports, and scrapped data
+* `add()` adds sequences, reports, metadata, and resource references
+* `assign()` assigns abundances, classifications, bins, samples and treatments and more
+* `names()` gets the names of sequences, bins, samples, treatments and reports
+* `count()` gets the number of sequences, bins, samples and treatments
+* `abundance()` gets the abundances for sequences, bins, samples, and treatments
+* `report()` gets [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequences, sequence and classification reports, bin assignments, sample assignments, metadata, sequence data reports, custom reports, resource references and scrapped data reports.
+* `summary()` summarizes sequences, your custom reports, and scrapped data
 
 ## Installation
 
@@ -75,8 +75,7 @@ add(
 abundance_table <- readr::read_tsv(strollur_example("mothur2_count_table.tsv.gz"),
   show_col_types = FALSE
 )
-assign(
-  data = data,
+assign(data,
   table = abundance_table,
   type = "sequence_abundance",
   table_names = list(sequence_name = "names")
@@ -89,8 +88,7 @@ bin_table <- readr::read_tsv(
   show_col_types = FALSE
 )
 
-assign(
-  data = data,
+assign(data,
   table = bin_table,
   type = "bins",
   bin_type = "otu",
@@ -101,8 +99,7 @@ sequence_classification_data <- read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
 
-assign(
-  data = data,
+assign(data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
 )

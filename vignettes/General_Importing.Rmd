@@ -36,15 +36,6 @@ The *strollur* package includes two functions to allow you to add microbial data
 ### add
 The add function allows you to add sequences, reports, metadata, and resource references to your data set.
 
-* **Parameters:** 
-    + *data* - a data set object
-    + *table* - a data.frame containing the data you wish to add
-    + *type* - string containing the type of data you are adding
-    + *report_type* - string containing the report type you would like to add
-    + *table_names* - a named list used to indicate the names of the columns in the table
-    + *reference* - a list created by the `new_reference()` function 
-    + *verbose* - Boolean, indicating whether you want outputs about what is being added
-    
 #### Adding FASTA sequences
 
 First, let's add some [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data. strollur has a function for reading FASTA files named `read_fasta()`. We will use it to read the sequence data into a data.frame.
@@ -53,7 +44,7 @@ First, let's add some [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/)
 fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
 add(
-  data = data,
+  data,
   table = fasta_data,
   type = "sequences"
 )
@@ -76,7 +67,7 @@ resource_reference <- new_reference(
 )
 
 add(
-  data = data,
+  data,
   table = fasta_data,
   type = "sequences",
   reference = resource_reference
@@ -96,7 +87,7 @@ contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
 )
 
 add(
-  data = data,
+  data,
   table = contigs_report,
   type = "reports",
   report_type = "contigs_report"
@@ -105,7 +96,7 @@ add(
 # Error: The report must include a column containing sequence names.
 # sequence_names is not a named column in your report.
 
-# Called from: xdev_add_report(data = data, table = table, type = report_type,
+# Called from: xdev_add_report(data, table = table, type = report_type,
 #    sequence_name = table_names[["sequence_name"]], verbose)
 ```
 
@@ -117,7 +108,7 @@ contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
 )
 
 add(
-  data = data,
+  data,
   table = contigs_report,
   type = "reports",
   report_type = "contigs_report",
@@ -137,7 +128,7 @@ metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
 )
 
 add(
-  data = data,
+  data,
   table = metadata,
   type = "metadata"
 )
@@ -154,7 +145,7 @@ reference <- readr::read_csv(strollur_example("references.csv"),
 )
 
 add(
-  data = data,
+  data,
   table = reference,
   type = "references"
 )
@@ -164,16 +155,6 @@ add(
 ### assign
 
 The `assign()` function allows assign sequence abundances, sequence classifications, bins, bin representative sequences, bin classifications, samples and treatments to your data set.
-
-* **Parameters:** 
-    + *data* - a data set object
-    + *table* - a data.frame containing the data you wish to assign
-    + *type* - string containing the type of data you are assigning
-    + *bin_type* - string containing the bin type you would like to assign
-    + *table_names* - a named list used to indicate the names of the columns in the table
-    + *reference* - a list created by the `new_reference()` function 
-    + *verbose* - boolean, indicating whether you want outputs about what is being added
-    
 
 #### Assigning Abundances
 
@@ -187,7 +168,7 @@ abundance_table <- readr::read_tsv(
   show_col_types = FALSE
 )
 assign(
-  data = data,
+  data,
   table = abundance_table,
   type = "sequence_abundance",
   table_names = list(sequence_name = "names")
@@ -209,7 +190,7 @@ bin_table <- readr::read_tsv(
 )
 
 assign(
-  data = data,
+  data,
   table = bin_table,
   type = "bins",
   bin_type = "otu",
@@ -233,7 +214,7 @@ sequence_classification_data <- read_mothur_taxonomy(
 )
 
 assign(
-  data = data,
+  data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
 )
@@ -247,7 +228,7 @@ otu_data <- read_mothur_cons_taxonomy(strollur_example(
 ))
 
 assign(
-  data = data,
+  data,
   table = otu_data,
   type = "bin_taxonomy",
   bin_type = "otu"
@@ -268,7 +249,7 @@ bin_representatives <- readr::read_tsv(
 )
 
 assign(
-  data = data,
+  data,
   table = bin_representatives,
   type = "bin_representatives"
 )
@@ -286,7 +267,7 @@ sample_assignments <- readr::read_table(
 )
 
 assign(
-  data = data,
+  data,
   table = sample_assignments,
   type = "treatments"
 )
@@ -306,8 +287,8 @@ data$add_sequence_tree(sequence_tree)
 
 #| fig.alt: >
 #|   Plot of Miseq_SOP's sample relationship tree
-#|
-plot(data$get_sample_tree(),
+par(bg = "white")
+ape::plot.phylo(data$get_sample_tree(),
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"
 )

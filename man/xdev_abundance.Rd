@@ -4,7 +4,7 @@
 \alias{xdev_abundance}
 \title{xdev_abundance}
 \usage{
-xdev_abundance(data, type = "sequence", bin_type = "otu", by_sample = FALSE)
+xdev_abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 }
 \arguments{
 \item{data, }{a \link{dataset} object}

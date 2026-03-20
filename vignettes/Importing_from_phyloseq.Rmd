@@ -1,0 +1,50 @@
+---
+title: "Importing_from_phyloseq"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Importing_from_phyloseq}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(strollur)
+library(phyloseq)
+```
+
+rdataset includes functionality for the reading and writing of phyloseq objects. To convert a phyloseq object to a rdataset object, you need to run the `read_phyloseq()` function. 
+
+```{r}
+# Using the phyloseq example data
+phylo_object <- readRDS(strollur_example("GlobalPatterns.RDS"))
+rdata_object <- read_phyloseq(phylo_object)
+rdata_object
+```
+
+Now that are phyloseq object is converted into a rdataset object, we can utilize functions like `count()`, `abundance()`, and `names()` to inspect the data. 
+```{r rdataset_functions}
+count(rdata_object, "samples")
+head(names(rdata_object, "sequences"))
+head(abundance(rdata_object, "sequences"))
+```
+
+Furthermore, we can output rdataset objects as phyloseq objects using the `write_phyloseq()` function.
+
+```{r write_phyloseq} 
+phyloseq_object <- write_phyloseq(rdata_object)
+phyloseq_object
+
+
+# With the miseq example data
+miseq <- miseq_sop_example()
+miseq_phyloseq <- write_phyloseq(miseq)
+miseq_phyloseq
+```
+

@@ -71,7 +71,7 @@ fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
 fasta_data is a data.frame containing sequence names, sequence nucleotide strings, and comments if provided. You can add the FASTA sequences to your data set using the `add()` function:
 
 ```{r}
-add(data = my_data, table = fasta_data, type = "sequences")
+add(my_data, table = fasta_data, type = "sequences")
 my_data
 ```
 
@@ -86,7 +86,7 @@ sample_table <- read_mothur_count(
 sample_table is a data.frame containing sequence_names, samples, and abundances. You can add the sequence abundance data to your data set using the `assign()` function:
 
 ```{r}
-assign(data = my_data, table = sample_table, type = "sequence_abundance")
+assign(my_data, table = sample_table, type = "sequence_abundance")
 my_data
 ```
 
@@ -101,7 +101,7 @@ classification_data <- read_mothur_taxonomy(
 classification_data is a data.frame containing sequence names and taxonomies. You can add the sequence classification data to your data set as follows:
 
 ```{r}
-assign(data = my_data, table = classification_data, type = "sequence_taxonomy")
+assign(my_data, table = classification_data, type = "sequence_taxonomy")
 ```
 
 To assign sequences to bins, you can read a [mothur list file](https://mothur.org/wiki/list_file/) file using the `read_mothur_list()` function:
@@ -115,10 +115,11 @@ phylotype_data <- read_mothur_list(list = strollur_example("final.tx.list.gz"))
 otu_data, asv_data and phylotype_data are data.frames containing bin names and sequence names. You can add the bin data to your data set as follows:
 
 ```{r}
-assign(data = my_data, table = otu_data, type = "bins", bin_type = "otu")
-assign(data = my_data, table = asv_data, type = "bins", bin_type = "asv")
+assign(my_data, table = otu_data, type = "bins", bin_type = "otu")
+assign(my_data, table = asv_data, type = "bins", bin_type = "asv")
 assign(
-  data = my_data, table = phylotype_data,
+  my_data,
+  table = phylotype_data,
   type = "bins", bin_type = "phylotype"
 )
 my_data
@@ -136,7 +137,7 @@ otu_taxonomy_data <- read_mothur_cons_taxonomy(
 otu_taxonomy_data is a data.frame containing bin names, abundances and taxonomies. You can add the bin taxonomic data to your data set as follows:
 
 ```{r}
-assign(data = my_data, table = otu_taxonomy_data, type = "bin_taxonomy")
+assign(my_data, table = otu_taxonomy_data, type = "bin_taxonomy")
 ```
 
 ## Writing mothur formatted file types

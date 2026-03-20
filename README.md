@@ -27,20 +27,20 @@ functions to import from [mothur](https://mothur.org),
 and
 [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 
-- `add()` add sequences, reports, metadata, and resource references
-- `assign()` assign abundances, classifications, bins, samples and
+- `add()` adds sequences, reports, metadata, and resource references
+- `assign()` assigns abundances, classifications, bins, samples and
   treatments and more
-- `names()` get the names of sequences, bins, samples, treatments and
+- `names()` gets the names of sequences, bins, samples, treatments and
   reports
-- `count()` get the number of sequences, bins, samples and treatments
-- `abundance()` get the abundances for sequences, bins, samples, and
+- `count()` gets the number of sequences, bins, samples and treatments
+- `abundance()` gets the abundances for sequences, bins, samples, and
   treatments
-- `report()` get
+- `report()` gets
   [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequences,
   sequence and classification reports, bin assignments, sample
   assignments, metadata, sequence data reports, custom reports, resource
   references and scrapped data reports.
-- `summary()` summarize sequences, your custom reports, and scrapped
+- `summary()` summarizes sequences, your custom reports, and scrapped
   data
 
 ## Installation
@@ -86,8 +86,7 @@ add(
 abundance_table <- readr::read_tsv(strollur_example("mothur2_count_table.tsv.gz"),
   show_col_types = FALSE
 )
-assign(
-  data = data,
+assign(data,
   table = abundance_table,
   type = "sequence_abundance",
   table_names = list(sequence_name = "names")
@@ -102,8 +101,7 @@ bin_table <- readr::read_tsv(
   show_col_types = FALSE
 )
 
-assign(
-  data = data,
+assign(data,
   table = bin_table,
   type = "bins",
   bin_type = "otu",
@@ -116,8 +114,7 @@ sequence_classification_data <- read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
 
-assign(
-  data = data,
+assign(data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
 )
