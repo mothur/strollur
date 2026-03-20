@@ -39,7 +39,48 @@ test_that("xdev_get_by_sample", {
   expect_error(xdev_get_by_sample(data, "badType"))
 })
 
-xdev_get_by_sample
+test_that("xdev_get_abundances_by_sample - getSequenceAbundanceBySample", {
+  data <- new_dataset()
+
+  seq_names <- c(
+    "seq1", "seq2", "seq3", "seq3",
+    "seq4", "seq4", "seq5", "seq6",
+    "seq7", "seq8", "seq9", "seq9",
+    "seq10", "seq10", "seq10", "seq10"
+  )
+  samples <- c(
+    "sample1", "sample2", "sample4", "sample5",
+    "sample1", "sample2", "sample1", "sample1",
+    "sample2", "sample4", "sample4", "sample5",
+    "sample1", "sample3", "sample5", "sample6"
+  )
+  abundances <- c(
+    10, 10, 5, 5, 5, 5,
+    10, 10, 10, 10, 5, 5,
+    1, 2, 3, 4
+  )
+
+  assign(
+    data = data,
+    table = data.frame(
+      sequence_names = seq_names,
+      samples = samples,
+      abundances = abundances
+    ),
+    type = "sequence_abundance"
+  )
+
+  expected <- list(
+    c(10, 1, 5, 10, 10), c(10, 5, 10),
+    c(2), c(5, 10, 5), c(3, 5, 5), c(4)
+  )
+
+  actual <- xdev_get_abundances_by_sample(data)
+
+  expect_equal(actual, expected)
+})
+
+
 test_that("xdev_assign_bins, assign with reference", {
   data <- new_dataset()
 

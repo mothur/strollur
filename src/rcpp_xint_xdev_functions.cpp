@@ -649,6 +649,13 @@ double xdev_count(Rcpp::Environment data,
     return 0;
 }
 /******************************************************************************/
+vector<vector<float> > xdev_get_abundances_by_sample(Rcpp::Environment data,
+                                                     Rcpp::CharacterVector samples) {
+    Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->getSequenceAbundanceBySample(Rcpp::as<vector<string>>(samples));
+}
+
+/******************************************************************************/
 vector<string> xdev_get_list_vector(Rcpp::Environment data,
                                     string type) {
     Rcpp::XPtr<Dataset> d = data["data"];

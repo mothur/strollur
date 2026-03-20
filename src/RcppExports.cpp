@@ -305,6 +305,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// xdev_get_abundances_by_sample
+vector<vector<float> > xdev_get_abundances_by_sample(Rcpp::Environment data, Rcpp::CharacterVector samples);
+RcppExport SEXP _strollur_xdev_get_abundances_by_sample(SEXP dataSEXP, SEXP samplesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type samples(samplesSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_get_abundances_by_sample(data, samples));
+    return rcpp_result_gen;
+END_RCPP
+}
 // xdev_get_list_vector
 vector<string> xdev_get_list_vector(Rcpp::Environment data, string type);
 RcppExport SEXP _strollur_xdev_get_list_vector(SEXP dataSEXP, SEXP typeSEXP) {
@@ -586,6 +598,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_assign_sequence_abundance", (DL_FUNC) &_strollur_xdev_assign_sequence_abundance, 7},
     {"_strollur_xdev_assign_treatments", (DL_FUNC) &_strollur_xdev_assign_treatments, 5},
     {"_strollur_xdev_count", (DL_FUNC) &_strollur_xdev_count, 5},
+    {"_strollur_xdev_get_abundances_by_sample", (DL_FUNC) &_strollur_xdev_get_abundances_by_sample, 2},
     {"_strollur_xdev_get_list_vector", (DL_FUNC) &_strollur_xdev_get_list_vector, 2},
     {"_strollur_xdev_get_by_sample", (DL_FUNC) &_strollur_xdev_get_by_sample, 3},
     {"_strollur_xdev_get_sequences", (DL_FUNC) &_strollur_xdev_get_sequences, 2},

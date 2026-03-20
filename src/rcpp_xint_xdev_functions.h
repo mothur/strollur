@@ -61,9 +61,9 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
 //' xdev_abundance(data = miseq, type = "treatments")
 //'
 //' @return data.frame
- //[[Rcpp::export]]
+//[[Rcpp::export]]
 Rcpp::DataFrame xdev_abundance(Rcpp::Environment data,
-                               string type = "sequence",
+                               string type = "sequences",
                                string bin_type = "otu",
                                bool by_sample = false);
 /******************************************************************************/
@@ -571,7 +571,26 @@ double xdev_count(Rcpp::Environment data,
             string bin_type = "otu",
             Rcpp::Nullable<Rcpp::List> samples = R_NilValue,
             bool distinct = false);
-
+/******************************************************************************/
+//' @title xdev_get_abundances_by_sample
+//' @description
+//' Get the sequence abundance data in a \link{dataset} object parsed by sample
+//'
+//' @param data, a \link{dataset} object
+//'
+//' @param samples a vector of strings containing the names of the samples you
+//' would like sequence names for. By default all samples are included.
+//' @examples
+//'
+//' data <- miseq_sop_example()
+//'
+//' # To get the sequence names parsed by sample
+//' abunds <- xdev_get_abundances_by_sample(data)
+//'
+//' @return 2D vector of float containing data requested parsed by sample.
+//[[Rcpp::export]]
+vector<vector<float> > xdev_get_abundances_by_sample(Rcpp::Environment data,
+                                            Rcpp::CharacterVector samples = Rcpp::CharacterVector::create());
 /******************************************************************************/
 //' @title xdev_get_list_vector
 //' @description

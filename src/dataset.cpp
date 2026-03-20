@@ -1061,6 +1061,11 @@ const Rcpp::DataFrame Dataset::getSequenceAbundances(bool bySample){
                                     getIncludedNamesIndexes());
 }
 /******************************************************************************/
+const vector<vector<float> > Dataset::getSequenceAbundanceBySample(vector<string> samples) {
+    vector<int> ids = getIncludedNamesIndexes();
+    return count.getAbundanceBySample(ids, samples);
+}
+/******************************************************************************/
 const Rcpp::DataFrame Dataset::getSequenceTable(string sample) {
 
     if (hasSequenceData) {

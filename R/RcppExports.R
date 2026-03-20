@@ -228,7 +228,7 @@ is_aligned <- function(data) {
 #' xdev_abundance(data = miseq, type = "treatments")
 #'
 #' @return data.frame
-xdev_abundance <- function(data, type = "sequence", bin_type = "otu", by_sample = FALSE) {
+xdev_abundance <- function(data, type = "sequences", bin_type = "otu", by_sample = FALSE) {
     .Call(`_strollur_xdev_abundance`, data, type, bin_type, by_sample)
 }
 
@@ -688,6 +688,26 @@ xdev_assign_treatments <- function(data, table, sample = "samples", treatment = 
 #' @return double
 xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NULL, distinct = FALSE) {
     .Call(`_strollur_xdev_count`, data, type, bin_type, samples, distinct)
+}
+
+#' @title xdev_get_abundances_by_sample
+#' @description
+#' Get the sequence abundance data in a \link{dataset} object parsed by sample
+#'
+#' @param data, a \link{dataset} object
+#'
+#' @param samples a vector of strings containing the names of the samples you
+#' would like sequence names for. By default all samples are included.
+#' @examples
+#'
+#' data <- miseq_sop_example()
+#'
+#' # To get the sequence names parsed by sample
+#' abunds <- xdev_get_abundances_by_sample(data)
+#'
+#' @return 2D vector of float containing data requested parsed by sample.
+xdev_get_abundances_by_sample <- function(data, samples = as.character( c())) {
+    .Call(`_strollur_xdev_get_abundances_by_sample`, data, samples)
 }
 
 #' @title xdev_get_list_vector

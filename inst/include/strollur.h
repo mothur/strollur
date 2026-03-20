@@ -206,6 +206,8 @@ public:
     const vector<float> getAbundances(const int id);
     // abundances by sample for ids
     const vector<vector<float>> getAbundances(const vector<int>& ids);
+    // results[0][1:numSeqsInSample0] -> sample 0's abundances for each sequence
+    const vector<vector<float>> getAbundanceBySample(const vector<int>& ids, vector<string> samples = nullVector);
     // total number of sequences
     const double getTotal(const string sample = "");
 
@@ -517,6 +519,8 @@ public:
     double assignTreatments(const vector<string>& samples,
                             const vector<string>& treatments);
 
+
+    const vector<vector<float> > getSequenceAbundanceBySample(vector<string> samples = nullVector);
 
     // names of bins
     const vector<string> getBinIds(string type = "otu",
