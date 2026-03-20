@@ -10,7 +10,7 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' write_mothur_design(miseq)
+#' write_mothur_design(miseq, tempfile())
 #'
 #' @return name of design file
 #' @export

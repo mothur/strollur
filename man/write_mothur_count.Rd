@@ -22,6 +22,6 @@ Write a mothur formatted
 \examples{
 
 miseq <- miseq_sop_example()
-write_mothur_count(miseq)
+write_mothur_count(miseq, tempfile())
 
 }

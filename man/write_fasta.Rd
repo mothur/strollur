@@ -22,6 +22,6 @@ formatted sequence file
 \examples{
 
 miseq <- miseq_sop_example()
-write_fasta(miseq)
+write_fasta(miseq, tempfile())
 
 }

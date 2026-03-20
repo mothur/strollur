@@ -10,7 +10,7 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' write_mothur_count(miseq)
+#' write_mothur_count(miseq, tempfile())
 #'
 #' @return name of count file
 #' @export

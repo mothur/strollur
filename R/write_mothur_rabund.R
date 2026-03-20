@@ -11,7 +11,7 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' write_mothur_rabund(miseq)
+#' write_mothur_rabund(miseq, tempfile())
 #'
 #' @return vector containing the names of the files created
 #' @export

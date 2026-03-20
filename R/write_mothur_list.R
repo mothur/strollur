@@ -10,7 +10,7 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' write_mothur_list(miseq)
+#' write_mothur_list(miseq, tempfile())
 #'
 #' @return vector containing the names of the files created
 #' @export

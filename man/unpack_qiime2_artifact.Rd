@@ -27,6 +27,7 @@ To generate the various input files you can follow \href{https://amplicon-docs.q
 
 artifact <- unpack_qiime2_artifact(
   qza = strollur_example("table.qza"),
+  dir_path = tempdir()
 )
 
 }

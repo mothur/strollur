@@ -17,6 +17,7 @@
 #'
 #' artifact <- unpack_qiime2_artifact(
 #'   qza = strollur_example("table.qza"),
+#'   dir_path = tempdir()
 #' )
 #'
 #' @return A unpacked qza artifact

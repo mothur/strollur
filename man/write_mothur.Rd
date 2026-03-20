@@ -30,6 +30,6 @@ mothur.
 \examples{
 
 miseq <- miseq_sop_example()
-files <- write_mothur(miseq)
+files <- write_mothur(miseq, tempfile())
 
 }

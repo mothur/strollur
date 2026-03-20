@@ -10,7 +10,7 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' write_taxonomy(miseq)
+#' write_taxonomy(miseq, tempfile())
 #'
 #' @return name of taxonomy file
 #' @export
