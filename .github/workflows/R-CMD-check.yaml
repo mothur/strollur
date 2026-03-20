@@ -42,9 +42,6 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          packages: |
-            any::data.table
-            any::R.utils
           extra-packages: any::rcmdcheck
           needs: check
 

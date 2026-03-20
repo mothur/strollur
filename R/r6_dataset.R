@@ -8,7 +8,7 @@
 #'
 #' @importFrom R6 R6Class
 #' @importFrom methods new
-#' @importFrom parallelly, availableCores
+#' @importFrom parallelly availableCores
 #' @importFrom waldo compare
 #' @import cli
 #' @export

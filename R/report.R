@@ -87,6 +87,7 @@
 #' head(contigs_report, n = 10)
 #'
 #' @return data.frame
+#' @export
 report <- function(data, type = "sequences", bin_type = "otu") {
   xdev_report(data, type, bin_type)
 }

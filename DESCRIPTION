@@ -12,11 +12,11 @@ BugReports: https://github.com/mothur/strollur/issues
 License: GPL (>= 3)
 RoxygenNote: 7.3.3
 biocViews:
-Imports: Rcpp (>= 1.1.0),
+Imports: 
+    Rcpp,
     RcppThread,
     cli,
     methods,
-    parallelly,
     microseq,
     R6,
     waldo,
@@ -29,14 +29,18 @@ Imports: Rcpp (>= 1.1.0),
     rbiom,
     rhdf5,
     data.table,
-    R.utils
+    parallelly,
+    R.utils,
+    stats,
+    utils
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
 Depends: R (>= 4.4.0)
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    xml2
+    xml2,
+    phyloseq
 Config/testthat/edition: 3
 Encoding: UTF-8
 VignetteBuilder: knitr
