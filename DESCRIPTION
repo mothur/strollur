@@ -14,7 +14,6 @@ RoxygenNote: 7.3.3
 biocViews:
 Imports: 
     Rcpp,
-    RcppThread,
     cli,
     methods,
     microseq,
@@ -22,15 +21,11 @@ Imports:
     waldo,
     readr,
     ape,
-    Rcereal,
     dplyr,
     tidyr,
     yaml,
     rbiom,
-    rhdf5,
-    data.table,
     parallelly,
-    R.utils,
     stats,
     utils
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal

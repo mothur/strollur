@@ -72,6 +72,10 @@ write_mothur_count <- function(data, filename = NULL) {
       )
 
       # Group by 'ids' and summarize the 'sample_index' and 'abunds'
+      # To fix build warnings, we have to make bindings for:
+      # abundances, sample_index, sequence_names
+      abundances <- sample_index <- sequence_names <- NULL
+
       df <- df |>
         group_by(sequence_names) |>
         summarise(
