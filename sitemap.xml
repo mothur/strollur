@@ -6,6 +6,7 @@
 <url><loc>https://mothur.org/strollur/articles/Functions_for_Package_Developers.html</loc></url>
 <url><loc>https://mothur.org/strollur/articles/General_Importing.html</loc></url>
 <url><loc>https://mothur.org/strollur/articles/Importing_from_mothur.html</loc></url>
+<url><loc>https://mothur.org/strollur/articles/Importing_from_phyloseq.html</loc></url>
 <url><loc>https://mothur.org/strollur/articles/Importing_from_qiime2.html</loc></url>
 <url><loc>https://mothur.org/strollur/articles/index.html</loc></url>
 <url><loc>https://mothur.org/strollur/articles/strollur.html</loc></url>
@@ -42,7 +43,6 @@
 <url><loc>https://mothur.org/strollur/reference/names.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/new_dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/new_reference.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/rdataset-package.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/read_dada2.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/read_fasta.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/read_mothur.html</loc></url>
@@ -52,15 +52,18 @@
 <url><loc>https://mothur.org/strollur/reference/read_mothur_rabund.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/read_mothur_shared.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/read_mothur_taxonomy.html</loc></url>
+<url><loc>https://mothur.org/strollur/reference/read_phyloseq.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/read_qiime2.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/read_qiime2_feature_table.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/read_qiime2_metadata.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/read_qiime2_taxonomy.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/remove_file.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/report.html</loc></url>
+<url><loc>https://mothur.org/strollur/reference/require_namespace.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/run_testthat_tests.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/save_dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/sort_dataframe.html</loc></url>
+<url><loc>https://mothur.org/strollur/reference/strollur-package.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/strollur_example.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/summary.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/unpack_qiime2_artifact.html</loc></url>
@@ -72,6 +75,7 @@
 <url><loc>https://mothur.org/strollur/reference/write_mothur_list.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/write_mothur_rabund.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/write_mothur_shared.html</loc></url>
+<url><loc>https://mothur.org/strollur/reference/write_phyloseq.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/write_taxonomy.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_abundance.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_add_references.html</loc></url>
@@ -84,6 +88,7 @@
 <url><loc>https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_assign_treatments.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_count.html</loc></url>
+<url><loc>https://mothur.org/strollur/reference/xdev_get_abundances_by_sample.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_get_by_sample.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_get_list_vector.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_get_sequences.html</loc></url>

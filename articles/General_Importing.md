@@ -32,20 +32,6 @@ classifications, samples and treatments to your data set.
 The add function allows you to add sequences, reports, metadata, and
 resource references to your data set.
 
-- **Parameters:**
-  - *data* - a data set object
-  - *table* - a data.frame containing the data you wish to add
-  - *type* - string containing the type of data you are adding
-  - *report_type* - string containing the report type you would like to
-    add
-  - *table_names* - a named list used to indicate the names of the
-    columns in the table
-  - *reference* - a list created by the
-    [`new_reference()`](https://mothur.org/strollur/reference/new_reference.md)
-    function
-  - *verbose* - Boolean, indicating whether you want outputs about what
-    is being added
-
 #### Adding FASTA sequences
 
 First, let’s add some
@@ -58,7 +44,7 @@ We will use it to read the sequence data into a data.frame.
 fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
 add(
-  data = data,
+  data,
   table = fasta_data,
   type = "sequences"
 )
@@ -67,18 +53,15 @@ add(
 data
 #> my_data:
 #> 
-#> sequence_summary:
-#>             starts ends   nbases ambigs polymers numns  numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0    1.000
-#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  607.250
-#> Median:          1  375 253.0000      0 4.000000     0 1213.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750
-#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375
-#> Maximum:         1  375 256.0000      0 6.000000     0 2425.000
-#> Mean:            1  375 252.7406      0 4.496082     0    0.000
-#> Unique seqs:  2425 
-#> Total seqs:   2425 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 2425
@@ -105,7 +88,7 @@ resource_reference <- new_reference(
 )
 
 add(
-  data = data,
+  data,
   table = fasta_data,
   type = "sequences",
   reference = resource_reference
@@ -115,21 +98,20 @@ add(
 data
 #> my_data:
 #> 
-#> sequence_summary:
-#>             starts ends   nbases ambigs polymers numns  numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0    1.000
-#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  607.250
-#> Median:          1  375 253.0000      0 4.000000     0 1213.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750
-#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375
-#> Maximum:         1  375 256.0000      0 6.000000     0 2425.000
-#> Mean:            1  375 252.7406      0 4.496082     0    0.000
-#> Unique seqs:  2425 
-#> Total seqs:   2425 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
 #> 
 #> Number of unique seqs: 2425 
-#> Total number of seqs: 2425
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 1
 ```
 
 #### Adding Custom Reports
@@ -149,7 +131,7 @@ contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
 )
 
 add(
-  data = data,
+  data,
   table = contigs_report,
   type = "reports",
   report_type = "contigs_report"
@@ -158,7 +140,7 @@ add(
 # Error: The report must include a column containing sequence names.
 # sequence_names is not a named column in your report.
 
-# Called from: xdev_add_report(data = data, table = table, type = report_type,
+# Called from: xdev_add_report(data, table = table, type = report_type,
 #    sequence_name = table_names[["sequence_name"]], verbose)
 ```
 
@@ -173,7 +155,7 @@ contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
 )
 
 add(
-  data = data,
+  data,
   table = contigs_report,
   type = "reports",
   report_type = "contigs_report",
@@ -184,44 +166,21 @@ add(
 data
 #> my_data:
 #> 
-#> sequence_summary:
-#>             starts ends   nbases ambigs polymers numns  numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0    1.000
-#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  607.250
-#> Median:          1  375 253.0000      0 4.000000     0 1213.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750
-#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375
-#> Maximum:         1  375 256.0000      0 6.000000     0 2425.000
-#> Mean:            1  375 252.7406      0 4.496082     0    0.000
-#> Unique seqs:  2425 
-#> Total seqs:   2425 
-#> 
-#> contigs_report :
-#>             Expected_Errors   Length MisMatches Num_Ns Overlap_End
-#> Minimum:       0.0000452496 250.0000   0.000000      0    248.0000
-#> 2.5%-tile:     0.0010250499 252.0000   0.000000      0    250.0000
-#> 25%-tile:      0.0022657500 252.0000   0.000000      0    251.0000
-#> Median:        0.0092338603 253.0000   1.000000      0    251.0000
-#> 75%-tile:      0.0559640005 253.0000   5.000000      0    251.0000
-#> 97.5%-tile:    0.4990670085 254.0000  26.000000      0    253.0000
-#> Maximum:       3.0126200000 270.0000 120.000000      0    256.0000
-#> Mean:          0.0738509483 252.7575   5.162474      0    251.1555
-#>             Overlap_Length Overlap_Start
-#> Minimum:          232.0000      0.000000
-#> 2.5%-tile:        246.0000      1.000000
-#> 25%-tile:         249.0000      2.000000
-#> Median:           249.0000      2.000000
-#> 75%-tile:         250.0000      2.000000
-#> 97.5%-tile:       251.0000      4.000000
-#> Maximum:          255.0000     22.000000
-#> Mean:             249.1501      2.005361
-#> Unique seqs:  2425 
-#> Total seqs:   2425 
-#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
 #> 
 #> Number of unique seqs: 2425 
-#> Total number of seqs: 2425
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 1 
+#> Total number of custom reports: 1
 ```
 
 #### Adding Metadata
@@ -236,7 +195,7 @@ metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
 )
 
 add(
-  data = data,
+  data,
   table = metadata,
   type = "metadata"
 )
@@ -255,7 +214,7 @@ reference <- readr::read_csv(strollur_example("references.csv"),
 )
 
 add(
-  data = data,
+  data,
   table = reference,
   type = "references"
 )
@@ -270,19 +229,6 @@ function allows assign sequence abundances, sequence classifications,
 bins, bin representative sequences, bin classifications, samples and
 treatments to your data set.
 
-- **Parameters:**
-  - *data* - a data set object
-  - *table* - a data.frame containing the data you wish to assign
-  - *type* - string containing the type of data you are assigning
-  - *bin_type* - string containing the bin type you would like to assign
-  - *table_names* - a named list used to indicate the names of the
-    columns in the table
-  - *reference* - a list created by the
-    [`new_reference()`](https://mothur.org/strollur/reference/new_reference.md)
-    function
-  - *verbose* - boolean, indicating whether you want outputs about what
-    is being added
-
 #### Assigning Abundances
 
 After adding your FASTA sequences, you can assign abundance and sample
@@ -296,7 +242,7 @@ abundance_table <- readr::read_tsv(
   show_col_types = FALSE
 )
 assign(
-  data = data,
+  data,
   table = abundance_table,
   type = "sequence_abundance",
   table_names = list(sequence_name = "names")
@@ -306,69 +252,24 @@ assign(
 data
 #> my_data:
 #> 
-#> sequence_summary:
-#>             starts ends   nbases ambigs polymers numns    numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0      1.000
-#> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750
-#> Median:          1  375 252.0000      0 4.000000     0  56982.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250
-#> 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925
-#> Maximum:         1  375 256.0000      0 6.000000     0 113963.000
-#> Mean:            1  375 252.4472      0 4.368699     0      0.000
-#> Unique seqs:  2425 
-#> Total seqs:   113963 
-#> 
-#> contigs_report :
-#>             Expected_Errors   Length MisMatches Num_Ns Overlap_End
-#> Minimum:       0.0000452496 250.0000   0.000000      0    248.0000
-#> 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000
-#> 25%-tile:      0.0028177700 252.0000   0.000000      0    251.0000
-#> Median:        0.0062948698 252.0000   2.000000      0    251.0000
-#> 75%-tile:      0.0264780000 253.0000   4.000000      0    251.0000
-#> 97.5%-tile:    1.1412299871 253.0000  76.000000      0    252.0000
-#> Maximum:       3.0126200000 270.0000 120.000000      0    256.0000
-#> Mean:          0.0984788569 252.5128   7.534147      0    251.0762
-#>             Overlap_Length Overlap_Start
-#> Minimum:          232.0000      0.000000
-#> 2.5%-tile:        248.0000      1.000000
-#> 25%-tile:         249.0000      2.000000
-#> Median:           249.0000      2.000000
-#> 75%-tile:         249.0000      2.000000
-#> 97.5%-tile:       251.0000      3.000000
-#> Maximum:          255.0000     22.000000
-#> Mean:             249.2136      1.862692
-#> Unique seqs:  2425 
-#> Total seqs:   113963 
-#> 
-#> 
-#> Sample   Total:
-#> F3D0 6191 
-#> F3D1 4652 
-#> F3D141   4656 
-#> F3D142   2423 
-#> F3D143   2403 
-#> F3D144   3449 
-#> F3D145   5532 
-#> F3D146   3831 
-#> F3D147   12430 
-#> F3D148   9465 
-#> F3D149   10014 
-#> F3D150   4126 
-#> F3D2 15686 
-#> F3D3 5199 
-#> F3D5 3469 
-#> F3D6 6394 
-#> F3D7 4055 
-#> F3D8 4253 
-#> F3D9 5735 
-#> 
-#> Treatment   Total:
-#> Early    55634 
-#> Late 58329 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
 #> 
 #> Number of unique seqs: 2425 
-#> Total number of seqs: 113963
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of resource references: 3 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 ```
 
 #### Assigning Bins
@@ -390,7 +291,7 @@ bin_table <- readr::read_tsv(
 )
 
 assign(
-  data = data,
+  data,
   table = bin_table,
   type = "bins",
   bin_type = "otu",
@@ -401,70 +302,25 @@ assign(
 data
 #> my_data:
 #> 
-#> sequence_summary:
-#>             starts ends   nbases ambigs polymers numns    numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0      1.000
-#> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750
-#> Median:          1  375 252.0000      0 4.000000     0  56982.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250
-#> 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925
-#> Maximum:         1  375 256.0000      0 6.000000     0 113963.000
-#> Mean:            1  375 252.4472      0 4.368699     0      0.000
-#> Unique seqs:  2425 
-#> Total seqs:   113963 
-#> 
-#> contigs_report :
-#>             Expected_Errors   Length MisMatches Num_Ns Overlap_End
-#> Minimum:       0.0000452496 250.0000   0.000000      0    248.0000
-#> 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000
-#> 25%-tile:      0.0028177700 252.0000   0.000000      0    251.0000
-#> Median:        0.0062948698 252.0000   2.000000      0    251.0000
-#> 75%-tile:      0.0264780000 253.0000   4.000000      0    251.0000
-#> 97.5%-tile:    1.1412299871 253.0000  76.000000      0    252.0000
-#> Maximum:       3.0126200000 270.0000 120.000000      0    256.0000
-#> Mean:          0.0984788569 252.5128   7.534147      0    251.0762
-#>             Overlap_Length Overlap_Start
-#> Minimum:          232.0000      0.000000
-#> 2.5%-tile:        248.0000      1.000000
-#> 25%-tile:         249.0000      2.000000
-#> Median:           249.0000      2.000000
-#> 75%-tile:         249.0000      2.000000
-#> 97.5%-tile:       251.0000      3.000000
-#> Maximum:          255.0000     22.000000
-#> Mean:             249.2136      1.862692
-#> Unique seqs:  2425 
-#> Total seqs:   113963 
-#> 
-#> 
-#> Sample   Total:
-#> F3D0 6191 
-#> F3D1 4652 
-#> F3D141   4656 
-#> F3D142   2423 
-#> F3D143   2403 
-#> F3D144   3449 
-#> F3D145   5532 
-#> F3D146   3831 
-#> F3D147   12430 
-#> F3D148   9465 
-#> F3D149   10014 
-#> F3D150   4126 
-#> F3D2 15686 
-#> F3D3 5199 
-#> F3D5 3469 
-#> F3D6 6394 
-#> F3D7 4055 
-#> F3D8 4253 
-#> F3D9 5735 
-#> 
-#> Treatment   Total:
-#> Early    55634 
-#> Late 58329 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
-#> Total number of otus: 531
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of resource references: 3 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 ```
 
 You can see from the summary, we now have 531 otus in our dataset.
@@ -487,7 +343,7 @@ sequence_classification_data <- read_mothur_taxonomy(
 )
 
 assign(
-  data = data,
+  data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
 )
@@ -506,7 +362,7 @@ otu_data <- read_mothur_cons_taxonomy(strollur_example(
 ))
 
 assign(
-  data = data,
+  data,
   table = otu_data,
   type = "bin_taxonomy",
   bin_type = "otu"
@@ -529,7 +385,7 @@ bin_representatives <- readr::read_tsv(
 )
 
 assign(
-  data = data,
+  data,
   table = bin_representatives,
   type = "bin_representatives"
 )
@@ -549,7 +405,7 @@ sample_assignments <- readr::read_table(
 )
 
 assign(
-  data = data,
+  data,
   table = sample_assignments,
   type = "treatments"
 )
@@ -571,8 +427,8 @@ data$add_sequence_tree(sequence_tree)
 
 #| fig.alt: >
 #|   Plot of Miseq_SOP's sample relationship tree
-#|
-plot(data$get_sample_tree(),
+par(bg = "white")
+ape::plot.phylo(data$get_sample_tree(),
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"
 )

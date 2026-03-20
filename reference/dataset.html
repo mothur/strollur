@@ -30,6 +30,7 @@ analysis across multiple R packages."><meta property="og:image" content="https:/
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -311,17 +312,9 @@ length of longest homopolymer, and the number of N's.</p><div class="section">
 <h3 id="method-get-summary-">Method <code>get_summary()</code><a class="anchor" aria-label="anchor" href="#method-get-summary-"></a></h3>
 <p>Get summary of the sequence reports</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_summary</span><span class="op">(</span>silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">dataset</span><span class="op">$</span><span class="fu">get_summary</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
-<div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>silent</code></dt>
-<dd><p>Default = FALSE, meaning print summaries</p></dd>
-
-
-</dl><p></p></div>
-</div>
 <div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>list of data.frames</p>
@@ -353,7 +346,7 @@ length of longest homopolymer, and the number of N's.</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

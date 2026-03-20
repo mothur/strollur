@@ -58,28 +58,9 @@ assign(data = data, table = sample_table, type = "sequence_abundance")
 # print summary of data
 data
 #> 
-#> Sample   Total:
-#> F3D0 6191 
-#> F3D1 4652 
-#> F3D141   4656 
-#> F3D142   2423 
-#> F3D143   2403 
-#> F3D144   3449 
-#> F3D145   5532 
-#> F3D146   3831 
-#> F3D147   12430 
-#> F3D148   9465 
-#> F3D149   10014 
-#> F3D150   4126 
-#> F3D2 15686 
-#> F3D3 5199 
-#> F3D5 3469 
-#> F3D6 6394 
-#> F3D7 4055 
-#> F3D8 4253 
-#> F3D9 5735 
-#> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
 #> 
 ```

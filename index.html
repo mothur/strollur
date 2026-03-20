@@ -47,6 +47,7 @@
     <li><a class="dropdown-item" href="articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="articles/Importing_from_mothur.html">Importing from mothur</a></li>
+    <li><a class="dropdown-item" href="articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
     <li><a class="dropdown-item" href="articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
 </li>
@@ -87,19 +88,19 @@
 <p>The <strong>strollur</strong> package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, sequence bin assignments, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to import from <a href="https://mothur.org" class="external-link">mothur</a>, <a href="https://qiime2.org" class="external-link">qiime2</a>, <a href="https://benjjneb.github.io/dada2/" class="external-link">dada2</a> and <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link">phyloseq</a>.</p>
 <ul>
 <li>
-<code><a href="reference/add.html">add()</a></code> add sequences, reports, metadata, and resource references</li>
+<code><a href="reference/add.html">add()</a></code> adds sequences, reports, metadata, and resource references</li>
 <li>
-<code><a href="reference/assign.html">assign()</a></code> assign abundances, classifications, bins, samples and treatments and more</li>
+<code><a href="reference/assign.html">assign()</a></code> assigns abundances, classifications, bins, samples and treatments and more</li>
 <li>
-<code><a href="reference/names.html">names()</a></code> get the names of sequences, bins, samples, treatments and reports</li>
+<code><a href="reference/names.html">names()</a></code> gets the names of sequences, bins, samples, treatments and reports</li>
 <li>
-<code><a href="reference/count.html">count()</a></code> get the number of sequences, bins, samples and treatments</li>
+<code><a href="reference/count.html">count()</a></code> gets the number of sequences, bins, samples and treatments</li>
 <li>
-<code><a href="reference/abundance.html">abundance()</a></code> get the abundances for sequences, bins, samples, and treatments</li>
+<code><a href="reference/abundance.html">abundance()</a></code> gets the abundances for sequences, bins, samples, and treatments</li>
 <li>
-<code><a href="reference/report.html">report()</a></code> get <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> sequences, sequence and classification reports, bin assignments, sample assignments, metadata, sequence data reports, custom reports, resource references and scrapped data reports.</li>
+<code><a href="reference/report.html">report()</a></code> gets <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> sequences, sequence and classification reports, bin assignments, sample assignments, metadata, sequence data reports, custom reports, resource references and scrapped data reports.</li>
 <li>
-<code><a href="reference/summary.html">summary()</a></code> summarize sequences, your custom reports, and scrapped data</li>
+<code><a href="reference/summary.html">summary()</a></code> summarizes sequences, your custom reports, and scrapped data</li>
 </ul>
 </div>
 <div class="section level2">
@@ -139,8 +140,7 @@
 <span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"mothur2_count_table.tsv.gz"</span><span class="op">)</span>,</span>
 <span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">abundance_table</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_abundance"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"names"</span><span class="op">)</span></span>
@@ -155,8 +155,7 @@
 <span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">bin_table</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
@@ -169,8 +168,7 @@
 <span>  taxonomy <span class="op">=</span> <span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">sequence_classification_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span>
 <span><span class="op">)</span></span>

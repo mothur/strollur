@@ -44,6 +44,7 @@
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
 </li>
@@ -110,33 +111,6 @@ set.</p>
 </h3>
 <p>The add function allows you to add sequences, reports, metadata, and
 resource references to your data set.</p>
-<ul>
-<li>
-<strong>Parameters:</strong>
-<ul>
-<li>
-<em>data</em> - a data set object</li>
-<li>
-<em>table</em> - a data.frame containing the data you wish to
-add</li>
-<li>
-<em>type</em> - string containing the type of data you are
-adding</li>
-<li>
-<em>report_type</em> - string containing the report type you would
-like to add</li>
-<li>
-<em>table_names</em> - a named list used to indicate the names of
-the columns in the table</li>
-<li>
-<em>reference</em> - a list created by the
-<code><a href="../reference/new_reference.html">new_reference()</a></code> function</li>
-<li>
-<em>verbose</em> - Boolean, indicating whether you want outputs
-about what is being added</li>
-</ul>
-</li>
-</ul>
 <div class="section level4">
 <h4 id="adding-fasta-sequences">Adding FASTA sequences<a class="anchor" aria-label="anchor" href="#adding-fasta-sequences"></a>
 </h4>
@@ -148,7 +122,7 @@ a data.frame.</p>
 <code class="sourceCode R"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequences"</span></span>
 <span><span class="op">)</span></span>
@@ -157,18 +131,15 @@ a data.frame.</p>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
-<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns  numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0    1.000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  607.250</span></span>
-<span><span class="co">#&gt; Median:          1  375 253.0000      0 4.000000     0 1213.500</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375</span></span>
-<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 2425.000</span></span>
-<span><span class="co">#&gt; Mean:            1  375 252.7406      0 4.496082     0    0.000</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   2425 </span></span>
+<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
+<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
+<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 2425</span></span></code></pre></div>
@@ -191,7 +162,7 @@ from our data set.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="va">resource_reference</span></span>
@@ -201,21 +172,20 @@ from our data set.</p>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
-<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns  numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0    1.000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  607.250</span></span>
-<span><span class="co">#&gt; Median:          1  375 253.0000      0 4.000000     0 1213.500</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375</span></span>
-<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 2425.000</span></span>
-<span><span class="co">#&gt; Mean:            1  375 252.7406      0 4.496082     0    0.000</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   2425 </span></span>
+<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
+<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
+<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 2425</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of seqs: 2425 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of resource references: 1</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="adding-custom-reports">Adding Custom Reports<a class="anchor" aria-label="anchor" href="#adding-custom-reports"></a>
@@ -233,7 +203,7 @@ expecting, you will see an error like that below.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">contigs_report</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"reports"</span>,</span>
 <span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span></span>
@@ -242,7 +212,7 @@ expecting, you will see an error like that below.</p>
 <span><span class="co"># Error: The report must include a column containing sequence names.</span></span>
 <span><span class="co"># sequence_names is not a named column in your report.</span></span>
 <span></span>
-<span><span class="co"># Called from: xdev_add_report(data = data, table = table, type = report_type,</span></span>
+<span><span class="co"># Called from: xdev_add_report(data, table = table, type = report_type,</span></span>
 <span><span class="co">#    sequence_name = table_names[["sequence_name"]], verbose)</span></span></code></pre></div>
 <p>You can use the table_names parameter to tell strollur what the
 specific column is called in your custom report table. In the
@@ -254,7 +224,7 @@ contigs_report the <em>sequence_name</em> column is called
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">contigs_report</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"reports"</span>,</span>
 <span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span>,</span>
@@ -265,44 +235,21 @@ contigs_report the <em>sequence_name</em> column is called
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
-<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns  numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0    1.000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  607.250</span></span>
-<span><span class="co">#&gt; Median:          1  375 253.0000      0 4.000000     0 1213.500</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375</span></span>
-<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 2425.000</span></span>
-<span><span class="co">#&gt; Mean:            1  375 252.7406      0 4.496082     0    0.000</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   2425 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; contigs_report :</span></span>
-<span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
-<span><span class="co">#&gt; Minimum:       0.0000452496 250.0000   0.000000      0    248.0000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:     0.0010250499 252.0000   0.000000      0    250.0000</span></span>
-<span><span class="co">#&gt; 25%-tile:      0.0022657500 252.0000   0.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; Median:        0.0092338603 253.0000   1.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; 75%-tile:      0.0559640005 253.0000   5.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; 97.5%-tile:    0.4990670085 254.0000  26.000000      0    253.0000</span></span>
-<span><span class="co">#&gt; Maximum:       3.0126200000 270.0000 120.000000      0    256.0000</span></span>
-<span><span class="co">#&gt; Mean:          0.0738509483 252.7575   5.162474      0    251.1555</span></span>
-<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
-<span><span class="co">#&gt; Minimum:          232.0000      0.000000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:        246.0000      1.000000</span></span>
-<span><span class="co">#&gt; 25%-tile:         249.0000      2.000000</span></span>
-<span><span class="co">#&gt; Median:           249.0000      2.000000</span></span>
-<span><span class="co">#&gt; 75%-tile:         250.0000      2.000000</span></span>
-<span><span class="co">#&gt; 97.5%-tile:       251.0000      4.000000</span></span>
-<span><span class="co">#&gt; Maximum:          255.0000     22.000000</span></span>
-<span><span class="co">#&gt; Mean:             249.1501      2.005361</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   2425 </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
+<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
+<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 2425</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of seqs: 2425 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of resource references: 1 </span></span>
+<span><span class="co">#&gt; Total number of custom reports: 1</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="adding-metadata">Adding Metadata<a class="anchor" aria-label="anchor" href="#adding-metadata"></a>
@@ -316,7 +263,7 @@ setting the type = “metadata”.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">metadata</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"metadata"</span></span>
 <span><span class="op">)</span></span>
@@ -334,7 +281,7 @@ the type = “references”.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">reference</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"references"</span></span>
 <span><span class="op">)</span></span>
@@ -348,33 +295,6 @@ the type = “references”.</p>
 <p>The <code><a href="../reference/assign.html">assign()</a></code> function allows assign sequence abundances,
 sequence classifications, bins, bin representative sequences, bin
 classifications, samples and treatments to your data set.</p>
-<ul>
-<li>
-<strong>Parameters:</strong>
-<ul>
-<li>
-<em>data</em> - a data set object</li>
-<li>
-<em>table</em> - a data.frame containing the data you wish to
-assign</li>
-<li>
-<em>type</em> - string containing the type of data you are
-assigning</li>
-<li>
-<em>bin_type</em> - string containing the bin type you would like to
-assign</li>
-<li>
-<em>table_names</em> - a named list used to indicate the names of
-the columns in the table</li>
-<li>
-<em>reference</em> - a list created by the
-<code><a href="../reference/new_reference.html">new_reference()</a></code> function</li>
-<li>
-<em>verbose</em> - boolean, indicating whether you want outputs
-about what is being added</li>
-</ul>
-</li>
-</ul>
 <div class="section level4">
 <h4 id="assigning-abundances">Assigning Abundances<a class="anchor" aria-label="anchor" href="#assigning-abundances"></a>
 </h4>
@@ -389,7 +309,7 @@ sample data using the assign function with the type =
 <span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">abundance_table</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_abundance"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"names"</span><span class="op">)</span></span>
@@ -399,69 +319,24 @@ sample data using the assign function with the type =
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
-<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns    numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0      1.000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750</span></span>
-<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0  56982.500</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925</span></span>
-<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 113963.000</span></span>
-<span><span class="co">#&gt; Mean:            1  375 252.4472      0 4.368699     0      0.000</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; contigs_report :</span></span>
-<span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
-<span><span class="co">#&gt; Minimum:       0.0000452496 250.0000   0.000000      0    248.0000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; 25%-tile:      0.0028177700 252.0000   0.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; Median:        0.0062948698 252.0000   2.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; 75%-tile:      0.0264780000 253.0000   4.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; 97.5%-tile:    1.1412299871 253.0000  76.000000      0    252.0000</span></span>
-<span><span class="co">#&gt; Maximum:       3.0126200000 270.0000 120.000000      0    256.0000</span></span>
-<span><span class="co">#&gt; Mean:          0.0984788569 252.5128   7.534147      0    251.0762</span></span>
-<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
-<span><span class="co">#&gt; Minimum:          232.0000      0.000000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:        248.0000      1.000000</span></span>
-<span><span class="co">#&gt; 25%-tile:         249.0000      2.000000</span></span>
-<span><span class="co">#&gt; Median:           249.0000      2.000000</span></span>
-<span><span class="co">#&gt; 75%-tile:         249.0000      2.000000</span></span>
-<span><span class="co">#&gt; 97.5%-tile:       251.0000      3.000000</span></span>
-<span><span class="co">#&gt; Maximum:          255.0000     22.000000</span></span>
-<span><span class="co">#&gt; Mean:             249.2136      1.862692</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Sample   Total:</span></span>
-<span><span class="co">#&gt; F3D0 6191 </span></span>
-<span><span class="co">#&gt; F3D1 4652 </span></span>
-<span><span class="co">#&gt; F3D141   4656 </span></span>
-<span><span class="co">#&gt; F3D142   2423 </span></span>
-<span><span class="co">#&gt; F3D143   2403 </span></span>
-<span><span class="co">#&gt; F3D144   3449 </span></span>
-<span><span class="co">#&gt; F3D145   5532 </span></span>
-<span><span class="co">#&gt; F3D146   3831 </span></span>
-<span><span class="co">#&gt; F3D147   12430 </span></span>
-<span><span class="co">#&gt; F3D148   9465 </span></span>
-<span><span class="co">#&gt; F3D149   10014 </span></span>
-<span><span class="co">#&gt; F3D150   4126 </span></span>
-<span><span class="co">#&gt; F3D2 15686 </span></span>
-<span><span class="co">#&gt; F3D3 5199 </span></span>
-<span><span class="co">#&gt; F3D5 3469 </span></span>
-<span><span class="co">#&gt; F3D6 6394 </span></span>
-<span><span class="co">#&gt; F3D7 4055 </span></span>
-<span><span class="co">#&gt; F3D8 4253 </span></span>
-<span><span class="co">#&gt; F3D9 5735 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Treatment   Total:</span></span>
-<span><span class="co">#&gt; Early    55634 </span></span>
-<span><span class="co">#&gt; Late 58329 </span></span>
+<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
+<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
+<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of samples: 19 </span></span>
+<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
+<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
+<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
+<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="assigning-bins">Assigning Bins<a class="anchor" aria-label="anchor" href="#assigning-bins"></a>
@@ -481,7 +356,7 @@ Taxonomic Unit</a> clusters and set the bin_type = “otu”.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">bin_table</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
@@ -492,70 +367,25 @@ Taxonomic Unit</a> clusters and set the bin_type = “otu”.</p>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
-<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns    numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0      1.000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750</span></span>
-<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0  56982.500</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925</span></span>
-<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 113963.000</span></span>
-<span><span class="co">#&gt; Mean:            1  375 252.4472      0 4.368699     0      0.000</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; contigs_report :</span></span>
-<span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
-<span><span class="co">#&gt; Minimum:       0.0000452496 250.0000   0.000000      0    248.0000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; 25%-tile:      0.0028177700 252.0000   0.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; Median:        0.0062948698 252.0000   2.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; 75%-tile:      0.0264780000 253.0000   4.000000      0    251.0000</span></span>
-<span><span class="co">#&gt; 97.5%-tile:    1.1412299871 253.0000  76.000000      0    252.0000</span></span>
-<span><span class="co">#&gt; Maximum:       3.0126200000 270.0000 120.000000      0    256.0000</span></span>
-<span><span class="co">#&gt; Mean:          0.0984788569 252.5128   7.534147      0    251.0762</span></span>
-<span><span class="co">#&gt;             Overlap_Length Overlap_Start</span></span>
-<span><span class="co">#&gt; Minimum:          232.0000      0.000000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:        248.0000      1.000000</span></span>
-<span><span class="co">#&gt; 25%-tile:         249.0000      2.000000</span></span>
-<span><span class="co">#&gt; Median:           249.0000      2.000000</span></span>
-<span><span class="co">#&gt; 75%-tile:         249.0000      2.000000</span></span>
-<span><span class="co">#&gt; 97.5%-tile:       251.0000      3.000000</span></span>
-<span><span class="co">#&gt; Maximum:          255.0000     22.000000</span></span>
-<span><span class="co">#&gt; Mean:             249.2136      1.862692</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Sample   Total:</span></span>
-<span><span class="co">#&gt; F3D0 6191 </span></span>
-<span><span class="co">#&gt; F3D1 4652 </span></span>
-<span><span class="co">#&gt; F3D141   4656 </span></span>
-<span><span class="co">#&gt; F3D142   2423 </span></span>
-<span><span class="co">#&gt; F3D143   2403 </span></span>
-<span><span class="co">#&gt; F3D144   3449 </span></span>
-<span><span class="co">#&gt; F3D145   5532 </span></span>
-<span><span class="co">#&gt; F3D146   3831 </span></span>
-<span><span class="co">#&gt; F3D147   12430 </span></span>
-<span><span class="co">#&gt; F3D148   9465 </span></span>
-<span><span class="co">#&gt; F3D149   10014 </span></span>
-<span><span class="co">#&gt; F3D150   4126 </span></span>
-<span><span class="co">#&gt; F3D2 15686 </span></span>
-<span><span class="co">#&gt; F3D3 5199 </span></span>
-<span><span class="co">#&gt; F3D5 3469 </span></span>
-<span><span class="co">#&gt; F3D6 6394 </span></span>
-<span><span class="co">#&gt; F3D7 4055 </span></span>
-<span><span class="co">#&gt; F3D8 4253 </span></span>
-<span><span class="co">#&gt; F3D9 5735 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Treatment   Total:</span></span>
-<span><span class="co">#&gt; Early    55634 </span></span>
-<span><span class="co">#&gt; Late 58329 </span></span>
+<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
+<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
+<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; Total number of otus: 531</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of samples: 19 </span></span>
+<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
+<span><span class="co">#&gt; Total number of otus: 531 </span></span>
+<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
+<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
+<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
 <p>You can see from the summary, we now have 531 otus in our
 dataset.</p>
 <p>Note, if you are importing data from packages that preprocess the
@@ -574,7 +404,7 @@ taxonomy to our sequences.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">sequence_classification_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span>
 <span><span class="op">)</span></span>
@@ -590,7 +420,7 @@ taxonomies independently by setting the type = “bin_taxonomy”.</p>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">otu_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
@@ -613,7 +443,7 @@ bins in your clusters. Let’s assign bin representatives to our
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">bin_representatives</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_representatives"</span></span>
 <span><span class="op">)</span></span>
@@ -633,7 +463,7 @@ you can also assign samples to treatments by setting type =
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">sample_assignments</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"treatments"</span></span>
 <span><span class="op">)</span></span>
@@ -656,8 +486,8 @@ sequences. Let’s look at some examples together.</p>
 <span></span>
 <span><span class="co">#| fig.alt: &gt;</span></span>
 <span><span class="co">#|   Plot of Miseq_SOP's sample relationship tree</span></span>
-<span><span class="co">#|</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="fu">get_sample_tree</span><span class="op">(</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
+<span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="fu">get_sample_tree</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  no.margin <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cex <span class="op">=</span> <span class="fl">0.5</span>, edge.color <span class="op">=</span> <span class="st">"maroon"</span>, tip.color <span class="op">=</span> <span class="st">"navy"</span></span>
 <span><span class="op">)</span></span></code></pre></div>

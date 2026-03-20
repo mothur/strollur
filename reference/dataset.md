@@ -259,13 +259,7 @@ Get summary of the sequence reports
 
 #### Usage
 
-    dataset$get_summary(silent = FALSE)
-
-#### Arguments
-
-- `silent`:
-
-  Default = FALSE, meaning print summaries
+    dataset$get_summary()
 
 #### Returns
 

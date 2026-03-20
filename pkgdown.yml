@@ -7,9 +7,10 @@ articles:
   Functions_for_Package_Developers: Functions_for_Package_Developers.html
   General_Importing: General_Importing.html
   Importing_from_mothur: Importing_from_mothur.html
+  Importing_from_phyloseq: Importing_from_phyloseq.html
   Importing_from_qiime2: Importing_from_qiime2.html
   strollur: strollur.html
-last_built: 2026-02-06T21:06Z
+last_built: 2026-03-20T15:42Z
 urls:
   reference: https://mothur.org/strollur/reference
   article: https://mothur.org/strollur/articles

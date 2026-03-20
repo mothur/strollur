@@ -6,7 +6,7 @@ Get a table containing the requested abundance data in a
 ## Usage
 
 ``` r
-xdev_abundance(data, type = "sequence", bin_type = "otu", by_sample = FALSE)
+xdev_abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 ```
 
 ## Arguments

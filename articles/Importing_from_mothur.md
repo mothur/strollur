@@ -35,46 +35,21 @@ To view a summary of data:
 data
 #> miseq_sop:
 #> 
-#> sequence_summary:
-#>             starts ends   nbases ambigs polymers numns    numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0      1.000
-#> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750
-#> Median:          1  375 252.0000      0 4.000000     0  56982.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250
-#> 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925
-#> Maximum:         1  375 256.0000      0 6.000000     0 113963.000
-#> Mean:            1  375 252.4472      0 4.368699     0      0.000
-#> Unique seqs:  2425 
-#> Total seqs:   113963 
-#> 
-#> Sample   Total:
-#> F3D0 6191 
-#> F3D1 4652 
-#> F3D141   4656 
-#> F3D142   2423 
-#> F3D143   2403 
-#> F3D144   3449 
-#> F3D145   5532 
-#> F3D146   3831 
-#> F3D147   12430 
-#> F3D148   9465 
-#> F3D149   10014 
-#> F3D150   4126 
-#> F3D2 15686 
-#> F3D3 5199 
-#> F3D5 3469 
-#> F3D6 6394 
-#> F3D7 4055 
-#> F3D8 4253 
-#> F3D9 5735 
-#> 
-#> Treatment   Total:
-#> Early    55634 
-#> Late 58329 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
 #> Total number of otus: 531 
 #> Total number of asvs: 2425 
 #> Total number of phylotypes: 63
@@ -126,24 +101,21 @@ sequences to your data set using the
 [`add()`](https://mothur.org/strollur/reference/add.md) function:
 
 ``` r
-add(data = my_data, table = fasta_data, type = "sequences")
+add(my_data, table = fasta_data, type = "sequences")
 #> ℹ Added 2425 sequences.
 #> [1] 2425
 my_data
 #> my_data:
 #> 
-#> sequence_summary:
-#>             starts ends   nbases ambigs polymers numns  numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0    1.000
-#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  607.250
-#> Median:          1  375 253.0000      0 4.000000     0 1213.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750
-#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375
-#> Maximum:         1  375 256.0000      0 6.000000     0 2425.000
-#> Mean:            1  375 252.7406      0 4.496082     0    0.000
-#> Unique seqs:  2425 
-#> Total seqs:   2425 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 2425
@@ -166,48 +138,26 @@ using the [`assign()`](https://mothur.org/strollur/reference/assign.md)
 function:
 
 ``` r
-assign(data = my_data, table = sample_table, type = "sequence_abundance")
+assign(my_data, table = sample_table, type = "sequence_abundance")
 #> ℹ Assigned 2425 sequence abundances.
 #> [1] 2425
 my_data
 #> my_data:
 #> 
-#> sequence_summary:
-#>             starts ends   nbases ambigs polymers numns    numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0      1.000
-#> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750
-#> Median:          1  375 252.0000      0 4.000000     0  56982.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250
-#> 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925
-#> Maximum:         1  375 256.0000      0 6.000000     0 113963.000
-#> Mean:            1  375 252.4472      0 4.368699     0      0.000
-#> Unique seqs:  2425 
-#> Total seqs:   113963 
-#> 
-#> Sample   Total:
-#> F3D0 6191 
-#> F3D1 4652 
-#> F3D141   4656 
-#> F3D142   2423 
-#> F3D143   2403 
-#> F3D144   3449 
-#> F3D145   5532 
-#> F3D146   3831 
-#> F3D147   12430 
-#> F3D148   9465 
-#> F3D149   10014 
-#> F3D150   4126 
-#> F3D2 15686 
-#> F3D3 5199 
-#> F3D5 3469 
-#> F3D6 6394 
-#> F3D7 4055 
-#> F3D8 4253 
-#> F3D9 5735 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
 #> 
 #> Number of unique seqs: 2425 
-#> Total number of seqs: 113963
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19
 ```
 
 To add sequence taxonomy assignments, you can read a [taxonomy
@@ -226,7 +176,7 @@ taxonomies. You can add the sequence classification data to your data
 set as follows:
 
 ``` r
-assign(data = my_data, table = classification_data, type = "sequence_taxonomy")
+assign(my_data, table = classification_data, type = "sequence_taxonomy")
 #> ℹ Assigned 2425 sequence taxonomies.
 #> [1] 2425
 ```
@@ -247,14 +197,15 @@ names and sequence names. You can add the bin data to your data set as
 follows:
 
 ``` r
-assign(data = my_data, table = otu_data, type = "bins", bin_type = "otu")
+assign(my_data, table = otu_data, type = "bins", bin_type = "otu")
 #> ℹ Assigned 531 otu bins.
 #> [1] 531
-assign(data = my_data, table = asv_data, type = "bins", bin_type = "asv")
+assign(my_data, table = asv_data, type = "bins", bin_type = "asv")
 #> ℹ Assigned 2425 asv bins.
 #> [1] 2425
 assign(
-  data = my_data, table = phylotype_data,
+  my_data,
+  table = phylotype_data,
   type = "bins", bin_type = "phylotype"
 )
 #> ℹ Assigned 63 phylotype bins.
@@ -262,42 +213,20 @@ assign(
 my_data
 #> my_data:
 #> 
-#> sequence_summary:
-#>             starts ends   nbases ambigs polymers numns    numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0      1.000
-#> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750
-#> Median:          1  375 252.0000      0 4.000000     0  56982.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250
-#> 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925
-#> Maximum:         1  375 256.0000      0 6.000000     0 113963.000
-#> Mean:            1  375 252.4472      0 4.368699     0      0.000
-#> Unique seqs:  2425 
-#> Total seqs:   113963 
-#> 
-#> Sample   Total:
-#> F3D0 6191 
-#> F3D1 4652 
-#> F3D141   4656 
-#> F3D142   2423 
-#> F3D143   2403 
-#> F3D144   3449 
-#> F3D145   5532 
-#> F3D146   3831 
-#> F3D147   12430 
-#> F3D148   9465 
-#> F3D149   10014 
-#> F3D150   4126 
-#> F3D2 15686 
-#> F3D3 5199 
-#> F3D5 3469 
-#> F3D6 6394 
-#> F3D7 4055 
-#> F3D8 4253 
-#> F3D9 5735 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
 #> Total number of otus: 531 
 #> Total number of asvs: 2425 
 #> Total number of phylotypes: 63
@@ -323,7 +252,7 @@ taxonomies. You can add the bin taxonomic data to your data set as
 follows:
 
 ``` r
-assign(data = my_data, table = otu_taxonomy_data, type = "bin_taxonomy")
+assign(my_data, table = otu_taxonomy_data, type = "bin_taxonomy")
 #> ℹ Assigned 531 otu bin taxonomies.
 #> [1] 531
 ```

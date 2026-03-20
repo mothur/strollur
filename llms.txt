@@ -12,23 +12,23 @@ functions to import from [mothur](https://mothur.org),
 and
 [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 
-- [`add()`](https://mothur.org/strollur/reference/add.md) add sequences,
-  reports, metadata, and resource references
-- [`assign()`](https://mothur.org/strollur/reference/assign.md) assign
+- [`add()`](https://mothur.org/strollur/reference/add.md) adds
+  sequences, reports, metadata, and resource references
+- [`assign()`](https://mothur.org/strollur/reference/assign.md) assigns
   abundances, classifications, bins, samples and treatments and more
-- [`names()`](https://mothur.org/strollur/reference/names.md) get the
+- [`names()`](https://mothur.org/strollur/reference/names.md) gets the
   names of sequences, bins, samples, treatments and reports
-- [`count()`](https://mothur.org/strollur/reference/count.md) get the
+- [`count()`](https://mothur.org/strollur/reference/count.md) gets the
   number of sequences, bins, samples and treatments
 - [`abundance()`](https://mothur.org/strollur/reference/abundance.md)
-  get the abundances for sequences, bins, samples, and treatments
-- [`report()`](https://mothur.org/strollur/reference/report.md) get
+  gets the abundances for sequences, bins, samples, and treatments
+- [`report()`](https://mothur.org/strollur/reference/report.md) gets
   [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequences,
   sequence and classification reports, bin assignments, sample
   assignments, metadata, sequence data reports, custom reports, resource
   references and scrapped data reports.
 - [`summary()`](https://mothur.org/strollur/reference/summary.md)
-  summarize sequences, your custom reports, and scrapped data
+  summarizes sequences, your custom reports, and scrapped data
 
 ## Installation
 
@@ -73,8 +73,7 @@ add(
 abundance_table <- readr::read_tsv(strollur_example("mothur2_count_table.tsv.gz"),
   show_col_types = FALSE
 )
-assign(
-  data = data,
+assign(data,
   table = abundance_table,
   type = "sequence_abundance",
   table_names = list(sequence_name = "names")
@@ -89,8 +88,7 @@ bin_table <- readr::read_tsv(
   show_col_types = FALSE
 )
 
-assign(
-  data = data,
+assign(data,
   table = bin_table,
   type = "bins",
   bin_type = "otu",
@@ -103,8 +101,7 @@ sequence_classification_data <- read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
 
-assign(
-  data = data,
+assign(data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
 )
@@ -185,9 +182,10 @@ Adding and using data
   summary
 - [`dataset`](https://mothur.org/strollur/reference/dataset.md) :
   dataset
-- [`strollur-package`](https://mothur.org/strollur/reference/rdataset-package.md)
-  [`strollur`](https://mothur.org/strollur/reference/rdataset-package.md)
-  : Store and transfer data used in the analysis of microbial DNA
+- [`strollur`](https://mothur.org/strollur/reference/strollur-package.md)
+  [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
+  : strollur: Store and transfer data used in the analysis of microbial
+  RNA
 - [`get_bin_types()`](https://mothur.org/strollur/reference/get_bin_types.md)
   : get_bin_types
 
@@ -214,6 +212,8 @@ DADA2
   : read_mothur_shared
 - [`read_mothur_taxonomy()`](https://mothur.org/strollur/reference/read_mothur_taxonomy.md)
   : read_mothur_taxonomy
+- [`read_phyloseq()`](https://mothur.org/strollur/reference/read_phyloseq.md)
+  : read_phyloseq
 - [`read_qiime2()`](https://mothur.org/strollur/reference/read_qiime2.md)
   : read_qiime2
 - [`read_qiime2_feature_table()`](https://mothur.org/strollur/reference/read_qiime2_feature_table.md)
@@ -271,6 +271,8 @@ Save, copy, load, import, export and write to file
   : write_mothur_rabund
 - [`write_mothur_shared()`](https://mothur.org/strollur/reference/write_mothur_shared.md)
   : write_mothur_shared
+- [`write_phyloseq()`](https://mothur.org/strollur/reference/write_phyloseq.md)
+  : write_phyloseq
 - [`write_taxonomy()`](https://mothur.org/strollur/reference/write_taxonomy.md)
   : write_taxonomy
 
@@ -315,6 +317,8 @@ these functions
   : xdev_assign_treatments
 - [`xdev_count()`](https://mothur.org/strollur/reference/xdev_count.md)
   : xdev_count
+- [`xdev_get_abundances_by_sample()`](https://mothur.org/strollur/reference/xdev_get_abundances_by_sample.md)
+  : xdev_get_abundances_by_sample
 - [`xdev_get_by_sample()`](https://mothur.org/strollur/reference/xdev_get_by_sample.md)
   : xdev_get_by_sample
 - [`xdev_get_list_vector()`](https://mothur.org/strollur/reference/xdev_get_list_vector.md)
@@ -368,6 +372,7 @@ these functions
   Importing](https://mothur.org/strollur/articles/General_Importing.md):
 - [Importing from
   mothur](https://mothur.org/strollur/articles/Importing_from_mothur.md):
+- [Importing_from_phyloseq](https://mothur.org/strollur/articles/Importing_from_phyloseq.md):
 - [Importing from
   qiime2](https://mothur.org/strollur/articles/Importing_from_qiime2.md):
 - [Getting Started](https://mothur.org/strollur/articles/strollur.md):

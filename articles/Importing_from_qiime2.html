@@ -44,6 +44,7 @@
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
 </li>
@@ -110,58 +111,22 @@ moving-pictures example</a>, run the following:</p>
 <code class="sourceCode R"><span><span class="va">data</span></span>
 <span><span class="co">#&gt; qiime_moving_pictures:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
 <span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  120    120      0 3.000000     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  120    120      0 3.000000     0   3933.45</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  120    120      0 4.000000     0  39325.50</span></span>
-<span><span class="co">#&gt; Median:          1  120    120      0 4.000000     0  78650.00</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  120    120      0 4.000000     0 117974.50</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  120    120      0 6.000000     0 153366.55</span></span>
-<span><span class="co">#&gt; Maximum:         1  120    120      0 8.000000     0 157298.00</span></span>
-<span><span class="co">#&gt; Mean:            1  120    120      0 4.009059     0      0.00</span></span>
-<span><span class="co">#&gt; Unique seqs:  759 </span></span>
-<span><span class="co">#&gt; Total seqs:   157298 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Sample   Total:</span></span>
-<span><span class="co">#&gt; L1S105   7865 </span></span>
-<span><span class="co">#&gt; L1S140   7245 </span></span>
-<span><span class="co">#&gt; L1S208   8270 </span></span>
-<span><span class="co">#&gt; L1S257   6486 </span></span>
-<span><span class="co">#&gt; L1S281   6755 </span></span>
-<span><span class="co">#&gt; L1S57    8756 </span></span>
-<span><span class="co">#&gt; L1S76    7922 </span></span>
-<span><span class="co">#&gt; L1S8 7068 </span></span>
-<span><span class="co">#&gt; L2S155   4112 </span></span>
-<span><span class="co">#&gt; L2S175   4545 </span></span>
-<span><span class="co">#&gt; L2S204   3340 </span></span>
-<span><span class="co">#&gt; L2S222   3485 </span></span>
-<span><span class="co">#&gt; L2S240   5146 </span></span>
-<span><span class="co">#&gt; L2S309   1549 </span></span>
-<span><span class="co">#&gt; L2S357   2526 </span></span>
-<span><span class="co">#&gt; L2S382   4166 </span></span>
-<span><span class="co">#&gt; L3S242   917 </span></span>
-<span><span class="co">#&gt; L3S294   1313 </span></span>
-<span><span class="co">#&gt; L3S313   1191 </span></span>
-<span><span class="co">#&gt; L3S341   1109 </span></span>
-<span><span class="co">#&gt; L3S360   1130 </span></span>
-<span><span class="co">#&gt; L3S378   1279 </span></span>
-<span><span class="co">#&gt; L4S112   8575 </span></span>
-<span><span class="co">#&gt; L4S137   9961 </span></span>
-<span><span class="co">#&gt; L4S63    10095 </span></span>
-<span><span class="co">#&gt; L5S104   2253 </span></span>
-<span><span class="co">#&gt; L5S155   1827 </span></span>
-<span><span class="co">#&gt; L5S174   1969 </span></span>
-<span><span class="co">#&gt; L5S203   2132 </span></span>
-<span><span class="co">#&gt; L5S222   2555 </span></span>
-<span><span class="co">#&gt; L5S240   1817 </span></span>
-<span><span class="co">#&gt; L6S20    6892 </span></span>
-<span><span class="co">#&gt; L6S68    6022 </span></span>
-<span><span class="co">#&gt; L6S93    7025 </span></span>
+<span><span class="co">#&gt; Minimum:         1  120    120      0        3     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  120    120      0        3     0   3933.45</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  120    120      0        4     0  39325.50</span></span>
+<span><span class="co">#&gt; Median:          1  120    120      0        4     0  78650.00</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  120    120      0        4     0 117974.50</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  120    120      0        6     0 153366.55</span></span>
+<span><span class="co">#&gt; Maximum:         1  120    120      0        8     0 157298.00</span></span>
+<span><span class="co">#&gt; Mean:            1  120    120      0        4     0      0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 759 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 157298 </span></span>
-<span><span class="co">#&gt; Total number of asvs: 759</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of samples: 34 </span></span>
+<span><span class="co">#&gt; Total number of asvs: 759 </span></span>
+<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="reading-individual-files">Reading Individual Files<a class="anchor" aria-label="anchor" href="#reading-individual-files"></a>
 </h2>
@@ -202,7 +167,7 @@ nucleotide strings, and comments if provided. You can add the FASTA
 sequences to your dataset using the <code><a href="../reference/add.html">add()</a></code> function:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">my_data</span>,</span>
+<span>  <span class="va">my_data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequences"</span></span>
 <span><span class="op">)</span></span>
@@ -222,7 +187,7 @@ abundance table.</p>
 <code class="sourceCode R"><span><span class="va">abundance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_qiime2_feature_table.html">read_qiime2_feature_table</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"table.qza"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">my_data</span>,</span>
+<span>  <span class="va">my_data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">abundance</span><span class="op">$</span><span class="va">data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_abundance"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"bin_names"</span><span class="op">)</span></span>
@@ -231,7 +196,7 @@ abundance table.</p>
 <span><span class="co">#&gt; [1] 759</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">my_data</span>,</span>
+<span>  <span class="va">my_data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">abundance</span><span class="op">$</span><span class="va">data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"asv"</span>,</span>
@@ -243,57 +208,20 @@ abundance table.</p>
 <span><span class="va">my_data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
 <span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  120    120      0 3.000000     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  120    120      0 3.000000     0   3933.45</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  120    120      0 4.000000     0  39325.50</span></span>
-<span><span class="co">#&gt; Median:          1  120    120      0 4.000000     0  78650.00</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  120    120      0 4.000000     0 117974.50</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  120    120      0 6.000000     0 153366.55</span></span>
-<span><span class="co">#&gt; Maximum:         1  120    120      0 8.000000     0 157298.00</span></span>
-<span><span class="co">#&gt; Mean:            1  120    120      0 4.009059     0      0.00</span></span>
-<span><span class="co">#&gt; Unique seqs:  759 </span></span>
-<span><span class="co">#&gt; Total seqs:   157298 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Sample   Total:</span></span>
-<span><span class="co">#&gt; L1S105   7865 </span></span>
-<span><span class="co">#&gt; L1S140   7245 </span></span>
-<span><span class="co">#&gt; L1S208   8270 </span></span>
-<span><span class="co">#&gt; L1S257   6486 </span></span>
-<span><span class="co">#&gt; L1S281   6755 </span></span>
-<span><span class="co">#&gt; L1S57    8756 </span></span>
-<span><span class="co">#&gt; L1S76    7922 </span></span>
-<span><span class="co">#&gt; L1S8 7068 </span></span>
-<span><span class="co">#&gt; L2S155   4112 </span></span>
-<span><span class="co">#&gt; L2S175   4545 </span></span>
-<span><span class="co">#&gt; L2S204   3340 </span></span>
-<span><span class="co">#&gt; L2S222   3485 </span></span>
-<span><span class="co">#&gt; L2S240   5146 </span></span>
-<span><span class="co">#&gt; L2S309   1549 </span></span>
-<span><span class="co">#&gt; L2S357   2526 </span></span>
-<span><span class="co">#&gt; L2S382   4166 </span></span>
-<span><span class="co">#&gt; L3S242   917 </span></span>
-<span><span class="co">#&gt; L3S294   1313 </span></span>
-<span><span class="co">#&gt; L3S313   1191 </span></span>
-<span><span class="co">#&gt; L3S341   1109 </span></span>
-<span><span class="co">#&gt; L3S360   1130 </span></span>
-<span><span class="co">#&gt; L3S378   1279 </span></span>
-<span><span class="co">#&gt; L4S112   8575 </span></span>
-<span><span class="co">#&gt; L4S137   9961 </span></span>
-<span><span class="co">#&gt; L4S63    10095 </span></span>
-<span><span class="co">#&gt; L5S104   2253 </span></span>
-<span><span class="co">#&gt; L5S155   1827 </span></span>
-<span><span class="co">#&gt; L5S174   1969 </span></span>
-<span><span class="co">#&gt; L5S203   2132 </span></span>
-<span><span class="co">#&gt; L5S222   2555 </span></span>
-<span><span class="co">#&gt; L5S240   1817 </span></span>
-<span><span class="co">#&gt; L6S20    6892 </span></span>
-<span><span class="co">#&gt; L6S68    6022 </span></span>
-<span><span class="co">#&gt; L6S93    7025 </span></span>
+<span><span class="co">#&gt; Minimum:         1  120    120      0        3     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  120    120      0        3     0   3933.45</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  120    120      0        4     0  39325.50</span></span>
+<span><span class="co">#&gt; Median:          1  120    120      0        4     0  78650.00</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  120    120      0        4     0 117974.50</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  120    120      0        6     0 153366.55</span></span>
+<span><span class="co">#&gt; Maximum:         1  120    120      0        8     0 157298.00</span></span>
+<span><span class="co">#&gt; Mean:            1  120    120      0        4     0      0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 759 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 157298 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of samples: 34 </span></span>
 <span><span class="co">#&gt; Total number of asvs: 759</span></span></code></pre></div>
 <p>Now that we have added the abundance data and assigned the sequences
 to bins, let’s take a look at the taxonomic classifications provided in
@@ -304,7 +232,7 @@ classification table.</p>
 <code class="sourceCode R"><span><span class="va">taxonomy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_qiime2_taxonomy.html">read_qiime2_taxonomy</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"taxonomy.qza"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">my_data</span>,</span>
+<span>  <span class="va">my_data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">taxonomy</span><span class="op">$</span><span class="va">data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"bin_names"</span><span class="op">)</span></span>
@@ -341,7 +269,7 @@ function.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>To add the metadata to the my_data dataset, run the following:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_data</span>, table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added metadata.</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 <p>To view a summary of your imported dataset, ‘my_data’, run the
@@ -350,58 +278,22 @@ following:</p>
 <code class="sourceCode R"><span><span class="va">my_data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
 <span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  120    120      0 3.000000     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  120    120      0 3.000000     0   3933.45</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  120    120      0 4.000000     0  39325.50</span></span>
-<span><span class="co">#&gt; Median:          1  120    120      0 4.000000     0  78650.00</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  120    120      0 4.000000     0 117974.50</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  120    120      0 6.000000     0 153366.55</span></span>
-<span><span class="co">#&gt; Maximum:         1  120    120      0 8.000000     0 157298.00</span></span>
-<span><span class="co">#&gt; Mean:            1  120    120      0 4.009059     0      0.00</span></span>
-<span><span class="co">#&gt; Unique seqs:  759 </span></span>
-<span><span class="co">#&gt; Total seqs:   157298 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Sample   Total:</span></span>
-<span><span class="co">#&gt; L1S105   7865 </span></span>
-<span><span class="co">#&gt; L1S140   7245 </span></span>
-<span><span class="co">#&gt; L1S208   8270 </span></span>
-<span><span class="co">#&gt; L1S257   6486 </span></span>
-<span><span class="co">#&gt; L1S281   6755 </span></span>
-<span><span class="co">#&gt; L1S57    8756 </span></span>
-<span><span class="co">#&gt; L1S76    7922 </span></span>
-<span><span class="co">#&gt; L1S8 7068 </span></span>
-<span><span class="co">#&gt; L2S155   4112 </span></span>
-<span><span class="co">#&gt; L2S175   4545 </span></span>
-<span><span class="co">#&gt; L2S204   3340 </span></span>
-<span><span class="co">#&gt; L2S222   3485 </span></span>
-<span><span class="co">#&gt; L2S240   5146 </span></span>
-<span><span class="co">#&gt; L2S309   1549 </span></span>
-<span><span class="co">#&gt; L2S357   2526 </span></span>
-<span><span class="co">#&gt; L2S382   4166 </span></span>
-<span><span class="co">#&gt; L3S242   917 </span></span>
-<span><span class="co">#&gt; L3S294   1313 </span></span>
-<span><span class="co">#&gt; L3S313   1191 </span></span>
-<span><span class="co">#&gt; L3S341   1109 </span></span>
-<span><span class="co">#&gt; L3S360   1130 </span></span>
-<span><span class="co">#&gt; L3S378   1279 </span></span>
-<span><span class="co">#&gt; L4S112   8575 </span></span>
-<span><span class="co">#&gt; L4S137   9961 </span></span>
-<span><span class="co">#&gt; L4S63    10095 </span></span>
-<span><span class="co">#&gt; L5S104   2253 </span></span>
-<span><span class="co">#&gt; L5S155   1827 </span></span>
-<span><span class="co">#&gt; L5S174   1969 </span></span>
-<span><span class="co">#&gt; L5S203   2132 </span></span>
-<span><span class="co">#&gt; L5S222   2555 </span></span>
-<span><span class="co">#&gt; L5S240   1817 </span></span>
-<span><span class="co">#&gt; L6S20    6892 </span></span>
-<span><span class="co">#&gt; L6S68    6022 </span></span>
-<span><span class="co">#&gt; L6S93    7025 </span></span>
+<span><span class="co">#&gt; Minimum:         1  120    120      0        3     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  120    120      0        3     0   3933.45</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  120    120      0        4     0  39325.50</span></span>
+<span><span class="co">#&gt; Median:          1  120    120      0        4     0  78650.00</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  120    120      0        4     0 117974.50</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  120    120      0        6     0 153366.55</span></span>
+<span><span class="co">#&gt; Maximum:         1  120    120      0        8     0 157298.00</span></span>
+<span><span class="co">#&gt; Mean:            1  120    120      0        4     0      0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 759 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 157298 </span></span>
-<span><span class="co">#&gt; Total number of asvs: 759</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of samples: 34 </span></span>
+<span><span class="co">#&gt; Total number of asvs: 759 </span></span>
+<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
 </div>
   </main>
 </div>

@@ -141,7 +141,10 @@ add(
 
 # Add contigs assembly report with a 'sequence_name' column named 'Name'
 
-contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
+contigs_report <- readr::read_tsv(
+  strollur_example(
+    "final.contigs_report.gz"
+  ),
   col_names = TRUE, show_col_types = FALSE
 )
 

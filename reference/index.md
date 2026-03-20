@@ -15,9 +15,10 @@ Adding and using data
   summary
 - [`dataset`](https://mothur.org/strollur/reference/dataset.md) :
   dataset
-- [`strollur-package`](https://mothur.org/strollur/reference/rdataset-package.md)
-  [`strollur`](https://mothur.org/strollur/reference/rdataset-package.md)
-  : Store and transfer data used in the analysis of microbial DNA
+- [`strollur`](https://mothur.org/strollur/reference/strollur-package.md)
+  [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
+  : strollur: Store and transfer data used in the analysis of microbial
+  RNA
 - [`get_bin_types()`](https://mothur.org/strollur/reference/get_bin_types.md)
   : get_bin_types
 
@@ -44,6 +45,8 @@ DADA2
   : read_mothur_shared
 - [`read_mothur_taxonomy()`](https://mothur.org/strollur/reference/read_mothur_taxonomy.md)
   : read_mothur_taxonomy
+- [`read_phyloseq()`](https://mothur.org/strollur/reference/read_phyloseq.md)
+  : read_phyloseq
 - [`read_qiime2()`](https://mothur.org/strollur/reference/read_qiime2.md)
   : read_qiime2
 - [`read_qiime2_feature_table()`](https://mothur.org/strollur/reference/read_qiime2_feature_table.md)
@@ -101,6 +104,8 @@ Save, copy, load, import, export and write to file
   : write_mothur_rabund
 - [`write_mothur_shared()`](https://mothur.org/strollur/reference/write_mothur_shared.md)
   : write_mothur_shared
+- [`write_phyloseq()`](https://mothur.org/strollur/reference/write_phyloseq.md)
+  : write_phyloseq
 - [`write_taxonomy()`](https://mothur.org/strollur/reference/write_taxonomy.md)
   : write_taxonomy
 
@@ -145,6 +150,8 @@ these functions
   : xdev_assign_treatments
 - [`xdev_count()`](https://mothur.org/strollur/reference/xdev_count.md)
   : xdev_count
+- [`xdev_get_abundances_by_sample()`](https://mothur.org/strollur/reference/xdev_get_abundances_by_sample.md)
+  : xdev_get_abundances_by_sample
 - [`xdev_get_by_sample()`](https://mothur.org/strollur/reference/xdev_get_by_sample.md)
   : xdev_get_by_sample
 - [`xdev_get_list_vector()`](https://mothur.org/strollur/reference/xdev_get_list_vector.md)

@@ -25,8 +25,8 @@ count(
 - type, :
 
   string containing the type of data you want the number of. Options
-  include: "sequences", "samples", "treatments", "bins". Default =
-  "sequences".
+  include: "sequences", "samples", "treatments", "bins", and
+  "references". Default = "sequences".
 
 - bin_type, :
 

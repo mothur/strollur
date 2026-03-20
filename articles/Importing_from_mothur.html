@@ -44,6 +44,7 @@
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
 </li>
@@ -114,46 +115,21 @@ following:</p>
 <code class="sourceCode R"><span><span class="va">data</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
-<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns    numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0      1.000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750</span></span>
-<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0  56982.500</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925</span></span>
-<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 113963.000</span></span>
-<span><span class="co">#&gt; Mean:            1  375 252.4472      0 4.368699     0      0.000</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Sample   Total:</span></span>
-<span><span class="co">#&gt; F3D0 6191 </span></span>
-<span><span class="co">#&gt; F3D1 4652 </span></span>
-<span><span class="co">#&gt; F3D141   4656 </span></span>
-<span><span class="co">#&gt; F3D142   2423 </span></span>
-<span><span class="co">#&gt; F3D143   2403 </span></span>
-<span><span class="co">#&gt; F3D144   3449 </span></span>
-<span><span class="co">#&gt; F3D145   5532 </span></span>
-<span><span class="co">#&gt; F3D146   3831 </span></span>
-<span><span class="co">#&gt; F3D147   12430 </span></span>
-<span><span class="co">#&gt; F3D148   9465 </span></span>
-<span><span class="co">#&gt; F3D149   10014 </span></span>
-<span><span class="co">#&gt; F3D150   4126 </span></span>
-<span><span class="co">#&gt; F3D2 15686 </span></span>
-<span><span class="co">#&gt; F3D3 5199 </span></span>
-<span><span class="co">#&gt; F3D5 3469 </span></span>
-<span><span class="co">#&gt; F3D6 6394 </span></span>
-<span><span class="co">#&gt; F3D7 4055 </span></span>
-<span><span class="co">#&gt; F3D8 4253 </span></span>
-<span><span class="co">#&gt; F3D9 5735 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Treatment   Total:</span></span>
-<span><span class="co">#&gt; Early    55634 </span></span>
-<span><span class="co">#&gt; Late 58329 </span></span>
+<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
+<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
+<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of samples: 19 </span></span>
+<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
 <span><span class="co">#&gt; Total number of otus: 531 </span></span>
 <span><span class="co">#&gt; Total number of asvs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of phylotypes: 63</span></span></code></pre></div>
@@ -197,24 +173,21 @@ to your data set you can use the <code><a href="../reference/read_fasta.html">re
 nucleotide strings, and comments if provided. You can add the FASTA
 sequences to your data set using the <code><a href="../reference/add.html">add()</a></code> function:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span><span class="va">my_data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
-<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns  numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0    1.000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  607.250</span></span>
-<span><span class="co">#&gt; Median:          1  375 253.0000      0 4.000000     0 1213.500</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375</span></span>
-<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 2425.000</span></span>
-<span><span class="co">#&gt; Mean:            1  375 252.7406      0 4.496082     0    0.000</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   2425 </span></span>
+<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
+<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
+<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 2425</span></span></code></pre></div>
@@ -228,48 +201,26 @@ using the <code><a href="../reference/read_mothur_count.html">read_mothur_count(
 abundances. You can add the sequence abundance data to your data set
 using the <code><a href="../reference/assign.html">assign()</a></code> function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_data</span>, table <span class="op">=</span> <span class="va">sample_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">sample_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span><span class="va">my_data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
-<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns    numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0      1.000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750</span></span>
-<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0  56982.500</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925</span></span>
-<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 113963.000</span></span>
-<span><span class="co">#&gt; Mean:            1  375 252.4472      0 4.368699     0      0.000</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Sample   Total:</span></span>
-<span><span class="co">#&gt; F3D0 6191 </span></span>
-<span><span class="co">#&gt; F3D1 4652 </span></span>
-<span><span class="co">#&gt; F3D141   4656 </span></span>
-<span><span class="co">#&gt; F3D142   2423 </span></span>
-<span><span class="co">#&gt; F3D143   2403 </span></span>
-<span><span class="co">#&gt; F3D144   3449 </span></span>
-<span><span class="co">#&gt; F3D145   5532 </span></span>
-<span><span class="co">#&gt; F3D146   3831 </span></span>
-<span><span class="co">#&gt; F3D147   12430 </span></span>
-<span><span class="co">#&gt; F3D148   9465 </span></span>
-<span><span class="co">#&gt; F3D149   10014 </span></span>
-<span><span class="co">#&gt; F3D150   4126 </span></span>
-<span><span class="co">#&gt; F3D2 15686 </span></span>
-<span><span class="co">#&gt; F3D3 5199 </span></span>
-<span><span class="co">#&gt; F3D5 3469 </span></span>
-<span><span class="co">#&gt; F3D6 6394 </span></span>
-<span><span class="co">#&gt; F3D7 4055 </span></span>
-<span><span class="co">#&gt; F3D8 4253 </span></span>
-<span><span class="co">#&gt; F3D9 5735 </span></span>
+<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
+<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
+<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of samples: 19</span></span></code></pre></div>
 <p>To add sequence taxonomy assignments, you can read a <a href="https://mothur.org/wiki/taxonomy_file/" class="external-link">taxonomy file</a> file
 using the <code><a href="../reference/read_mothur_taxonomy.html">read_mothur_taxonomy()</a></code> function:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -280,7 +231,7 @@ using the <code><a href="../reference/read_mothur_taxonomy.html">read_mothur_tax
 taxonomies. You can add the sequence classification data to your data
 set as follows:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_data</span>, table <span class="op">=</span> <span class="va">classification_data</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">classification_data</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span></code></pre></div>
 <p>To assign sequences to bins, you can read a <a href="https://mothur.org/wiki/list_file/" class="external-link">mothur list file</a> file
@@ -293,14 +244,15 @@ using the <code><a href="../reference/read_mothur_list.html">read_mothur_list()<
 names and sequence names. You can add the bin data to your data set as
 follows:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span></span>
 <span><span class="co">#&gt; [1] 531</span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_data</span>, table <span class="op">=</span> <span class="va">asv_data</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">asv_data</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">my_data</span>, table <span class="op">=</span> <span class="va">phylotype_data</span>,</span>
+<span>  <span class="va">my_data</span>,</span>
+<span>  table <span class="op">=</span> <span class="va">phylotype_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span></span>
@@ -308,42 +260,20 @@ follows:</p>
 <span><span class="va">my_data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; sequence_summary:</span></span>
-<span><span class="co">#&gt;             starts ends   nbases ambigs polymers numns    numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375 249.0000      0 3.000000     0      1.000</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750</span></span>
-<span><span class="co">#&gt; Median:          1  375 252.0000      0 4.000000     0  56982.500</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375 253.0000      0 6.000000     0 111114.925</span></span>
-<span><span class="co">#&gt; Maximum:         1  375 256.0000      0 6.000000     0 113963.000</span></span>
-<span><span class="co">#&gt; Mean:            1  375 252.4472      0 4.368699     0      0.000</span></span>
-<span><span class="co">#&gt; Unique seqs:  2425 </span></span>
-<span><span class="co">#&gt; Total seqs:   113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Sample   Total:</span></span>
-<span><span class="co">#&gt; F3D0 6191 </span></span>
-<span><span class="co">#&gt; F3D1 4652 </span></span>
-<span><span class="co">#&gt; F3D141   4656 </span></span>
-<span><span class="co">#&gt; F3D142   2423 </span></span>
-<span><span class="co">#&gt; F3D143   2403 </span></span>
-<span><span class="co">#&gt; F3D144   3449 </span></span>
-<span><span class="co">#&gt; F3D145   5532 </span></span>
-<span><span class="co">#&gt; F3D146   3831 </span></span>
-<span><span class="co">#&gt; F3D147   12430 </span></span>
-<span><span class="co">#&gt; F3D148   9465 </span></span>
-<span><span class="co">#&gt; F3D149   10014 </span></span>
-<span><span class="co">#&gt; F3D150   4126 </span></span>
-<span><span class="co">#&gt; F3D2 15686 </span></span>
-<span><span class="co">#&gt; F3D3 5199 </span></span>
-<span><span class="co">#&gt; F3D5 3469 </span></span>
-<span><span class="co">#&gt; F3D6 6394 </span></span>
-<span><span class="co">#&gt; F3D7 4055 </span></span>
-<span><span class="co">#&gt; F3D8 4253 </span></span>
-<span><span class="co">#&gt; F3D9 5735 </span></span>
+<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
+<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
+<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
+<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Total number of samples: 19 </span></span>
 <span><span class="co">#&gt; Total number of otus: 531 </span></span>
 <span><span class="co">#&gt; Total number of asvs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of phylotypes: 63</span></span></code></pre></div>
@@ -361,7 +291,7 @@ function:</p>
 and taxonomies. You can add the bin taxonomic data to your data set as
 follows:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_taxonomy_data</span>, type <span class="op">=</span> <span class="st">"bin_taxonomy"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_taxonomy_data</span>, type <span class="op">=</span> <span class="st">"bin_taxonomy"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span></span>
 <span><span class="co">#&gt; [1] 531</span></span></code></pre></div>
 </div>

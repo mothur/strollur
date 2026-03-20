@@ -12,23 +12,23 @@ functions to import from [mothur](https://mothur.org),
 and
 [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 
-- [`add()`](https://mothur.org/strollur/reference/add.md) add sequences,
-  reports, metadata, and resource references
-- [`assign()`](https://mothur.org/strollur/reference/assign.md) assign
+- [`add()`](https://mothur.org/strollur/reference/add.md) adds
+  sequences, reports, metadata, and resource references
+- [`assign()`](https://mothur.org/strollur/reference/assign.md) assigns
   abundances, classifications, bins, samples and treatments and more
-- [`names()`](https://mothur.org/strollur/reference/names.md) get the
+- [`names()`](https://mothur.org/strollur/reference/names.md) gets the
   names of sequences, bins, samples, treatments and reports
-- [`count()`](https://mothur.org/strollur/reference/count.md) get the
+- [`count()`](https://mothur.org/strollur/reference/count.md) gets the
   number of sequences, bins, samples and treatments
 - [`abundance()`](https://mothur.org/strollur/reference/abundance.md)
-  get the abundances for sequences, bins, samples, and treatments
-- [`report()`](https://mothur.org/strollur/reference/report.md) get
+  gets the abundances for sequences, bins, samples, and treatments
+- [`report()`](https://mothur.org/strollur/reference/report.md) gets
   [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequences,
   sequence and classification reports, bin assignments, sample
   assignments, metadata, sequence data reports, custom reports, resource
   references and scrapped data reports.
 - [`summary()`](https://mothur.org/strollur/reference/summary.md)
-  summarize sequences, your custom reports, and scrapped data
+  summarizes sequences, your custom reports, and scrapped data
 
 ## Installation
 
@@ -73,8 +73,7 @@ add(
 abundance_table <- readr::read_tsv(strollur_example("mothur2_count_table.tsv.gz"),
   show_col_types = FALSE
 )
-assign(
-  data = data,
+assign(data,
   table = abundance_table,
   type = "sequence_abundance",
   table_names = list(sequence_name = "names")
@@ -89,8 +88,7 @@ bin_table <- readr::read_tsv(
   show_col_types = FALSE
 )
 
-assign(
-  data = data,
+assign(data,
   table = bin_table,
   type = "bins",
   bin_type = "otu",
@@ -103,8 +101,7 @@ sequence_classification_data <- read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
 
-assign(
-  data = data,
+assign(data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
 )
