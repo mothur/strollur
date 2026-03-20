@@ -599,6 +599,7 @@ double xdev_count(Rcpp::Environment data,
 //' abunds <- xdev_get_abundances_by_sample(data)
 //'
 //' @return 2D vector of float containing data requested parsed by sample.
+//' @export
 //[[Rcpp::export]]
 vector<vector<float> > xdev_get_abundances_by_sample(Rcpp::Environment data,
                                             Rcpp::CharacterVector samples = Rcpp::CharacterVector::create());

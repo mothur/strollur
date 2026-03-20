@@ -239,7 +239,7 @@ is_aligned <- function(data) {
 #'
 #' @return data.frame
 #' @export
-xdev_abundance <- function(data, type = "sequence", bin_type = "otu", by_sample = FALSE) {
+xdev_abundance <- function(data, type = "sequences", bin_type = "otu", by_sample = FALSE) {
     .Call(`_strollur_xdev_abundance`, data, type, bin_type, by_sample)
 }
 
@@ -727,6 +727,7 @@ xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #' abunds <- xdev_get_abundances_by_sample(data)
 #'
 #' @return 2D vector of float containing data requested parsed by sample.
+#' @export
 xdev_get_abundances_by_sample <- function(data, samples = as.character( c())) {
     .Call(`_strollur_xdev_get_abundances_by_sample`, data, samples)
 }
