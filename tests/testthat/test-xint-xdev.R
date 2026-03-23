@@ -320,6 +320,9 @@ test_that("xdev_get_sequences", {
   seqs <- c("..AT-TG-C..", ".AT---TGC", "A-TTGC.", "..ATTGC..")
   comments <- c("ddd", "ftf", "efr", "ssd")
 
+  samples <- c("sample1", "sample2", "sample1", "sample2")
+  abunds <- c(10, 10, 10, 10)
+
   data <- new_dataset()
 
   xdev_add_sequences(data, data.frame(
@@ -336,6 +339,23 @@ test_that("xdev_get_sequences", {
 
   expected <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
   expect_equal(actual, expected)
+
+  # add samples
+  xdev_assign_sequence_abundance(data, data.frame(
+      sequence_names = names,
+      samples = samples,
+      abundances = abunds
+  ))
+
+  actual <- xdev_get_sequences(data, sample = "sample1")
+
+  expect_equal(actual, c("..AT-TG-C..", "A-TTGC."))
+
+  actual <- xdev_get_sequences(data, sample = "sample1", degap = TRUE)
+
+  expected <- c("ATTGC", "ATTGC")
+  expect_equal(actual, expected)
+
 })
 
 test_that("Tests removeBins, getScrapReport, getScrapSummary", {
