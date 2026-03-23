@@ -484,7 +484,7 @@ public:
     double numUnique;
 
     void clear();
-    Rcpp::List exportDataset(const vector<string> tags = nullVector);
+    Rcpp::List exportDataset();
 
     // add seqs
     double addSequences(const vector<string>& n,
@@ -569,7 +569,8 @@ public:
     const vector<string> getSequences(string sample = "", bool degap = false);
     // 2 columns: sequence names, sequence strings
     const Rcpp::DataFrame getSequenceTable(string sample = "");
-    const vector<vector<string> > getSequencesBySample(const vector<string> samples);
+    const vector<vector<string> > getSequencesBySample(const vector<string> samples,
+                                                       bool degap = false);
 
     const Rcpp::DataFrame getSummary(string type = "sequences",
                                      string reportType = "");

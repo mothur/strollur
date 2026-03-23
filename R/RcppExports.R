@@ -762,6 +762,9 @@ xdev_get_list_vector <- function(data, type = "otu") {
 #'
 #' @param samples a vector of strings containing the names of the samples you
 #' would like sequence names for. By default all samples are included.
+#'
+#' @param degap a logical. Default = FALSE. When degap = `TRUE`, all gap
+#' characters will be removed from the sequences.
 #' @examples
 #'
 #' data <- miseq_sop_example()
@@ -775,8 +778,8 @@ xdev_get_list_vector <- function(data, type = "otu") {
 #' @return 2D vector of strings ([num_seqs][num_samples]) containing data
 #' requested parsed by sample.
 #' @export
-xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.character( c())) {
-    .Call(`_strollur_xdev_get_by_sample`, data, type, samples)
+xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.character( c()), degap = FALSE) {
+    .Call(`_strollur_xdev_get_by_sample`, data, type, samples, degap)
 }
 
 #' @title xdev_get_sequences

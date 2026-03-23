@@ -634,6 +634,9 @@ vector<string> xdev_get_list_vector(Rcpp::Environment data,
 //'
 //' @param samples a vector of strings containing the names of the samples you
 //' would like sequence names for. By default all samples are included.
+//'
+//' @param degap a logical. Default = FALSE. When degap = `TRUE`, all gap
+//' characters will be removed from the sequences.
 //' @examples
 //'
 //' data <- miseq_sop_example()
@@ -650,7 +653,8 @@ vector<string> xdev_get_list_vector(Rcpp::Environment data,
 //[[Rcpp::export]]
 vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
                                       string type = "sequence_names",
-                                      Rcpp::CharacterVector samples = Rcpp::CharacterVector::create());
+                                      Rcpp::CharacterVector samples = Rcpp::CharacterVector::create(),
+                                      bool degap = false);
 /******************************************************************************/
 //' @title xdev_get_sequences
 //' @description
