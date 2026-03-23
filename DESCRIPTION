@@ -17,6 +17,7 @@ Imports:
     cli,
     methods,
     microseq,
+    R.utils,
     R6,
     waldo,
     readr,
