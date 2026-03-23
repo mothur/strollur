@@ -182,11 +182,11 @@ public:
                          const vector<string> treatments = nullVector);
 
     // set abundance parsed by sample
-    void setAbundance(const int name, const vector<float>& abunds);
+    float setAbundance(const int name, const vector<float>& abunds);
     // set abundance, assumes no samples if sample is blank
-    void setAbundance(const int name, const float abund, const string sample = "");
+    float setAbundance(const int name, const float abund, const string sample = "");
     // index -> (sampleName -> abundance)
-    void setAbundances(const map<int, map<string, float>>& binAbunds);
+    //void setAbundances(const map<int, map<string, float>>& binAbunds);
 
     // removes id, returns abund. Be sure to run updateTotals after.
     // totals are not updated in function for time savings when removing multiple
