@@ -123,7 +123,7 @@ struct sampleAbunds {
             sampleIndex = ind;
             abunds = a;
         }else{
-            for (int i = 0; i < a.size(); i++){
+            for (size_t i = 0; i < a.size(); i++){
                 if (a[i] != 0) {
                     sampleIndex.push_back(ind[i]);
                     abunds.push_back(a[i]);
@@ -166,7 +166,7 @@ public:
     // used to export AbundTable
     const Rcpp::DataFrame getAbundanceTable(const vector<string>& outputNames,
                                       const vector<int>& names,
-                                      const string tag = "sequence",
+                                      const string& tag = "sequence",
                                       const bool useNames = true);
 
     // names, sets abundance to 1
@@ -178,8 +178,8 @@ public:
     // names, abundances, samples (optional), treatments (optional)
     double assignAbundance(vector<int>& names,
                          const vector<float>& abunds,
-                         const vector<string> samples = nullVector,
-                         const vector<string> treatments = nullVector);
+                         const vector<string>& samples = nullVector,
+                         const vector<string>& treatments = nullVector);
 
     // set abundance parsed by sample
     void setAbundance(const int name, const vector<float>& abunds);
@@ -201,27 +201,28 @@ public:
     const vector<float> getTotalAbundances(const vector<int>& names);
     // total abundance for sequence, if sample is provided then abundance for
     // that sequence in that sample
-    const float getAbundance(const int name, vector<string> samples = nullVector);
+    const float getAbundance(const int name, const vector<string>& samples = nullVector);
     // abundances by sample for id, (in the same order as the samples)
-    const vector<float> getAbundances(const int id);
+    const vector<float> getAbundances(const int id) const;
     // abundances by sample for ids
-    const vector<vector<float>> getAbundances(const vector<int>& ids);
+    const vector<vector<float>> getAbundances(const vector<int>& ids) const;
     // results[0][1:numSeqsInSample0] -> sample 0's abundances for each sequence
-    const vector<vector<float>> getAbundanceBySample(const vector<int>& ids, vector<string> samples = nullVector);
+    const vector<vector<float>> getAbundanceBySample(const vector<int>& ids,
+        vector<string> samplesToSelect = nullVector);
     // total number of sequences
-    const double getTotal(const string sample = "");
+    const double getTotal(const string& sample = "") const;
 
     const int getNumSamples(const int name = -1);
-    const int getNumTreatments();
+    const int getNumTreatments() const;
     // vector containing total abundance for each sample
-    const vector<double> getSampleTotals();
+    const vector<double> getSampleTotals() const;
     // vector containing total abundance for each treatment
     const vector<double> getTreatmentTotals();
     // vector containing names of samples
     const vector<string> getSamples(const int name = -1);
-    const vector<string> getTreatments();
+    const vector<string> getTreatments() const;
     // maps sampleName to treatmentName
-    const map<string, string> getSampleTreatmentAssignments();
+    const map<string, string> getSampleTreatmentAssignments() const;
 
     // does the table contain a sample
     // if name provided, does the sequence have this sample
