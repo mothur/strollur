@@ -47,30 +47,37 @@ test_that("xdev_get_by_sample", {
 
   data <- new_dataset()
 
-  xdev_add_sequences(data, data.frame(
+  xdev_add_sequences(
+    data,
+    data.frame(
       sequence_names = names,
       sequences = seqs,
       comments = comments
-  ))
+    )
+  )
 
   # add samples
   xdev_assign_sequence_abundance(data, data.frame(
-      sequence_names = names,
-      samples = samples,
-      abundances = abunds
+    sequence_names = names,
+    samples = samples,
+    abundances = abunds
   ))
 
   expected <- list(c("ATTGC", "ATTGC"), c("ATTGC", "ATTGC"))
   actual <- xdev_get_by_sample(data, type = "sequences", degap = TRUE)
   expect_equal(actual, expected)
 
-  actual <- xdev_get_by_sample(data, type = "sequences",
-                               samples = c("sample1"))
+  actual <- xdev_get_by_sample(data,
+    type = "sequences",
+    samples = c("sample1")
+  )
 
   expect_equal(actual, list(c("..AT-TG-C..", "A-TTGC.")))
 
-  actual <- xdev_get_by_sample(data, type = "sequences",
-                               sample = "sample1", degap = TRUE)
+  actual <- xdev_get_by_sample(data,
+    type = "sequences",
+    sample = "sample1", degap = TRUE
+  )
 
   expected <- c("ATTGC", "ATTGC")
   expect_equal(actual, list(expected))
@@ -379,9 +386,9 @@ test_that("xdev_get_sequences", {
 
   # add samples
   xdev_assign_sequence_abundance(data, data.frame(
-      sequence_names = names,
-      samples = samples,
-      abundances = abunds
+    sequence_names = names,
+    samples = samples,
+    abundances = abunds
   ))
 
   actual <- xdev_get_sequences(data, sample = "sample1")
@@ -392,7 +399,6 @@ test_that("xdev_get_sequences", {
 
   expected <- c("ATTGC", "ATTGC")
   expect_equal(actual, expected)
-
 })
 
 test_that("Tests removeBins, getScrapReport, getScrapSummary", {
