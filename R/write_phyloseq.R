@@ -6,8 +6,8 @@
 #' read functions in this package.
 #' @return returns a "phyloseq" object.
 #' @examples
-#'  miseq <- miseq_sop_example()
-#'  phylo_obj <- write_phyloseq(miseq)
+#' miseq <- miseq_sop_example()
+#' phylo_obj <- write_phyloseq(miseq)
 #' @export
 write_phyloseq <- function(data) {
   if (!require_namespace("phyloseq")) {
@@ -55,7 +55,8 @@ write_phyloseq <- function(data) {
       )
 
     colnames(taxas) <- c("id", paste("level_", seq(1, ncol(taxas) - 1),
-                                     sep = ""))
+      sep = ""
+    ))
     sequence_names <- taxas$id
     taxas <- as.matrix(taxas[, colnames(taxas) != "id"])
     taxas[which(taxas == "NA")] <- NA
@@ -74,7 +75,7 @@ write_phyloseq <- function(data) {
     sample_assignments <- report(data, "sample_assignments")
     if (!is.null(sample_assignments) && nrow(sample_assignments) > 0) {
       colnames(sample_assignments)[1] <- "sample"
-      metadata <-  merge(metadata, sample_assignments, by = "sample")
+      metadata <- merge(metadata, sample_assignments, by = "sample")
     }
     rownames(metadata) <- metadata$sample
     metadata$sample <- NULL
@@ -87,6 +88,8 @@ write_phyloseq <- function(data) {
     stop("You have an empty object that cannot become a phyloseq object.")
   }
 
-  do.call(phyloseq::phyloseq,
-          phyloseq_parameter_list[indexes])
+  do.call(
+    phyloseq::phyloseq,
+    phyloseq_parameter_list[indexes]
+  )
 }

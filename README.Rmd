@@ -66,8 +66,7 @@ data <- new_dataset(dataset_name = "microbial RNA example")
 
 fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
-add(
-  data = data,
+add(data,
   table = fasta_data,
   type = "sequences"
 )

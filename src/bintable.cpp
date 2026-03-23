@@ -471,9 +471,8 @@ const Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>&
             Rcpp::_["representative_sequences"] = seqDNA);
         return df;
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
 
+    return Rcpp::DataFrame::create();
 }
 
 /******************************************************************************/
@@ -500,8 +499,7 @@ const Rcpp::DataFrame BinTable::getRAbund(AbundTable& count) {
 
         return df;
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 // vector of total abundances for each outID
@@ -518,11 +516,10 @@ const Rcpp::DataFrame BinTable::getShared(AbundTable& count) {
         for (int i = 0; i < ids.size(); i++) {
             indexes[i] = binIndex[ids[i]];
         }
-        Rcpp::DataFrame df = getAbundanceTable(count);
-        return df;
+        return getAbundanceTable(count);
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 // abundances for each OTU broken down by sample
@@ -729,8 +726,7 @@ const Rcpp::DataFrame BinTable::getAbundanceTable(AbundTable& count,
 
     }
 
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 const int BinTable::getNumBins(AbundTable& count, vector<string> samples,
@@ -809,8 +805,7 @@ const Rcpp::DataFrame BinTable::getScrapReport() {
         return df;
     }
 
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 // type, trashCode, binCount, abundanceCount

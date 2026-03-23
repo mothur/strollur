@@ -1,13 +1,14 @@
 test_that("write phyloseq creates phyloseq object", {
-
   list_file <- strollur_example("final.asv.list.gz")
   shared_file <- strollur_example("final.opti_mcc.shared")
   constaxonomy_file <- strollur_example("final.cons.taxonomy")
 
-  phyloseq_object <- phyloseq::import_mothur(mothur_list_file = list_file,
-                                             mothur_shared_file = shared_file,
-                                             mothur_constaxonomy_file =
-                                               constaxonomy_file)
+  phyloseq_object <- phyloseq::import_mothur(
+    mothur_list_file = list_file,
+    mothur_shared_file = shared_file,
+    mothur_constaxonomy_file =
+      constaxonomy_file
+  )
 
   data <- read_phyloseq(phyloseq_object)
 
@@ -36,16 +37,21 @@ test_that("write phyloseq creates phyloseq object", {
   miseq <- miseq_sop_example()
   recreated_phylo_object <- write_phyloseq(miseq)
   data <- read_phyloseq(recreated_phylo_object,
-                        treatment_column_name = "treatments")
-  expect_identical(report(miseq, "sample_assignments"),
-                   report(data, "sample_assignments"))
+    treatment_column_name = "treatments"
+  )
+  expect_identical(
+    report(miseq, "sample_assignments"),
+    report(data, "sample_assignments")
+  )
 })
 
 
 test_that("write phyloseq fails if not given a dataset object", {
   miseq <- c()
-  expect_error(write_phyloseq(miseq),
-               "The data parameter must be an object of type `dataset`.")
+  expect_error(
+    write_phyloseq(miseq),
+    "The data parameter must be an object of type `dataset`."
+  )
 })
 
 
@@ -56,6 +62,8 @@ test_that("write phyloseq will fail if the dataset is empty", {
 
 test_that("Will error if phyloseq is not installed", {
   local_mocked_bindings(require_namespace = function(...) FALSE)
-  expect_error(write_phyloseq(c()),
-               "To use this functionality")
+  expect_error(
+    write_phyloseq(c()),
+    "To use this functionality"
+  )
 })

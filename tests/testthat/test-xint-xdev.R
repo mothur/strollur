@@ -166,6 +166,94 @@ test_that("xdev_set_abundances", {
   expect_equal(length(bin_abundances[[2]]), 3)
 })
 
+test_that("Tests setAbundance (no samples), getScrapSummary", {
+  otu_names <- c(
+    "otu1", "otu1", "otu1", "otu1",
+    "otu2", "otu2", "otu2", "otu2",
+    "otu2", "otu2", "otu2", "otu2",
+    "otu3", "otu3", "otu3", "otu3"
+  )
+  seq_names <- c(
+    "seq1", "seq2", "seq3", "seq3",
+    "seq4", "seq4", "seq5", "seq6",
+    "seq7", "seq8", "seq9", "seq9",
+    "seq10", "seq10", "seq10", "seq10"
+  )
+  samples <- c(
+    "sample1", "sample2", "sample4", "sample5",
+    "sample1", "sample2", "sample1", "sample1",
+    "sample2", "sample4", "sample4", "sample5",
+    "sample1", "sample3", "sample5", "sample6"
+  )
+  abundances <- c(
+    10, 10, 5, 5, 5, 5,
+    10, 10, 10, 10, 5, 5,
+    1, 2, 3, 4
+  )
+
+  data <- new_dataset("mydata")
+
+  assign(
+    data = data,
+    table = data.frame(
+      bin_names = otu_names,
+      sequence_names = seq_names,
+      samples = samples,
+      abundances = abundances
+    ),
+    type = "bins", bin_type = "otu"
+  )
+
+  # set abundances to remove seq1 and adjust the abundances of seq10
+  seqs_to_change <- c("seq1", "seq10")
+  new_abunds <- list(c(0, 0, 0, 0, 0, 0), c(0, 0, 0, 0, 3, 4))
+
+  xdev_set_abundances(data, seqs_to_change, new_abunds, "test")
+
+  scrap_summary <- summary(data = data, type = "scrap")
+
+  expect_equal(scrap_summary[[1]], c("sequence"))
+  expect_equal(scrap_summary[[2]], c("test"))
+  expect_equal(scrap_summary[[3]], c(1))
+  expect_equal(scrap_summary[[4]], c(13))
+})
+
+test_that("Tests setAbundances, getScrapSummary", {
+  seq_names <- c(
+    "seq1", "seq2", "seq3", "seq4", "seq5",
+    "seq6", "seq7", "seq8", "seq9", "seq10"
+  )
+
+  abundances <- c(
+    10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10
+  )
+
+  data <- new_dataset("mydata")
+
+  assign(
+    data = data,
+    table = data.frame(
+      sequence_names = seq_names,
+      abundances = abundances
+    ),
+    type = "sequence_abundance"
+  )
+
+  # set abundances to remove seq1 and adjust the abundances of seq10
+  seqs_to_change <- c("seq1", "seq10")
+  new_abunds <- c(0, 5)
+
+  xdev_set_abundance(data, seqs_to_change, new_abunds, "test")
+
+  scrap_summary <- summary(data = data, type = "scrap")
+
+  expect_equal(scrap_summary[[1]], c("sequence"))
+  expect_equal(scrap_summary[[2]], c("test"))
+  expect_equal(scrap_summary[[3]], c(1))
+  expect_equal(scrap_summary[[4]], c(15))
+})
+
 test_that("xdev_set_abundances", {
   data <- new_dataset()
 

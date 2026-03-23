@@ -535,8 +535,7 @@ const Rcpp::DataFrame AbundTable::getAbundanceTable(const vector<string>& output
 
     }
 
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 const int AbundTable::getSparseIndex(int name, int sample) {
@@ -701,7 +700,7 @@ void AbundTable::removeSamples(const vector<string>& samples) {
 }
 /******************************************************************************/
 // set abundance
-void AbundTable::setAbundance(const int name, const vector<float>& abunds) {
+float AbundTable::setAbundance(const int name, const vector<float>& abunds) {
 
     vector<float> origAbunds = getAbundances(name);
 
@@ -723,13 +722,15 @@ void AbundTable::setAbundance(const int name, const vector<float>& abunds) {
         }
 
         total -= diffAbund;
+        return diffAbund;
     }else{
         total -= (origAbunds[0] - abunds[0]);
+        return (origAbunds[0] - abunds[0]);
     }
 }
 /******************************************************************************/
 // set abundance - for single sample
-void AbundTable::setAbundance(int name, float abund, string sample) {
+float AbundTable::setAbundance(int name, float abund, string sample) {
 
     if (!hasSampleData && (sample == "")) {
         float origAbund = getAbundance(name);
@@ -738,6 +739,8 @@ void AbundTable::setAbundance(int name, float abund, string sample) {
         counts[name] = thisCount;
 
         total -= (origAbund - abund);
+
+        return (origAbund - abund);
     }else if (hasSampleData && (sample != "")) {
         // valid sample
         auto it = sampleIndex.find(sample);
@@ -764,41 +767,44 @@ void AbundTable::setAbundance(int name, float abund, string sample) {
                 float diff = orig - abund;
                 sampleTotals[index] -= diff;
                 total -= diff;
+
+                return diff;
             }
         }
     }
+    return 0;
 }
 /******************************************************************************/
-void AbundTable::setAbundances(const map<int, map<string, float>>& binAbunds) {
-
-    // just abunds no parse by sample
-    if (hasSampleData) {
-        for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
-
-            vector<float> abunds(numSamples, 0);
-            for (auto itSample = it->second.begin();
-                 itSample != it->second.end(); itSample++) {
-
-                 // valid sample
-                 auto itIndex = sampleIndex.find(itSample->first);
-
-                if (itIndex != sampleIndex.end()) {
-                    int index = itIndex->second;
-
-                    abunds[index] = itSample->second;
-                }
-            }
-
-            setAbundance(it->first, abunds);
-        }
-    }else{
-        for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
-            setAbundance(it->first, it->second.begin()->second);
-        }
-    }
-
-    updateTotals();
-}
+// void AbundTable::setAbundances(const map<int, map<string, float>>& binAbunds) {
+//
+//     // just abunds no parse by sample
+//     if (hasSampleData) {
+//         for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
+//
+//             vector<float> abunds(numSamples, 0);
+//             for (auto itSample = it->second.begin();
+//                  itSample != it->second.end(); itSample++) {
+//
+//                  // valid sample
+//                  auto itIndex = sampleIndex.find(itSample->first);
+//
+//                 if (itIndex != sampleIndex.end()) {
+//                     int index = itIndex->second;
+//
+//                     abunds[index] = itSample->second;
+//                 }
+//             }
+//
+//             setAbundance(it->first, abunds);
+//         }
+//     }else{
+//         for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
+//             setAbundance(it->first, it->second.begin()->second);
+//         }
+//     }
+//
+//     updateTotals();
+// }
 /******************************************************************************/
 void AbundTable::updateTotals() {
 

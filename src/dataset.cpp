@@ -1575,6 +1575,8 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
         throw Rcpp::exception(message.c_str());
     }
 
+    float diff = 0;
+
     for (int i = 0; i < n.size(); i++) {
         auto it = seqIndex.find(n[i]);
 
@@ -1584,7 +1586,7 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
             if (abunds[i] == 0) {
                 removeSequence(index, reason, true, true);
             }else{
-                count.setAbundance(index, abunds[i]);
+                diff += count.setAbundance(index, abunds[i]);
             }
 
         }else{
@@ -1595,6 +1597,21 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
     }
 
     count.updateTotals();
+
+    if (diff > 0) {
+        // may not be removing the whole sequence perhaps just reducing
+        auto itBad = badAccnos.find(reason);
+
+        if (itBad != badAccnos.end()) {
+            // update counts of trashCode
+            itBad->second[1] += diff;
+        }else{
+            // add new trashCode
+            vector<double> badAbunds(2, 0);
+            badAbunds[1] = diff;
+            badAccnos[reason] = badAbunds;
+        }
+    }
 }
 /******************************************************************************/
 // for datasets with samples
@@ -1609,6 +1626,8 @@ void Dataset::setAbundances(const vector<string>& n,
         throw Rcpp::exception(message.c_str());
     }
 
+    float diff = 0;
+
     for (int i = 0; i < n.size(); i++) {
         auto it = seqIndex.find(n[i]);
 
@@ -1618,7 +1637,7 @@ void Dataset::setAbundances(const vector<string>& n,
             if (sum(abunds[i]) == 0) {
                 removeSequence(index, reason, true, true);
             }else{
-                count.setAbundance(index, abunds[i]);
+                diff += count.setAbundance(index, abunds[i]);
             }
 
         }else{
@@ -1629,6 +1648,22 @@ void Dataset::setAbundances(const vector<string>& n,
     }
 
     count.updateTotals();
+
+    if (diff > 0) {
+        // may not be removing the whole sequence perhaps just reducing
+        auto itBad = badAccnos.find(reason);
+
+        if (itBad != badAccnos.end()) {
+            // update counts of trashCode
+            itBad->second[1] += diff;
+        }else{
+            // add new trashCode
+            vector<double> badAbunds(2, 0);
+            badAbunds[1] = diff;
+            badAccnos[reason] = badAbunds;
+        }
+    }
+
 }
 /******************************************************************************/
 void Dataset::setSequences(const vector<string>& n, const vector<string>& s,
