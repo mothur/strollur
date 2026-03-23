@@ -7,6 +7,8 @@
 #' @param data A 'dataset' object
 #' @param filename a string containing the name of the output file. Default =
 #' 'dataset_name'.fasta
+#' @param degap a logical. Default = FALSE. When degap = `TRUE`, all gap
+#' characters will be removed from the sequences.
 #'
 #' @examples
 #'
@@ -15,7 +17,7 @@
 #'
 #' @return name of FASTA file
 #' @export
-write_fasta <- function(data, filename = NULL) {
+write_fasta <- function(data, filename = NULL, degap = FALSE) {
   # check type
   if (class(data)[1] != "dataset") {
     .abort_incorrect_type("dataset", data)
@@ -33,7 +35,7 @@ write_fasta <- function(data, filename = NULL) {
 
   # data contains sequences
   if (length(sequence_names) != 0) {
-    sequences <- xdev_get_sequences(data)
+    sequences <- xdev_get_sequences(data, degap = degap)
 
     # make sure they aren't blank
     if (!any(sequences == "")) {

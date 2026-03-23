@@ -315,6 +315,29 @@ test_that("xdev_set_abundances", {
   expect_equal(abundance(data = data, type = "samples")[[2]], c(20, 30, 80))
 })
 
+test_that("xdev_get_sequences", {
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("..AT-TG-C..", ".AT---TGC", "A-TTGC.", "..ATTGC..")
+  comments <- c("ddd", "ftf", "efr", "ssd")
+
+  data <- new_dataset()
+
+  xdev_add_sequences(data, data.frame(
+    sequence_names = names,
+    sequences = seqs,
+    comments = comments
+  ))
+
+  actual <- xdev_get_sequences(data)
+
+  expect_equal(actual, seqs)
+
+  actual <- xdev_get_sequences(data, degap = TRUE)
+
+  expected <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+  expect_equal(actual, expected)
+})
+
 test_that("Tests removeBins, getScrapReport, getScrapSummary", {
   otu_names <- c(
     "otu1", "otu1", "otu1", "otu1",

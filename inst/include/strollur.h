@@ -566,7 +566,7 @@ public:
     const vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector);
 
 
-    const vector<string> getSequences(string sample = "");
+    const vector<string> getSequences(string sample = "", bool degap = false);
     // 2 columns: sequence names, sequence strings
     const Rcpp::DataFrame getSequenceTable(string sample = "");
     const vector<vector<string> > getSequencesBySample(const vector<string> samples);
@@ -652,6 +652,7 @@ private:
     Report metadata;
 
     // if unaligned, returns -1
+    string degapSeq(string& sequence);
     int getAlignedLength();
     const vector<int> getIncludedNamesIndexes();
     const vector<int> getIndexes(const vector<string>&);

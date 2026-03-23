@@ -787,6 +787,8 @@ xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.chara
 #'
 #' @param sample, a string containing the name of the sample you
 #' would like sequence names for. For all samples in dataset, sample = "".
+#' @param degap, a logical. Default = FALSE. When degap = `TRUE`, all gap
+#' characters ('-', '.') will be removed from the sequences.
 #' @examples
 #'
 #'  data <- miseq_sop_example()
@@ -795,8 +797,8 @@ xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.chara
 #' @return vector of string containing nucleotide strings of the sequences in
 #' a \link{dataset} object
 #' @export
-xdev_get_sequences <- function(data, sample = "") {
-    .Call(`_strollur_xdev_get_sequences`, data, sample)
+xdev_get_sequences <- function(data, sample = "", degap = FALSE) {
+    .Call(`_strollur_xdev_get_sequences`, data, sample, degap)
 }
 
 #' @title xdev_merge_bins

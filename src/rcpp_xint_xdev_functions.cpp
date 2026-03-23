@@ -682,9 +682,10 @@ vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
     return null2DVector;
 }
 /******************************************************************************/
-vector<string> xdev_get_sequences(Rcpp::Environment data, string sample) {
+vector<string> xdev_get_sequences(Rcpp::Environment data, string sample,
+                                  bool degap) {
     Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getSequences(sample);
+    return d.get()->getSequences(sample, degap);
 }
 /******************************************************************************/
 void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,

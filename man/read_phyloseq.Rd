@@ -26,7 +26,7 @@ the phyloseq package
 and converts it into a strollur object.
 }
 \examples{
- miseq <- miseq_sop_example()
- phylo_obj <- write_phyloseq(miseq)
- miseq_re_read <- read_phyloseq(phylo_obj)
+miseq <- miseq_sop_example()
+phylo_obj <- write_phyloseq(miseq)
+miseq_re_read <- read_phyloseq(phylo_obj)
 }

@@ -487,6 +487,21 @@ double Dataset::assignSequenceAbundance(vector<string>& ids,
     return numSeqsAssigned;
 }
 /******************************************************************************/
+string Dataset::degapSeq(string& sequence) {
+    string degappedSeq = sequence;
+
+    degappedSeq.erase(
+        std::remove_if(degappedSeq.begin(), degappedSeq.end(),
+                       [=](char c) {
+                           return c == '-' || c == '.';
+                       }
+        ),
+        degappedSeq.end()
+    );
+
+    return degappedSeq;
+}
+/******************************************************************************/
 double Dataset::assignSequenceTaxonomy(const vector<string>& n,
                                        const vector<string>& t){
 
@@ -1087,24 +1102,46 @@ const Rcpp::DataFrame Dataset::getSequenceTable(string sample) {
     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
-const vector<string> Dataset::getSequences(string sample){
+const vector<string> Dataset::getSequences(string sample, bool degap){
     vector<string> included;
 
     if (sample == "") {
-        for (int i = 0; i < tableSeqs.size(); i++) {
-            if (tableSeqs[i]) {
-                included.push_back(seqs[i]);
+        if (!degap) {
+            for (int i = 0; i < tableSeqs.size(); i++) {
+                if (tableSeqs[i]) {
+                    included.push_back(seqs[i]);
+                }
+            }
+        }else{
+            for (int i = 0; i < tableSeqs.size(); i++) {
+                if (tableSeqs[i]) {
+                    included.push_back(degapSeq(seqs[i]));
+                }
             }
         }
     }else{
         if (count.hasSample(sample)) {
-            // all seqs
-            for (int i = 0; i < tableSeqs.size(); i++) {
-                // if "good" seq
-                if (tableSeqs[i]) {
-                    // if this sequence is in sample
-                    if (count.hasSample(sample, i)) {
-                        included.push_back(seqs[i]);
+
+            if (!degap) {
+                // all seqs
+                for (int i = 0; i < tableSeqs.size(); i++) {
+                    // if "good" seq
+                    if (tableSeqs[i]) {
+                        // if this sequence is in sample
+                        if (count.hasSample(sample, i)) {
+                            included.push_back(seqs[i]);
+                        }
+                    }
+                }
+            }else {
+                // all seqs
+                for (int i = 0; i < tableSeqs.size(); i++) {
+                    // if "good" seq
+                    if (tableSeqs[i]) {
+                        // if this sequence is in sample
+                        if (count.hasSample(sample, i)) {
+                            included.push_back(degapSeq(seqs[i]));
+                        }
                     }
                 }
             }
