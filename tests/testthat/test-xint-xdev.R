@@ -37,6 +37,50 @@ test_that("xdev_get_by_sample", {
 
   # can't assign bin taxonomy when you have not assigned bins
   expect_error(xdev_get_by_sample(data, "badType"))
+
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("..AT-TG-C..", ".AT---TGC", "A-TTGC.", "..ATTGC..")
+  comments <- c("ddd", "ftf", "efr", "ssd")
+
+  samples <- c("sample1", "sample2", "sample1", "sample2")
+  abunds <- c(10, 10, 10, 10)
+
+  data <- new_dataset()
+
+  xdev_add_sequences(
+    data,
+    data.frame(
+      sequence_names = names,
+      sequences = seqs,
+      comments = comments
+    )
+  )
+
+  # add samples
+  xdev_assign_sequence_abundance(data, data.frame(
+    sequence_names = names,
+    samples = samples,
+    abundances = abunds
+  ))
+
+  expected <- list(c("ATTGC", "ATTGC"), c("ATTGC", "ATTGC"))
+  actual <- xdev_get_by_sample(data, type = "sequences", degap = TRUE)
+  expect_equal(actual, expected)
+
+  actual <- xdev_get_by_sample(data,
+    type = "sequences",
+    samples = c("sample1")
+  )
+
+  expect_equal(actual, list(c("..AT-TG-C..", "A-TTGC.")))
+
+  actual <- xdev_get_by_sample(data,
+    type = "sequences",
+    sample = "sample1", degap = TRUE
+  )
+
+  expected <- c("ATTGC", "ATTGC")
+  expect_equal(actual, list(expected))
 })
 
 test_that("xdev_get_abundances_by_sample - getSequenceAbundanceBySample", {
@@ -313,6 +357,48 @@ test_that("xdev_set_abundances", {
   expect_equal(count(data = data, type = "sequences"), 130)
   expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2)
   expect_equal(abundance(data = data, type = "samples")[[2]], c(20, 30, 80))
+})
+
+test_that("xdev_get_sequences", {
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("..AT-TG-C..", ".AT---TGC", "A-TTGC.", "..ATTGC..")
+  comments <- c("ddd", "ftf", "efr", "ssd")
+
+  samples <- c("sample1", "sample2", "sample1", "sample2")
+  abunds <- c(10, 10, 10, 10)
+
+  data <- new_dataset()
+
+  xdev_add_sequences(data, data.frame(
+    sequence_names = names,
+    sequences = seqs,
+    comments = comments
+  ))
+
+  actual <- xdev_get_sequences(data)
+
+  expect_equal(actual, seqs)
+
+  actual <- xdev_get_sequences(data, degap = TRUE)
+
+  expected <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+  expect_equal(actual, expected)
+
+  # add samples
+  xdev_assign_sequence_abundance(data, data.frame(
+    sequence_names = names,
+    samples = samples,
+    abundances = abunds
+  ))
+
+  actual <- xdev_get_sequences(data, sample = "sample1")
+
+  expect_equal(actual, c("..AT-TG-C..", "A-TTGC."))
+
+  actual <- xdev_get_sequences(data, sample = "sample1", degap = TRUE)
+
+  expected <- c("ATTGC", "ATTGC")
+  expect_equal(actual, expected)
 })
 
 test_that("Tests removeBins, getScrapReport, getScrapSummary", {
