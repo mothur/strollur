@@ -475,7 +475,7 @@ class Dataset {
 public:
 
     Dataset();
-    Dataset(const string name, const int processors);
+    Dataset(string name, const int processors);
     Dataset(const Dataset& dataset);
     ~Dataset();
 

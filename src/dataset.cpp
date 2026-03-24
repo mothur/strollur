@@ -18,7 +18,8 @@ Dataset::Dataset() {
     processors = 1;
 }
 /******************************************************************************/
-Dataset::Dataset(string n, int proc) : datasetName(n) {
+Dataset::Dataset(string name, const int processors) : datasetName(std::move(name)),
+processors(processors) {
     isAligned = false;
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
@@ -26,7 +27,6 @@ Dataset::Dataset(string n, int proc) : datasetName(n) {
     numUnique = 0;
     uniqueBad = 0;
     alignmentLength = 0;
-    processors = proc;
 }
 /******************************************************************************/
 Dataset::Dataset(const Dataset& dataset) {
@@ -63,9 +63,9 @@ Dataset::Dataset(const Dataset& dataset) {
 
     count.clone(dataset.count);
 
-    for (int i = 0; i < dataset.binTables.size(); i++) {
+    for (const auto & binTable : dataset.binTables) {
         BinTable table;
-        table.clone(dataset.binTables[i]);
+        table.clone(binTable);
         binTables.push_back(table);
     }
 

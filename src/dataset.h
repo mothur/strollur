@@ -97,9 +97,9 @@ template<typename T>
 set<T> toSet(const vector<T>& x) {
     set<T> results;
 
-    if (x.size() == 0) { return results; }
+    if (x.empty()) { return results; }
 
-    for (int i = 0; i < x.size(); i++ ) {
+    for (size_t i = 0; i < x.size(); i++ ) {
         results.insert(x[i]);
     }
 
@@ -110,7 +110,7 @@ template<typename T, typename T2>
 vector<T> getValues(const map<T2, T>& x) {
     vector<T> results(x.size());
 
-    if (x.size() == 0) { return results; }
+    if (x.empty()) { return results; }
 
     int index = 0;
     for (auto it = x.begin(); it != x.end(); it++) {
@@ -125,7 +125,7 @@ template<typename T, typename T2>
 vector<T> getKeys(const map<T, T2>& x) {
     vector<T> results(x.size());
 
-    if (x.size() == 0) { return results; }
+    if (x.empty()) { return results; }
 
     int index = 0;
     for (auto it = x.begin(); it != x.end(); it++) {
@@ -140,9 +140,9 @@ template<typename T>
 vector<T> select(const vector<T>& x, const vector<bool>& filter) {
     vector<T> results;
 
-    if (x.size() == 0) { return results; }
+    if (x.empty()) { return results; }
 
-    for (int i = 0; i < x.size(); i++ ) {
+    for (size_t i = 0; i < x.size(); i++ ) {
         if (filter[i]) {
             results.push_back(x[i]);
         }
@@ -153,31 +153,17 @@ vector<T> select(const vector<T>& x, const vector<bool>& filter) {
 /**********************************************************************/
 template<typename T>
 T sum(const vector<T>& x) {
-    return accumulate(x.begin(), x.end(), 0);
+    return accumulate(x.cbegin(), x.cend(), 0);
 }
 /**********************************************************************/
 template<typename T>
-bool allIdentical(const vector<T>& x, T& value) {
-
-    if (!x.empty()) {
-        value = x[0];
-        for (int i = 0; i < x.size(); i++) {
-            if (x[i] != value) {
-                return false;
-            }
-        }
-
-    }
-    return true;
+bool allIdentical(const vector<T>& x, const T& value) {
+    return std::all_of(x.cbegin(), x.cend(), [value] (const T& val) { return val == value; });
 }
 /**********************************************************************/
 static inline bool allBlank(const vector<string>& x) {
-    string value = "";
-    if (allIdentical(x, value)) {
-        if (value == "") {
-            return true;
-        }
-    }
+    const string value = "";
+    return allIdentical(x, value);
     return false;
 }
 /**********************************************************************/
@@ -207,11 +193,11 @@ vector<T> unique(const vector<T>& x) {
 
     vector<T> uniqueX;
 
-    if (x.size() == 0) { return uniqueX; }
+    if (x.empty()) { return uniqueX; }
 
     set<T> s;
-    unsigned size = x.size();
-    for( unsigned i = 0; i < size; ++i ) {
+    const size_t size = x.size();
+    for(size_t i = 0; i < size; ++i ) {
         s.insert( x[i] );
     }
 
@@ -236,7 +222,7 @@ vector<T> toVector(const set<T>& x) {
 inline string toString(const set<string>& x, char delim) {
     string result = "";
 
-    if (x.size() == 0) { return result; }
+    if (x.empty()) { return result; }
 
     for (auto it = x.begin(); it != x.end(); it++) {
         result += delim + *it;
@@ -258,10 +244,11 @@ static bool inline isTrue(vector<bool> c) {
 
     if (c.size() == 1) { return c[0]; }
 
-    set<bool> x = toSet(c);
+    const set<bool> x = toSet(c);
     if (x.size() > 1) {
         return false;
-    }else if (x.size() == 1) {
+    }
+    if (x.size() == 1) {
         return (*x.begin() == true);
     }
     return true;
@@ -271,20 +258,21 @@ static bool inline isFalse(vector<bool> c) {
 
     if (c.size() == 1) { return (c[0] == false); }
 
-    set<bool> x = toSet(c);
+    const set<bool> x = toSet(c);
 
     if (x.size() > 1) {
         return false;
-    }else if (x.size() == 1) {
+    }
+    if (x.size() == 1) {
         return (*x.begin() == false);
     }
     return true;
 }
 /**********************************************************************/
-inline string toString(const set<string>& x, string delim) {
+inline string toString(const set<string>& x, const string& delim) {
     string result = "";
 
-    if (x.size() == 0) { return result; }
+    if (x.empty()) { return result; }
 
     for (auto it = x.begin(); it != x.end(); it++) {
         result += delim + *it;
@@ -302,7 +290,7 @@ string toString(const T&x) {
 }
 /**********************************************************************/
 template<typename T>
-string toString(const T&x, int i) {
+string toString(const T&x, const int i) {
     stringstream output;
 
     output.precision(i);
@@ -312,14 +300,14 @@ string toString(const T&x, int i) {
 }
 /**********************************************************************/
 template<typename T>
-string toString(const vector<T>& x, char delim) {
+string toString(const vector<T>& x, const char delim) {
     string result = "";
 
-    if (x.size() == 0) { return result; }
+    if (x.empty()) { return result; }
 
     result = toString(x[0]);
 
-    for (int i = 1; i < x.size(); i++) {
+    for (size_t i = 1; i < x.size(); i++) {
         result += delim + toString(x[i]);
     }
 
@@ -332,7 +320,7 @@ public:
 };
 /**********************************************************************/
 template<typename T>
-void convert(const string& s, T& x, bool failIfLeftoverChars = true){
+void convert(const string& s, T& x, const bool failIfLeftoverChars = true){
 
     istringstream i(s);
     char c;

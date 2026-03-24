@@ -292,7 +292,7 @@ vector<float> AbundTable::getAbundances(const int id) const {
         }
 
         // only include "good" samples
-        abunds = select(allAbunds, tableSamples);
+        abunds = select<float>(allAbunds, tableSamples);
     }else{
         abunds.push_back(counts[id].abunds[0]);
     }
