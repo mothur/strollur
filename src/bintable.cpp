@@ -11,14 +11,6 @@ BinTable::BinTable() {
     runClassify = false;
 }
 /******************************************************************************/
-BinTable::BinTable(string l) {
-    uniqueBad = 0;
-    label = l;
-    hasBinTaxonomy = false;
-    hasBinReps = false;
-    runClassify = false;
-}
-/******************************************************************************/
 BinTable::BinTable(const BinTable& binTable) {
     label = binTable.label;
     hasBinTaxonomy = binTable.hasBinTaxonomy;

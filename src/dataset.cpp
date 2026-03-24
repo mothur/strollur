@@ -681,8 +681,7 @@ const Rcpp::DataFrame Dataset::getList(string type) {
         assignBins(asvIds, nullFloatVector, nullVector, seqIds, "asv");
         return binTables[getBinTableIndex(type)].getList(names);
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 const Rcpp::DataFrame Dataset::getMetadata() {
@@ -789,8 +788,7 @@ const Rcpp::DataFrame Dataset::getBinRepresentativeSequences(string type) {
     if (hasBinTable(type)) {
         return binTables[getBinTableIndex(type)].getRepresentativeSequences(names, seqs);
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getBinTaxonomyReport(string type) {
@@ -897,8 +895,8 @@ const Rcpp::DataFrame Dataset::getReferences() {
 
         return df;
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 const vector<string> Dataset::getSamples(){
@@ -915,8 +913,7 @@ const Rcpp::DataFrame Dataset::getSampleTreatmentAssignments() {
         return df;
     }
 
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 // id, trashCode
@@ -948,8 +945,8 @@ const Rcpp::DataFrame Dataset::getScrapReport(string mode) {
             return binTables[getBinTableIndex(mode)].getScrapReport();
         }
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 // type, trashCode, uniqueCount, totalCount
@@ -1025,27 +1022,6 @@ const Rcpp::DataFrame Dataset::getSequenceAbundances(bool bySample){
 const vector<vector<float> > Dataset::getSequenceAbundanceBySample(vector<string> samples) {
     vector<int> ids = getIncludedNamesIndexes();
     return count.getAbundanceBySample(ids, samples);
-}
-/******************************************************************************/
-const Rcpp::DataFrame Dataset::getSequenceTable(string sample) {
-
-    if (hasSequenceData) {
-
-        vector<string> samples;
-
-        if(sample != "") {
-            samples.push_back(sample);
-        }
-
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("sequence_names") = getSequenceNames(samples),
-            Rcpp::_["sequences"] = getSequences(sample)
-        );
-
-        return df;
-    }
-
-    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 const vector<string> Dataset::getSequences(string sample, bool degap){
@@ -1170,9 +1146,7 @@ Rcpp::DataFrame Dataset::getSequenceTaxonomyReport() {
     if (hasSequenceTaxonomy){
         return (fillTaxReport("sequence"));
     }
-
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 const vector<string> Dataset::getTreatments(){
@@ -1228,9 +1202,7 @@ const Rcpp::DataFrame Dataset::getTotals(string type){
             Rcpp::_["abundances"] = totals);
         return df;
     }
-
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 const double Dataset::getUniqueTotal(vector<string> samples){

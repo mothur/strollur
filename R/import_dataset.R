@@ -110,19 +110,6 @@ import_dataset <- function(table) {
           table[[obrs]]$bin_ids <- table[[bt]]$bin_ids[matched_indices]
           table[[obrs]] <- na.omit(table[[obrs]])
         }
-      } else {
-        b <- paste0(type, "_bin_abundance_table")
-
-        if (b %in% names) {
-          matched_indices <- match(
-            table[[b]]$bin_ids,
-            table[[bt]]$bin_ids
-          )
-
-          # filter bins from _bin_abundance_table
-          table[[b]]$bin_ids <- table[[bt]]$bin_ids[matched_indices]
-          table[[b]] <- na.omit(table[[b]])
-        }
       }
     }
   }
@@ -159,7 +146,6 @@ import_dataset <- function(table) {
     }
   }
 
-
   # if we have bin assignments
   if (length(bin_data_names) != 0) {
     # "otu", "asv" or whatever the user specified
@@ -174,34 +160,8 @@ import_dataset <- function(table) {
       # label+"_sequence_bin_assignments" or label+"_bin_abundance_table"
 
       sequence_bin_assignments <- paste0(type, "_sequence_bin_assignments")
-      otu_bin_abund_table <- paste0(type, "_bin_abundance_table")
 
-      # only abundance data
-      if (otu_bin_abund_table %in% names) {
-        otu_bin_abund_names <- names(table[[otu_bin_abund_table]])
-
-        # create bin_names from bin_ids
-        m_indices <- match(
-          table[[otu_bin_abund_table]]$bin_ids,
-          table[[bin_type]]$bin_ids
-        )
-
-        table[[otu_bin_abund_table]]$bin_names <-
-          table[[bin_type]]$bin_names[m_indices]
-
-        # bin_id, abund, sample(optional), treatment(optional)
-        assign(
-          data = data, table = table[[otu_bin_abund_table]],
-          type = "bins", bin_type = type
-        )
-
-        if ("treatments" %in% otu_bin_abund_names) {
-          assign(
-            data = data, table = table[[otu_bin_abund_table]],
-            type = "treatments"
-          )
-        }
-      } else if ((sequence_bin_assignments %in% names) && has_sequence_data) {
+      if ((sequence_bin_assignments %in% names) && has_sequence_data) {
         # requested sequence_data and has sequence_data
 
         # create bin_names from bin_ids

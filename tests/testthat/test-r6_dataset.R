@@ -12,6 +12,31 @@ test_that("dataset - intialize from read_mothur / print", {
     dataset_name = "miseq_sop"
   )
 
+  # add references, custom report and metadata
+  contigs_report <- readr::read_tsv(
+    strollur_example(
+      "final.contigs_report.gz"
+    ),
+    col_names = TRUE, show_col_types = FALSE
+  )
+  add(
+    data = dataset_t, table = contigs_report, type = "reports",
+    report_type = "contigs_report", list(sequence_name = "Name")
+  )
+
+  metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+  add(data = dataset_t, table = metadata, type = "metadata")
+
+  reference <- readr::read_csv(strollur_example("references.csv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+  xdev_add_references(dataset_t, reference)
+
+  actual <- dataset_t$get_metadata()
+  expect_equal(nrow(actual), 19)
+
   expect_equal(dataset_t$get_bin_types(), c("otu", "asv", "phylotype"))
   expect_equal(names(dataset_t, "dataset")[1], "miseq_sop")
   expect_equal(
@@ -39,9 +64,10 @@ test_that("dataset - intialize from read_mothur / print", {
   expect_equal(seqs_summary$polymers[1], 3)
   expect_equal(seqs_summary$polymers[7], 6)
 
-  expect_snapshot(
-    waldo::compare(dataset_t$print(), dataset_t$print())
-  )
+  seq_report <- dataset_t$get_sequence_report()
+
+  expect_equal(nrow(seq_report), 2425)
+  expect_equal(ncol(seq_report), 7)
 
   # remove bin from "phylotype" list and confirm that it removes seqs from all
   # from all list types
@@ -156,6 +182,13 @@ test_that("dataset - intialize from read_mothur / print", {
     type = "sequences",
     distinct = TRUE
   ), 2086)
+
+  expect_snapshot(
+    waldo::compare(dataset_t$print(), dataset_t$print())
+  )
+
+  dataset_t$clear()
+  expect_equal(count(data = dataset_t, type = "sequences"), 0)
 })
 
 test_that("dataset - intialize from dataset object", {

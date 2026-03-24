@@ -509,6 +509,11 @@ test_that("Tests removeBins, getScrapReport, getScrapSummary", {
   otus_to_remove <- c("otu1", "non_existant_otu")
   reasons <- rep("bad_bin", 2)
 
+  expect_error(xdev_remove_bins(
+    data, otus_to_remove,
+    c("not_enough_reasons"), "otu"
+  ))
+
   xdev_remove_bins(data, otus_to_remove, reasons, "otu")
 
   expect_equal(
