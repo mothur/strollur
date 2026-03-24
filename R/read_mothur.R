@@ -133,18 +133,10 @@ read_mothur <- function(fasta = NULL, count = NULL,
       ))
     }
 
-    # if the count file include samples, add them
-    if ("sample" %in% names(count_table)) {
-      xdev_assign_sequence_abundance(
-        data,
-        count_table
-      )
-    } else {
-      xdev_assign_sequence_abundance(
-        data,
-        count_table
-      )
-    }
+    xdev_assign_sequence_abundance(
+      data,
+      count_table
+    )
   }
 
   # add taxonomy data
