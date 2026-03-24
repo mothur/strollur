@@ -481,7 +481,7 @@ vector<string> BinTable::getTaxonomies(const vector<string>& tax,
         classify(tax, count);
     }
 
-    if (taxonomies.size() != 0) {
+    if (!taxonomies.empty()) {
         return select(taxonomies, tableBins);
     }
 

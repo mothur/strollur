@@ -33,7 +33,7 @@ void Report::clear() {
     logColumns.clear();
 }
 /******************************************************************************/
-void Report::addReport(Rcpp::DataFrame& report) {
+void Report::addReport(const Rcpp::DataFrame& report) {
     clear();
 
     vector<string> cnames;
@@ -96,7 +96,7 @@ void Report::addReport(Rcpp::DataFrame& report) {
     }
 }
 /******************************************************************************/
-Rcpp::DataFrame Report::getReport(set<string> datasetNames) {
+Rcpp::DataFrame Report::getReport(const set<string>& datasetNames) {
 
     Rcpp::DataFrame data = Rcpp::DataFrame::create();
 
@@ -128,7 +128,7 @@ Rcpp::DataFrame Report::getReport(set<string> datasetNames) {
             data.attr("names") = getValues(columnNames);
         }
 
-        if (sequence_name != "") {
+        if (!sequence_name.empty()) {
             data.attr("sequence_name") = sequence_name;
         }
     }
