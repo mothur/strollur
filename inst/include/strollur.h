@@ -164,10 +164,10 @@ public:
     //                                   treatment (optional -
     //                                   added when table includes treatment data),
     // used to export AbundTable
-    const Rcpp::DataFrame getAbundanceTable(const vector<string>& outputNames,
+    Rcpp::DataFrame getAbundanceTable(const vector<string>& outputNames,
                                       const vector<int>& names,
                                       const string& tag = "sequence",
-                                      const bool useNames = true);
+                                      const bool useNames = true) const;
 
     // names, sets abundance to 1
     double add(const vector<int>& names);
@@ -184,7 +184,7 @@ public:
     // set abundance parsed by sample
     void setAbundance(const int name, const vector<float>& abunds);
     // set abundance, assumes no samples if sample is blank
-    void setAbundance(const int name, const float abund, const string sample = "");
+    void setAbundance(const int name, const float abund, const string& sample = "");
     // index -> (sampleName -> abundance)
     void setAbundances(const map<int, map<string, float>>& binAbunds);
 
@@ -198,38 +198,38 @@ public:
     void merge(const vector<int>& idsToMerge);
 
     // vector containing total abundance for each id
-    const vector<float> getTotalAbundances(const vector<int>& names);
+    vector<float> getTotalAbundances(const vector<int>& names) const;
     // total abundance for sequence, if sample is provided then abundance for
     // that sequence in that sample
-    const float getAbundance(const int name, const vector<string>& samples = nullVector);
+   float getAbundance(const int name, const vector<string>& samples = nullVector) const;
     // abundances by sample for id, (in the same order as the samples)
-    const vector<float> getAbundances(const int id) const;
+    vector<float> getAbundances(const int id) const;
     // abundances by sample for ids
-    const vector<vector<float>> getAbundances(const vector<int>& ids) const;
+    vector<vector<float>> getAbundances(const vector<int>& ids) const;
     // results[0][1:numSeqsInSample0] -> sample 0's abundances for each sequence
-    const vector<vector<float>> getAbundanceBySample(const vector<int>& ids,
-        vector<string> samplesToSelect = nullVector);
+    vector<vector<float>> getAbundanceBySample(const vector<int>& ids,
+        vector<string> samplesToSelect = nullVector) const;
     // total number of sequences
-    const double getTotal(const string& sample = "") const;
+    double getTotal(const string& sample = "") const;
 
-    const int getNumSamples(const int name = -1);
-    const int getNumTreatments() const;
+    int getNumSamples(const int name = -1) const;
+    int getNumTreatments() const;
     // vector containing total abundance for each sample
-    const vector<double> getSampleTotals() const;
+    vector<double> getSampleTotals() const;
     // vector containing total abundance for each treatment
-    const vector<double> getTreatmentTotals();
+    vector<double> getTreatmentTotals() const;
     // vector containing names of samples
-    const vector<string> getSamples(const int name = -1);
-    const vector<string> getTreatments() const;
+    vector<string> getSamples(const int name = -1) const;
+    vector<string> getTreatments() const;
     // maps sampleName to treatmentName
-    const map<string, string> getSampleTreatmentAssignments() const;
+    map<string, string> getSampleTreatmentAssignments() const;
 
     // does the table contain a sample
     // if name provided, does the sequence have this sample
-    const bool hasSample(const string sample, const int name = -1);
-    const bool hasSamples(const vector<string> samples, const int name = -1);
+    bool hasSample(const string& sample, const int name = -1) const;
+    bool hasSamples(const vector<string>& samples, const int name = -1) const;
     // does the table have sample information
-    const bool hasSamplesData() { return hasSampleData; }
+    bool hasSamplesData() const { return hasSampleData; }
 
 private:
 
@@ -258,8 +258,8 @@ private:
 
     bool hasSampleData, hasTreatments;
 
-    const int getSparseIndex(const int, const int);
-    const vector<int> getSampleIndexes();
+    int getSparseIndex(const int, const int) const;
+    vector<int> getSampleIndexes() const;
     void addSamples(vector<string> samples);
     void addTreatments(vector<string> treatments);
     void updateSampleTotals(const vector<float>& diffAbunds);
