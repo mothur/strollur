@@ -303,25 +303,25 @@ vector<int> BinTable::getGoodIndexes(const AbundTable& count) const {
 
     vector<int> indexes(ids.size(), -1);
 
-    for (int i = 0; i < ids.size(); i++) {
+    for (size_t i = 0; i < ids.size(); i++) {
         indexes[i] = binIndex.at(ids[i]);
     }
     return indexes;
 }
 /******************************************************************************/
 // string containing seqs in bin, comma separated
-const string BinTable::get(const string binName,
-                           const vector<string>& seqNames) {
+string BinTable::get(const string binName,
+                           const vector<string>& seqNames) const {
     string bin = "";
 
-    auto it = binIndex.find(binName);
+    const auto it = binIndex.find(binName);
     if (it != binIndex.end()) {
         // "good" bin
         if (tableBins[it->second]) {
-            set<int> seqs = binList[it->second];
+            const set<int> seqs = binList[it->second];
 
-            for (int seq : seqs) {
-                if (bin != "") {
+            for (const int& seq : seqs) {
+                if (!bin.empty()) {
                     bin += "," + seqNames[seq];
                 }else{
                     bin = seqNames[seq];
@@ -333,10 +333,10 @@ const string BinTable::get(const string binName,
     return bin;
 }
 /******************************************************************************/
-const vector<string> BinTable::getListVector(const vector<string>& seqNames) {
+vector<string> BinTable::getListVector(const vector<string>& seqNames) const {
     vector<string> listVector;
 
-    for (int i = 0; i < binNames.size(); i++) {
+    for (size_t i = 0; i < binNames.size(); i++) {
         if (tableBins[i]) {
             listVector.push_back(get(binNames[i], seqNames));
         }
@@ -346,23 +346,23 @@ const vector<string> BinTable::getListVector(const vector<string>& seqNames) {
 }
 /******************************************************************************/
 // 2 column dataframe - bin_id, seq_id
-const Rcpp::DataFrame BinTable::getList(const vector<string>& seqNames){
+Rcpp::DataFrame BinTable::getList(const vector<string>& seqNames) const{
 
     vector<string> ids, seqids;
-    for (int i = 0; i < binNames.size(); i++) {
+    for (size_t i = 0; i < binNames.size(); i++) {
 
         // if this is a "good" bin
         if (tableBins[i]) {
-            set<int> seqs = binList[i];
+            const set<int> seqs = binList[i];
 
-            for (int seq : seqs) {
+            for (const int& seq : seqs) {
                 ids.push_back(binNames[i]);
                 seqids.push_back(seqNames[seq]);
             }
         }
     }
 
-    string tag = label + "_id";
+    const string tag = label + "_id";
     Rcpp::DataFrame df = Rcpp::DataFrame::create(
         Rcpp::Named(tag.c_str()) = ids,
         Rcpp::_["seq_id"] = seqids);
@@ -384,7 +384,7 @@ vector<string> BinTable::getIds(const AbundTable& count,
         if (distinct) {
             const vector<string> sampleNames = count.getSamples();
             int next = 0;
-            for (int i = 0; i < sampleNames.size(); i++) {
+            for (int i = 0; i < static_cast<int>(sampleNames.size()); i++) {
                 // is this sample in the samples requested
                 if (vectorContains(samples, sampleNames[i])) {
                     sampleIndexes[next] = i;
@@ -421,12 +421,12 @@ vector<string> BinTable::getIds(const AbundTable& count,
                         }
                         // if all the sequences come from this sample, save name
                         if (isEqual(sum(sampleAbunds), theseSamples) &&
-                                    (numSamplesFound == samples.size())) {
+                                    (numSamplesFound == static_cast<int>(samples.size()))) {
                             results.push_back(binName);
                         }
                     }else {
                         // all samples requested are present
-                        if (numSamplesFound == samples.size()) {
+                        if (numSamplesFound == static_cast<int>(samples.size())) {
                             results.push_back(binName);
                         }
                     }
@@ -754,7 +754,7 @@ vector<int> BinTable::getIndexes(vector<string>& binIDS) const {
         // done if we find bin
         if (it != binIndex.end()) {
             done = true;
-        }else if (firstGoodIndex >= binIDS.size()){
+        }else if (firstGoodIndex >= static_cast<int>(binIDS.size())){
             // done if out of bins to check
             done = true;
         }else{
@@ -767,7 +767,7 @@ vector<int> BinTable::getIndexes(vector<string>& binIDS) const {
     // you have a valid binId
     if (it != binIndex.end()) {
 
-        for (int i = firstGoodIndex; i < binIDS.size(); i++) {
+        for (size_t i = firstGoodIndex; i < binIDS.size(); i++) {
             it = binIndex.find(binIDS[i]);
 
             if (it != binIndex.end()) {
@@ -854,7 +854,7 @@ bool BinTable::okToMerge(const vector<int>& seqIds) const {
             binNumber = it->second;
         }
 
-        for (int i = 1; i < seqIds.size(); i++) {
+        for (size_t i = 1; i < seqIds.size(); i++) {
             it = seqBins.find(seqIds[i]);
 
             if (it != seqBins.end()) {

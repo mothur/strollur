@@ -357,9 +357,9 @@ public:
     vector<string> getIds(const AbundTable& count,
                                 const vector<string>& sample = nullVector,
                                 bool distinct = false) const;
-    const vector<string> getListVector(const vector<string>& seqNames);
+    vector<string> getListVector(const vector<string>& seqNames) const;
     // 2 column dataframe - bin_id, seq_id
-    const Rcpp::DataFrame getList(const vector<string>& seqNames);
+    Rcpp::DataFrame getList(const vector<string>& seqNames) const;
 
     int getNumBins(const AbundTable& count,
                          const vector<string>& samples = nullVector,
@@ -426,7 +426,7 @@ private:
                        const AbundTable& count) const;
 
     // string containing seqs in bin, comma separated
-    const string get(const string binName, const vector<string>& seqNames);
+    string get(const string binName, const vector<string>& seqNames) const;
     // total abundance for a given bin
     float getAbundance(const AbundTable& count,
                              const string& binName,
