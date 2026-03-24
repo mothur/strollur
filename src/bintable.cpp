@@ -11,9 +11,8 @@ BinTable::BinTable() {
     runClassify = false;
 }
 /******************************************************************************/
-BinTable::BinTable(string l) {
+BinTable::BinTable(string label): label(std::move(label)) {
     uniqueBad = 0;
-    label = l;
     hasBinTaxonomy = false;
     hasBinReps = false;
     runClassify = false;
@@ -86,13 +85,13 @@ double BinTable::assignBins(AbundTable& count, vector<string> binIds,
                                  const vector<int>& seqIds){
     // we are assigning seqIds to bins, so remove all old bin data
     // to avoid inconsistencies
-    string oldLabel = label;
+    const string oldLabel = label;
     clear();
     int numBins = 0;
     label = oldLabel;
     runClassify = true;
 
-    for (int i = 0; i < seqIds.size(); i++) {
+    for (size_t i = 0; i < seqIds.size(); i++) {
 
         auto itIndex = binIndex.find(binIds[i]);
         int index = numBins;
@@ -126,16 +125,16 @@ double BinTable::assignBins(AbundTable& count, vector<string> binIds,
     return numBins;
 }
 /******************************************************************************/
-double BinTable::assignRepresentativeSequences(const vector<string>& binNames,
+double BinTable::assignRepresentativeSequences(const vector<string>& binNamesVector,
                                                  const vector<int>& repNames){
     double repAssigned = 0;
 
     // set as unassigned
     repSequences.resize(tableBins.size(), -1);
 
-    for (int i = 0; i < binNames.size(); i++) {
+    for (size_t i = 0; i < binNamesVector.size(); i++) {
 
-        string binName = binNames[i];
+        const string& binName = binNamesVector[i];
 
         auto it = binIndex.find(binName);
 
@@ -158,9 +157,9 @@ double BinTable::assignTaxonomy(const vector<string>& binIds,
     // make space for assignments
     taxonomies.resize(binNames.size(), "");
 
-    for (int i = 0; i < binIds.size(); i++) {
+    for (size_t i = 0; i < binIds.size(); i++) {
 
-        string binName = binIds[i];
+        const string& binName = binIds[i];
 
         auto it = binIndex.find(binName);
 
@@ -176,9 +175,9 @@ double BinTable::assignTaxonomy(const vector<string>& binIds,
 }
 /******************************************************************************/
 void BinTable::classify(const vector<string>& taxs,
-                        AbundTable& count) {
+                        const AbundTable& count) {
     taxonomies.resize(binNames.size(), "");
-    for (int i = 0; i < binNames.size(); i++) {
+    for (int i = 0; i < static_cast<int>(binNames.size()); i++) {
         if (tableBins[i]) {
             taxonomies[i] = classifyBin(i, taxs, count);
         }
@@ -189,26 +188,26 @@ void BinTable::classify(const vector<string>& taxs,
 /******************************************************************************/
 string BinTable::classifyBin(const int binId,
                              const vector<string>& tax,
-                             AbundTable& count){
+                             const AbundTable& count) const {
     string binTax = "";
 
-    if (tax.size() != 0) {
+    if (!tax.empty()) {
 
         set<int> binSeqs = binList[binId];
 
         PhyloTree phylo;
-        int size = 0;
+        float size = 0;
 
         // add all "good" seqs in bin to phylotree
         for (int index : binSeqs) {
-            int seqAbund = count.getAbundance(index);
+            float seqAbund = count.getAbundance(index);
             size += seqAbund;
             phylo.addSeqToTree(tax[index], seqAbund);
         }
 
         TaxNode currentNode = phylo.getRoot();
 
-        while (!isZero(currentNode.total)) {
+        while (!isZero(static_cast<float>(currentNode.total))) {
 
             TaxNode bestChild;
             int bestChildSize = 0;
@@ -229,10 +228,9 @@ string BinTable::classifyBin(const int binId,
             //phylotree adds an extra unknown so we want to remove that
             if (bestChild.name == "unknown") { bestChildSize--; }
 
-            int consensusConfidence = ceil((bestChildSize /
-                                           (float) size) * 100);
+            int consensusConfidence = ceil((static_cast<float>(bestChildSize) /size) * 100.0);
 
-            if (bestChild.name != "") {
+            if (!bestChild.name.empty()) {
                 binTax += bestChild.name + "(" + toString(consensusConfidence) + ");";
             }
             //move down a level
@@ -240,7 +238,7 @@ string BinTable::classifyBin(const int binId,
         }
     }
 
-    if (binTax == "") {  binTax = "unknown;";  }
+    if (binTax.empty()) {  binTax = "unknown;";  }
 
     return binTax;
 }
@@ -252,7 +250,7 @@ Rcpp::List BinTable::exportBinTable(AbundTable& count) {
     Rcpp::DataFrame binData = Rcpp::DataFrame::create();
     vector<string> binDataLabels;
 
-    vector<int> binIndexes = getIndexes(binNames);
+    const vector<int> binIndexes = getIndexes(binNames);
 
     // ids, bin_names, bin_abundance, bin_taxonomy, trash_codes, binTable
     binData.push_back(binIndexes);
@@ -280,7 +278,7 @@ Rcpp::List BinTable::exportBinTable(AbundTable& count) {
     resultLabels.push_back("bin_data");
 
     // bin_id, seq_id
-    Rcpp::DataFrame binSeqAssignments = Rcpp::DataFrame::create(
+    const Rcpp::DataFrame binSeqAssignments = Rcpp::DataFrame::create(
         Rcpp::Named("bin_ids") = getValues(seqBins),
         Rcpp::_["sequence_ids"] = getKeys(seqBins));
     results.push_back(binSeqAssignments);
@@ -288,7 +286,7 @@ Rcpp::List BinTable::exportBinTable(AbundTable& count) {
 
 
     if (hasBinReps) {
-        Rcpp::DataFrame binSeqReps = Rcpp::DataFrame::create(
+        const Rcpp::DataFrame binSeqReps = Rcpp::DataFrame::create(
             Rcpp::Named("bin_ids") = binIndexes,
             Rcpp::_["sequence_ids"] = repSequences);
         results.push_back(binSeqReps);
@@ -299,14 +297,14 @@ Rcpp::List BinTable::exportBinTable(AbundTable& count) {
     return results;
 }
 /******************************************************************************/
-const vector<int> BinTable::getGoodIndexes(AbundTable& count) {
+vector<int> BinTable::getGoodIndexes(const AbundTable& count) const {
 
-    vector<string> ids = getIds(count);
+    const vector<string> ids = getIds(count);
 
     vector<int> indexes(ids.size(), -1);
 
     for (int i = 0; i < ids.size(); i++) {
-        indexes[i] = binIndex[ids[i]];
+        indexes[i] = binIndex.at(ids[i]);
     }
     return indexes;
 }
@@ -372,8 +370,8 @@ const Rcpp::DataFrame BinTable::getList(const vector<string>& seqNames){
 }
 /******************************************************************************/
 // names of OTUs
-const vector<string> BinTable::getIds(AbundTable& count,
-                                      vector<string> samples, bool distinct){
+vector<string> BinTable::getIds(const AbundTable& count,
+                                const vector<string>& samples, const bool distinct) const {
 
     vector<string> results;
 
@@ -384,7 +382,7 @@ const vector<string> BinTable::getIds(AbundTable& count,
         // index of sample we are looking for
         vector<int> sampleIndexes(samples.size(), -1);
         if (distinct) {
-            vector<string> sampleNames = count.getSamples();
+            const vector<string> sampleNames = count.getSamples();
             int next = 0;
             for (int i = 0; i < sampleNames.size(); i++) {
                 // is this sample in the samples requested
@@ -396,9 +394,9 @@ const vector<string> BinTable::getIds(AbundTable& count,
         }
 
         // for every bin
-        for (int i = 0; i < binNames.size(); i++) {
+        for (const auto & binName : binNames) {
 
-            auto it = binIndex.find(binNames[i]);
+            auto it = binIndex.find(binName);
 
             if (it != binIndex.end()) {
 
@@ -406,7 +404,7 @@ const vector<string> BinTable::getIds(AbundTable& count,
                 if (tableBins[it->second]) {
 
                     int numSamplesFound = 0;
-                    for (string sample : samples) {
+                    for (const string& sample : samples) {
                         vector<string> s; s.push_back(sample);
                         if (getAbundance(count, it->second, s) != 0) {
                             numSamplesFound++;
@@ -418,18 +416,18 @@ const vector<string> BinTable::getIds(AbundTable& count,
                         const vector<float> sampleAbunds = getAbundances(count, it->second);
 
                         float theseSamples = 0;
-                        for (int index : sampleIndexes) {
+                        for (const int& index : sampleIndexes) {
                             theseSamples += sampleAbunds[index];
                         }
                         // if all the sequences come from this sample, save name
                         if (isEqual(sum(sampleAbunds), theseSamples) &&
                                     (numSamplesFound == samples.size())) {
-                            results.push_back(binNames[i]);
+                            results.push_back(binName);
                         }
                     }else {
                         // all samples requested are present
                         if (numSamplesFound == samples.size()) {
-                            results.push_back(binNames[i]);
+                            results.push_back(binName);
                         }
                     }
                 }
@@ -441,17 +439,17 @@ const vector<string> BinTable::getIds(AbundTable& count,
 }
 /******************************************************************************/
 // 3 column dataframe - bin_id, abundance, sample
-const Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>& seqNames,
-                                                 const vector<string>& seqs) {
+Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>& seqNames,
+                                                 const vector<string>& seqs) const {
 
     if (hasBinReps) {
 
         vector<string> ids, seqids, seqDNA;
-        for (int i = 0; i < binNames.size(); i++) {
+        for (size_t i = 0; i < binNames.size(); i++) {
 
             // if this is a "good" bin
             if (tableBins[i]) {
-                int repSeq = repSequences[i];
+                const int repSeq = repSequences[i];
 
                 ids.push_back(binNames[i]);
                 if (repSeq != -1) {
@@ -464,7 +462,7 @@ const Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>&
             }
         }
 
-        string tag = label + "_names";
+        const string tag = label + "_names";
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named(tag.c_str()) = ids,
             Rcpp::_["representative_names"] = seqids,
@@ -478,7 +476,7 @@ const Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>&
 
 /******************************************************************************/
 vector<string> BinTable::getTaxonomies(const vector<string>& tax,
-                                       AbundTable& count) {
+                                       const AbundTable& count) {
     if (runClassify) {
         classify(tax, count);
     }
@@ -490,9 +488,9 @@ vector<string> BinTable::getTaxonomies(const vector<string>& tax,
     return nullVector;
 }
 /******************************************************************************/
-const Rcpp::DataFrame BinTable::getRAbund(AbundTable& count) {
+Rcpp::DataFrame BinTable::getRAbund(const AbundTable& count) const {
     if (getNumBins(count)!= 0) {
-        string tag = label + "_id";
+        const string tag = label + "_id";
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named(tag) = select(binNames, tableBins),
             Rcpp::_["abundance"] = getAbundances(count)
@@ -505,18 +503,18 @@ const Rcpp::DataFrame BinTable::getRAbund(AbundTable& count) {
 }
 /******************************************************************************/
 // vector of total abundances for each outID
-const vector<float> BinTable::getRAbundVector(AbundTable& count){
+vector<float> BinTable::getRAbundVector(const AbundTable& count) const{
     return getAbundances(count);
 }
 /******************************************************************************/
-const Rcpp::DataFrame BinTable::getShared(AbundTable& count) {
+Rcpp::DataFrame BinTable::getShared(const AbundTable& count) const {
     if ((getNumBins(count) != 0) && (count.getNumSamples() != 0)) {
 
-        vector<string> ids = getIds(count);
+        const vector<string> ids = getIds(count);
         vector<int> indexes(ids.size(), -1);
 
-        for (int i = 0; i < ids.size(); i++) {
-            indexes[i] = binIndex[ids[i]];
+        for (size_t i = 0; i < ids.size(); i++) {
+            indexes[i] = binIndex.at(ids[i]);
         }
         Rcpp::DataFrame df = getAbundanceTable(count);
         return df;
@@ -526,13 +524,13 @@ const Rcpp::DataFrame BinTable::getShared(AbundTable& count) {
 }
 /******************************************************************************/
 // abundances for each OTU broken down by sample
-const vector<vector<float> > BinTable::getSharedVector(AbundTable& count){
+vector<vector<float>> BinTable::getSharedVector(const AbundTable& count) const {
 
-    vector<int> goodBins = getGoodIndexes(count);
+    const vector<int> goodBins = getGoodIndexes(count);
 
-    vector<vector<float> > bins(goodBins.size());
+    vector<vector<float>> bins(goodBins.size());
 
-    for (int i = 0; i < goodBins.size(); i++) {
+    for (size_t i = 0; i < goodBins.size(); i++) {
         bins[i] = getAbundances(count, goodBins[i]);
     }
 
@@ -540,11 +538,11 @@ const vector<vector<float> > BinTable::getSharedVector(AbundTable& count){
 }
 /******************************************************************************/
 // total abundance for a given binID, optional sample
-const float BinTable::getAbundance(AbundTable& count,
-                                   const string binId,
-                                   vector<string> samples){
+float BinTable::getAbundance(const AbundTable& count,
+                                   const string& binId,
+                                   const vector<string>& samples) const {
 
-    auto it = binIndex.find(binId);
+    const auto it = binIndex.find(binId);
 
     if (it != binIndex.end()) {
         return getAbundance(count, it->second, samples);
@@ -554,13 +552,13 @@ const float BinTable::getAbundance(AbundTable& count,
 }
 /******************************************************************************/
 // total abundance for a given binID, optional sample
-const float BinTable::getAbundance(AbundTable& count,
+float BinTable::getAbundance(const AbundTable& count,
                                    const int binId,
-                                   vector<string> samples){
+                                   const vector<string>& samples) const {
     // if this is a "good" bin
     if (tableBins[binId]) {
 
-        set<int> seqsInBin = binList[binId];
+        const set<int> seqsInBin = binList[binId];
         float binAbund = 0;
 
         // for each seq in bin
@@ -577,7 +575,7 @@ const float BinTable::getAbundance(AbundTable& count,
 }
 /******************************************************************************/
 // total abundance for each bin
-const vector<float> BinTable::getAbundances(AbundTable& count, bool onlyGood) {
+vector<float> BinTable::getAbundances(const AbundTable& count, const bool onlyGood) const {
 
     vector<string> namesToInclude;
 
@@ -590,13 +588,13 @@ const vector<float> BinTable::getAbundances(AbundTable& count, bool onlyGood) {
     vector<float> abunds(namesToInclude.size(), 0);
 
     // for each bin
-    for (int i = 0; i < namesToInclude.size(); i++) {
+    for (size_t i = 0; i < namesToInclude.size(); i++) {
 
-        int index = binIndex[namesToInclude[i]];
+        const int index = binIndex.at(namesToInclude[i]);
         set<int> seqsInBin = binList[index];
 
         // for each seq in bin
-        for (int seq : seqsInBin) {
+        for (const int& seq : seqsInBin) {
             // add seq abunds to abunds[i]
             abunds[i] += count.getAbundance(seq);
         }
@@ -605,9 +603,9 @@ const vector<float> BinTable::getAbundances(AbundTable& count, bool onlyGood) {
 }
 /******************************************************************************/
 // abundances for given binID broken down by sample
-const vector<float> BinTable::getAbundances(AbundTable& count,
-                                            const string binName){
-    auto it = binIndex.find(binName);
+vector<float> BinTable::getAbundances(const AbundTable& count,
+                                            const string& binName) const{
+    const auto it = binIndex.find(binName);
     if (it != binIndex.end()) {
         return getAbundances(count, it->second);
     }
@@ -615,17 +613,17 @@ const vector<float> BinTable::getAbundances(AbundTable& count,
 }
 /******************************************************************************/
 // abundances for given binID broken down by sample
-const vector<float> BinTable::getAbundances(AbundTable& count,
-                                            const int binId){
+vector<float> BinTable::getAbundances(const AbundTable& count,
+                                            const int binId) const {
     // if this is a "good" bin
     if (tableBins[binId]) {
 
         vector<float> abundances(count.getNumSamples(), 0);
 
-        set<int> seqsInBin = binList[binId];
+        const set<int> seqsInBin = binList[binId];
 
         // for each seq in bin
-        for (int seq : seqsInBin) {
+        for (const int& seq : seqsInBin) {
 
             // get seq abunds
             vector<float> seqAbunds = count.getAbundances(seq);
@@ -640,14 +638,14 @@ const vector<float> BinTable::getAbundances(AbundTable& count,
     return nullFloatVector;
 }
 /******************************************************************************/
-const Rcpp::DataFrame BinTable::getAbundanceTable(AbundTable& count,
-                                                  const bool useNames) {
+Rcpp::DataFrame BinTable::getAbundanceTable(const AbundTable& count,
+                                                  const bool useNames) const {
 
     if (count.hasSamplesData()) {
 
-        bool hasTreatments = (count.getNumTreatments() != 0);
-        vector<string> allSamples = count.getSamples();
-        map<string, string> treatmentAssignments = count.getSampleTreatmentAssignments();
+        const bool hasTreatments = (count.getNumTreatments() != 0);
+        const vector<string> allSamples = count.getSamples();
+        const map<string, string> treatmentAssignments = count.getSampleTreatmentAssignments();
 
         vector<string> ids;
         vector<int> ids_index;
@@ -655,16 +653,16 @@ const Rcpp::DataFrame BinTable::getAbundanceTable(AbundTable& count,
         vector<string> samples;
         vector<string> treaments;
 
-        vector<int> binIds = getGoodIndexes(count);
+        const vector<int> binIds = getGoodIndexes(count);
 
         // for each bin index
         for (int index : binIds) {
             string name = binNames[index];
 
             // binAbundances parsed by sample
-            vector<float> binAbunds = getAbundances(count, index);
+            const vector<float> binAbunds = getAbundances(count, index);
 
-            for (int i = 0; i < binAbunds.size(); i++) {
+            for (size_t i = 0; i < binAbunds.size(); i++) {
                 // nonzero sample
                 if (binAbunds[i] != 0) {
                     if (useNames) {
@@ -675,7 +673,7 @@ const Rcpp::DataFrame BinTable::getAbundanceTable(AbundTable& count,
                     abunds.push_back(binAbunds[i]);
                     samples.push_back(allSamples[i]);
                     if (hasTreatments) {
-                        treaments.push_back(treatmentAssignments[allSamples[i]]);
+                        treaments.push_back(treatmentAssignments.at(allSamples[i]));
                     }
                 }
             }
@@ -733,21 +731,21 @@ const Rcpp::DataFrame BinTable::getAbundanceTable(AbundTable& count,
     return empty;
 }
 /******************************************************************************/
-const int BinTable::getNumBins(AbundTable& count, vector<string> samples,
-                               bool distinct) {
+int BinTable::getNumBins(const AbundTable& count, const vector<string>& samples,
+                               const bool distinct) const {
     if (!samples.empty()) {
-        return getIds(count, samples, distinct).size();
+        return static_cast<int>(getIds(count, samples, distinct).size());
     }
 
     // all "good" bins
     return accumulate(tableBins.begin(), tableBins.end(), 0);
 }
 /******************************************************************************/
-const vector<int> BinTable::getIndexes(vector<string>& binIDS) {
+vector<int> BinTable::getIndexes(vector<string>& binIDS) const {
 
     bool done = false;
     int firstGoodIndex = 0;
-    map<string, int>::iterator it;
+    map<string, int>::const_iterator it;
     vector<string> validOtuIds;
 
     while (!done) {
@@ -784,42 +782,44 @@ const vector<int> BinTable::getIndexes(vector<string>& binIDS) {
 }
 /******************************************************************************/
 // id, trashCode
-const Rcpp::DataFrame BinTable::getScrapReport() {
+Rcpp::DataFrame BinTable::getScrapReport() {
 
-    if (badAccnos.size() != 0) {
-        vector<string> badNames(uniqueBad, "");
-        vector<string> badCodes(uniqueBad, "");
-
-        int next = 0;
-        for (int i = 0; i < trashCodes.size(); i++) {
-            if (trashCodes[i] != "") {
-                badNames[next] = binNames[i];
-                if (trashCodes[i][trashCodes[i].length()-1] == ',') {
-                    // remove last comma
-                    trashCodes[i].pop_back();
-                }
-                badCodes[next] = trashCodes[i];
-                next++;
-            }
-        }
-
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("id") = badNames,
-            Rcpp::_["trash_code"] = badCodes);
-        return df;
+    if (badAccnos.empty()) {
+        Rcpp::DataFrame empty = Rcpp::DataFrame::create();
+        return empty;
     }
 
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    const auto vectorSize = static_cast<size_t>(uniqueBad);
+    vector<string> badNames(vectorSize, "");
+    vector<string> badCodes(vectorSize, "");
+
+    int next = 0;
+    for (size_t i = 0; i < trashCodes.size(); i++) {
+        if (!trashCodes[i].empty()) {
+            badNames[next] = binNames[i];
+            if (trashCodes[i][trashCodes[i].length()-1] == ',') {
+                // remove last comma
+                trashCodes[i].pop_back();
+            }
+            badCodes[next] = trashCodes[i];
+            next++;
+        }
+    }
+
+    Rcpp::DataFrame df = Rcpp::DataFrame::create(
+        Rcpp::Named("id") = badNames,
+        Rcpp::_["trash_code"] = badCodes);
+    return df;
+
 }
 /******************************************************************************/
 // type, trashCode, binCount, abundanceCount
-const Rcpp::DataFrame BinTable::getScrapSummary() {
+Rcpp::DataFrame BinTable::getScrapSummary() const {
 
     vector<string> types, codes;
     vector<float> uniqueCounts, totalCounts;
 
-    if (badAccnos.size() != 0) {
+    if (!badAccnos.empty()) {
         types.resize(badAccnos.size());
         codes.resize(badAccnos.size());
         uniqueCounts.resize(badAccnos.size());
@@ -846,7 +846,7 @@ const Rcpp::DataFrame BinTable::getScrapSummary() {
     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
-const bool BinTable::okToMerge(const vector<int>& seqIds) {
+bool BinTable::okToMerge(const vector<int>& seqIds) const {
 
         int binNumber = -1;
         auto it = seqBins.find(seqIds[0]);
@@ -867,15 +867,15 @@ const bool BinTable::okToMerge(const vector<int>& seqIds) {
     return true;
 }
 /******************************************************************************/
-void BinTable::merge(vector<string> binIDS, const string reason){
+void BinTable::merge(vector<string> binIDS, const string& reason){
     if (binIDS.size() != 1) {
 
-        vector<int> indexes = getIndexes(binIDS);
+        const vector<int> indexes = getIndexes(binIDS);
 
-        for (int i = 1; i < indexes.size(); i++) {
+        for (size_t i = 1; i < indexes.size(); i++) {
 
             // no need to update the sample and treatment counts
-            vector<int> seqIds = remove(binIDS[i], reason);
+            const vector<int> seqIds = remove(binIDS[i], reason);
 
             // set each seqs bin assignment
             for (int seq : seqIds) {
@@ -888,39 +888,39 @@ void BinTable::merge(vector<string> binIDS, const string reason){
     }
 }
 /******************************************************************************/
-void BinTable::removeSeq(const int seqId, const string reason) {
+void BinTable::removeSeq(const int seqId, const string& reason) {
 
     // if seqs were assigned to otus
     runClassify = true;
 
     // remove from otu
-    auto it = seqBins.find(seqId);
+    const auto it = seqBins.find(seqId);
 
     if (it != seqBins.end()) {
 
-        int index = it->second;
+        const int index = it->second;
 
         // does removing the seq remove a bin
         binList[index].erase(seqId);
 
         // remove bin, if empty
-        if (binList[index].size() == 0) {
+        if (binList[index].empty()) {
             remove(index, reason);
         }
     }
 
     if (hasBinReps) {
-        auto it = std::find(repSequences.begin(), repSequences.end(), seqId);
-        if (it != repSequences.end()) {
-            *it = -1;
+        const auto itTwo = std::find(repSequences.begin(), repSequences.end(), seqId);
+        if (itTwo != repSequences.end()) {
+            *itTwo = -1;
         }
     }
 }
 /******************************************************************************/
 // remove given outID, returns seqs removed
-vector<int> BinTable::remove(string binID, string reason){
+vector<int> BinTable::remove(const string& binID, const string& reason){
 
-    auto it = binIndex.find(binID);
+    const auto it = binIndex.find(binID);
 
     // bin is not in dataset
     if (it == binIndex.end()) {
@@ -934,13 +934,13 @@ vector<int> BinTable::remove(string binID, string reason){
 }
 /******************************************************************************/
 // remove given outID, returns seqs removed
-vector<int> BinTable::remove(int index, string reason){
+vector<int> BinTable::remove(const int index, const string& reason){
 
     // remove from tableBins and add trashCode
     tableBins[index] = false;
     trashCodes[index] += reason;
 
-    auto itBad = badAccnos.find(reason);
+    const auto itBad = badAccnos.find(reason);
 
     if (itBad != badAccnos.end()) {
         // update counts of trashCode

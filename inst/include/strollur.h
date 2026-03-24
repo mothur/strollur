@@ -331,7 +331,7 @@ class BinTable {
 public:
 
     BinTable();
-    BinTable(const string label);
+    BinTable(string label);
     BinTable(const BinTable& binTable);
     ~BinTable();
 
@@ -341,7 +341,7 @@ public:
     // ids, seqids
     double assignBins(AbundTable& count, vector<string> ids,
                            const vector<int>& seqIds);
-    double assignRepresentativeSequences(const vector<string>& binNames,
+    double assignRepresentativeSequences(const vector<string>& binNamesVector,
                                             const vector<int>& repNames);
 
     double assignTaxonomy(const vector<string>& ids,
@@ -354,41 +354,41 @@ public:
     Rcpp::List exportBinTable(AbundTable& count);
 
     // names of bins
-    const vector<string> getIds(AbundTable& count,
-                                vector<string> sample = nullVector,
-                                bool distinct = false);
+    vector<string> getIds(const AbundTable& count,
+                                const vector<string>& sample = nullVector,
+                                bool distinct = false) const;
     const vector<string> getListVector(const vector<string>& seqNames);
     // 2 column dataframe - bin_id, seq_id
     const Rcpp::DataFrame getList(const vector<string>& seqNames);
 
-    const int getNumBins(AbundTable& count,
-                         vector<string> samples = nullVector,
-                         bool distinct = false);
+    int getNumBins(const AbundTable& count,
+                         const vector<string>& samples = nullVector,
+                         bool distinct = false) const;
     // 2 column dataframe - bin_id, abundance
-    const Rcpp::DataFrame getRAbund(AbundTable& count);
+    Rcpp::DataFrame getRAbund(const AbundTable& count) const;
     // vector of total abundances for each binId
-    const vector<float> getRAbundVector(AbundTable& count);
+    vector<float> getRAbundVector(const AbundTable& count) const;
     // 3 column dataframe - bin_id, abundance, sample
-    const Rcpp::DataFrame getRepresentativeSequences(const vector<string>& seqNames,
-                                                     const vector<string>& seqs);
-    const Rcpp::DataFrame getScrapReport();
+    Rcpp::DataFrame getRepresentativeSequences(const vector<string>& seqNames,
+                                                const vector<string>& seqs) const;
+    Rcpp::DataFrame getScrapReport();
     // type, trashCode, binCount, abundanceCount
-    const Rcpp::DataFrame getScrapSummary();
+    Rcpp::DataFrame getScrapSummary() const;
 
-    const Rcpp::DataFrame getShared(AbundTable& count);
+    Rcpp::DataFrame getShared(const AbundTable& count) const;
     // abundances for each bin broken down by sample
-    const vector<vector<float> > getSharedVector(AbundTable& count);
+    vector<vector<float>> getSharedVector(const AbundTable& count) const;
     // classifications of bins
     vector<string> getTaxonomies(const vector<string>& tax,
-                                 AbundTable& count);
+                                 const AbundTable& count);
 
-    void merge(vector<string> binIds, string reason = "merged");
+    void merge(vector<string> binIds, const string& reason = "merged");
     // returns false if seqs are in different bins
-    const bool okToMerge(const vector<int>& seqIds);
+    bool okToMerge(const vector<int>& seqIds) const;
 
     // remove given binId, return seqs removed
-    vector<int> remove(const string binId, const string reason);
-    void removeSeq(const int seqId, const string reason);
+    vector<int> remove(const string& binId, const string& reason);
+    void removeSeq(const int seqId, const string& reason);
 
 private:
 
@@ -420,38 +420,38 @@ private:
     double uniqueBad;
 
     void classify(const vector<string>& taxs,
-                  AbundTable& count);
+                  const AbundTable& count);
     string classifyBin(const int binIndex,
                        const vector<string>& tax,
-                       AbundTable& count);
+                       const AbundTable& count) const;
 
     // string containing seqs in bin, comma separated
     const string get(const string binName, const vector<string>& seqNames);
     // total abundance for a given bin
-    const float getAbundance(AbundTable& count,
-                             const string binName,
-                             vector<string> samples = nullVector);
+    float getAbundance(const AbundTable& count,
+                             const string& binName,
+                             const vector<string>& samples = nullVector) const;
     // total abundance for a given bin
-    const float getAbundance(AbundTable& count,
+    float getAbundance(const AbundTable& count,
                              const int binId,
-                             vector<string> samples = nullVector);
+                             const vector<string>& samples = nullVector) const;
     // abundances for given binId broken down by sample
-    const vector<float> getAbundances(AbundTable& count, const string binName);
+    vector<float> getAbundances(const AbundTable& count, const string& binName) const;
     // abundances for given binId broken down by sample
-    const vector<float> getAbundances(AbundTable& count, const int binId);
+    vector<float> getAbundances(const AbundTable& count, const int binId) const;
     // total abundance for each bin
-    const vector<float> getAbundances(AbundTable& count, bool onlyGood = true);
+    vector<float> getAbundances(const AbundTable& count, bool onlyGood = true) const;
     // 2, 3 or 4 columns: id, abundance, sample (optional -
     //                                   added when table includes sample data),
     //                                   treatment (optional -
     //                                   added when table includes treatment data),
     // used to export BinTable and Shared functions
-    const Rcpp::DataFrame getAbundanceTable(AbundTable& count,
-                                            const bool useNames = true);
+    Rcpp::DataFrame getAbundanceTable(const AbundTable& count,
+                                            const bool useNames = true) const;
 
-    const vector<int> getGoodIndexes(AbundTable& count);
-    const vector<int> getIndexes(vector<string>&);
-    vector<int> remove(const int binId, const string reason);
+    vector<int> getGoodIndexes(const AbundTable& count) const;
+    vector<int> getIndexes(vector<string>&) const;
+    vector<int> remove(const int binId, const string& reason);
 
     friend class cereal::access; // Grants Cereal access
 
