@@ -152,12 +152,12 @@ Rcpp::DataFrame Report::summarizeReport(set<string> datasetNames,
 
         for (auto it = intColumns.begin(); it != intColumns.end(); it++) {
             report.push_back(it->second);
-            reportNames.push_back(columnNames[it->first]);
+            reportNames.push_back(columnNames.at(it->first));
         }
 
         for (auto it = numColumns.begin(); it != numColumns.end(); it++) {
             report.push_back(it->second);
-            reportNames.push_back(columnNames[it->first]);
+            reportNames.push_back(columnNames.at(it->first));
         }
 
         results = summary->summarize(report, counts, reportNames);
@@ -187,7 +187,7 @@ void Report::pruneReport(set<string> datasetNames) {
 
         vector<string> reportSequenceNames = strColumns[sequence_name_col];
 
-        for (int i = 0; i < reportSequenceNames.size(); i++) {
+        for (size_t i = 0; i < reportSequenceNames.size(); i++) {
             // if the name is in the dataset, set filter pos to true
             if (datasetNames.count(reportSequenceNames[i]) != 0) {
                 filter[i] = true;
@@ -195,9 +195,9 @@ void Report::pruneReport(set<string> datasetNames) {
         }
 
         // sanity check
-        int trueCount = count(filter.begin(), filter.end(), true);
+        const int trueCount = count(filter.begin(), filter.end(), true);
 
-        if (trueCount < datasetNames.size()) {
+        if (trueCount < static_cast<int>(datasetNames.size())) {
             // error, report is missing names. This can happen if you add sequences
             // after adding a report
             string message = "Your dataset contains more sequences than your report";

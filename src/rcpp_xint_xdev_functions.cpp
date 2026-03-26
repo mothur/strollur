@@ -120,7 +120,7 @@ double xdev_add_references(Rcpp::Environment data,
     }
 
     vector<Reference> refs;
-    for (int i = 0; i < reference_names.size(); i++) {
+    for (size_t i = 0; i < reference_names.size(); i++) {
 
         Reference ref(reference_names[i]);
         if (hasVersions) {

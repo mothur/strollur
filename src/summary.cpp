@@ -16,17 +16,17 @@ Summary::Summary(int p) {
     numUniques = 0;
 }
 //**************************************************************************
-vector<double> Summary::getDefaults() {
+vector<double> Summary::getDefaults() const {
         vector<double> locations;
 
         //number of sequences at 2.5%
-        double ptile0_25	= 1+(total * 0.025);
+        const double ptile0_25	= 1+(total * 0.025);
         //number of sequences at 25%
-        double ptile25		= 1+(total * 0.250);
-        double ptile50		= 1+(total * 0.500);
-        double ptile75		= 1+(total * 0.750);
-        double ptile97_5	    = 1+(total * 0.975);
-        double ptile100	    = (total);
+        const double ptile25		= 1+(total * 0.250);
+        const double ptile50		= 1+(total * 0.500);
+        const double ptile75		= 1+(total * 0.750);
+        const double ptile97_5	    = 1+(total * 0.975);
+        const double ptile100	    = (total);
 
         locations.push_back(1);
         locations.push_back(ptile0_25);
@@ -39,8 +39,8 @@ vector<double> Summary::getDefaults() {
         return locations;
 }
 //**************************************************************************
-vector<double> Summary::getValues(map<double, double>& positions) {
-        vector<double> defaults = getDefaults();
+vector<double> Summary::getValues(map<double, double>& positions) const {
+        const vector<double> defaults = getDefaults();
         vector<double> results; results.resize(7,0);
         double meanPosition; meanPosition = 0;
         double totalSoFar = 0;
@@ -89,7 +89,7 @@ vector<double> Summary::getValues(map<double, double>& positions) {
         // maximum
         results[6] = (positions.rbegin())->first;
 
-        double meansPosition = meanPosition / (double) total;
+        const double meansPosition = meanPosition / static_cast<double>(total);
 
         // mean
         results.push_back(meansPosition);
@@ -115,8 +115,8 @@ struct seqSumData {
         end = 0;
     }
     // fasta summary constructor
-    seqSumData(vector<vector<int>>& f, double st, double en, vector<float> nam,
-               vector<string> cn) {
+    seqSumData(const vector<vector<int>>& f, const double st, const double en, const vector<float>& nam,
+               const vector<string>& cn) {
         fastaReport = f;
         start = st;
         end = en;
@@ -125,8 +125,8 @@ struct seqSumData {
     }
 
     // contigs and align summary constructor
-    seqSumData(vector<vector<double>>& f, double st, double en,
-               vector<float> nam, vector<string> cn) {
+    seqSumData(const vector<vector<double>>& f, const double st, const double en,
+               const vector<float>& nam, const vector<string>& cn) {
         report = f;
         start = st;
         end = en;
@@ -139,8 +139,8 @@ Rcpp::DataFrame Summary::summarizeFasta(vector<vector<int>> report,
                                   vector<float> counts) {
         numUniques = counts.size();
         total = numUniques;
-        if (counts.size() != 0) {
-            float initial_sum = 0;
+        if (!counts.empty()) {
+            constexpr float initial_sum = 0;
             total = accumulate(counts.begin(), counts.end(), initial_sum);
         }else {
             counts.resize(numUniques, 1);
@@ -176,18 +176,18 @@ Rcpp::DataFrame Summary::summarizeFasta(vector<vector<int>> report,
 void driverSummarize(seqSumData* params) {
 
     // for each column in dataframe
-    for (int j = 0; j < params->columnNames.size(); j++) {
+    for (size_t j = 0; j < params->columnNames.size(); j++) {
 
         RcppThread::checkUserInterrupt();
 
         string col = params->columnNames[j];
 
         // for this processes section of the column
-        for (int i = params->start; i < params->end; i++) {
+        for (int i = static_cast<int>(params->start); i < static_cast<int>(params->end); i++) {
 
-            float num = params->counts[i];
+            const float num = params->counts[i];
 
-            int thisValue = params->fastaReport[j][i];
+            const int thisValue = params->fastaReport[j][i];
             auto it = params->results[col].find(thisValue);
             if (it == params->results[col].end()) {
                 params->results[col][thisValue] = num; }
@@ -196,11 +196,11 @@ void driverSummarize(seqSumData* params) {
     }
 }
 //**************************************************************************
-void Summary::createThreadsFasta(vector<vector<int>>& summary,
-                                 vector<float>& counts) {
+void Summary::createThreadsFasta(const vector<vector<int>>& summary,
+                                 const vector<float>& counts) {
          //divide reads between processors
          Utils util;
-        vector<pieceOfWork> startEndIndexes = util.divideWork(counts.size(),
+        const vector<pieceOfWork> startEndIndexes = util.divideWork(counts.size(),
                                                               processors);
 
         vector<RcppThread::Thread*> workerThreads;
@@ -235,7 +235,7 @@ void Summary::createThreadsFasta(vector<vector<int>>& summary,
             workerThreads[i]->join();
 
             // for each column in dataframe
-            for (int j = 0; j < names.size(); j++) {
+            for (size_t j = 0; j < names.size(); j++) {
 
                 // merge results for this processors section of the column
                 for (auto it = data[i]->results[names[j]].begin();
@@ -256,7 +256,7 @@ Rcpp::DataFrame Summary::summarize(Rcpp::DataFrame df, vector<float> counts,
                                    vector<string> dfNames) {
 
         numUniques = counts.size();
-        float initial_sum = 0;
+        constexpr float initial_sum = 0;
         total = accumulate(counts.begin(), counts.end(), initial_sum);
 
         // columns by rows
@@ -291,16 +291,16 @@ Rcpp::DataFrame Summary::summarize(Rcpp::DataFrame df, vector<float> counts,
 //**************************************************************************
 void driverReports(seqSumData* params) {
     // for each column in dataframe
-    for (int j = 0; j < params->columnNames.size(); j++) {
+    for (size_t j = 0; j < params->columnNames.size(); j++) {
 
         RcppThread::checkUserInterrupt();
 
         string col = params->columnNames[j];
 
         // for this processes section of the column
-        for (int i = params->start; i < params->end; i++) {
+        for (size_t i = params->start; i < params->end; i++) {
 
-            float num = params->counts[i];
+            const float num = params->counts[i];
 
             double thisValue = params->report[j][i];
             auto it = params->results[col].find(thisValue);
@@ -311,11 +311,11 @@ void driverReports(seqSumData* params) {
     }
 }
 //**************************************************************************
-void Summary::createThreadsReport(vector<vector<double>>& report,
-                                   vector<float>& counts, vector<string>& names) {
+void Summary::createThreadsReport(const vector<vector<double>>& report,
+                                   const vector<float>& counts, const vector<string>& names) {
          //divide reads between processors
          Utils util;
-        vector<pieceOfWork> startEndIndexes = util.divideWork(counts.size(),
+        const vector<pieceOfWork> startEndIndexes = util.divideWork(counts.size(),
                                                               processors);
 
         vector<RcppThread::Thread*> workerThreads;
@@ -346,7 +346,7 @@ void Summary::createThreadsReport(vector<vector<double>>& report,
             workerThreads[i]->join();
 
             // for each column in dataframe
-            for (int j = 0; j < names.size(); j++) {
+            for (size_t j = 0; j < names.size(); j++) {
 
                 // merge results for this processors section of the column
                 for (auto it = data[i]->results[names[j]].begin();

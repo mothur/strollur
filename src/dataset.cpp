@@ -501,7 +501,7 @@ double Dataset::assignSequenceTaxonomy(const vector<string>& n,
         taxonomies.resize(names.size(), "");
     }
 
-    for (int i = 0; i < n.size(); i++) {
+    for (size_t i = 0; i < n.size(); i++) {
 
         auto it = seqIndex.find(n[i]);
 
@@ -570,7 +570,7 @@ const Rcpp::DataFrame Dataset::fillTaxReport(const string& mode) {
     bool hasConfidences = true;
 
     // split taxonomy and confidences by level
-    for (int i = 0; i < taxes.size(); i++) {
+    for (size_t i = 0; i < taxes.size(); i++) {
         const int numLevels = split(taxes[i], ';',
                               back_inserter(taxons[i]));
 
@@ -627,10 +627,10 @@ const Rcpp::DataFrame Dataset::fillTaxReport(const string& mode) {
 /******************************************************************************/
 int Dataset::getAlignedLength() {
     set<int> seqLengths;
-    for (int i = 0; i < seqs.size(); i++) {
+    for (size_t i = 0; i < seqs.size(); i++) {
         // is this a "good" seq
         if (tableSeqs[i]) {
-            seqLengths.insert(seqs[i].length());
+            seqLengths.insert(static_cast<int>(seqs[i].length()));
         }
     }
 
@@ -685,7 +685,7 @@ Rcpp::DataFrame Dataset::getFastaReport() const {
 // returns indexes of "good" seqs in table
 vector<int> Dataset::getIncludedNamesIndexes() const {
     vector<int> included;
-    for (int i = 0; i < tableSeqs.size(); i++) {
+    for (int i = 0; i < static_cast<int>(tableSeqs.size()); i++) {
         if (tableSeqs[i]) {
             included.push_back(i);
         }
@@ -696,7 +696,7 @@ vector<int> Dataset::getIncludedNamesIndexes() const {
 vector<int> Dataset::getIndexes(const vector<string>& ids) const {
     vector<int> indexes(ids.size(), -1);
 
-    for (int i = 0; i < ids.size(); i++) {
+    for (size_t i = 0; i < ids.size(); i++) {
 
         auto it = seqIndex.find(ids[i]);
         if (it != seqIndex.end()) {
@@ -715,9 +715,9 @@ const Rcpp::DataFrame Dataset::getList(const string& type) {
     if (hasBinTable(type) && hasList) {
         return binTables[getBinTableIndex(type)].getList(names);
     }else if ((type == "asv") && (hasSequenceData)) {
-        vector<string> seqIds = getSequenceNames();
+        const vector<string> seqIds = getSequenceNames();
         vector<string> asvIds(seqIds.size(), "");
-        for (int i = 0; i < asvIds.size(); i++) {
+        for (int i = 0; i < static_cast<int>(asvIds.size()); i++) {
             asvIds[i] = "ASV" + toString(i+1);
         }
         assignBins(asvIds, nullFloatVector, nullVector, seqIds, "asv");
@@ -892,8 +892,8 @@ const vector<string> Dataset::getReportTypes() {
         }
     }
 
-    for (int i = 0; i < binTables.size(); i++) {
-        if (binTables[i].getScrapReport().size() != 0) {
+    for (auto & binTable : binTables) {
+        if (binTable.getScrapReport().size() != 0) {
             reportTypes.push_back("bin_scrap");
             break;
         }
@@ -965,13 +965,14 @@ const Rcpp::DataFrame Dataset::getSampleTreatmentAssignments() {
 const Rcpp::DataFrame Dataset::getScrapReport(string mode) {
 
     if (mode == "sequence") {
-        if (badAccnos.size() != 0) {
-            vector<string> badNames(uniqueBad, "");
-            vector<string> badCodes(uniqueBad, "");
+        if (!badAccnos.empty()) {
+            const auto uniqueBadSize = static_cast<size_t>(uniqueBad);
+            vector<string> badNames(uniqueBadSize, "");
+            vector<string> badCodes(uniqueBadSize, "");
 
             int next = 0;
-            for (int i = 0; i < trashCodes.size(); i++) {
-                if (trashCodes[i] != "") {
+            for (size_t i = 0; i < trashCodes.size(); i++) {
+                if (!trashCodes[i].empty()) {
                     badNames[next] = names[i];
                     // remove last comma
                     trashCodes[i].pop_back();
@@ -995,12 +996,12 @@ const Rcpp::DataFrame Dataset::getScrapReport(string mode) {
 }
 /******************************************************************************/
 // type, trashCode, uniqueCount, totalCount
-const Rcpp::DataFrame Dataset::getScrapSummary() {
+Rcpp::DataFrame Dataset::getScrapSummary() const {
 
     vector<string> types, codes;
     vector<float> uniqueCounts, totalCounts;
 
-    if (badAccnos.size() != 0) {
+    if (!badAccnos.empty()) {
         types.resize(badAccnos.size());
         codes.resize(badAccnos.size());
         uniqueCounts.resize(badAccnos.size());
@@ -1016,9 +1017,9 @@ const Rcpp::DataFrame Dataset::getScrapSummary() {
         }
     }
 
-    if (binTables.size() != 0) {
-        for (int i = 0; i < binTables.size(); i++) {
-            Rcpp::DataFrame df = binTables[i].getScrapSummary();
+    if (!binTables.empty()) {
+        for (const auto & binTable : binTables) {
+            Rcpp::DataFrame df = binTable.getScrapSummary();
             if (df.size() == 4) {
                 vector<string> b = Rcpp::as<vector<string>>(df[0]);
                 types.insert(types.end(), b.begin(), b.end());
@@ -1047,7 +1048,7 @@ const Rcpp::DataFrame Dataset::getScrapSummary() {
 }
 /******************************************************************************/
 // total abundance for each sequence
-const Rcpp::DataFrame Dataset::getSequenceAbundances(bool bySample){
+Rcpp::DataFrame Dataset::getSequenceAbundances(const bool bySample) const{
 
     if (!bySample) {
         vector<float> abunds = count.getTotalAbundances(getIncludedNamesIndexes());
@@ -1064,18 +1065,18 @@ const Rcpp::DataFrame Dataset::getSequenceAbundances(bool bySample){
                                     getIncludedNamesIndexes());
 }
 /******************************************************************************/
-const vector<vector<float> > Dataset::getSequenceAbundanceBySample(vector<string> samples) {
-    vector<int> ids = getIncludedNamesIndexes();
+vector<vector<float> > Dataset::getSequenceAbundanceBySample(const vector<string>& samples)  const {
+    const vector<int> ids = getIncludedNamesIndexes();
     return count.getAbundanceBySample(ids, samples);
 }
 /******************************************************************************/
-const Rcpp::DataFrame Dataset::getSequenceTable(string sample) {
+Rcpp::DataFrame Dataset::getSequenceTable(const string& sample) const {
 
     if (hasSequenceData) {
 
         vector<string> samples;
 
-        if(sample != "") {
+        if(!sample.empty()) {
             samples.push_back(sample);
         }
 
@@ -1090,11 +1091,11 @@ const Rcpp::DataFrame Dataset::getSequenceTable(string sample) {
     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
-const vector<string> Dataset::getSequences(string sample){
+vector<string> Dataset::getSequences(const string& sample) const {
     vector<string> included;
 
-    if (sample == "") {
-        for (int i = 0; i < tableSeqs.size(); i++) {
+    if (sample.empty()) {
+        for (size_t i = 0; i < tableSeqs.size(); i++) {
             if (tableSeqs[i]) {
                 included.push_back(seqs[i]);
             }
@@ -1102,7 +1103,7 @@ const vector<string> Dataset::getSequences(string sample){
     }else{
         if (count.hasSample(sample)) {
             // all seqs
-            for (int i = 0; i < tableSeqs.size(); i++) {
+            for (int i = 0; i < static_cast<int>(tableSeqs.size()); i++) {
                 // if "good" seq
                 if (tableSeqs[i]) {
                     // if this sequence is in sample
@@ -1117,23 +1118,23 @@ const vector<string> Dataset::getSequences(string sample){
     return included;
 }
 /******************************************************************************/
-const vector<vector<string> > Dataset::getSequencesBySample(vector<string> samples){
+vector<vector<string> > Dataset::getSequencesBySample(vector<string> samples) const{
     vector<vector<string> > result;
 
     // return all samples if none specified
-    if (samples.size() == 0) {
+    if (samples.empty()) {
         samples = getSamples();
     }
 
-    for (int i = 0; i < samples.size(); i++) {
-        result.push_back(getSequences(samples[i]));
+    for (const auto & sample : samples) {
+        result.push_back(getSequences(sample));
     }
 
     return result;
 }
 /******************************************************************************/
 // fasta summary data: starts, ends, lengths, ambigs, polymers, numns
-const Rcpp::DataFrame Dataset::getSequenceReport(){
+Rcpp::DataFrame Dataset::getSequenceReport() const {
 
     Rcpp::DataFrame df = Rcpp::DataFrame::create(
         Rcpp::Named("id") = select(names, tableSeqs),
@@ -1147,7 +1148,7 @@ const Rcpp::DataFrame Dataset::getSequenceReport(){
     return df;
 }
 /******************************************************************************/
-const Rcpp::DataFrame Dataset::getSummary(string type, string reportType) {
+const Rcpp::DataFrame Dataset::getSummary(const string& type, const string& reportType) {
 
     Rcpp::DataFrame result = Rcpp::DataFrame::create();
 
@@ -1194,11 +1195,11 @@ Rcpp::DataFrame Dataset::getSequenceTaxonomyReport() {
     return empty;
 }
 /******************************************************************************/
-const vector<string> Dataset::getTreatments(){
+vector<string> Dataset::getTreatments() const{
     return count.getTreatments();
 }
 /******************************************************************************/
-const double Dataset::getTotal(vector<string> samples){
+double Dataset::getTotal(const vector<string>& samples) const {
 
     if (samples.empty()) {
         return count.getTotal();
@@ -1208,7 +1209,7 @@ const double Dataset::getTotal(vector<string> samples){
            double seqTotal = 0;
 
            // all seqs
-           for (int i = 0; i < tableSeqs.size(); i++) {
+           for (int i = 0; i < static_cast<int>(tableSeqs.size()); i++) {
 
                // if "good" seq
                if (tableSeqs[i]) {
@@ -1228,7 +1229,7 @@ const double Dataset::getTotal(vector<string> samples){
     return 0;
 }
 /******************************************************************************/
-const Rcpp::DataFrame Dataset::getTotals(string type){
+Rcpp::DataFrame Dataset::getTotals(const string& type) const {
 
     vector<double> totals;
     vector<string> names;
@@ -1252,11 +1253,11 @@ const Rcpp::DataFrame Dataset::getTotals(string type){
     return empty;
 }
 /******************************************************************************/
-const double Dataset::getUniqueTotal(vector<string> samples){
+double Dataset::getUniqueTotal(const vector<string>& samples) const {
     if (samples.empty()) {
         return numUnique;
     }
-    return getSequenceNames(samples, true).size();
+    return static_cast<double>(getSequenceNames(samples, true).size());
 }
 /******************************************************************************/
 bool Dataset::hasBinTable(const string& type) const {
@@ -1274,57 +1275,54 @@ int Dataset::getBinTableIndex(const string& type) const {
     return -1;
 }
 /******************************************************************************/
-const bool Dataset::hasSample(string sample){
+bool Dataset::hasSample(const string& sample) const {
     return count.hasSample(sample);
 }
 /******************************************************************************/
-const bool Dataset::hasSamples(vector<string> samples) {
+bool Dataset::hasSamples(const vector<string>& samples) const {
 
-    int numFound = 0;
-    for (string sample : samples) {
+    size_t numFound = 0;
+    for (const string& sample : samples) {
         if (hasSample(sample)) {
             numFound++;
         }
     }
 
-    if (numFound == samples.size()) {
-        return true;
-    }
-    return false;
+    return numFound == samples.size();
 }
 /******************************************************************************/
-const bool Dataset::hasSeqs() {
-    if (seqs.size() == 0) {
+bool Dataset::hasSeqs() const {
+    if (seqs.empty()) {
         return false;
     }
 
     string id;
     if (allIdentical(seqs, id)) {
-        if (id == "") { return false; }
+        if (id.empty()) { return false; }
     }
     return true;
 }
 /******************************************************************************/
-void Dataset::mergeSequences(const vector<string>& ids, string reason){
+void Dataset::mergeSequences(const vector<string>& ids, const string& reason) {
     if (ids.size() != 1) {
 
-        vector<int> indexes = getIndexes(ids);
+        const vector<int> indexes = getIndexes(ids);
 
         // sanity check: if you have assigned bins, make sure the sequences
         // are in the same bin
-        if (binTables.size() != 0) {
+        if (!binTables.empty()) {
             // innocent until proven guilty
             vector<bool> okToMerge(binTables.size(), true);
 
             int tableIndex = 0;
             string message = "Can not merge sequences assigned";
             message += " to different bins.";
-            for (int i = 0; i < binTables.size(); i++) {
+            for (const auto& binTable : binTables) {
 
                 // if seqs were assigned to otus
-                if (!binTables[i].okToMerge(indexes)) {
+                if (!binTable.okToMerge(indexes)) {
                     okToMerge[tableIndex] = false;
-                    message += " The '" + binTables[i].label + "' bin table has";
+                    message += " The '" + binTable.label + "' bin table has";
                     message += " sequences assigned to different bins.";
                 }
                 tableIndex++;
@@ -1338,14 +1336,14 @@ void Dataset::mergeSequences(const vector<string>& ids, string reason){
 
         count.merge(indexes);
 
-        for (int i = 1; i < indexes.size(); i++) {
+        for (size_t i = 1; i < indexes.size(); i++) {
             // no need to update the sample and treatment counts
             removeSequence(indexes[i], reason, false, false);
         }
     }
 }
 /******************************************************************************/
-void Dataset::mergeBins(const vector<string>& ids, string reason, string type){
+void Dataset::mergeBins(const vector<string>& ids, const string& reason, const string& type) {
     if (ids.size() != 1) {
         if (hasBinTable(type)) {
             binTables[getBinTableIndex(type)].merge(ids, reason);
@@ -1353,9 +1351,9 @@ void Dataset::mergeBins(const vector<string>& ids, string reason, string type){
     }
 }
 /******************************************************************************/
-void Dataset::removeLineages(const vector<string>& contaminants, string trashTag) {
+void Dataset::removeLineages(const vector<string>& contaminants, const string& trashTag) {
     // if no sequence taxonomy or clusters
-    if (!hasSequenceTaxonomy && (binTables.size() == 0)) { return; }
+    if (!hasSequenceTaxonomy && (binTables.empty())) { return; }
 
     Utils util;
     vector<vector<string> > conTax(contaminants.size());
@@ -1363,7 +1361,7 @@ void Dataset::removeLineages(const vector<string>& contaminants, string trashTag
     vector<bool> conHasConfidences(contaminants.size(), false);
 
     // split contaminant taxonomies and confidences by level
-    for (int i = 0; i < contaminants.size(); i++) {
+    for (size_t i = 0; i < contaminants.size(); i++) {
 
         split(contaminants[i], ';', back_inserter(conTax[i]));
         conConfidenceThreshold[i] = util.removeConfidences(conTax[i]);
@@ -1378,12 +1376,12 @@ void Dataset::removeLineages(const vector<string>& contaminants, string trashTag
         // and reclassify bins (below)
 
         // remove seqs assigned to this taxonomy
-        for (int i = 0; i < taxonomies.size(); i++) {
+        for (int i = 0; i < static_cast<int>(taxonomies.size()); i++) {
 
             if (tableSeqs[i]) {
                 vector<string> userTax;
                 split(taxonomies[i], ';', back_inserter(userTax));
-                vector<int> userConfidences = util.removeConfidences(userTax);
+                const vector<int> userConfidences = util.removeConfidences(userTax);
 
                 // if this seq is a contaminant, remove it
                 if (util.searchTax(userTax, userConfidences,
@@ -1395,26 +1393,26 @@ void Dataset::removeLineages(const vector<string>& contaminants, string trashTag
         }
     }
 
-    for (int i = 0; i < binTables.size(); i++) {
+    for (auto & binTable : binTables) {
 
-        vector<string> binIds = binTables[i].getIds(count);
+        vector<string> binIds = binTable.getIds(count);
         vector<string> binTaxes;
 
         // if you have only have bin classifications, and no seq classifications
         if (!hasSequenceTaxonomy) {
-            if (binTables[i].hasBinTaxonomy) {
-                binTaxes = binTables[i].getTaxonomies(binTaxes, count);
+            if (binTable.hasBinTaxonomy) {
+                binTaxes = binTable.getTaxonomies(binTaxes, count);
             }
         }else{
-            binTaxes = binTables[i].getTaxonomies(taxonomies, count);
+            binTaxes = binTable.getTaxonomies(taxonomies, count);
         }
 
         // remove bins assigned to this taxonomy
-        for (int j = 0; j < binTaxes.size(); j++) {
+        for (size_t j = 0; j < binTaxes.size(); j++) {
 
             vector<string> userTax;
             split(binTaxes[j], ';', back_inserter(userTax));
-            vector<int> userConfidences = util.removeConfidences(userTax);
+            const vector<int> userConfidences = util.removeConfidences(userTax);
 
             // if this seq is a contaminant, remove it
             if (util.searchTax(userTax, userConfidences,
@@ -1423,7 +1421,7 @@ void Dataset::removeLineages(const vector<string>& contaminants, string trashTag
                 vector<string> binToRemove(1, binIds[j]);
                 vector<string> trashTags(1, trashTag);
 
-                removeBins(binToRemove, trashTags, binTables[i].label);
+                removeBins(binToRemove, trashTags, binTable.label);
             }
         }
     }
@@ -1432,9 +1430,9 @@ void Dataset::removeLineages(const vector<string>& contaminants, string trashTag
 }
 /******************************************************************************/
 void Dataset::removeBins(const vector<string>& namesToRemove,
-                         const vector<string>& trashTags, string type){
+                         const vector<string>& trashTags, const string& type) {
 
-    if (binTables.size() == 0) { return; }
+    if (binTables.empty()) { return; }
 
     if (hasBinTable(type)) {
 
@@ -1445,19 +1443,19 @@ void Dataset::removeBins(const vector<string>& namesToRemove,
             throw Rcpp::exception(message.c_str());
         }
 
-        for (int i = 0; i < namesToRemove.size(); i++) {
+        for (size_t i = 0; i < namesToRemove.size(); i++) {
             vector<int> seqsToRemove = binTables[getBinTableIndex(type)].remove(namesToRemove[i], trashTags[i]);
 
             // remove any sequences from removed bin
-            for (int seq : seqsToRemove) {
+            for (const int& seq : seqsToRemove) {
                 removeSequence(seq, trashTags[i], true, false);
             }
 
             // remove from other lists
-            for (int j = 0; j < binTables.size(); j++) {
-                if (binTables[j].label != type) {
-                    for (int seq : seqsToRemove) {
-                        binTables[j].removeSeq(seq, trashTags[i]);
+            for (auto & binTable : binTables) {
+                if (binTable.label != type) {
+                    for (const int& seq : seqsToRemove) {
+                        binTable.removeSeq(seq, trashTags[i]);
                     }
                 }
             }
@@ -1467,22 +1465,22 @@ void Dataset::removeBins(const vector<string>& namesToRemove,
     }
 }
 /******************************************************************************/
-void Dataset::removeSamples(const vector<string>& samples, string reason) {
+void Dataset::removeSamples(const vector<string>& samples, const string& reason) {
     AbundTable dupCount(count);
 
     dupCount.removeSamples(samples);
 
     // // remove samples from count
     // remove any seqs only assigned to these samples
-    for (int i = 0; i < names.size(); i++) {
+    for (int i = 0; i < static_cast<int>(names.size()); i++) {
         // included seq
         if (tableSeqs[i]) {
             if (sum(dupCount.getAbundances(i)) == 0) {
                 removeSequence(i, reason, true, false);
 
                 // remove from list otus
-                for (int j = 0; j < binTables.size(); j++) {
-                    binTables[j].removeSeq(i, reason);
+                for (auto & binTable : binTables) {
+                    binTable.removeSeq(i, reason);
                 }
             }
         }
@@ -1491,8 +1489,8 @@ void Dataset::removeSamples(const vector<string>& samples, string reason) {
     count.removeSamples(samples);
 }
 /******************************************************************************/
-void Dataset::removeSequence(const int index, const string reasons,
-                             bool update, bool removeFromBin) {
+void Dataset::removeSequence(const int index, const string& reasons,
+                             const bool update, const bool removeFromBin) {
     // remove from tableSeqs and add trashCode
     tableSeqs[index] = false;
     trashCodes[index] += reasons + ",";
@@ -1501,25 +1499,25 @@ void Dataset::removeSequence(const int index, const string reasons,
     // remove from counts
     int abund = 1;
     if (update) {
-        if ((binTables.size() != 0) && removeFromBin) {
+        if ((!binTables.empty()) && removeFromBin) {
 
             // remove from list otus
-            for (int i = 0; i < binTables.size(); i++) {
-               binTables[i].removeSeq(index, reasons);
+            for (auto & binTable : binTables) {
+               binTable.removeSeq(index, reasons);
             }
         }
 
         abund = count.remove(index);
     }else{
-        abund = count.getAbundance(index);
+        abund = static_cast<int>(count.getAbundance(index));
     }
 
     // add to badAccnos
     vector<string> theseReasons;
     split(reasons, ',', back_inserter(theseReasons));
 
-    for (int j = 0; j < theseReasons.size(); j++) {
-        auto itBad = badAccnos.find(theseReasons[j]);
+    for (const auto & theseReason : theseReasons) {
+        auto itBad = badAccnos.find(theseReason);
 
         if (itBad != badAccnos.end()) {
             // update counts of trashCode
@@ -1529,7 +1527,7 @@ void Dataset::removeSequence(const int index, const string reasons,
             // add new trashCode
             vector<double> badAbunds(2, 1);
             badAbunds[1] = abund;
-            badAccnos[theseReasons[j]] = badAbunds;
+            badAccnos[theseReason] = badAbunds;
         }
     }
 
@@ -1547,11 +1545,11 @@ void Dataset::removeSequences(const vector<string>& namesToRemove,
         throw Rcpp::exception(message.c_str());
     }
 
-    for (int i = 0; i < namesToRemove.size(); i++) {
+    for (size_t i = 0; i < namesToRemove.size(); i++) {
         auto it = seqIndex.find(namesToRemove[i]);
 
         if (it != seqIndex.end()) {
-            int index = it->second;
+            const int index = it->second;
 
             removeSequence(index, trashTags[i], true, true);
         }else{
@@ -1566,7 +1564,7 @@ void Dataset::removeSequences(const vector<string>& namesToRemove,
 /******************************************************************************/
 // for datasets without samples
 void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
-                            string reason){
+                            const string& reason){
 
     if (n.size() != abunds.size()) {
         string message = "Size mismatch. ids and sequences must be";
@@ -1575,11 +1573,11 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
         throw Rcpp::exception(message.c_str());
     }
 
-    for (int i = 0; i < n.size(); i++) {
+    for (size_t i = 0; i < n.size(); i++) {
         auto it = seqIndex.find(n[i]);
 
         if (it != seqIndex.end()) {
-            int index = it->second;
+            const int index = it->second;
 
             if (abunds[i] == 0) {
                 removeSequence(index, reason, true, true);
@@ -1600,7 +1598,7 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
 // for datasets with samples
 void Dataset::setAbundances(const vector<string>& n,
                             const vector<vector<float>>& abunds,
-                            string reason){
+                            const string& reason){
 
     if (n.size() != abunds.size()) {
         string message = "Size mismatch. ids and sequences must be";
@@ -1609,11 +1607,11 @@ void Dataset::setAbundances(const vector<string>& n,
         throw Rcpp::exception(message.c_str());
     }
 
-    for (int i = 0; i < n.size(); i++) {
+    for (size_t i = 0; i < n.size(); i++) {
         auto it = seqIndex.find(n[i]);
 
         if (it != seqIndex.end()) {
-            int index = it->second;
+            const int index = it->second;
 
             if (sum(abunds[i]) == 0) {
                 removeSequence(index, reason, true, true);
@@ -1641,7 +1639,7 @@ void Dataset::setSequences(const vector<string>& n, const vector<string>& s,
     }
 
     bool hasComments = false;
-    if (c.size() != 0) {
+    if (!c.empty()) {
         if (c.size() != n.size()) {
             string message = "Size mismatch. When providing comments,";
             message += " ids and comments must be the same size.";
@@ -1652,13 +1650,13 @@ void Dataset::setSequences(const vector<string>& n, const vector<string>& s,
 
     SeqReport report;
 
-    for (int i = 0; i < n.size(); i++) {
+    for (size_t i = 0; i < n.size(); i++) {
 
         auto it = seqIndex.find(n[i]);
 
         if (it != seqIndex.end()) {
 
-            int index = it->second;
+            const int index = it->second;
 
             // update sequence
             seqs[index] = s[i];

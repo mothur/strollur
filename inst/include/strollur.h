@@ -521,14 +521,14 @@ public:
                             const vector<string>& treatments);
 
 
-    const vector<vector<float> > getSequenceAbundanceBySample(const vector<string>& samples = nullVector) const;
+    vector<vector<float> > getSequenceAbundanceBySample(const vector<string>& samples = nullVector) const;
 
     // names of bins
     vector<string> getBinIds(const string& type = "otu",
                                    const vector<string>& samples = nullVector,
                                    bool distinct = false) const;
     // n columns: id, taxonomy split by level
-    Rcpp::DataFrame getBinTaxonomyReport(const string& type = "otu") const;
+    Rcpp::DataFrame getBinTaxonomyReport(const string& type = "otu");
     // 3 columns: bin_names, representative_names, representative_sequences
     Rcpp::DataFrame getBinRepresentativeSequences(const string& type = "otu") const;
     // 2 column dataframe - bin_id, seq_id
@@ -550,16 +550,16 @@ public:
     const Rcpp::DataFrame getReports(string type);
     const vector<string> getReportTypes();
     // sequence report: starts, ends, lengths, ambigs, polymers, numns
-    const Rcpp::DataFrame getSequenceReport();
+    Rcpp::DataFrame getSequenceReport() const;
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getSequenceTaxonomyReport();
     vector<string> getSamples() const;
     const Rcpp::DataFrame getSampleTreatmentAssignments();
     const Rcpp::DataFrame getScrapReport(string mode = "sequence");
     // type, trashCode, uniqueCount, totalCount
-    const Rcpp::DataFrame getScrapSummary();
+    Rcpp::DataFrame getScrapSummary() const;
     // total abundance for each sequence
-    const Rcpp::DataFrame getSequenceAbundances(bool bySample = false);
+    Rcpp::DataFrame getSequenceAbundances(bool bySample = false) const;
     const Rcpp::DataFrame getBinAbundances(string bin_type = "otu",
                                            bool bySample = false);
     vector<string> getSequenceNames(const vector<string>& sample = nullVector,
@@ -567,46 +567,46 @@ public:
     vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector) const;
 
 
-    const vector<string> getSequences(string sample = "");
+    vector<string> getSequences(const string& sample = "") const;
     // 2 columns: sequence names, sequence strings
-    const Rcpp::DataFrame getSequenceTable(string sample = "");
-    const vector<vector<string> > getSequencesBySample(const vector<string> samples);
+    Rcpp::DataFrame getSequenceTable(const string& sample = "") const;
+    vector<vector<string> > getSequencesBySample(vector<string> samples) const;
 
-    const Rcpp::DataFrame getSummary(string type = "sequences",
-                                     string reportType = "");
+    const Rcpp::DataFrame getSummary(const string& type = "sequences",
+                                     const string& reportType = "");
 
-    const double getTotal(vector<string> samples = nullVector);
-    const Rcpp::DataFrame getTotals(string type = "samples");
-    const vector<string> getTreatments();
-    const double getUniqueTotal(vector<string> samples = nullVector);
+    double getTotal(const vector<string>& samples = nullVector) const;
+    Rcpp::DataFrame getTotals(const string& type = "samples") const;
+    vector<string> getTreatments() const;
+    double getUniqueTotal(const vector<string>& samples = nullVector) const;
 
-    const bool hasSample(string sample);
-    const bool hasSamples(vector<string> samples = nullVector);
+    bool hasSample(const string& sample) const;
+    bool hasSamples(const vector<string>& samples = nullVector) const;
     bool hasListAssignments() const { return hasList; }
-    const bool hasSeqs();
+    bool hasSeqs() const;
 
-    void mergeBins(const vector<string>& binIDS, string reason = "merged",
-                   string type = "otu");
-    void mergeSequences(const vector<string>&, string reason = "merged");
+    void mergeBins(const vector<string>& binIDS, const string& reason = "merged",
+                   const string& type = "otu");
+    void mergeSequences(const vector<string>&, const string& reason = "merged");
 
     void removeBins(const vector<string>& binIDs,
                     const vector<string>& trashTags,
-                    string type = "otu");
+                    const string& type = "otu");
     void removeLineages(const vector<string>& taxonomies,
-                        string trashTag = "contaminant");
+                        const string& trashTag = "contaminant");
     void removeSamples(const vector<string>& samples,
-                       string reason = "remove_samples");
+                       const string& reason = "remove_samples");
     void removeSequences(const vector<string>& names,
                          const vector<string>& trashTags);
 
     // for datasets without samples
     void setAbundance(const vector<string>& names,
                       const vector<float>& abunds,
-                      string reason = "update");
+                      const string& reason = "update");
     // for datasets with samples
     void setAbundances(const vector<string>& names,
                        const vector<vector<float>>& abunds,
-                       string reason = "update");
+                       const string& reason = "update");
 
     // set sequence string and optionally comments
     void setSequences(const vector<string>& names,
@@ -658,7 +658,7 @@ private:
     vector<int> getIndexes(const vector<string>&) const;
     bool hasBinTable(const string& type) const;
     void removeSequence(const int index,
-                        const string reasons,
+                        const string& reasons,
                         bool update = true,
                         bool removeFromBin = true);
     const Rcpp::DataFrame fillTaxReport(const string& mode);
