@@ -69,7 +69,7 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
-    #' Get summary of sequence data
+    #' Get summary of `strollur` object
     print = function() {
       if (names(self, type = "dataset")[1] != "") {
         cat(names(self, type = "dataset")[1])
@@ -285,7 +285,6 @@ strollur <- R6Class("strollur",
     #'
     #' data$add(table = metadata, type = "metadata")
     #'
-    #' @return double - The number of items added
     add = function(table,
                 type = "sequences",
                 report_type = NULL,
