@@ -208,9 +208,7 @@ strollur <- R6Class("strollur",
     #'
     #' # To the total abundance for each treatment
     #' miseq$abundance(type = "treatments")
-    #'
-    #' @return data.frame
-    abundance <- function(type = "sequences",
+    abundance = function(type = "sequences",
                           bin_type = "otu",
                           by_sample = FALSE) {
       xdev_abundance(self, type, bin_type, by_sample)
