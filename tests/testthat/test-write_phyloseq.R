@@ -25,7 +25,8 @@ test_that("write phyloseq creates phyloseq object", {
   phyloseq_object <- read_phyloseq(dat)
   recreated_phylo_object <- write_phyloseq(phyloseq_object)
   expect_true(all(phyloseq::tax_table(dat) ==
-                    phyloseq::tax_table(recreated_phylo_object), na.rm = TRUE))
+                    phyloseq::tax_table(recreated_phylo_object),
+                  na.rm = TRUE))
   expect_true(all(phyloseq::otu_table(dat) ==
                     phyloseq::otu_table(recreated_phylo_object)))
   expect_true(all(phyloseq::sample_data(dat) ==

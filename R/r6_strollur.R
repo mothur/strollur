@@ -176,11 +176,11 @@ strollur <- R6Class("strollur",
     #' @param type, a string containing the type of data. Options include:
     #' 'sequences', 'references' 'metadata' and 'reports'.
     #'
-    #' @param report_type, a string containing the type of report you are adding.
-    #' Options include: 'metadata' and custom reports.
+    #' @param report_type, a string containing the type of report you are
+    #' adding. Options include: 'metadata' and custom reports.
     #'
-    #' @param table_names, named list used to indicate the names of the columns in
-    #' the table. By default:
+    #' @param table_names, named list used to indicate the names of the columns
+    #'  in the table. By default:
     #'
     #' table_names <- list(sequence_name = "sequence_names",
     #'                     comment = "comments",
@@ -191,42 +191,43 @@ strollur <- R6Class("strollur",
     #'                     reference_note = "reference_notes",
     #'                     reference_url = "reference_urls")
     #'
-    #' In table_names, 'sequence_name' is a string containing the name of the column
-    #' in 'table' that contains the sequence names. It is used when you are adding
-    #' FASTA data. Default column name is 'sequence_names'.
+    #' In table_names, 'sequence_name' is a string containing the name of the
+    #' column in 'table' that contains the sequence names. It is used when you
+    #' are adding FASTA data. Default column name is 'sequence_names'.
     #'
-    #' In table_names, 'sequence' is a string containing the name of the column in
-    #' 'table' that contains the sequence nucleotide strings. It is used when you
-    #' are adding FASTA data. Default column name is 'sequences'.
+    #' In table_names, 'sequence' is a string containing the name of the column
+    #' in 'table' that contains the sequence nucleotide strings. It is used when
+    #' you are adding FASTA data. Default column name is 'sequences'.
     #'
-    #' In table_names, 'comment' is a string containing the name of the column in
-    #' 'table' that contains the sequence comments. It is used when you are adding
-    #' FASTA data. Default column name is 'comments'.
+    #' In table_names, 'comment' is a string containing the name of the column
+    #' in 'table' that contains the sequence comments. It is used when you are
+    #' adding FASTA data. Default column name is 'comments'.
     #'
     #' In table_names, 'reference_name' is a string containing the name of the
-    #' column in 'table' that contains the reference names. It is used when you are
-    #' adding reference data. Default column name is 'reference_names'.
+    #' column in 'table' that contains the reference names. It is used when you
+    #' are adding reference data. Default column name is 'reference_names'.
     #'
-    #' In table_names, 'reference_version' is a string containing the name of the
-    #' column in 'table' that contains the reference versions. Default column name
-    #' is 'reference_versions'.
+    #' In table_names, 'reference_version' is a string containing the name of
+    #' the column in 'table' that contains the reference versions. Default
+    #' column name is 'reference_versions'.
     #'
     #' In table_names, 'reference_usage' is a string containing the name of the
-    #' column in 'table' that contains the reference usages. Default column name is
-    #' 'reference_usages'.
+    #' column in 'table' that contains the reference usages. Default column name
+    #' is 'reference_usages'.
     #'
     #' In table_names, 'reference_note' is a string containing the name of the
-    #' column in 'table' that contains the reference notes. Default column name is
-    #'  'reference_notes'.
+    #' column in 'table' that contains the reference notes. Default column name
+    #' is 'reference_notes'.
     #'
-    #' In table_names, 'reference_url' is a string containing the name of the column
-    #' in 'table' that contains the reference urls. Default column name is
-    #'  'reference_urls'.
+    #' In table_names, 'reference_url' is a string containing the name of the
+    #' column in 'table' that contains the reference urls. Default column name
+    #' is 'reference_urls'.
     #'
-    #' @param reference, a list created by the function [new_reference]. Optional.
+    #' @param reference, a list created by the function [new_reference].
+    #'   Optional.
     #'
-    #' @param verbose, boolean indicating whether or not you want progress messages.
-    #' Default = TRUE.
+    #' @param verbose, boolean indicating whether or not you want progress
+    #'   messages. Default = TRUE.
     #'
     #' @examples
     #'
@@ -286,26 +287,27 @@ strollur <- R6Class("strollur",
     #' data$add(table = metadata, type = "metadata")
     #'
     add = function(table,
-                type = "sequences",
-                report_type = NULL,
-                table_names = list(
-                    sequence_name = "sequence_names",
-                    sequence = "sequences",
-                    comment = "comments",
-                    reference_name = "reference_names",
-                    reference_version = "reference_versions",
-                    reference_usage = "reference_usages",
-                    reference_note = "reference_notes",
-                    reference_url = "reference_urls"
-                ),
-                reference = NULL,
-                verbose = TRUE) {
+                   type = "sequences",
+                   report_type = NULL,
+                   table_names = list(
+                     sequence_name = "sequence_names",
+                     sequence = "sequences",
+                     comment = "comments",
+                     reference_name = "reference_names",
+                     reference_version = "reference_versions",
+                     reference_usage = "reference_usages",
+                     reference_note = "reference_notes",
+                     reference_url = "reference_urls"
+                   ),
+                   reference = NULL,
+                   verbose = TRUE) {
+      add(self,
+        table = table, type = type,
+        report_type = report_type, table_names = table_names,
+        reference = reference, verbose = verbose
+      )
 
-        add(self, table = table, type = type,
-            report_type = report_type, table_names = table_names,
-            reference = reference, verbose = verbose)
-
-        invisible(self)
+      invisible(self)
     },
 
     #' @description
@@ -451,44 +453,43 @@ strollur <- R6Class("strollur",
     #'  'bin_representatives', 'bin_taxonomy' and 'treatments'.
     #'  Default = "bins".
     #'
-    #' @param bin_type, string containing the bin type you would like the number of
-    #' bins for. Default = "otu".
+    #' @param bin_type, string containing the bin type you would like the number
+    #'   of bins for. Default = "otu".
     #'
-    #' @param table_names, named list used to indicate the names of the columns in
-    #' the table. By default:
+    #' @param table_names, named list used to indicate the names of the columns
+    #'   in the table. By default:
     #'
-    #' table_names <- list(sequence_name = "sequence_names",
-    #'                     abundance = "abundances",
-    #'                     sample = "samples",
-    #'                     treatment = "treatments",
-    #'                     taxonomy = "taxonomies",
-    #'                     bin_name = "bin_names")
+    #'   table_names <- list(sequence_name = "sequence_names", abundance =
+    #'   "abundances", sample = "samples", treatment = "treatments", taxonomy =
+    #'   "taxonomies", bin_name = "bin_names")
     #'
-    #' In table_names, 'sequence_name' is a string containing the name of the column
-    #' in 'table' that contains the sequence names. Default column name is
-    #' 'sequence_names'.
+    #'   In table_names, 'sequence_name' is a string containing the name of the
+    #'   column in 'table' that contains the sequence names. Default column name
+    #'   is 'sequence_names'.
     #'
-    #' In table_names, 'abundance' is a string containing the name of the column in
-    #' 'table' that contains the abundances. Default column name is 'abundances'.
+    #'   In table_names, 'abundance' is a string containing the name of the
+    #'   column in 'table' that contains the abundances. Default column name is
+    #'   'abundances'.
     #'
-    #' In table_names, 'sample' is a string containing the name of the column in
-    #' 'table' that contains the samples. Default column name is 'samples'.
+    #'   In table_names, 'sample' is a string containing the name of the column
+    #'   in 'table' that contains the samples. Default column name is 'samples'.
     #'
-    #' In table_names, 'treatment' is a string containing the name of the
-    #' column in 'table' that contains the treatment names. Default column name is
-    #'  'treatments'.
+    #'   In table_names, 'treatment' is a string containing the name of the
+    #'   column in 'table' that contains the treatment names. Default column
+    #'   name is 'treatments'.
     #'
-    #' In table_names, 'taxonomy' is a string containing the name of the
-    #' column in 'table' that contains the classifications. Default column name
-    #' is 'taxonomies'.
+    #'   In table_names, 'taxonomy' is a string containing the name of the
+    #'   column in 'table' that contains the classifications. Default column
+    #'   name is 'taxonomies'.
     #'
-    #' In table_names, 'bin_name' is a string containing the name of the
-    #' column in 'table' that contains the bin names. Default column name is
-    #' 'bin_names'.
+    #'   In table_names, 'bin_name' is a string containing the name of the
+    #'   column in 'table' that contains the bin names. Default column name is
+    #'   'bin_names'.
     #'
-    #' @param reference, a list created by the function [new_reference]. Optional.
-    #' @param verbose, boolean indicating whether or not you want progress messages.
-    #' Default = TRUE.
+    #' @param reference, a list created by the function [new_reference].
+    #'   Optional.
+    #' @param verbose, boolean indicating whether or not you want progress
+    #'   messages. Default = TRUE.
     #'
     #' @examples
     #'
@@ -575,22 +576,24 @@ strollur <- R6Class("strollur",
     #'
     #' @return double - The number of items assigned
     assign = function(table,
-                       type = "bins",
-                       bin_type = "otu",
-                       table_names = list(
-                           sequence_name = "sequence_names",
-                           abundance = "abundances",
-                           sample = "samples",
-                           treatment = "treatments",
-                           taxonomy = "taxonomies",
-                           bin_name = "bin_names"
-                       ),
-                       reference = NULL,
-                       verbose = TRUE) {
-        assign(self, table = table, type = type,
-               bin_type = bin_type, table_names = table_names,
-               reference = reference, verbose = verbose)
-        invisible(self)
+                      type = "bins",
+                      bin_type = "otu",
+                      table_names = list(
+                        sequence_name = "sequence_names",
+                        abundance = "abundances",
+                        sample = "samples",
+                        treatment = "treatments",
+                        taxonomy = "taxonomies",
+                        bin_name = "bin_names"
+                      ),
+                      reference = NULL,
+                      verbose = TRUE) {
+      assign(self,
+        table = table, type = type,
+        bin_type = bin_type, table_names = table_names,
+        reference = reference, verbose = verbose
+      )
+      invisible(self)
     },
 
     #' @description
@@ -608,24 +611,25 @@ strollur <- R6Class("strollur",
     #' Options include: "sequences", "samples", "treatments", "bins", and
     #'  "references". Default = "sequences".
     #'
-    #' @param bin_type, string containing the bin type you would like the number of
-    #' bins for. Default = "otu".
+    #' @param bin_type, string containing the bin type you would like the number
+    #'   of bins for. Default = "otu".
     #'
     #' @param samples, vector of strings. samples is only used when 'type' =
-    #' "sequences" or 'type' = "bins" . samples should contain the names of the
-    #' samples you want the count for. Default = NULL.
+    #'   "sequences" or 'type' = "bins" . samples should contain the names of
+    #'   the samples you want the count for. Default = NULL.
     #'
-    #' @param distinct, Boolean. distinct is used when 'type' =
-    #' "sequences" or 'type' = "bins". When 'type' = "sequences" and distinct is
-    #' TRUE the number of unique sequences is returned. When 'type' = "sequences"
-    #' and distinct is FALSE the total number of sequences is returned. This can
-    #' also be combined with samples to find the number of unique sequences found
-    #' ONLY in a given set of samples, or to find the number of unique sequences
-    #' in given set of samples that may also be present in other samples.
-    #' When 'type' = "bins", you can set distinct = TRUE to return the number of
-    #' bins that ONLY contain sequences from the given samples. When distinct is
-    #' FALSE the count returned contains bins with sequences from a given samples,
-    #' but those bins may also contain other samples. Default = FALSE.
+    #' @param distinct, Boolean. distinct is used when 'type' = "sequences" or
+    #'   'type' = "bins". When 'type' = "sequences" and distinct is TRUE the
+    #'   number of unique sequences is returned. When 'type' = "sequences" and
+    #'   distinct is FALSE the total number of sequences is returned. This can
+    #'   also be combined with samples to find the number of unique sequences
+    #'   found ONLY in a given set of samples, or to find the number of unique
+    #'   sequences in given set of samples that may also be present in other
+    #'   samples. When 'type' = "bins", you can set distinct = TRUE to return
+    #'   the number of bins that ONLY contain sequences from the given samples.
+    #'   When distinct is FALSE the count returned contains bins with sequences
+    #'   from a given samples, but those bins may also contain other samples.
+    #'   Default = FALSE.
     #'
     #' @examples
     #'
@@ -642,13 +646,12 @@ strollur <- R6Class("strollur",
     #' # be present in other samples as well
     #' miseq$count(type = "sequences", samples = c("F3D0", "F3D1"))
     #'
-    #' # To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
-    #' # Note sequences are present in both samples and NOT present in any other
-    #' # samples.
-    #' miseq$count(
-    #'   type = "sequences", samples = c("F3D0", "F3D1"),
-    #'   distinct = TRUE
-    #' )
+    #' # To get number of unique sequences exclusive to samples 'F3D0' and
+    #' # 'F3D1'. Note sequences are present in both samples and NOT present in
+    #' # any other samples.
+    #'
+    #' miseq$count(type = "sequences",
+    #'             samples = c("F3D0", "F3D1"), distinct = TRUE )
     #'
     #' # To get the number of samples in the dataset
     #' miseq$count(type = "samples")
@@ -673,8 +676,9 @@ strollur <- R6Class("strollur",
     #' )
     #'
     #' # To get number of "otu" bins unique to samples 'F3D0' and 'F3D1'
-    #' # Note these bins will have sequences from both samples and NO other samples
-    #' # will be present in the bins.
+    #' # Note these bins will have sequences from both samples and NO other
+    #' # samples will be present in the bins.
+    #'
     #' miseq$count(
     #'   type = "bins", bin_type = "otu",
     #'   samples = c("F3D0", "F3D1"), distinct = TRUE
@@ -682,11 +686,10 @@ strollur <- R6Class("strollur",
     #'
     #' @return double
     count = function(type = "sequences",
-                      bin_type = "otu",
-                      samples = NULL,
-                      distinct = FALSE) {
-
-        xdev_count(self, type, bin_type, samples, distinct)
+                     bin_type = "otu",
+                     samples = NULL,
+                     distinct = FALSE) {
+      xdev_count(self, type, bin_type, samples, distinct)
     },
 
 
@@ -845,23 +848,23 @@ strollur <- R6Class("strollur",
     #' Get the names of a given type of data
     #'
     #' @param type, string containing the type of data you would like. Options
-    #' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
-    #' Default = "sequences".
+    #'   include: "dataset", "sequences", "bins", "samples", "treatments",
+    #'   "reports". Default = "sequences".
     #'
     #' @param bin_type, string containing the bin type you would like the names
-    #' for. Default = "otu".
+    #'   for. Default = "otu".
     #'
     #' @param samples, vector of strings. samples is only used when 'type' =
-    #' "sequences" or 'type' = "bins" . samples should contain the names of the
-    #' samples you want names for. Default = NULL.
+    #'   "sequences" or 'type' = "bins" . samples should contain the names of
+    #'   the samples you want names for. Default = NULL.
     #'
-    #' @param distinct, Boolean. distinct is used when 'type' =
-    #' "sequences" or 'type' = "bins" and the samples parameter is used. The
-    #' distinct parameter allows you to get the names that present given
-    #' set of samples. When distinct is TRUE, the names function will return the
-    #' names that ONLY contain data from the given samples. When distinct is FALSE
-    #' the data returned contains data from a given samples, but may ALSO contain
-    #' data from other samples. Default = FALSE.
+    #' @param distinct, Boolean. distinct is used when 'type' = "sequences" or
+    #'   'type' = "bins" and the samples parameter is used. The distinct
+    #'   parameter allows you to get the names that present given set of
+    #'   samples. When distinct is TRUE, the names function will return the
+    #'   names that ONLY contain data from the given samples. When distinct is
+    #'   FALSE the data returned contains data from a given samples, but may
+    #'   ALSO contain data from other samples. Default = FALSE.
     #'
     #' @examples
     #'
@@ -899,11 +902,10 @@ strollur <- R6Class("strollur",
     #'
     #' @return vector of strings, containing the names requested
     names = function(type = "sequences",
-                      bin_type = "otu",
-                      samples = NULL,
-                      distinct = FALSE) {
-
-        xdev_names(self, type, bin_type, samples, distinct)
+                     bin_type = "otu",
+                     samples = NULL,
+                     distinct = FALSE) {
+      xdev_names(self, type, bin_type, samples, distinct)
     },
 
     #' @description
@@ -917,8 +919,8 @@ strollur <- R6Class("strollur",
     #' contigs_assembly or chimeras, you can get those as well.
     #'  Default = "sequences".
     #'
-    #' @param bin_type, string containing the bin type you would like a bin_taxonomy
-    #' report for. Default = "otu".
+    #' @param bin_type, string containing the bin type you would like a
+    #'   bin_taxonomy report for. Default = "otu".
     #'
     #' @examples
     #'
@@ -990,7 +992,7 @@ strollur <- R6Class("strollur",
     #'
     #' @return data.frame
     report = function(type = "sequences", bin_type = "otu") {
-        xdev_report(self, type, bin_type)
+      xdev_report(self, type, bin_type)
     },
 
     #' @description
@@ -1030,15 +1032,13 @@ strollur <- R6Class("strollur",
     #'
     #' @return data.frame
     summary = function(type = "sequences",
-                        report_type = NULL, verbose = TRUE) {
-
-        dataset_summary <- xdev_summarize(self, type, report_type)
-        if (verbose) {
-            print(dataset_summary)
-        }
-        dataset_summary
+                       report_type = NULL, verbose = TRUE) {
+      dataset_summary <- xdev_summarize(self, type, report_type)
+      if (verbose) {
+        print(dataset_summary)
+      }
+      dataset_summary
     }
-
   ),
   private = list(
     processors = 1,
