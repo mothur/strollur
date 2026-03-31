@@ -18,7 +18,7 @@ add(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{table, }{a data.frame containing the data you wish to add.}
 
@@ -81,12 +81,12 @@ Default = TRUE.}
 double - The number of items added
 }
 \description{
-Add sequences, reports, metadata or resource references to a \link{dataset}
+Add sequences, reports, metadata or resource references to a \link{strollur}
 object
 }
 \examples{
 
-# Create a new empty dataset named 'example_dataset'
+# Create a new empty strollur object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
 # Read FASTA data into data.frame
@@ -97,7 +97,7 @@ add(data = data, table = fasta_data, type = "sequences")
 
 # To add FASTA data with a resource reference
 
-# Create a new empty dataset named 'example_dataset'
+# Create a new empty strollur object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
 # Create a resource reference for the FASTA data
@@ -114,7 +114,7 @@ resource_reference <-
 # Add FASTA data with a resource reference
 
 add(
-  data = data,
+  data,
   table = fasta_data,
   type = "sequences",
   reference = resource_reference
@@ -130,7 +130,8 @@ contigs_report <- readr::read_tsv(
 )
 
 add(
-  data = data, table = contigs_report, type = "reports",
+  data,
+  table = contigs_report, type = "reports",
   report_type = "contigs_report", list(sequence_name = "Name")
 )
 
@@ -140,6 +141,6 @@ metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
   col_names = TRUE, show_col_types = FALSE
 )
 
-add(data = data, table = metadata, type = "metadata")
+add(data, table = metadata, type = "metadata")
 
 }

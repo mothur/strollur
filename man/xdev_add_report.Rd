@@ -13,7 +13,7 @@ xdev_add_report(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{table, }{a data.frame containing your report.}
 
@@ -28,7 +28,7 @@ does not require a sequence_name column. Default column name is 'sequence_names'
 Default = TRUE.}
 }
 \description{
-Add a report to a \link{dataset} object
+Add a report to a \link{strollur} object
 }
 \examples{
 

@@ -1,10 +1,10 @@
 #' @title import_dataset
 #' @description
-#' The import_dataset function will create a \link{dataset} object from the
-#' exported table of a \link{dataset} object.
+#' The import_dataset function will create a \link{strollur} object from the
+#' exported table of a \link{strollur} object.
 #'
-#' @param table a table containing the data from a \link{dataset} object. You
-#' can create the table using 'export(dataset)'.
+#' @param table a table containing the data from a \link{strollur} object. You
+#' can create the table using 'export(data)'.
 #'
 #' @examples
 #'
@@ -12,7 +12,7 @@
 #' data <- import_dataset(export_dataset(miseq))
 #' data
 #'
-#' @return a \link{dataset} object
+#' @return a \link{strollur} object
 #' @seealso [dataset$export()]
 #' @export
 import_dataset <- function(table) {
@@ -21,7 +21,7 @@ import_dataset <- function(table) {
   # check attributes for valid version
   if (utils::packageVersion("strollur") != table_version) {
     message <- paste0(
-      "[ERROR]: Unable to create 'dataset' object. ",
+      "[ERROR]: Unable to create 'strollur' object. ",
       "The table was created with strollur version ",
       table_version, " and you are running strollur version ",
       utils::packageVersion("strollur"), "."

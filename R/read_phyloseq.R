@@ -27,7 +27,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
     stop("phyloseq_object has to an object created using the phyloseq package.")
   }
 
-  rdaset_object <- dataset$new(dataset_name)
+  rdaset_object <- strollur$new(dataset_name)
 
   # samples
   if (!is.null(phyloseq::get_sample(phyloseq_object))) {
@@ -92,13 +92,14 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
 
   # Treatments
   if (!is.null(treatment_column_name)) {
-    if (any(phyloseq::sample_variables(phyloseq_object) ==
-              treatment_column_name)) {
+    tcn <- treatment_column_name
+    if (any(phyloseq::sample_variables(phyloseq_object) == tcn)) {
       treatment_df <- data.frame(
         cbind(
           phyloseq::sample_names(phyloseq_object),
-          as.character(phyloseq::get_variable(phyloseq_object)
-                       [[treatment_column_name]])
+          as.character(
+            phyloseq::get_variable(phyloseq_object)[[treatment_column_name]]
+          )
         )
       )
       colnames(treatment_df) <- c("samples", "treatments")

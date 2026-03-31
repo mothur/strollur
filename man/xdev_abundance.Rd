@@ -7,7 +7,7 @@
 xdev_abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "bins".
@@ -23,7 +23,7 @@ be parsed by sample. Default = FALSE.}
 data.frame
 }
 \description{
-Get a table containing the requested abundance data in a \link{dataset}
+Get a table containing the requested abundance data in a \link{strollur}
 object
 }
 \examples{

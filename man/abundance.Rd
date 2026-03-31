@@ -7,7 +7,7 @@
 abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "bins", "samples" and "treatments".
@@ -24,7 +24,7 @@ data.frame
 }
 \description{
 Get the abundance data for sequences, bins, samples, and treatments in a
-\link{dataset} object
+\link{strollur} object
 }
 \examples{
 

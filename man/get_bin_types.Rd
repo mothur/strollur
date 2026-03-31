@@ -7,13 +7,13 @@
 get_bin_types(data)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 }
 \value{
 vector of strings
 }
 \description{
-Get bin table types of a \link{dataset} object
+Get bin table types of a \link{strollur} object
 }
 \examples{
 

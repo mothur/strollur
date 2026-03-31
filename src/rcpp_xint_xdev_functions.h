@@ -17,10 +17,10 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
 /******************************************************************************/
 //' @title xdev_abundance
 //' @description
-//' Get a table containing the requested abundance data in a \link{dataset}
+//' Get a table containing the requested abundance data in a \link{strollur}
 //' object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param type, string containing the type of data you want the number of.
 //' Options include: "sequences", "bins".
@@ -70,9 +70,9 @@ Rcpp::DataFrame xdev_abundance(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_add_references
 //' @description
-//' Add resource references to a \link{dataset} object
+//' Add resource references to a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param table, a data.frame containing reference_names, reference_versions
 //' (optional), reference_usages (optional), reference_notes (optional), and
@@ -117,9 +117,9 @@ double xdev_add_references(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_add_report
 //' @description
-//' Add a report to a \link{dataset} object
+//' Add a report to a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param table, a data.frame containing your report.
 //'
@@ -160,9 +160,9 @@ void xdev_add_report(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_add_sequences
 //' @description
-//' Add sequence data to a \link{dataset} object
+//' Add sequence data to a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param table, a data.frame containing names, sequences(optional) and
 //' comments(optional).
@@ -212,9 +212,9 @@ double xdev_add_sequences(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_assign_bins
 //' @description
-//' Add bin assignments to a \link{dataset} object
+//' Add bin assignments to a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param table, a data.frame containing bin_data assignments
 //' @param bin_type a string indicating the type of bin assignments. Default "otu".
@@ -277,7 +277,7 @@ double xdev_assign_bins(Rcpp::Environment data,
 //' @description
 //' Assign representative sequences to bins.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param table, a data.frame containing bin representative assignments
 //'
@@ -319,12 +319,12 @@ double xdev_assign_bin_representative_sequences(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_assign_bin_taxonomy
 //' @description
-//' Assign bin classifications to a \link{dataset} object
+//' Assign bin classifications to a \link{strollur} object
 //'
 //' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 //'  the concensus taxonomy for each bin for you.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param table, a data.frame containing bin taxonomy assignments
 //' @param bin_type a string indicating the type of bin assignments. Default "otu".
@@ -366,12 +366,12 @@ double xdev_assign_bin_taxonomy(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_assign_sequence_taxonomy
 //' @description
-//' Assign sequence classifications to a \link{dataset} object
+//' Assign sequence classifications to a \link{strollur} object
 //'
 //' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 //'  the consensus taxonomy for each bin for you.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param table, a data.frame containing sequence taxonomy assignments
 //'
@@ -418,9 +418,9 @@ double xdev_assign_sequence_taxonomy(Rcpp::Environment data,
 //' @title xdev_assign_sequence_abundance
 //' @description
 //' Assign sequence abundance and optionally assign sample and treatment data to
-//'  a \link{dataset} object
+//'  a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param table, a data.frame containing sequence abundance assignments
 //'
@@ -460,9 +460,9 @@ double xdev_assign_sequence_abundance(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_assign_treatments
 //' @description
-//' Assign samples to treatments in a \link{dataset} object
+//' Assign samples to treatments in a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param table, a data.frame containing sample treatment assignments
 //'
@@ -500,9 +500,9 @@ double xdev_assign_treatments(Rcpp::Environment data,
 //' @title xdev_count
 //' @description
 //' Find the number of sequences, samples, treatments or bins of a given type in
-//' a \link{dataset} object
+//' a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param type, string containing the type of data you want the number of.
 //' Options include: "sequences", "samples", "treatments", "bins" and
@@ -585,9 +585,9 @@ double xdev_count(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_get_abundances_by_sample
 //' @description
-//' Get the sequence abundance data in a \link{dataset} object parsed by sample
+//' Get the sequence abundance data in a \link{strollur} object parsed by sample
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param samples a vector of strings containing the names of the samples you
 //' would like sequence names for. By default all samples are included.
@@ -608,7 +608,7 @@ vector<vector<float> > xdev_get_abundances_by_sample(Rcpp::Environment data,
 //' @description
 //' Get vector of strings containing the sequences bin data
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param type a string indicating the type of bin assignments. Default "otu".
 //' @examples
@@ -625,9 +625,9 @@ vector<string> xdev_get_list_vector(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_get_by_sample
 //' @description
-//' Get the requested data in a \link{dataset} object parsed by sample
+//' Get the requested data in a \link{strollur} object parsed by sample
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param type, string containing the type of data you want the totals of.
 //' Options include: "sequence_names", "sequences". Default = "sequence_names".
@@ -658,9 +658,9 @@ vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
 /******************************************************************************/
 //' @title xdev_get_sequences
 //' @description
-//' Get the nucleotide strings for each sequence in a \link{dataset} object
+//' Get the nucleotide strings for each sequence in a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param sample, a string containing the name of the sample you
 //' would like sequence names for. For all samples in dataset, sample = "".
@@ -672,7 +672,7 @@ vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
 //'  xdev_get_sequences(data)
 //'
 //' @return vector of string containing nucleotide strings of the sequences in
-//' a \link{dataset} object
+//' a \link{strollur} object
 //' @export
 //[[Rcpp::export]]
 vector<string> xdev_get_sequences(Rcpp::Environment data, string sample = "",
@@ -683,9 +683,9 @@ vector<string> xdev_get_sequences(Rcpp::Environment data, string sample = "",
 //' @title xdev_merge_bins
 //' @description
 //' Designed with package integration in mind, the merge bins function allows
-//' you to merge bins in a \link{dataset} object
+//' you to merge bins in a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object.
+//' @param data, a \link{strollur} object.
 //'
 //' @param bin_names, a vector of strings containing the names of the bins you
 //' would like merge. The resulting merged bin will be stored in the first
@@ -718,9 +718,9 @@ void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
 //' @title xdev_merge_sequences
 //' @description
 //' Designed with package integration in mind, the merge sequences function
-//' allows you to merge sequences in a \link{dataset} object.
+//' allows you to merge sequences in a \link{strollur} object.
 //'
-//' @param data, a \link{dataset} object.
+//' @param data, a \link{strollur} object.
 //'
 //' @param sequence_names, a vector of strings containing the names of the
 //' sequences you would like merge. The resulting merged sequence will be stored
@@ -777,9 +777,9 @@ void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
 /******************************************************************************/
 //' @title xdev_names
 //' @description
-//' Get the names of a given type of data in a \link{dataset} object
+//' Get the names of a given type of data in a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param type, string containing the type of data you would like. Options
 //' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
@@ -849,9 +849,9 @@ const vector<string> xdev_names(Rcpp::Environment data,
 //' @title xdev_remove_bins
 //' @description
 //' Designed with package integration in mind, the remove bins function allows
-//' you to remove bins from a \link{dataset} object
+//' you to remove bins from a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object.
+//' @param data, a \link{strollur} object.
 //'
 //' @param bin_names, a vector of strings containing the names of the bins you
 //' would like removed.
@@ -887,9 +887,9 @@ void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
 //' @title xdev_remove_lineages
 //' @description
 //' Designed with package integration in mind, the remove lineages function
-//' allows you to remove contaminents from a \link{dataset}
+//' allows you to remove contaminents from a \link{strollur}
 //'
-//' @param data, a \link{dataset} object.
+//' @param data, a \link{strollur} object.
 //'
 //' @param contaminants, vector of strings containing the taxonomies you would
 //' like to remove
@@ -917,9 +917,9 @@ void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants,
 //' @title xdev_remove_samples
 //' @description
 //' Designed with package integration in mind, the remove samples function allows
-//' you to remove samples from a \link{dataset} object
+//' you to remove samples from a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object.
+//' @param data, a \link{strollur} object.
 //'
 //' @param samples, vector of strings containing the names of the samples to
 //' remove.
@@ -947,9 +947,9 @@ void xdev_remove_samples(Rcpp::Environment data, vector<string> samples,
 //' @title xdev_remove_sequences
 //' @description
 //' Designed with package integration in mind, the remove sequences function
-//' allows you to remove sequences from a \link{dataset} object
+//' allows you to remove sequences from a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object.
+//' @param data, a \link{strollur} object.
 //'
 //' @param sequence_names, vector of strings containing the names of the
 //' sequences to remove
@@ -991,9 +991,9 @@ void xdev_remove_sequences(Rcpp::Environment data,
 
 //' @title xdev_report
 //' @description
-//' Get a data.frame containing the given report in a \link{dataset} object
+//' Get a data.frame containing the given report in a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param type, string containing the type of report you would like. Options
 //' include: "fasta", "sequences", "sequence_bin_assignments",
@@ -1100,10 +1100,10 @@ Rcpp::DataFrame xdev_report(Rcpp::Environment data, string type = "sequences",
 //' @title xdev_set_abundance
 //' @description
 //' Designed with package integration in mind, the set abundance function
-//' allows you to change the abundances of sequences in a \link{dataset} object
+//' allows you to change the abundances of sequences in a \link{strollur} object
 //' without samples.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param sequence_names, a vector of strings containing sequence names
 //' @param sequence_abundances, vector containing the abundances of each
@@ -1141,10 +1141,10 @@ void xdev_set_abundance(Rcpp::Environment data,
 //' @title xdev_set_abundances
 //' @description
 //' Designed with package integration in mind, the set abundances function
-//' allows you to change the abundances of sequences in a \link{dataset} object
+//' allows you to change the abundances of sequences in a \link{strollur} object
 //' with samples.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param sequence_names, a vector of strings containing sequence names
 //' @param abundances, 2D vector ([num_seqs][num_samples]) containing
@@ -1183,11 +1183,11 @@ void xdev_set_abundances(Rcpp::Environment data,
 //' @title xdev_set_sequences
 //' @description
 //' Designed with package integration in mind, the set sequences function
-//' allows you to change the nucleotide strings of sequences in a \link{dataset}
+//' allows you to change the nucleotide strings of sequences in a \link{strollur}
 //' object. For example, set_sequences may be used after alignment to overwrite
 //' the unaligned sequences with aligned sequences.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //' @param sequence_names, a vector of strings containing sequence names
 //' @param sequences, a vector of strings containing sequence nucleotide strings
 //' @param comments, a vector of strings containing sequence comments.
@@ -1214,9 +1214,9 @@ void xdev_set_sequences(Rcpp::Environment data,
 
 //' @title xdev_set_dataset_name
 //' @description
-//' Designed with package integration in mind, set the name of a \link{dataset} object.
+//' Designed with package integration in mind, set the name of a \link{strollur} object.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //' @param dataset_name, a string containing the desired name
 //'
 //' @examples
@@ -1231,9 +1231,9 @@ void xdev_set_dataset_name(Rcpp::Environment data, string dataset_name);
 //' @title xdev_set_num_processors
 //' @description
 //' Designed with package integration in mind, set the number of processors used
-//'  to summarize a \link{dataset} object
+//'  to summarize a \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //' @param processors, a integer containing the desired number of processors
 //' @examples
 //'
@@ -1248,9 +1248,9 @@ void xdev_set_num_processors(Rcpp::Environment data, int processors);
 //' @title xdev_summarize
 //' @description
 //' Summarize the sequences data, custom reports, and scrapped data in a
-//' \link{dataset} object
+//' \link{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //'
 //' @param type, string containing the type of data you want the number of.
 //' Options include: "sequences", "reports" and "scrap". Default = "sequences".
@@ -1292,7 +1292,7 @@ Rcpp::DataFrame xdev_summarize(Rcpp::Environment data,
 //' @name xint_copy_pointer
 //' @description
 //' For internal use only, copy an instance of the C++ 'Dataset' class.
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //' @return pointer to an instance of the C++ 'Dataset' class.
 //' @keywords internal
 //[[Rcpp::export]]
@@ -1314,7 +1314,7 @@ Rcpp::XPtr<Dataset> xint_new_pointer(string dataset_name, int processors);
 //' @description
 //' For internal use only, deserialize_dobject an instance of the C++ 'Dataset'
 //'  class.
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //[[Rcpp::export]]
 void xint_deserialize_dobject(Rcpp::Environment data);
 
@@ -1323,7 +1323,7 @@ void xint_deserialize_dobject(Rcpp::Environment data);
 //' @description
 //' For internal use only, xint_serialize_dobject an instance of the C++ 'Dataset'
 //' class.
-//' @param data, a \link{dataset} object
+//' @param data, a \link{strollur} object
 //[[Rcpp::export]]
 void xint_serialize_dobject(Rcpp::Environment data);
 

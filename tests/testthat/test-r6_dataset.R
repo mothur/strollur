@@ -203,7 +203,7 @@ test_that("dataset - intialize from dataset object", {
     dataset_name = "miseq_sop"
   )
 
-  dataset_t <- dataset$new(
+  dataset_t <- strollur$new(
     name = "clone_of_miseq", dataset = temp,
     processors = 4
   )
@@ -227,7 +227,7 @@ test_that("dataset - intialize from dataset object", {
 })
 
 test_that("dataset - addSeqs, assign samples", {
-  data <- dataset$new("mydata")
+  data <- strollur$new("mydata")
 
   # missing data and names
   expect_error(xdev_add_sequences(data))
@@ -432,7 +432,7 @@ test_that("dataset - addSeqs, assign samples", {
 })
 
 test_that("dataset - assign_sequence_abundance, remove_sequences", {
-  data <- dataset$new("mydata")
+  data <- strollur$new("mydata")
 
   # missing data and names
   expect_error(xdev_assign_sequence_abundance(data))
@@ -621,7 +621,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     abunds
   )
 
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   samples <- c(
     "sample1", "sample2", "sample5",
@@ -654,7 +654,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
   expect_true(has_sample(dataset_t, "sample1"))
   expect_false(has_sample(dataset_t, "non_existant_sample"))
 
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
   bin_ids <- c(
     "bin1", "bin1", "bin1", "bin1",
     "bin2", "bin2", "bin2", "bin2", "bin2", "bin2", "bin2", "bin2",
@@ -738,7 +738,7 @@ test_that("dataset - ", {
   tax4 <- "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);"
   taxonomies <- c(tax1, tax2, tax3, tax4)
 
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
 
   url <- paste0(
     "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
@@ -789,7 +789,7 @@ test_that("dataset - ", {
   tax4 <- "Bacteria;Proteobacteria;Gammaproteobacteria;"
   taxonomies <- c(tax1, tax2, tax3, tax4)
   #---------------------------------------------------------#
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
   assign(data = dataset_t, table = data.frame(
     sequence_names = names,
     taxonomies = taxonomies
@@ -810,7 +810,7 @@ test_that("dataset - ", {
   tax4 <- "Bacteria;Proteobacteria;"
   taxonomies <- c(tax1, tax2, tax3, tax4)
   #---------------------------------------------------------#
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
   xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
     taxonomies = taxonomies
@@ -852,7 +852,7 @@ test_that("dataset - ", {
   tax4 <- "Bacteria(100);Proteobacteria(95);"
   taxonomies <- c(tax1, tax2, tax3, tax4)
   #---------------------------------------------------------#
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
   xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
     taxonomies = taxonomies
@@ -1060,7 +1060,7 @@ test_that("dataset - ", {
 })
 
 test_that("dataset - add_metadata, get_metadata", {
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
 
   expect_equal(report(dataset_t, "metadata"), data.frame())
 
@@ -1087,7 +1087,7 @@ test_that("dataset - add_metadata, get_metadata", {
 })
 
 test_that("dataset - add_references, get_references", {
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
 
   expect_equal(report(dataset_t, "references"), data.frame())
   expect_error(xdev_add_references(dataset_t, reference = c("bad_type")))
@@ -1118,7 +1118,7 @@ test_that("dataset - add_references, get_references", {
     "custom reference created by trimming silva.bacteria.fasta to the V4 region"
   )
 
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
 
   # add single reference then dataframe
   ref <- data.frame(
@@ -1151,7 +1151,7 @@ test_that("dataset - add_references, get_references", {
 })
 
 test_that("dataset - add_alignment_report, get_alignment_report", {
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
 
   align_report <- readr::read_tsv(strollur_example("alignment_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
@@ -1186,7 +1186,7 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
 })
 
 test_that("dataset - add / get _contigs_assembly_report,", {
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
 
   report <- readr::read_tsv(strollur_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
@@ -1222,7 +1222,7 @@ test_that("dataset - add / get _contigs_assembly_report,", {
 })
 
 test_that("dataset - add / get _chimera_report,", {
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
 
   report <- readr::read_tsv(strollur_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
@@ -1255,7 +1255,7 @@ test_that("dataset - add / get _chimera_report,", {
 })
 
 test_that("dataset - get_sequence_summary,", {
-  dataset_t <- dataset$new("my_dataset")
+  dataset_t <- strollur$new("my_dataset")
 
   report <- readr::read_tsv(strollur_example("contigs_data.tsv"),
     col_names = TRUE, show_col_types = FALSE
@@ -1288,7 +1288,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
-  dataset_t <- dataset$new()
+  dataset_t <- strollur$new()
 
   expect_error(dataset_t$add_sequence_tree(tree = c("bad_type")))
 
@@ -1299,7 +1299,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   expect_equal(dataset_t$get_sequence_tree(), NULL)
 
   # add full tree
-  dataset_t <- dataset$new()
+  dataset_t <- strollur$new()
   xdev_add_sequences(dataset_t, data.frame(sequence_names = names))
 
   l <- lapply(strsplit(seqs, split = ""), "[")
@@ -1336,13 +1336,13 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   names(l) <- names[1:3]
 
   # should alert that the tree is missing reads, and not save it
-  dataset_t <- dataset$new()
+  dataset_t <- strollur$new()
   xdev_add_sequences(dataset_t, data.frame(sequence_names = names))
   dataset_t$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
   expect_equal(dataset_t$get_sequence_tree(), NULL)
 
   # add tree from file
-  dataset_t <- dataset$new()
+  dataset_t <- strollur$new()
   dataset_t$add_sequence_tree(read.tree(
     strollur_example("final.phylip.tre.gz")
   ))
@@ -1357,7 +1357,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   )
 
   # add tree with extra sequences, forcing prune
-  dataset_t <- dataset$new()
+  dataset_t <- strollur$new()
   xdev_add_sequences(dataset_t, data.frame(sequence_names = names))
 
   seqs <- c(seqs, "ACTGC")
@@ -1380,7 +1380,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 })
 
 test_that("dataset - add_sample_tree / get_sample_tree,", {
-  dataset_t <- dataset$new()
+  dataset_t <- strollur$new()
   expect_null(dataset_t$get_sample_tree())
 
   sample_tree <- ape::read.tree(
@@ -1659,7 +1659,7 @@ test_that("dataset - assign_bin_representative_sequences", {
   expect_equal(df[[2]], rep_names)
   expect_equal(df[[3]], xdev_get_sequences(dataset_t)[1:num_bins])
 
-  d <- dataset$new()
+  d <- strollur$new()
   expect_equal(report(d, "bin_representatives"), data.frame())
   expect_equal(report(d, "sample_assignments"), data.frame())
 

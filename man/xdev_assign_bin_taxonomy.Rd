@@ -15,7 +15,7 @@ xdev_assign_bin_taxonomy(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{table, }{a data.frame containing bin taxonomy assignments}
 
@@ -36,7 +36,7 @@ Default = TRUE.}
 double containing the number of bins assigned
 }
 \description{
-Assign bin classifications to a \link{dataset} object
+Assign bin classifications to a \link{strollur} object
 
 Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
  the concensus taxonomy for each bin for you.

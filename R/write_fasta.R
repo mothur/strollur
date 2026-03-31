@@ -4,7 +4,7 @@
 #' Write a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}
 #' formatted sequence file
 #'
-#' @param data A 'dataset' object
+#' @param data A `strollur` object
 #' @param filename a string containing the name of the output file. Default =
 #' 'dataset_name'.fasta
 #' @param degap a logical. Default = FALSE. When degap = `TRUE`, all gap
@@ -19,8 +19,8 @@
 #' @export
 write_fasta <- function(data, filename = NULL, degap = FALSE) {
   # check type
-  if (class(data)[1] != "dataset") {
-    .abort_incorrect_type("dataset", data)
+  if (class(data)[1] != "strollur") {
+    .abort_incorrect_type("strollur", data)
   }
 
   if (is.null(filename)) {

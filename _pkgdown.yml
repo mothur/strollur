@@ -14,7 +14,7 @@ reference:
   - abundance
   - report
   - summary
-  - dataset
+  - strollur
   - strollur-package
   - get_bin_types
 - title: Importing Data
@@ -41,7 +41,7 @@ reference:
   - copy_dataset
   - starts_with("write_")
 - title: Functions for Package Developers
-  desc: "Want to create and modify dataset objects from your package? Check out these functions"
+  desc: "Want to create and modify strollur objects from your package? Check out these functions"
   contents:
   - strollur_example
   - get_available_processors
