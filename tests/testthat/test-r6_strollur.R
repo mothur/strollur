@@ -600,7 +600,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     character()
   )
 
-  rabund <- abundance(data = dataset_t, type = "bins", bin_type = "otu")
+  rabund <- dataset_t$abundance(type = "bins", bin_type = "otu")
 
   abunds <- c(111, 525, 80)
   expect_equal(rabund$otu_id, unique(bin_ids))
@@ -1068,7 +1068,7 @@ test_that("dataset - add_metadata, get_metadata", {
     col_names = TRUE, show_col_types = FALSE
   )
 
-  xdev_add_report(dataset_t, metadata, "metadata")
+  dataset_t$add(metadata, "metadata")
   metadata <- report(dataset_t, "metadata")
 
   expect_equal(names(metadata), c(
@@ -1466,6 +1466,17 @@ test_that("dataset - assign_treatments", {
   expect_equal(count(dataset_t, "samples"), 19)
   expect_equal(count(dataset_t, "treatments"), 2)
 
+  report <- dataset_t$report(type = "sample_assignments")
+
+  expect_equal(report$treatments, c("Early", "Early", "Late", "Late", "Late",
+                                    "Late", "Late", "Late", "Late", "Late",
+                                    "Late", "Late", "Early", "Early", "Early",
+                                    "Early", "Early", "Early", "Early"))
+
+  expect_equal(dataset_t$count(type = "samples"), 19)
+  expect_equal(dataset_t$names(type = "treatments"), c("Early", "Late"))
+  expect_equal(dataset_t$summary(type = "scrap"), data.frame())
+
   dataset_t <- read_mothur(
     fasta = strollur_example("final.fasta.gz"),
     count = strollur_example("final.count_table.gz"),
@@ -1510,7 +1521,7 @@ test_that("dataset - assign_sequence_taxonomy", {
   expect_error(xdev_assign_sequence_taxonomy(dataset_t))
 
   # test with data.frame
-  xdev_assign_sequence_taxonomy(data = dataset_t, table = tax_table)
+  dataset_t$assign(table = tax_table, type = "sequence_taxonomy")
 
   report <- report(dataset_t, "sequence_taxonomy")
 
