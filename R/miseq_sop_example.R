@@ -1,6 +1,6 @@
 #' @title miseq_sop_example
 #' @description
-#' The miseq_sop_example function will create 'dataset' object using the
+#' The miseq_sop_example function will create 'strollur' object using the
 #' analysis files from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
 #' example.
 #'
@@ -8,7 +8,7 @@
 #'
 #' miseq <- miseq_sop_example()
 #'
-#' @return A 'dataset' object
+#' @return A 'strollur' object
 #' @export
 miseq_sop_example <- function() {
   data <- read_mothur(

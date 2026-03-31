@@ -1,5 +1,5 @@
-#' @title dataset
-#' @description 'dataset' is an R6 class that stores nucleotide sequences,
+#' @title strollur
+#' @description 'strollur' is an R6 class that stores nucleotide sequences,
 #' abundance, sample and treatment assignments, taxonomic classifications,
 #' asv / otu clusters and various reports. It is designed to facilitate data
 #' analysis across multiple R packages.
@@ -12,7 +12,7 @@
 #' @importFrom waldo compare
 #' @import cli
 #' @export
-dataset <- R6Class("dataset",
+strollur <- R6Class("strollur",
   public = list(
     #' @field data Rcpp::XPtr<Dataset> pointer to 'Dataset' c++ class. This
     #' allows package developers an easy access point to the underlying C++ code
@@ -31,18 +31,18 @@ dataset <- R6Class("dataset",
     sample_tree = NULL,
 
     #' @description
-    #' Create a new dataset
+    #' Create a new strollur dataset
     #' @param name String, name of dataset (optional)
     #' @param processors Integer, number of cores to use.
     #'  Default = all available
-    #' @param dataset a `dataset` object.
+    #' @param dataset a `strollur` object.
     #' @examples
     #'
-    #' # to create an empty dataset, run the following:
+    #' # to create an empty strollur object, run the following:
     #'
     #' data <- new_dataset("soil")
     #'
-    #' @return A new `dataset` object.
+    #' @return A new `strollur` object.
     initialize = function(name = "",
                           processors = parallelly::availableCores(),
                           dataset = NULL) {
@@ -174,7 +174,7 @@ dataset <- R6Class("dataset",
     #' @param tree a phylo tree object created by ape::read.tree.
     #' @examples
     #'
-    #'  data <- dataset$new("my_dataset")
+    #'  data <- strollur$new("my_dataset")
     #'
     #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
@@ -243,7 +243,7 @@ dataset <- R6Class("dataset",
     #' @param tree a phylo tree object created by ape::read.tree.
     #' @examples
     #'
-    #'  data <- dataset$new("my_dataset")
+    #'  data <- strollur$new("my_dataset")
     #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'
@@ -321,9 +321,9 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
-    #' Get data.frame containing metadata for the dataset
+    #' Get data.frame containing metadata for the strollur object
     #' @examples
-    #'   data <- dataset$new("my_dataset")
+    #'   data <- strollur$new("my_dataset")
     #'
     #'   metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
     #'    col_names = TRUE, show_col_types = FALSE)
@@ -346,7 +346,7 @@ dataset <- R6Class("dataset",
     #'
     #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'
-    #'  data <- dataset$new("my_dataset")
+    #'  data <- strollur$new("my_dataset")
     #'
     #'  # assign abundance 'otu' bins
     #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
@@ -432,10 +432,10 @@ dataset <- R6Class("dataset",
     },
 
     #' @description
-    #' Get phylo tree relating the sequences in your dataset.
+    #' Get phylo tree relating the sequences in your strollur object.
     #' @examples
     #'
-    #'  data <- dataset$new("my_dataset")
+    #'  data <- strollur$new("my_dataset")
     #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'  data$get_sequence_tree()

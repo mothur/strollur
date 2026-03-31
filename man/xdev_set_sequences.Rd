@@ -12,7 +12,7 @@ xdev_set_sequences(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{sequence_names, }{a vector of strings containing sequence names}
 
@@ -23,7 +23,7 @@ xdev_set_sequences(
 }
 \description{
 Designed with package integration in mind, the set sequences function
-allows you to change the nucleotide strings of sequences in a \link{dataset}
+allows you to change the nucleotide strings of sequences in a \link{strollur}
 object. For example, set_sequences may be used after alignment to overwrite
 the unaligned sequences with aligned sequences.
 }

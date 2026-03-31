@@ -14,8 +14,8 @@ write_phyloseq <- function(data) {
     stop("To use this functionality you have to install the phyloseq package.")
   }
 
-  if (!inherits(data, "dataset")) {
-    stop("The data parameter must be an object of type `dataset`.")
+  if (!inherits(data, "strollur")) {
+    stop("The data parameter must be an object of type `strollur`.")
   }
   phyloseq_parameter_list <- vector("list", 4)
   if (nrow(abundance(data = data, type = "sequences")) > 0) {

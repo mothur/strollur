@@ -7,7 +7,7 @@
 write_fasta(data, filename = NULL, degap = FALSE)
 }
 \arguments{
-\item{data}{A 'dataset' object}
+\item{data}{A `strollur` object}
 
 \item{filename}{a string containing the name of the output file. Default =
 'dataset_name'.fasta}

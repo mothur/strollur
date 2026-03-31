@@ -7,7 +7,7 @@
 xdev_remove_samples(data, samples, reason = "remove_samples")
 }
 \arguments{
-\item{data, }{a \link{dataset} object.}
+\item{data, }{a \link{strollur} object.}
 
 \item{samples, }{vector of strings containing the names of the samples to
 remove.}
@@ -17,7 +17,7 @@ Default = "remove_samples".}
 }
 \description{
 Designed with package integration in mind, the remove samples function allows
-you to remove samples from a \link{dataset} object
+you to remove samples from a \link{strollur} object
 }
 \examples{
 

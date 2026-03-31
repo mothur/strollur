@@ -13,7 +13,7 @@ xdev_assign_treatments(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{table, }{a data.frame containing sample treatment assignments}
 
@@ -30,7 +30,7 @@ messages. Default = TRUE.}
 double containing the number of samples assigned to treatments
 }
 \description{
-Assign samples to treatments in a \link{dataset} object
+Assign samples to treatments in a \link{strollur} object
 }
 \examples{
 

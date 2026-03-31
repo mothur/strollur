@@ -1,9 +1,9 @@
 #' @title add
 #' @description
-#' Add sequences, reports, metadata or resource references to a \link{dataset}
+#' Add sequences, reports, metadata or resource references to a \link{strollur}
 #' object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing the data you wish to add.
 #'
@@ -64,7 +64,7 @@
 #'
 #' @examples
 #'
-#' # Create a new empty dataset named 'example_dataset'
+#' # Create a new empty strollur object named 'example_dataset'
 #' data <- new_dataset(dataset_name = "example_dataset")
 #'
 #' # Read FASTA data into data.frame
@@ -75,7 +75,7 @@
 #'
 #' # To add FASTA data with a resource reference
 #'
-#' # Create a new empty dataset named 'example_dataset'
+#' # Create a new empty strollur object named 'example_dataset'
 #' data <- new_dataset(dataset_name = "example_dataset")
 #'
 #' # Create a resource reference for the FASTA data
@@ -92,7 +92,7 @@
 #' # Add FASTA data with a resource reference
 #'
 #' add(
-#'   data = data,
+#'   data,
 #'   table = fasta_data,
 #'   type = "sequences",
 #'   reference = resource_reference
@@ -108,7 +108,8 @@
 #' )
 #'
 #' add(
-#'   data = data, table = contigs_report, type = "reports",
+#'   data,
+#'   table = contigs_report, type = "reports",
 #'   report_type = "contigs_report", list(sequence_name = "Name")
 #' )
 #'
@@ -118,7 +119,7 @@
 #'   col_names = TRUE, show_col_types = FALSE
 #' )
 #'
-#' add(data = data, table = metadata, type = "metadata")
+#' add(data, table = metadata, type = "metadata")
 #'
 #' @return double - The number of items added
 #' @export

@@ -46,17 +46,17 @@ test_that("write phyloseq creates phyloseq object", {
 })
 
 
-test_that("write phyloseq fails if not given a dataset object", {
+test_that("write phyloseq fails if not given a strollur object", {
   miseq <- c()
   expect_error(
     write_phyloseq(miseq),
-    "The data parameter must be an object of type `dataset`."
+    "The data parameter must be an object of type `strollur`."
   )
 })
 
 
 test_that("write phyloseq will fail if the dataset is empty", {
-  empty_dataset <- dataset$new("")
+  empty_dataset <- strollur$new("")
   expect_error(write_phyloseq(empty_dataset))
 })
 

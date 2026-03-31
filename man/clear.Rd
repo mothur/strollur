@@ -7,10 +7,10 @@
 clear(data)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 }
 \description{
-Clear data from a \link{dataset} object
+Clear data from a \link{strollur} object
 }
 \examples{
 

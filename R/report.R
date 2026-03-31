@@ -1,8 +1,8 @@
 #' @title report
 #' @description
-#' Get a data.frame containing the given report in a \link{dataset} object
+#' Get a data.frame containing the given report in a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of report you would like. Options
 #' include: "fasta", "sequences", "sequence_bin_assignments",
@@ -18,7 +18,7 @@
 #' @examples
 #'
 # nolint start
-#' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
+#' # First let's create a `strollur` object from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
 # nolint end
 #' miseq <- miseq_sop_example()
 #'

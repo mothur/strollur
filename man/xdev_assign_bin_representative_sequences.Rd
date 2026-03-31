@@ -15,7 +15,7 @@ xdev_assign_bin_representative_sequences(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{table, }{a data.frame containing bin representative assignments}
 

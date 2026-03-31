@@ -2,7 +2,6 @@
 % Please edit documentation in R/strollur-package.R
 \docType{package}
 \name{strollur-package}
-\alias{strollur}
 \alias{strollur-package}
 \title{strollur: Store and transfer data used in the analysis of microbial RNA}
 \description{

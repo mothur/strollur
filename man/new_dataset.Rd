@@ -14,10 +14,10 @@ Default = ""}
 Default = all available}
 }
 \value{
-a \link{dataset} object
+a \link{strollur} object
 }
 \description{
-Create a new \link{dataset} object
+Create a new \link{strollur} object
 }
 \examples{
 
@@ -35,5 +35,5 @@ data <- new_dataset(dataset_name = "soil", processors = 2)
 
 }
 \seealso{
-The 'new' method in the \link{dataset} class
+The 'new' method in the \link{strollur} class
 }

@@ -7,13 +7,13 @@
 export_dataset(data)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 }
 \value{
 Rcpp::List, containing the data in the 'Dataset
 }
 \description{
-Export all data from a \link{dataset} object.
+Export all data from a \link{strollur} object.
 }
 \examples{
 

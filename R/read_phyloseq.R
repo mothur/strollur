@@ -27,7 +27,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
     stop("phyloseq_object has to an object created using the phyloseq package.")
   }
 
-  rdaset_object <- dataset$new(dataset_name)
+  rdaset_object <- strollur$new(dataset_name)
 
   # samples
   if (!is.null(phyloseq::get_sample(phyloseq_object))) {

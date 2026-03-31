@@ -12,7 +12,7 @@ get_available_processors <- function() {
 
 #' @title new_dataset
 #' @description
-#' Create a new \link{dataset} object
+#' Create a new \link{strollur} object
 #'
 #' @param dataset_name string, a string containing the dataset name.
 #' Default = ""
@@ -32,9 +32,9 @@ get_available_processors <- function() {
 #'
 #' data <- new_dataset(dataset_name = "soil", processors = 2)
 #'
-#' @returns a \link{dataset} object
+#' @returns a \link{strollur} object
 #' @export
-#' @seealso The 'new' method in the \link{dataset} class
+#' @seealso The 'new' method in the \link{strollur} class
 new_dataset <- function(dataset_name = "", processors = NULL) {
     .Call(`_strollur_new_dataset`, dataset_name, processors)
 }
@@ -74,9 +74,9 @@ new_reference <- function(reference_name, reference_version = "", reference_usag
 
 #' @title copy_dataset
 #' @description
-#' Create a new \link{dataset} object from an existing dataset.
+#' Create a new \link{strollur} object from an existing dataset.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
@@ -85,8 +85,8 @@ new_reference <- function(reference_name, reference_version = "", reference_usag
 #'
 #' data <- copy_dataset(miseq)
 #'
-#' @returns a \link{dataset} object
-#' @seealso The 'new' method in the \link{dataset} class
+#' @returns a \link{strollur} object
+#' @seealso The 'new' method in the \link{strollur} class
 #' @export
 copy_dataset <- function(data) {
     .Call(`_strollur_copy_dataset`, data)
@@ -94,9 +94,9 @@ copy_dataset <- function(data) {
 
 #' @title clear
 #' @description
-#' Clear data from a \link{dataset} object
+#' Clear data from a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @examples
 #'
@@ -110,9 +110,9 @@ clear <- function(data) {
 
 #' @title export_dataset
 #' @description
-#' Export all data from a \link{dataset} object.
+#' Export all data from a \link{strollur} object.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @examples
 #'
@@ -127,9 +127,9 @@ export_dataset <- function(data) {
 
 #' @title get_bin_types
 #' @description
-#' Get bin table types of a \link{dataset} object
+#' Get bin table types of a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #' @examples
 #'
 #' data <- miseq_sop_example()
@@ -143,9 +143,9 @@ get_bin_types <- function(data) {
 
 #' @title has_sample
 #' @description
-#' Determine if a given sample is in a \link{dataset} object
+#' Determine if a given sample is in a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object.
+#' @param data, a \link{strollur} object.
 #' @param sample a string containing the name of a sample.
 #' @examples
 #'
@@ -161,9 +161,9 @@ has_sample <- function(data, sample) {
 
 #' @title has_sequence_strings
 #' @description
-#' Determine if a \link{dataset} object contains sequence nucleotide strings.
+#' Determine if a \link{strollur} object contains sequence nucleotide strings.
 #'
-#' @param data, a \link{dataset} object.
+#' @param data, a \link{strollur} object.
 #' @examples
 #'
 #' data <- miseq_sop_example()
@@ -178,9 +178,9 @@ has_sequence_strings <- function(data) {
 
 #' @title is_aligned
 #' @description
-#' Determine if a \link{dataset} object contains aligned sequences.
+#' Determine if a \link{strollur} object contains aligned sequences.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #' @examples
 #'
 #' dataset <- miseq_sop_example()
@@ -194,10 +194,10 @@ is_aligned <- function(data) {
 
 #' @title xdev_abundance
 #' @description
-#' Get a table containing the requested abundance data in a \link{dataset}
+#' Get a table containing the requested abundance data in a \link{strollur}
 #' object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
 #' Options include: "sequences", "bins".
@@ -245,9 +245,9 @@ xdev_abundance <- function(data, type = "sequences", bin_type = "otu", by_sample
 
 #' @title xdev_add_references
 #' @description
-#' Add resource references to a \link{dataset} object
+#' Add resource references to a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing reference_names, reference_versions
 #' (optional), reference_usages (optional), reference_notes (optional), and
@@ -286,9 +286,9 @@ xdev_add_references <- function(data, table, reference_name = "reference_names",
 
 #' @title xdev_add_report
 #' @description
-#' Add a report to a \link{dataset} object
+#' Add a report to a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing your report.
 #'
@@ -326,9 +326,9 @@ xdev_add_report <- function(data, table, type = "metadata", sequence_name = "seq
 
 #' @title xdev_add_sequences
 #' @description
-#' Add sequence data to a \link{dataset} object
+#' Add sequence data to a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing names, sequences(optional) and
 #' comments(optional).
@@ -373,9 +373,9 @@ xdev_add_sequences <- function(data, table, reference = NULL, sequence_name = "s
 
 #' @title xdev_assign_bins
 #' @description
-#' Add bin assignments to a \link{dataset} object
+#' Add bin assignments to a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing bin_data assignments
 #' @param bin_type a string indicating the type of bin assignments. Default "otu".
@@ -431,7 +431,7 @@ xdev_assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bi
 #' @description
 #' Assign representative sequences to bins.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing bin representative assignments
 #'
@@ -468,12 +468,12 @@ xdev_assign_bin_representative_sequences <- function(data, table, bin_type = "ot
 
 #' @title xdev_assign_bin_taxonomy
 #' @description
-#' Assign bin classifications to a \link{dataset} object
+#' Assign bin classifications to a \link{strollur} object
 #'
 #' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 #'  the concensus taxonomy for each bin for you.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing bin taxonomy assignments
 #' @param bin_type a string indicating the type of bin assignments. Default "otu".
@@ -510,12 +510,12 @@ xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = 
 
 #' @title xdev_assign_sequence_taxonomy
 #' @description
-#' Assign sequence classifications to a \link{dataset} object
+#' Assign sequence classifications to a \link{strollur} object
 #'
 #' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
 #'  the consensus taxonomy for each bin for you.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing sequence taxonomy assignments
 #'
@@ -557,9 +557,9 @@ xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequenc
 #' @title xdev_assign_sequence_abundance
 #' @description
 #' Assign sequence abundance and optionally assign sample and treatment data to
-#'  a \link{dataset} object
+#'  a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing sequence abundance assignments
 #'
@@ -594,9 +594,9 @@ xdev_assign_sequence_abundance <- function(data, table, sequence_name = "sequenc
 
 #' @title xdev_assign_treatments
 #' @description
-#' Assign samples to treatments in a \link{dataset} object
+#' Assign samples to treatments in a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param table, a data.frame containing sample treatment assignments
 #'
@@ -631,9 +631,9 @@ xdev_assign_treatments <- function(data, table, sample = "samples", treatment = 
 #' @title xdev_count
 #' @description
 #' Find the number of sequences, samples, treatments or bins of a given type in
-#' a \link{dataset} object
+#' a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
 #' Options include: "sequences", "samples", "treatments", "bins" and
@@ -713,9 +713,9 @@ xdev_count <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 
 #' @title xdev_get_abundances_by_sample
 #' @description
-#' Get the sequence abundance data in a \link{dataset} object parsed by sample
+#' Get the sequence abundance data in a \link{strollur} object parsed by sample
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param samples a vector of strings containing the names of the samples you
 #' would like sequence names for. By default all samples are included.
@@ -736,7 +736,7 @@ xdev_get_abundances_by_sample <- function(data, samples = as.character( c())) {
 #' @description
 #' Get vector of strings containing the sequences bin data
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type a string indicating the type of bin assignments. Default "otu".
 #' @examples
@@ -753,9 +753,9 @@ xdev_get_list_vector <- function(data, type = "otu") {
 
 #' @title xdev_get_by_sample
 #' @description
-#' Get the requested data in a \link{dataset} object parsed by sample
+#' Get the requested data in a \link{strollur} object parsed by sample
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of data you want the totals of.
 #' Options include: "sequence_names", "sequences". Default = "sequence_names".
@@ -784,9 +784,9 @@ xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.chara
 
 #' @title xdev_get_sequences
 #' @description
-#' Get the nucleotide strings for each sequence in a \link{dataset} object
+#' Get the nucleotide strings for each sequence in a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param sample, a string containing the name of the sample you
 #' would like sequence names for. For all samples in dataset, sample = "".
@@ -798,7 +798,7 @@ xdev_get_by_sample <- function(data, type = "sequence_names", samples = as.chara
 #'  xdev_get_sequences(data)
 #'
 #' @return vector of string containing nucleotide strings of the sequences in
-#' a \link{dataset} object
+#' a \link{strollur} object
 #' @export
 xdev_get_sequences <- function(data, sample = "", degap = FALSE) {
     .Call(`_strollur_xdev_get_sequences`, data, sample, degap)
@@ -807,9 +807,9 @@ xdev_get_sequences <- function(data, sample = "", degap = FALSE) {
 #' @title xdev_merge_bins
 #' @description
 #' Designed with package integration in mind, the merge bins function allows
-#' you to merge bins in a \link{dataset} object
+#' you to merge bins in a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object.
+#' @param data, a \link{strollur} object.
 #'
 #' @param bin_names, a vector of strings containing the names of the bins you
 #' would like merge. The resulting merged bin will be stored in the first
@@ -842,9 +842,9 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu"
 #' @title xdev_merge_sequences
 #' @description
 #' Designed with package integration in mind, the merge sequences function
-#' allows you to merge sequences in a \link{dataset} object.
+#' allows you to merge sequences in a \link{strollur} object.
 #'
-#' @param data, a \link{dataset} object.
+#' @param data, a \link{strollur} object.
 #'
 #' @param sequence_names, a vector of strings containing the names of the
 #' sequences you would like merge. The resulting merged sequence will be stored
@@ -900,9 +900,9 @@ xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
 
 #' @title xdev_names
 #' @description
-#' Get the names of a given type of data in a \link{dataset} object
+#' Get the names of a given type of data in a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of data you would like. Options
 #' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
@@ -967,9 +967,9 @@ xdev_names <- function(data, type = "sequences", bin_type = "otu", samples = NUL
 #' @title xdev_remove_bins
 #' @description
 #' Designed with package integration in mind, the remove bins function allows
-#' you to remove bins from a \link{dataset} object
+#' you to remove bins from a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object.
+#' @param data, a \link{strollur} object.
 #'
 #' @param bin_names, a vector of strings containing the names of the bins you
 #' would like removed.
@@ -1005,9 +1005,9 @@ xdev_remove_bins <- function(data, bin_names, trash_tags, bin_type = "otu") {
 #' @title xdev_remove_lineages
 #' @description
 #' Designed with package integration in mind, the remove lineages function
-#' allows you to remove contaminents from a \link{dataset}
+#' allows you to remove contaminents from a \link{strollur}
 #'
-#' @param data, a \link{dataset} object.
+#' @param data, a \link{strollur} object.
 #'
 #' @param contaminants, vector of strings containing the taxonomies you would
 #' like to remove
@@ -1035,9 +1035,9 @@ xdev_remove_lineages <- function(data, contaminants, reason = "contaminant") {
 #' @title xdev_remove_samples
 #' @description
 #' Designed with package integration in mind, the remove samples function allows
-#' you to remove samples from a \link{dataset} object
+#' you to remove samples from a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object.
+#' @param data, a \link{strollur} object.
 #'
 #' @param samples, vector of strings containing the names of the samples to
 #' remove.
@@ -1065,9 +1065,9 @@ xdev_remove_samples <- function(data, samples, reason = "remove_samples") {
 #' @title xdev_remove_sequences
 #' @description
 #' Designed with package integration in mind, the remove sequences function
-#' allows you to remove sequences from a \link{dataset} object
+#' allows you to remove sequences from a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object.
+#' @param data, a \link{strollur} object.
 #'
 #' @param sequence_names, vector of strings containing the names of the
 #' sequences to remove
@@ -1108,9 +1108,9 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 
 #' @title xdev_report
 #' @description
-#' Get a data.frame containing the given report in a \link{dataset} object
+#' Get a data.frame containing the given report in a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of report you would like. Options
 #' include: "fasta", "sequences", "sequence_bin_assignments",
@@ -1216,10 +1216,10 @@ xdev_report <- function(data, type = "sequences", bin_type = "otu") {
 #' @title xdev_set_abundance
 #' @description
 #' Designed with package integration in mind, the set abundance function
-#' allows you to change the abundances of sequences in a \link{dataset} object
+#' allows you to change the abundances of sequences in a \link{strollur} object
 #' without samples.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param sequence_names, a vector of strings containing sequence names
 #' @param sequence_abundances, vector containing the abundances of each
@@ -1255,10 +1255,10 @@ xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason
 #' @title xdev_set_abundances
 #' @description
 #' Designed with package integration in mind, the set abundances function
-#' allows you to change the abundances of sequences in a \link{dataset} object
+#' allows you to change the abundances of sequences in a \link{strollur} object
 #' with samples.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param sequence_names, a vector of strings containing sequence names
 #' @param abundances, 2D vector ([num_seqs][num_samples]) containing
@@ -1295,11 +1295,11 @@ xdev_set_abundances <- function(data, sequence_names, abundances, reason = "upda
 #' @title xdev_set_sequences
 #' @description
 #' Designed with package integration in mind, the set sequences function
-#' allows you to change the nucleotide strings of sequences in a \link{dataset}
+#' allows you to change the nucleotide strings of sequences in a \link{strollur}
 #' object. For example, set_sequences may be used after alignment to overwrite
 #' the unaligned sequences with aligned sequences.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #' @param sequence_names, a vector of strings containing sequence names
 #' @param sequences, a vector of strings containing sequence nucleotide strings
 #' @param comments, a vector of strings containing sequence comments.
@@ -1324,9 +1324,9 @@ xdev_set_sequences <- function(data, sequence_names, sequences, comments = as.ch
 
 #' @title xdev_set_dataset_name
 #' @description
-#' Designed with package integration in mind, set the name of a \link{dataset} object.
+#' Designed with package integration in mind, set the name of a \link{strollur} object.
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #' @param dataset_name, a string containing the desired name
 #'
 #' @examples
@@ -1342,9 +1342,9 @@ xdev_set_dataset_name <- function(data, dataset_name) {
 #' @title xdev_set_num_processors
 #' @description
 #' Designed with package integration in mind, set the number of processors used
-#'  to summarize a \link{dataset} object
+#'  to summarize a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #' @param processors, a integer containing the desired number of processors
 #' @examples
 #'
@@ -1359,9 +1359,9 @@ xdev_set_num_processors <- function(data, processors) {
 #' @title xdev_summarize
 #' @description
 #' Summarize the sequences data, custom reports, and scrapped data in a
-#' \link{dataset} object
+#' \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
 #' Options include: "sequences", "reports" and "scrap". Default = "sequences".
@@ -1400,7 +1400,7 @@ xdev_summarize <- function(data, type = "sequences", report_type = NULL) {
 #' @name xint_copy_pointer
 #' @description
 #' For internal use only, copy an instance of the C++ 'Dataset' class.
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #' @return pointer to an instance of the C++ 'Dataset' class.
 #' @keywords internal
 xint_copy_pointer <- function(data) {
@@ -1424,7 +1424,7 @@ xint_new_pointer <- function(dataset_name, processors) {
 #' @description
 #' For internal use only, deserialize_dobject an instance of the C++ 'Dataset'
 #'  class.
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 xint_deserialize_dobject <- function(data) {
     invisible(.Call(`_strollur_xint_deserialize_dobject`, data))
 }
@@ -1434,7 +1434,7 @@ xint_deserialize_dobject <- function(data) {
 #' @description
 #' For internal use only, xint_serialize_dobject an instance of the C++ 'Dataset'
 #' class.
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 xint_serialize_dobject <- function(data) {
     invisible(.Call(`_strollur_xint_serialize_dobject`, data))
 }
