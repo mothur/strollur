@@ -146,7 +146,8 @@ otu_data <- read_mothur_cons_taxonomy(strollur_example(
 
 # assign otu consensus taxonomies
 assign(
-  data, table = otu_data,
+  data,
+  table = otu_data,
   type = "bin_taxonomy", bin_type = "otu"
 )
 

@@ -168,6 +168,33 @@ strollur <- R6Class("strollur",
       cat("\n")
     },
 
+    add = function(table,
+                    type = "sequences",
+                    report_type = NULL,
+                    table_names = list(
+                        sequence_name = "sequence_names",
+                        sequence = "sequences",
+                        comment = "comments",
+                        reference_name = "reference_names",
+                        reference_version = "reference_versions",
+                        reference_usage = "reference_usages",
+                        reference_note = "reference_notes",
+                        reference_url = "reference_urls"
+                    ),
+                    reference = NULL,
+                    verbose = TRUE) {
+print("here")
+        strollur::add(self,
+            table = table,
+            type = type,
+            report_type = report_type,
+            table_names = table_names,
+            reference = reference,
+            verbose = verbose)
+
+        invisible(self)
+    },
+
     #' @description
     #' Add phylo tree relating the samples in your dataset
     #'

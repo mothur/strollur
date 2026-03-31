@@ -908,6 +908,7 @@ Rcpp::DataFrame xdev_summarize(Rcpp::Environment data, string type,
 
         // make sure its a valid report type
         vector<string> reportOptions = d.get()->getReportTypes();
+
         if (!vectorContains(reportOptions, rType)) {
             string message = rType + " is not a valid report_type option. ";
             if (!reportOptions.empty()) {

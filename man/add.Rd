@@ -130,7 +130,8 @@ contigs_report <- readr::read_tsv(
 )
 
 add(
-  data, table = contigs_report, type = "reports",
+  data,
+  table = contigs_report, type = "reports",
   report_type = "contigs_report", list(sequence_name = "Name")
 )
 
