@@ -7,7 +7,7 @@
 xdev_remove_lineages(data, contaminants, reason = "contaminant")
 }
 \arguments{
-\item{data, }{a \link{dataset} object.}
+\item{data, }{a \link{strollur} object.}
 
 \item{contaminants, }{vector of strings containing the taxonomies you would
 like to remove}
@@ -17,7 +17,7 @@ Default = "contaminant".}
 }
 \description{
 Designed with package integration in mind, the remove lineages function
-allows you to remove contaminents from a \link{dataset}
+allows you to remove contaminents from a \link{strollur}
 }
 \examples{
 data <- read_mothur(fasta = strollur_example("final.fasta.gz"),

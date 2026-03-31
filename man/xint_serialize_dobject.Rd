@@ -7,7 +7,7 @@
 xint_serialize_dobject(data)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 }
 \description{
 For internal use only, xint_serialize_dobject an instance of the C++ 'Dataset'

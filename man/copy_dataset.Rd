@@ -7,13 +7,13 @@
 copy_dataset(data)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 }
 \value{
-a \link{dataset} object
+a \link{strollur} object
 }
 \description{
-Create a new \link{dataset} object from an existing dataset.
+Create a new \link{strollur} object from an existing dataset.
 }
 \examples{
 
@@ -25,5 +25,5 @@ data <- copy_dataset(miseq)
 
 }
 \seealso{
-The 'new' method in the \link{dataset} class
+The 'new' method in the \link{strollur} class
 }

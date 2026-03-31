@@ -299,16 +299,6 @@ const vector<float> AbundTable::getAbundances(const int name) {
     return abunds;
 }
 /******************************************************************************/
-const vector<vector<float>> AbundTable::getAbundances(const vector<int>& ids) {
-    vector<vector<float>> results(ids.size());
-
-    for (int i = 0; i < ids.size(); i++) {
-        results[i] = getAbundances(ids[i]);
-    }
-
-    return results;
-}
-/******************************************************************************/
 const vector<vector<float>> AbundTable::getAbundanceBySample(const vector<int>& ids,
                                                  vector<string> samplesToSelect) {
 
@@ -403,21 +393,9 @@ const map<string, string> AbundTable::getSampleTreatmentAssignments() {
     return results;
 }
 /******************************************************************************/
-const int AbundTable::getNumSamples(const int name) {
+const int AbundTable::getNumSamples() {
     if (hasSampleData) {
-        if (name == -1) {
-           return numSamples;
-        }else {
-           vector<int> sampleIndexes = counts[name].sampleIndex;
-           int num = 0;
-           for (int index : sampleIndexes) {
-               // only count "good" samples
-               if (tableSamples[index]) {
-                   num++;
-               }
-           }
-           return num;
-        }
+        return numSamples;
     }
     return 0;
 }
@@ -535,8 +513,7 @@ const Rcpp::DataFrame AbundTable::getAbundanceTable(const vector<string>& output
 
     }
 
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 const int AbundTable::getSparseIndex(int name, int sample) {
@@ -554,20 +531,7 @@ const int AbundTable::getSparseIndex(int name, int sample) {
     return index;
 }
 /******************************************************************************/
-const double AbundTable::getTotal(string sample) {
-    if (sample != "") {
-        auto it = sampleIndex.find(sample);
-
-        // is this a sample in the table
-        if (it != sampleIndex.end()) {
-            // is it "good"
-            if (tableSamples[it->second]) {
-                return sampleTotals[it->second];
-            }
-        }
-        // dataset does not include the sample
-        return 0;
-    }
+const double AbundTable::getTotal() {
     return total;
 }
 /******************************************************************************/
@@ -701,7 +665,7 @@ void AbundTable::removeSamples(const vector<string>& samples) {
 }
 /******************************************************************************/
 // set abundance
-void AbundTable::setAbundance(const int name, const vector<float>& abunds) {
+float AbundTable::setAbundance(const int name, const vector<float>& abunds) {
 
     vector<float> origAbunds = getAbundances(name);
 
@@ -723,82 +687,60 @@ void AbundTable::setAbundance(const int name, const vector<float>& abunds) {
         }
 
         total -= diffAbund;
+        return diffAbund;
     }else{
         total -= (origAbunds[0] - abunds[0]);
+        return (origAbunds[0] - abunds[0]);
     }
 }
 /******************************************************************************/
 // set abundance - for single sample
-void AbundTable::setAbundance(int name, float abund, string sample) {
+float AbundTable::setAbundance(int name, float abund) {
 
-    if (!hasSampleData && (sample == "")) {
+    if (!hasSampleData) {
         float origAbund = getAbundance(name);
 
         sampleAbunds thisCount(0, abund);
         counts[name] = thisCount;
 
         total -= (origAbund - abund);
-    }else if (hasSampleData && (sample != "")) {
-        // valid sample
-        auto it = sampleIndex.find(sample);
 
-        if (it != sampleIndex.end()) {
-            int index = it->second;
-
-            // "good" sample
-            if (tableSamples[index]) {
-                // if the sequence does not have this sample, -1 returned
-                int thisSamplesIndex = getSparseIndex(name, index);
-
-                float orig = 0;
-                if (thisSamplesIndex != -1) {
-                    // update existing abunds
-                    orig = counts[name].abunds[thisSamplesIndex];
-                    counts[name].abunds[thisSamplesIndex] = abund;
-                }else{
-                    // add new abund
-                    counts[name].abunds.push_back(abund);
-                    counts[name].sampleIndex.push_back(index);
-                }
-
-                float diff = orig - abund;
-                sampleTotals[index] -= diff;
-                total -= diff;
-            }
-        }
+        return (origAbund - abund);
     }
+
+    return 0;
 }
 /******************************************************************************/
-void AbundTable::setAbundances(const map<int, map<string, float>>& binAbunds) {
-
-    // just abunds no parse by sample
-    if (hasSampleData) {
-        for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
-
-            vector<float> abunds(numSamples, 0);
-            for (auto itSample = it->second.begin();
-                 itSample != it->second.end(); itSample++) {
-
-                 // valid sample
-                 auto itIndex = sampleIndex.find(itSample->first);
-
-                if (itIndex != sampleIndex.end()) {
-                    int index = itIndex->second;
-
-                    abunds[index] = itSample->second;
-                }
-            }
-
-            setAbundance(it->first, abunds);
-        }
-    }else{
-        for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
-            setAbundance(it->first, it->second.begin()->second);
-        }
-    }
-
-    updateTotals();
-}
+// void AbundTable::setAbundances(const map<int, map<string, float>>& binAbunds) {
+//
+//     // just abunds no parse by sample
+//     if (hasSampleData) {
+//         for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
+//
+//             vector<float> abunds(numSamples, 0);
+//             for (auto itSample = it->second.begin();
+//                  itSample != it->second.end(); itSample++) {
+//
+//                  // valid sample
+//                  auto itIndex = sampleIndex.find(itSample->first);
+//
+//                 if (itIndex != sampleIndex.end()) {
+//                     int index = itIndex->second;
+//
+//                     abunds[index] = itSample->second;
+//                 }
+//             }
+//
+//             setAbundance(it->first, abunds);
+//         }
+//     }else{
+//         for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
+//             setAbundance(it->first, it->second.begin()->second);
+//         }
+//     }
+//
+//     updateTotals();
+// }
 /******************************************************************************/
 void AbundTable::updateTotals() {
 

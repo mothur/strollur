@@ -52,19 +52,6 @@
           but received {.var {type_received}}.")
 }
 
-#' @title alert_missing_data
-#' @description
-#' Import table is missing requested tag
-#' @param tag name of missing requested tag
-#' @keywords internal
-.abort_missing_tag_alert <- function(tag) {
-  message <- paste0(
-    "[WARNING]: The import table does not include ",
-    "'{.var {tag}', ignoring tag."
-  )
-  cli::cli_alert(message)
-}
-
 #' @title added_message
 #' @description
 #' Report dataset additions

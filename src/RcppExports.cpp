@@ -330,27 +330,29 @@ BEGIN_RCPP
 END_RCPP
 }
 // xdev_get_by_sample
-vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data, string type, Rcpp::CharacterVector samples);
-RcppExport SEXP _strollur_xdev_get_by_sample(SEXP dataSEXP, SEXP typeSEXP, SEXP samplesSEXP) {
+vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data, string type, Rcpp::CharacterVector samples, bool degap);
+RcppExport SEXP _strollur_xdev_get_by_sample(SEXP dataSEXP, SEXP typeSEXP, SEXP samplesSEXP, SEXP degapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type type(typeSEXP);
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type samples(samplesSEXP);
-    rcpp_result_gen = Rcpp::wrap(xdev_get_by_sample(data, type, samples));
+    Rcpp::traits::input_parameter< bool >::type degap(degapSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_get_by_sample(data, type, samples, degap));
     return rcpp_result_gen;
 END_RCPP
 }
 // xdev_get_sequences
-vector<string> xdev_get_sequences(Rcpp::Environment data, string sample);
-RcppExport SEXP _strollur_xdev_get_sequences(SEXP dataSEXP, SEXP sampleSEXP) {
+vector<string> xdev_get_sequences(Rcpp::Environment data, string sample, bool degap);
+RcppExport SEXP _strollur_xdev_get_sequences(SEXP dataSEXP, SEXP sampleSEXP, SEXP degapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
     Rcpp::traits::input_parameter< string >::type sample(sampleSEXP);
-    rcpp_result_gen = Rcpp::wrap(xdev_get_sequences(data, sample));
+    Rcpp::traits::input_parameter< bool >::type degap(degapSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_get_sequences(data, sample, degap));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -600,8 +602,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_count", (DL_FUNC) &_strollur_xdev_count, 5},
     {"_strollur_xdev_get_abundances_by_sample", (DL_FUNC) &_strollur_xdev_get_abundances_by_sample, 2},
     {"_strollur_xdev_get_list_vector", (DL_FUNC) &_strollur_xdev_get_list_vector, 2},
-    {"_strollur_xdev_get_by_sample", (DL_FUNC) &_strollur_xdev_get_by_sample, 3},
-    {"_strollur_xdev_get_sequences", (DL_FUNC) &_strollur_xdev_get_sequences, 2},
+    {"_strollur_xdev_get_by_sample", (DL_FUNC) &_strollur_xdev_get_by_sample, 4},
+    {"_strollur_xdev_get_sequences", (DL_FUNC) &_strollur_xdev_get_sequences, 3},
     {"_strollur_xdev_merge_bins", (DL_FUNC) &_strollur_xdev_merge_bins, 4},
     {"_strollur_xdev_merge_sequences", (DL_FUNC) &_strollur_xdev_merge_sequences, 3},
     {"_strollur_xdev_names", (DL_FUNC) &_strollur_xdev_names, 5},

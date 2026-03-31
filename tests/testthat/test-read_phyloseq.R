@@ -3,9 +3,11 @@ test_that("test read_phyloseq", {
   groups_file <- strollur_example("esophagus.good.groups")
   tree_file <- strollur_example("esophagus.tree")
 
-  phyloseq_object <- phyloseq::import_mothur(list_file,
-                                             groups_file,
-                                             tree_file)
+  phyloseq_object <- phyloseq::import_mothur(
+    list_file,
+    groups_file,
+    tree_file
+  )
   data <- read_phyloseq(phyloseq_object)
   expect_true(count(data) == 675)
 
@@ -13,11 +15,13 @@ test_that("test read_phyloseq", {
   shared_file <- strollur_example("final.opti_mcc.shared")
   constaxonomy_file <- strollur_example("final.cons.taxonomy")
 
-  phyloseq_object_w_tax <- phyloseq::import_mothur(mothur_list_file = list_file,
-                                                   mothur_shared_file =
-                                                     shared_file,
-                                                   mothur_constaxonomy_file =
-                                                     constaxonomy_file)
+  phyloseq_object_w_tax <- phyloseq::import_mothur(
+    mothur_list_file = list_file,
+    mothur_shared_file =
+      shared_file,
+    mothur_constaxonomy_file =
+      constaxonomy_file
+  )
 
   data <- read_phyloseq(phyloseq_object_w_tax)
   row_data <- phyloseq::tax_table(phyloseq_object_w_tax)[9, ]
@@ -33,18 +37,23 @@ test_that("test read_phyloseq", {
   expect_true(rdata_set_data[52, 3] == row_data[[4]])
   expect_true(rdata_set_data[53, 3] == row_data[[5]])
   expect_true(rdata_set_data[54, 3] == row_data[[6]])
-
 })
 
 test_that("read phyloseq fails if not given an phyloseq object", {
   empty <- c()
-  expect_error(read_phyloseq(empty),
-               paste0("phyloseq_object has to an object created using ",
-                      "the phyloseq package."))
+  expect_error(
+    read_phyloseq(empty),
+    paste0(
+      "phyloseq_object has to an object created using ",
+      "the phyloseq package."
+    )
+  )
 })
 
 test_that("Will error if phyloseq is not installed", {
   local_mocked_bindings(require_namespace = function(...) FALSE)
-  expect_error(read_phyloseq(c()),
-               "To use this functionality")
+  expect_error(
+    read_phyloseq(c()),
+    "To use this functionality"
+  )
 })

@@ -9,9 +9,9 @@ count <- function(x, type = "sequences",
 #' @title count
 #' @description
 #' Find the number of sequences, samples, treatments or bins of a given type in
-#' a \link{dataset} object
+#' a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
 #' Options include: "sequences", "samples", "treatments", "bins", and
@@ -97,7 +97,7 @@ count <- function(data,
                   bin_type = "otu",
                   samples = NULL,
                   distinct = FALSE) {
-  if ("dataset" %in% class(data)) {
+  if ("strollur" %in% class(data)) {
     xdev_count(data, type, bin_type, samples, distinct)
   } else {
     dplyr::count(data)

@@ -13,7 +13,7 @@ names(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{type, }{string containing the type of data you would like. Options
 include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
@@ -38,7 +38,7 @@ data from other samples. Default = FALSE.}
 vector of strings, containing the names requested
 }
 \description{
-Get the names of a given type of data in a \link{dataset} object
+Get the names of a given type of data in a \link{strollur} object
 }
 \examples{
 

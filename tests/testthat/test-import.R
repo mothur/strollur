@@ -55,7 +55,7 @@ test_that("import - miseq_sop_example", {
     )
   }
 
-  data <- dataset$new()
+  data <- strollur$new()
   abunds <- c(1, 10, 100)
   bins <- c("otu1", "otu2", "otu3")
 
@@ -179,7 +179,7 @@ test_that("import - errors and warnings", {
   expect_equal(count(data, "samples"), count(just_bins, "samples"))
   expect_equal(length(names(data)), 531)
 
-  data <- dataset$new()
+  data <- strollur$new()
 
   table <- export_dataset(data)
   expect_equal(length(table), 0)

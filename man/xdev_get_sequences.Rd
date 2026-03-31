@@ -4,20 +4,23 @@
 \alias{xdev_get_sequences}
 \title{xdev_get_sequences}
 \usage{
-xdev_get_sequences(data, sample = "")
+xdev_get_sequences(data, sample = "", degap = FALSE)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{sample, }{a string containing the name of the sample you
 would like sequence names for. For all samples in dataset, sample = "".}
+
+\item{degap, }{a logical. Default = FALSE. When degap = `TRUE`, all gap
+characters ('-', '.') will be removed from the sequences.}
 }
 \value{
 vector of string containing nucleotide strings of the sequences in
-a \link{dataset} object
+a \link{strollur} object
 }
 \description{
-Get the nucleotide strings for each sequence in a \link{dataset} object
+Get the nucleotide strings for each sequence in a \link{strollur} object
 }
 \examples{
 

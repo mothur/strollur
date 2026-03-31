@@ -2,7 +2,7 @@ test_that("write_mothur_design - errors", {
   expect_error(write_mothur_design("Bad_type"))
 
   # no file name with nameless dataset
-  data <- dataset$new()
+  data <- strollur$new()
   expect_error(write_mothur_design(data))
 })
 

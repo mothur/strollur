@@ -51,3 +51,19 @@ test_that("test read_qiime2", {
   expect_equal(sample_totals$abundances, sample_abunds)
   expect_equal(sample_totals$samples, sample_names)
 })
+
+test_that("test read_qiime2", {
+  metadata <- read_qiime2_metadata(
+    metadata = strollur_example("mouse.dpw.metadata")
+  )
+
+  expect_equal(nrow(metadata), 19)
+  expect_equal(length(metadata), 2)
+
+  days_post_wean <- c(
+    0, 1, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
+    2, 3, 5, 6, 7, 8, 9
+  )
+
+  expect_equal(metadata[[2]], days_post_wean)
+})

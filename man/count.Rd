@@ -13,7 +13,7 @@ count(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "samples", "treatments", "bins", and
@@ -43,7 +43,7 @@ double
 }
 \description{
 Find the number of sequences, samples, treatments or bins of a given type in
-a \link{dataset} object
+a \link{strollur} object
 }
 \examples{
 

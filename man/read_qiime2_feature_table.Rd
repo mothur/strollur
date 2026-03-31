@@ -39,9 +39,9 @@ artifact <- read_qiime2_feature_table(strollur_example(
 
 artifact$data
 
-# to create a 'dataset' object with your data
+# to create a `strollur` object with your data
 
-data <- dataset$new("my_data")
+data <- strollur$new("my_data")
 
 assign(data = data, table = artifact$data, type = "bins")
 

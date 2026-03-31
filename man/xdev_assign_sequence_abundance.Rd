@@ -15,7 +15,7 @@ xdev_assign_sequence_abundance(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{table, }{a data.frame containing sequence abundance assignments}
 
@@ -40,7 +40,7 @@ double containing the number of sequences assigned
 }
 \description{
 Assign sequence abundance and optionally assign sample and treatment data to
- a \link{dataset} object
+ a \link{strollur} object
 }
 \examples{
 

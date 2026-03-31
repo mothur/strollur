@@ -1,7 +1,7 @@
 #' @title read_qiime2
 #' @description
 #' The read_qiime2 function reads various types of .qza files created by
-#' \href{https://qiime2.org}{qiime2}, and creates a 'dataset' object.
+#' \href{https://qiime2.org}{qiime2}, and creates a `strollur` object.
 #'
 # nolint start
 #' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
@@ -35,7 +35,7 @@
 #' )
 #' data
 #'
-#' @return A 'dataset' object
+#' @return A `strollur` object
 #' @export
 read_qiime2 <- function(qza, metadata = NULL,
                         dataset_name = "", dir_path = NULL,
@@ -130,8 +130,8 @@ read_qiime2 <- function(qza, metadata = NULL,
     }
   }
 
-  # create new blank dataset
-  data <- dataset$new(name = dataset_name)
+  # create new blank `strollur` object
+  data <- strollur$new(name = dataset_name)
 
   # read metadata
   if (!is.null(metadata)) {

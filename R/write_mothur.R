@@ -4,7 +4,7 @@
 #' \href{https://mothur.org/wiki/tags/#file_types}{file types} for use with
 #' mothur.
 #'
-#' @param data A 'dataset' object
+#' @param data A `strollur` object
 #' @param dir_path a string containing the name of directory where the files
 #' should be written. Default = current working directory.
 #' @param tags a vector of strings containing the items you wish to write
@@ -23,8 +23,8 @@
 #' @export
 write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   # check type
-  if (class(data)[1] != "dataset") {
-    .abort_incorrect_type("dataset", data)
+  if (class(data)[1] != "strollur") {
+    .abort_incorrect_type("strollur", data)
   }
 
   dataset_name <- names(data, "dataset")

@@ -7,7 +7,7 @@
 report(data, type = "sequences", bin_type = "otu")
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{type, }{string containing the type of report you would like. Options
 include: "fasta", "sequences", "sequence_bin_assignments",
@@ -24,11 +24,11 @@ report for. Default = "otu".}
 data.frame
 }
 \description{
-Get a data.frame containing the given report in a \link{dataset} object
+Get a data.frame containing the given report in a \link{strollur} object
 }
 \examples{
 
-# First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
+# First let's create a `strollur` object from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
 miseq <- miseq_sop_example()
 
 # To get the FASTA data

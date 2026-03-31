@@ -8,9 +8,9 @@ summary <- function(x, type = "sequences",
 #' @title summary
 #' @description
 #' Summarize the sequences data, custom reports, and scrapped data in a
-#' \link{dataset} object
+#' \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
 #' Options include: "sequences", "reports" and "scrap". Default = "sequences".
@@ -46,7 +46,7 @@ summary <- function(x, type = "sequences",
 #' @export
 summary <- function(data, type = "sequences",
                     report_type = NULL, verbose = TRUE) {
-  if ("dataset" %in% class(data)) {
+  if ("strollur" %in% class(data)) {
     dataset_summary <- xdev_summarize(data, type, report_type)
     if (verbose) {
       print(dataset_summary)

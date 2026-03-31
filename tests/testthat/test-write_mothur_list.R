@@ -4,7 +4,7 @@ test_that("write_mothur_list - errors", {
   expect_error(write_mothur_list("Bad_type"))
 
   # no file name with nameless dataset
-  data <- dataset$new()
+  data <- strollur$new()
   expect_error(write_mothur_list(data))
 })
 

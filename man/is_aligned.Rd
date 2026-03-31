@@ -7,13 +7,13 @@
 is_aligned(data)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 }
 \value{
 Boolean
 }
 \description{
-Determine if a \link{dataset} object contains aligned sequences.
+Determine if a \link{strollur} object contains aligned sequences.
 }
 \examples{
 

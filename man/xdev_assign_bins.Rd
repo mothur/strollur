@@ -17,7 +17,7 @@ xdev_assign_bins(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \link{strollur} object}
 
 \item{table, }{a data.frame containing bin_data assignments}
 
@@ -47,7 +47,7 @@ Default = TRUE.}
 double containing the number of bins assigned
 }
 \description{
-Add bin assignments to a \link{dataset} object
+Add bin assignments to a \link{strollur} object
 }
 \examples{
 

@@ -8,9 +8,9 @@ names <- function(x, type = "sequences",
 
 #' @title names
 #' @description
-#' Get the names of a given type of data in a \link{dataset} object
+#' Get the names of a given type of data in a \link{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a \link{strollur} object
 #'
 #' @param type, string containing the type of data you would like. Options
 #' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
@@ -72,7 +72,7 @@ names <- function(data,
                   bin_type = "otu",
                   samples = NULL,
                   distinct = FALSE) {
-  if ("dataset" %in% class(data)) {
+  if ("strollur" %in% class(data)) {
     xdev_names(data, type, bin_type, samples, distinct)
   } else {
     base::names(data)
