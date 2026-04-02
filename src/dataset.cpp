@@ -74,7 +74,7 @@ Dataset::Dataset(const Dataset& dataset) {
 }
 /******************************************************************************/
 void Dataset::loadFromSerialized(Rcpp::RawVector serializedDataset) {
-    std::string serialized_data(reinterpret_cast<const char*>(serializedDataset.begin()),
+    const std::string serialized_data(reinterpret_cast<const char*>(serializedDataset.begin()),
                                 serializedDataset.size());
     std::stringstream ss(serialized_data);
     {
@@ -130,7 +130,7 @@ Rcpp::List Dataset::exportDataset(const vector<string>& tags){
 
     set<string> t;
     bool hasTags = false;
-    if (tags.size() != 0) {
+    if (!tags.empty()) {
         t = toSet(tags);
         hasTags = true;
 
@@ -1171,7 +1171,7 @@ const Rcpp::DataFrame Dataset::getSummary(const string& type, const string& repo
             delete summary;
         }
     }else if (type == "reports") {
-        auto it = reports.find(reportType);
+        const auto it = reports.find(reportType);
 
         // do we have this report type
         if (it != reports.end()) {
