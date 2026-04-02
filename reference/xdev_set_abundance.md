@@ -2,7 +2,7 @@
 
 Designed with package integration in mind, the set abundance function
 allows you to change the abundances of sequences in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 without samples.
 
 ## Usage
@@ -20,7 +20,7 @@ xdev_set_abundance(
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - sequence_names, :
 

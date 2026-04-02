@@ -1,29 +1,34 @@
 # xdev_get_sequences
 
 Get the nucleotide strings for each sequence in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
 ``` r
-xdev_get_sequences(data, sample = "")
+xdev_get_sequences(data, sample = "", degap = FALSE)
 ```
 
 ## Arguments
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - sample, :
 
   a string containing the name of the sample you would like sequence
   names for. For all samples in dataset, sample = "".
 
+- degap, :
+
+  a logical. Default = FALSE. When degap = \`TRUE\`, all gap characters
+  ('-', '.') will be removed from the sequences.
+
 ## Value
 
 vector of string containing nucleotide strings of the sequences in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Examples
 

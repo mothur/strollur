@@ -13,7 +13,7 @@ write_mothur_cons_taxonomy(data, file_root = NULL)
 
 - data:
 
-  A 'dataset' object
+  A \`strollur\` object
 
 - file_root:
 

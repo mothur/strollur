@@ -13,10 +13,9 @@ Adding and using data
 - [`report()`](https://mothur.org/strollur/reference/report.md) : report
 - [`summary()`](https://mothur.org/strollur/reference/summary.md) :
   summary
-- [`dataset`](https://mothur.org/strollur/reference/dataset.md) :
-  dataset
-- [`strollur`](https://mothur.org/strollur/reference/strollur-package.md)
-  [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
+- [`strollur`](https://mothur.org/strollur/reference/strollur.md) :
+  strollur
+- [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
   : strollur: Store and transfer data used in the analysis of microbial
   RNA
 - [`get_bin_types()`](https://mothur.org/strollur/reference/get_bin_types.md)
@@ -111,7 +110,7 @@ Save, copy, load, import, export and write to file
 
 ## Functions for Package Developers
 
-Want to create and modify dataset objects from your package? Check out
+Want to create and modify strollur objects from your package? Check out
 these functions
 
 - [`strollur_example()`](https://mothur.org/strollur/reference/strollur_example.md)

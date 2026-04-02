@@ -1,7 +1,7 @@
 # xdev_get_abundances_by_sample
 
 Get the sequence abundance data in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 parsed by sample
 
 ## Usage
@@ -14,7 +14,7 @@ xdev_get_abundances_by_sample(data, samples = as.character(c()))
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - samples:
 

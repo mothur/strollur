@@ -1,7 +1,7 @@
 # xdev_add_report
 
 Add a report to a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -19,7 +19,7 @@ xdev_add_report(
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - table, :
 

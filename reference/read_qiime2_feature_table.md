@@ -2339,9 +2339,9 @@ artifact$data
 #> 2289 98d250a339a635f20e26397dafc6ced3          2   L4S63
 #> 2290 1830c14ead81ad012f1db0e12f8ab6a4          2   L6S93
 
-# to create a 'dataset' object with your data
+# to create a `strollur` object with your data
 
-data <- dataset$new("my_data")
+data <- strollur$new("my_data")
 
 assign(data = data, table = artifact$data, type = "bins")
 #> ℹ Assigned 759 otu bins.

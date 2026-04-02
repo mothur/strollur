@@ -2,7 +2,7 @@
 
 Designed with package integration in mind, the remove samples function
 allows you to remove samples from a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -14,7 +14,8 @@ xdev_remove_samples(data, samples, reason = "remove_samples")
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object.
+  a [strollur](https://mothur.org/strollur/reference/strollur.md)
+  object.
 
 - samples, :
 

@@ -20,7 +20,7 @@ xdev_assign_bin_representative_sequences(
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - table, :
 

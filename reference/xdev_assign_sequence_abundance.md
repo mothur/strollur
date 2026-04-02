@@ -1,7 +1,7 @@
 # xdev_assign_sequence_abundance
 
 Assign sequence abundance and optionally assign sample and treatment
-data to a [dataset](https://mothur.org/strollur/reference/dataset.md)
+data to a [strollur](https://mothur.org/strollur/reference/strollur.md)
 object
 
 ## Usage
@@ -22,7 +22,7 @@ xdev_assign_sequence_abundance(
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - table, :
 

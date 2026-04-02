@@ -1,6 +1,6 @@
 # miseq_sop_example
 
-The miseq_sop_example function will create 'dataset' object using the
+The miseq_sop_example function will create 'strollur' object using the
 analysis files from the [MiSeq_SOP](https://mothur.org/wiki/miseq_sop/)
 example.
 
@@ -12,7 +12,7 @@ miseq_sop_example()
 
 ## Value
 
-A 'dataset' object
+A 'strollur' object
 
 ## Examples
 

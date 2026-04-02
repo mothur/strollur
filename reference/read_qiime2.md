@@ -1,7 +1,7 @@
 # read_qiime2
 
 The read_qiime2 function reads various types of .qza files created by
-[qiime2](https://qiime2.org), and creates a 'dataset' object.
+[qiime2](https://qiime2.org), and creates a \`strollur\` object.
 
 To generate the various input files you can follow [qiime2
 moving-pictures](https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html).
@@ -44,7 +44,7 @@ read_qiime2(
 
 ## Value
 
-A 'dataset' object
+A \`strollur\` object
 
 ## Examples
 

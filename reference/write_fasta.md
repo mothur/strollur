@@ -6,19 +6,24 @@ formatted sequence file
 ## Usage
 
 ``` r
-write_fasta(data, filename = NULL)
+write_fasta(data, filename = NULL, degap = FALSE)
 ```
 
 ## Arguments
 
 - data:
 
-  A 'dataset' object
+  A \`strollur\` object
 
 - filename:
 
   a string containing the name of the output file. Default =
   'dataset_name'.fasta
+
+- degap:
+
+  a logical. Default = FALSE. When degap = \`TRUE\`, all gap characters
+  will be removed from the sequences.
 
 ## Value
 

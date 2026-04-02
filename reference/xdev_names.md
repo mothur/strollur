@@ -1,7 +1,7 @@
 # xdev_names
 
 Get the names of a given type of data in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -19,7 +19,7 @@ xdev_names(
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - type, :
 

@@ -1,7 +1,7 @@
 # xdev_summarize
 
 Summarize the sequences data, custom reports, and scrapped data in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -13,7 +13,7 @@ xdev_summarize(data, type = "sequences", report_type = NULL)
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - type, :
 

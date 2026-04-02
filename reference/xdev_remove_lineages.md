@@ -2,7 +2,7 @@
 
 Designed with package integration in mind, the remove lineages function
 allows you to remove contaminents from a
-[dataset](https://mothur.org/strollur/reference/dataset.md)
+[strollur](https://mothur.org/strollur/reference/strollur.md)
 
 ## Usage
 
@@ -14,7 +14,8 @@ xdev_remove_lineages(data, contaminants, reason = "contaminant")
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object.
+  a [strollur](https://mothur.org/strollur/reference/strollur.md)
+  object.
 
 - contaminants, :
 

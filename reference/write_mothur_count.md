@@ -13,7 +13,7 @@ write_mothur_count(data, filename = NULL)
 
 - data:
 
-  A 'dataset' object
+  A \`strollur\` object
 
 - filename:
 

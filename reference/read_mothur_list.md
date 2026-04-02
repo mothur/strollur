@@ -31,7 +31,7 @@ A data.frame containing the sequence otu assignments
 # read mothur's list file into data.frame
 otu_data <- read_mothur_list(strollur_example("final.opti_mcc.list.gz"))
 
-# create a new empty dataset
+# create a new empty `strollur` object
 data <- new_dataset()
 
 # assign sequences to 'otu' bins

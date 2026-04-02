@@ -2,7 +2,7 @@
 
 Assign sequence abundances, sequence classifications, bins, bin
 representative sequences, bin classifications or treatments to a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -23,7 +23,7 @@ assign(
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - table, :
 
@@ -92,7 +92,7 @@ double - The number of items assigned
 ``` r
 # Assign sequence classifications
 
-# create a new empty dataset named 'example_dataset'
+# create a new empty strollur object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
 sequence_classifications <- read_mothur_taxonomy(strollur_example(
@@ -100,7 +100,7 @@ sequence_classifications <- read_mothur_taxonomy(strollur_example(
 ))
 
 assign(
-  data = data,
+  data,
   table = sequence_classifications, type = "sequence_taxonomy"
 )
 #> ℹ Assigned 2425 sequence taxonomies.
@@ -132,35 +132,35 @@ bin_reps <- readr::read_tsv(
 )
 
 # assign 'otu' bins using sequence names
-assign(data = data, table = otu_data, bin_type = "otu")
+assign(data, table = otu_data, bin_type = "otu")
 #> ℹ Assigned 531 otu bins.
 #> [1] 531
 
 # assign 'asv' bins using sequence names
-assign(data = data, table = asv_data, bin_type = "asv")
+assign(data, table = asv_data, bin_type = "asv")
 #> ℹ Assigned 2425 asv bins.
 #> [1] 2425
 
 # assign 'phylotype' bins using sequence names
-assign(data = data, table = phylo_data, bin_type = "phylotype")
+assign(data, table = phylo_data, bin_type = "phylotype")
 #> ℹ Assigned 63 phylotype bins.
 #> [1] 63
 
 # assign 'otu' bin representative sequences
-assign(data = data, table = bin_reps, type = "bin_representatives")
+assign(data, table = bin_reps, type = "bin_representatives")
 #> ℹ Assigned 531 otu bin representative sequences.
 #> [1] 531
 
 # To assign abundance only bins
 
-# create a new empty dataset named 'example_dataset'
+# create a new empty strollur object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
 # read mothur's shared file
 otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
 # assign abundance only otus parsed by sample
-assign(data = data, table = otu_data, bin_type = "otu")
+assign(data, table = otu_data, bin_type = "otu")
 #> ℹ Assigned 531 otu bins.
 #> [1] 531
 
@@ -173,7 +173,8 @@ otu_data <- read_mothur_cons_taxonomy(strollur_example(
 
 # assign otu consensus taxonomies
 assign(
-  data = data, table = otu_data,
+  data,
+  table = otu_data,
   type = "bin_taxonomy", bin_type = "otu"
 )
 #> ℹ Assigned 531 otu bin taxonomies.
@@ -186,7 +187,7 @@ sample_assignments <- readr::read_table(
   col_names = TRUE, show_col_types = FALSE
 )
 
-assign(data = data, table = sample_assignments, type = "treatments")
+assign(data, table = sample_assignments, type = "treatments")
 #> ℹ Assigned 19 samples to treatments.
 #> [1] 19
 ```

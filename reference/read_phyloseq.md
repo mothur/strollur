@@ -35,7 +35,7 @@ a strollur object.
 ## Examples
 
 ``` r
- miseq <- miseq_sop_example()
+miseq <- miseq_sop_example()
 #> ℹ Added 2425 sequences.
 #> ℹ Assigned 2425 sequence abundances.
 #> ℹ Assigned 2425 sequence taxonomies.
@@ -48,8 +48,8 @@ a strollur object.
 #> ℹ Added metadata.
 #> ℹ Added 2 resource references.
 #> ℹ Added a contigs_report.
- phylo_obj <- write_phyloseq(miseq)
- miseq_re_read <- read_phyloseq(phylo_obj)
+phylo_obj <- write_phyloseq(miseq)
+miseq_re_read <- read_phyloseq(phylo_obj)
 #> ℹ Added 2425 sequences.
 #> ℹ Assigned 2425 sequence abundances.
 #> ℹ Assigned 2425 sequence taxonomies.

@@ -93,7 +93,7 @@ be a character. Defaults to NULL.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> <span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
@@ -106,8 +106,8 @@ be a character. Defaults to NULL.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
-<span class="r-in"><span> <span class="va">phylo_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="write_phyloseq.html">write_phyloseq</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="va">miseq_re_read</span> <span class="op">&lt;-</span> <span class="fu">read_phyloseq</span><span class="op">(</span><span class="va">phylo_obj</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">phylo_obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="write_phyloseq.html">write_phyloseq</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq_re_read</span> <span class="op">&lt;-</span> <span class="fu">read_phyloseq</span><span class="op">(</span><span class="va">phylo_obj</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>

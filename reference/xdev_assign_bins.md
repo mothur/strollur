@@ -1,7 +1,7 @@
 # xdev_assign_bins
 
 Add bin assignments to a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -23,7 +23,7 @@ xdev_assign_bins(
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - table, :
 

@@ -1,7 +1,7 @@
 # count
 
 Find the number of sequences, samples, treatments or bins of a given
-type in a [dataset](https://mothur.org/strollur/reference/dataset.md)
+type in a [strollur](https://mothur.org/strollur/reference/strollur.md)
 object
 
 ## Usage
@@ -20,7 +20,7 @@ count(
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - type, :
 

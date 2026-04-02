@@ -13,7 +13,7 @@ write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 
 - data:
 
-  A 'dataset' object
+  A \`strollur\` object
 
 - dir_path:
 

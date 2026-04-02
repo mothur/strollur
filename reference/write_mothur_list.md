@@ -12,7 +12,7 @@ write_mothur_list(data, file_root = NULL)
 
 - data:
 
-  A 'dataset' object
+  A \`strollur\` object
 
 - file_root:
 

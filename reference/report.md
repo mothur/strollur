@@ -1,7 +1,7 @@
 # report
 
 Get a data.frame containing the given report in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -13,7 +13,7 @@ report(data, type = "sequences", bin_type = "otu")
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - type, :
 
@@ -36,7 +36,7 @@ data.frame
 ## Examples
 
 ``` r
-# First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
+# First let's create a `strollur` object from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
 miseq <- miseq_sop_example()
 #> ℹ Added 2425 sequences.
 #> ℹ Assigned 2425 sequence abundances.

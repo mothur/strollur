@@ -1,6 +1,6 @@
 # read_dada2
 
-This function reads a dada2 sequence table and creates a 'dataset'
+This function reads a dada2 sequence table and creates a \`strollur\`
 object. The dada2 sequence table is a 2D matrix containing the abundance
 counts by sample for each ASV. The sample names are stored as row names
 and the sequence nucleotide strings are stored as column names.
@@ -26,7 +26,7 @@ read_dada2(sequence_table, dataset_name = "")
 
 ## Value
 
-A 'dataset' object
+A \`strollur\` object
 
 ## Examples
 

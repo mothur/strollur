@@ -1,7 +1,7 @@
 # xdev_report
 
 Get a data.frame containing the given report in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -13,7 +13,7 @@ xdev_report(data, type = "sequences", bin_type = "otu")
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - type, :
 

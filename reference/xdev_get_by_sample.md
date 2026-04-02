@@ -1,20 +1,25 @@
 # xdev_get_by_sample
 
 Get the requested data in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 parsed by sample
 
 ## Usage
 
 ``` r
-xdev_get_by_sample(data, type = "sequence_names", samples = as.character(c()))
+xdev_get_by_sample(
+  data,
+  type = "sequence_names",
+  samples = as.character(c()),
+  degap = FALSE
+)
 ```
 
 ## Arguments
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - type, :
 
@@ -25,6 +30,11 @@ xdev_get_by_sample(data, type = "sequence_names", samples = as.character(c()))
 
   a vector of strings containing the names of the samples you would like
   sequence names for. By default all samples are included.
+
+- degap:
+
+  a logical. Default = FALSE. When degap = \`TRUE\`, all gap characters
+  will be removed from the sequences.
 
 ## Value
 

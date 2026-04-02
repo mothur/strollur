@@ -1,7 +1,7 @@
 # xdev_abundance
 
 Get a table containing the requested abundance data in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -13,7 +13,7 @@ xdev_abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - type, :
 

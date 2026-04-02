@@ -2,7 +2,7 @@
 
 Designed with package integration in mind, the merge bins function
 allows you to merge bins in a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -14,7 +14,8 @@ xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object.
+  a [strollur](https://mothur.org/strollur/reference/strollur.md)
+  object.
 
 - bin_names, :
 

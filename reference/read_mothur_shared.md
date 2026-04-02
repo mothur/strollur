@@ -27,7 +27,7 @@ A data.frame containing the sequence otu assignments
 # read mothur shared file into data.frame
 otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
-# create a new empty dataset
+# create a new empty `strollur` object
 data <- new_dataset()
 
 # assign abundance only 'otu' bins parsed by sample

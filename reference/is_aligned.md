@@ -1,7 +1,7 @@
 # is_aligned
 
 Determine if a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 contains aligned sequences.
 
 ## Usage
@@ -14,7 +14,7 @@ is_aligned(data)
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Value
 

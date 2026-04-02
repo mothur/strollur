@@ -2,7 +2,7 @@
 
 The read_mothur function reads various [file
 types](https://mothur.org/wiki/tags/#file_types) created by mothur, and
-creates a 'dataset' object.
+creates a \`strollur\` object.
 
 To generate the various input files you can follow Pat's [Miseq example
 analysis](https://mothur.org/wiki/miseq_sop/).
@@ -116,15 +116,15 @@ A 'dataset' object
 
 ## Note
 
-- *consensus taxonomy*, The 'dataset' object will generate consensus
+- *consensus taxonomy*, The \`strollur\` object will generate consensus
   taxonomies for you based on the sequence taxonomy assignment. You only
   need to provide the ".cons.taxonomy" file if you are not providing
   sequence taxonomy assignments.
 
-- *shared / rabund file*, The 'dataset' object will generate shared and
-  rabund data for you based on the otu assignment in the list file and
-  the count data. You only need to provide the ".shared" file if you are
-  not providing the list and count files.
+- *shared / rabund file*, The \`strollur\` object will generate shared
+  and rabund data for you based on the otu assignment in the list file
+  and the count data. You only need to provide the ".shared" file if you
+  are not providing the list and count files.
 
 ## Examples
 

@@ -29,12 +29,14 @@ devtools::install_github("mothur/strollur")
 ## Importing, Accessing and Transfering Data
 
 - [General
-  Importing](https://mothur.org/strollur/articles/vignettes/General_Importing.md)
+  Importing](https://mothur.org/strollur/articles/General_Importing.html)
 - [Importing data from
-  mothur](https://mothur.org/strollur/articles/vignettes/Importing_from_mothur.md)
+  mothur](https://mothur.org/strollur/articles/Importing_from_mothur.html)
 - [Importing data from
-  qiime2](https://mothur.org/strollur/articles/vignettes/Importing_from_qiime2.md)
+  qiime2](https://mothur.org/strollur/articles/Importing_from_qiime2.html)
+- [Importing data from
+  phyloseq](https://mothur.org/strollur/articles/Importing_from_phyloseq.html)
 - [Accessing
-  Data](https://mothur.org/strollur/articles/vignettes/Accessing_Dataset.md)
+  Data](https://mothur.org/strollur/articles/Accessing_Dataset.html)
 - [Data
-  Transfers](https://mothur.org/strollur/articles/vignettes/Data_Transfers2.md)
+  Transfers](https://mothur.org/strollur/articles/Data_Transfers.html)

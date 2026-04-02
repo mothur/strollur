@@ -13,7 +13,7 @@ write_mothur_shared(data, file_root = NULL)
 
 - data:
 
-  A 'dataset' object
+  A \`strollur\` object
 
 - file_root:
 

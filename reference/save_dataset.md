@@ -1,20 +1,20 @@
 # save_dataset
 
 The save_dataset function will save the
-[dataset](https://mothur.org/strollur/reference/dataset.md) object to
+[strollur](https://mothur.org/strollur/reference/strollur.md) object to
 file.
 
 ## Usage
 
 ``` r
-save_dataset(dataset, file)
+save_dataset(data, file)
 ```
 
 ## Arguments
 
-- dataset:
+- data:
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - file:
 
@@ -22,12 +22,12 @@ save_dataset(dataset, file)
 
 ## Value
 
-A file containing the 'dataset' object
+A file containing the \`strollur\` object
 
 ## Examples
 
 ``` r
-dataset <- read_mothur(
+data <- read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),
   taxonomy = strollur_example("final.taxonomy.gz"),
@@ -41,6 +41,6 @@ dataset <- read_mothur(
 #> ℹ Assigned 531 otu bins.
 #> ℹ Assigned 19 samples to treatments.
 
-save_dataset(dataset, "miseq_sop.rds")
+save_dataset(data, "miseq_sop.rds")
 #> [1] "miseq_sop.rds"
 ```

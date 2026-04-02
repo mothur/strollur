@@ -12,7 +12,7 @@ write_taxonomy(data, filename = NULL)
 
 - data:
 
-  A 'dataset' object
+  A \`strollur\` object
 
 - filename:
 

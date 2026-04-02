@@ -1,7 +1,7 @@
 # add
 
 Add sequences, reports, metadata or resource references to a
-[dataset](https://mothur.org/strollur/reference/dataset.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 ## Usage
 
@@ -24,7 +24,7 @@ add(
 
 - data, :
 
-  a [dataset](https://mothur.org/strollur/reference/dataset.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
 - table, :
 
@@ -101,7 +101,7 @@ double - The number of items added
 ## Examples
 
 ``` r
-# Create a new empty dataset named 'example_dataset'
+# Create a new empty strollur object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
 # Read FASTA data into data.frame
@@ -114,7 +114,7 @@ add(data = data, table = fasta_data, type = "sequences")
 
 # To add FASTA data with a resource reference
 
-# Create a new empty dataset named 'example_dataset'
+# Create a new empty strollur object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
 # Create a resource reference for the FASTA data
@@ -131,7 +131,7 @@ resource_reference <-
 # Add FASTA data with a resource reference
 
 add(
-  data = data,
+  data,
   table = fasta_data,
   type = "sequences",
   reference = resource_reference
@@ -149,7 +149,8 @@ contigs_report <- readr::read_tsv(
 )
 
 add(
-  data = data, table = contigs_report, type = "reports",
+  data,
+  table = contigs_report, type = "reports",
   report_type = "contigs_report", list(sequence_name = "Name")
 )
 #> ℹ Added a contigs_report.
@@ -161,7 +162,7 @@ metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
   col_names = TRUE, show_col_types = FALSE
 )
 
-add(data = data, table = metadata, type = "metadata")
+add(data, table = metadata, type = "metadata")
 #> ℹ Added metadata.
 #> [1] 1
 ```
