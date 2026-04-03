@@ -108,7 +108,8 @@
 </h2>
 <p>You can install the CRAN version with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"strollur"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mothur/strollur" class="external-link">strollur</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"strollur"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="development-version">Development version<a class="anchor" aria-label="anchor" href="#development-version"></a>
 </h3>
@@ -121,58 +122,28 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>The example below adds <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> sequence data, assigns sequence abundance, samples and treatments, as well as assigning bins and taxonomic data.</p>
+<p>The example below adds <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> sequence data, assigns sequence abundance, samples and treatments, as well as assigning bins and taxonomic data to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mothur/strollur" class="external-link">strollur</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_abundance_by_sample.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_list_otu.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">classification_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span>taxonomy <span class="op">=</span> <span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"microbial RNA example"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/add.html">add</a></span><span class="op">(</span><span class="va">data</span>,</span>
-<span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/add.html">add</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ℹ Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
-<span></span>
-<span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"mothur2_count_table.tsv.gz"</span><span class="op">)</span>,</span>
-<span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>,</span>
-<span>  table <span class="op">=</span> <span class="va">abundance_table</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequence_abundance"</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"names"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ℹ Assigned 2425 sequence abundances.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
-<span></span>
-<span><span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
-<span>    <span class="st">"mothur2_bin_assignments_list.tsv.gz"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>,</span>
-<span>  table <span class="op">=</span> <span class="va">bin_table</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
-<span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bin_name <span class="op">=</span> <span class="st">"otu_id"</span>, sequence_name <span class="op">=</span> <span class="st">"seq_id"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ℹ Assigned 531 otu bins.</span></span>
 <span><span class="co">#&gt; [1] 531</span></span>
-<span></span>
-<span><span class="va">sequence_classification_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span></span>
-<span>  taxonomy <span class="op">=</span> <span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>,</span>
-<span>  table <span class="op">=</span> <span class="va">sequence_classification_data</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">classification_data</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ℹ Assigned 2425 sequence taxonomies.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
+<span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; microbial RNA example:</span></span>
 <span><span class="co">#&gt; </span></span>

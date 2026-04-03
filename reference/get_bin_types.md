@@ -1,7 +1,7 @@
 # get_bin_types
 
 Get bin table types of a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -13,7 +13,8 @@ get_bin_types(data)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 ## Value
 

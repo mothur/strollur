@@ -1,7 +1,7 @@
-# summary
+# Summarize the sequences data, custom reports, and scrapped data in a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 Summarize the sequences data, custom reports, and scrapped data in a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -13,7 +13,8 @@ summary(data, type = "sequences", report_type = NULL, verbose = TRUE)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - type, :
 

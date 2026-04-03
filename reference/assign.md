@@ -1,8 +1,8 @@
-# assign
+# Assign sequence abundances, sequence classifications, bins, bin representative sequences, bin classifications or treatments to a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 Assign sequence abundances, sequence classifications, bins, bin
 representative sequences, bin classifications or treatments to a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -23,7 +23,8 @@ assign(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - table, :
 
@@ -124,12 +125,7 @@ phylo_data <- read_mothur_list(list = strollur_example(
 ))
 
 # read otu bin representative sequences into a data.frame
-bin_reps <- readr::read_tsv(
-  strollur_example(
-    "otu_representative_sequences.tsv"
-  ),
-  show_col_types = FALSE
-)
+bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
 
 # assign 'otu' bins using sequence names
 assign(data, table = otu_data, bin_type = "otu")
@@ -182,10 +178,7 @@ assign(
 
 # Assign treatments
 
-sample_assignments <- readr::read_table(
-  strollur_example("mouse.time.design"),
-  col_names = TRUE, show_col_types = FALSE
-)
+sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
 assign(data, table = sample_assignments, type = "treatments")
 #> ℹ Assigned 19 samples to treatments.

@@ -2,7 +2,7 @@
 
 Designed with package integration in mind, the remove bins function
 allows you to remove bins from a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -14,7 +14,7 @@ xdev_remove_bins(data, bin_names, trash_tags, bin_type = "otu")
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md)
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object.
 
 - bin_names, :

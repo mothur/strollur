@@ -71,7 +71,7 @@
 
 
 <dl><dt id="arg-data-">data, <a class="anchor" aria-label="anchor" href="#arg-data-"></a></dt>
-<dd><p>a <a href="strollur.html">strollur</a> object</p></dd>
+<dd><p>a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</p></dd>
 
 
 <dt id="arg-table-">table, <a class="anchor" aria-label="anchor" href="#arg-table-"></a></dt>
@@ -124,9 +124,8 @@ Default = TRUE.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">bin_reps</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>                                      <span class="st">"otu_representative_sequences.tsv"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                      show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">bin_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>         <span class="st">"miseq_representative_sequences.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu">xdev_assign_bin_representative_sequences</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
 <span class="r-in"><span>                                      table <span class="op">=</span> <span class="va">bin_reps</span>,</span></span>

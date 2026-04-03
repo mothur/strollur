@@ -1,7 +1,7 @@
 # xdev_assign_treatments
 
 Assign samples to treatments in a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -19,7 +19,8 @@ xdev_assign_treatments(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - table, :
 
@@ -48,16 +49,13 @@ double containing the number of samples assigned to treatments
 
 ``` r
 data <- new_dataset("my_dataset")
-sequence_abundance <- readr::read_tsv(strollur_example(
-                                      "mothur2_count_table.tsv.gz"),
-                                      show_col_types = FALSE)
+sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 
-xdev_assign_sequence_abundance(data, sequence_abundance, "names")
+xdev_assign_sequence_abundance(data, sequence_abundance)
 #> ℹ Assigned 2425 sequence abundances.
 #> [1] 2425
 
-sample_assignments <- readr::read_table(file = strollur_example("mouse.time.design"),
-                             col_names = TRUE, show_col_types = FALSE)
+sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
 xdev_assign_treatments(data, sample_assignments)
 #> ℹ Assigned 19 samples to treatments.

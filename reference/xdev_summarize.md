@@ -13,7 +13,8 @@ xdev_summarize(data, type = "sequences", report_type = NULL)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - type, :
 

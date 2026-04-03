@@ -1,7 +1,7 @@
 # xdev_add_sequences
 
 Add sequence data to a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -21,7 +21,8 @@ xdev_add_sequences(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - table, :
 

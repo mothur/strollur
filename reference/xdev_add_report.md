@@ -1,7 +1,7 @@
-# xdev_add_report
+# Add a report to a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 Add a report to a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -19,7 +19,8 @@ xdev_add_report(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - table, :
 
@@ -47,16 +48,14 @@ xdev_add_report(
 # To add a custom report including your contigs assembly data
 
 data <- new_dataset("just for fun", 2)
-contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
-   col_names = TRUE, show_col_types = FALSE)
+contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
 xdev_add_report(data, contigs_report, "contigs_report", "Name")
 #> ℹ Added a contigs_report.
 
 # To add metadata related to your study
 
-metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-                            col_names = TRUE, show_col_types = FALSE)
+metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 xdev_add_report(data, metadata, "metadata")
 #> ℹ Added metadata.

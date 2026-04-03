@@ -1,8 +1,8 @@
 # xdev_count
 
 Find the number of sequences, samples, treatments or bins of a given
-type in a [strollur](https://mothur.org/strollur/reference/strollur.md)
-object
+type in a
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -20,7 +20,8 @@ xdev_count(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - type, :
 

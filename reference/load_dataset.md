@@ -1,7 +1,7 @@
 # load_dataset
 
 The load_dataset function will create a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 from an RDS file.
 
 ## Usage
@@ -18,7 +18,7 @@ load_dataset(file)
 
 ## Value
 
-a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 

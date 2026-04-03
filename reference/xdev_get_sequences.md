@@ -1,7 +1,7 @@
 # xdev_get_sequences
 
 Get the nucleotide strings for each sequence in a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -13,7 +13,8 @@ xdev_get_sequences(data, sample = "", degap = FALSE)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - sample, :
 
@@ -28,7 +29,7 @@ xdev_get_sequences(data, sample = "", degap = FALSE)
 ## Value
 
 vector of string containing nucleotide strings of the sequences in a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 

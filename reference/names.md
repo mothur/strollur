@@ -1,7 +1,7 @@
-# names
+# Get the names sequences, bins, samples, treatments, and reports data in a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 Get the names of a given type of data in a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -19,7 +19,8 @@ names(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - type, :
 

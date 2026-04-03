@@ -1,9 +1,9 @@
 # import_dataset
 
 The import_dataset function will create a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 from the exported table of a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object.
+[strollur](https://mothur.org/strollur/reference/strollur.html) object.
 
 ## Usage
 
@@ -16,12 +16,12 @@ import_dataset(table)
 - table:
 
   a table containing the data from a
-  [strollur](https://mothur.org/strollur/reference/strollur.md) object.
-  You can create the table using 'export(data)'.
+  [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object. You can create the table using 'export(data)'.
 
 ## Value
 
-a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## See also
 

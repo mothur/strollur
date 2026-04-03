@@ -1,4 +1,4 @@
-# read_dada2
+# Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from dada2 outputs
 
 This function reads a dada2 sequence table and creates a \`strollur\`
 object. The dada2 sequence table is a 2D matrix containing the abundance

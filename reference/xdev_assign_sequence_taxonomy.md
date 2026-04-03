@@ -1,7 +1,7 @@
 # xdev_assign_sequence_taxonomy
 
 Assign sequence classifications to a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 Note, if you assign sequence taxonomies and assign bins, 'Dataset' will
 find the consensus taxonomy for each bin for you.
@@ -23,7 +23,8 @@ xdev_assign_sequence_taxonomy(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - table, :
 

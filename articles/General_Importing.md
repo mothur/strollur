@@ -126,9 +126,7 @@ names. If your table’s names differ from what strollur is expecting, you
 will see an error like that below.
 
 ``` r
-contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
-  col_names = TRUE, show_col_types = FALSE
-)
+contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
 add(
   data,
@@ -150,10 +148,7 @@ column is called in your custom report table. In the contigs_report the
 the add function.
 
 ``` r
-contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
-  col_names = TRUE, show_col_types = FALSE
-)
-
+contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 add(
   data,
   table = contigs_report,
@@ -190,9 +185,7 @@ how to add metadata. We can add metadata to our data set by setting the
 type = “metadata”.
 
 ``` r
-metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-  col_names = TRUE, show_col_types = FALSE
-)
+metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 add(
   data,
@@ -235,20 +228,12 @@ After adding your FASTA sequences, you can assign abundance and sample
 data using the assign function with the type = “sequence_abundance”.
 
 ``` r
-abundance_table <- readr::read_tsv(
-  strollur_example(
-    "mothur2_count_table.tsv.gz"
-  ),
-  show_col_types = FALSE
-)
-assign(
-  data,
-  table = abundance_table,
-  type = "sequence_abundance",
-  table_names = list(sequence_name = "names")
-)
+abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+
+assign(data, table = abundance_table, type = "sequence_abundance")
 #> ℹ Assigned 2425 sequence abundances.
 #> [1] 2425
+
 data
 #> my_data:
 #> 
@@ -283,22 +268,12 @@ Unit](https://en.wikipedia.org/wiki/Operational_taxonomic_unit) clusters
 and set the bin_type = “otu”.
 
 ``` r
-bin_table <- readr::read_tsv(
-  strollur_example(
-    "mothur2_bin_assignments_list.tsv.gz"
-  ),
-  show_col_types = FALSE
-)
+bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
 
-assign(
-  data,
-  table = bin_table,
-  type = "bins",
-  bin_type = "otu",
-  table_names = list(bin_name = "otu_id", sequence_name = "seq_id")
-)
+assign(data, table = bin_table, type = "bins", bin_type = "otu")
 #> ℹ Assigned 531 otu bins.
 #> [1] 531
+
 data
 #> my_data:
 #> 
@@ -377,16 +352,11 @@ strollur allows you to assign a bin representative sequences to the bins
 in your clusters. Let’s assign bin representatives to our *otu* bins.
 
 ``` r
-bin_representatives <- readr::read_tsv(
-  strollur_example(
-    "otu_representative_sequences.tsv"
-  ),
-  show_col_types = FALSE
-)
+bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
 
 assign(
   data,
-  table = bin_representatives,
+  table = bin_reps,
   type = "bin_representatives"
 )
 #> ℹ Assigned 531 otu bin representative sequences.
@@ -399,10 +369,7 @@ In our case the abundance_table included treatment assignments, but you
 can also assign samples to treatments by setting type = “treatments”.
 
 ``` r
-sample_assignments <- readr::read_table(
-  strollur_example("mouse.time.design"),
-  col_names = TRUE, show_col_types = FALSE
-)
+sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
 assign(
   data,
@@ -438,5 +405,5 @@ ape::plot.phylo(data$get_sample_tree(),
 
 Thanks for following along. To learn more about the functions used to
 access the data in your data set, take a look at the [Accessing
-Data](https://mothur.org/strollur/articles/vignettes/Accessing_Dataset.md)
+Data](https://mothur.org/strollur/articles/Accessing_Dataset.html)
 tutorial.

@@ -1,4 +1,4 @@
-# read_mothur
+# Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from mothur outputs
 
 The read_mothur function reads various [file
 types](https://mothur.org/wiki/tags/#file_types) created by mothur, and
@@ -112,7 +112,7 @@ read_mothur(
 
 ## Value
 
-A 'dataset' object
+A [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Note
 

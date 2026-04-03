@@ -35,6 +35,7 @@ and
 You can install the CRAN version with:
 
 ``` r
+library(strollur)
 install.packages("strollur")
 ```
 
@@ -53,59 +54,30 @@ devtools::install_github("mothur/strollur")
 The example below adds
 [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequence
 data, assigns sequence abundance, samples and treatments, as well as
-assigning bins and taxonomic data.
+assigning bins and taxonomic data to a [strollur
+object](https://mothur.org/strollur/reference/strollur.html).
 
 ``` r
-library(strollur)
+fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
+classification_data <- read_mothur_taxonomy(taxonomy = strollur_example("final.taxonomy.gz"))
 
 data <- new_dataset(dataset_name = "microbial RNA example")
 
-fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
-
-add(data,
-  table = fasta_data,
-  type = "sequences"
-)
+add(data, table = fasta_data, type = "sequences")
 #> ℹ Added 2425 sequences.
 #> [1] 2425
-
-abundance_table <- readr::read_tsv(strollur_example("mothur2_count_table.tsv.gz"),
-  show_col_types = FALSE
-)
-assign(data,
-  table = abundance_table,
-  type = "sequence_abundance",
-  table_names = list(sequence_name = "names")
-)
+assign(data, table = abundance_table, type = "sequence_abundance")
 #> ℹ Assigned 2425 sequence abundances.
 #> [1] 2425
-
-bin_table <- readr::read_tsv(
-  strollur_example(
-    "mothur2_bin_assignments_list.tsv.gz"
-  ),
-  show_col_types = FALSE
-)
-
-assign(data,
-  table = bin_table,
-  type = "bins",
-  bin_type = "otu",
-  table_names = list(bin_name = "otu_id", sequence_name = "seq_id")
-)
+assign(data, table = bin_table, type = "bins", bin_type = "otu")
 #> ℹ Assigned 531 otu bins.
 #> [1] 531
-
-sequence_classification_data <- read_mothur_taxonomy(
-  taxonomy = strollur_example("final.taxonomy.gz")
-)
-
-assign(data,
-  table = sequence_classification_data,
-  type = "sequence_taxonomy"
-)
+assign(data, table = classification_data, type = "sequence_taxonomy")
 #> ℹ Assigned 2425 sequence taxonomies.
 #> [1] 2425
+
 data
 #> microbial RNA example:
 #> 

@@ -198,9 +198,7 @@ does for you. strollur expects the columns in custom reports to have
 specific names. If your table’s names differ from what strollur is
 expecting, you will see an error like that below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.contigs_report.gz"</span><span class="op">)</span>,</span>
-<span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_contigs_report.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
@@ -219,10 +217,7 @@ specific column is called in your custom report table. In the
 contigs_report the <em>sequence_name</em> column is called
 <em>Name</em>, so we will add one more line to the add function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.contigs_report.gz"</span><span class="op">)</span>,</span>
-<span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
+<code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_contigs_report.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">contigs_report</span>,</span>
@@ -258,9 +253,7 @@ contigs_report the <em>sequence_name</em> column is called
 learn how to add metadata. We can add metadata to our data set by
 setting the type = “metadata”.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"mouse.dpw.metadata"</span><span class="op">)</span>,</span>
-<span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_metadata.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
@@ -302,20 +295,12 @@ classifications, samples and treatments to your data set.</p>
 sample data using the assign function with the type =
 “sequence_abundance”.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
-<span>    <span class="st">"mothur2_count_table.tsv.gz"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  table <span class="op">=</span> <span class="va">abundance_table</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequence_abundance"</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"names"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_abundance_by_sample.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
+<span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -348,22 +333,12 @@ to the data set. Next, let’s assign the sequences to bins using type =
 reference the bin clusters you are adding. Let’s add some <a href="https://en.wikipedia.org/wiki/Operational_taxonomic_unit" class="external-link">Operational
 Taxonomic Unit</a> clusters and set the bin_type = “otu”.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
-<span>    <span class="st">"mothur2_bin_assignments_list.tsv.gz"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_list_otu.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  table <span class="op">=</span> <span class="va">bin_table</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
-<span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bin_name <span class="op">=</span> <span class="st">"otu_id"</span>, sequence_name <span class="op">=</span> <span class="st">"seq_id"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span></span>
 <span><span class="co">#&gt; [1] 531</span></span>
+<span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -435,16 +410,11 @@ taxonomies independently by setting the type = “bin_taxonomy”.</p>
 bins in your clusters. Let’s assign bin representatives to our
 <em>otu</em> bins.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bin_representatives</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
-<span>    <span class="st">"otu_representative_sequences.tsv"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">bin_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_representative_sequences.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  table <span class="op">=</span> <span class="va">bin_representatives</span>,</span>
+<span>  table <span class="op">=</span> <span class="va">bin_reps</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_representatives"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span></span>
@@ -457,10 +427,7 @@ bins in your clusters. Let’s assign bin representatives to our
 you can also assign samples to treatments by setting type =
 “treatments”.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sample_assignments</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html" class="external-link">read_table</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"mouse.time.design"</span><span class="op">)</span>,</span>
-<span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sample_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_sample_design.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
@@ -493,7 +460,8 @@ sequences. Let’s look at some examples together.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="General_Importing_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="700"></p>
 <p>Thanks for following along. To learn more about the functions used to
-access the data in your data set, take a look at the <a href="vignettes/Accessing_Dataset.html">Accessing Data</a> tutorial.</p>
+access the data in your data set, take a look at the <a href="https://mothur.org/strollur/articles/Accessing_Dataset.html">Accessing
+Data</a> tutorial.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -1,7 +1,7 @@
 # has_sequence_strings
 
 Determine if a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 contains sequence nucleotide strings.
 
 ## Usage
@@ -14,7 +14,7 @@ has_sequence_strings(data)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md)
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object.
 
 ## Value

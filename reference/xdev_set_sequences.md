@@ -2,7 +2,7 @@
 
 Designed with package integration in mind, the set sequences function
 allows you to change the nucleotide strings of sequences in a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object.
+[strollur](https://mothur.org/strollur/reference/strollur.html) object.
 For example, set_sequences may be used after alignment to overwrite the
 unaligned sequences with aligned sequences.
 
@@ -21,7 +21,8 @@ xdev_set_sequences(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - sequence_names, :
 

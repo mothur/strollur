@@ -1,7 +1,7 @@
 # export_dataset
 
 Export all data from a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object.
+[strollur](https://mothur.org/strollur/reference/strollur.html) object.
 
 ## Usage
 
@@ -13,7 +13,8 @@ export_dataset(data)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 ## Value
 

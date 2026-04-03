@@ -1,4 +1,4 @@
-# read_phyloseq
+# Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from a phyloseq object
 
 The \`read_phyloseq()\` function reads phyloseq objects created from the
 phyloseq package

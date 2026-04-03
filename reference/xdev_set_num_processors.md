@@ -2,7 +2,7 @@
 
 Designed with package integration in mind, set the number of processors
 used to summarize a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -14,7 +14,8 @@ xdev_set_num_processors(data, processors)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - processors, :
 

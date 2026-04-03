@@ -1,8 +1,8 @@
 # save_dataset
 
 The save_dataset function will save the
-[strollur](https://mothur.org/strollur/reference/strollur.md) object to
-file.
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
+to file.
 
 ## Usage
 
@@ -14,7 +14,8 @@ save_dataset(data, file)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - file:
 

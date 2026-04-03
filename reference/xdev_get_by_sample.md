@@ -1,7 +1,7 @@
 # xdev_get_by_sample
 
 Get the requested data in a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 parsed by sample
 
 ## Usage
@@ -19,7 +19,8 @@ xdev_get_by_sample(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - type, :
 

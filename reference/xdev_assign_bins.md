@@ -1,7 +1,7 @@
 # xdev_assign_bins
 
 Add bin assignments to a
-[strollur](https://mothur.org/strollur/reference/strollur.md) object
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
 
@@ -23,7 +23,8 @@ xdev_assign_bins(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - table, :
 
@@ -92,16 +93,7 @@ double containing the number of bins assigned
   # To add abundance bin assignments parsed by sample:
 
   data <- new_dataset(dataset_name = "miseq_sop")
-  otu_data <- readr::read_tsv(strollur_example(
-                                "mothur2_bin_assignments_shared.tsv.gz"))
-#> Rows: 3431 Columns: 4
-#> ── Column specification ────────────────────────────────────────────────────────
-#> Delimiter: "\t"
-#> chr (3): bin_names, samples, treatments
-#> dbl (1): abundances
-#> 
-#> ℹ Use `spec()` to retrieve the full column specification for this data.
-#> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+  otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #> ℹ Assigned 531 otu bins.
