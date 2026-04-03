@@ -98,15 +98,19 @@ test_that("write_mothur - bin_data only", {
 test_that("write_mothur - report_data only", {
   data <- strollur$new()
 
-  xdev_add_report(data, readr::read_tsv(
-    strollur_example("alignment_data.tsv"),
-    col_names = TRUE, show_col_types = FALSE
-  ), "alignment_report", "QueryName")
+  xdev_add_report(
+    data,
+    readRDS(strollur_example("test_alignment_data.rds")),
+    "alignment_report",
+    "QueryName"
+  )
 
-  xdev_add_report(data, readr::read_tsv(
-    strollur_example("contigs_data.tsv"),
-    col_names = TRUE, show_col_types = FALSE
-  ), "contigs_report", "Name")
+  xdev_add_report(
+    data,
+    readRDS(strollur_example("test_contigs_data.rds")),
+    "contigs_report",
+    "Name"
+  )
 
   outputs <- write_mothur(data,
     dir_path = get_full_name("tmp"),

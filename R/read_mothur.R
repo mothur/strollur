@@ -1,4 +1,6 @@
-#' @title read_mothur
+#' @title Create a \link{strollur::strollur} object from mothur outputs
+#' @name read_mothur
+#' @rdname read_mothur
 #' @description
 #' The read_mothur function reads various
 #' \href{https://mothur.org/wiki/tags/#file_types}{file types} created by

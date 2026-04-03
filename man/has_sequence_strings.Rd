@@ -7,14 +7,14 @@
 has_sequence_strings(data)
 }
 \arguments{
-\item{data, }{a \link{strollur} object.}
+\item{data, }{a \link{strollur::strollur} object.}
 }
 \value{
 boolean indicating whether the dataset has sequence nucleotide
 strings.
 }
 \description{
-Determine if a \link{strollur} object contains sequence nucleotide strings.
+Determine if a \link{strollur::strollur} object contains sequence nucleotide strings.
 }
 \examples{
 

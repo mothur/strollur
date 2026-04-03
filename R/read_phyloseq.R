@@ -1,5 +1,7 @@
 #' @importFrom stats reshape
-#' @title read_phyloseq
+#' @title Create a \link{strollur::strollur} object from a phyloseq object
+#' @name read_phyloseq
+#' @rdname read_phyloseq
 #' @description
 #' The `read_phyloseq()` function reads phyloseq objects created from
 #' the phyloseq package

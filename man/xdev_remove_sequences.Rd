@@ -7,7 +7,7 @@
 xdev_remove_sequences(data, sequence_names, trash_tags)
 }
 \arguments{
-\item{data, }{a \link{strollur} object.}
+\item{data, }{a \link{strollur::strollur} object.}
 
 \item{sequence_names, }{vector of strings containing the names of the
 sequences to remove}
@@ -17,7 +17,7 @@ removals}
 }
 \description{
 Designed with package integration in mind, the remove sequences function
-allows you to remove sequences from a \link{strollur} object
+allows you to remove sequences from a \link{strollur::strollur} object
 }
 \examples{
 

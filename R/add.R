@@ -1,9 +1,12 @@
-#' @title add
+#' @title Add sequences, reports, metadata or resource references to a
+#'   \link{strollur} object
+#' @name add
+#' @rdname add
 #' @description
-#' Add sequences, reports, metadata or resource references to a \link{strollur}
-#' object
+#' Add sequences, reports, metadata or resource references to a
+#' \link{strollur::strollur} object
 #'
-#' @param data, a \link{strollur} object
+#' @param data, a \link{strollur::strollur} object
 #'
 #' @param table, a data.frame containing the data you wish to add.
 #'
@@ -100,12 +103,7 @@
 #'
 #' # Add contigs assembly report with a 'sequence_name' column named 'Name'
 #'
-#' contigs_report <- readr::read_tsv(
-#'   strollur_example(
-#'     "final.contigs_report.gz"
-#'   ),
-#'   col_names = TRUE, show_col_types = FALSE
-#' )
+#' contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 #'
 #' add(
 #'   data,
@@ -115,9 +113,7 @@
 #'
 #' # To add metadata related to your study
 #'
-#' metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-#'   col_names = TRUE, show_col_types = FALSE
-#' )
+#' metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 #'
 #' add(data, table = metadata, type = "metadata")
 #'

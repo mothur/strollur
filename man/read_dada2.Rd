@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_dada2.R
 \name{read_dada2}
 \alias{read_dada2}
-\title{read_dada2}
+\title{Create a \link{strollur::strollur} object from dada2 outputs}
 \usage{
 read_dada2(sequence_table, dataset_name = "")
 }

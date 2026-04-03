@@ -7,7 +7,7 @@
 xdev_get_list_vector(data, type = "otu")
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \link{strollur::strollur} object}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }

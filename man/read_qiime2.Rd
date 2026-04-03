@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_qiime2.R
 \name{read_qiime2}
 \alias{read_qiime2}
-\title{read_qiime2}
+\title{Create a \link{strollur::strollur} object from a qiime2 outputs}
 \usage{
 read_qiime2(
   qza,

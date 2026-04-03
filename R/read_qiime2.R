@@ -1,4 +1,6 @@
-#' @title read_qiime2
+#' @title Create a \link{strollur::strollur} object from a qiime2 outputs
+#' @name read_qiime2
+#' @rdname read_qiime2
 #' @description
 #' The read_qiime2 function reads various types of .qza files created by
 #' \href{https://qiime2.org}{qiime2}, and creates a `strollur` object.

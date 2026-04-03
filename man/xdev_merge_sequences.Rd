@@ -7,7 +7,7 @@
 xdev_merge_sequences(data, sequence_names, reason = "merged")
 }
 \arguments{
-\item{data, }{a \link{strollur} object.}
+\item{data, }{a \link{strollur::strollur} object.}
 
 \item{sequence_names, }{a vector of strings containing the names of the
 sequences you would like merge. The resulting merged sequence will be stored
@@ -18,7 +18,7 @@ Default = "merged"}
 }
 \description{
 Designed with package integration in mind, the merge sequences function
-allows you to merge sequences in a \link{strollur} object.
+allows you to merge sequences in a \link{strollur::strollur} object.
 }
 \examples{
 

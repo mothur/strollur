@@ -2,7 +2,8 @@
 % Please edit documentation in R/add.R
 \name{add}
 \alias{add}
-\title{add}
+\title{Add sequences, reports, metadata or resource references to a
+  \link{strollur} object}
 \usage{
 add(
   data,
@@ -18,7 +19,7 @@ add(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \link{strollur::strollur} object}
 
 \item{table, }{a data.frame containing the data you wish to add.}
 
@@ -81,8 +82,8 @@ Default = TRUE.}
 double - The number of items added
 }
 \description{
-Add sequences, reports, metadata or resource references to a \link{strollur}
-object
+Add sequences, reports, metadata or resource references to a
+\link{strollur::strollur} object
 }
 \examples{
 
@@ -122,12 +123,7 @@ add(
 
 # Add contigs assembly report with a 'sequence_name' column named 'Name'
 
-contigs_report <- readr::read_tsv(
-  strollur_example(
-    "final.contigs_report.gz"
-  ),
-  col_names = TRUE, show_col_types = FALSE
-)
+contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
 add(
   data,
@@ -137,9 +133,7 @@ add(
 
 # To add metadata related to your study
 
-metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-  col_names = TRUE, show_col_types = FALSE
-)
+metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 add(data, table = metadata, type = "metadata")
 

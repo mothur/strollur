@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_mothur.R
 \name{read_mothur}
 \alias{read_mothur}
-\title{read_mothur}
+\title{Create a \link{strollur::strollur} object from mothur outputs}
 \usage{
 read_mothur(
   fasta = NULL,

@@ -1,8 +1,14 @@
-#' @title report
+#' @title Get a data.frame containing the given report in a
+#' \link{strollur::strollur} object
+#' @name report
+#' @rdname report
 #' @description
-#' Get a data.frame containing the given report in a \link{strollur} object
+#' Get a data.frame containing the report. Reports include FASTA format,
+#' sequences reports, sequence_bin_assignments, sequence_taxonomy, bin_taxonomy,
+#' bin_representatives, sample_assignments, metadata, references,
+#' sequence_scrap, and bin_scrap in a \link{strollur::strollur} object.
 #'
-#' @param data, a \link{strollur} object
+#' @param data, a \link{strollur::strollur} object
 #'
 #' @param type, string containing the type of report you would like. Options
 #' include: "fasta", "sequences", "sequence_bin_assignments",

@@ -7,7 +7,7 @@
 xint_copy_pointer(data)
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \link{strollur::strollur} object}
 }
 \value{
 pointer to an instance of the C++ 'Dataset' class.

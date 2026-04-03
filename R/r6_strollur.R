@@ -1,4 +1,7 @@
-#' @title strollur
+#' @title The `strollur` object stores the data associated with your microbial
+#'   analysis.
+#' @name strollur
+#' @rdname strollur
 #' @description 'strollur' is an R6 class that stores nucleotide sequences,
 #' abundance, sample and treatment assignments, taxonomic classifications,
 #' asv / otu clusters and various reports. It is designed to facilitate data
@@ -77,7 +80,7 @@ strollur <- R6Class("strollur",
       }
 
       # get dataset summaries
-      results <- self$get_summary()
+      results <- private$get_summary()
 
       results_names <- names(results)
 
@@ -186,31 +189,33 @@ strollur <- R6Class("strollur",
     #' miseq <- miseq_sop_example()
     #'
     #' # To the total abundance for each sequence
-    #' miseq$abundance(type = "sequences")
+    #' miseq$abundance(type = "sequences") |> head(n = 5)
     #'
     #' # To the total abundance for each sequence parsed by sample
-    #' miseq$abundance(type = "sequences", by_sample = TRUE)
+    #' miseq$abundance(type = "sequences", by_sample = TRUE) |> head(n = 5)
     #'
     #' # To the total abundance for each "otu" bin
-    #' miseq$abundance(type = "bins", bin_type = "otu")
+    #' miseq$abundance(type = "bins", bin_type = "otu") |> head(n = 5)
     #'
     #' # To the total abundance for each "otu" bin parsed by sample
-    #' miseq$abundance(type = "bins", bin_type = "otu", by_sample = TRUE)
+    #' miseq$abundance(type = "bins", bin_type = "otu", by_sample = TRUE) |>
+    #' head(n = 5)
     #'
     #' # To the total abundance for each "asv" bin
-    #' miseq$abundance(type = "bins", bin_type = "asv")
+    #' miseq$abundance(type = "bins", bin_type = "asv") |> head(n = 5)
     #'
     #' # To the total abundance for each "asv" bin parsed by sample
-    #' miseq$abundance(type = "bins", bin_type = "asv", by_sample = TRUE)
+    #' miseq$abundance(type = "bins", bin_type = "asv", by_sample = TRUE) |>
+    #' head(n = 5)
     #'
     #' # To the total abundance for each sample
-    #' miseq$abundance(type = "samples")
+    #' miseq$abundance(type = "samples") |> head(n = 5)
     #'
     #' # To the total abundance for each treatment
     #' miseq$abundance(type = "treatments")
     abundance = function(type = "sequences",
-                          bin_type = "otu",
-                          by_sample = FALSE) {
+                         bin_type = "otu",
+                         by_sample = FALSE) {
       xdev_abundance(self, type, bin_type, by_sample)
     },
 
@@ -277,14 +282,23 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
+    #' fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
+    #' contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
+    #'
     #' # Create a new empty `strollur` object named 'example_dataset'
     #' data <- new_dataset(dataset_name = "example_dataset")
     #'
-    #' # Read FASTA data into data.frame
-    #' fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
-    #'
-    #' # Add FASTA sequence data
     #' data$add(table = fasta_data, type = "sequences")
+    #' data$add(
+    #'   table = contigs_report, type = "reports",
+    #'   report_type = "contigs_report", list(sequence_name = "Name")
+    #' )
+    #'
+    #' # To add metadata related to your study
+    #'
+    #' metadata <- readRDS(strollur_example("miseq_metadata.rds"))
+    #'
+    #' data$add(table = metadata, type = "metadata")
     #'
     #' # To add FASTA data with a resource reference
     #'
@@ -309,28 +323,6 @@ strollur <- R6Class("strollur",
     #'   type = "sequences",
     #'   reference = resource_reference
     #' )
-    #'
-    #' # Add contigs assembly report with a 'sequence_name' column named 'Name'
-    #'
-    #' contigs_report <- readr::read_tsv(
-    #'   strollur_example(
-    #'     "final.contigs_report.gz"
-    #'   ),
-    #'   col_names = TRUE, show_col_types = FALSE
-    #' )
-    #'
-    #' data$add(
-    #'   table = contigs_report, type = "reports",
-    #'   report_type = "contigs_report", list(sequence_name = "Name")
-    #' )
-    #'
-    #' # To add metadata related to your study
-    #'
-    #' metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-    #'   col_names = TRUE, show_col_types = FALSE
-    #' )
-    #'
-    #' data$add(table = metadata, type = "metadata")
     #'
     add = function(table,
                    type = "sequences",
@@ -539,10 +531,19 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' # Assign sequence classifications
-    #'
     #' # create a new empty strollur object named 'example_dataset'
+    #'
     #' data <- new_dataset(dataset_name = "example_dataset")
+    #'
+    #' # Assign sequence abundances
+    #'
+    #' abundance_by_sample <- read_mothur_count(strollur_example(
+    #'   "final.count_table.gz"
+    #' ))
+    #'
+    #' data$assign(table = abundance_by_sample, type = "sequence_abundance")
+    #'
+    #' # Assign sequence classifications
     #'
     #' sequence_classifications <- read_mothur_taxonomy(strollur_example(
     #'   "final.taxonomy.gz"
@@ -568,12 +569,8 @@ strollur <- R6Class("strollur",
     #' ))
     #'
     #' # read otu bin representative sequences into a data.frame
-    #' bin_reps <- readr::read_tsv(
-    #'   strollur_example(
-    #'     "otu_representative_sequences.tsv"
-    #'   ),
-    #'   show_col_types = FALSE
-    #' )
+    #' bin_reps <- readRDS(strollur_example(
+    #'                         "miseq_representative_sequences.rds"))
     #'
     #' # assign 'otu' bins using sequence names
     #' data$assign(table = otu_data, bin_type = "otu")
@@ -613,10 +610,8 @@ strollur <- R6Class("strollur",
     #'
     #' # Assign treatments
     #'
-    #' sample_assignments <- readr::read_table(
-    #'   strollur_example("mouse.time.design"),
-    #'   col_names = TRUE, show_col_types = FALSE
-    #' )
+    #' sample_assignments <- readRDS(
+    #'    strollur_example("miseq_sample_design.rds"))
     #'
     #' data$assign(table = sample_assignments, type = "treatments")
     #'
@@ -752,23 +747,6 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
-    #' Get data.frame containing metadata for the strollur object
-    #' @examples
-    #'   data <- strollur$new("my_dataset")
-    #'
-    #'   metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
-    #'    col_names = TRUE, show_col_types = FALSE)
-    #'
-    #'   add(data = data, table = metadata, type = "metadata")
-    #'
-    #'   data$get_metadata()
-    #'
-    #' @return data.frame()
-    get_metadata = function() {
-      report(self, "metadata")
-    },
-
-    #' @description
     #' Get phylo tree relating the samples in your dataset.
     #' @examples
     #'
@@ -802,64 +780,6 @@ strollur <- R6Class("strollur",
         }
       }
       self$sample_tree
-    },
-
-
-    #' @description
-    #' Get data.frame sequence report data. Sequence report data includes: start
-    #' positions, end positions, number of bases, number of ambiguous bases,
-    #' length of longest homopolymer, and the number of N's.
-    #' @return data.frame
-    get_sequence_report = function() {
-      report(self, "sequences")
-    },
-
-    #' @description
-    #' Get summary of the sequence reports
-    #' @return list of data.frames
-    get_summary = function() {
-      results <- list()
-
-      # if you have summary results to print
-      if (!all(xdev_get_sequences(self) == "")) {
-        # if you have summary results to print
-        results[["sequence_summary"]] <- xdev_summarize(
-          data = self,
-          type = "sequences"
-        )
-      }
-
-      exclude <- c("sequence_scrap", "bin_scrap")
-      report_names <- names(data = self, type = "reports")
-      report_names <- report_names[!report_names %in% exclude]
-
-      if (length(report_names) != 0) {
-        for (name in report_names) {
-          results[[name]] <- xdev_summarize(
-            data = self,
-            type = "reports",
-            report_type = name
-          )
-        }
-      }
-
-      df <- xdev_summarize(
-        data = self,
-        type = "scrap"
-      )
-      if (nrow(df) != 0) {
-        results[["scrap_summary"]] <- df
-      }
-
-      if (count(self, type = "samples") != 0) {
-        results[["sample_summary"]] <- abundance(self, type = "samples")
-
-        if (count(self, "treatments") != 0) {
-          results[["treatment_summary"]] <- abundance(self, type = "treatments")
-        }
-      }
-
-      results
     },
 
     #' @description
@@ -974,46 +894,33 @@ strollur <- R6Class("strollur",
     #'
     #' # To get the FASTA data
     #'
-    #' fasta <- miseq$report(type = "fasta")
-    #' head(fasta, n = 10)
+    #' miseq$report(type = "fasta") |> head(n = 5)
     #'
     #' # To get a report about the FASTA data
     #'
-    #' sequence_report <- miseq$report(type = "sequences")
-    #' head(sequence_report, n = 10)
+    #' miseq$report(type = "sequences") |> head(n = 5)
     #'
     #' # To get the sequence bin assignments
     #'
-    #' bin_assignments <- miseq$report(
-    #'   type = "sequence_bin_assignments",
-    #'   bin_type = "otu"
-    #' )
-    #' head(bin_assignments, n = 10)
+    #' miseq$report(type = "sequence_bin_assignments", bin_type = "otu") |>
+    #' head(n = 5)
     #'
     #' # To get the sample treatment assignments
     #'
-    #' miseq$report(type = "sample_assignments")
+    #' miseq$report(type = "sample_assignments") |> head(n = 5)
     #'
     #' # To get a report about sequence classifications
     #'
-    #' sequence_taxonomy_report <- miseq$report(type = "sequence_taxonomy")
-    #' head(sequence_taxonomy_report, n = 10)
+    #' miseq$report(type = "sequence_taxonomy") |> head(n = 5)
     #'
     #' # To get a report about bin classifications for 'otu' data
     #'
-    #' otu_taxonomy_report <- miseq$report(
-    #'   type = "bin_taxonomy",
-    #'   bin_type = "otu"
-    #' )
-    #' head(otu_taxonomy_report, n = 10)
+    #' miseq$report(type = "bin_taxonomy", bin_type = "otu") |> head(n = 5)
     #'
     #' # To get the 'otu' bin representative sequences
     #'
-    #' otu_bin_reps <- miseq$report(
-    #'   type = "bin_representatives",
-    #'   bin_type = "otu"
-    #' )
-    #' head(otu_bin_reps, n = 10)
+    #' miseq$report(type = "bin_representatives", bin_type = "otu") |>
+    #' head(n = 5)
     #'
     #' # To get a report about the sequences removed during your analysis:
     #'
@@ -1025,7 +932,7 @@ strollur <- R6Class("strollur",
     #'
     #' # To get the metadata associated with your data:
     #'
-    #' metadata <- miseq$report(type = "metadata")
+    #' metadata <- miseq$report(type = "metadata") |> head(n = 5)
     #'
     #' # To get the resource references associated with your data:
     #'
@@ -1033,8 +940,7 @@ strollur <- R6Class("strollur",
     #'
     #' # To get our custom report containing the contigs assembly data:
     #'
-    #' contigs_report <- miseq$report(type = "contigs_report")
-    #' head(contigs_report, n = 10)
+    #' miseq$report(type = "contigs_report") |> head(n = 5)
     #'
     #' @return data.frame
     report = function(type = "sequences", bin_type = "otu") {
@@ -1069,9 +975,6 @@ strollur <- R6Class("strollur",
     #' # remove sample 'F3D0' to produce a scrap report
     #' xdev_remove_samples(data = miseq, samples = c("F3D0"))
     #'
-    #' # summarize FASTA data after removal of sample F3D0
-    #' miseq$summary(type = "sequences")
-    #'
     #' # summarize scrapped data -
     #' # sequences and bins scrapped by removing the sample "F3D0"
     #' miseq$summary(type = "scrap")
@@ -1089,6 +992,53 @@ strollur <- R6Class("strollur",
   private = list(
     processors = 1,
     version = "1.0.0",
-    finalize = function() {}
+    finalize = function() {},
+
+
+    #' Get summary of the sequence reports
+    get_summary = function() {
+      results <- list()
+
+      # if you have summary results to print
+      if (!all(xdev_get_sequences(self) == "")) {
+        # if you have summary results to print
+        results[["sequence_summary"]] <- xdev_summarize(
+          data = self,
+          type = "sequences"
+        )
+      }
+
+      exclude <- c("sequence_scrap", "bin_scrap")
+      report_names <- names(data = self, type = "reports")
+      report_names <- report_names[!report_names %in% exclude]
+
+      if (length(report_names) != 0) {
+        for (name in report_names) {
+          results[[name]] <- xdev_summarize(
+            data = self,
+            type = "reports",
+            report_type = name
+          )
+        }
+      }
+
+      df <- xdev_summarize(
+        data = self,
+        type = "scrap"
+      )
+      if (nrow(df) != 0) {
+        results[["scrap_summary"]] <- df
+      }
+
+      if (count(self, type = "samples") != 0) {
+        results[["sample_summary"]] <- abundance(self, type = "samples")
+
+        if (count(self, "treatments") != 0) {
+          results[["treatment_summary"]] <- abundance(self, type = "treatments")
+        }
+      }
+
+      results
+    }
   )
 )

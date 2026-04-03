@@ -15,7 +15,7 @@ xdev_add_sequences(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \link{strollur::strollur} object}
 
 \item{table, }{a data.frame containing names, sequences(optional) and
 comments(optional).}
@@ -40,7 +40,7 @@ Default = TRUE.}
 double containing the number of sequences added
 }
 \description{
-Add sequence data to a \link{strollur} object
+Add sequence data to a \link{strollur::strollur} object
 }
 \examples{
 

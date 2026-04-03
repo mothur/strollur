@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_phyloseq.R
 \name{read_phyloseq}
 \alias{read_phyloseq}
-\title{read_phyloseq}
+\title{Create a \link{strollur::strollur} object from a phyloseq object}
 \usage{
 read_phyloseq(phyloseq_object, treatment_column_name = NULL, dataset_name = "")
 }

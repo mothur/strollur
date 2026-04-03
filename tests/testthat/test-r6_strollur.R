@@ -13,20 +13,14 @@ test_that("dataset - intialize from read_mothur / print", {
   )
 
   # add references, custom report and metadata
-  contigs_report <- readr::read_tsv(
-    strollur_example(
-      "final.contigs_report.gz"
-    ),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
   add(
     data = dataset_t, table = contigs_report, type = "reports",
     report_type = "contigs_report", list(sequence_name = "Name")
   )
 
-  metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  metadata <- readRDS(strollur_example("miseq_metadata.rds"))
+
   add(data = dataset_t, table = metadata, type = "metadata")
 
   reference <- readr::read_csv(strollur_example("references.csv"),
@@ -34,7 +28,7 @@ test_that("dataset - intialize from read_mothur / print", {
   )
   xdev_add_references(dataset_t, reference)
 
-  actual <- dataset_t$get_metadata()
+  actual <- dataset_t$report(type = "metadata")
   expect_equal(nrow(actual), 19)
 
   expect_equal(dataset_t$get_bin_types(), c("otu", "asv", "phylotype"))
@@ -53,7 +47,7 @@ test_that("dataset - intialize from read_mothur / print", {
   )
   expect_equal(count(data = dataset_t, type = "bins", bin_type = "asv"), 2425)
 
-  seqs_summary <- dataset_t$get_summary()[["sequence_summary"]]
+  seqs_summary <- summary(dataset_t, type = "sequences")
 
   expect_equal(seqs_summary$starts[1], 1)
   expect_equal(seqs_summary$ends[1], 375)
@@ -64,7 +58,7 @@ test_that("dataset - intialize from read_mothur / print", {
   expect_equal(seqs_summary$polymers[1], 3)
   expect_equal(seqs_summary$polymers[7], 6)
 
-  seq_report <- dataset_t$get_sequence_report()
+  seq_report <- report(dataset_t, type = "sequences")
 
   expect_equal(nrow(seq_report), 2425)
   expect_equal(ncol(seq_report), 7)
@@ -401,8 +395,8 @@ test_that("dataset - addSeqs, assign samples", {
   expect_equal(names(data, "treatments"), c("early", "late"))
   expect_equal(names(data, "samples"), c("sample2", "sample3", "sample4"))
 
-  sample_summary <- data$get_summary()$sample_summary
-  treatment_summary <- data$get_summary()$treatment_summary
+  sample_summary <- abundance(data, type = "samples")
+  treatment_summary <- abundance(data, type = "treatments")
 
   expect_equal(treatment_summary$abundances, c(766, 554))
   expect_equal(sample_summary$abundances, c(301, 465, 554))
@@ -437,14 +431,12 @@ test_that("dataset - assign_sequence_abundance, remove_sequences", {
   # missing data and names
   expect_error(xdev_assign_sequence_abundance(data))
 
-  sequence_abundance <- readr::read_tsv(strollur_example(
-    "mothur2_count_table.tsv.gz"
-  ), show_col_types = FALSE)
-
+  sequence_abundance <- readRDS(
+    strollur_example("miseq_abundance_by_sample.rds")
+  )
 
   assign(
-    data = data, table = sequence_abundance, table_names =
-      list(sequence_name = "names"), type = "sequence_abundance"
+    data = data, table = sequence_abundance, type = "sequence_abundance"
   )
 
   expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2425)
@@ -688,15 +680,13 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
   expect_equal(count(dataset_t, "bins"), 3)
   expect_equal(count(dataset_t, "samples"), 6)
   expect_equal(
-    dataset_t$get_summary()[["sample_summary"]]$abundances,
+    abundance(dataset_t, type = "samples")[["abundances"]],
     c(36, 25, 2, 20, 13, 4)
   )
 
   clear(dataset_t)
 
-  bin_table <- readr::read_tsv(strollur_example(
-    "mothur2_bin_assignments_shared.tsv.gz"
-  ), show_col_types = FALSE)
+  bin_table <- readRDS(strollur_example("miseq_shared_otu.rds"))
 
   expect_error(assign(
     data = dataset_t, table = bin_table,
@@ -711,16 +701,11 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
 
   clear(dataset_t)
 
-  bin_table <- readr::read_tsv(strollur_example(
-    "mothur2_bin_assignments_list.tsv.gz"
-  ), show_col_types = FALSE)
+  bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
 
   assign(
     data = dataset_t, table = bin_table, type = "bins",
-    bin_type = "otu", table_names = list(
-      bin_name = "otu_id",
-      sequence_name = "seq_id"
-    )
+    bin_type = "otu"
   )
 
   expect_equal(count(dataset_t, "bins"), 531)
@@ -929,7 +914,6 @@ test_that("dataset - ", {
   )
 
   expect_error(assign(dataset_t, table = "not_a_data.frame"))
-  expect_equal(dataset_t$get_summary(), list())
   expect_false(has_sample(dataset_t, "noSample"))
 
   abunds <- c(200, 40, 100, 5)
@@ -1027,16 +1011,11 @@ test_that("dataset - ", {
   table <- readr::read_tsv(strollur_example("final.cons.taxonomy"),
     show_col_types = FALSE
   )
-  bin_table <- readr::read_tsv(strollur_example(
-    "mothur2_bin_assignments_list.tsv.gz"
-  ), show_col_types = FALSE)
+  bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
 
   assign(
     data = dataset_t, table = bin_table, type = "bins",
-    bin_type = "otu", table_names = list(
-      bin_name = "otu_id",
-      sequence_name = "seq_id"
-    )
+    bin_type = "otu"
   )
 
   assign(
@@ -1153,9 +1132,7 @@ test_that("dataset - add_references, get_references", {
 test_that("dataset - add_alignment_report, get_alignment_report", {
   dataset_t <- strollur$new("my_dataset")
 
-  align_report <- readr::read_tsv(strollur_example("alignment_data.tsv"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  align_report <- readRDS(strollur_example("test_alignment_data.rds"))
 
   expect_error(xdev_add_report(
     dataset_t,
@@ -1188,9 +1165,7 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
 test_that("dataset - add / get _contigs_assembly_report,", {
   dataset_t <- strollur$new("my_dataset")
 
-  report <- readr::read_tsv(strollur_example("contigs_data.tsv"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  report <- readRDS(strollur_example("test_contigs_data.rds"))
   expect_error(xdev_add_report(dataset_t, report, "contigs_report", "badName"))
 
   xdev_add_report(dataset_t, report, "contigs_report", "Name")
@@ -1248,39 +1223,39 @@ test_that("dataset - add / get _chimera_report,", {
 
   expect_equal(nrow(report), 71)
   expect_equal(report[, 2], names(dataset_t, "sequences"))
-
-  chimera_summary <- dataset_t$get_summary()[["chimera_report"]]
-
-  expect_equal(ncol(chimera_summary), 13)
 })
 
 test_that("dataset - get_sequence_summary,", {
   dataset_t <- strollur$new("my_dataset")
 
-  report <- readr::read_tsv(strollur_example("contigs_data.tsv"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  report <- readRDS(strollur_example("test_contigs_data.rds"))
   xdev_add_report(dataset_t, report, "contigs_report", "Name")
 
-  report <- readr::read_tsv(strollur_example("alignment_data.tsv"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  report <- readRDS(strollur_example("test_alignment_data.rds"))
   xdev_add_report(dataset_t, report, "alignment_report", "QueryName")
 
-  summary <- dataset_t$get_summary()
+  summary <- summary(dataset_t,
+    type = "reports",
+    report_type = "contigs_report"
+  )
 
-  expect_equal(summary$contigs_report$MisMatches, c(0, 0, 1, 2, 7, 7, 7, 2))
-  expect_equal(summary$contigs_report$Overlap_End, rep(251, 8))
-  expect_equal(summary$contigs_report$Length[1], 252)
-  expect_equal(summary$contigs_report$Length[7], 253)
+  expect_equal(summary$MisMatches, c(0, 0, 1, 2, 7, 7, 7, 2))
+  expect_equal(summary$Overlap_End, rep(251, 8))
+  expect_equal(summary$Length[1], 252)
+  expect_equal(summary$Length[7], 253)
 
-  expect_equal(summary$alignment_report$QueryLength, c(
+  summary <- summary(dataset_t,
+    type = "reports",
+    report_type = "alignment_report"
+  )
+
+  expect_equal(summary$QueryLength, c(
     252, 252, 253, 253,
     253, 253, 253, 252.6
   ))
-  expect_equal(summary$alignment_report$GapsInQuery, rep(0, 8))
-  expect_equal(summary$alignment_report$SearchScore[1], 57.55)
-  expect_equal(summary$alignment_report$SearchScore[7], 82.44)
+  expect_equal(summary$GapsInQuery, rep(0, 8))
+  expect_equal(summary$SearchScore[1], 57.55)
+  expect_equal(summary$SearchScore[7], 82.44)
 })
 
 test_that("dataset - add_sequence_tree / get_sequence_tree,", {
@@ -1468,10 +1443,12 @@ test_that("dataset - assign_treatments", {
 
   report <- dataset_t$report(type = "sample_assignments")
 
-  expect_equal(report$treatments, c("Early", "Early", "Late", "Late", "Late",
-                                    "Late", "Late", "Late", "Late", "Late",
-                                    "Late", "Late", "Early", "Early", "Early",
-                                    "Early", "Early", "Early", "Early"))
+  expect_equal(report$treatments, c(
+    "Early", "Early", "Late", "Late", "Late",
+    "Late", "Late", "Late", "Late", "Late",
+    "Late", "Late", "Early", "Early", "Early",
+    "Early", "Early", "Early", "Early"
+  ))
 
   expect_equal(dataset_t$count(type = "samples"), 19)
   expect_equal(dataset_t$names(type = "treatments"), c("Early", "Late"))

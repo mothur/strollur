@@ -1,14 +1,14 @@
 #' @title load_dataset
-#' @description
-#' The load_dataset function will create a \link{strollur} object from an RDS
-#' file.
+#' @description The load_dataset function will create a
+#'   \link{strollur::strollur} object from an RDS file.
+#'
 #' @param file a string containing the .rds file name.
 #' @examples
 #'
 #' data <- load_dataset(strollur_example("miseq_sop.rds"))
 #' data
 #'
-#' @return a \link{strollur} object
+#' @return a \link{strollur::strollur} object
 #' @export
 load_dataset <- function(file) {
   if (!file.exists(file)) {

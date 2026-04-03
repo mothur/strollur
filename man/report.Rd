@@ -2,12 +2,13 @@
 % Please edit documentation in R/report.R
 \name{report}
 \alias{report}
-\title{report}
+\title{Get a data.frame containing the given report in a
+\link{strollur::strollur} object}
 \usage{
 report(data, type = "sequences", bin_type = "otu")
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \link{strollur::strollur} object}
 
 \item{type, }{string containing the type of report you would like. Options
 include: "fasta", "sequences", "sequence_bin_assignments",
@@ -24,7 +25,10 @@ report for. Default = "otu".}
 data.frame
 }
 \description{
-Get a data.frame containing the given report in a \link{strollur} object
+Get a data.frame containing the report. Reports include FASTA format,
+sequences reports, sequence_bin_assignments, sequence_taxonomy, bin_taxonomy,
+bin_representatives, sample_assignments, metadata, references,
+sequence_scrap, and bin_scrap in a \link{strollur::strollur} object.
 }
 \examples{
 

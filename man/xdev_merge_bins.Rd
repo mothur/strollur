@@ -7,7 +7,7 @@
 xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 }
 \arguments{
-\item{data, }{a \link{strollur} object.}
+\item{data, }{a \link{strollur::strollur} object.}
 
 \item{bin_names, }{a vector of strings containing the names of the bins you
 would like merge. The resulting merged bin will be stored in the first
@@ -21,7 +21,7 @@ Default = "otu"}
 }
 \description{
 Designed with package integration in mind, the merge bins function allows
-you to merge bins in a \link{strollur} object
+you to merge bins in a \link{strollur::strollur} object
 }
 \examples{
 

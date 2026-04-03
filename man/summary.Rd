@@ -2,12 +2,13 @@
 % Please edit documentation in R/summary.R
 \name{summary}
 \alias{summary}
-\title{summary}
+\title{Summarize the sequences data, custom reports, and scrapped data in a
+\link{strollur::strollur} object}
 \usage{
 summary(data, type = "sequences", report_type = NULL, verbose = TRUE)
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \link{strollur::strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "reports" and "scrap". Default = "sequences".}
@@ -24,7 +25,7 @@ data.frame
 }
 \description{
 Summarize the sequences data, custom reports, and scrapped data in a
-\link{strollur} object
+\link{strollur::strollur} object
 }
 \examples{
 
