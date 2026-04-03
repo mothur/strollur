@@ -2,7 +2,9 @@
 % Please edit documentation in R/read_mothur.R
 \name{read_mothur}
 \alias{read_mothur}
-\title{Create a \link{strollur::strollur} object from mothur outputs}
+\title{Create a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+  from mothur outputs}
 \usage{
 read_mothur(
   fasta = NULL,
@@ -85,7 +87,8 @@ The sequence tree is created by
 \item{dataset_name}{A string containing a name for your dataset.}
 }
 \value{
-A 'dataset' object
+A
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 The read_mothur function reads various

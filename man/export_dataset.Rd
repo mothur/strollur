@@ -7,13 +7,13 @@
 export_dataset(data)
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 }
 \value{
 Rcpp::List, containing the data in the 'Dataset
 }
 \description{
-Export all data from a \link{strollur::strollur} object.
+Export all data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 }
 \examples{
 

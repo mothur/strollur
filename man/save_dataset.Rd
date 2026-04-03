@@ -7,7 +7,8 @@
 save_dataset(data, file)
 }
 \arguments{
-\item{data}{a \link{strollur::strollur} object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{file}{a string containing the file name.}
 }
@@ -15,8 +16,9 @@ save_dataset(data, file)
 A file containing the `strollur` object
 }
 \description{
-The save_dataset function will save the \link{strollur::strollur} object to
-file.
+The save_dataset function will save the
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+to file.
 }
 \examples{
 

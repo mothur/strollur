@@ -1,4 +1,6 @@
-#' @title Create a \link{strollur::strollur} object from mothur outputs
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from mothur outputs
 #' @name read_mothur
 #' @rdname read_mothur
 #' @description
@@ -94,7 +96,8 @@
 #'   dataset_name = "miseq_sop"
 #' )
 #'
-#' @return A 'dataset' object
+#' @return A
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 read_mothur <- function(fasta = NULL, count = NULL,
                         taxonomy = NULL, otu_list = NULL, asv_list = NULL,

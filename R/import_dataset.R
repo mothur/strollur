@@ -1,9 +1,12 @@
 #' @title import_dataset
 #' @description The import_dataset function will create a
-#' \link{strollur::strollur} object from the exported table of a
-#' \link{strollur::strollur} object.
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from the exported table of a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+#'   object.
 #'
-#' @param table a table containing the data from a \link{strollur::strollur}
+#' @param table a table containing the data from a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
 #'   object. You can create the table using 'export(data)'.
 #'
 #' @examples
@@ -12,7 +15,8 @@
 #' data <- import_dataset(export_dataset(miseq))
 #' data
 #'
-#' @return a \link{strollur::strollur} object
+#' @return a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @seealso [dataset$export()]
 #' @export
 import_dataset <- function(table) {

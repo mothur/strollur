@@ -1,14 +1,15 @@
 #' @title Assign sequence abundances, sequence classifications, bins, bin
 #' representative sequences, bin classifications or treatments to a
-#' \link{strollur::strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @name assign
 #' @rdname assign
 #' @description
 #' Assign sequence abundances, sequence classifications, bins, bin
 #' representative sequences, bin classifications or treatments to a
-#' \link{strollur::strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \link{strollur::strollur} object
+#' @param data, a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param table, a data.frame containing the data you wish to assign
 #'

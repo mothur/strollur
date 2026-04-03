@@ -1,4 +1,6 @@
-#' @title Create a \link{strollur::strollur} object from a qiime2 outputs
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from a qiime2 outputs
 #' @name read_qiime2
 #' @rdname read_qiime2
 #' @description

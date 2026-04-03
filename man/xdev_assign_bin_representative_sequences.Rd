@@ -15,7 +15,7 @@ xdev_assign_bin_representative_sequences(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing bin representative assignments}
 

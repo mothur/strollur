@@ -3,12 +3,14 @@
 \name{abundance}
 \alias{abundance}
 \title{Get the abundance data for sequences, bins, samples, and treatments in
-  a \link{strollur::strollur} object}
+  a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+  object}
 \usage{
 abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "bins", "samples" and "treatments".
@@ -24,8 +26,9 @@ be parsed by sample. Default = FALSE.}
 data.frame
 }
 \description{
-Get the abundance data for sequences, bins, samples, and treatments in a
-\link{strollur::strollur} object
+Get the abundance data for sequences, bins, samples, and
+  treatments in a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

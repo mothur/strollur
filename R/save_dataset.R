@@ -1,9 +1,11 @@
+#' @import Rcereal
 #' @title save_dataset
-#' @description
-#' The save_dataset function will save the \link{strollur::strollur} object to
-#' file.
+#' @description The save_dataset function will save the
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' to file.
 #'
-#' @param data a \link{strollur::strollur} object
+#' @param data a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param file a string containing the file name.
 #' @examples

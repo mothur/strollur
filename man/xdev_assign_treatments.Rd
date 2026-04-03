@@ -13,7 +13,7 @@ xdev_assign_treatments(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing sample treatment assignments}
 
@@ -30,7 +30,7 @@ messages. Default = TRUE.}
 double containing the number of samples assigned to treatments
 }
 \description{
-Assign samples to treatments in a \link{strollur::strollur} object
+Assign samples to treatments in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

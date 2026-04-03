@@ -10,11 +10,13 @@ load_dataset(file)
 \item{file}{a string containing the .rds file name.}
 }
 \value{
-a \link{strollur::strollur} object
+a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 The load_dataset function will create a
-  \link{strollur::strollur} object from an RDS file.
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+  from an RDS file.
 }
 \examples{
 

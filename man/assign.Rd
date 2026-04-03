@@ -4,7 +4,7 @@
 \alias{assign}
 \title{Assign sequence abundances, sequence classifications, bins, bin
 representative sequences, bin classifications or treatments to a
-\link{strollur::strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
 assign(
   data,
@@ -18,7 +18,8 @@ assign(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing the data you wish to assign}
 
@@ -73,7 +74,7 @@ double - The number of items assigned
 \description{
 Assign sequence abundances, sequence classifications, bins, bin
 representative sequences, bin classifications or treatments to a
-\link{strollur::strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

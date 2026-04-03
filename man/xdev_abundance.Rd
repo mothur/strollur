@@ -7,7 +7,7 @@
 xdev_abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "bins".
@@ -24,7 +24,7 @@ data.frame
 }
 \description{
 Get a table containing the requested abundance data in a
-\link{strollur::strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

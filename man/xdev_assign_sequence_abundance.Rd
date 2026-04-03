@@ -15,7 +15,7 @@ xdev_assign_sequence_abundance(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing sequence abundance assignments}
 
@@ -40,7 +40,7 @@ double containing the number of sequences assigned
 }
 \description{
 Assign sequence abundance and optionally assign sample and treatment data to
- a \link{strollur::strollur} object
+ a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

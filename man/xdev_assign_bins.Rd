@@ -17,7 +17,7 @@ xdev_assign_bins(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing bin_data assignments}
 
@@ -47,7 +47,7 @@ Default = TRUE.}
 double containing the number of bins assigned
 }
 \description{
-Add bin assignments to a \link{strollur::strollur} object
+Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

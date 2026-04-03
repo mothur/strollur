@@ -1,12 +1,14 @@
 #' @title Get the abundance data for sequences, bins, samples, and treatments in
-#'   a \link{strollur::strollur} object
+#'   a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+#'   object
 #' @name abundance
 #' @rdname abundance
-#' @description
-#' Get the abundance data for sequences, bins, samples, and treatments in a
-#' \link{strollur::strollur} object
+#' @description Get the abundance data for sequences, bins, samples, and
+#'   treatments in a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \link{strollur::strollur} object
+#' @param data, a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
 #' Options include: "sequences", "bins", "samples" and "treatments".

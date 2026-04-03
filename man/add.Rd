@@ -19,7 +19,8 @@ add(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing the data you wish to add.}
 
@@ -83,7 +84,7 @@ double - The number of items added
 }
 \description{
 Add sequences, reports, metadata or resource references to a
-\link{strollur::strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

@@ -13,7 +13,7 @@ xdev_count(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "samples", "treatments", "bins" and
@@ -44,7 +44,7 @@ double
 }
 \description{
 Find the number of sequences, samples, treatments or bins of a given type in
-a \link{strollur::strollur} object
+a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

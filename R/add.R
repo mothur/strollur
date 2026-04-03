@@ -4,9 +4,10 @@
 #' @rdname add
 #' @description
 #' Add sequences, reports, metadata or resource references to a
-#' \link{strollur::strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \link{strollur::strollur} object
+#' @param data, a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param table, a data.frame containing the data you wish to add.
 #'

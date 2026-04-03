@@ -1,5 +1,7 @@
 #' @importFrom stats reshape
-#' @title Create a \link{strollur::strollur} object from a phyloseq object
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from a phyloseq object
 #' @name read_phyloseq
 #' @rdname read_phyloseq
 #' @description

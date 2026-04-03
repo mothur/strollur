@@ -7,7 +7,7 @@
 has_sample(data, sample)
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object.}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
 
 \item{sample}{a string containing the name of a sample.}
 }
@@ -15,7 +15,7 @@ has_sample(data, sample)
 boolean indicating whether the dataset has a given sample
 }
 \description{
-Determine if a given sample is in a \link{strollur::strollur} object
+Determine if a given sample is in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

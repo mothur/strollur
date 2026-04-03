@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_add_report}
 \alias{xdev_add_report}
-\title{Add a report to a \link{strollur::strollur} object}
+\title{Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
 xdev_add_report(
   data,
@@ -13,7 +13,7 @@ xdev_add_report(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur::strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing your report.}
 
@@ -28,7 +28,7 @@ does not require a sequence_name column. Default column name is 'sequence_names'
 Default = TRUE.}
 }
 \description{
-Add a report to a \link{strollur::strollur} object
+Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
