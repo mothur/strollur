@@ -1,4 +1,8 @@
-#' @title read_dada2
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from dada2 outputs
+#' @name read_dada2
+#' @rdname read_dada2
 #' @description
 #' This function reads a dada2 sequence table and creates a `strollur`
 #' object. The dada2 sequence table is a 2D matrix containing the abundance

@@ -7,7 +7,7 @@
 xdev_get_abundances_by_sample(data, samples = as.character(c()))
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{samples}{a vector of strings containing the names of the samples you
 would like sequence names for. By default all samples are included.}
@@ -16,7 +16,7 @@ would like sequence names for. By default all samples are included.}
 2D vector of float containing data requested parsed by sample.
 }
 \description{
-Get the sequence abundance data in a \link{strollur} object parsed by sample
+Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 }
 \examples{
 

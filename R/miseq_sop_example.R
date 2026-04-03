@@ -25,18 +25,16 @@ miseq_sop_example <- function() {
     dataset_name = "miseq_sop"
   )
 
-  representative_seqs <- readr::read_tsv(
-    strollur_example("otu_representative_sequences.tsv"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  representative_seqs <- readRDS(strollur_example(
+    "miseq_representative_sequences.rds"
+  ))
+
   assign(
     data = data, table = representative_seqs,
     type = "bin_representatives"
   )
 
-  metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  metadata <- readRDS(strollur_example("miseq_metadata.rds"))
   xdev_add_report(data, metadata, "metadata")
 
   reference <- readr::read_csv(strollur_example("references.csv"),
@@ -44,9 +42,7 @@ miseq_sop_example <- function() {
   )
   xdev_add_references(data, reference)
 
-  contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
   add(
     data = data, table = contigs_report, type = "reports",
     report_type = "contigs_report",

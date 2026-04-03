@@ -7,15 +7,20 @@
 import_dataset(table)
 }
 \arguments{
-\item{table}{a table containing the data from a \link{strollur} object. You
-can create the table using 'export(data)'.}
+\item{table}{a table containing the data from a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object. You can create the table using 'export(data)'.}
 }
 \value{
-a \link{strollur} object
+a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
-The import_dataset function will create a \link{strollur} object from the
-exported table of a \link{strollur} object.
+The import_dataset function will create a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+  from the exported table of a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+  object.
 }
 \examples{
 

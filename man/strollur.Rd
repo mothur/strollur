@@ -2,7 +2,8 @@
 % Please edit documentation in R/r6_strollur.R
 \name{strollur}
 \alias{strollur}
-\title{strollur}
+\title{The `strollur` object stores the data associated with your microbial
+  analysis.}
 \description{
 'strollur' is an R6 class that stores nucleotide sequences,
 abundance, sample and treatment assignments, taxonomic classifications,
@@ -22,18 +23,60 @@ data <- new_dataset("soil")
 
 
 ## ------------------------------------------------
+## Method `strollur$abundance`
+## ------------------------------------------------
+
+
+miseq <- miseq_sop_example()
+
+# To the total abundance for each sequence
+miseq$abundance(type = "sequences") |> head(n = 5)
+
+# To the total abundance for each sequence parsed by sample
+miseq$abundance(type = "sequences", by_sample = TRUE) |> head(n = 5)
+
+# To the total abundance for each "otu" bin
+miseq$abundance(type = "bins", bin_type = "otu") |> head(n = 5)
+
+# To the total abundance for each "otu" bin parsed by sample
+miseq$abundance(type = "bins", bin_type = "otu", by_sample = TRUE) |>
+head(n = 5)
+
+# To the total abundance for each "asv" bin
+miseq$abundance(type = "bins", bin_type = "asv") |> head(n = 5)
+
+# To the total abundance for each "asv" bin parsed by sample
+miseq$abundance(type = "bins", bin_type = "asv", by_sample = TRUE) |>
+head(n = 5)
+
+# To the total abundance for each sample
+miseq$abundance(type = "samples") |> head(n = 5)
+
+# To the total abundance for each treatment
+miseq$abundance(type = "treatments")
+
+## ------------------------------------------------
 ## Method `strollur$add`
 ## ------------------------------------------------
 
 
+fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
+contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
+
 # Create a new empty `strollur` object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
-# Read FASTA data into data.frame
-fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
-
-# Add FASTA sequence data
 data$add(table = fasta_data, type = "sequences")
+data$add(
+  table = contigs_report, type = "reports",
+  report_type = "contigs_report", list(sequence_name = "Name")
+)
+
+# To add metadata related to your study
+
+metadata <- readRDS(strollur_example("miseq_metadata.rds"))
+
+data$add(table = metadata, type = "metadata")
 
 # To add FASTA data with a resource reference
 
@@ -58,28 +101,6 @@ data$add(
   type = "sequences",
   reference = resource_reference
 )
-
-# Add contigs assembly report with a 'sequence_name' column named 'Name'
-
-contigs_report <- readr::read_tsv(
-  strollur_example(
-    "final.contigs_report.gz"
-  ),
-  col_names = TRUE, show_col_types = FALSE
-)
-
-data$add(
-  table = contigs_report, type = "reports",
-  report_type = "contigs_report", list(sequence_name = "Name")
-)
-
-# To add metadata related to your study
-
-metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-  col_names = TRUE, show_col_types = FALSE
-)
-
-data$add(table = metadata, type = "metadata")
 
 
 ## ------------------------------------------------
@@ -113,10 +134,19 @@ data$add(table = metadata, type = "metadata")
 ## ------------------------------------------------
 
 
-# Assign sequence classifications
-
 # create a new empty strollur object named 'example_dataset'
+
 data <- new_dataset(dataset_name = "example_dataset")
+
+# Assign sequence abundances
+
+abundance_by_sample <- read_mothur_count(strollur_example(
+  "final.count_table.gz"
+))
+
+data$assign(table = abundance_by_sample, type = "sequence_abundance")
+
+# Assign sequence classifications
 
 sequence_classifications <- read_mothur_taxonomy(strollur_example(
   "final.taxonomy.gz"
@@ -142,12 +172,8 @@ phylo_data <- read_mothur_list(list = strollur_example(
 ))
 
 # read otu bin representative sequences into a data.frame
-bin_reps <- readr::read_tsv(
-  strollur_example(
-    "otu_representative_sequences.tsv"
-  ),
-  show_col_types = FALSE
-)
+bin_reps <- readRDS(strollur_example(
+                        "miseq_representative_sequences.rds"))
 
 # assign 'otu' bins using sequence names
 data$assign(table = otu_data, bin_type = "otu")
@@ -187,10 +213,8 @@ data$assign(
 
 # Assign treatments
 
-sample_assignments <- readr::read_table(
-  strollur_example("mouse.time.design"),
-  col_names = TRUE, show_col_types = FALSE
-)
+sample_assignments <- readRDS(
+   strollur_example("miseq_sample_design.rds"))
 
 data$assign(table = sample_assignments, type = "treatments")
 
@@ -213,13 +237,12 @@ miseq$count(type = "sequences", distinct = TRUE)
 # be present in other samples as well
 miseq$count(type = "sequences", samples = c("F3D0", "F3D1"))
 
-# To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
-# Note sequences are present in both samples and NOT present in any other
-# samples.
-miseq$count(
-  type = "sequences", samples = c("F3D0", "F3D1"),
-  distinct = TRUE
-)
+# To get number of unique sequences exclusive to samples 'F3D0' and
+# 'F3D1'. Note sequences are present in both samples and NOT present in
+# any other samples.
+
+miseq$count(type = "sequences",
+            samples = c("F3D0", "F3D1"), distinct = TRUE )
 
 # To get the number of samples in the dataset
 miseq$count(type = "samples")
@@ -244,8 +267,9 @@ miseq$count(
 )
 
 # To get number of "otu" bins unique to samples 'F3D0' and 'F3D1'
-# Note these bins will have sequences from both samples and NO other samples
-# will be present in the bins.
+# Note these bins will have sequences from both samples and NO other
+# samples will be present in the bins.
+
 miseq$count(
   type = "bins", bin_type = "otu",
   samples = c("F3D0", "F3D1"), distinct = TRUE
@@ -259,20 +283,6 @@ miseq$count(
 
 data <- miseq_sop_example()
 data$get_bin_types()
-
-
-## ------------------------------------------------
-## Method `strollur$get_metadata`
-## ------------------------------------------------
-
-  data <- strollur$new("my_dataset")
-
-  metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-
-  add(data = data, table = metadata, type = "metadata")
-
-  data$get_metadata()
 
 
 ## ------------------------------------------------
@@ -352,46 +362,33 @@ miseq <- miseq_sop_example()
 
 # To get the FASTA data
 
-fasta <- miseq$report(type = "fasta")
-head(fasta, n = 10)
+miseq$report(type = "fasta") |> head(n = 5)
 
 # To get a report about the FASTA data
 
-sequence_report <- miseq$report(type = "sequences")
-head(sequence_report, n = 10)
+miseq$report(type = "sequences") |> head(n = 5)
 
 # To get the sequence bin assignments
 
-bin_assignments <- miseq$report(
-  type = "sequence_bin_assignments",
-  bin_type = "otu"
-)
-head(bin_assignments, n = 10)
+miseq$report(type = "sequence_bin_assignments", bin_type = "otu") |>
+head(n = 5)
 
 # To get the sample treatment assignments
 
-miseq$report(type = "sample_assignments")
+miseq$report(type = "sample_assignments") |> head(n = 5)
 
 # To get a report about sequence classifications
 
-sequence_taxonomy_report <- miseq$report(type = "sequence_taxonomy")
-head(sequence_taxonomy_report, n = 10)
+miseq$report(type = "sequence_taxonomy") |> head(n = 5)
 
 # To get a report about bin classifications for 'otu' data
 
-otu_taxonomy_report <- miseq$report(
-  type = "bin_taxonomy",
-  bin_type = "otu"
-)
-head(otu_taxonomy_report, n = 10)
+miseq$report(type = "bin_taxonomy", bin_type = "otu") |> head(n = 5)
 
 # To get the 'otu' bin representative sequences
 
-otu_bin_reps <- miseq$report(
-  type = "bin_representatives",
-  bin_type = "otu"
-)
-head(otu_bin_reps, n = 10)
+miseq$report(type = "bin_representatives", bin_type = "otu") |>
+head(n = 5)
 
 # To get a report about the sequences removed during your analysis:
 
@@ -403,7 +400,7 @@ miseq$report(type = "bin_scrap", bin_type = "otu")
 
 # To get the metadata associated with your data:
 
-metadata <- miseq$report(type = "metadata")
+metadata <- miseq$report(type = "metadata") |> head(n = 5)
 
 # To get the resource references associated with your data:
 
@@ -411,8 +408,7 @@ references <- miseq$report(type = "references")
 
 # To get our custom report containing the contigs assembly data:
 
-contigs_report <- miseq$report(type = "contigs_report")
-head(contigs_report, n = 10)
+miseq$report(type = "contigs_report") |> head(n = 5)
 
 
 ## ------------------------------------------------
@@ -430,9 +426,6 @@ miseq$summary(type = "reports", report_type = "contigs_report")
 
 # remove sample 'F3D0' to produce a scrap report
 xdev_remove_samples(data = miseq, samples = c("F3D0"))
-
-# summarize FASTA data after removal of sample F3D0
-miseq$summary(type = "sequences")
 
 # summarize scrapped data -
 # sequences and bins scrapped by removing the sample "F3D0"
@@ -464,6 +457,7 @@ the class.}
 \itemize{
 \item \href{#method-strollur-new}{\code{strollur$new()}}
 \item \href{#method-strollur-print}{\code{strollur$print()}}
+\item \href{#method-strollur-abundance}{\code{strollur$abundance()}}
 \item \href{#method-strollur-add}{\code{strollur$add()}}
 \item \href{#method-strollur-add_sample_tree}{\code{strollur$add_sample_tree()}}
 \item \href{#method-strollur-add_sequence_tree}{\code{strollur$add_sequence_tree()}}
@@ -471,10 +465,7 @@ the class.}
 \item \href{#method-strollur-clear}{\code{strollur$clear()}}
 \item \href{#method-strollur-count}{\code{strollur$count()}}
 \item \href{#method-strollur-get_bin_types}{\code{strollur$get_bin_types()}}
-\item \href{#method-strollur-get_metadata}{\code{strollur$get_metadata()}}
 \item \href{#method-strollur-get_sample_tree}{\code{strollur$get_sample_tree()}}
-\item \href{#method-strollur-get_sequence_report}{\code{strollur$get_sequence_report()}}
-\item \href{#method-strollur-get_summary}{\code{strollur$get_summary()}}
 \item \href{#method-strollur-get_sequence_tree}{\code{strollur$get_sequence_tree()}}
 \item \href{#method-strollur-names}{\code{strollur$names()}}
 \item \href{#method-strollur-report}{\code{strollur$report()}}
@@ -534,6 +525,66 @@ Get summary of `strollur` object
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-strollur-abundance"></a>}}
+\if{latex}{\out{\hypertarget{method-strollur-abundance}{}}}
+\subsection{Method \code{abundance()}}{
+Get the abundance data for sequences, bins, samples, and treatments.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{strollur$abundance(type = "sequences", bin_type = "otu", by_sample = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type, }}{string containing the type of data you want the number of.
+Options include: "sequences", "bins", "samples" and "treatments".
+Default = "sequences".}
+
+\item{\code{bin_type, }}{string containing the bin type you would like the
+abundance data for. Default = "otu".}
+
+\item{\code{by_sample, }}{Boolean. When by_sample is TRUE, the abundance data
+will be parsed by sample. Default = FALSE.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{
+miseq <- miseq_sop_example()
+
+# To the total abundance for each sequence
+miseq$abundance(type = "sequences") |> head(n = 5)
+
+# To the total abundance for each sequence parsed by sample
+miseq$abundance(type = "sequences", by_sample = TRUE) |> head(n = 5)
+
+# To the total abundance for each "otu" bin
+miseq$abundance(type = "bins", bin_type = "otu") |> head(n = 5)
+
+# To the total abundance for each "otu" bin parsed by sample
+miseq$abundance(type = "bins", bin_type = "otu", by_sample = TRUE) |>
+head(n = 5)
+
+# To the total abundance for each "asv" bin
+miseq$abundance(type = "bins", bin_type = "asv") |> head(n = 5)
+
+# To the total abundance for each "asv" bin parsed by sample
+miseq$abundance(type = "bins", bin_type = "asv", by_sample = TRUE) |>
+head(n = 5)
+
+# To the total abundance for each sample
+miseq$abundance(type = "samples") |> head(n = 5)
+
+# To the total abundance for each treatment
+miseq$abundance(type = "treatments")
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-strollur-add"></a>}}
 \if{latex}{\out{\hypertarget{method-strollur-add}{}}}
 \subsection{Method \code{add()}}{
@@ -560,11 +611,11 @@ Add sequences, reports, metadata or resource references
 \item{\code{type, }}{a string containing the type of data. Options include:
 'sequences', 'references' 'metadata' and 'reports'.}
 
-\item{\code{report_type, }}{a string containing the type of report you are adding.
-Options include: 'metadata' and custom reports.}
+\item{\code{report_type, }}{a string containing the type of report you are
+adding. Options include: 'metadata' and custom reports.}
 
-\item{\code{table_names, }}{named list used to indicate the names of the columns in
-the table. By default:
+\item{\code{table_names, }}{named list used to indicate the names of the columns
+ in the table. By default:
 
 table_names <- list(sequence_name = "sequence_names",
                     comment = "comments",
@@ -575,56 +626,66 @@ table_names <- list(sequence_name = "sequence_names",
                     reference_note = "reference_notes",
                     reference_url = "reference_urls")
 
-In table_names, 'sequence_name' is a string containing the name of the column
-in 'table' that contains the sequence names. It is used when you are adding
-FASTA data. Default column name is 'sequence_names'.
+In table_names, 'sequence_name' is a string containing the name of the
+column in 'table' that contains the sequence names. It is used when you
+are adding FASTA data. Default column name is 'sequence_names'.
 
-In table_names, 'sequence' is a string containing the name of the column in
-'table' that contains the sequence nucleotide strings. It is used when you
-are adding FASTA data. Default column name is 'sequences'.
+In table_names, 'sequence' is a string containing the name of the column
+in 'table' that contains the sequence nucleotide strings. It is used when
+you are adding FASTA data. Default column name is 'sequences'.
 
-In table_names, 'comment' is a string containing the name of the column in
-'table' that contains the sequence comments. It is used when you are adding
-FASTA data. Default column name is 'comments'.
+In table_names, 'comment' is a string containing the name of the column
+in 'table' that contains the sequence comments. It is used when you are
+adding FASTA data. Default column name is 'comments'.
 
 In table_names, 'reference_name' is a string containing the name of the
-column in 'table' that contains the reference names. It is used when you are
-adding reference data. Default column name is 'reference_names'.
+column in 'table' that contains the reference names. It is used when you
+are adding reference data. Default column name is 'reference_names'.
 
-In table_names, 'reference_version' is a string containing the name of the
-column in 'table' that contains the reference versions. Default column name
-is 'reference_versions'.
+In table_names, 'reference_version' is a string containing the name of
+the column in 'table' that contains the reference versions. Default
+column name is 'reference_versions'.
 
 In table_names, 'reference_usage' is a string containing the name of the
-column in 'table' that contains the reference usages. Default column name is
-'reference_usages'.
+column in 'table' that contains the reference usages. Default column name
+is 'reference_usages'.
 
 In table_names, 'reference_note' is a string containing the name of the
-column in 'table' that contains the reference notes. Default column name is
- 'reference_notes'.
+column in 'table' that contains the reference notes. Default column name
+is 'reference_notes'.
 
-In table_names, 'reference_url' is a string containing the name of the column
-in 'table' that contains the reference urls. Default column name is
- 'reference_urls'.}
+In table_names, 'reference_url' is a string containing the name of the
+column in 'table' that contains the reference urls. Default column name
+is 'reference_urls'.}
 
-\item{\code{reference, }}{a list created by the function [new_reference]. Optional.}
+\item{\code{reference, }}{a list created by the function [new_reference].
+Optional.}
 
-\item{\code{verbose, }}{boolean indicating whether or not you want progress messages.
-Default = TRUE.}
+\item{\code{verbose, }}{boolean indicating whether or not you want progress
+messages. Default = TRUE.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
+fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
+contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
+
 # Create a new empty `strollur` object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
-# Read FASTA data into data.frame
-fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
-
-# Add FASTA sequence data
 data$add(table = fasta_data, type = "sequences")
+data$add(
+  table = contigs_report, type = "reports",
+  report_type = "contigs_report", list(sequence_name = "Name")
+)
+
+# To add metadata related to your study
+
+metadata <- readRDS(strollur_example("miseq_metadata.rds"))
+
+data$add(table = metadata, type = "metadata")
 
 # To add FASTA data with a resource reference
 
@@ -649,28 +710,6 @@ data$add(
   type = "sequences",
   reference = resource_reference
 )
-
-# Add contigs assembly report with a 'sequence_name' column named 'Name'
-
-contigs_report <- readr::read_tsv(
-  strollur_example(
-    "final.contigs_report.gz"
-  ),
-  col_names = TRUE, show_col_types = FALSE
-)
-
-data$add(
-  table = contigs_report, type = "reports",
-  report_type = "contigs_report", list(sequence_name = "Name")
-)
-
-# To add metadata related to your study
-
-metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-  col_names = TRUE, show_col_types = FALSE
-)
-
-data$add(table = metadata, type = "metadata")
 
 }
 \if{html}{\out{</div>}}
@@ -770,45 +809,44 @@ representative sequences, bin classifications or treatments.
  'bin_representatives', 'bin_taxonomy' and 'treatments'.
  Default = "bins".}
 
-\item{\code{bin_type, }}{string containing the bin type you would like the number of
-bins for. Default = "otu".}
+\item{\code{bin_type, }}{string containing the bin type you would like the number
+of bins for. Default = "otu".}
 
-\item{\code{table_names, }}{named list used to indicate the names of the columns in
-the table. By default:
+\item{\code{table_names, }}{named list used to indicate the names of the columns
+  in the table. By default:
 
-table_names <- list(sequence_name = "sequence_names",
-                    abundance = "abundances",
-                    sample = "samples",
-                    treatment = "treatments",
-                    taxonomy = "taxonomies",
-                    bin_name = "bin_names")
+  table_names <- list(sequence_name = "sequence_names", abundance =
+  "abundances", sample = "samples", treatment = "treatments", taxonomy =
+  "taxonomies", bin_name = "bin_names")
 
-In table_names, 'sequence_name' is a string containing the name of the column
-in 'table' that contains the sequence names. Default column name is
-'sequence_names'.
+  In table_names, 'sequence_name' is a string containing the name of the
+  column in 'table' that contains the sequence names. Default column name
+  is 'sequence_names'.
 
-In table_names, 'abundance' is a string containing the name of the column in
-'table' that contains the abundances. Default column name is 'abundances'.
+  In table_names, 'abundance' is a string containing the name of the
+  column in 'table' that contains the abundances. Default column name is
+  'abundances'.
 
-In table_names, 'sample' is a string containing the name of the column in
-'table' that contains the samples. Default column name is 'samples'.
+  In table_names, 'sample' is a string containing the name of the column
+  in 'table' that contains the samples. Default column name is 'samples'.
 
-In table_names, 'treatment' is a string containing the name of the
-column in 'table' that contains the treatment names. Default column name is
- 'treatments'.
+  In table_names, 'treatment' is a string containing the name of the
+  column in 'table' that contains the treatment names. Default column
+  name is 'treatments'.
 
-In table_names, 'taxonomy' is a string containing the name of the
-column in 'table' that contains the classifications. Default column name
-is 'taxonomies'.
+  In table_names, 'taxonomy' is a string containing the name of the
+  column in 'table' that contains the classifications. Default column
+  name is 'taxonomies'.
 
-In table_names, 'bin_name' is a string containing the name of the
-column in 'table' that contains the bin names. Default column name is
-'bin_names'.}
+  In table_names, 'bin_name' is a string containing the name of the
+  column in 'table' that contains the bin names. Default column name is
+  'bin_names'.}
 
-\item{\code{reference, }}{a list created by the function [new_reference]. Optional.}
+\item{\code{reference, }}{a list created by the function [new_reference].
+Optional.}
 
-\item{\code{verbose, }}{boolean indicating whether or not you want progress messages.
-Default = TRUE.}
+\item{\code{verbose, }}{boolean indicating whether or not you want progress
+messages. Default = TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -818,10 +856,19 @@ double - The number of items assigned
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
-# Assign sequence classifications
-
 # create a new empty strollur object named 'example_dataset'
+
 data <- new_dataset(dataset_name = "example_dataset")
+
+# Assign sequence abundances
+
+abundance_by_sample <- read_mothur_count(strollur_example(
+  "final.count_table.gz"
+))
+
+data$assign(table = abundance_by_sample, type = "sequence_abundance")
+
+# Assign sequence classifications
 
 sequence_classifications <- read_mothur_taxonomy(strollur_example(
   "final.taxonomy.gz"
@@ -847,12 +894,8 @@ phylo_data <- read_mothur_list(list = strollur_example(
 ))
 
 # read otu bin representative sequences into a data.frame
-bin_reps <- readr::read_tsv(
-  strollur_example(
-    "otu_representative_sequences.tsv"
-  ),
-  show_col_types = FALSE
-)
+bin_reps <- readRDS(strollur_example(
+                        "miseq_representative_sequences.rds"))
 
 # assign 'otu' bins using sequence names
 data$assign(table = otu_data, bin_type = "otu")
@@ -892,10 +935,8 @@ data$assign(
 
 # Assign treatments
 
-sample_assignments <- readr::read_table(
-  strollur_example("mouse.time.design"),
-  col_names = TRUE, show_col_types = FALSE
-)
+sample_assignments <- readRDS(
+   strollur_example("miseq_sample_design.rds"))
 
 data$assign(table = sample_assignments, type = "treatments")
 
@@ -936,24 +977,25 @@ Find the number of sequences, samples, treatments or bins of a given type
 Options include: "sequences", "samples", "treatments", "bins", and
  "references". Default = "sequences".}
 
-\item{\code{bin_type, }}{string containing the bin type you would like the number of
-bins for. Default = "otu".}
+\item{\code{bin_type, }}{string containing the bin type you would like the number
+of bins for. Default = "otu".}
 
 \item{\code{samples, }}{vector of strings. samples is only used when 'type' =
-"sequences" or 'type' = "bins" . samples should contain the names of the
-samples you want the count for. Default = NULL.}
+"sequences" or 'type' = "bins" . samples should contain the names of
+the samples you want the count for. Default = NULL.}
 
-\item{\code{distinct, }}{Boolean. distinct is used when 'type' =
-"sequences" or 'type' = "bins". When 'type' = "sequences" and distinct is
-TRUE the number of unique sequences is returned. When 'type' = "sequences"
-and distinct is FALSE the total number of sequences is returned. This can
-also be combined with samples to find the number of unique sequences found
-ONLY in a given set of samples, or to find the number of unique sequences
-in given set of samples that may also be present in other samples.
-When 'type' = "bins", you can set distinct = TRUE to return the number of
-bins that ONLY contain sequences from the given samples. When distinct is
-FALSE the count returned contains bins with sequences from a given samples,
-but those bins may also contain other samples. Default = FALSE.}
+\item{\code{distinct, }}{Boolean. distinct is used when 'type' = "sequences" or
+'type' = "bins". When 'type' = "sequences" and distinct is TRUE the
+number of unique sequences is returned. When 'type' = "sequences" and
+distinct is FALSE the total number of sequences is returned. This can
+also be combined with samples to find the number of unique sequences
+found ONLY in a given set of samples, or to find the number of unique
+sequences in given set of samples that may also be present in other
+samples. When 'type' = "bins", you can set distinct = TRUE to return
+the number of bins that ONLY contain sequences from the given samples.
+When distinct is FALSE the count returned contains bins with sequences
+from a given samples, but those bins may also contain other samples.
+Default = FALSE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -976,13 +1018,12 @@ miseq$count(type = "sequences", distinct = TRUE)
 # be present in other samples as well
 miseq$count(type = "sequences", samples = c("F3D0", "F3D1"))
 
-# To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
-# Note sequences are present in both samples and NOT present in any other
-# samples.
-miseq$count(
-  type = "sequences", samples = c("F3D0", "F3D1"),
-  distinct = TRUE
-)
+# To get number of unique sequences exclusive to samples 'F3D0' and
+# 'F3D1'. Note sequences are present in both samples and NOT present in
+# any other samples.
+
+miseq$count(type = "sequences",
+            samples = c("F3D0", "F3D1"), distinct = TRUE )
 
 # To get the number of samples in the dataset
 miseq$count(type = "samples")
@@ -1007,8 +1048,9 @@ miseq$count(
 )
 
 # To get number of "otu" bins unique to samples 'F3D0' and 'F3D1'
-# Note these bins will have sequences from both samples and NO other samples
-# will be present in the bins.
+# Note these bins will have sequences from both samples and NO other
+# samples will be present in the bins.
+
 miseq$count(
   type = "bins", bin_type = "otu",
   samples = c("F3D0", "F3D1"), distinct = TRUE
@@ -1037,35 +1079,6 @@ vector of strings
 \preformatted{
 data <- miseq_sop_example()
 data$get_bin_types()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-strollur-get_metadata"></a>}}
-\if{latex}{\out{\hypertarget{method-strollur-get_metadata}{}}}
-\subsection{Method \code{get_metadata()}}{
-Get data.frame containing metadata for the strollur object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{strollur$get_metadata()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.frame()
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{  data <- strollur$new("my_dataset")
-
-  metadata <- readr::read_tsv(strollur_example("sample-metadata.tsv"),
-   col_names = TRUE, show_col_types = FALSE)
-
-  add(data = data, table = metadata, type = "metadata")
-
-  data$get_metadata()
 
 }
 \if{html}{\out{</div>}}
@@ -1103,34 +1116,6 @@ Get phylo tree relating the samples in your dataset.
 
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-strollur-get_sequence_report"></a>}}
-\if{latex}{\out{\hypertarget{method-strollur-get_sequence_report}{}}}
-\subsection{Method \code{get_sequence_report()}}{
-Get data.frame sequence report data. Sequence report data includes: start
-positions, end positions, number of bases, number of ambiguous bases,
-length of longest homopolymer, and the number of N's.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{strollur$get_sequence_report()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-data.frame
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-strollur-get_summary"></a>}}
-\if{latex}{\out{\hypertarget{method-strollur-get_summary}{}}}
-\subsection{Method \code{get_summary()}}{
-Get summary of the sequence reports
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{strollur$get_summary()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-list of data.frames
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-strollur-get_sequence_tree"></a>}}
@@ -1173,23 +1158,23 @@ Get the names of a given type of data
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{type, }}{string containing the type of data you would like. Options
-include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
-Default = "sequences".}
+include: "dataset", "sequences", "bins", "samples", "treatments",
+"reports". Default = "sequences".}
 
 \item{\code{bin_type, }}{string containing the bin type you would like the names
 for. Default = "otu".}
 
 \item{\code{samples, }}{vector of strings. samples is only used when 'type' =
-"sequences" or 'type' = "bins" . samples should contain the names of the
-samples you want names for. Default = NULL.}
+"sequences" or 'type' = "bins" . samples should contain the names of
+the samples you want names for. Default = NULL.}
 
-\item{\code{distinct, }}{Boolean. distinct is used when 'type' =
-"sequences" or 'type' = "bins" and the samples parameter is used. The
-distinct parameter allows you to get the names that present given
-set of samples. When distinct is TRUE, the names function will return the
-names that ONLY contain data from the given samples. When distinct is FALSE
-the data returned contains data from a given samples, but may ALSO contain
-data from other samples. Default = FALSE.}
+\item{\code{distinct, }}{Boolean. distinct is used when 'type' = "sequences" or
+'type' = "bins" and the samples parameter is used. The distinct
+parameter allows you to get the names that present given set of
+samples. When distinct is TRUE, the names function will return the
+names that ONLY contain data from the given samples. When distinct is
+FALSE the data returned contains data from a given samples, but may
+ALSO contain data from other samples. Default = FALSE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1257,8 +1242,8 @@ include: "fasta", "sequences", "sequence_bin_assignments",
 contigs_assembly or chimeras, you can get those as well.
  Default = "sequences".}
 
-\item{\code{bin_type, }}{string containing the bin type you would like a bin_taxonomy
-report for. Default = "otu".}
+\item{\code{bin_type, }}{string containing the bin type you would like a
+bin_taxonomy report for. Default = "otu".}
 }
 \if{html}{\out{</div>}}
 }
@@ -1272,46 +1257,33 @@ miseq <- miseq_sop_example()
 
 # To get the FASTA data
 
-fasta <- miseq$report(type = "fasta")
-head(fasta, n = 10)
+miseq$report(type = "fasta") |> head(n = 5)
 
 # To get a report about the FASTA data
 
-sequence_report <- miseq$report(type = "sequences")
-head(sequence_report, n = 10)
+miseq$report(type = "sequences") |> head(n = 5)
 
 # To get the sequence bin assignments
 
-bin_assignments <- miseq$report(
-  type = "sequence_bin_assignments",
-  bin_type = "otu"
-)
-head(bin_assignments, n = 10)
+miseq$report(type = "sequence_bin_assignments", bin_type = "otu") |>
+head(n = 5)
 
 # To get the sample treatment assignments
 
-miseq$report(type = "sample_assignments")
+miseq$report(type = "sample_assignments") |> head(n = 5)
 
 # To get a report about sequence classifications
 
-sequence_taxonomy_report <- miseq$report(type = "sequence_taxonomy")
-head(sequence_taxonomy_report, n = 10)
+miseq$report(type = "sequence_taxonomy") |> head(n = 5)
 
 # To get a report about bin classifications for 'otu' data
 
-otu_taxonomy_report <- miseq$report(
-  type = "bin_taxonomy",
-  bin_type = "otu"
-)
-head(otu_taxonomy_report, n = 10)
+miseq$report(type = "bin_taxonomy", bin_type = "otu") |> head(n = 5)
 
 # To get the 'otu' bin representative sequences
 
-otu_bin_reps <- miseq$report(
-  type = "bin_representatives",
-  bin_type = "otu"
-)
-head(otu_bin_reps, n = 10)
+miseq$report(type = "bin_representatives", bin_type = "otu") |>
+head(n = 5)
 
 # To get a report about the sequences removed during your analysis:
 
@@ -1323,7 +1295,7 @@ miseq$report(type = "bin_scrap", bin_type = "otu")
 
 # To get the metadata associated with your data:
 
-metadata <- miseq$report(type = "metadata")
+metadata <- miseq$report(type = "metadata") |> head(n = 5)
 
 # To get the resource references associated with your data:
 
@@ -1331,8 +1303,7 @@ references <- miseq$report(type = "references")
 
 # To get our custom report containing the contigs assembly data:
 
-contigs_report <- miseq$report(type = "contigs_report")
-head(contigs_report, n = 10)
+miseq$report(type = "contigs_report") |> head(n = 5)
 
 }
 \if{html}{\out{</div>}}
@@ -1368,6 +1339,7 @@ messages. Default = TRUE.}
 }
 \subsection{Returns}{
 data.frame
+Get summary of the sequence reports
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1382,9 +1354,6 @@ miseq$summary(type = "reports", report_type = "contigs_report")
 
 # remove sample 'F3D0' to produce a scrap report
 xdev_remove_samples(data = miseq, samples = c("F3D0"))
-
-# summarize FASTA data after removal of sample F3D0
-miseq$summary(type = "sequences")
 
 # summarize scrapped data -
 # sequences and bins scrapped by removing the sample "F3D0"

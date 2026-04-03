@@ -1,4 +1,8 @@
-#' @title read_mothur
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from mothur outputs
+#' @name read_mothur
+#' @rdname read_mothur
 #' @description
 #' The read_mothur function reads various
 #' \href{https://mothur.org/wiki/tags/#file_types}{file types} created by
@@ -92,7 +96,8 @@
 #'   dataset_name = "miseq_sop"
 #' )
 #'
-#' @return A 'dataset' object
+#' @return A
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 read_mothur <- function(fasta = NULL, count = NULL,
                         taxonomy = NULL, otu_list = NULL, asv_list = NULL,

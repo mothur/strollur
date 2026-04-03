@@ -7,7 +7,7 @@
 xint_deserialize_dobject(data)
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 }
 \description{
 For internal use only, deserialize_dobject an instance of the C++ 'Dataset'

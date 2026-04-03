@@ -7,13 +7,13 @@
 is_aligned(data)
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 }
 \value{
 Boolean
 }
 \description{
-Determine if a \link{strollur} object contains aligned sequences.
+Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object contains aligned sequences.
 }
 \examples{
 
