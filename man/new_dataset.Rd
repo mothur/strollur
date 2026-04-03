@@ -14,10 +14,10 @@ Default = ""}
 Default = all available}
 }
 \value{
-a \link{strollur} object
+a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
-Create a new \link{strollur} object
+Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
@@ -35,5 +35,5 @@ data <- new_dataset(dataset_name = "soil", processors = 2)
 
 }
 \seealso{
-The 'new' method in the \link{strollur} class
+The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
 }

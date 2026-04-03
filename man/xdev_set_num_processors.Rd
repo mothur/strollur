@@ -7,13 +7,13 @@
 xdev_set_num_processors(data, processors)
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{processors, }{a integer containing the desired number of processors}
 }
 \description{
 Designed with package integration in mind, set the number of processors used
- to summarize a \link{strollur} object
+ to summarize a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

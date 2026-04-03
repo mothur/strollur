@@ -12,7 +12,7 @@ xdev_get_by_sample(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the totals of.
 Options include: "sequence_names", "sequences". Default = "sequence_names".}
@@ -28,7 +28,7 @@ characters will be removed from the sequences.}
 requested parsed by sample.
 }
 \description{
-Get the requested data in a \link{strollur} object parsed by sample
+Get the requested data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 }
 \examples{
 

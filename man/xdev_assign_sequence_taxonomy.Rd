@@ -14,7 +14,7 @@ xdev_assign_sequence_taxonomy(
 )
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing sequence taxonomy assignments}
 
@@ -33,7 +33,7 @@ Default = TRUE.}
 double containing the number of sequence assigned
 }
 \description{
-Assign sequence classifications to a \link{strollur} object
+Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 
 Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
  the consensus taxonomy for each bin for you.

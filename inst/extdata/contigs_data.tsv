@@ -1,6 +1,0 @@
-Name	Length	Overlap_Length	Overlap_Start	Overlap_End	MisMatches	Num_Ns	Expected_Errors
-seq1	253	249	2	251	0	0	0.00210751
-seq2	252	249	2	251	7	0	0.0276405
-seq3	252	249	2	251	2	0	0.00777748
-seq4	253	249	2	251	0	0	0.0021094
-seq5	253	249	2	251	1	0	0.0256878

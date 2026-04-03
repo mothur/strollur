@@ -4,12 +4,7 @@ test_that("test report - errors", {
   data <- new_dataset()
 
   # add references, custom report and metadata
-  contigs_report <- readr::read_tsv(
-    strollur_example(
-      "final.contigs_report.gz"
-    ),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
   add(data,
     table = contigs_report, type = "reports",
     report_type = "contigs_report", list(sequence_name = "Name")

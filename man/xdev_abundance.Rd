@@ -2,12 +2,12 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_abundance}
 \alias{xdev_abundance}
-\title{xdev_abundance}
+\title{Get a data.frame containing the requested abundance data}
 \usage{
 xdev_abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
 }
 \arguments{
-\item{data, }{a \link{strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "bins".
@@ -23,8 +23,8 @@ be parsed by sample. Default = FALSE.}
 data.frame
 }
 \description{
-Get a table containing the requested abundance data in a \link{strollur}
-object
+Get a table containing the requested abundance data in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

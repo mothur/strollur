@@ -6,12 +6,17 @@ count <- function(x, type = "sequences",
   UseMethod("count", x)
 }
 
-#' @title count
+#' @title Find the number of sequences, samples, treatments or bins of a given
+#'   type in a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @name count
+#' @rdname count
 #' @description
 #' Find the number of sequences, samples, treatments or bins of a given type in
-#' a \link{strollur} object
+#' a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \link{strollur} object
+#' @param data, a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
 #' Options include: "sequences", "samples", "treatments", "bins", and

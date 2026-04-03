@@ -6,11 +6,16 @@ names <- function(x, type = "sequences",
   UseMethod("names", x)
 }
 
-#' @title names
-#' @description
-#' Get the names of a given type of data in a \link{strollur} object
+#' @title Get the names sequences, bins, samples, treatments, and reports data
+#'   in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+#'   object
+#' @name names
+#' @rdname names
+#' @description Get the names of a given type of data in a
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \link{strollur} object
+#' @param data, a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param type, string containing the type of data you would like. Options
 #' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
