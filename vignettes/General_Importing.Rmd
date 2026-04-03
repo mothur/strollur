@@ -216,7 +216,7 @@ assign(
 strollur allows you to assign a bin representative sequences to the bins in your clusters. Let's assign bin representatives to our *otu* bins.
 
 ```{r}
-bin_representatives <- readRDS(strollur_example( "miseq_representative_sequences.rds"))
+bin_representatives <- readRDS(strollur_example("miseq_representative_sequences.rds"))
 
 assign(
   data,
