@@ -50,7 +50,14 @@ summary <- function(x, type = "sequences",
 #' @export
 summary <- function(data, type = "sequences",
                     report_type = NULL, verbose = TRUE) {
-  if ("strollur" %in% class(data)) {
+  if(type == "sequences") {
+    return(generate_sequence_report(data))
+  }
+  else if(type == "report" && report_type == "contigs_report") {
+    return(generate_contig_report(data))
+  }
+  # otherwise, we can summarize it differently
+  if ("dataset" %in% class(data)) {
     dataset_summary <- xdev_summarize(data, type, report_type)
     if (verbose) {
       print(dataset_summary)
@@ -59,4 +66,52 @@ summary <- function(data, type = "sequences",
   } else {
     base::summary(data)
   }
+}
+
+generate_sequence_report <- function(dataset) {
+  dataset <- dat
+  report <- report(dataset) 
+  abunds <- abundance(dataset)
+  report <- cbind(report, abundance = abunds)
+
+  desired_quantiles <- c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1)
+  desired_tags <- c("Minimum:", "2.5%-tile:", "25%-tile:", "Median:",
+  "75%-tile:", "97.5%-tile:", "Maximum:", "Mean:")
+
+  report_summary <- report |>
+    reframe(stat = desired_tags,
+      across(
+      where(is.numeric),
+      ~ c(quantile(.x, probs = desired_quantiles, na.rm = TRUE),
+      mean(.x, na.rm = TRUE)),
+      .names = "{.col}"
+    )
+  )
+
+  # remove weighted counts
+  report_summary$abundance.abundances <- NULL
+  report_summary$abundance.sequence_names <- NULL
+
+
+  total_seqs <- count(dataset, type)
+  num_seqs <- total_seqs * desired_quantiles + 1 # minimum seqs should be 1
+  num_seqs <- c(num_seqs, mean(num_seqs))
+  report_summary <- cbind(report_summary, num_seqs)
+  report_summary
+}
+
+generate_contig_report <- function(dataset) {
+  desired_quantiles <- c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1)
+  desired_tags <- c("Minimum:", "2.5%-tile:", "25%-tile:", "Median:",
+  "75%-tile:", "97.5%-tile:", "Maximum:", "Mean:")
+
+  report(dat, "contigs_report") |>
+      reframe(stat = desired_tags,
+        across(
+        where(is.numeric),
+        ~ c(quantile(.x, probs = desired_quantiles, na.rm = TRUE),
+        mean(.x, na.rm = TRUE)),
+        .names = "{.col}"
+      )
+    )
 }
