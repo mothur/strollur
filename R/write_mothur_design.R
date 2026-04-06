@@ -3,7 +3,7 @@
 #' Write a mothur formatted
 #' \href{https://mothur.org/wiki/design_file/}{design file}
 #'
-#' @param data A 'dataset' object
+#' @param data A `strollur` object
 #' @param filename a string containing the name of the output file. Default =
 #' 'dataset_name'.design
 #'
@@ -16,8 +16,8 @@
 #' @export
 write_mothur_design <- function(data, filename = NULL) {
   # check type
-  if (class(data)[1] != "dataset") {
-    .abort_incorrect_type("dataset", data)
+  if (class(data)[1] != "strollur") {
+    .abort_incorrect_type("strollur", data)
   }
 
   if (is.null(filename)) {

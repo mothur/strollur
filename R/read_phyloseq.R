@@ -1,5 +1,9 @@
 #' @importFrom stats reshape
-#' @title read_phyloseq
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from a phyloseq object
+#' @name read_phyloseq
+#' @rdname read_phyloseq
 #' @description
 #' The `read_phyloseq()` function reads phyloseq objects created from
 #' the phyloseq package
@@ -13,9 +17,9 @@
 #' @param dataset_name A string containing a name for your dataset.
 #' @return a strollur object.
 #' @examples
-#'  miseq <- miseq_sop_example()
-#'  phylo_obj <- write_phyloseq(miseq)
-#'  miseq_re_read <- read_phyloseq(phylo_obj)
+#' miseq <- miseq_sop_example()
+#' phylo_obj <- write_phyloseq(miseq)
+#' miseq_re_read <- read_phyloseq(phylo_obj)
 #' @export
 read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
                           dataset_name = "") {
@@ -27,9 +31,9 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
     stop("phyloseq_object has to an object created using the phyloseq package.")
   }
 
-  rdaset_object <- dataset$new(dataset_name)
+  rdaset_object <- strollur$new(dataset_name)
 
-  #samples
+  # samples
   if (!is.null(phyloseq::get_sample(phyloseq_object))) {
     sample_df <- phyloseq::get_sample(phyloseq_object)
     xdev_add_sequences(rdaset_object, data.frame(
@@ -38,7 +42,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
     ))
   }
 
-  #otu table
+  # otu table
   if (!is.null(phyloseq_object@otu_table)) {
     shaped <- phyloseq::otu_table(phyloseq_object)@.Data
     names <- rownames(shaped)
@@ -69,7 +73,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
     xdev_assign_sequence_taxonomy(rdaset_object, taxas)
   }
 
-  #sample data
+  # sample data
   if (!is.null(phyloseq_object@sam_data)) {
     df <- data.frame(phyloseq::sample_data(phyloseq_object)@.Data)
     df <- data.frame(apply(df, 2, as.character))
@@ -85,19 +89,22 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
     )
   }
 
-  #phy tree
+  # phy tree
   if (!is.null(phyloseq_object@phy_tree)) {
     rdaset_object$add_sequence_tree(phyloseq::phy_tree(phyloseq_object))
   }
 
-  #Treatments
+  # Treatments
   if (!is.null(treatment_column_name)) {
-    if (any(phyloseq::sample_variables(phyloseq_object) ==
-              treatment_column_name)) {
+    tcn <- treatment_column_name
+    if (any(phyloseq::sample_variables(phyloseq_object) == tcn)) {
       treatment_df <- data.frame(
-        cbind(phyloseq::sample_names(phyloseq_object),
-              as.character(phyloseq::get_variable(phyloseq_object)
-                           [[treatment_column_name]]))
+        cbind(
+          phyloseq::sample_names(phyloseq_object),
+          as.character(
+            phyloseq::get_variable(phyloseq_object)[[treatment_column_name]]
+          )
+        )
       )
       colnames(treatment_df) <- c("samples", "treatments")
       assign(data = rdaset_object, table = treatment_df, type = "treatments")

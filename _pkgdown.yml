@@ -14,9 +14,8 @@ reference:
   - abundance
   - report
   - summary
-  - dataset
+  - strollur
   - strollur-package
-  - get_bin_types
 - title: Importing Data
   desc: "Importing from other software tools namely: mothur, qiime2, phyloseq and DADA2"
   contents:
@@ -31,6 +30,7 @@ reference:
   - clear
   - is_aligned
   - has_sample
+  - get_bin_types
 - title: Data Transfers
   desc: "Save, copy, load, import, export and write to file"
   contents:
@@ -41,7 +41,7 @@ reference:
   - copy_dataset
   - starts_with("write_")
 - title: Functions for Package Developers
-  desc: "Want to create and modify dataset objects from your package? Check out these functions"
+  desc: "Want to create and modify strollur objects from your package? Check out these functions"
   contents:
   - strollur_example
   - get_available_processors

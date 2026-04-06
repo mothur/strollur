@@ -37,6 +37,50 @@ test_that("xdev_get_by_sample", {
 
   # can't assign bin taxonomy when you have not assigned bins
   expect_error(xdev_get_by_sample(data, "badType"))
+
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("..AT-TG-C..", ".AT---TGC", "A-TTGC.", "..ATTGC..")
+  comments <- c("ddd", "ftf", "efr", "ssd")
+
+  samples <- c("sample1", "sample2", "sample1", "sample2")
+  abunds <- c(10, 10, 10, 10)
+
+  data <- new_dataset()
+
+  xdev_add_sequences(
+    data,
+    data.frame(
+      sequence_names = names,
+      sequences = seqs,
+      comments = comments
+    )
+  )
+
+  # add samples
+  xdev_assign_sequence_abundance(data, data.frame(
+    sequence_names = names,
+    samples = samples,
+    abundances = abunds
+  ))
+
+  expected <- list(c("ATTGC", "ATTGC"), c("ATTGC", "ATTGC"))
+  actual <- xdev_get_by_sample(data, type = "sequences", degap = TRUE)
+  expect_equal(actual, expected)
+
+  actual <- xdev_get_by_sample(data,
+    type = "sequences",
+    samples = c("sample1")
+  )
+
+  expect_equal(actual, list(c("..AT-TG-C..", "A-TTGC.")))
+
+  actual <- xdev_get_by_sample(data,
+    type = "sequences",
+    sample = "sample1", degap = TRUE
+  )
+
+  expected <- c("ATTGC", "ATTGC")
+  expect_equal(actual, list(expected))
 })
 
 test_that("xdev_get_abundances_by_sample - getSequenceAbundanceBySample", {
@@ -166,6 +210,94 @@ test_that("xdev_set_abundances", {
   expect_equal(length(bin_abundances[[2]]), 3)
 })
 
+test_that("Tests setAbundance (no samples), getScrapSummary", {
+  otu_names <- c(
+    "otu1", "otu1", "otu1", "otu1",
+    "otu2", "otu2", "otu2", "otu2",
+    "otu2", "otu2", "otu2", "otu2",
+    "otu3", "otu3", "otu3", "otu3"
+  )
+  seq_names <- c(
+    "seq1", "seq2", "seq3", "seq3",
+    "seq4", "seq4", "seq5", "seq6",
+    "seq7", "seq8", "seq9", "seq9",
+    "seq10", "seq10", "seq10", "seq10"
+  )
+  samples <- c(
+    "sample1", "sample2", "sample4", "sample5",
+    "sample1", "sample2", "sample1", "sample1",
+    "sample2", "sample4", "sample4", "sample5",
+    "sample1", "sample3", "sample5", "sample6"
+  )
+  abundances <- c(
+    10, 10, 5, 5, 5, 5,
+    10, 10, 10, 10, 5, 5,
+    1, 2, 3, 4
+  )
+
+  data <- new_dataset("mydata")
+
+  assign(
+    data = data,
+    table = data.frame(
+      bin_names = otu_names,
+      sequence_names = seq_names,
+      samples = samples,
+      abundances = abundances
+    ),
+    type = "bins", bin_type = "otu"
+  )
+
+  # set abundances to remove seq1 and adjust the abundances of seq10
+  seqs_to_change <- c("seq1", "seq10")
+  new_abunds <- list(c(0, 0, 0, 0, 0, 0), c(0, 0, 0, 0, 3, 4))
+
+  xdev_set_abundances(data, seqs_to_change, new_abunds, "test")
+
+  scrap_summary <- summary(data = data, type = "scrap")
+
+  expect_equal(scrap_summary[[1]], c("sequence"))
+  expect_equal(scrap_summary[[2]], c("test"))
+  expect_equal(scrap_summary[[3]], c(1))
+  expect_equal(scrap_summary[[4]], c(13))
+})
+
+test_that("Tests setAbundances, getScrapSummary", {
+  seq_names <- c(
+    "seq1", "seq2", "seq3", "seq4", "seq5",
+    "seq6", "seq7", "seq8", "seq9", "seq10"
+  )
+
+  abundances <- c(
+    10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10
+  )
+
+  data <- new_dataset("mydata")
+
+  assign(
+    data = data,
+    table = data.frame(
+      sequence_names = seq_names,
+      abundances = abundances
+    ),
+    type = "sequence_abundance"
+  )
+
+  # set abundances to remove seq1 and adjust the abundances of seq10
+  seqs_to_change <- c("seq1", "seq10")
+  new_abunds <- c(0, 5)
+
+  xdev_set_abundance(data, seqs_to_change, new_abunds, "test")
+
+  scrap_summary <- summary(data = data, type = "scrap")
+
+  expect_equal(scrap_summary[[1]], c("sequence"))
+  expect_equal(scrap_summary[[2]], c("test"))
+  expect_equal(scrap_summary[[3]], c(1))
+  expect_equal(scrap_summary[[4]], c(15))
+})
+
 test_that("xdev_set_abundances", {
   data <- new_dataset()
 
@@ -225,6 +357,48 @@ test_that("xdev_set_abundances", {
   expect_equal(count(data = data, type = "sequences"), 130)
   expect_equal(count(data = data, type = "sequences", distinct = TRUE), 2)
   expect_equal(abundance(data = data, type = "samples")[[2]], c(20, 30, 80))
+})
+
+test_that("xdev_get_sequences", {
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("..AT-TG-C..", ".AT---TGC", "A-TTGC.", "..ATTGC..")
+  comments <- c("ddd", "ftf", "efr", "ssd")
+
+  samples <- c("sample1", "sample2", "sample1", "sample2")
+  abunds <- c(10, 10, 10, 10)
+
+  data <- new_dataset()
+
+  xdev_add_sequences(data, data.frame(
+    sequence_names = names,
+    sequences = seqs,
+    comments = comments
+  ))
+
+  actual <- xdev_get_sequences(data)
+
+  expect_equal(actual, seqs)
+
+  actual <- xdev_get_sequences(data, degap = TRUE)
+
+  expected <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+  expect_equal(actual, expected)
+
+  # add samples
+  xdev_assign_sequence_abundance(data, data.frame(
+    sequence_names = names,
+    samples = samples,
+    abundances = abunds
+  ))
+
+  actual <- xdev_get_sequences(data, sample = "sample1")
+
+  expect_equal(actual, c("..AT-TG-C..", "A-TTGC."))
+
+  actual <- xdev_get_sequences(data, sample = "sample1", degap = TRUE)
+
+  expected <- c("ATTGC", "ATTGC")
+  expect_equal(actual, expected)
 })
 
 test_that("Tests removeBins, getScrapReport, getScrapSummary", {
@@ -334,6 +508,11 @@ test_that("Tests removeBins, getScrapReport, getScrapSummary", {
   # remove otu1 and test bad otu name
   otus_to_remove <- c("otu1", "non_existant_otu")
   reasons <- rep("bad_bin", 2)
+
+  expect_error(xdev_remove_bins(
+    data, otus_to_remove,
+    c("not_enough_reasons"), "otu"
+  ))
 
   xdev_remove_bins(data, otus_to_remove, reasons, "otu")
 

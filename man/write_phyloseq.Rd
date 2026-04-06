@@ -18,6 +18,6 @@ The `write_phyloseq()` function will take any strollur object and
 return it as a "phyloseq" object.
 }
 \examples{
- miseq <- miseq_sop_example()
- phylo_obj <- write_phyloseq(miseq)
+miseq <- miseq_sop_example()
+phylo_obj <- write_phyloseq(miseq)
 }

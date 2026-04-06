@@ -7,7 +7,7 @@
 write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 }
 \arguments{
-\item{data}{A 'dataset' object}
+\item{data}{A `strollur` object}
 
 \item{dir_path}{a string containing the name of directory where the files
 should be written. Default = current working directory.}

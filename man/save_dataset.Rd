@@ -4,22 +4,25 @@
 \alias{save_dataset}
 \title{save_dataset}
 \usage{
-save_dataset(dataset, file)
+save_dataset(data, file)
 }
 \arguments{
-\item{dataset}{a \link{dataset} object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{file}{a string containing the file name.}
 }
 \value{
-A file containing the 'dataset' object
+A file containing the `strollur` object
 }
 \description{
-The save_dataset function will save the \link{dataset} object to file.
+The save_dataset function will save the
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+to file.
 }
 \examples{
 
-dataset <- read_mothur(
+data <- read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),
   taxonomy = strollur_example("final.taxonomy.gz"),
@@ -28,6 +31,6 @@ dataset <- read_mothur(
   dataset_name = "miseq_sop"
 )
 
-save_dataset(dataset, "miseq_sop.rds")
+save_dataset(data, "miseq_sop.rds")
 
 }

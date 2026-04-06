@@ -7,7 +7,7 @@
 write_mothur_design(data, filename = NULL)
 }
 \arguments{
-\item{data}{A 'dataset' object}
+\item{data}{A `strollur` object}
 
 \item{filename}{a string containing the name of the output file. Default =
 'dataset_name'.design}

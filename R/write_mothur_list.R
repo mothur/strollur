@@ -2,7 +2,7 @@
 #' @description
 #' Write mothur formatted \href{https://mothur.org/wiki/list_file/}{list files}
 #'
-#' @param data A 'dataset' object
+#' @param data A `strollur` object
 #' @param file_root a string containing the root name of the output file.
 #' Default = 'dataset_name'. Resulting in output files
 #' 'dataset_name'.bin_type'.list.
@@ -16,8 +16,8 @@
 #' @export
 write_mothur_list <- function(data, file_root = NULL) {
   # check type
-  if (class(data)[1] != "dataset") {
-    .abort_incorrect_type("dataset", data)
+  if (class(data)[1] != "strollur") {
+    .abort_incorrect_type("strollur", data)
   }
 
   if (is.null(file_root)) {

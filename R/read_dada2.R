@@ -1,6 +1,10 @@
-#' @title read_dada2
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from dada2 outputs
+#' @name read_dada2
+#' @rdname read_dada2
 #' @description
-#' This function reads a dada2 sequence table and creates a 'dataset'
+#' This function reads a dada2 sequence table and creates a `strollur`
 #' object. The dada2 sequence table is a 2D matrix containing the abundance
 #' counts by sample for each ASV. The sample names are stored as row names and
 #' the sequence nucleotide strings are stored as column names.
@@ -18,7 +22,7 @@
 #'
 #' # data <- read_dada2(seqtab, "dada2")
 #' }
-#' @return A 'dataset' object
+#' @return A `strollur` object
 #' @export
 read_dada2 <- function(sequence_table, dataset_name = "") {
   # generate sequence names

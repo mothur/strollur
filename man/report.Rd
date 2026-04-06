@@ -2,12 +2,14 @@
 % Please edit documentation in R/report.R
 \name{report}
 \alias{report}
-\title{report}
+\title{Get a data.frame containing the given report in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
 report(data, type = "sequences", bin_type = "otu")
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of report you would like. Options
 include: "fasta", "sequences", "sequence_bin_assignments",
@@ -24,30 +26,28 @@ report for. Default = "otu".}
 data.frame
 }
 \description{
-Get a data.frame containing the given report in a \link{dataset} object
+Get a data.frame containing the report. Reports include FASTA format,
+sequences reports, sequence_bin_assignments, sequence_taxonomy, bin_taxonomy,
+bin_representatives, sample_assignments, metadata, references,
+sequence_scrap, and bin_scrap in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 }
 \examples{
 
-# First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
 miseq <- miseq_sop_example()
 
 # To get the FASTA data
 
-fasta <- report(data = miseq, type = "fasta")
-head(fasta, n = 10)
+report(data = miseq, type = "fasta") |> head(n = 5)
 
 # To get a report about the FASTA data
 
-sequence_report <- report(data = miseq, type = "sequences")
-head(sequence_report, n = 10)
+report(data = miseq, type = "sequences") |> head(n = 5)
 
 # To get the sequence bin assignments
 
-bin_assignments <- report(
-  data = miseq, type = "sequence_bin_assignments",
-  bin_type = "otu"
-)
-head(bin_assignments, n = 10)
+report(data = miseq, type = "sequence_bin_assignments", bin_type = "otu") |>
+head(n = 5)
 
 # To get the sample treatment assignments
 
@@ -55,24 +55,18 @@ report(data = miseq, type = "sample_assignments")
 
 # To get a report about sequence classifications
 
-sequence_taxonomy_report <- report(data = miseq, type = "sequence_taxonomy")
-head(sequence_taxonomy_report, n = 10)
+report(data = miseq, type = "sequence_taxonomy") |> head(n = 10)
 
 # To get a report about bin classifications for 'otu' data
 
-otu_taxonomy_report <- report(
-  data = miseq, type = "bin_taxonomy",
-  bin_type = "otu"
-)
-head(otu_taxonomy_report, n = 10)
+report(data = miseq, type = "bin_taxonomy", bin_type = "otu") |> head(n = 10)
 
 # To get the 'otu' bin representative sequences
 
-otu_bin_reps <- report(
+report(
   data = miseq, type = "bin_representatives",
   bin_type = "otu"
-)
-head(otu_bin_reps, n = 10)
+) |> head(n = 5)
 
 # To get a report about the sequences removed during your analysis:
 
@@ -92,7 +86,6 @@ references <- report(data = miseq, type = "references")
 
 # To get our custom report containing the contigs assembly data:
 
-contigs_report <- report(data = miseq, type = "contigs_report")
-head(contigs_report, n = 10)
+report(data = miseq, type = "contigs_report") |> head(n = 10)
 
 }

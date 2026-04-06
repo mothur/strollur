@@ -123,155 +123,101 @@ void Dataset::clear() {
         metadata.clear();
 }
 /******************************************************************************/
-Rcpp::List Dataset::exportDataset(const vector<string>& tags){
+Rcpp::List Dataset::exportDataset(){
 
     Rcpp::List results = Rcpp::List::create();
     vector<string> resultsLabels;
 
-    set<string> t;
-    bool hasTags = false;
-    if (!tags.empty()) {
-        t = toSet(tags);
-        hasTags = true;
-
-        // check for tags for data you dont have and warn
-        if (!hasSequenceData) {
-
-            if (setContains(t, "sequence_data")) {
-                string message = "[WARNING]: The dataset does not include ";
-                message += " sequence data, ignoring 'sequence_data' tag.";
-                RcppThread::Rcout << endl << message << endl;
-            }
-        }
-
-        if (binTables.empty()) {
-
-            if (setContains(t, "bin_data")) {
-                string message = "[WARNING]: The dataset does not include ";
-                message += " bin data, ignoring 'bin_data' tag.";
-                RcppThread::Rcout << endl << message << endl;
-            }
-        }
-
-        if (!metadata.hasReport) {
-
-            if (setContains(t, "metadata")) {
-                string message = "[WARNING]: The dataset does not include ";
-                message += " metadata, ignoring 'metadata' tag.";
-                RcppThread::Rcout << endl << message << endl;
-            }
-        }
-
-        if (reports.empty()) {
-            if (setContains(t, "reports")) {
-                string message = "[WARNING]: The dataset does not include ";
-                message += " reports, ignoring 'reports' tag.";
-                RcppThread::Rcout << endl << message << endl;
-            }
-        }
-    }
-
     if (hasSequenceData) {
+        // sequence data.frame
+        // ids, names, seqs, comments(optional),
+        // trashCodes, taxonomies(optional), tableSeqs
+        Rcpp::DataFrame sequenceData = Rcpp::DataFrame::create();
+        vector<string> sequenceDataLabels;
 
-        if (!hasTags || setContains(t, "sequence_data")) {
+        sequenceData.push_back(getIndexes(names));
+        sequenceDataLabels.push_back("sequence_ids");
+        sequenceData.push_back(names);
+        sequenceDataLabels.push_back("sequence_names");
 
-            // sequence data.frame
-            // ids, names, seqs, comments(optional),
-            // trashCodes, taxonomies(optional), tableSeqs
-            Rcpp::DataFrame sequenceData = Rcpp::DataFrame::create();
-            vector<string> sequenceDataLabels;
+        if (!allBlank(seqs)) {
+            sequenceData.push_back(seqs);
+            sequenceDataLabels.push_back("sequences");
+        }
+        if (!allBlank(comments)) {
+            sequenceData.push_back(comments);
+            sequenceDataLabels.push_back("comments");
+        }
+        if (!allBlank(taxonomies)) {
+            sequenceData.push_back(taxonomies);
+            sequenceDataLabels.push_back("taxonomies");
+        }
+        if (!allBlank(trashCodes)) {
+            sequenceData.push_back(trashCodes);
+            sequenceDataLabels.push_back("trash_codes");
+        }
+        sequenceData.push_back(tableSeqs);
+        sequenceDataLabels.push_back("include_sequence");
 
-            sequenceData.push_back(getIndexes(names));
-            sequenceDataLabels.push_back("sequence_ids");
-            sequenceData.push_back(names);
-            sequenceDataLabels.push_back("sequence_names");
+        sequenceData.attr("names") = sequenceDataLabels;
 
-            if (!allBlank(seqs)) {
-                sequenceData.push_back(seqs);
-                sequenceDataLabels.push_back("sequences");
-            }
-            if (!allBlank(comments)) {
-                sequenceData.push_back(comments);
-                sequenceDataLabels.push_back("comments");
-            }
-            if (!allBlank(taxonomies)) {
-                sequenceData.push_back(taxonomies);
-                sequenceDataLabels.push_back("taxonomies");
-            }
-            if (!allBlank(trashCodes)) {
-                sequenceData.push_back(trashCodes);
-                sequenceDataLabels.push_back("trash_codes");
-            }
-            sequenceData.push_back(tableSeqs);
-            sequenceDataLabels.push_back("include_sequence");
+        results.push_back(sequenceData);
+        resultsLabels.push_back("sequence_data");
 
-            sequenceData.attr("names") = sequenceDataLabels;
+        // only create sequence report if its not blank
+        if (!allBlank(seqs)) {
 
-            results.push_back(sequenceData);
-            resultsLabels.push_back("sequence_data");
+            // sequence report data.frame
+            // starts, ends, lengths, ambigs, polymers, numns
+            Rcpp::DataFrame sequenceReport = Rcpp::DataFrame::create(
+                Rcpp::Named("sequence_ids") = getIndexes(names),
+                Rcpp::_["starts"] = starts,
+                Rcpp::_["ends"] = ends,
+                Rcpp::_["lengths"] = lengths,
+                Rcpp::_["ambigs"] = ambigs,
+                Rcpp::_["longest_homopolymers"] = polymers,
+                Rcpp::_["num_ns"] = numns);
 
-            // only create sequence report if its not blank
-            if (!allBlank(seqs)) {
+            results.push_back(sequenceReport);
+            resultsLabels.push_back("sequence_report");
+        }
 
-                // sequence report data.frame
-                // starts, ends, lengths, ambigs, polymers, numns
-                Rcpp::DataFrame sequenceReport = Rcpp::DataFrame::create(
-                    Rcpp::Named("sequence_ids") = getIndexes(names),
-                    Rcpp::_["starts"] = starts,
-                    Rcpp::_["ends"] = ends,
-                    Rcpp::_["lengths"] = lengths,
-                    Rcpp::_["ambigs"] = ambigs,
-                    Rcpp::_["longest_homopolymers"] = polymers,
-                    Rcpp::_["num_ns"] = numns);
+        // count_data(id, abundance, sample, treatment)
+        results.push_back(count.getAbundanceTable(names,
+                                                  getIndexes(names),
+                                                  "sequence", false));
+        resultsLabels.push_back("sequence_abundance_table");
+    }
 
-                results.push_back(sequenceReport);
-                resultsLabels.push_back("sequence_report");
-            }
 
-            // count_data(id, abundance, sample, treatment)
-            results.push_back(count.getAbundanceTable(names,
-                                                      getIndexes(names),
-                                                      "sequence", false));
-            resultsLabels.push_back("sequence_abundance_table");
+    // sequence bin table
+    for (BinTable& binTable : binTables) {
+        // create bin taxonomy if needed
+        fillTaxReport(binTable.label);
+
+        Rcpp::List binList = binTable.exportBinTable(count);
+        vector<string> binListNames = binList.attr("names");
+
+        for (int i = 0; i < binList.size(); i++) {
+            results.push_back(binList[i]);
+            resultsLabels.push_back(binTable.label+"_"+binListNames[i]);
         }
     }
 
-    if (!hasTags || setContains(t, "bin_data")) {
-        // sequence bin table
-        for (auto & binTable : binTables) {
-            // create bin taxonomy if needed
-            fillTaxReport(binTable.label);
-
-            Rcpp::List binList = binTable.exportBinTable(count);
-            vector<string> binListNames = binList.attr("names");
-
-            for (int j = 0; j < binList.size(); j++) {
-                results.push_back(binList[j]);
-                resultsLabels.push_back(binTable.label+"_"+binListNames[j]);
-            }
-        }
+    if (!references.empty()) {
+        results.push_back(getReferences());
+        resultsLabels.push_back("references");
     }
 
-    if (!hasTags || setContains(t, "references")) {
-        if (!references.empty()) {
-            results.push_back(getReferences());
-            resultsLabels.push_back("references");
-        }
+    if (metadata.hasReport) {
+        results.push_back(getMetadata());
+        resultsLabels.push_back("metadata");
     }
 
-    if (!hasTags || setContains(t, "metadata")) {
-        if (metadata.hasReport) {
-            results.push_back(getMetadata());
-            resultsLabels.push_back("metadata");
-        }
-    }
-
-    if (!hasTags || setContains(t, "reports")) {
-        if (!reports.empty()) {
-            for (auto it = reports.begin(); it != reports.end(); it++) {
-                results.push_back(getReports(it->first));
-                resultsLabels.push_back(it->first);
-            }
+    if (!reports.empty()) {
+        for (auto it = reports.begin(); it != reports.end(); it++) {
+            results.push_back(getReports(it->first));
+            resultsLabels.push_back(it->first);
         }
     }
 
@@ -485,6 +431,21 @@ double Dataset::assignSequenceAbundance(const vector<string>& ids,
                                             samples, treatments);
 
     return numSeqsAssigned;
+}
+/******************************************************************************/
+string Dataset::degapSeq(const string& sequence) const{
+    string degappedSeq = sequence;
+
+    degappedSeq.erase(
+        std::remove_if(degappedSeq.begin(), degappedSeq.end(),
+                       [=](char c) {
+                           return c == '-' || c == '.';
+                       }
+        ),
+        degappedSeq.end()
+    );
+
+    return degappedSeq;
 }
 /******************************************************************************/
 double Dataset::assignSequenceTaxonomy(const vector<string>& n,
@@ -723,8 +684,7 @@ const Rcpp::DataFrame Dataset::getList(const string& type) {
         assignBins(asvIds, nullFloatVector, nullVector, seqIds, "asv");
         return binTables[getBinTableIndex(type)].getList(names);
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getMetadata() {
@@ -831,41 +791,39 @@ Rcpp::DataFrame Dataset::getBinRepresentativeSequences(const string& type) const
     if (hasBinTable(type)) {
         return binTables[getBinTableIndex(type)].getRepresentativeSequences(names, seqs);
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getBinTaxonomyReport(const string& type) {
     return (fillTaxReport(type));
 }
 /******************************************************************************/
-const vector<string> Dataset::getBinTypes() {
+vector<string> Dataset::getBinTypes() const {
     vector<string> types;
 
-    for (size_t i = 0; i < binTables.size(); i++) {
-        types.push_back(binTables[i].label);
+    for (const auto& binTable : binTables) {
+        types.push_back(binTable.label);
     }
     return types;
 }
 /******************************************************************************/
-const Rcpp::DataFrame Dataset::getBinAbundances(string bin_type, bool bySample) {
+Rcpp::DataFrame Dataset::getBinAbundances(const string& bin_type, const bool bySample) const {
 
     if (hasBinTable(bin_type)) {
         if (!bySample) {
             return binTables[getBinTableIndex(bin_type)].getRAbund(count);
-        }else {
-            return binTables[getBinTableIndex(bin_type)].getShared(count);
         }
+        return binTables[getBinTableIndex(bin_type)].getShared(count);
     }
 
     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
-const Rcpp::DataFrame Dataset::getReports(string type) {
+Rcpp::DataFrame Dataset::getReports(const string& type) {
     Rcpp::DataFrame reportResults = Rcpp::DataFrame::create();
 
     if (!reports.empty()) {
-        auto it = reports.find(type);
+        const auto it = reports.find(type);
 
         if (it != reports.end()) {
             return it->second.getReport(toSet(getSequenceNames()));
@@ -879,7 +837,7 @@ const Rcpp::DataFrame Dataset::getReports(string type) {
     return reportResults;
 }
 /******************************************************************************/
-const vector<string> Dataset::getReportTypes() {
+vector<string> Dataset::getReportTypes() {
 
     //custom report types
     vector<string> reportTypes = getKeys(reports);
@@ -887,7 +845,7 @@ const vector<string> Dataset::getReportTypes() {
     if (hasSeqs()) {
         //reportTypes.push_back("sequence_data");
 
-        if (badAccnos.size() != 0) {
+        if (!badAccnos.empty()) {
             reportTypes.push_back("sequence_scrap");
         }
     }
@@ -902,7 +860,7 @@ const vector<string> Dataset::getReportTypes() {
     return reportTypes;
 }
 /******************************************************************************/
-const Rcpp::DataFrame Dataset::getReferences() {
+Rcpp::DataFrame Dataset::getReferences() const {
 
     if (!references.empty()) {
 
@@ -913,19 +871,19 @@ const Rcpp::DataFrame Dataset::getReferences() {
         vector<string> refVersions(references.size(), "NA");
 
         for (size_t i = 0; i < references.size(); i++) {
-            if (references[i].name != "") {
+            if (!references[i].name.empty()) {
                 refNames[i] = references[i].name;
             }
-            if (references[i].version != "") {
+            if (!references[i].version.empty()) {
                 refVersions[i] = references[i].version;
             }
-            if (references[i].note != "") {
+            if (!references[i].note.empty()) {
                 refNotes[i] = references[i].note;
             }
-            if (references[i].url != "") {
+            if (!references[i].url.empty()) {
                 refUrls[i] = references[i].url;
             }
-            if (references[i].usage != "") {
+            if (!references[i].usage.empty()) {
                 refUsages[i] = references[i].usage;
             }
         }
@@ -939,26 +897,25 @@ const Rcpp::DataFrame Dataset::getReferences() {
 
         return df;
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 vector<string> Dataset::getSamples() const {
     return count.getSamples();
 }
 /******************************************************************************/
-const Rcpp::DataFrame Dataset::getSampleTreatmentAssignments() {
-    map<string, string> sampleToTreatment = count.getSampleTreatmentAssignments();
+Rcpp::DataFrame Dataset::getSampleTreatmentAssignments() const{
+    const map<string, string> sampleToTreatment = count.getSampleTreatmentAssignments();
 
-    if (sampleToTreatment.size() != 0) {
+    if (!sampleToTreatment.empty()) {
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named("samples") = getKeys(sampleToTreatment),
             Rcpp::_["treatments"] = getValues(sampleToTreatment));
         return df;
     }
 
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 // id, trashCode
@@ -991,8 +948,8 @@ const Rcpp::DataFrame Dataset::getScrapReport(string mode) {
             return binTables[getBinTableIndex(mode)].getScrapReport();
         }
     }
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 // type, trashCode, uniqueCount, totalCount
@@ -1070,45 +1027,46 @@ vector<vector<float> > Dataset::getSequenceAbundanceBySample(const vector<string
     return count.getAbundanceBySample(ids, samples);
 }
 /******************************************************************************/
-Rcpp::DataFrame Dataset::getSequenceTable(const string& sample) const {
-
-    if (hasSequenceData) {
-
-        vector<string> samples;
-
-        if(!sample.empty()) {
-            samples.push_back(sample);
-        }
-
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("sequence_names") = getSequenceNames(samples),
-            Rcpp::_["sequences"] = getSequences(sample)
-        );
-
-        return df;
-    }
-
-    return Rcpp::DataFrame::create();
-}
-/******************************************************************************/
-vector<string> Dataset::getSequences(const string& sample) const {
+vector<string> Dataset::getSequences(const string& sample, const bool degap) const {
     vector<string> included;
 
     if (sample.empty()) {
-        for (size_t i = 0; i < tableSeqs.size(); i++) {
-            if (tableSeqs[i]) {
-                included.push_back(seqs[i]);
+        if (!degap) {
+            for (size_t i = 0; i < tableSeqs.size(); i++) {
+                if (tableSeqs[i]) {
+                    included.push_back(seqs[i]);
+                }
+            }
+        }else{
+            for (size_t i = 0; i < tableSeqs.size(); i++) {
+                if (tableSeqs[i]) {
+                    included.push_back(degapSeq(seqs[i]));
+                }
             }
         }
     }else{
         if (count.hasSample(sample)) {
-            // all seqs
-            for (int i = 0; i < static_cast<int>(tableSeqs.size()); i++) {
-                // if "good" seq
-                if (tableSeqs[i]) {
-                    // if this sequence is in sample
-                    if (count.hasSample(sample, i)) {
-                        included.push_back(seqs[i]);
+
+            if (!degap) {
+                // all seqs
+                for (size_t i = 0; i < tableSeqs.size(); i++) {
+                    // if "good" seq
+                    if (tableSeqs[i]) {
+                        // if this sequence is in sample
+                        if (count.hasSample(sample, i)) {
+                            included.push_back(seqs[i]);
+                        }
+                    }
+                }
+            }else {
+                // all seqs
+                for (size_t i = 0; i < tableSeqs.size(); i++) {
+                    // if "good" seq
+                    if (tableSeqs[i]) {
+                        // if this sequence is in sample
+                        if (count.hasSample(sample, i)) {
+                            included.push_back(degapSeq(seqs[i]));
+                        }
                     }
                 }
             }
@@ -1118,7 +1076,8 @@ vector<string> Dataset::getSequences(const string& sample) const {
     return included;
 }
 /******************************************************************************/
-vector<vector<string> > Dataset::getSequencesBySample(vector<string> samples) const{
+vector<vector<string>> Dataset::getSequencesBySample(vector<string> samples,
+                                                            const bool degap) const {
     vector<vector<string> > result;
 
     // return all samples if none specified
@@ -1126,8 +1085,8 @@ vector<vector<string> > Dataset::getSequencesBySample(vector<string> samples) co
         samples = getSamples();
     }
 
-    for (const auto & sample : samples) {
-        result.push_back(getSequences(sample));
+    for (const auto& sample : samples) {
+        result.push_back(getSequences(sample, degap));
     }
 
     return result;
@@ -1190,9 +1149,7 @@ Rcpp::DataFrame Dataset::getSequenceTaxonomyReport() {
     if (hasSequenceTaxonomy){
         return (fillTaxReport("sequence"));
     }
-
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 vector<string> Dataset::getTreatments() const{
@@ -1248,9 +1205,7 @@ Rcpp::DataFrame Dataset::getTotals(const string& type) const {
             Rcpp::_["abundances"] = totals);
         return df;
     }
-
-    Rcpp::DataFrame empty = Rcpp::DataFrame::create();
-    return empty;
+    return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
 double Dataset::getUniqueTotal(const vector<string>& samples) const {
@@ -1573,6 +1528,8 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
         throw Rcpp::exception(message.c_str());
     }
 
+    float diff = 0;
+
     for (size_t i = 0; i < n.size(); i++) {
         auto it = seqIndex.find(n[i]);
 
@@ -1582,7 +1539,7 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
             if (abunds[i] == 0) {
                 removeSequence(index, reason, true, true);
             }else{
-                count.setAbundance(index, abunds[i]);
+                diff += count.setAbundance(index, abunds[i]);
             }
 
         }else{
@@ -1593,6 +1550,21 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
     }
 
     count.updateTotals();
+
+    if (diff > 0) {
+        // may not be removing the whole sequence perhaps just reducing
+        auto itBad = badAccnos.find(reason);
+
+        if (itBad != badAccnos.end()) {
+            // update counts of trashCode
+            itBad->second[1] += diff;
+        }else{
+            // add new trashCode
+            vector<double> badAbunds(2, 0);
+            badAbunds[1] = diff;
+            badAccnos[reason] = badAbunds;
+        }
+    }
 }
 /******************************************************************************/
 // for datasets with samples
@@ -1607,6 +1579,8 @@ void Dataset::setAbundances(const vector<string>& n,
         throw Rcpp::exception(message.c_str());
     }
 
+    float diff = 0;
+
     for (size_t i = 0; i < n.size(); i++) {
         auto it = seqIndex.find(n[i]);
 
@@ -1616,7 +1590,7 @@ void Dataset::setAbundances(const vector<string>& n,
             if (sum(abunds[i]) == 0) {
                 removeSequence(index, reason, true, true);
             }else{
-                count.setAbundance(index, abunds[i]);
+                diff += count.setAbundance(index, abunds[i]);
             }
 
         }else{
@@ -1627,6 +1601,22 @@ void Dataset::setAbundances(const vector<string>& n,
     }
 
     count.updateTotals();
+
+    if (diff > 0) {
+        // may not be removing the whole sequence perhaps just reducing
+        auto itBad = badAccnos.find(reason);
+
+        if (itBad != badAccnos.end()) {
+            // update counts of trashCode
+            itBad->second[1] += diff;
+        }else{
+            // add new trashCode
+            vector<double> badAbunds(2, 0);
+            badAbunds[1] = diff;
+            badAccnos[reason] = badAbunds;
+        }
+    }
+
 }
 /******************************************************************************/
 void Dataset::setSequences(const vector<string>& n, const vector<string>& s,

@@ -24,7 +24,7 @@ int get_available_processors() {
 /******************************************************************************/
 //' @title new_dataset
 //' @description
-//' Create a new \link{dataset} object
+//' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @param dataset_name string, a string containing the dataset name.
 //' Default = ""
@@ -44,16 +44,16 @@ int get_available_processors() {
 //'
 //' data <- new_dataset(dataset_name = "soil", processors = 2)
 //'
-//' @returns a \link{dataset} object
+//' @returns a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
-//' @seealso The 'new' method in the \link{dataset} class
+//' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
 //[[Rcpp::export]]
 Rcpp::Environment new_dataset(string dataset_name = "",
                               Rcpp::Nullable<int> processors = R_NilValue) {
 
-    // dataset$new()
+    // strollur$new()
     Rcpp::Environment strollur_env("package:strollur");
-    Rcpp::Environment dataset_class_env = strollur_env["dataset"];
+    Rcpp::Environment dataset_class_env = strollur_env["strollur"];
     Rcpp::Function constructor = dataset_class_env["new"];
 
     int num_proc = 1;
@@ -114,9 +114,9 @@ Rcpp::List new_reference(string reference_name,
 /******************************************************************************/
 //' @title copy_dataset
 //' @description
-//' Create a new \link{dataset} object from an existing dataset.
+//' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object from an existing dataset.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @examples
 //'
 //' miseq <- miseq_sop_example()
@@ -125,15 +125,15 @@ Rcpp::List new_reference(string reference_name,
 //'
 //' data <- copy_dataset(miseq)
 //'
-//' @returns a \link{dataset} object
-//' @seealso The 'new' method in the \link{dataset} class
+//' @returns a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
 //' @export
 //[[Rcpp::export]]
 Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 
-    // dataset$new()
+    // strollur$new()
     Rcpp::Environment strollur_env("package:strollur");
-    Rcpp::Environment dataset_class_env = strollur_env["dataset"];
+    Rcpp::Environment dataset_class_env = strollur_env["strollur"];
     Rcpp::Function constructor = dataset_class_env["new"];
     Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -146,9 +146,9 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 /******************************************************************************/
 //' @title clear
 //' @description
-//' Clear data from a \link{dataset} object
+//' Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @examples
 //'
@@ -167,9 +167,9 @@ void clear(Rcpp::Environment data) {
 /******************************************************************************/
 //' @title export_dataset
 //' @description
-//' Export all data from a \link{dataset} object.
+//' Export all data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @examples
 //'
@@ -210,9 +210,9 @@ Rcpp::List export_dataset(Rcpp::Environment data) {
 /******************************************************************************/
 //' @title get_bin_types
 //' @description
-//' Get bin table types of a \link{dataset} object
+//' Get bin table types of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @examples
 //'
 //' data <- miseq_sop_example()
@@ -228,9 +228,9 @@ vector<string> get_bin_types(Rcpp::Environment data) {
 /******************************************************************************/
 //' @title has_sample
 //' @description
-//' Determine if a given sample is in a \link{dataset} object
+//' Determine if a given sample is in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
-//' @param data, a \link{dataset} object.
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 //' @param sample a string containing the name of a sample.
 //' @examples
 //'
@@ -248,9 +248,9 @@ bool has_sample(Rcpp::Environment data, string sample) {
 /******************************************************************************/
 //' @title has_sequence_strings
 //' @description
-//' Determine if a \link{dataset} object contains sequence nucleotide strings.
+//' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object contains sequence nucleotide strings.
 //'
-//' @param data, a \link{dataset} object.
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 //' @examples
 //'
 //' data <- miseq_sop_example()
@@ -267,9 +267,9 @@ bool has_sequence_strings(Rcpp::Environment data) {
 /******************************************************************************/
 //' @title is_aligned
 //' @description
-//' Determine if a \link{dataset} object contains aligned sequences.
+//' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object contains aligned sequences.
 //'
-//' @param data, a \link{dataset} object
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @examples
 //'
 //' dataset <- miseq_sop_example()

@@ -28,8 +28,8 @@ classification_data <- read_mothur_taxonomy(strollur_example(
   "final.taxonomy.gz"
 ))
 
-# create a new empty dataset
-data <- dataset$new()
+# create a new empty `strollur` object
+data <- strollur$new()
 
 # assign sequence classifications
 assign(data = data, table = classification_data, type = "sequence_taxonomy")

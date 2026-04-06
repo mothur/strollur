@@ -7,7 +7,7 @@
 xdev_remove_bins(data, bin_names, trash_tags, bin_type = "otu")
 }
 \arguments{
-\item{data, }{a \link{dataset} object.}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
 
 \item{bin_names, }{a vector of strings containing the names of the bins you
 would like removed.}
@@ -19,7 +19,7 @@ removing each bin}
 }
 \description{
 Designed with package integration in mind, the remove bins function allows
-you to remove bins from a \link{dataset} object
+you to remove bins from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

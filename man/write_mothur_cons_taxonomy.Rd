@@ -7,7 +7,7 @@
 write_mothur_cons_taxonomy(data, file_root = NULL)
 }
 \arguments{
-\item{data}{A 'dataset' object}
+\item{data}{A `strollur` object}
 
 \item{file_root}{a string containing the root name of the output file.
 Default = 'dataset_name'. Resulting in output files

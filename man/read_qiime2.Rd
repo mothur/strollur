@@ -2,7 +2,9 @@
 % Please edit documentation in R/read_qiime2.R
 \name{read_qiime2}
 \alias{read_qiime2}
-\title{read_qiime2}
+\title{Create a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+  from a qiime2 outputs}
 \usage{
 read_qiime2(
   qza,
@@ -26,11 +28,11 @@ files should be unpacked. Default = current working directory.}
 and temporary directories will be removed. Default = TRUE.}
 }
 \value{
-A 'dataset' object
+A `strollur` object
 }
 \description{
 The read_qiime2 function reads various types of .qza files created by
-\href{https://qiime2.org}{qiime2}, and creates a 'dataset' object.
+\href{https://qiime2.org}{qiime2}, and creates a `strollur` object.
 
 To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
 }

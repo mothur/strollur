@@ -2,7 +2,9 @@
 % Please edit documentation in R/read_dada2.R
 \name{read_dada2}
 \alias{read_dada2}
-\title{read_dada2}
+\title{Create a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+  from dada2 outputs}
 \usage{
 read_dada2(sequence_table, dataset_name = "")
 }
@@ -12,10 +14,10 @@ read_dada2(sequence_table, dataset_name = "")
 \item{dataset_name}{A string containing a name for your dataset.}
 }
 \value{
-A 'dataset' object
+A `strollur` object
 }
 \description{
-This function reads a dada2 sequence table and creates a 'dataset'
+This function reads a dada2 sequence table and creates a `strollur`
 object. The dada2 sequence table is a 2D matrix containing the abundance
 counts by sample for each ASV. The sample names are stored as row names and
 the sequence nucleotide strings are stored as column names.

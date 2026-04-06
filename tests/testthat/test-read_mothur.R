@@ -1,5 +1,32 @@
 # test read_mothur_shared
 
+test_that("test read_mothur - errors", {
+  shared <- strollur_example("final.opti_mcc.shared")
+  list <- strollur_example("final.opti_mcc.list.gz")
+
+  # can't read otulist and otushared
+  expect_error(read_mothur(
+    otu_shared = shared,
+    otu_list = list
+  ))
+
+  list <- strollur_example("final.asv.list.gz")
+
+  # can't read otulist and otushared
+  expect_error(read_mothur(
+    asv_shared = shared,
+    asv_list = list
+  ))
+
+  list <- strollur_example("final.asv.list.gz")
+
+  # can't read otulist and otushared
+  expect_error(read_mothur(
+    phylo_shared = shared,
+    phylo_list = list
+  ))
+})
+
 test_that("test read_mothur", {
   # test complete dataset
   dataset <- read_mothur(

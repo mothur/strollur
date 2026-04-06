@@ -2,7 +2,9 @@
 % Please edit documentation in R/read_phyloseq.R
 \name{read_phyloseq}
 \alias{read_phyloseq}
-\title{read_phyloseq}
+\title{Create a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+  from a phyloseq object}
 \usage{
 read_phyloseq(phyloseq_object, treatment_column_name = NULL, dataset_name = "")
 }
@@ -26,7 +28,7 @@ the phyloseq package
 and converts it into a strollur object.
 }
 \examples{
- miseq <- miseq_sop_example()
- phylo_obj <- write_phyloseq(miseq)
- miseq_re_read <- read_phyloseq(phylo_obj)
+miseq <- miseq_sop_example()
+phylo_obj <- write_phyloseq(miseq)
+miseq_re_read <- read_phyloseq(phylo_obj)
 }

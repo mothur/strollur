@@ -4,23 +4,31 @@
 \alias{xdev_get_by_sample}
 \title{xdev_get_by_sample}
 \usage{
-xdev_get_by_sample(data, type = "sequence_names", samples = as.character(c()))
+xdev_get_by_sample(
+  data,
+  type = "sequence_names",
+  samples = as.character(c()),
+  degap = FALSE
+)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the totals of.
 Options include: "sequence_names", "sequences". Default = "sequence_names".}
 
 \item{samples}{a vector of strings containing the names of the samples you
 would like sequence names for. By default all samples are included.}
+
+\item{degap}{a logical. Default = FALSE. When degap = `TRUE`, all gap
+characters will be removed from the sequences.}
 }
 \value{
 2D vector of strings ([num_seqs][num_samples]) containing data
 requested parsed by sample.
 }
 \description{
-Get the requested data in a \link{dataset} object parsed by sample
+Get the requested data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 }
 \examples{
 

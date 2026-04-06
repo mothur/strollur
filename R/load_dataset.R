@@ -1,14 +1,17 @@
+#' @import Rcereal
 #' @title load_dataset
-#' @description
-#' The load_dataset function will create a \link{dataset} object from an RDS
-#' file.
+#' @description The load_dataset function will create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from an RDS file.
+#'
 #' @param file a string containing the .rds file name.
 #' @examples
 #'
 #' data <- load_dataset(strollur_example("miseq_sop.rds"))
 #' data
 #'
-#' @return a \link{dataset} object
+#' @return a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 load_dataset <- function(file) {
   if (!file.exists(file)) {

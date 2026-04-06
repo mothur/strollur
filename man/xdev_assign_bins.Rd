@@ -17,7 +17,7 @@ xdev_assign_bins(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing bin_data assignments}
 
@@ -47,7 +47,7 @@ Default = TRUE.}
 double containing the number of bins assigned
 }
 \description{
-Add bin assignments to a \link{dataset} object
+Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
@@ -68,8 +68,7 @@ Add bin assignments to a \link{dataset} object
   # To add abundance bin assignments parsed by sample:
 
   data <- new_dataset(dataset_name = "miseq_sop")
-  otu_data <- readr::read_tsv(strollur_example(
-                                "mothur2_bin_assignments_shared.tsv.gz"))
+  otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 

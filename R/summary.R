@@ -5,12 +5,16 @@ summary <- function(x, type = "sequences",
   UseMethod("summary", x)
 }
 
-#' @title summary
+#' @title Summarize the sequences data, custom reports, and scrapped data in a
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @name summary
+#' @rdname summary
 #' @description
 #' Summarize the sequences data, custom reports, and scrapped data in a
-#' \link{dataset} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \link{dataset} object
+#' @param data, a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
 #' Options include: "sequences", "reports" and "scrap". Default = "sequences".
@@ -46,7 +50,7 @@ summary <- function(x, type = "sequences",
 #' @export
 summary <- function(data, type = "sequences",
                     report_type = NULL, verbose = TRUE) {
-  if ("dataset" %in% class(data)) {
+  if ("strollur" %in% class(data)) {
     dataset_summary <- xdev_summarize(data, type, report_type)
     if (verbose) {
       print(dataset_summary)

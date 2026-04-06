@@ -2,7 +2,9 @@
 % Please edit documentation in R/count.R
 \name{count}
 \alias{count}
-\title{count}
+\title{Find the number of sequences, samples, treatments or bins of a given
+  type in a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
 count(
   data,
@@ -13,7 +15,8 @@ count(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "samples", "treatments", "bins", and
@@ -43,7 +46,7 @@ double
 }
 \description{
 Find the number of sequences, samples, treatments or bins of a given type in
-a \link{dataset} object
+a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

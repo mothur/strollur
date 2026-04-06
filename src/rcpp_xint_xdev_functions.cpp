@@ -665,7 +665,8 @@ vector<string> xdev_get_list_vector(const Rcpp::Environment& data,
 /******************************************************************************/
 vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
                                            const string& type,
-                                           const Rcpp::CharacterVector& samples) {
+                                           const Rcpp::CharacterVector& samples,
+                                           const bool degap) {
 
     const Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -673,7 +674,8 @@ vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
         return d.get()->getSequenceNamesBySample(Rcpp::as<vector<string>>(samples));
     }
     else if (type == "sequences") {
-        return d.get()->getSequencesBySample(Rcpp::as<vector<string>>(samples));
+        return d.get()->getSequencesBySample(Rcpp::as<vector<string>>(samples),
+                                             degap);
     }
     else {
         string message = "Invalid type. Types include: 'sequence_names' and ";
@@ -683,9 +685,9 @@ vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
     return null2DVector;
 }
 /******************************************************************************/
-vector<string> xdev_get_sequences(const Rcpp::Environment& data, const string& sample) {
+vector<string> xdev_get_sequences(const Rcpp::Environment& data, const string& sample, const bool degap) {
     const Rcpp::XPtr<Dataset> d = data["data"];
-    return d.get()->getSequences(sample);
+    return d.get()->getSequences(sample, degap);
 }
 /******************************************************************************/
 void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names,

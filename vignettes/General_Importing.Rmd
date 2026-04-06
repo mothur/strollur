@@ -82,9 +82,7 @@ You may want to add custom reports to your data set such as an contigs assembly 
 This is also a good time to explain what the table_names parameter does for you. strollur expects the columns in custom reports to have specific names. If your table's names differ from what strollur is expecting, you will see an error like that below.
 
 ```{r, eval=FALSE} 
-contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
-  col_names = TRUE, show_col_types = FALSE
-)
+contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
 add(
   data,
@@ -103,10 +101,7 @@ add(
 You can use the table_names parameter to tell strollur what the specific column is called in your custom report table. In the contigs_report the *sequence_name* column is called *Name*, so we will add one more line to the add function.
 
 ```{r} 
-contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
-  col_names = TRUE, show_col_types = FALSE
-)
-
+contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 add(
   data,
   table = contigs_report,
@@ -123,9 +118,7 @@ data
 Now that we have added our custom contigs assembly report, let's learn how to add metadata. We can add metadata to our data set by setting the type = "metadata".
 
 ```{r}
-metadata <- readr::read_tsv(strollur_example("mouse.dpw.metadata"),
-  col_names = TRUE, show_col_types = FALSE
-)
+metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 add(
   data,
@@ -161,18 +154,10 @@ The `assign()` function allows assign sequence abundances, sequence classificati
 After adding your FASTA sequences, you can assign abundance and sample data using the assign function with the type = "sequence_abundance".    
     
 ```{r}
-abundance_table <- readr::read_tsv(
-  strollur_example(
-    "mothur2_count_table.tsv.gz"
-  ),
-  show_col_types = FALSE
-)
-assign(
-  data,
-  table = abundance_table,
-  type = "sequence_abundance",
-  table_names = list(sequence_name = "names")
-)
+abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+
+assign(data, table = abundance_table, type = "sequence_abundance")
+
 data
 ```
 
@@ -182,20 +167,10 @@ data
 As you can see we now have abundances, samples and treatments added to the data set. Next, let's assign the sequences to bins using type = "bins". When you assign sequences to bins you must provide a *bin_type*. The bin_type is a tag of your choosing used to reference the bin clusters you are adding. Let's add some [Operational Taxonomic Unit](https://en.wikipedia.org/wiki/Operational_taxonomic_unit) clusters and set the bin_type = "otu".
 
 ```{r}
-bin_table <- readr::read_tsv(
-  strollur_example(
-    "mothur2_bin_assignments_list.tsv.gz"
-  ),
-  show_col_types = FALSE
-)
+bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
 
-assign(
-  data,
-  table = bin_table,
-  type = "bins",
-  bin_type = "otu",
-  table_names = list(bin_name = "otu_id", sequence_name = "seq_id")
-)
+assign(data, table = bin_table, type = "bins", bin_type = "otu")
+
 data
 ```
 
@@ -241,16 +216,11 @@ assign(
 strollur allows you to assign a bin representative sequences to the bins in your clusters. Let's assign bin representatives to our *otu* bins.
 
 ```{r}
-bin_representatives <- readr::read_tsv(
-  strollur_example(
-    "otu_representative_sequences.tsv"
-  ),
-  show_col_types = FALSE
-)
+bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
 
 assign(
   data,
-  table = bin_representatives,
+  table = bin_reps,
   type = "bin_representatives"
 )
 ```
@@ -261,10 +231,7 @@ assign(
 In our case the abundance_table included treatment assignments, but you can also assign samples to treatments by setting type = "treatments".
 
 ```{r}
-sample_assignments <- readr::read_table(
-  strollur_example("mouse.time.design"),
-  col_names = TRUE, show_col_types = FALSE
-)
+sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
 assign(
   data,
@@ -294,4 +261,4 @@ ape::plot.phylo(data$get_sample_tree(),
 )
 ```
 
-Thanks for following along. To learn more about the functions used to access the data in your data set, take a look at the [Accessing Data](vignettes/Accessing_Dataset.html) tutorial.
+Thanks for following along. To learn more about the functions used to access the data in your data set, take a look at the [Accessing Data](https://mothur.org/strollur/articles/Accessing_Dataset.html) tutorial.

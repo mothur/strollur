@@ -2,7 +2,9 @@
 % Please edit documentation in R/names.R
 \name{names}
 \alias{names}
-\title{names}
+\title{Get the names sequences, bins, samples, treatments, and reports data
+  in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+  object}
 \usage{
 names(
   data,
@@ -13,7 +15,8 @@ names(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you would like. Options
 include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
@@ -38,7 +41,8 @@ data from other samples. Default = FALSE.}
 vector of strings, containing the names requested
 }
 \description{
-Get the names of a given type of data in a \link{dataset} object
+Get the names of a given type of data in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

@@ -7,7 +7,7 @@
 xdev_summarize(data, type = "sequences", report_type = NULL)
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequences", "reports" and "scrap". Default = "sequences".}
@@ -21,7 +21,7 @@ data.frame()
 }
 \description{
 Summarize the sequences data, custom reports, and scrapped data in a
-\link{dataset} object
+\link{strollur} object
 }
 \examples{
 

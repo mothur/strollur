@@ -2,9 +2,7 @@
 
 test_that("summary tests", {
   # test non dataset type
-  contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
   expect_equal(class(summary(contigs_report)), "table")
 
   miseq <- miseq_sop_example()
@@ -73,9 +71,7 @@ test_that("summary tests", {
 })
 
 test_that("add, assign, abundance error tests", {
-  contigs_report <- readr::read_tsv(strollur_example("final.contigs_report.gz"),
-    col_names = TRUE, show_col_types = FALSE
-  )
+  contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
   # no report type provided
   expect_error(add(

@@ -15,7 +15,7 @@ xdev_assign_bin_representative_sequences(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing bin representative assignments}
 
@@ -43,9 +43,8 @@ Assign representative sequences to bins.
 
   miseq <- miseq_sop_example()
 
-  bin_reps <- readr::read_tsv(strollur_example(
-                                      "otu_representative_sequences.tsv"),
-                                      show_col_types = FALSE)
+  bin_reps <- readRDS(strollur_example(
+         "miseq_representative_sequences.rds"))
 
   xdev_assign_bin_representative_sequences(data = miseq,
                                       table = bin_reps,

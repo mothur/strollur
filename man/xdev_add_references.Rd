@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_add_references}
 \alias{xdev_add_references}
-\title{xdev_add_references}
+\title{Add resource references}
 \usage{
 xdev_add_references(
   data,
@@ -16,7 +16,7 @@ xdev_add_references(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing reference_names, reference_versions
 (optional), reference_usages (optional), reference_notes (optional), and
@@ -48,7 +48,7 @@ Default = TRUE.}
 double containing the number of references added
 }
 \description{
-Add resource references to a \link{dataset} object
+Add resource references to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

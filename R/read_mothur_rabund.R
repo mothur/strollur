@@ -13,7 +13,7 @@
 #'     strollur_example("final.opti_mcc.rabund")
 #' )
 #'
-#  #create a new empty dataset
+#  #create a new empty `strollur` object
 #' data <- new_dataset()
 #'
 #' # assign abundance only 'otu' bins

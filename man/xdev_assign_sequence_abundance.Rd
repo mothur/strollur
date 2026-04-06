@@ -15,7 +15,7 @@ xdev_assign_sequence_abundance(
 )
 }
 \arguments{
-\item{data, }{a \link{dataset} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table, }{a data.frame containing sequence abundance assignments}
 
@@ -40,16 +40,13 @@ double containing the number of sequences assigned
 }
 \description{
 Assign sequence abundance and optionally assign sample and treatment data to
- a \link{dataset} object
+ a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
 data <- new_dataset("my_dataset")
-sequence_abundance <- readr::read_tsv(strollur_example(
-                                      "mothur2_count_table.tsv.gz"),
-                                      show_col_types = FALSE)
+sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 
-xdev_assign_sequence_abundance(data = data, table = sequence_abundance,
-                               sequence_name = "names")
+xdev_assign_sequence_abundance(data = data, table = sequence_abundance)
 
 }

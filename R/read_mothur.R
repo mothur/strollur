@@ -1,8 +1,12 @@
-#' @title read_mothur
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from mothur outputs
+#' @name read_mothur
+#' @rdname read_mothur
 #' @description
 #' The read_mothur function reads various
 #' \href{https://mothur.org/wiki/tags/#file_types}{file types} created by
-#' mothur, and creates a 'dataset' object.
+#' mothur, and creates a `strollur` object.
 #'
 #' To generate the various input files you can follow Pat's
 #' \href{https://mothur.org/wiki/miseq_sop/}{Miseq example analysis}.
@@ -56,11 +60,11 @@
 #'  memory limitation.
 #' @note
 #' \itemize{
-#' \item \emph{consensus taxonomy}, The 'dataset' object will generate
+#' \item \emph{consensus taxonomy}, The `strollur` object will generate
 #' consensus taxonomies for you based on the sequence taxonomy assignment. You
 #' only need to provide the ".cons.taxonomy" file if you are not providing
 #' sequence taxonomy assignments.
-#' \item \emph{shared / rabund file}, The 'dataset' object will generate
+#' \item \emph{shared / rabund file}, The `strollur` object will generate
 #' shared and rabund data for you based on the otu assignment in the list file
 #' and the count data. You only need to provide the ".shared" file if you are
 #' not providing the list and count files.
@@ -92,7 +96,8 @@
 #'   dataset_name = "miseq_sop"
 #' )
 #'
-#' @return A 'dataset' object
+#' @return A
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 read_mothur <- function(fasta = NULL, count = NULL,
                         taxonomy = NULL, otu_list = NULL, asv_list = NULL,
@@ -113,7 +118,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
   }
 
   # create new blank dataset
-  data <- dataset$new(dataset_name)
+  data <- strollur$new(dataset_name)
 
   # add sequence nucleotide strings
   if (!is.null(fasta)) {
@@ -133,18 +138,10 @@ read_mothur <- function(fasta = NULL, count = NULL,
       ))
     }
 
-    # if the count file include samples, add them
-    if ("sample" %in% names(count_table)) {
-      xdev_assign_sequence_abundance(
-        data,
-        count_table
-      )
-    } else {
-      xdev_assign_sequence_abundance(
-        data,
-        count_table
-      )
-    }
+    xdev_assign_sequence_abundance(
+      data,
+      count_table
+    )
   }
 
   # add taxonomy data

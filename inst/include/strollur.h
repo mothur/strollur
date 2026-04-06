@@ -182,11 +182,9 @@ public:
                          const vector<string>& treatments = nullVector);
 
     // set abundance parsed by sample
-    void setAbundance(const int name, const vector<float>& abunds);
+    float setAbundance(const int name, const vector<float>& abunds);
     // set abundance, assumes no samples if sample is blank
-    void setAbundance(const int name, const float abund, const string& sample = "");
-    // index -> (sampleName -> abundance)
-    void setAbundances(const map<int, map<string, float>>& binAbunds);
+    float setAbundance(const int name, const float abund);
 
     // removes id, returns abund. Be sure to run updateTotals after.
     // totals are not updated in function for time savings when removing multiple
@@ -204,15 +202,13 @@ public:
    float getAbundance(const int name, const vector<string>& samples = nullVector) const;
     // abundances by sample for id, (in the same order as the samples)
     vector<float> getAbundances(const int id) const;
-    // abundances by sample for ids
-    vector<vector<float>> getAbundances(const vector<int>& ids) const;
     // results[0][1:numSeqsInSample0] -> sample 0's abundances for each sequence
     vector<vector<float>> getAbundanceBySample(const vector<int>& ids,
         vector<string> samplesToSelect = nullVector) const;
     // total number of sequences
-    double getTotal(const string& sample = "") const;
+    double getTotal() const;
 
-    int getNumSamples(const int name = -1) const;
+    int getNumSamples() const;
     int getNumTreatments() const;
     // vector containing total abundance for each sample
     vector<double> getSampleTotals() const;
@@ -331,7 +327,6 @@ class BinTable {
 public:
 
     BinTable();
-    BinTable(string label);
     BinTable(const BinTable& binTable);
     ~BinTable();
 
@@ -351,7 +346,7 @@ public:
     void clone(const BinTable& binTable);
 
     // id, bin_name, seq_id, abundance, sample, treatment, taxonomy, trashCode
-    Rcpp::List exportBinTable(AbundTable& count);
+    Rcpp::List exportBinTable(const AbundTable& count);
 
     // names of bins
     vector<string> getIds(const AbundTable& count,
@@ -469,7 +464,6 @@ private:
  * The 'Dataset' class will store sequence data for DNA analysis.
  */
 
-
 class Dataset {
 
 public:
@@ -485,7 +479,7 @@ public:
     double numUnique;
 
     void clear();
-    Rcpp::List exportDataset(const vector<string>& tags = nullVector);
+    Rcpp::List exportDataset();
 
     // add seqs
     double addSequences(const vector<string>& n,
@@ -532,7 +526,7 @@ public:
     // 3 columns: bin_names, representative_names, representative_sequences
     Rcpp::DataFrame getBinRepresentativeSequences(const string& type = "otu") const;
     // 2 column dataframe - bin_id, seq_id
-    const vector<string> getBinTypes();
+    vector<string> getBinTypes() const;
     // fasta data.frame 2 or 3 columns, sequence_names, sequences, comments
     Rcpp::DataFrame getFastaReport() const;
 
@@ -546,31 +540,30 @@ public:
     int getNumResourceReferences() const;
 
     Rcpp::DataFrame getMetadata();
-    const Rcpp::DataFrame getReferences();
-    const Rcpp::DataFrame getReports(string type);
-    const vector<string> getReportTypes();
+    Rcpp::DataFrame getReferences() const;
+    Rcpp::DataFrame getReports(const string& type);
+    vector<string> getReportTypes();
     // sequence report: starts, ends, lengths, ambigs, polymers, numns
     Rcpp::DataFrame getSequenceReport() const;
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getSequenceTaxonomyReport();
     vector<string> getSamples() const;
-    const Rcpp::DataFrame getSampleTreatmentAssignments();
+    Rcpp::DataFrame getSampleTreatmentAssignments() const;
     const Rcpp::DataFrame getScrapReport(string mode = "sequence");
     // type, trashCode, uniqueCount, totalCount
     Rcpp::DataFrame getScrapSummary() const;
     // total abundance for each sequence
     Rcpp::DataFrame getSequenceAbundances(bool bySample = false) const;
-    const Rcpp::DataFrame getBinAbundances(string bin_type = "otu",
-                                           bool bySample = false);
+    Rcpp::DataFrame getBinAbundances(const string& bin_type = "otu",
+                                           bool bySample = false) const;
     vector<string> getSequenceNames(const vector<string>& sample = nullVector,
                                           bool distinct = false) const;
     vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector) const;
 
 
-    vector<string> getSequences(const string& sample = "") const;
-    // 2 columns: sequence names, sequence strings
-    Rcpp::DataFrame getSequenceTable(const string& sample = "") const;
-    vector<vector<string> > getSequencesBySample(vector<string> samples) const;
+    vector<string> getSequences(const string& sample = "", bool degap = false) const;
+    vector<vector<string> > getSequencesBySample(vector<string> samples,
+                                                       bool degap = false) const;
 
     const Rcpp::DataFrame getSummary(const string& type = "sequences",
                                      const string& reportType = "");
@@ -653,6 +646,7 @@ private:
     Report metadata;
 
     // if unaligned, returns -1
+    string degapSeq(const string& sequence) const;
     int getAlignedLength();
     vector<int> getIncludedNamesIndexes() const;
     vector<int> getIndexes(const vector<string>&) const;
