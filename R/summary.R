@@ -50,26 +50,29 @@ summary <- function(x, type = "sequences",
 #' @export
 summary <- function(data, type = "sequences",
                     report_type = NULL, verbose = TRUE) {
+  if(!inherits(data, "strollur")) {
+    return(base::summary(data))
+  }
+
+  dataset_summary <- ""
   if(type == "sequences") {
-    return(generate_sequence_report(data))
+    dataset_summary <- generate_sequence_report(data)
   }
   else if(type == "report" && report_type == "contigs_report") {
-    return(generate_contig_report(data))
-  }
-  # otherwise, we can summarize it differently
-  if ("dataset" %in% class(data)) {
+    dataset_summary <- generate_contig_report(data)
+  } 
+  else {
     dataset_summary <- xdev_summarize(data, type, report_type)
-    if (verbose) {
-      print(dataset_summary)
-    }
-    dataset_summary
-  } else {
-    base::summary(data)
   }
+  
+  if (verbose) {
+    print(dataset_summary)
+  }
+  dataset_summary
+
 }
 
 generate_sequence_report <- function(dataset) {
-  dataset <- dat
   report <- report(dataset) 
   abunds <- abundance(dataset)
   report <- cbind(report, abundance = abunds)
@@ -93,11 +96,16 @@ generate_sequence_report <- function(dataset) {
   report_summary$abundance.sequence_names <- NULL
 
 
-  total_seqs <- count(dataset, type)
+  total_seqs <- count(dataset, "sequences")
   num_seqs <- total_seqs * desired_quantiles + 1 # minimum seqs should be 1
   num_seqs <- c(num_seqs, mean(num_seqs))
   report_summary <- cbind(report_summary, num_seqs)
-  report_summary
+  rownames(report_summary) <- report_summary$stat
+  colnames(report_summary) <-  c(
+    "stat", "starts", "ends", "nbases", "ambigs",
+    "polymers", "numns", "numseqs"
+  )
+  report_summary[, -1]
 }
 
 generate_contig_report <- function(dataset) {
@@ -105,7 +113,7 @@ generate_contig_report <- function(dataset) {
   desired_tags <- c("Minimum:", "2.5%-tile:", "25%-tile:", "Median:",
   "75%-tile:", "97.5%-tile:", "Maximum:", "Mean:")
 
-  report(dat, "contigs_report") |>
+  report(dataset, "contigs_report") |>
       reframe(stat = desired_tags,
         across(
         where(is.numeric),

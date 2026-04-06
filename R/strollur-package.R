@@ -11,6 +11,7 @@
 #' @importFrom dplyr group_by
 #' @importFrom dplyr left_join
 #' @importFrom dplyr mutate
+#' @importFrom dplyr reframe
 #' @importFrom dplyr relocate
 #' @importFrom dplyr summarise
 #' @importFrom microseq readFasta
