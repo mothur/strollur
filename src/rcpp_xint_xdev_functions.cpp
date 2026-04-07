@@ -918,7 +918,7 @@ Rcpp::DataFrame xdev_summarize(const Rcpp::Environment& data, const string& type
         }
     }
 
-    const vector<string> typeOptions = {"sequences", "reports", "scrap"};
+    const vector<string> typeOptions = {"scrap"};
     if (!vectorContains(typeOptions, type)) {
         string message = type + " is not a valid type option. Options include:";
         message += " 'sequences', 'reports' and 'scrap'.";

@@ -58,7 +58,7 @@ summary <- function(data, type = "sequences",
   if(type == "sequences") {
     dataset_summary <- generate_sequence_report(data)
   }
-  else if(type == "report" && report_type == "contigs_report") {
+  else if(type == "reports" && report_type == "contigs_report") {
     dataset_summary <- generate_contig_report(data)
   } 
   else {
@@ -113,7 +113,7 @@ generate_contig_report <- function(dataset) {
   desired_tags <- c("Minimum:", "2.5%-tile:", "25%-tile:", "Median:",
   "75%-tile:", "97.5%-tile:", "Maximum:", "Mean:")
 
-  report(dataset, "contigs_report") |>
+  result <- report(dataset, "contigs_report") |>
       reframe(stat = desired_tags,
         across(
         where(is.numeric),
@@ -122,4 +122,9 @@ generate_contig_report <- function(dataset) {
         .names = "{.col}"
       )
     )
+  data.frame(Expected_Errors = result$Expected_Errors, 
+                       Length = result$Length, MisMatches = result$MisMatches,
+                       Num_Ns = result$Num_Ns, Overlap_End = result$Overlap_End,
+                       Overlap_Length = result$Overlap_Length,
+                       Overlap_Start = result$Overlap_Start, row.names = result$stat)
 }
