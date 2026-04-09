@@ -22,6 +22,6 @@ Write a 2 column
 \examples{
 
 miseq <- miseq_sop_example()
-write_taxonomy(miseq)
+write_taxonomy(miseq, tempfile())
 
 }

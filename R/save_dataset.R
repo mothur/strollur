@@ -1,4 +1,3 @@
-#' @import Rcereal
 #' @title save_dataset
 #' @description The save_dataset function will save the
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

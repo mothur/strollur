@@ -11,7 +11,7 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' write_mothur_shared(miseq)
+#' write_mothur_shared(miseq, tempfile())
 #'
 #' @return vector containing the names of the files created
 #' @export
@@ -65,6 +65,10 @@ write_mothur_shared <- function(data, file_root = NULL) {
         num_samples <- nrow(df)
 
         # add label column before samples
+        # To fix build warnings, we have to make bindings for:
+        # label, num_bins, samples
+        label <- num_bins <- samples <- NULL
+
         df <- df |>
           mutate(label = rep(1, num_samples)) |>
           relocate(label, .before = samples)

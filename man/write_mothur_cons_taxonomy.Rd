@@ -23,6 +23,6 @@ Write a mothur formatted
 \examples{
 
 miseq <- miseq_sop_example()
-write_mothur_cons_taxonomy(miseq)
+write_mothur_cons_taxonomy(miseq, tempfile())
 
 }

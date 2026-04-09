@@ -39,13 +39,13 @@ public:
 	PhyloTree();
 	~PhyloTree() = default;
 
-	int addSeqToTree(string, float);
+	int addSeqToTree(const string&, float);
 	TaxNode get(int seqIndex);
 
 	TaxNode getRoot()       {   return tree[0];     }
-	int getMaxLevel()		{	return maxLevel;	}
-	float getNumSeqs()		{	return numSeqs;		}
-	int getNumNodes()		{	return (int)tree.size();	}
+	int getMaxLevel() const	{	return maxLevel;	}
+	float getNumSeqs() const {	return numSeqs;		}
+	int getNumNodes() const	{	return static_cast<int>(tree.size());	}
 
 private:
 

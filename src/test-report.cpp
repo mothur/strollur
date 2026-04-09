@@ -46,7 +46,7 @@
         flo = {10.5,20.5,30.5,40.5,50.5,50.5,50.5,37.1667};
 
         // * 100 rounded
-        for (int i = 0; i < flo.size(); i++) {
+        for (size_t i = 0; i < flo.size(); i++) {
             summaryFlo[i] = ceil(summaryFlo[i]*100);
             flo[i] = ceil(flo[i]*100);
         }

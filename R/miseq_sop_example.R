@@ -37,7 +37,7 @@ miseq_sop_example <- function() {
   metadata <- readRDS(strollur_example("miseq_metadata.rds"))
   xdev_add_report(data, metadata, "metadata")
 
-  reference <- readr::read_csv(strollur_example("references.csv"),
+  reference <- read_csv(strollur_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE
   )
   xdev_add_references(data, reference)
