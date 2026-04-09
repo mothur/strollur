@@ -25,7 +25,7 @@ vector<int> SeqReport::getReport(string seq) {
 vector<vector<int>> SeqReport::getReport(vector<string>& seqs) {
     vector<vector<int>> results(6, vector<int>(seqs.size()));
 
-    for (int i = 0; i < seqs.size(); i++) {
+    for (size_t i = 0; i < seqs.size(); i++) {
 
         vector<int> thisSeqsResults = getReport(seqs[i]);
         results[0][i] = thisSeqsResults[0];
@@ -46,8 +46,8 @@ void SeqReport::addReports(vector<string>& seqs, vector<int>& starts,
                            vector<int>& ambigs, vector<int>& polymers,
                            vector<int>& numns){
 
-    size_t originalSize = starts.size();
-    size_t numSeqs = seqs.size();
+    const size_t originalSize = starts.size();
+    const size_t numSeqs = seqs.size();
 
     starts.resize(originalSize+numSeqs);
     ends.resize(originalSize+numSeqs);
@@ -67,12 +67,12 @@ void SeqReport::addReports(vector<string>& seqs, vector<int>& starts,
     }
 }
 /******************************************************************************/
-int SeqReport::getStart(string seq) {
+int SeqReport::getStart(const string& seq) const {
 
-    if (seq == "") { return 0; }
+    if (seq.empty()) { return 0; }
 
     int startPos = 1;
-    for(int i = 0; i < seq.length(); i++) {
+    for(int i = 0; i < static_cast<int>(seq.length()); i++) {
         if(!isgap(seq[i])){
             startPos = i + 1;
             break;
@@ -81,14 +81,14 @@ int SeqReport::getStart(string seq) {
     return startPos;
 }
 /******************************************************************************/
-int SeqReport::getEnd(string seq) {
-    if (seq == "") { return 0; }
+int SeqReport::getEnd(const string& seq) const {
+    if (seq.empty()) { return 0; }
 
     int endPos = 1;
 
-    if (seq == "") { return endPos; }
+    if (seq.empty()) { return endPos; }
 
-    for(int i = seq.length()-1; i >= 0; i--){
+    for(int i = static_cast<int>(seq.length())-1; i >= 0; i--){
         if(!isgap(seq[i])){
             endPos = i + 1;
             break;
@@ -97,9 +97,9 @@ int SeqReport::getEnd(string seq) {
     return endPos;
 }
 /******************************************************************************/
-int SeqReport::getNumAmbigs(string seq) {
+int SeqReport::getNumAmbigs(const string& seq) const {
     int ambigBases = 0;
-    for(int i = 0; i < seq.length(); i++) {
+    for(size_t i = 0; i < seq.length(); i++) {
         if(!isgap(seq[i]) && !isacgt(seq[i])){
             ambigBases++;
         }
@@ -107,7 +107,7 @@ int SeqReport::getNumAmbigs(string seq) {
     return ambigBases;
 }
 /******************************************************************************/
-int SeqReport::getLongestHomopolymer(string seq) {
+int SeqReport::getLongestHomopolymer(const string& seq) const {
     int longHomoPolymer = 1;
     int homoPolymer = 1;
 
@@ -117,8 +117,8 @@ int SeqReport::getLongestHomopolymer(string seq) {
         unaligned = degapSeq(seq);
     }
 
-    if (unaligned != "") {
-    for(int j = 1; j < unaligned.length(); j++){
+    if (!unaligned.empty()) {
+    for(size_t j = 1; j < unaligned.length(); j++){
         if(unaligned[j] == unaligned[j-1]){
             homoPolymer++;
         }else{
@@ -139,9 +139,9 @@ int SeqReport::getLongestHomopolymer(string seq) {
     return longHomoPolymer;
 }
 /******************************************************************************/
-int SeqReport::getNumbases(string seq) {
+int SeqReport::getNumbases(const string& seq) const {
     int numBases = 0;
-    for(int i = 0; i < seq.length(); i++) {
+    for(size_t i = 0; i < seq.length(); i++) {
         if(!isgap(seq[i])){
             numBases++;
         }
@@ -149,9 +149,9 @@ int SeqReport::getNumbases(string seq) {
     return numBases;
 }
 /******************************************************************************/
-int SeqReport::getNumns(string seq) {
+int SeqReport::getNumns(const string& seq) const {
     int numNs = 0;
-    for (int i = 0; i < seq.length(); i++) {
+    for (size_t i = 0; i < seq.length(); i++) {
         if(seq[i] == 'N') { numNs++; }
     }
     return numNs;

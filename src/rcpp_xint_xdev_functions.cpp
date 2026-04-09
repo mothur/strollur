@@ -3,12 +3,12 @@
 #include "rcpp_xint_xdev_functions.h"
 
 /******************************************************************************/
-SEXP xint_fill_required_parameters(const Rcpp::DataFrame df,
+SEXP xint_fill_required_parameters(const Rcpp::DataFrame& df,
                                    const string& given_column_name,
-                                   string type) {
+                                   const string& type) {
 
     if (!df.containsElementNamed(given_column_name.c_str())) {
-        string message = "Expected a data.frame column named " +
+        const string message = "Expected a data.frame column named " +
             given_column_name +" to be provided.";
 
         throw Rcpp::exception(message.c_str());
@@ -17,10 +17,10 @@ SEXP xint_fill_required_parameters(const Rcpp::DataFrame df,
     return df[given_column_name];
 }
 /******************************************************************************/
-SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
+SEXP xint_fill_optional_parameters(const Rcpp::DataFrame& df,
                                    const string& default_column_name,
                                    const string& given_column_name,
-                                   string type) {
+                                   const string& type) {
 
 
     // Check if the column exists in the data frame
@@ -32,7 +32,7 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
         (given_column_name == default_column_name)) {
         //fall through
     }else {
-        string message = "Expected a data.frame column named " +
+        const string message = "Expected a data.frame column named " +
             given_column_name +" to be provided.";
 
         throw Rcpp::exception(message.c_str());
@@ -47,12 +47,12 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame df,
     return Rcpp::CharacterVector(0);
 }
 /******************************************************************************/
-Rcpp::DataFrame xdev_abundance(Rcpp::Environment data,
-                           string type,
-                           string bin_type,
-                           bool by_sample) {
+Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
+                           const string& type,
+                           const string& bin_type,
+                           const bool by_sample) {
 
-     Rcpp::XPtr<Dataset> d = data["data"];
+     const Rcpp::XPtr<Dataset> d = data["data"];
 
     if (type == "sequences") {
         // data.frame containing 2, 3 or 4 columns: sequence_names, abundances,
@@ -77,13 +77,13 @@ Rcpp::DataFrame xdev_abundance(Rcpp::Environment data,
     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
-double xdev_add_references(Rcpp::Environment data,
-                           Rcpp::DataFrame table,
-                           string reference_name,
-                           string reference_version,
-                           string reference_usage,
-                           string reference_note,
-                           string reference_url,
+double xdev_add_references(const Rcpp::Environment& data,
+                           const Rcpp::DataFrame& table,
+                           const string& reference_name,
+                           const string& reference_version,
+                           const string& reference_usage,
+                           const string& reference_note,
+                           const string& reference_url,
                            bool verbose) {
 
     vector<string> reference_names, reference_versions, reference_usages;
@@ -120,7 +120,7 @@ double xdev_add_references(Rcpp::Environment data,
     }
 
     vector<Reference> refs;
-    for (int i = 0; i < reference_names.size(); i++) {
+    for (size_t i = 0; i < reference_names.size(); i++) {
 
         Reference ref(reference_names[i]);
         if (hasVersions) {
@@ -151,10 +151,10 @@ double xdev_add_references(Rcpp::Environment data,
     return numAdded;
 }
 /******************************************************************************/
-void xdev_add_report(Rcpp::Environment data,
+void xdev_add_report(const Rcpp::Environment& data,
                      Rcpp::DataFrame table,
-                     string type,
-                     string sequence_name,
+                     const string& type,
+                     const string& sequence_name,
                      bool verbose) {
 
     Rcpp::XPtr<Dataset> d = data["data"];
@@ -226,13 +226,13 @@ void xdev_add_report(Rcpp::Environment data,
     }
 }
 /******************************************************************************/
-double xdev_add_sequences(Rcpp::Environment data,
-                     Rcpp::DataFrame table,
+double xdev_add_sequences(const Rcpp::Environment& data,
+                     const Rcpp::DataFrame& table,
                      Rcpp::Nullable<Rcpp::List> reference,
-                     string sequence_name,
-                     string sequence,
-                     string comment,
-                     bool verbose) {
+                     const string& sequence_name,
+                     const string& sequence,
+                     const string& comment,
+                     const bool verbose) {
 
     vector<string> sequence_names, sequences, comments;
     sequence_names = Rcpp::as<vector<string>>(
@@ -258,26 +258,26 @@ double xdev_add_sequences(Rcpp::Environment data,
         ref.url = Rcpp::as<string>(ref_list["reference_url"]);
     }
 
-    double numAdded = d.get()->addSequences(sequence_names,
+    const double numAdded = d.get()->addSequences(sequence_names,
                             sequences, comments, ref);
 
     if (verbose) {
         Rcpp::Environment strollur_env("package:strollur");
-        Rcpp::Function message = strollur_env["added_message"];
+        const Rcpp::Function message = strollur_env["added_message"];
         message(numAdded);
     }
 
     return numAdded;
 }
 /******************************************************************************/
-double xdev_assign_bins(Rcpp::Environment data,
-                        Rcpp::DataFrame table,
-                        string bin_type,
+double xdev_assign_bins(const Rcpp::Environment& data,
+                        const Rcpp::DataFrame& table,
+                        const string& bin_type,
                         Rcpp::Nullable<Rcpp::List> reference,
-                        string bin_name,
-                        string abundance,
-                        string sample,
-                        string sequence_name,
+                        const string& bin_name,
+                        const string& abundance,
+                        const string& sample,
+                        const string& sequence_name,
                         bool verbose) {
 
     vector<string> bin_names, samples, sequence_names;
@@ -297,7 +297,7 @@ double xdev_assign_bins(Rcpp::Environment data,
                                                                        abundance,
                                                                        "float"));
 
-    if ((abundances.size() == 0) && (sequence_names.size() == 0)) {
+    if ((abundances.empty()) && (sequence_names.empty())) {
         string message = "You must provide either abundances or ";
         message += "sequence_names to assign bins.";
         RcppThread::Rcerr << endl << message << endl;
@@ -326,9 +326,9 @@ double xdev_assign_bins(Rcpp::Environment data,
         message(numBinsAssigned, tag);
     }
 
-    Reference ref;
-    if (reference.isNotNull()) {
 
+    if (reference.isNotNull()) {
+        Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
         ref.name = Rcpp::as<string>(ref_list["reference_name"]);
@@ -345,12 +345,12 @@ double xdev_assign_bins(Rcpp::Environment data,
     return numBinsAssigned;
 }
 /******************************************************************************/
-double xdev_assign_bin_representative_sequences(Rcpp::Environment data,
-                                                Rcpp::DataFrame table,
-                                                string bin_type,
+double xdev_assign_bin_representative_sequences(const Rcpp::Environment& data,
+                                                const Rcpp::DataFrame& table,
+                                                const string& bin_type,
                                                 Rcpp::Nullable<Rcpp::List> reference,
-                                                string bin_name,
-                                                string sequence_name,
+                                                const string& bin_name,
+                                                const string& sequence_name,
                                                 bool verbose) {
 
     vector<string> bin_names,  sequence_names;
@@ -359,21 +359,21 @@ double xdev_assign_bin_representative_sequences(Rcpp::Environment data,
     sequence_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                             sequence_name));
 
-    Rcpp::XPtr<Dataset> d = data["data"];
+    const Rcpp::XPtr<Dataset> d = data["data"];
 
-    double numAssigned = d.get()->assignBinRepresentativeSequences(bin_names,
+    const double numAssigned = d.get()->assignBinRepresentativeSequences(bin_names,
                                sequence_names, bin_type);
 
     if (verbose) {
-        string tag = " " + bin_type +" bin representative sequences.";
+        const string tag = " " + bin_type +" bin representative sequences.";
         Rcpp::Environment strollur_env("package:strollur");
         Rcpp::Function message = strollur_env["assigned_message"];
         message(numAssigned, tag);
     }
 
-    Reference ref;
-    if (reference.isNotNull()) {
 
+    if (reference.isNotNull()) {
+        Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
         ref.name = Rcpp::as<string>(ref_list["reference_name"]);
@@ -390,12 +390,12 @@ double xdev_assign_bin_representative_sequences(Rcpp::Environment data,
     return numAssigned;
 }
 /******************************************************************************/
-double xdev_assign_bin_taxonomy(Rcpp::Environment data,
-                                Rcpp::DataFrame table,
-                                string bin_type,
+double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
+                                const Rcpp::DataFrame& table,
+                                const string& bin_type,
                                 Rcpp::Nullable<Rcpp::List> reference,
-                                string bin_name,
-                                string taxonomy,
+                                const string& bin_name,
+                                const string& taxonomy,
                                 bool verbose) {
 
     Rcpp::XPtr<Dataset> d = data["data"];
@@ -424,9 +424,9 @@ double xdev_assign_bin_taxonomy(Rcpp::Environment data,
         message(numAssigned, tag);
     }
 
-    Reference ref;
-    if (reference.isNotNull()) {
 
+    if (reference.isNotNull()) {
+        Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
         ref.name = Rcpp::as<string>(ref_list["reference_name"]);
@@ -443,12 +443,12 @@ double xdev_assign_bin_taxonomy(Rcpp::Environment data,
     return numAssigned;
 }
 /******************************************************************************/
-double xdev_assign_sequence_abundance(Rcpp::Environment data,
-                                      Rcpp::DataFrame table,
-                                      string sequence_name,
-                                      string abundance,
-                                      string sample,
-                                      string treatment,
+double xdev_assign_sequence_abundance(const Rcpp::Environment& data,
+                                      const Rcpp::DataFrame& table,
+                                      const string& sequence_name,
+                                      const string& abundance,
+                                      const string& sample,
+                                      const string& treatment,
                                       bool verbose) {
 
     vector<string> sequence_names, samples, treatments;
@@ -505,32 +505,33 @@ double xdev_assign_sequence_abundance(Rcpp::Environment data,
     return numAssigned;
 }
 /******************************************************************************/
-double xdev_assign_sequence_taxonomy(Rcpp::Environment data,
-                                     Rcpp::DataFrame table,
+double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
+                                     const Rcpp::DataFrame& table,
                                      Rcpp::Nullable<Rcpp::List> reference,
-                                     string sequence_name,
-                                     string taxonomy,
-                                     bool verbose) {
+                                     const string& sequence_name,
+                                     const string& taxonomy,
+                                     const bool verbose) {
 
     vector<string> sequence_names, taxonomies;
     sequence_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                             sequence_name));
     taxonomies = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                         taxonomy));
-    Rcpp::XPtr<Dataset> d = data["data"];
+    const Rcpp::XPtr<Dataset> d = data["data"];
 
-    double numAssigned = d.get()->assignSequenceTaxonomy(sequence_names,
+    const double numAssigned = d.get()->assignSequenceTaxonomy(sequence_names,
                                taxonomies);
 
     if (verbose) {
         Rcpp::Environment strollur_env("package:strollur");
-        Rcpp::Function message = strollur_env["assigned_message"];
+        const Rcpp::Function message = strollur_env["assigned_message"];
         message(numAssigned, " sequence taxonomies.");
     }
 
-    Reference ref;
+
     if (reference.isNotNull()) {
 
+        Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
         ref.name = Rcpp::as<string>(ref_list["reference_name"]);
@@ -547,10 +548,10 @@ double xdev_assign_sequence_taxonomy(Rcpp::Environment data,
     return numAssigned;
 }
 /******************************************************************************/
-double xdev_assign_treatments(Rcpp::Environment data,
-                              Rcpp::DataFrame table,
-                              string sample,
-                              string treatment,
+double xdev_assign_treatments(const Rcpp::Environment& data,
+                              const Rcpp::DataFrame& table,
+                              const string& sample,
+                              const string& treatment,
                               bool verbose) {
 
     vector<string> samples, treatments;
@@ -559,7 +560,7 @@ double xdev_assign_treatments(Rcpp::Environment data,
     treatments = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                         treatment));
 
-    Rcpp::XPtr<Dataset> d = data["data"];
+    const Rcpp::XPtr<Dataset> d = data["data"];
 
     if (d.get()->getNumSamples() == 0) {
         string message = "[ERROR]: You cannot assign treatments, your dataset";
@@ -576,24 +577,24 @@ double xdev_assign_treatments(Rcpp::Environment data,
         throw Rcpp::exception(message.c_str());
     }
 
-    double numAssigned = d.get()->assignTreatments(samples, treatments);
+    const double numAssigned = d.get()->assignTreatments(samples, treatments);
 
     if (verbose) {
         Rcpp::Environment strollur_env("package:strollur");
-        Rcpp::Function message = strollur_env["assigned_message"];
+        const Rcpp::Function message = strollur_env["assigned_message"];
         message(numAssigned, " samples to treatments.");
     }
 
     return numAssigned;
 }
 /******************************************************************************/
-double xdev_count(Rcpp::Environment data,
-                  string type,
-                  string bin_type,
+double xdev_count(const Rcpp::Environment& data,
+                  const string& type,
+                  const string& bin_type,
                   Rcpp::Nullable<Rcpp::List> samples,
                   bool distinct) {
 
-    Rcpp::XPtr<Dataset> d = data["data"];
+    const Rcpp::XPtr<Dataset> d = data["data"];
 
     vector<string> s;
     if (samples.isNotNull()) {
@@ -649,25 +650,25 @@ double xdev_count(Rcpp::Environment data,
     return 0;
 }
 /******************************************************************************/
-vector<vector<float> > xdev_get_abundances_by_sample(Rcpp::Environment data,
-                                                     Rcpp::CharacterVector samples) {
-    Rcpp::XPtr<Dataset> d = data["data"];
+vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& data,
+                                                     const Rcpp::CharacterVector& samples) {
+    const Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getSequenceAbundanceBySample(Rcpp::as<vector<string>>(samples));
 }
 
 /******************************************************************************/
-vector<string> xdev_get_list_vector(Rcpp::Environment data,
-                                    string type) {
-    Rcpp::XPtr<Dataset> d = data["data"];
+vector<string> xdev_get_list_vector(const Rcpp::Environment& data,
+                                    const string& type) {
+    const Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getListVector(type);
 }
 /******************************************************************************/
-vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
-                                           string type,
-                                           Rcpp::CharacterVector samples,
-                                           bool degap) {
+vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
+                                           const string& type,
+                                           const Rcpp::CharacterVector& samples,
+                                           const bool degap) {
 
-    Rcpp::XPtr<Dataset> d = data["data"];
+    const Rcpp::XPtr<Dataset> d = data["data"];
 
     if (type == "sequence_names") {
         return d.get()->getSequenceNamesBySample(Rcpp::as<vector<string>>(samples));
@@ -684,31 +685,30 @@ vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
     return null2DVector;
 }
 /******************************************************************************/
-vector<string> xdev_get_sequences(Rcpp::Environment data, string sample,
-                                  bool degap) {
-    Rcpp::XPtr<Dataset> d = data["data"];
+vector<string> xdev_get_sequences(const Rcpp::Environment& data, const string& sample, const bool degap) {
+    const Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getSequences(sample, degap);
 }
 /******************************************************************************/
-void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
-                      string reason, string bin_type) {
-     Rcpp::XPtr<Dataset> d = data["data"];
+void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
+                      const string& reason, const string& bin_type) {
+     const Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->mergeBins(bin_names, reason, bin_type);
 }
 /******************************************************************************/
-void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
-                           string reason) {
-     Rcpp::XPtr<Dataset> d = data["data"];
+void xdev_merge_sequences(const Rcpp::Environment& data, const vector<string>& sequence_names,
+                           const string& reason) {
+     const Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->mergeSequences(sequence_names, reason);
 }
 /******************************************************************************/
-const vector<string> xdev_names(Rcpp::Environment data,
-                          string type,
-                          string bin_type,
+vector<string> xdev_names(const Rcpp::Environment& data,
+                          const string& type,
+                          const string& bin_type,
                           Rcpp::Nullable<Rcpp::List> samples,
-                          bool distinct) {
+                          const bool distinct) {
 
-    Rcpp::XPtr<Dataset> d = data["data"];
+    const Rcpp::XPtr<Dataset> d = data["data"];
 
     vector<string> s;
     if (samples.isNotNull()) {
@@ -757,36 +757,36 @@ const vector<string> xdev_names(Rcpp::Environment data,
     return names;
 }
 /******************************************************************************/
-void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
-                       vector<string> trash_tags, string bin_type) {
-     Rcpp::XPtr<Dataset> d = data["data"];
+void xdev_remove_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
+                       const vector<string>& trash_tags, const string& bin_type) {
+     const Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeBins(bin_names, trash_tags, bin_type);
 }
 /******************************************************************************/
-void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants,
-                           string reason) {
-     Rcpp::XPtr<Dataset> d = data["data"];
+void xdev_remove_lineages(const Rcpp::Environment& data, const vector<string>& contaminants,
+                           const string& reason) {
+     const Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeLineages(contaminants, reason);
 }
 /******************************************************************************/
-void xdev_remove_samples(Rcpp::Environment data, vector<string> samples,
-                         string reason) {
-     Rcpp::XPtr<Dataset> d = data["data"];
+void xdev_remove_samples(const Rcpp::Environment& data, const vector<string>& samples,
+                         const string& reason) {
+     const Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeSamples(samples, reason);
 }
 /******************************************************************************/
-void xdev_remove_sequences(Rcpp::Environment data,
-                            vector<string> sequence_names,
-                            vector<string> trash_tags) {
+void xdev_remove_sequences(const Rcpp::Environment& data,
+                            const vector<string>& sequence_names,
+                            const vector<string>& trash_tags) {
 
-     Rcpp::XPtr<Dataset> d = data["data"];
+     const Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeSequences(sequence_names, trash_tags);
 }
 /******************************************************************************/
-Rcpp::DataFrame xdev_report(Rcpp::Environment data, string type,
-                            string bin_type) {
+Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
+                            const string& bin_type) {
 
-    Rcpp::XPtr<Dataset> d = data["data"];
+    const Rcpp::XPtr<Dataset> d = data["data"];
 
     // sequence_data reports contain the starts, ends, ambigs,...
     if (type == "sequences") {
@@ -841,12 +841,12 @@ Rcpp::DataFrame xdev_report(Rcpp::Environment data, string type,
     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
-void xdev_set_abundance(Rcpp::Environment data,
-                         vector<string> sequence_names,
-                         vector<float> sequence_abundances,
-                         string reason) {
+void xdev_set_abundance(const Rcpp::Environment& data,
+                         const vector<string>& sequence_names,
+                         const vector<float>& sequence_abundances,
+                         const string& reason) {
 
-     Rcpp::XPtr<Dataset> d = data["data"];
+     const Rcpp::XPtr<Dataset> d = data["data"];
 
      if (d.get()->getNumSamples() == 0) {
          d.get()->setAbundance(sequence_names, sequence_abundances, reason);
@@ -859,12 +859,12 @@ void xdev_set_abundance(Rcpp::Environment data,
      }
 }
 /******************************************************************************/
-void xdev_set_abundances(Rcpp::Environment data,
-                          vector<string> sequence_names,
-                          vector<vector<float>> abundances,
-                          string reason) {
+void xdev_set_abundances(const Rcpp::Environment& data,
+                          const vector<string>& sequence_names,
+                          const vector<vector<float>>& abundances,
+                          const string& reason) {
 
-     Rcpp::XPtr<Dataset> d = data["data"];
+     const Rcpp::XPtr<Dataset> d = data["data"];
 
      if (d.get()->getNumSamples() != 0) {
          d.get()->setAbundances(sequence_names, abundances, reason);
@@ -877,38 +877,37 @@ void xdev_set_abundances(Rcpp::Environment data,
      }
 }
 /******************************************************************************/
-void xdev_set_sequences(Rcpp::Environment data,
-                         vector<string> sequence_names,
-                         vector<string> sequences,
-                         Rcpp::CharacterVector comments) {
+void xdev_set_sequences(const Rcpp::Environment& data,
+                         const vector<string>& sequence_names,
+                         const vector<string>& sequences,
+                         const Rcpp::CharacterVector& comments) {
 
-     Rcpp::XPtr<Dataset> d = data["data"];
+     const Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->setSequences(sequence_names, sequences,
            Rcpp::as<vector<string>>(comments));
 }
 /******************************************************************************/
-void xdev_set_dataset_name(Rcpp::Environment data, string dataset_name = "") {
-     Rcpp::XPtr<Dataset> d = data["data"];
+void xdev_set_dataset_name(const Rcpp::Environment& data, const string& dataset_name = "") {
+     const Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->datasetName = dataset_name;
 }
 /******************************************************************************/
-void xdev_set_num_processors(Rcpp::Environment data, int processors = 1) {
-     Rcpp::XPtr<Dataset> d = data["data"];
+void xdev_set_num_processors(const Rcpp::Environment& data, const int processors = 1) {
+     const Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->processors = processors;
 }
 /******************************************************************************/
-Rcpp::DataFrame xdev_summarize(Rcpp::Environment data, string type,
+Rcpp::DataFrame xdev_summarize(const Rcpp::Environment& data, const string& type,
                                Rcpp::Nullable<Rcpp::CharacterVector> report_type) {
 
-    Rcpp::XPtr<Dataset> d = data["data"];
+    const Rcpp::XPtr<Dataset> d = data["data"];
 
     string rType = "";
     if (report_type.isNotNull()) {
         rType = Rcpp::as<string>(report_type);
 
         // make sure its a valid report type
-        vector<string> reportOptions = d.get()->getReportTypes();
-
+        const vector<string> reportOptions = d.get()->getReportTypes();
         if (!vectorContains(reportOptions, rType)) {
             string message = rType + " is not a valid report_type option. ";
             if (!reportOptions.empty()) {
@@ -919,7 +918,7 @@ Rcpp::DataFrame xdev_summarize(Rcpp::Environment data, string type,
         }
     }
 
-    vector<string> typeOptions = {"sequences", "reports", "scrap"};
+    const vector<string> typeOptions = {"sequences", "reports", "scrap"};
     if (!vectorContains(typeOptions, type)) {
         string message = type + " is not a valid type option. Options include:";
         message += " 'sequences', 'reports' and 'scrap'.";
@@ -931,20 +930,20 @@ Rcpp::DataFrame xdev_summarize(Rcpp::Environment data, string type,
     return d.get()->getSummary(type, rType);
 }
 /******************************************************************************/
-Rcpp::XPtr<Dataset> xint_copy_pointer(Rcpp::Environment data) {
+Rcpp::XPtr<Dataset> xint_copy_pointer(const Rcpp::Environment& data) {
      Rcpp::XPtr<Dataset> d = data["data"];
      Dataset* copy = new Dataset(*d.get());
      return Rcpp::XPtr<Dataset>(copy);
 }
 /******************************************************************************/
-Rcpp::XPtr<Dataset> xint_new_pointer(string dataset_name = "", int processors = 1) {
+Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name = "", const int processors = 1) {
      Dataset* d = new Dataset(dataset_name, processors);
      return Rcpp::XPtr<Dataset>(d);
 }
 /******************************************************************************/
 void xint_deserialize_dobject(Rcpp::Environment data) {
      data["data"] = xint_new_pointer();
-     Rcpp::XPtr<Dataset> d = data["data"];
+     const Rcpp::XPtr<Dataset> d = data["data"];
      const Rcpp::RawVector raw = data["raw"];
      d.get()->loadFromSerialized(raw);
 }

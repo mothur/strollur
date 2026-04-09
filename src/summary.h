@@ -36,14 +36,14 @@ private:
     // "ends" -> (position -> number of seqs with that end position)
     map<string, map<double, double> > results;
 
-    void createThreadsFasta(vector<vector<int>>& fasta,
-                                          vector<float>& counts);
+    void createThreadsFasta(const vector<vector<int>>& fasta,
+                                          const vector<float>& counts);
 
-    void createThreadsReport(vector<vector<double>>& report,
-                            vector<float>& counts, vector<string>&);
+    void createThreadsReport(const vector<vector<double>>& report,
+                            const vector<float>& counts, const vector<string>&);
 
-    vector<double> getValues(map<double, double>& positions);
-    vector<double> getDefaults();
+    vector<double> getValues(map<double, double>& positions) const;
+    vector<double> getDefaults() const;
 };
 /******************************************************************************/
 

@@ -24,10 +24,10 @@ vector<pieceOfWork> Utils::divideWork(double numItems, int& numProcessors) {
     return work;
 }
 /******************************************************************************/
-bool Utils::isPositiveNumeric(string s){
+bool Utils::isPositiveNumeric(const string& s){
     bool numeric = false;
 
-    if (s == "") { numeric = false;  }
+    if (s.empty()) { numeric = false;  }
     else if(s.find_first_not_of("0123456789.") == string::npos) {
         numeric = true;
     }
@@ -38,12 +38,12 @@ bool Utils::isPositiveNumeric(string s){
 // taxonomy utils
 int Utils::removeConfidence(string& taxon) {
     int confidence = 0;
-    int pos = taxon.find_last_of('(');
+    const int pos = taxon.find_last_of('(');
     if (pos != -1) {
         //is it a number?
-        int pos2 = taxon.find_last_of(')');
+        const int pos2 = taxon.find_last_of(')');
         if (pos2 != -1) {
-            string temp = taxon.substr(pos+1, (pos2-(pos+1)));
+            const string temp = taxon.substr(pos+1, (pos2-(pos+1)));
             if (isPositiveNumeric(temp)) {
                 taxon = taxon.substr(0, pos); //rip off confidence
                 convert(temp, confidence);
@@ -56,7 +56,7 @@ int Utils::removeConfidence(string& taxon) {
 vector<int> Utils::removeConfidences(vector<string>& taxons) {
     vector<int> confidences(taxons.size(), 0);
 
-    for (int i = 0; i < taxons.size(); i++) {
+    for (size_t i = 0; i < taxons.size(); i++) {
         confidences[i] = removeConfidence(taxons[i]);
     }
     return confidences;
@@ -75,18 +75,18 @@ vector<int> Utils::removeConfidences(vector<string>& taxons) {
 // }
 /******************************************************************************/
 void Utils::addUnclassifieds(vector<string>& taxons,
-                      vector<int>& confidences, int maxlevel) {
+                      vector<int>& confidences, const int maxlevel) {
 
-    if (taxons.size() == maxlevel) { return; }
+    if (static_cast<int>(taxons.size()) == maxlevel) { return; }
 
     int index = 0;
     // find last taxon, end early for unclassifieds
-    for (int i = 0; i < taxons.size(); i++) {
+    for (int i = 0; i < static_cast<int>(taxons.size()); i++) {
         index = i;
         if (taxons[i] == "unclassified"){ index--; break; }
     }
     int level = index+1;
-    string cTax = taxons[index] + "_unclassified";
+    const string cTax = taxons[index] + "_unclassified";
 
     //add "unclassified" until you reach maxLevel
     while (level < maxlevel) {
@@ -96,7 +96,7 @@ void Utils::addUnclassifieds(vector<string>& taxons,
 
     if (!confidences.empty()) {
         int level = index+1;
-        int cConfidence = confidences[index];
+        const int cConfidence = confidences[index];
 
         while (level < maxlevel) {
             confidences.push_back(cConfidence);
@@ -134,7 +134,7 @@ bool Utils::findTaxon(vector<string> tax, vector<string> stax) {
         //we are looking for a more specific taxonomy, not a match
         if (stax.size() > tax.size()) { return false; } //we are looking for a more specific taxonomy, not a match
         else {
-            for (int i = 0; i < stax.size(); i++) {
+            for (size_t i = 0; i < stax.size(); i++) {
                 if (stax[i] != tax[i]) { return false; }
             }
             return true;
@@ -148,34 +148,34 @@ void Utils::removeQuotes(vector<string>& tax) {
     string taxon;
     string newTax = "";
 
-    for (int i = 0; i < tax.size(); i++) {
+    for (size_t i = 0; i < tax.size(); i++) {
         tax[i] = removeQuotes(tax[i]);
     }
 }
 /**************************************************************************************************/
-string Utils::removeQuotes(string tax) {
+string Utils::removeQuotes(const string &tax) {
     string taxon;
     string newTax = "";
 
-    for (int i = 0; i < tax.length(); i++) {
+    for (size_t i = 0; i < tax.length(); i++) {
         if ((tax[i] != '\'') && (tax[i] != '\"')) { newTax += tax[i]; }
     }
 
     return newTax;
 }
 /**************************************************************************************************/
-bool Utils::searchTax(vector<string> userTaxons,
-                      vector<int> userConfidences,
-                      vector<bool> taxonsHasConfidence,
-                      vector< vector<string> > searchTaxons,
-                      vector< vector<int> > searchConfidenceThresholds) {
+bool Utils::searchTax(const vector<string> &userTaxons,
+                      const vector<int> &userConfidences,
+                      const vector<bool>& taxonsHasConfidence,
+                      const vector< vector<string> > &searchTaxons,
+                      const vector< vector<int> > &searchConfidenceThresholds) {
 
-    bool userDataHasConfidence = (sum(userConfidences) != 0);
+    const bool userDataHasConfidence = (sum(userConfidences) != 0);
 
-    for (int j = 0; j < searchTaxons.size(); j++) {
+    for (size_t j = 0; j < searchTaxons.size(); j++) {
 
-        bool foundTaxonMatch = findTaxon(userTaxons, searchTaxons[j]);
-
+        const bool foundTaxonMatch = findTaxon(userTaxons, searchTaxons[j]);
+        const int userTaxonSize = static_cast<int>(userTaxons.size());
         if (foundTaxonMatch) {
             // searchTaxon or user taxons don't include confidence scores so
             // ignore them
@@ -191,7 +191,7 @@ bool Utils::searchTax(vector<string> userTaxons,
                 // we want to "line them up", so we will find the the index
                 // where the searchstring starts
                 int index = 0;
-                for (int i = 0; i < userTaxons.size(); i++) {
+                for (int i = 0; i < userTaxonSize; i++) {
 
                     if (userTaxons[i] == searchTaxons[j][0]) {
                         index = i;
@@ -200,8 +200,8 @@ bool Utils::searchTax(vector<string> userTaxons,
 
                         // is this really the start, or are we dealing with a
                         // taxon of the same name?
-                        while ((spot < searchTaxons[j].size()) &&
-                               ((i+spot) < userTaxons.size())) {
+                        while ((spot < static_cast<int>(searchTaxons[j].size())) &&
+                               ((i+spot) < userTaxonSize)) {
                             if (userTaxons[i+spot] != searchTaxons[j][spot]) {
                                 goodspot = false; break;
                             }else { spot++; }
@@ -211,9 +211,9 @@ bool Utils::searchTax(vector<string> userTaxons,
                     }
                 }
 
-                for (int i = 0; i < searchTaxons[j].size(); i++) {
+                for (int i = 0; i < static_cast<int>(searchTaxons[j].size()); i++) {
 
-                    if ((i+index) < userTaxons.size()) {
+                    if ((i+index) < userTaxonSize) {
                         //is the users cutoff less than the search taxons
                         if (userConfidences[i+index] < searchConfidenceThresholds[j][i]) {
                             found = true;

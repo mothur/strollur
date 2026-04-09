@@ -22,6 +22,6 @@ Write mothur formatted \href{https://mothur.org/wiki/list_file/}{list files}
 \examples{
 
 miseq <- miseq_sop_example()
-write_mothur_list(miseq)
+write_mothur_list(miseq, tempfile())
 
 }

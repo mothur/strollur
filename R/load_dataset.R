@@ -1,4 +1,3 @@
-#' @import Rcereal
 #' @title load_dataset
 #' @description The load_dataset function will create a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

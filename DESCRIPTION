@@ -14,23 +14,19 @@ RoxygenNote: 7.3.3
 biocViews:
 Imports: 
     Rcpp,
-    RcppThread,
     cli,
     methods,
     microseq,
+    R.utils,
     R6,
     waldo,
     readr,
     ape,
-    Rcereal,
     dplyr,
     tidyr,
     yaml,
     rbiom,
-    rhdf5,
-    data.table,
     parallelly,
-    R.utils,
     stats,
     utils
 LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
@@ -40,7 +36,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     xml2,
-    phyloseq
+    phyloseq,
+    rhdf5
 Config/testthat/edition: 3
 Encoding: UTF-8
 VignetteBuilder: knitr

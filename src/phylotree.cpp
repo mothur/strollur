@@ -11,21 +11,21 @@ PhyloTree::PhyloTree(){
 	addSeqToTree("unknown;", 1);
 }
 /******************************************************************************/
-int PhyloTree::addSeqToTree(string seqTaxonomy, float numReps){
+int PhyloTree::addSeqToTree(const string& seqTaxonomy, const float numReps){
 
     numSeqs += numReps;
 
-    tree[0].total += numReps;
+    tree[0].total += static_cast<int>(numReps);
     vector<string> taxons;
-    int numLevels = split(seqTaxonomy, ';', back_inserter(taxons));
+    const int numLevels = split(seqTaxonomy, ';', back_inserter(taxons));
     util.removeConfidences(taxons);
 
     if (numLevels > maxLevel) { maxLevel = numLevels; }
 
     int level = 0;
     int currentNode = 0;
-
-    for(string taxon : taxons) {
+    const int numRepsInt = static_cast<int>(numReps);
+    for(const string& taxon : taxons) {
 
         level++;
 
@@ -34,7 +34,7 @@ int PhyloTree::addSeqToTree(string seqTaxonomy, float numReps){
         //if the node already exists, move on
         if(childPointer != tree[currentNode].children.end()){
             currentNode = childPointer->second;
-            tree[currentNode].total += numReps;
+            tree[currentNode].total += numRepsInt;
         }else{
             //otherwise, create it
             tree.push_back(TaxNode(taxon));
@@ -42,7 +42,7 @@ int PhyloTree::addSeqToTree(string seqTaxonomy, float numReps){
             tree[currentNode].children[taxon] = numNodes;
             tree[numNodes].level = level;
             tree[numNodes].parent = currentNode;
-            tree[numNodes].total = numReps;
+            tree[numNodes].total = numRepsInt;
             currentNode = numNodes;
             numNodes++;
         }
@@ -51,9 +51,9 @@ int PhyloTree::addSeqToTree(string seqTaxonomy, float numReps){
     return level;
 }
 /******************************************************************************/
-TaxNode PhyloTree::get(int seqIndex){
+TaxNode PhyloTree::get(const int seqIndex){
 
-    if (seqIndex < tree.size()) {
+    if (seqIndex < static_cast<int>(tree.size())) {
         return tree[seqIndex];
     }
 	TaxNode empty;

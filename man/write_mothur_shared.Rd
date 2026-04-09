@@ -23,6 +23,6 @@ Write mothur formatted
 \examples{
 
 miseq <- miseq_sop_example()
-write_mothur_shared(miseq)
+write_mothur_shared(miseq, tempfile())
 
 }

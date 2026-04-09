@@ -35,26 +35,26 @@ public:
                    vector<int>& numbases, vector<int>& ambigs,
                    vector<int>& polymers, vector<int>& numns);
 
-    int getStart(string seq);
-    int getEnd(string seq);
-    int getNumAmbigs(string seq);
-    int getLongestHomopolymer(string seq);
-    int getNumbases(string seq);
-    int getNumns(string seq);
+    int getStart(const string& seq) const;
+    int getEnd(const string& seq) const;
+    int getNumAmbigs(const string& seq) const;
+    int getLongestHomopolymer(const string& seq) const;
+    int getNumbases(const string& seq) const;
+    int getNumns(const string& seq) const;
 
 private:
 
     // used to save time when running getReport.
     bool runDegap;
 
-    string degapSeq(string seq) {
+    string degapSeq(const string& seq) const {
 
         string unaligned = seq;
 
         if(seq.find_first_of('.') != string::npos ||
            seq.find_first_of('-') != string::npos) {
             unaligned = "";
-            for(int j = 0; j < seq.length(); j++) {
+            for(size_t j = 0; j < seq.length(); j++) {
                 if(isalpha(seq[j]))	{	unaligned += seq[j];	}
             }
         }
