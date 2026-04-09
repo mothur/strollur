@@ -51,5 +51,5 @@ miseq <- miseq_sop_example()
 #> ℹ Added metadata.
 #> ℹ Added 2 resource references.
 #> ℹ Added a contigs_report.
-files <- write_mothur(miseq)
+files <- write_mothur(miseq, tempfile())
 ```
