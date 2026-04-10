@@ -89,7 +89,7 @@ report(data = miseq, type = "sequences") |> head(n = 5)
 # To get the sequence bin assignments
 
 report(data = miseq, type = "sequence_bin_assignments", bin_type = "otu") |>
-head(n = 5)
+  head(n = 5)
 #>   otu_id                                       seq_id
 #> 1 Otu001  M00967_43_000000000-A3JHG_1_1111_20933_6700
 #> 2 Otu001  M00967_43_000000000-A3JHG_1_1113_17095_9759
