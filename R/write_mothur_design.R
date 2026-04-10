@@ -15,9 +15,8 @@
 #' @return name of design file
 #' @export
 write_mothur_design <- function(data, filename = NULL) {
-  # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   if (is.null(filename)) {

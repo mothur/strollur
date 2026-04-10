@@ -151,6 +151,10 @@ assign <- function(data, table,
                    ),
                    reference = NULL,
                    verbose = TRUE) {
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
+  }
+
   default_tn <- list(
     sequence_name = "sequence_names",
     abundance = "abundances",
@@ -161,6 +165,10 @@ assign <- function(data, table,
   )
 
   table_names <- modifyList(default_tn, table_names)
+
+  # allow for type and bin_type to be entered without ""
+  type <- as.character(substitute(type))
+  bin_type <- as.character(substitute(bin_type))
 
   num <- 0
   if (type == "bins") {

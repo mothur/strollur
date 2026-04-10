@@ -29,9 +29,9 @@ miseq_sop_example <- function() {
     "miseq_representative_sequences.rds"
   ))
 
-  assign(
+  xdev_assign_bin_representative_sequences(
     data = data, table = representative_seqs,
-    type = "bin_representatives"
+    bin_type = "otu"
   )
 
   metadata <- readRDS(strollur_example("miseq_metadata.rds"))

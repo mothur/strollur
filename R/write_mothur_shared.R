@@ -17,8 +17,8 @@
 #' @export
 write_mothur_shared <- function(data, file_root = NULL) {
   # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   if (is.null(file_root)) {
@@ -32,7 +32,7 @@ write_mothur_shared <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- abundance(
+    df <- xdev_abundance(
       data = data, type = "bins",
       bin_type = type, by_sample = TRUE
     )

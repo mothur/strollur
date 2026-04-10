@@ -26,7 +26,7 @@ test_that("write_mothur_shared", {
   df <- read_mothur_shared(outputs[1])
   names(df) <- c("bin_names", "abundances", "samples")
 
-  expected <- abundance(
+  expected <- xdev_abundance(
     data = miseq, type = "bins",
     bin_type = bin_types[1], by_sample = TRUE
   )

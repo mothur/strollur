@@ -18,9 +18,8 @@
 #' @return name of FASTA file
 #' @export
 write_fasta <- function(data, filename = NULL, degap = FALSE) {
-  # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   if (is.null(filename)) {

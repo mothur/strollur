@@ -157,26 +157,27 @@ read_qiime2 <- function(qza, metadata = NULL,
 
     # assign sequence abundance by sample
     if ("bin_shared_assignments" %in% data_names) {
-      assign(
-        data = data, table = data_found[["bin_shared_assignments"]],
-        type = "sequence_abundance",
-        table_names = list(sequence_name = "bin_names")
+      xdev_assign_sequence_abundance(
+        data = data,
+        table = data_found[["bin_shared_assignments"]],
+        sequence_name = "bin_names"
       )
     }
 
     # assign sequences to bins
     if ("bin_shared_assignments" %in% data_names) {
-      assign(
+      xdev_assign_bins(
         data = data, table = data_found[["bin_shared_assignments"]],
-        type = "bins", bin_type = bin_type
+        bin_type = bin_type
       )
     }
 
     # add bin taxonomy
     if ("bin_taxonomy" %in% data_names) {
-      assign(
-        data = data, table = data_found[["bin_taxonomy"]],
-        type = "bin_taxonomy", bin_type = bin_type
+      xdev_assign_bin_taxonomy(
+        data = data,
+        table = data_found[["bin_taxonomy"]],
+        bin_type = bin_type
       )
     }
 

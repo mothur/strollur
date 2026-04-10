@@ -16,9 +16,8 @@
 #' @return vector containing the names of the files created
 #' @export
 write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
-  # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   if (is.null(file_root)) {
@@ -32,7 +31,7 @@ write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- report(data, "bin_taxonomy", type)
+    df <- xdev_report(data, type = "bin_taxonomy", bin_type = type)
 
     if (nrow(df) != 0) {
       # confidence scores are available
@@ -43,7 +42,7 @@ write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
 
       df <- data.frame(
         bin_name = unique(df[[1]]),
-        bin_abundance = abundance(
+        bin_abundance = xdev_abundance(
           data = data,
           type = "bins", bin_type = type
         )[[2]],

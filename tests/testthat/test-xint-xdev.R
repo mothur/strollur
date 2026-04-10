@@ -9,6 +9,154 @@ test_that("xdev_abundance", {
     "bad_type is not a valid type for the abundance function",
     message
   ))
+
+  x <- 10
+  expect_error(xdev_abundance(x), "data must be a strollur object.")
+})
+
+test_that("xdev - not a strollur object tests", {
+  data <- new_dataset()
+
+  x <- 10
+  df <- data.frame()
+
+  expect_error(
+    xdev_add_references(x, df),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_add_report(x, df),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_add_sequences(x, df),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_assign_bins(x, df),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_assign_bin_representative_sequences(x, df),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_assign_sequence_taxonomy(x, df),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_assign_treatments(x, df),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_count(x),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_get_list_vector(x),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_get_sequences(x),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_merge_bins(x, c("seq1", "seq2")),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_merge_sequences(x, c("seq1", "seq2")),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_names(x),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_remove_bins(
+      x, c("bin1", "bin2"),
+      c("bad", "bad2")
+    ),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_remove_lineages(x, c("bad", "bad2")),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_remove_samples(x, c("bad", "bad2")),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_remove_sequences(
+      x, c("bad", "bad2"),
+      c("bad", "bad2")
+    ),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_report(x),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_set_abundance(
+      x, c("seq1", "seq2"),
+      c(10, 20)
+    ),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_set_abundances(
+      x, c("seq1", "seq2"),
+      list(c(10, 20), c(10, 20))
+    ),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_set_sequences(
+      x, c("seq1", "seq2"),
+      c("bad", "bad2")
+    ),
+    "data must be a strollur object."
+  )
+
+  expect_error(
+    xdev_set_dataset_name(x, "bad"),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_set_num_processors(x, 9),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xdev_summarize(x),
+    "data must be a strollur object."
+  )
+
+  expect_error(
+    xdev_summarize(data, report_type = "bad"),
+    "bad is not a valid report_type option."
+  )
+  message <- paste0(
+    "bad is not a valid type option. Options include: ",
+    "'sequences', 'reports' and 'scrap'."
+  )
+  expect_error(
+    xdev_summarize(data, type = "bad"),
+    message
+  )
+  expect_error(
+    xint_copy_pointer(x),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xint_deserialize_dobject(x),
+    "data must be a strollur object."
+  )
+  expect_error(
+    xint_serialize_dobject(x),
+    "data must be a strollur object."
+  )
 })
 
 test_that("xdev_assign_bin_taxonomy", {
@@ -16,6 +164,12 @@ test_that("xdev_assign_bin_taxonomy", {
 
   # can't assign bin taxonomy when you have not assigned bins
   expect_error(xdev_assign_bin_taxonomy(data, data.frame()))
+
+  x <- 10
+  expect_error(
+    xdev_assign_bin_taxonomy(x, data.frame()),
+    "data must be a strollur object."
+  )
 })
 
 test_that("xdev_assign_sequence_abundance", {
@@ -30,6 +184,12 @@ test_that("xdev_assign_sequence_abundance", {
 
   # must assign abundances for all sequences
   expect_error(xdev_assign_sequence_abundance(data, table))
+
+  x <- 10
+  expect_error(
+    xdev_assign_sequence_abundance(x, table),
+    "data must be a strollur object."
+  )
 })
 
 test_that("xdev_get_by_sample", {
@@ -37,6 +197,9 @@ test_that("xdev_get_by_sample", {
 
   # can't assign bin taxonomy when you have not assigned bins
   expect_error(xdev_get_by_sample(data, "badType"))
+
+  x <- 10
+  expect_error(xdev_get_by_sample(x), "data must be a strollur object.")
 
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("..AT-TG-C..", ".AT---TGC", "A-TTGC.", "..ATTGC..")
@@ -122,6 +285,12 @@ test_that("xdev_get_abundances_by_sample - getSequenceAbundanceBySample", {
   actual <- xdev_get_abundances_by_sample(data)
 
   expect_equal(actual, expected)
+
+  x <- 10
+  expect_error(
+    xdev_get_abundances_by_sample(x),
+    "data must be a strollur object."
+  )
 })
 
 

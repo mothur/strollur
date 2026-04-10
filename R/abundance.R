@@ -54,5 +54,13 @@ abundance <- function(data,
                       type = "sequences",
                       bin_type = "otu",
                       by_sample = FALSE) {
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
+  }
+
+  # allow for type and bin_type to be entered without ""
+  type <- as.character(substitute(type))
+  bin_type <- as.character(substitute(bin_type))
+
   xdev_abundance(data, type, bin_type, by_sample)
 }

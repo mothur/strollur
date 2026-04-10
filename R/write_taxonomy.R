@@ -16,8 +16,8 @@
 #' @export
 write_taxonomy <- function(data, filename = NULL) {
   # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   if (is.null(filename)) {
@@ -28,7 +28,7 @@ write_taxonomy <- function(data, filename = NULL) {
     filename <- paste0(filename, ".taxonomy")
   }
 
-  df <- report(data, "sequence_taxonomy")
+  df <- xdev_report(data, type = "sequence_taxonomy")
 
   if (nrow(df) != 0) {
     # confidence scores are available
