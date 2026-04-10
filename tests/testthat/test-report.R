@@ -16,6 +16,10 @@ test_that("test report - errors", {
     type = "bad_type"
   ))
   expect_true(grepl("does not include a report named", message))
+
+  # not a strollur object
+  x <- 10
+  expect_error(report(x))
 })
 
 test_that("test report - type = fasta", {

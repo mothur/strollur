@@ -52,7 +52,12 @@ Rcpp::DataFrame xdev_abundance(Rcpp::Environment data,
                            string bin_type,
                            bool by_sample) {
 
-     Rcpp::XPtr<Dataset> d = data["data"];
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
 
     if (type == "sequences") {
         // data.frame containing 2, 3 or 4 columns: sequence_names, abundances,
@@ -85,6 +90,11 @@ double xdev_add_references(Rcpp::Environment data,
                            string reference_note,
                            string reference_url,
                            bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     vector<string> reference_names, reference_versions, reference_usages;
     vector<string> reference_notes, reference_urls;
@@ -156,6 +166,11 @@ void xdev_add_report(Rcpp::Environment data,
                      string type,
                      string sequence_name,
                      bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -234,6 +249,11 @@ double xdev_add_sequences(Rcpp::Environment data,
                      string comment,
                      bool verbose) {
 
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
     vector<string> sequence_names, sequences, comments;
     sequence_names = Rcpp::as<vector<string>>(
         xint_fill_required_parameters(table, sequence_name));
@@ -279,6 +299,11 @@ double xdev_assign_bins(Rcpp::Environment data,
                         string sample,
                         string sequence_name,
                         bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     vector<string> bin_names, samples, sequence_names;
     vector<float> abundances;
@@ -352,6 +377,10 @@ double xdev_assign_bin_representative_sequences(Rcpp::Environment data,
                                                 string bin_name,
                                                 string sequence_name,
                                                 bool verbose) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     vector<string> bin_names,  sequence_names;
     bin_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
@@ -397,6 +426,11 @@ double xdev_assign_bin_taxonomy(Rcpp::Environment data,
                                 string bin_name,
                                 string taxonomy,
                                 bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -450,6 +484,10 @@ double xdev_assign_sequence_abundance(Rcpp::Environment data,
                                       string sample,
                                       string treatment,
                                       bool verbose) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     vector<string> sequence_names, samples, treatments;
     vector<float> abundances;
@@ -512,6 +550,11 @@ double xdev_assign_sequence_taxonomy(Rcpp::Environment data,
                                      string taxonomy,
                                      bool verbose) {
 
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
     vector<string> sequence_names, taxonomies;
     sequence_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                             sequence_name));
@@ -553,6 +596,11 @@ double xdev_assign_treatments(Rcpp::Environment data,
                               string treatment,
                               bool verbose) {
 
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
     vector<string> samples, treatments;
     samples = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                      sample));
@@ -592,6 +640,11 @@ double xdev_count(Rcpp::Environment data,
                   string bin_type,
                   Rcpp::Nullable<Rcpp::List> samples,
                   bool distinct) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -651,6 +704,11 @@ double xdev_count(Rcpp::Environment data,
 /******************************************************************************/
 vector<vector<float> > xdev_get_abundances_by_sample(Rcpp::Environment data,
                                                      Rcpp::CharacterVector samples) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
     Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getSequenceAbundanceBySample(Rcpp::as<vector<string>>(samples));
 }
@@ -658,6 +716,12 @@ vector<vector<float> > xdev_get_abundances_by_sample(Rcpp::Environment data,
 /******************************************************************************/
 vector<string> xdev_get_list_vector(Rcpp::Environment data,
                                     string type) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
     Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getListVector(type);
 }
@@ -666,6 +730,10 @@ vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
                                            string type,
                                            Rcpp::CharacterVector samples,
                                            bool degap) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -686,18 +754,35 @@ vector<vector<string> > xdev_get_by_sample(Rcpp::Environment data,
 /******************************************************************************/
 vector<string> xdev_get_sequences(Rcpp::Environment data, string sample,
                                   bool degap) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
     Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getSequences(sample, degap);
 }
 /******************************************************************************/
 void xdev_merge_bins(Rcpp::Environment data, vector<string> bin_names,
                       string reason, string bin_type) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->mergeBins(bin_names, reason, bin_type);
 }
 /******************************************************************************/
 void xdev_merge_sequences(Rcpp::Environment data, vector<string> sequence_names,
                            string reason) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->mergeSequences(sequence_names, reason);
 }
@@ -707,6 +792,10 @@ const vector<string> xdev_names(Rcpp::Environment data,
                           string bin_type,
                           Rcpp::Nullable<Rcpp::List> samples,
                           bool distinct) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -759,18 +848,33 @@ const vector<string> xdev_names(Rcpp::Environment data,
 /******************************************************************************/
 void xdev_remove_bins(Rcpp::Environment data, vector<string> bin_names,
                        vector<string> trash_tags, string bin_type) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeBins(bin_names, trash_tags, bin_type);
 }
 /******************************************************************************/
 void xdev_remove_lineages(Rcpp::Environment data, vector<string> contaminants,
                            string reason) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeLineages(contaminants, reason);
 }
 /******************************************************************************/
 void xdev_remove_samples(Rcpp::Environment data, vector<string> samples,
                          string reason) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeSamples(samples, reason);
 }
@@ -778,6 +882,10 @@ void xdev_remove_samples(Rcpp::Environment data, vector<string> samples,
 void xdev_remove_sequences(Rcpp::Environment data,
                             vector<string> sequence_names,
                             vector<string> trash_tags) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->removeSequences(sequence_names, trash_tags);
@@ -785,6 +893,11 @@ void xdev_remove_sequences(Rcpp::Environment data,
 /******************************************************************************/
 Rcpp::DataFrame xdev_report(Rcpp::Environment data, string type,
                             string bin_type) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
     Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -845,6 +958,10 @@ void xdev_set_abundance(Rcpp::Environment data,
                          vector<string> sequence_names,
                          vector<float> sequence_abundances,
                          string reason) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
      Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -863,6 +980,10 @@ void xdev_set_abundances(Rcpp::Environment data,
                           vector<string> sequence_names,
                           vector<vector<float>> abundances,
                           string reason) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
      Rcpp::XPtr<Dataset> d = data["data"];
 
@@ -881,6 +1002,10 @@ void xdev_set_sequences(Rcpp::Environment data,
                          vector<string> sequence_names,
                          vector<string> sequences,
                          Rcpp::CharacterVector comments) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
 
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->setSequences(sequence_names, sequences,
@@ -888,18 +1013,29 @@ void xdev_set_sequences(Rcpp::Environment data,
 }
 /******************************************************************************/
 void xdev_set_dataset_name(Rcpp::Environment data, string dataset_name = "") {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->datasetName = dataset_name;
 }
 /******************************************************************************/
 void xdev_set_num_processors(Rcpp::Environment data, int processors = 1) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
      Rcpp::XPtr<Dataset> d = data["data"];
      d.get()->processors = processors;
 }
 /******************************************************************************/
 Rcpp::DataFrame xdev_summarize(Rcpp::Environment data, string type,
                                Rcpp::Nullable<Rcpp::CharacterVector> report_type) {
-
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
     Rcpp::XPtr<Dataset> d = data["data"];
 
     string rType = "";
@@ -932,17 +1068,26 @@ Rcpp::DataFrame xdev_summarize(Rcpp::Environment data, string type,
 }
 /******************************************************************************/
 Rcpp::XPtr<Dataset> xint_copy_pointer(Rcpp::Environment data) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
      Rcpp::XPtr<Dataset> d = data["data"];
      Dataset* copy = new Dataset(*d.get());
      return Rcpp::XPtr<Dataset>(copy);
 }
 /******************************************************************************/
 Rcpp::XPtr<Dataset> xint_new_pointer(string dataset_name = "", int processors = 1) {
+
      Dataset* d = new Dataset(dataset_name, processors);
      return Rcpp::XPtr<Dataset>(d);
 }
 /******************************************************************************/
 void xint_deserialize_dobject(Rcpp::Environment data) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
      data["data"] = xint_new_pointer();
      Rcpp::XPtr<Dataset> d = data["data"];
      const Rcpp::RawVector raw = data["raw"];
@@ -950,6 +1095,10 @@ void xint_deserialize_dobject(Rcpp::Environment data) {
 }
 /******************************************************************************/
 void xint_serialize_dobject(Rcpp::Environment data) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
      Rcpp::XPtr<Dataset> d = data["data"];
      data["raw"] = d.get()->serializeDataset();
 }

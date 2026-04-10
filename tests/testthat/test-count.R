@@ -18,7 +18,7 @@ test_that("count - samples & treatments", {
 test_that("count - bins", {
   miseq <- miseq_sop_example()
 
-  expect_equal(count(miseq, type = "bins", bin_type = "otu"), 531)
+  expect_equal(count(miseq, type = bins, bin_type = otu), 531)
   expect_equal(count(miseq, type = "bins", bin_type = "asv"), 2425)
   expect_equal(count(miseq, type = "bins", bin_type = "phylotype"), 63)
 

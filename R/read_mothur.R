@@ -153,32 +153,32 @@ read_mothur <- function(fasta = NULL, count = NULL,
   # add sequence otu assignments
   if (!is.null(otu_list)) {
     df <- read_mothur_list(otu_list)
-    assign(data = data, table = df, type = "bins", bin_type = "otu")
+    xdev_assign_bins(data = data, table = df, bin_type = "otu")
   }
 
   if (!is.null(otu_shared)) {
     df <- read_mothur_shared(otu_shared)
-    assign(data = data, table = df, type = "bins", bin_type = "otu")
+    xdev_assign_bins(data = data, table = df, bin_type = "otu")
   }
 
   if (!is.null(asv_list)) {
     df <- read_mothur_list(asv_list)
-    assign(data = data, table = df, type = "bins", bin_type = "asv")
+    xdev_assign_bins(data = data, table = df, bin_type = "asv")
   }
 
   if (!is.null(asv_shared)) {
     df <- read_mothur_shared(asv_shared)
-    assign(data = data, table = df, type = "bins", bin_type = "asv")
+    xdev_assign_bins(data = data, table = df, bin_type = "asv")
   }
 
   if (!is.null(phylo_list)) {
     df <- read_mothur_list(phylo_list)
-    assign(data = data, table = df, type = "bins", bin_type = "phylotype")
+    xdev_assign_bins(data = data, table = df, bin_type = "phylotype")
   }
 
   if (!is.null(phylo_shared)) {
     df <- read_mothur_shared(phylo_shared)
-    assign(data = data, table = df, type = "bins", bin_type = "phylotype")
+    xdev_assign_bins(data = data, table = df, bin_type = "phylotype")
   }
 
   # add sample / treatment assignments
@@ -187,12 +187,12 @@ read_mothur <- function(fasta = NULL, count = NULL,
       file = design, col_names = TRUE,
       show_col_types = FALSE
     )
-    assign(data = data, table = df, type = "treatments")
+    xdev_assign_treatments(data = data, table = df)
   }
 
   if (!is.null(cons_taxonomy)) {
     df <- read_mothur_cons_taxonomy(cons_taxonomy)
-    assign(data = data, table = df, type = "bin_taxonomy", bin_type = "otu")
+    xdev_assign_bin_taxonomy(data = data, table = df, bin_type = "otu")
   }
 
   if (!is.null(sample_tree)) {

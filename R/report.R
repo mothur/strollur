@@ -38,7 +38,7 @@
 #' # To get the sequence bin assignments
 #'
 #' report(data = miseq, type = "sequence_bin_assignments", bin_type = "otu") |>
-#' head(n = 5)
+#'   head(n = 5)
 #'
 #' # To get the sample treatment assignments
 #'
@@ -82,5 +82,13 @@
 #' @return data.frame
 #' @export
 report <- function(data, type = "sequences", bin_type = "otu") {
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
+  }
+
+  # allow for type and bin_type to be entered without ""
+  type <- as.character(substitute(type))
+  bin_type <- as.character(substitute(bin_type))
+
   xdev_report(data, type, bin_type)
 }

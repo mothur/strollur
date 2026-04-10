@@ -50,7 +50,13 @@ summary <- function(x, type = "sequences",
 #' @export
 summary <- function(data, type = "sequences",
                     report_type = NULL, verbose = TRUE) {
-  if ("strollur" %in% class(data)) {
+  if (inherits(data, "strollur")) {
+    # allow for type and report_type to be entered without ""
+    type <- as.character(substitute(type))
+    if (!is.null(report_type)) {
+      report_type <- as.character(substitute(report_type))
+    }
+
     dataset_summary <- xdev_summarize(data, type, report_type)
     if (verbose) {
       print(dataset_summary)

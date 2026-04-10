@@ -423,14 +423,8 @@ private:
     const string get(const string binName, const vector<string>& seqNames);
     // total abundance for a given bin
     const float getAbundance(AbundTable& count,
-                             const string binName,
-                             vector<string> samples = nullVector);
-    // total abundance for a given bin
-    const float getAbundance(AbundTable& count,
                              const int binId,
                              vector<string> samples = nullVector);
-    // abundances for given binId broken down by sample
-    const vector<float> getAbundances(AbundTable& count, const string binName);
     // abundances for given binId broken down by sample
     const vector<float> getAbundances(AbundTable& count, const int binId);
     // total abundance for each bin
@@ -440,8 +434,7 @@ private:
     //                                   treatment (optional -
     //                                   added when table includes treatment data),
     // used to export BinTable and Shared functions
-    const Rcpp::DataFrame getAbundanceTable(AbundTable& count,
-                                            const bool useNames = true);
+    const Rcpp::DataFrame getAbundanceTable(AbundTable& count);
 
     const vector<int> getGoodIndexes(AbundTable& count);
     const vector<int> getIndexes(vector<string>&);

@@ -298,7 +298,7 @@ data$get_bin_types()
  data <- strollur$new("my_dataset")
 
  # assign abundance 'otu' bins
- assign(data = data, table = df, type = "bins", bin_type = "otu")
+ data$assign(table = df, type = "bins", bin_type = "otu")
 
  data$add_sample_tree(tree)
  data$get_sample_tree()
@@ -1106,7 +1106,7 @@ Get phylo tree relating the samples in your dataset.
  data <- strollur$new("my_dataset")
 
  # assign abundance 'otu' bins
- assign(data = data, table = df, type = "bins", bin_type = "otu")
+ data$assign(table = df, type = "bins", bin_type = "otu")
 
  data$add_sample_tree(tree)
  data$get_sample_tree()

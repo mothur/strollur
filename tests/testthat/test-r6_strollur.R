@@ -14,14 +14,14 @@ test_that("dataset - intialize from read_mothur / print", {
 
   # add references, custom report and metadata
   contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
-  add(
-    data = dataset_t, table = contigs_report, type = "reports",
-    report_type = "contigs_report", list(sequence_name = "Name")
+  xdev_add_report(
+    data = dataset_t, table = contigs_report,
+    type = "contigs_report", sequence_name = "Name"
   )
 
   metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-  add(data = dataset_t, table = metadata, type = "metadata")
+  xdev_add_report(data = dataset_t, table = metadata, type = "metadata")
 
   reference <- readr::read_csv(strollur_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE
@@ -232,9 +232,16 @@ test_that("dataset - addSeqs, assign samples", {
   expect_error(xdev_add_sequences(data, fasta_data, NULL, "names", "mySeqTag"))
   expect_error(xdev_add_sequences(data, "not_a_data.frame"))
 
-  xdev_add_sequences(data, fasta_data, NULL, "myNameTag", "mySeqTag")
+  data$add(
+    table = fasta_data, type = sequences,
+    table_names = list(
+      sequence_name = "myNameTag",
+      sequence = "mySeqTag"
+    )
+  )
+  # xdev_add_sequences(data, fasta_data, NULL, "myNameTag", "mySeqTag")
 
-  expect_equal(count(data = data, type = "sequences"), 2425)
+  expect_equal(data$count(type = "sequences"), 2425)
 
   clear(data)
 
@@ -250,7 +257,7 @@ test_that("dataset - addSeqs, assign samples", {
   ))
   xdev_add_sequences(data, fasta_data, NULL, "names", "seqs")
 
-  expect_equal(count(data = data, type = "sequences"), 4)
+  expect_equal(data$count(type = "sequences"), 4)
   expect_equal(xdev_get_sequences(data), seqs)
   clear(data)
 
@@ -260,7 +267,7 @@ test_that("dataset - addSeqs, assign samples", {
   ))
   xdev_add_sequences(data, fasta_data, NULL, "names", "seqs", "comments")
 
-  expect_equal(count(data = data, type = "sequences"), 4)
+  expect_equal(data$count(type = "sequences"), 4)
   expect_equal(xdev_get_sequences(data), seqs)
 
   clear(data)
@@ -315,8 +322,8 @@ test_that("dataset - addSeqs, assign samples", {
   expect_equal(references[[1, "reference_notes"]], "alignment by mothur2 v1.0")
   expect_equal(references[[1, "reference_urls"]], url)
 
-  assign(
-    data = data, table = data.frame(
+  data$assign(
+    table = data.frame(
       sequence_names = ids, abundances = abundances,
       samples = samples, treatments = treatments
     ), type = "sequence_abundance"
@@ -423,6 +430,25 @@ test_that("dataset - addSeqs, assign samples", {
     data = data, type = "sequences",
     distinct = TRUE, samples = c("sample3")
   ), 0)
+})
+
+test_that("dataset - assign bins and bin_taxonomy", {
+  data <- strollur$new("test")
+
+  otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
+
+  data$assign(table = otu_data, type = "bins")
+
+  expect_equal(data$count("bins"), 531)
+  expect_equal(data$count("samples"), 19)
+
+  otu_data <- read_mothur_cons_taxonomy(
+    strollur_example("final.cons.taxonomy")
+  )
+
+  data$assign(table = otu_data, type = "bin_taxonomy")
+
+  expect_equal(nrow(data$report(type = "bin_taxonomy")), 3186)
 })
 
 test_that("dataset - assign_sequence_abundance, remove_sequences", {
@@ -1080,10 +1106,8 @@ test_that("dataset - add_references, get_references", {
     col_names = TRUE, show_col_types = FALSE
   )
 
-  mothur_url <- "https://github.com/mothur/mothur/releases/tag/v1.48.2"
-
   # add data.frame and single reference at the same time
-  xdev_add_references(dataset_t, reference)
+  dataset_t$add(table = reference, type = "references")
 
   references <- report(dataset_t, "references")
 
@@ -1098,6 +1122,8 @@ test_that("dataset - add_references, get_references", {
   )
 
   dataset_t <- strollur$new("my_dataset")
+
+  mothur_url <- "https://github.com/mothur/mothur/releases/tag/v1.48.2"
 
   # add single reference then dataframe
   ref <- data.frame(
@@ -1129,7 +1155,7 @@ test_that("dataset - add_references, get_references", {
   expect_equal(references[[1, 4]], "This is my mothur note")
 })
 
-test_that("dataset - add_alignment_report, get_alignment_report", {
+test_that("dataset - add reports, get reports", {
   dataset_t <- strollur$new("my_dataset")
 
   align_report <- readRDS(strollur_example("test_alignment_data.rds"))
@@ -1140,7 +1166,24 @@ test_that("dataset - add_alignment_report, get_alignment_report", {
     "align_report",
     "badName"
   ))
-  xdev_add_report(dataset_t, align_report, "align_report", "QueryName")
+  dataset_t$add(
+    table = align_report,
+    type = "reports",
+    report_type = align_report,
+    table_names = list(sequence_name = "QueryName")
+  )
+
+  expect_error(
+    dataset_t$add(
+      table = align_report,
+      type = "reports",
+      table_names = list(sequence_name = "QueryName")
+    ),
+    "'report_type' is required when adding a report."
+  )
+
+  message <- "bad_type is not a valid 'type' for the strollur$add() function."
+  expect_error(dataset_t$add(table = align_report, type = "bad_type"))
 
   align_report <- report(dataset_t, "align_report")
 
@@ -1423,23 +1466,24 @@ test_that("dataset - assign_treatments", {
     show_col_types = FALSE
   )
 
-  expect_equal(count(dataset_t, "samples"), 19)
-  expect_equal(count(dataset_t, "treatments"), 0)
+  expect_equal(dataset_t$count("samples"), 19)
+  expect_equal(dataset_t$count("treatments"), 0)
 
-  expect_error(assign(
-    data = dataset_t, table = design_table,
+  expect_error(dataset_t$assign(
+    table = design_table,
     type = "treatments",
     table_names = list(sample = "group")
   ))
   expect_error(xdev_assign_treatments(dataset_t))
   expect_error(xdev_assign_treatments(data = dataset_t, samples = "not_valid"))
   expect_error(xdev_assign_treatments(dataset_t, "not_a_data.frame"))
+  expect_error(dataset_t$assign(table = design_table, type = "bad_type"))
 
   # test with data.frame
-  assign(data = dataset_t, table = design_table, type = "treatments")
+  dataset_t$assign(table = design_table, type = "treatments")
 
-  expect_equal(count(dataset_t, "samples"), 19)
-  expect_equal(count(dataset_t, "treatments"), 2)
+  expect_equal(dataset_t$count("samples"), 19)
+  expect_equal(dataset_t$count("treatments"), 2)
 
   report <- dataset_t$report(type = "sample_assignments")
 
@@ -1631,8 +1675,7 @@ test_that("dataset - assign_bin_representative_sequences", {
   rep_names <- names(dataset_t, "sequences")[1:num_bins]
   bin_names <- names(dataset_t, "bins")
 
-  assign(
-    data = dataset_t,
+  dataset_t$assign(
     table = data.frame(
       bin_names = bin_names,
       sequence_names = rep_names
@@ -1641,7 +1684,7 @@ test_that("dataset - assign_bin_representative_sequences", {
     bin_type = "otu"
   )
 
-  df <- report(dataset_t, "bin_representatives")
+  df <- dataset_t$report("bin_representatives")
 
   expect_equal(df[[1]], bin_names)
   expect_equal(df[[2]], rep_names)

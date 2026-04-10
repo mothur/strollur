@@ -102,7 +102,7 @@ strollur <- R6Class("strollur",
         print(results[["scrap_summary"]])
       }
 
-      if (count(data = self, type = "sequences", distinct = TRUE) != 0) {
+      if (xdev_count(data = self, type = "sequences", distinct = TRUE) != 0) {
         cat(
           paste("\nNumber of unique seqs:", count(
             data = self,
@@ -114,44 +114,44 @@ strollur <- R6Class("strollur",
       } else {
         cat("\n")
       }
-      cat(
-        paste("Total number of seqs:", count(data = self, type = "sequences")),
-        "\n\n"
-      )
+      cat(paste(
+        "Total number of seqs:",
+        xdev_count(data = self, type = "sequences")
+      ), "\n\n")
 
       # print number of samples
-      if (count(data = self, type = "samples") != 0) {
+      if (xdev_count(data = self, type = "samples") != 0) {
         cat(paste0(
           "Total number of samples: ",
-          count(data = self, type = "samples")
+          xdev_count(data = self, type = "samples")
         ), "\n")
       }
       # print number of treatments
-      if (count(data = self, type = "treatments") != 0) {
+      if (xdev_count(data = self, type = "treatments") != 0) {
         cat(paste0(
           "Total number of treatments: ",
-          count(data = self, type = "treatments")
+          xdev_count(data = self, type = "treatments")
         ), "\n")
       }
 
       # print number of each bin type
       bin_types <- get_bin_types(self)
       for (bin_type in bin_types) {
-        if (count(data = self, type = "bins", bin_type = bin_type) != 0) {
+        if (xdev_count(data = self, type = "bins", bin_type = bin_type) != 0) {
           cat(
             paste0(
               "Total number of ", bin_type, "s: ",
-              count(data = self, type = "bins", bin_type = bin_type)
+              xdev_count(data = self, type = "bins", bin_type = bin_type)
             ),
             "\n"
           )
         }
       }
       # print number of resource references
-      if (count(data = self, type = "references") != 0) {
+      if (xdev_count(data = self, type = "references") != 0) {
         cat(paste0(
           "Total number of resource references: ",
-          count(data = self, type = "references")
+          xdev_count(data = self, type = "references")
         ), "\n")
       }
 
@@ -165,7 +165,7 @@ strollur <- R6Class("strollur",
           length(custom_report_names)
         ), "\n")
       }
-      if (nrow(report(self, type = "metadata")) != 0) {
+      if (nrow(xdev_report(self, type = "metadata")) != 0) {
         cat(paste0("Your dataset includes metadata"), "\n")
       }
       cat("\n")
@@ -339,11 +339,72 @@ strollur <- R6Class("strollur",
                    ),
                    reference = NULL,
                    verbose = TRUE) {
-      add(self,
-        table = table, type = type,
-        report_type = report_type, table_names = table_names,
-        reference = reference, verbose = verbose
+      default_tn <- list(
+        sequence_name = "sequence_names",
+        sequence = "sequences",
+        comment = "comments",
+        reference_name = "reference_names",
+        reference_version = "reference_versions",
+        reference_usage = "reference_usages",
+        reference_note = "reference_notes",
+        reference_url = "reference_urls"
       )
+
+      table_names <- modifyList(default_tn, table_names)
+
+      # allow for type and report_type to be entered without ""
+      type <- as.character(substitute(type))
+      if (!is.null(report_type)) {
+        report_type <- as.character(substitute(report_type))
+      }
+
+      num_added <- 0
+      if (type == "sequences") {
+        num_added <- xdev_add_sequences(
+          data = self, table = table,
+          sequence_name = table_names[["sequence_name"]],
+          sequence = table_names[["sequence"]],
+          comment = table_names[["comment"]],
+          reference = reference,
+          verbose = verbose
+        )
+      } else if (type == "reports") {
+        num_added <- 1
+
+        if (!is.null(report_type)) {
+          xdev_add_report(
+            data = self, table = table,
+            type = report_type,
+            sequence_name = table_names[["sequence_name"]],
+            verbose
+          )
+        } else {
+          cli::cli_abort("'report_type' is required when adding a report.")
+        }
+      } else if (type == "metadata") {
+        num_added <- 1
+        xdev_add_report(
+          data = self, table = table,
+          type = type,
+          verbose = verbose
+        )
+      } else if (type == "references") {
+        num_added <- xdev_add_references(
+          data = self, table = table,
+          reference_name = table_names[["reference_name"]],
+          reference_version = table_names[["reference_version"]],
+          reference_usage = table_names[["reference_usage"]],
+          reference_note = table_names[["reference_note"]],
+          reference_url = table_names[["reference_url"]],
+          verbose = verbose
+        )
+      } else {
+        message <- paste0(
+          type, " is not a valid 'type' for the strollur$add()",
+          " function."
+        )
+        cli::cli_abort(message)
+      }
 
       invisible(self)
     },
@@ -629,11 +690,82 @@ strollur <- R6Class("strollur",
                       ),
                       reference = NULL,
                       verbose = TRUE) {
-      assign(self,
-        table = table, type = type,
-        bin_type = bin_type, table_names = table_names,
-        reference = reference, verbose = verbose
+      default_tn <- list(
+        sequence_name = "sequence_names",
+        abundance = "abundances",
+        sample = "samples",
+        treatment = "treatments",
+        taxonomy = "taxonomies",
+        bin_name = "bin_names"
       )
+
+      table_names <- modifyList(default_tn, table_names)
+
+      # allow for type and bin_type to be entered without ""
+      type <- as.character(substitute(type))
+      bin_type <- as.character(substitute(bin_type))
+
+      num <- 0
+      if (type == "bins") {
+        num <- xdev_assign_bins(
+          data = self, table = table,
+          bin_type = bin_type,
+          reference = reference,
+          bin_name = table_names[["bin_name"]],
+          abundance = table_names[["abundance"]],
+          sample = table_names[["sample"]],
+          sequence_name = table_names[["sequence_name"]],
+          verbose = verbose
+        )
+      } else if (type == "bin_taxonomy") {
+        num <- xdev_assign_bin_taxonomy(
+          data = self, table = table,
+          bin_type = bin_type,
+          reference = reference,
+          bin_name = table_names[["bin_name"]],
+          taxonomy = table_names[["taxonomy"]],
+          verbose = verbose
+        )
+      } else if (type == "bin_representatives") {
+        num <- xdev_assign_bin_representative_sequences(
+          data = self, table = table,
+          bin_type = bin_type,
+          reference = reference,
+          bin_name = table_names[["bin_name"]],
+          sequence_name = table_names[["sequence_name"]],
+          verbose = verbose
+        )
+      } else if (type == "sequence_taxonomy") {
+        num <- xdev_assign_sequence_taxonomy(
+          data = self, table = table,
+          reference = reference,
+          sequence_name = table_names[["sequence_name"]],
+          taxonomy = table_names[["taxonomy"]],
+          verbose = verbose
+        )
+      } else if (type == "treatments") {
+        num <- xdev_assign_treatments(
+          data = self, table = table,
+          sample = table_names[["sample"]],
+          treatment = table_names[["treatment"]],
+          verbose = verbose
+        )
+      } else if (type == "sequence_abundance") {
+        num <- xdev_assign_sequence_abundance(
+          data = self, table = table,
+          sequence_name = table_names[["sequence_name"]],
+          abundance = table_names[["abundance"]],
+          sample = table_names[["sample"]],
+          treatment = table_names[["treatment"]],
+          verbose = verbose
+        )
+      } else {
+        message <- paste0(
+          type, " is not a valid 'type' for the assign()",
+          " function."
+        )
+        cli::cli_abort(message)
+      }
       invisible(self)
     },
 
@@ -758,7 +890,7 @@ strollur <- R6Class("strollur",
     #'  data <- strollur$new("my_dataset")
     #'
     #'  # assign abundance 'otu' bins
-    #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
+    #'  data$assign(table = df, type = "bins", bin_type = "otu")
     #'
     #'  data$add_sample_tree(tree)
     #'  data$get_sample_tree()

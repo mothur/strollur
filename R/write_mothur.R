@@ -23,8 +23,8 @@
 #' @export
 write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   dataset_name <- names(data, "dataset")
@@ -124,7 +124,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("metadata" %in% tags)) {
-    metadata <- report(data, "metadata")
+    metadata <- xdev_report(data, type = "metadata")
 
     if (nrow(metadata) != 0) {
       filename <- file.path(
@@ -137,7 +137,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("reports" %in% tags)) {
-    report_types <- names(data, "reports")
+    report_types <- xdev_names(data, type = "reports")
 
     if (length(report_types) != 0) {
       for (type in report_types) {
@@ -146,14 +146,14 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
           paste0(dataset_name, ".", type, collapse = "")
         )
 
-        readr::write_tsv(report(data, type), filename)
+        readr::write_tsv(xdev_report(data, type = type), filename)
         outputs <- c(outputs, filename)
       }
     }
   }
 
   if (!ht || ("references" %in% tags)) {
-    references <- report(data, "references")
+    references <- xdev_report(data, type = "references")
 
     if (nrow(references) != 0) {
       filename <- file.path(

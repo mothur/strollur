@@ -102,7 +102,11 @@ count <- function(data,
                   bin_type = "otu",
                   samples = NULL,
                   distinct = FALSE) {
-  if ("strollur" %in% class(data)) {
+  if (inherits(data, "strollur")) {
+    # allow for type and bin_type to be entered without ""
+    type <- as.character(substitute(type))
+    bin_type <- as.character(substitute(bin_type))
+
     xdev_count(data, type, bin_type, samples, distinct)
   } else {
     dplyr::count(data)

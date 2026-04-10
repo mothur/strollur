@@ -16,8 +16,8 @@
 #' @export
 write_mothur_list <- function(data, file_root = NULL) {
   # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   if (is.null(file_root)) {
@@ -31,7 +31,7 @@ write_mothur_list <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- report(data, "sequence_bin_assignments", type)
+    df <- xdev_report(data, "sequence_bin_assignments", type)
 
     if (nrow(df) != 0) {
       output_file <- paste0(file_root, ".", type, ".list")
