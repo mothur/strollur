@@ -7,22 +7,7 @@ test_that("import - miseq_sop_example", {
   expect_equal(count(miseq, "bins", "phylotype"), 63)
   expect_equal(count(miseq, distinct = TRUE), 2425)
 
-  phylo_bins_to_remove <- c("Phylo01", "Phylo02")
-  reasons_to_remove <- c("testing", "testing")
-
-  # remove some bins to allow for filtering
-  xdev_remove_bins(
-    miseq, phylo_bins_to_remove,
-    reasons_to_remove, "phylotype"
-  )
-
-  expect_equal(count(miseq, "bins", bin_type = "phylotype"), 61)
-  expect_equal(count(miseq, distinct = TRUE), 825)
-  expect_equal(count(miseq), 39177)
-
   exported_miseq <- export_dataset(miseq)
-
-  expect_equal(sum(exported_miseq$sequence_data$include_sequence), 825)
 
   dataset_t <- import_dataset(exported_miseq)
 
@@ -31,7 +16,10 @@ test_that("import - miseq_sop_example", {
   expect_equal(count(dataset_t), count(miseq))
   expect_equal(count(dataset_t, "treatments"), count(miseq, "treatments"))
   expect_equal(count(dataset_t, "samples"), count(miseq, "samples"))
-  expect_equal(count(dataset_t, "bins", "otu"), count(miseq, "bins", "otu"))
+  expect_equal(
+    count(dataset_t, type = "bins", bin_type = "otu"),
+    count(miseq, type = "bins", bin_type = "otu")
+  )
   expect_equal(
     count(dataset_t, "bins", "phylotype"), count(miseq, "bins", "phylotype")
   )
@@ -54,6 +42,22 @@ test_that("import - miseq_sop_example", {
       dfm |> filter(otu_names == otu)
     )
   }
+
+  phylo_bins_to_remove <- c("Phylo01", "Phylo02")
+  reasons_to_remove <- c("testing", "testing")
+
+  # remove some bins to allow for filtering
+  xdev_remove_bins(
+    miseq, phylo_bins_to_remove,
+    reasons_to_remove, "phylotype"
+  )
+
+  expect_equal(count(miseq, "bins", bin_type = "phylotype"), 61)
+  expect_equal(count(miseq, distinct = TRUE), 825)
+  expect_equal(count(miseq), 39177)
+
+  exported_miseq <- export_dataset(miseq)
+  expect_equal(sum(exported_miseq$sequence_data$include_sequence), 825)
 
   data <- strollur$new()
   abunds <- c(1, 10, 100)

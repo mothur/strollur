@@ -15,9 +15,8 @@
 #' @return name of count file
 #' @export
 write_mothur_count <- function(data, filename = NULL) {
-  # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   if (is.null(filename)) {

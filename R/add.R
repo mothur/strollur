@@ -135,6 +135,12 @@ add <- function(data, table,
                 ),
                 reference = NULL,
                 verbose = TRUE) {
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
+  }
+
+  type <- as.character(substitute(type))
+
   default_tn <- list(
     sequence_name = "sequence_names",
     sequence = "sequences",
@@ -169,11 +175,7 @@ add <- function(data, table,
         verbose
       )
     } else {
-      message <- paste0(
-        "'report_type' is required when adding a report",
-        ", please correct."
-      )
-      cli::cli_abort(message)
+      cli::cli_abort("'report_type' is required when adding a report.")
     }
   } else if (type == "metadata") {
     num_added <- 1

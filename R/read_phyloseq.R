@@ -107,7 +107,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
         )
       )
       colnames(treatment_df) <- c("samples", "treatments")
-      assign(data = rdaset_object, table = treatment_df, type = "treatments")
+      xdev_assign_treatments(data = rdaset_object, table = treatment_df)
     }
   }
   rdaset_object

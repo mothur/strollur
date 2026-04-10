@@ -382,6 +382,10 @@ double Dataset::assignBinRepresentativeSequences(const vector<string>& binNames,
         }
 
         repAssigned = binTables[getBinTableIndex(type)].assignRepresentativeSequences(binNames, getIndexes(repNames));
+    }else{
+        string message = "The dataset does not contain '" + type;
+        message += "' bin_types, ignoring.";
+        RcppThread::Rcout << endl << message << endl;
     }
 
     return repAssigned;

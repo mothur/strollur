@@ -127,9 +127,8 @@ import_dataset <- function(table) {
 
     # "sequence_names", "taxonomies"
     if ("taxonomies" %in% sequence_data_names) {
-      assign(
-        data = data, table = table$sequence_data,
-        type = "sequence_taxonomy"
+      xdev_assign_sequence_taxonomy(
+        data = data, table = table$sequence_data
       )
     }
 
@@ -186,15 +185,15 @@ import_dataset <- function(table) {
         table[[sequence_bin_assignments]]$sequence_names <-
           table$sequence_data$sequence_names[m_indices]
 
-        assign(
+        xdev_assign_bins(
           data = data, table = table[[sequence_bin_assignments]],
-          type = "bins", bin_type = type
+          bin_type = type
         )
       } else {
         # does not want sequence data, just bins and abundances
-        assign(
+        xdev_assign_bins(
           data = data, table = table[[bin_type]],
-          type = "bins", bin_type = type
+          bin_type = type
         )
       }
 
@@ -226,9 +225,8 @@ import_dataset <- function(table) {
       }
 
       if ("taxonomies" %in% bin_data_names) {
-        assign(
-          data = data, table = table[[bin_type]], type = "bin_taxonomy",
-          bin_type = type
+        xdev_assign_bin_taxonomy(
+          data = data, table = table[[bin_type]], bin_type = type
         )
       }
     }
@@ -251,9 +249,9 @@ import_dataset <- function(table) {
   if (length(report_names) != 0) {
     for (name in report_names) {
       name_col <- attr(table[[name]], "sequence_name")
-      add(
-        data = data, table = table[[name]], type = "reports",
-        report_type = name, table_names = list(sequence_name = name_col)
+      xdev_add_report(
+        data = data, table = table[[name]],
+        type = name, sequence_name = name_col
       )
     }
   }

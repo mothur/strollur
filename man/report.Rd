@@ -47,7 +47,7 @@ report(data = miseq, type = "sequences") |> head(n = 5)
 # To get the sequence bin assignments
 
 report(data = miseq, type = "sequence_bin_assignments", bin_type = "otu") |>
-head(n = 5)
+  head(n = 5)
 
 # To get the sample treatment assignments
 
