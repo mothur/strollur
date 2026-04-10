@@ -800,6 +800,23 @@ xdev_get_sequences <- function(data, sample = "", degap = FALSE) {
     .Call(`_strollur_xdev_get_sequences`, data, sample, degap)
 }
 
+#' @title xdev_has_sequence_taxonomy
+#' @description
+#' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
+#'
+#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'
+#' @examples
+#'
+#'  data <- miseq_sop_example()
+#'  xdev_has_sequence_taxonomy(data)
+#'
+#' @return boolean
+#' @export
+xdev_has_sequence_taxonomy <- function(data) {
+    .Call(`_strollur_xdev_has_sequence_taxonomy`, data)
+}
+
 #' @title xdev_merge_bins
 #' @description
 #' Designed with package integration in mind, the merge bins function allows

@@ -146,7 +146,37 @@ strollur <- R6Class("strollur",
             "\n"
           )
         }
+        bin_tax_report <- xdev_report(
+          data = self,
+          type = "bin_taxonomy",
+          bin_type = bin_type
+        )
+        if (nrow(bin_tax_report) != 0) {
+          cat(
+            paste0(
+              "Total number of ", bin_type, " bin classifications: ",
+              length(unique(bin_tax_report[["id"]]))
+            ),
+            "\n"
+          )
+        }
       }
+
+      if (xdev_has_sequence_taxonomy(self)) {
+        seq_tax_report <- xdev_report(
+          data = self,
+          type = "sequence_taxonomy",
+          bin_type = bin_type
+        )
+        cat(
+          paste0(
+            "Total number of sequence classifications: ",
+            length(unique(seq_tax_report[["id"]]))
+          ),
+          "\n"
+        )
+      }
+
       # print number of resource references
       if (xdev_count(data = self, type = "references") != 0) {
         cat(paste0(

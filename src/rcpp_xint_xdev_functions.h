@@ -673,6 +673,22 @@ vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 vector<string> xdev_get_sequences(const Rcpp::Environment& data, const string& sample = "", bool degap = false);
 /******************************************************************************/
+//' @title xdev_has_sequence_taxonomy
+//' @description
+//' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
+//'
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//'
+//' @examples
+//'
+//'  data <- miseq_sop_example()
+//'  xdev_has_sequence_taxonomy(data)
+//'
+//' @return boolean
+//' @export
+//[[Rcpp::export]]
+bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data);
+/******************************************************************************/
 // ******** merging *********
 
 //' @title xdev_merge_bins
