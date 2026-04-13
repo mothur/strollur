@@ -34,8 +34,12 @@
       Total number of samples: 17 
       Total number of treatments: 2 
       Total number of otus: 475 
+      Total number of otu bin classifications: 475 
       Total number of asvs: 2086 
+      Total number of asv bin classifications: 2086 
       Total number of phylotypes: 57 
+      Total number of phylotype bin classifications: 57 
+      Total number of sequence classifications: 2086 
       Total number of resource references: 2 
       Total number of custom reports: 1 
       Your dataset includes metadata 
@@ -71,8 +75,12 @@
       Total number of samples: 17 
       Total number of treatments: 2 
       Total number of otus: 475 
+      Total number of otu bin classifications: 475 
       Total number of asvs: 2086 
+      Total number of asv bin classifications: 2086 
       Total number of phylotypes: 57 
+      Total number of phylotype bin classifications: 57 
+      Total number of sequence classifications: 2086 
       Total number of resource references: 2 
       Total number of custom reports: 1 
       Your dataset includes metadata 

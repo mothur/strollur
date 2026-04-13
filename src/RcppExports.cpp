@@ -356,6 +356,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// xdev_has_sequence_taxonomy
+bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data);
+RcppExport SEXP _strollur_xdev_has_sequence_taxonomy(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_has_sequence_taxonomy(data));
+    return rcpp_result_gen;
+END_RCPP
+}
 // xdev_merge_bins
 void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names, const string& reason, const string& bin_type);
 RcppExport SEXP _strollur_xdev_merge_bins(SEXP dataSEXP, SEXP bin_namesSEXP, SEXP reasonSEXP, SEXP bin_typeSEXP) {
@@ -604,6 +615,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_get_list_vector", (DL_FUNC) &_strollur_xdev_get_list_vector, 2},
     {"_strollur_xdev_get_by_sample", (DL_FUNC) &_strollur_xdev_get_by_sample, 4},
     {"_strollur_xdev_get_sequences", (DL_FUNC) &_strollur_xdev_get_sequences, 3},
+    {"_strollur_xdev_has_sequence_taxonomy", (DL_FUNC) &_strollur_xdev_has_sequence_taxonomy, 1},
     {"_strollur_xdev_merge_bins", (DL_FUNC) &_strollur_xdev_merge_bins, 4},
     {"_strollur_xdev_merge_sequences", (DL_FUNC) &_strollur_xdev_merge_sequences, 3},
     {"_strollur_xdev_names", (DL_FUNC) &_strollur_xdev_names, 5},

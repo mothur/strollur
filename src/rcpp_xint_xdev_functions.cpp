@@ -766,6 +766,16 @@ vector<string> xdev_get_sequences(const Rcpp::Environment& data,
     return d.get()->getSequences(sample, degap);
 }
 /******************************************************************************/
+bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->hasSequenceTaxonomy;
+}
+/******************************************************************************/
 void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
                      const string& reason, const string& bin_type) {
 
