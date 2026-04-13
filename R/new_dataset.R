@@ -1,6 +1,6 @@
 #' @title new_dataset
-#' @description
-#' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @description Create a new
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param dataset_name string, a string containing the dataset name.
 #' Default = ""
@@ -20,9 +20,11 @@
 #'
 #' data <- new_dataset(dataset_name = "soil", processors = 2)
 #'
-#' @returns a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @returns a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
-#' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
+#' @seealso The 'new' method in the
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
 new_dataset <- function(dataset_name = "", processors = NULL) {
   if (is.null(processors)) {
     processors <- parallelly::availableCores()
