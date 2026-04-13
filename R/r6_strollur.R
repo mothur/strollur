@@ -165,8 +165,7 @@ strollur <- R6Class("strollur",
       if (xdev_has_sequence_taxonomy(self)) {
         seq_tax_report <- xdev_report(
           data = self,
-          type = "sequence_taxonomy",
-          bin_type = bin_type
+          type = "sequence_taxonomy"
         )
         cat(
           paste0(
