@@ -25,6 +25,10 @@ xdev_remove_sequences(data, sequence_names, trash_tags)
 
   vector of strings containing the reasons for the sequences removals
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

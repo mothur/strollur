@@ -1,4 +1,4 @@
-# get_available_processors
+# Get available processors
 
 Get the number of available cores
 
@@ -6,4 +6,16 @@ Get the number of available cores
 
 ``` r
 get_available_processors()
+```
+
+## Value
+
+Integer
+
+## Examples
+
+``` r
+get_available_processors()
+#> system 
+#>      4 
 ```

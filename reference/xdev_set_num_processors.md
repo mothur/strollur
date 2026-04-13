@@ -21,6 +21,10 @@ xdev_set_num_processors(data, processors)
 
   a integer containing the desired number of processors
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

@@ -32,6 +32,10 @@ xdev_set_abundances(data, sequence_names, abundances, reason = "update")
   a string containing the trash tag to be applied to any sequences set
   to 0 abundance. Default = "update".
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

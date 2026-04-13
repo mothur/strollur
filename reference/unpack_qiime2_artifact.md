@@ -3,9 +3,6 @@
 The unpack_qiime2_artifact function reads .qza files created by
 [qiime2](https://qiime2.org), and returns the artifact.
 
-To generate the various input files you can follow [qiime2
-moving-pictures](https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html).
-
 ## Usage
 
 ``` r

@@ -71,7 +71,14 @@
 
 
 <dt id="arg-named-col-">named_col, <a class="anchor" aria-label="anchor" href="#arg-named-col-"></a></dt>
-<dd><p>name of column in data.frame to match order</p></dd>
+<dd><p>name of column in data.frame to match order</p>
+<p># sort results alphabetically</p>
+<p>miseq &lt;- miseq_sop_example()</p>
+<p>sequence_names &lt;- names(miseq)</p>
+<p>fasta &lt;- report(miseq, type = fasta)</p>
+<p>sorted_fasta &lt;- sort_dataframe(fasta,
+                               order = sort(sequence_names),
+                               named_col = "sequence_names")</p></dd>
 
 </dl></div>
     <div class="section level2">

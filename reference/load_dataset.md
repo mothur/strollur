@@ -1,4 +1,4 @@
-# load_dataset
+# Load strollur object from .rds file
 
 The load_dataset function will create a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -19,6 +19,10 @@ load_dataset(file)
 ## Value
 
 a [strollur](https://mothur.org/strollur/reference/strollur.html) object
+
+## See also
+
+\[save_dataset()\]
 
 ## Examples
 

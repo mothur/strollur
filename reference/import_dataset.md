@@ -1,4 +1,4 @@
-# import_dataset
+# Import strollur object from exported data.frame.
 
 The import_dataset function will create a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -25,7 +25,7 @@ a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## See also
 
-\[dataset\$export()\]
+\[export_dataset()\]
 
 ## Examples
 

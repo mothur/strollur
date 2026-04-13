@@ -25,6 +25,10 @@ xdev_remove_samples(data, samples, reason = "remove_samples")
 
   string containing the reason for removal. Default = "remove_samples".
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

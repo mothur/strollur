@@ -36,6 +36,10 @@ xdev_set_sequences(
 
   a vector of strings containing sequence comments. (Optional)
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

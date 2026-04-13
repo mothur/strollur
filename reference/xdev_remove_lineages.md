@@ -26,6 +26,10 @@ xdev_remove_lineages(data, contaminants, reason = "contaminant")
   a string containing reason you are removing the lineages. Default =
   "contaminant".
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

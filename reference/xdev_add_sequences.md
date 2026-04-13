@@ -59,7 +59,7 @@ double containing the number of sequences added
 ## Examples
 
 ``` r
- data <- new_dataset("miseq_sop", 2)
+ data <- new_dataset("miseq_sop")
  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
  xdev_add_sequences(data, fasta_data)
 #> ℹ Added 2425 sequences.
@@ -67,7 +67,7 @@ double containing the number of sequences added
 
 # With the additional parameters to add information about the reference
 
- data <- new_dataset("miseq_sop", 2)
+ data <- new_dataset("miseq_sop")
  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
  xdev_add_sequences(data, fasta_data,

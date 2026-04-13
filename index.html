@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Store and transfer data used in the analysis of microbial RNA • strollur</title>
+<title>Store and Transfer Data Used in the Analysis of Microbial RNA • strollur</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -15,9 +15,9 @@
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Store and transfer data used in the analysis of microbial RNA">
-<meta name="description" content="The strollur package stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
-<meta property="og:description" content="The strollur package stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Store and Transfer Data Used in the Analysis of Microbial RNA">
+<meta name="description" content="Stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
+<meta property="og:description" content="Stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
 <meta property="og:image" content="https://mothur.org/strollur/logo.png">
 </head>
 <body>
@@ -85,7 +85,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <strong>strollur</strong> package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, sequence bin assignments, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to import from <a href="https://mothur.org" class="external-link">mothur</a>, <a href="https://qiime2.org" class="external-link">qiime2</a>, <a href="https://benjjneb.github.io/dada2/" class="external-link">dada2</a> and <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link">phyloseq</a>.</p>
+<p>The <strong><code>strollur</code></strong> package stores the data associated with your microbial DNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, sequence bin assignments, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to import from <a href="https://mothur.org" class="external-link">mothur</a>, <a href="https://qiime2.org" class="external-link">qiime2</a>, <a href="https://benjjneb.github.io/dada2/" class="external-link">dada2</a> and <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link">phyloseq</a>.</p>
 <ul>
 <li>
 <code><a href="reference/add.html">add()</a></code> adds sequences, reports, metadata, and resource references</li>
@@ -108,8 +108,7 @@
 </h2>
 <p>You can install the CRAN version with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mothur/strollur" class="external-link">strollur</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"strollur"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"strollur"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="development-version">Development version<a class="anchor" aria-label="anchor" href="#development-version"></a>
 </h3>
@@ -162,7 +161,9 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of samples: 19 </span></span>
 <span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of otus: 531</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of otus: 531 </span></span>
+<span><span class="co">#&gt; Total number of otu bin classifications: 531 </span></span>
+<span><span class="co">#&gt; Total number of sequence classifications: 2425</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
@@ -173,6 +174,11 @@
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
 </h2>
 <p>Is there a feature you’d like to see included, please let us know! Pull requests are welcome on <a href="https://github.com/mothur/strollur/pulls" class="external-link">GitHub</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
+<p>Please note that the strollur project is released with a <a href="https://mothur.org/strollur/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -191,6 +197,12 @@
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
+</ul>
+</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
@@ -203,6 +215,7 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Sarah Westcott <br><small class="roles"> Author, maintainer </small>   </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 

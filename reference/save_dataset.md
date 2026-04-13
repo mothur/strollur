@@ -25,6 +25,10 @@ save_dataset(data, file)
 
 A file containing the \`strollur\` object
 
+## See also
+
+\[load_dataset()\]
+
 ## Examples
 
 ``` r

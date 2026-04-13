@@ -1,4 +1,4 @@
-# miseq_sop_example
+# Example strollur object
 
 The miseq_sop_example function will create 'strollur' object using the
 analysis files from the [MiSeq_SOP](https://mothur.org/wiki/miseq_sop/)

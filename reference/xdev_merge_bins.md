@@ -31,6 +31,10 @@ xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 
   a string indicating the type of bin clusters. Default = "otu"
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

@@ -108,11 +108,20 @@ A new \`strollur\` object.
 
 ### Method [`print()`](https://rdrr.io/r/base/print.html)
 
-Get summary of \`strollur\` object
+Print summary of \`strollur\` object
 
 #### Usage
 
     strollur$print()
+
+#### Returns
+
+No return value, called for side effects.
+
+#### Examples
+
+    miseq <- miseq_sop_example()
+    miseq
 
 ------------------------------------------------------------------------
 
@@ -141,6 +150,10 @@ Get the abundance data for sequences, bins, samples, and treatments.
 
   Boolean. When by_sample is TRUE, the abundance data will be parsed by
   sample. Default = FALSE.
+
+#### Returns
+
+data.frame
 
 #### Examples
 
@@ -262,6 +275,10 @@ Add sequences, reports, metadata or resource references
   boolean indicating whether or not you want progress messages. Default
   = TRUE.
 
+#### Returns
+
+Updated \`strollur\` object - invisible(self)
+
 #### Examples
 
     fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
@@ -322,6 +339,10 @@ Add phylo tree relating the samples in your dataset
 
   a phylo tree object created by ape::read.tree.
 
+#### Returns
+
+Updated \`strollur\` object
+
 #### Examples
 
      data <- strollur$new("my_dataset")
@@ -349,6 +370,10 @@ Add phylo tree relating the sequences in your dataset
 - `tree`:
 
   a phylo tree object created by ape::read.tree.
+
+#### Returns
+
+Updated \`strollur\` object
 
 #### Examples
 
@@ -437,7 +462,7 @@ representative sequences, bin classifications or treatments.
 
 #### Returns
 
-double - The number of items assigned
+Updated \`strollur\` object
 
 #### Examples
 
@@ -534,6 +559,17 @@ Clear data from datasest
 #### Usage
 
     strollur$clear()
+
+#### Returns
+
+Updated \`strollur\` object
+
+#### Examples
+
+    miseq <- miseq_sop_example()
+    miseq
+    miseq$clear()
+    miseq
 
 ------------------------------------------------------------------------
 
@@ -671,6 +707,10 @@ Get phylo tree relating the samples in your dataset.
 
     strollur$get_sample_tree()
 
+#### Returns
+
+ape::tree
+
 #### Examples
 
      tree <- ape::read.tree(strollur_example(
@@ -695,6 +735,10 @@ Get phylo tree relating the sequences in your strollur object.
 #### Usage
 
     strollur$get_sequence_tree()
+
+#### Returns
+
+ape::tree
 
 #### Examples
 
@@ -948,6 +992,54 @@ data <- new_dataset("soil")
 
 
 ## ------------------------------------------------
+## Method `strollur$print`
+## ------------------------------------------------
+
+miseq <- miseq_sop_example()
+#> ℹ Added 2425 sequences.
+#> ℹ Assigned 2425 sequence abundances.
+#> ℹ Assigned 2425 sequence taxonomies.
+#> ℹ Assigned 531 otu bins.
+#> ℹ Assigned 2425 asv bins.
+#> ℹ Assigned 63 phylotype bins.
+#> ℹ Assigned 19 samples to treatments.
+#> ℹ Assigned 531 otu bin taxonomies.
+#> ℹ Assigned 531 otu bin representative sequences.
+#> ℹ Added metadata.
+#> ℹ Added 2 resource references.
+#> ℹ Added a contigs_report.
+miseq
+#> miseq_sop:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2425 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata 
+#> 
+
+
+## ------------------------------------------------
 ## Method `strollur$abundance`
 ## ------------------------------------------------
 
@@ -1106,7 +1198,6 @@ data$add(
 
  data$add_sample_tree(tree)
 
-
 ## ------------------------------------------------
 ## Method `strollur$add_sequence_tree`
 ## ------------------------------------------------
@@ -1216,6 +1307,61 @@ sample_assignments <- readRDS(
 data$assign(table = sample_assignments, type = "treatments")
 #> ℹ Assigned 19 samples to treatments.
 
+
+## ------------------------------------------------
+## Method `strollur$clear`
+## ------------------------------------------------
+
+miseq <- miseq_sop_example()
+#> ℹ Added 2425 sequences.
+#> ℹ Assigned 2425 sequence abundances.
+#> ℹ Assigned 2425 sequence taxonomies.
+#> ℹ Assigned 531 otu bins.
+#> ℹ Assigned 2425 asv bins.
+#> ℹ Assigned 63 phylotype bins.
+#> ℹ Assigned 19 samples to treatments.
+#> ℹ Assigned 531 otu bin taxonomies.
+#> ℹ Assigned 531 otu bin representative sequences.
+#> ℹ Added metadata.
+#> ℹ Added 2 resource references.
+#> ℹ Added a contigs_report.
+miseq
+#> miseq_sop:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2425 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata 
+#> 
+miseq$clear()
+miseq
+#> miseq_sop:
+#> 
+#> 
+#> Total number of seqs: 0 
+#> 
+#> 
 
 ## ------------------------------------------------
 ## Method `strollur$count`

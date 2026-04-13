@@ -15,6 +15,10 @@ strollur_example(file = NULL)
 
   Name of file.
 
+## Value
+
+string, Full path to example files
+
 ## Details
 
 Get path to strollur example

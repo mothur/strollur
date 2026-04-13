@@ -16,9 +16,8 @@ Adding and using data
 
 - [`names()`](https://mothur.org/strollur/reference/names.md) :
 
-  Get the names sequences, bins, samples, treatments, and reports data
-  in a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  Get the names of various data in a
+  [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 - [`count()`](https://mothur.org/strollur/reference/count.md) :
 
@@ -47,7 +46,7 @@ Adding and using data
   analysis.
 
 - [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
-  : strollur: Store and transfer data used in the analysis of microbial
+  : strollur: Store and Transfer Data Used in the Analysis of Microbial
   RNA
 
 ## Importing Data
@@ -121,7 +120,7 @@ DADA2
 Create datasets and references, clear data
 
 - [`miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
-  : miseq_sop_example
+  : Example strollur object
 - [`new_dataset()`](https://mothur.org/strollur/reference/new_dataset.md)
   : new_dataset
 - [`new_reference()`](https://mothur.org/strollur/reference/new_reference.md)
@@ -141,11 +140,11 @@ Save, copy, load, import, export and write to file
 - [`save_dataset()`](https://mothur.org/strollur/reference/save_dataset.md)
   : save_dataset
 - [`load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md)
-  : load_dataset
+  : Load strollur object from .rds file
 - [`export_dataset()`](https://mothur.org/strollur/reference/export_dataset.md)
   : export_dataset
 - [`import_dataset()`](https://mothur.org/strollur/reference/import_dataset.md)
-  : import_dataset
+  : Import strollur object from exported data.frame.
 - [`copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
   : copy_dataset
 - [`write_fasta()`](https://mothur.org/strollur/reference/write_fasta.md)
@@ -178,7 +177,7 @@ these functions
   : strollur_example
 
 - [`get_available_processors()`](https://mothur.org/strollur/reference/get_available_processors.md)
-  : get_available_processors
+  : Get available processors
 
 - [`has_sequence_strings()`](https://mothur.org/strollur/reference/has_sequence_strings.md)
   : has_sequence_strings
@@ -287,9 +286,3 @@ these functions
 
 - [`xdev_summarize()`](https://mothur.org/strollur/reference/xdev_summarize.md)
   : xdev_summarize
-
-- [`xint_deserialize_dobject()`](https://mothur.org/strollur/reference/xint_deserialize_dobject.md)
-  : xint_deserialize_dobject
-
-- [`xint_serialize_dobject()`](https://mothur.org/strollur/reference/xint_serialize_dobject.md)
-  : xint_serialize_dobject

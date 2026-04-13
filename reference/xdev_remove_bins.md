@@ -30,6 +30,10 @@ xdev_remove_bins(data, bin_names, trash_tags, bin_type = "otu")
 
   a string indicating the type of clusters.
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

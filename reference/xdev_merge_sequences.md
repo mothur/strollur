@@ -27,6 +27,10 @@ xdev_merge_sequences(data, sequence_names, reason = "merged")
 
   a string indicating why you are merging sequences. Default = "merged"
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

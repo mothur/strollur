@@ -20,6 +20,10 @@ xdev_set_dataset_name(data, dataset_name)
 
   a string containing the desired name
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

@@ -1,5 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://mothur.org/strollur/404.html</loc></url>
+<url><loc>https://mothur.org/strollur/CODE_OF_CONDUCT.html</loc></url>
 <url><loc>https://mothur.org/strollur/LICENSE.html</loc></url>
 <url><loc>https://mothur.org/strollur/articles/Accessing_Dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/articles/Data_Transfers.html</loc></url>
@@ -21,13 +22,6 @@
 <url><loc>https://mothur.org/strollur/reference/clear.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/copy_dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/count.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/dot-abort_incorrect_format.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/dot-abort_incorrect_type.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/dot-abort_no_name.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/dot-abort_nonexistant_file.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/dot-abort_not_writable.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/dot-split_at_char.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/dot-split_white_space.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/export_dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/get_available_processors.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/get_bin_types.html</loc></url>
@@ -57,7 +51,6 @@
 <url><loc>https://mothur.org/strollur/reference/read_qiime2_taxonomy.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/remove_file.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/report.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/require_namespace.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/run_testthat_tests.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/save_dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/sort_dataframe.html</loc></url>
@@ -106,9 +99,5 @@
 <url><loc>https://mothur.org/strollur/reference/xdev_set_num_processors.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_set_sequences.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_summarize.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/xint_copy_pointer.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/xint_deserialize_dobject.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/xint_new_pointer.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/xint_serialize_dobject.html</loc></url>
 </urlset>
 

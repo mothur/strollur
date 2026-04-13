@@ -42,6 +42,10 @@ xdev_add_report(
 
   a boolean whether or not you want progress messages. Default = TRUE.
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

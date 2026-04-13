@@ -2,11 +2,6 @@
 
 Read a [qiime2](https://qiime2.org) qza containing taxonomy data
 
-\# nolint start To generate the various input files you can follow
-[qiime2
-moving-pictures](https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html).
-\# nolint end
-
 ## Usage
 
 ``` r

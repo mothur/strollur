@@ -16,6 +16,10 @@ clear(data)
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
+## Value
+
+No return value, called for side effects.
+
 ## Examples
 
 ``` r

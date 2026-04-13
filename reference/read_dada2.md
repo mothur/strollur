@@ -5,8 +5,8 @@ object. The dada2 sequence table is a 2D matrix containing the abundance
 counts by sample for each ASV. The sample names are stored as row names
 and the sequence nucleotide strings are stored as column names.
 
-To generate the dada2 sequence table you can follow [this dada2
-tutorial](https://benjjneb.github.io/dada2/tutorial.html).
+To generate the dada2 sequence table from your own files you can follow
+[this dada2 tutorial](https://benjjneb.github.io/dada2/tutorial.html).
 
 ## Usage
 
@@ -31,12 +31,11 @@ A \`strollur\` object
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-# Follow the dada2 tutorial above to generate seqtab from your fastq files.
+seqtab <- readRDS(strollur_example("dada2.rds"))
+dim(seqtab)
+#> [1]  19 279
 
-# dim(seqtab)
-# [1]  20 293
-
-# data <- read_dada2(seqtab, "dada2")
-} # }
+data <- read_dada2(sequence_table = seqtab, dataset_name = "dada2 example")
+#> ℹ Added 279 sequences.
+#> ℹ Assigned 279 sequence abundances.
 ```

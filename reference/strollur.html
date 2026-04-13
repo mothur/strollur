@@ -157,9 +157,20 @@ Default = all available</p></dd>
 
 </div><p></p><hr><a id="method-strollur-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
-<p>Get summary of `strollur` object</p><div class="section">
+<p>Print summary of `strollur` object</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>No return value, called for side effects.</p>
+</div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">miseq</span></span>
+<span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -191,7 +202,11 @@ will be parsed by sample. Default = FALSE.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p>data.frame</p>
+</div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -306,7 +321,11 @@ messages. Default = TRUE.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>Updated `strollur` object - invisible(self)</p>
+</div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fasta.html">read_fasta</a></span><span class="op">(</span>fasta <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_contigs_report.rds"</span><span class="op">)</span><span class="op">)</span></span>
@@ -369,7 +388,11 @@ messages. Default = TRUE.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<p>Updated `strollur` object</p>
+</div>
+<div class="section">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/strollur.html">strollur</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span></span>
@@ -379,8 +402,7 @@ messages. Default = TRUE.</p></dd>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
 <span> <span class="st">"final.opti_mcc.jclass.ave.tre"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sample_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
-<span></span></code></pre></div><p></p></div>
+<span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sample_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -400,7 +422,11 @@ messages. Default = TRUE.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p>Updated `strollur` object</p>
+</div>
+<div class="section">
+<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/strollur.html">strollur</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre.gz"</span><span class="op">)</span><span class="op">)</span></span>
@@ -481,11 +507,11 @@ messages. Default = TRUE.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
-<p>double - The number of items assigned</p>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<p>Updated `strollur` object</p>
 </div>
 <div class="section">
-<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
+<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span><span class="co"># create a new empty strollur object named 'example_dataset'</span></span>
 <span></span>
@@ -581,6 +607,18 @@ messages. Default = TRUE.</p></dd>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p>Updated `strollur` object</p>
+</div>
+<div class="section">
+<h4 id="examples-7">Examples<a class="anchor" aria-label="anchor" href="#examples-7"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">miseq</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">miseq</span></span></code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-strollur-count"></a><div class="section">
 <h3 id="method-count-">Method <code><a href="count.html">count()</a></code><a class="anchor" aria-label="anchor" href="#method-count-"></a></h3>
@@ -631,11 +669,11 @@ Default = FALSE.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>double</p>
 </div>
 <div class="section">
-<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
+<h4 id="examples-8">Examples<a class="anchor" aria-label="anchor" href="#examples-8"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -699,11 +737,11 @@ Default = FALSE.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>vector of strings</p>
 </div>
 <div class="section">
-<h4 id="examples-7">Examples<a class="anchor" aria-label="anchor" href="#examples-7"></a></h4>
+<h4 id="examples-9">Examples<a class="anchor" aria-label="anchor" href="#examples-9"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="fu">get_bin_types</span><span class="op">(</span><span class="op">)</span></span>
@@ -719,7 +757,11 @@ Default = FALSE.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="examples-8">Examples<a class="anchor" aria-label="anchor" href="#examples-8"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<p>ape::tree</p>
+</div>
+<div class="section">
+<h4 id="examples-10">Examples<a class="anchor" aria-label="anchor" href="#examples-10"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
 <span>  <span class="st">"final.opti_mcc.jclass.ave.tre"</span><span class="op">)</span><span class="op">)</span></span>
@@ -745,7 +787,11 @@ Default = FALSE.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="examples-9">Examples<a class="anchor" aria-label="anchor" href="#examples-9"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<p>ape::tree</p>
+</div>
+<div class="section">
+<h4 id="examples-11">Examples<a class="anchor" aria-label="anchor" href="#examples-11"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/strollur.html">strollur</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre.gz"</span><span class="op">)</span><span class="op">)</span></span>
@@ -799,11 +845,11 @@ ALSO contain data from other samples. Default = FALSE.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p>vector of strings, containing the names requested</p>
 </div>
 <div class="section">
-<h4 id="examples-10">Examples<a class="anchor" aria-label="anchor" href="#examples-10"></a></h4>
+<h4 id="examples-12">Examples<a class="anchor" aria-label="anchor" href="#examples-12"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -867,11 +913,11 @@ bin_taxonomy report for. Default = "otu".</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>data.frame</p>
 </div>
 <div class="section">
-<h4 id="examples-11">Examples<a class="anchor" aria-label="anchor" href="#examples-11"></a></h4>
+<h4 id="examples-13">Examples<a class="anchor" aria-label="anchor" href="#examples-13"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -958,12 +1004,12 @@ messages. Default = TRUE.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>data.frame
 Get summary of the sequence reports</p>
 </div>
 <div class="section">
-<h4 id="examples-12">Examples<a class="anchor" aria-label="anchor" href="#examples-12"></a></h4>
+<h4 id="examples-14">Examples<a class="anchor" aria-label="anchor" href="#examples-14"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
 <span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -1014,6 +1060,54 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co"># to create an empty strollur object, run the following:</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"soil"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `strollur$print`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-in"><span><span class="va">miseq</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> miseq_sop:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends nbases ambigs polymers numns   numseqs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375    249      0        3     0      1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375    252      0        3     0   2850.08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25%-tile:        1  375    252      0        4     0  28491.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Median:          1  375    252      0        4     0  56982.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75%-tile:        1  375    253      0        5     0  85473.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97.5%-tile:      1  375    253      0        6     0 111114.93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum:         1  375    256      0        6     0 113963.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375    252      0        4     0      0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 113963 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of samples: 19 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of treatments: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asvs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asv bin classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotypes: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotype bin classifications: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of sequence classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of resource references: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of custom reports: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Your dataset includes metadata </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -1175,7 +1269,6 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sample_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `strollur$add_sequence_tree`</span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -1285,6 +1378,61 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">sample_assignments</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `strollur$clear`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-in"><span><span class="va">miseq</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> miseq_sop:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends nbases ambigs polymers numns   numseqs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375    249      0        3     0      1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375    252      0        3     0   2850.08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25%-tile:        1  375    252      0        4     0  28491.75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Median:          1  375    252      0        4     0  56982.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75%-tile:        1  375    253      0        5     0  85473.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97.5%-tile:      1  375    253      0        6     0 111114.93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum:         1  375    256      0        6     0 113963.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375    252      0        4     0      0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 113963 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of samples: 19 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of treatments: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asvs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asv bin classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotypes: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotype bin classifications: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of sequence classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of resource references: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of custom reports: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Your dataset includes metadata </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> miseq_sop:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `strollur$count`</span></span></span>
