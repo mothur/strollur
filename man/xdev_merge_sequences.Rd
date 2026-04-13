@@ -16,6 +16,9 @@ in the first sequence name in the vector.}
 \item{reason}{a string indicating why you are merging sequences.
 Default = "merged"}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, the merge sequences function
 allows you to merge sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.

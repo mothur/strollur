@@ -1402,6 +1402,7 @@ xdev_summarize <- function(data, type = "sequences", report_type = NULL) {
 #'
 #' @return pointer to an instance of the C++ 'Dataset' class.
 #' @keywords internal
+#' @noRd
 xint_copy_pointer <- function(data) {
     .Call(`_strollur_xint_copy_pointer`, data)
 }
@@ -1414,6 +1415,7 @@ xint_copy_pointer <- function(data) {
 #' @param processors, number of processors to use
 #' @return pointer to an instance of the C++ 'Dataset' class.
 #' @keywords internal
+#' @noRd
 xint_new_pointer <- function(dataset_name, processors) {
     .Call(`_strollur_xint_new_pointer`, dataset_name, processors)
 }
@@ -1425,6 +1427,7 @@ xint_new_pointer <- function(dataset_name, processors) {
 #'  class.
 #' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @keywords internal
+#' @noRd
 xint_deserialize_dobject <- function(data) {
     invisible(.Call(`_strollur_xint_deserialize_dobject`, data))
 }
@@ -1436,6 +1439,7 @@ xint_deserialize_dobject <- function(data) {
 #' class.
 #' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @keywords internal
+#' @noRd
 xint_serialize_dobject <- function(data) {
     invisible(.Call(`_strollur_xint_serialize_dobject`, data))
 }

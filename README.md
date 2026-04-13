@@ -108,7 +108,9 @@ data
 #> 
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
-#> Total number of otus: 531
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of sequence classifications: 2425
 ```
 
 ## Getting help
@@ -122,3 +124,9 @@ minimal reproducible example with your issue.
 Is there a feature you’d like to see included, please let us know! Pull
 requests are welcome on
 [GitHub](https://github.com/mothur/strollur/pulls).
+
+## Code of Conduct
+
+Please note that the strollur project is released with a [Contributor
+Code of Conduct](https://mothur.org/strollur/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.

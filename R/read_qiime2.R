@@ -7,10 +7,6 @@
 #' The read_qiime2 function reads various types of .qza files created by
 #' \href{https://qiime2.org}{qiime2}, and creates a `strollur` object.
 #'
-# nolint start
-#' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
-# nolint end
-#'
 #' @param qza vector of filenames, .qza files containing your data from qiime2.
 #' @param metadata filename, a .tsv file containing metadata
 #' @param dataset_name A string containing a name for your dataset.

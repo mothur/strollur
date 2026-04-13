@@ -38,6 +38,7 @@ sort_dataframe <- function(data, order, named_col) {
 #'
 #' @returns A vector of Strings
 #' @keywords internal
+#' @noRd
 .split_white_space <- function(line) {
   words <- strsplit(line, "\\s")[[1]]
   words <- words[nzchar(x = words)]
@@ -49,6 +50,7 @@ sort_dataframe <- function(data, order, named_col) {
 #' @param delim, Character to split data by
 #' @returns A vector of Strings
 #' @keywords internal
+#' @noRd
 .split_at_char <- function(line, delim = ",") {
   words <- strsplit(line, delim)
   unlist(words)
@@ -61,6 +63,7 @@ sort_dataframe <- function(data, order, named_col) {
 #' @returns A logical TRUE or FALSE boolean depending on whether the
 #' package was added to the search path.
 #' @keywords internal
+#' @noRd
 require_namespace <- function(package_name) {
   requireNamespace(package_name, quietly = TRUE)
 }

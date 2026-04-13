@@ -1329,6 +1329,7 @@ Rcpp::DataFrame xdev_summarize(const Rcpp::Environment& data,
 //'
 //' @return pointer to an instance of the C++ 'Dataset' class.
 //' @keywords internal
+//' @noRd
 //[[Rcpp::export]]
 Rcpp::XPtr<Dataset> xint_copy_pointer(const Rcpp::Environment& data);
 
@@ -1340,6 +1341,7 @@ Rcpp::XPtr<Dataset> xint_copy_pointer(const Rcpp::Environment& data);
 //' @param processors, number of processors to use
 //' @return pointer to an instance of the C++ 'Dataset' class.
 //' @keywords internal
+//' @noRd
 //[[Rcpp::export]]
 Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name, int processors);
 
@@ -1350,6 +1352,7 @@ Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name, int processors)
 //'  class.
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @keywords internal
+//' @noRd
 //[[Rcpp::export]]
 void xint_deserialize_dobject(Rcpp::Environment data);
 
@@ -1360,6 +1363,7 @@ void xint_deserialize_dobject(Rcpp::Environment data);
 //' class.
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @keywords internal
+//' @noRd
 //[[Rcpp::export]]
 void xint_serialize_dobject(Rcpp::Environment data);
 

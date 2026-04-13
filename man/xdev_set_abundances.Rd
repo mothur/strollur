@@ -17,6 +17,9 @@ the abundances of each sequence parsed by sample.}
 \item{reason, }{a string containing the trash tag to be applied to any
 sequences set to 0 abundance. Default = "update".}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, the set abundances function
 allows you to change the abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

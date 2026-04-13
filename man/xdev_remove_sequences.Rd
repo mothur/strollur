@@ -15,6 +15,9 @@ sequences to remove}
 \item{trash_tags}{vector of strings containing the reasons for the sequences
 removals}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, the remove sequences function
 allows you to remove sequences from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
