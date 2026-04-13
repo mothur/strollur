@@ -22,51 +22,6 @@ int get_available_processors() {
      return Rcpp::as<int>(availableCores());
 }
 /******************************************************************************/
-//' @title new_dataset
-//' @description
-//' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//'
-//' @param dataset_name string, a string containing the dataset name.
-//' Default = ""
-//' @param processors integer, number of cores to use during summary functions.
-//' Default = all available
-//' @examples
-//'
-//' data <- new_dataset()
-//'
-//' # to create a new dataset named "soil" and allow for all available
-//' # processors during summary functions, run the following:
-//'
-//' data <- new_dataset(dataset_name = "soil")
-//'
-//' # to create a new dataset named "soil" and allow for 2
-//' # processors during summary functions, run the following:
-//'
-//' data <- new_dataset(dataset_name = "soil", processors = 2)
-//'
-//' @returns a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//' @export
-//' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
-//[[Rcpp::export]]
-Rcpp::Environment new_dataset(string dataset_name = "",
-                              Rcpp::Nullable<int> processors = R_NilValue) {
-
-    // strollur$new()
-    Rcpp::Environment strollur_env("package:strollur");
-    Rcpp::Environment dataset_class_env = strollur_env["strollur"];
-    Rcpp::Function constructor = dataset_class_env["new"];
-
-    int num_proc = 1;
-    if (processors.isNotNull()) {
-        num_proc = Rcpp::as<int>(processors);
-    }else{
-        num_proc = get_available_processors();
-    }
-
-    Rcpp::Environment data = constructor(dataset_name, num_proc, R_NilValue);
-    return data;
-}
-/******************************************************************************/
 //' @title new_reference
 //' @description
 //' Create a reference you can add to your dataset
