@@ -19,6 +19,9 @@ bin_id in the vector.}
 \item{bin_type, }{a string indicating the type of bin clusters.
 Default = "otu"}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, the merge bins function allows
 you to merge bins in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

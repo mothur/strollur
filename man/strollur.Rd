@@ -23,6 +23,14 @@ data <- new_dataset("soil")
 
 
 ## ------------------------------------------------
+## Method `strollur$print`
+## ------------------------------------------------
+
+miseq <- miseq_sop_example()
+miseq
+
+
+## ------------------------------------------------
 ## Method `strollur$abundance`
 ## ------------------------------------------------
 
@@ -117,7 +125,6 @@ data$add(
  "final.opti_mcc.jclass.ave.tre"))
 
  data$add_sample_tree(tree)
-
 
 ## ------------------------------------------------
 ## Method `strollur$add_sequence_tree`
@@ -218,6 +225,15 @@ sample_assignments <- readRDS(
 
 data$assign(table = sample_assignments, type = "treatments")
 
+
+## ------------------------------------------------
+## Method `strollur$clear`
+## ------------------------------------------------
+
+miseq <- miseq_sop_example()
+miseq
+miseq$clear()
+miseq
 
 ## ------------------------------------------------
 ## Method `strollur$count`
@@ -518,9 +534,22 @@ data <- new_dataset("soil")
 \if{html}{\out{<a id="method-strollur-print"></a>}}
 \if{latex}{\out{\hypertarget{method-strollur-print}{}}}
 \subsection{Method \code{print()}}{
-Get summary of `strollur` object
+Print summary of `strollur` object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{strollur$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+No return value, called for side effects.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{miseq <- miseq_sop_example()
+miseq
+
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -547,6 +576,9 @@ abundance data for. Default = "otu".}
 will be parsed by sample. Default = FALSE.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+data.frame
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -666,6 +698,9 @@ messages. Default = TRUE.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Updated `strollur` object - invisible(self)
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
@@ -733,6 +768,9 @@ Add phylo tree relating the samples in your dataset
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Updated `strollur` object
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
@@ -745,7 +783,6 @@ Add phylo tree relating the samples in your dataset
  "final.opti_mcc.jclass.ave.tre"))
 
  data$add_sample_tree(tree)
-
 }
 \if{html}{\out{</div>}}
 
@@ -767,6 +804,9 @@ Add phylo tree relating the sequences in your dataset
 \item{\code{tree}}{a phylo tree object created by ape::read.tree.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Updated `strollur` object
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -851,7 +891,7 @@ messages. Default = TRUE.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-double - The number of items assigned
+Updated `strollur` object
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -953,6 +993,20 @@ data$assign(table = sample_assignments, type = "treatments")
 Clear data from datasest
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{strollur$clear()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Updated `strollur` object
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{miseq <- miseq_sop_example()
+miseq
+miseq$clear()
+miseq
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -1095,6 +1149,9 @@ Get phylo tree relating the samples in your dataset.
 \if{html}{\out{<div class="r">}}\preformatted{strollur$get_sample_tree()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ape::tree
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
@@ -1126,6 +1183,9 @@ Get phylo tree relating the sequences in your strollur object.
 \if{html}{\out{<div class="r">}}\preformatted{strollur$get_sequence_tree()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+ape::tree
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{

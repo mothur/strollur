@@ -118,12 +118,12 @@ read_mothur <- function(fasta = NULL, count = NULL,
   }
 
   # create new blank dataset
-  data <- strollur$new(dataset_name)
+  data <- new_dataset(dataset_name)
 
   # add sequence nucleotide strings
   if (!is.null(fasta)) {
     fasta_data <- read_fasta(fasta)
-    xdev_add_sequences(data, fasta_data)
+    xdev_add_sequences(data = data, table = fasta_data)
   }
 
   # add sequence abundance data
@@ -132,22 +132,22 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
     # you did not add fasta seqs
     if (is.null(fasta)) {
-      xdev_add_sequences(data, data.frame(
+      xdev_add_sequences(data = data, table = data.frame(
         sequence_names =
           unique(count_table$sequence_names)
       ))
     }
 
     xdev_assign_sequence_abundance(
-      data,
-      count_table
+      data = data,
+      table = count_table
     )
   }
 
   # add taxonomy data
   if (!is.null(taxonomy)) {
     df <- read_mothur_taxonomy(taxonomy)
-    xdev_assign_sequence_taxonomy(data, df)
+    xdev_assign_sequence_taxonomy(data = data, table = df)
   }
 
   # add sequence otu assignments

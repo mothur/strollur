@@ -1,4 +1,4 @@
-#' @title import_dataset
+#' @title Import strollur object from exported data.frame.
 #' @description The import_dataset function will create a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'   from the exported table of a
@@ -17,7 +17,7 @@
 #'
 #' @return a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @seealso [dataset$export()]
+#' @seealso [export_dataset()]
 #' @export
 import_dataset <- function(table) {
   table_version <- attributes(table)$strollur_version

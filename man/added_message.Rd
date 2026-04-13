@@ -4,13 +4,20 @@
 \alias{added_message}
 \title{added_message}
 \usage{
-added_message(num = NULL, tag = "sequences")
+added_message(num, tag = "sequences")
 }
 \arguments{
 \item{num}{integer containing the number of items added.}
 
 \item{tag}{string containing item added. Default = 'sequences'.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Report dataset additions
+}
+\examples{
+added_message(10)
+added_message(10, "sequence abundances")
 }

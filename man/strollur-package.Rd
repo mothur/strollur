@@ -3,11 +3,11 @@
 \docType{package}
 \name{strollur-package}
 \alias{strollur-package}
-\title{strollur: Store and transfer data used in the analysis of microbial RNA}
+\title{strollur: Store and Transfer Data Used in the Analysis of Microbial RNA}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-The 'strollur' package stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
+Stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 }
 \seealso{
 Useful links:
@@ -20,6 +20,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Sarah Westcott \email{swestcot@umich.edu}
+
+Other contributors:
+\itemize{
+  \item Pat Schloss \email{pschloss@umich.edu} (\href{https://orcid.org/0000-0002-6935-4275}{ORCID}) [copyright holder]
+}
 
 }
 \keyword{internal}

@@ -24,7 +24,7 @@ read_fasta <- function(fasta) {
   }
 
   # use microseq to read fasta file
-  df <- readFasta(fasta)
+  df <- microseq::readFasta(fasta)
 
   # extract name from comments
   num_seqs <- nrow(df)

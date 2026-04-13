@@ -15,6 +15,9 @@ like to remove}
 \item{reason, }{a string containing reason you are removing the lineages.
 Default = "contaminant".}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, the remove lineages function
 allows you to remove contaminents from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}

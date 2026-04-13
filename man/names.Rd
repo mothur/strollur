@@ -2,7 +2,7 @@
 % Please edit documentation in R/names.R
 \name{names}
 \alias{names}
-\title{Get the names sequences, bins, samples, treatments, and reports data
+\title{Get the names of various data
   in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
   object}
 \usage{
@@ -41,8 +41,9 @@ data from other samples. Default = FALSE.}
 vector of strings, containing the names requested
 }
 \description{
-Get the names of a given type of data in a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Get the names of names sequences, bins, samples, treatments, and
+  reports data in a
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

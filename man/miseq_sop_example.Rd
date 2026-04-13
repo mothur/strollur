@@ -2,7 +2,7 @@
 % Please edit documentation in R/miseq_sop_example.R
 \name{miseq_sop_example}
 \alias{miseq_sop_example}
-\title{miseq_sop_example}
+\title{Example strollur object}
 \usage{
 miseq_sop_example()
 }
