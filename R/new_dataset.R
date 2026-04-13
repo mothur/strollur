@@ -24,7 +24,7 @@
 #' @export
 #' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
 new_dataset <- function(dataset_name = "", processors = NULL) {
-  if(is.null(processors)) {
+  if (is.null(processors)) {
     processors <- parallelly::availableCores()
   }
   strollur$new(dataset_name, processors)

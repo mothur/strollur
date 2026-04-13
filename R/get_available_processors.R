@@ -9,5 +9,5 @@
 #' @return Integer
 #' @export
 get_available_processors <- function() {
-    parallelly::availableCores()
+  parallelly::availableCores()
 }
