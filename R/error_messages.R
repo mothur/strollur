@@ -57,8 +57,12 @@
 #' Report dataset additions
 #' @param num integer containing the number of items added.
 #' @param tag string containing item added. Default = 'sequences'.
+#' @examples
+#' added_message(10)
+#' added_message(10, "sequence abundances")
+#' @return No return value, called for side effects.
 #' @export
-added_message <- function(num = NULL, tag = "sequences") {
+added_message <- function(num, tag = "sequences") {
   if (!is.null(num)) {
     message <- paste0("Added ", as.character(num), " ", tag, ".",
       collapse = ""
@@ -75,6 +79,10 @@ added_message <- function(num = NULL, tag = "sequences") {
 #' Report dataset assignments
 #' @param num integer containing the number of items assigned
 #' @param tag string containing item assigned Default = 'sequences'.
+#' @examples
+#' assigned_message(10)
+#' assigned_message(10, "sequence abundances")
+#' @return No return value, called for side effects.
 #' @export
 assigned_message <- function(num, tag = "sequences") {
   message <- paste0("Assigned ", as.character(num), tag,

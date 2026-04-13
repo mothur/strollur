@@ -20,6 +20,8 @@
 #'
 #' save_dataset(data, "miseq_sop.rds")
 #'
+#' @seealso [load_dataset()]
+#'
 #' @return A file containing the `strollur` object
 #' @export
 save_dataset <- function(data, file) {

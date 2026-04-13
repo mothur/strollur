@@ -9,6 +9,9 @@ strollur_example(file = NULL)
 \arguments{
 \item{file}{Name of file.}
 }
+\value{
+string, Full path to example files
+}
 \description{
 strollur comes bundled with some example files in its `inst/extdata`
 directory. This function make them easy to access them.
@@ -19,4 +22,5 @@ Get path to strollur example
 \examples{
 strollur_example()
 strollur_example("final.fasta.gz")
+
 }

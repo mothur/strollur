@@ -7,21 +7,6 @@
 #include "dataset.h"
 
 /******************************************************************************/
-//' @title get_available_processors
-//' @name get_available_processors
-//' @description
-//' Get the number of available cores
-//' @export
-// [[Rcpp::export]]
-int get_available_processors() {
-     // Use Rcpp::Environment and Rcpp::Function to call R code from C++.
-     Rcpp::Environment parallelly_env = Rcpp::Environment::namespace_env("parallelly");
-     Rcpp::Function availableCores = parallelly_env["availableCores"];
-
-     // Call the R function and return the result.
-     return Rcpp::as<int>(availableCores());
-}
-/******************************************************************************/
 //' @title new_dataset
 //' @description
 //' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -60,7 +45,8 @@ Rcpp::Environment new_dataset(string dataset_name = "",
     if (processors.isNotNull()) {
         num_proc = Rcpp::as<int>(processors);
     }else{
-        num_proc = get_available_processors();
+        Rcpp::Function getProc = dataset_class_env["get_available_processors"];
+        num_proc = Rcpp::as<int>(getProc());
     }
 
     Rcpp::Environment data = constructor(dataset_name, num_proc, R_NilValue);
@@ -155,14 +141,16 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 //' data <- miseq_sop_example()
 //' clear(data)
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void clear(Rcpp::Environment data) {
     Rcpp::XPtr<Dataset> d = data["data"];
+    d.get()->clear();
+
     data["raw"] = R_NilValue;
     data["sequence_tree"] = R_NilValue;
     data["sample_tree"] = R_NilValue;
-    d.get()->clear();
 }
 /******************************************************************************/
 //' @title export_dataset

@@ -154,6 +154,7 @@ double xdev_add_references(const Rcpp::Environment& data,
 //'
 //' xdev_add_report(data, metadata, "metadata")
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_add_report(const Rcpp::Environment& data,
@@ -721,6 +722,7 @@ bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data);
 //'
 //'  report(data = data, type = "bin_scrap")
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
@@ -780,6 +782,7 @@ void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_na
 //'
 //' count(data = data, type = "sequences")
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_merge_sequences(const Rcpp::Environment& data, const vector<string>& sequence_names,
@@ -890,6 +893,7 @@ vector<string> xdev_names(const Rcpp::Environment& data,
 //'
 //'   count(data = data, type = "bins", bin_type = "otu")
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_remove_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
@@ -920,6 +924,7 @@ void xdev_remove_bins(const Rcpp::Environment& data, const vector<string>& bin_n
 //'
 //' xdev_remove_lineages(data = data, contaminants = contaminants)
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_remove_lineages(const Rcpp::Environment& data, const vector<string>& contaminants,
@@ -950,6 +955,7 @@ void xdev_remove_lineages(const Rcpp::Environment& data, const vector<string>& c
 //'
 //' count(data = data, type = "samples")
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_remove_samples(const Rcpp::Environment& data, const vector<string>& samples,
@@ -994,6 +1000,7 @@ void xdev_remove_samples(const Rcpp::Environment& data, const vector<string>& sa
 //'
 //' count(data = data, type = "sequences")
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_remove_sequences(const Rcpp::Environment& data,
@@ -1142,6 +1149,7 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type = 
 //'
 //' abundance(data = data, type = "sequences")
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_set_abundance(const Rcpp::Environment& data,
@@ -1184,6 +1192,7 @@ void xdev_set_abundance(const Rcpp::Environment& data,
 //'                     sequence_names = seqs_to_update,
 //'                     abundances = new_abunds)
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_set_abundances(const Rcpp::Environment& data,
@@ -1216,6 +1225,7 @@ void xdev_set_abundances(const Rcpp::Environment& data,
 //'                    sequence_names = c("seq1", "seq2","seq3", "seq4"),
 //'                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_set_sequences(const Rcpp::Environment& data,
@@ -1235,6 +1245,7 @@ void xdev_set_sequences(const Rcpp::Environment& data,
 //' data <- new_dataset(dataset_name = "my_dataset")
 //' xdev_set_dataset_name(data = data, dataset_name = "new_dataset_name")
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_set_dataset_name(const Rcpp::Environment& data, const string& dataset_name);
@@ -1251,6 +1262,7 @@ void xdev_set_dataset_name(const Rcpp::Environment& data, const string& dataset_
 //' data <- new_dataset(dataset_name = "my_dataset")
 //' xdev_set_num_processors(data = data, processors = 1)
 //'
+//' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
 void xdev_set_num_processors(const Rcpp::Environment& data, int processors);
@@ -1304,6 +1316,17 @@ Rcpp::DataFrame xdev_summarize(const Rcpp::Environment& data,
 //' @description
 //' For internal use only, copy an instance of the C++ 'Dataset' class.
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//'
+//' @examples
+//'
+//' data <- read_mothur(fasta = strollur_example("final.fasta.gz"))
+//'
+//' copy_data <- new_dataset("copy")
+//' copy_data
+//'
+//' copy_data$data <- xint_copy_pointer(data)
+//' copy_data
+//'
 //' @return pointer to an instance of the C++ 'Dataset' class.
 //' @keywords internal
 //[[Rcpp::export]]

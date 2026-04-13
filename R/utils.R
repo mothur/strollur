@@ -13,6 +13,19 @@ remove_file <- function(filename) {
 #' @param data, the data.frame to be sorted
 #' @param order, vector containing the order desired
 #' @param named_col, name of column in data.frame to match order
+#'
+#' # sort results alphabetically
+#'
+#' miseq <- miseq_sop_example()
+#'
+#' sequence_names <- names(miseq)
+#'
+#' fasta <- report(miseq, type = fasta)
+#'
+#' sorted_fasta <- sort_dataframe(fasta,
+#'                                order = sort(sequence_names),
+#'                                named_col = "sequence_names")
+#'
 #' @return sorted data.frame
 #' @export
 sort_dataframe <- function(data, order, named_col) {

@@ -12,16 +12,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// get_available_processors
-int get_available_processors();
-RcppExport SEXP _strollur_get_available_processors() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(get_available_processors());
-    return rcpp_result_gen;
-END_RCPP
-}
 // new_dataset
 Rcpp::Environment new_dataset(string dataset_name, Rcpp::Nullable<int> processors);
 RcppExport SEXP _strollur_new_dataset(SEXP dataset_nameSEXP, SEXP processorsSEXP) {
@@ -590,7 +580,6 @@ END_RCPP
 RcppExport SEXP run_testthat_tests(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_strollur_get_available_processors", (DL_FUNC) &_strollur_get_available_processors, 0},
     {"_strollur_new_dataset", (DL_FUNC) &_strollur_new_dataset, 2},
     {"_strollur_new_reference", (DL_FUNC) &_strollur_new_reference, 5},
     {"_strollur_copy_dataset", (DL_FUNC) &_strollur_copy_dataset, 1},
