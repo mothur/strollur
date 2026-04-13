@@ -243,6 +243,9 @@ these functions
 - [`xdev_get_sequences()`](https://mothur.org/strollur/reference/xdev_get_sequences.md)
   : xdev_get_sequences
 
+- [`xdev_has_sequence_taxonomy()`](https://mothur.org/strollur/reference/xdev_has_sequence_taxonomy.md)
+  : xdev_has_sequence_taxonomy
+
 - [`xdev_merge_bins()`](https://mothur.org/strollur/reference/xdev_merge_bins.md)
   : xdev_merge_bins
 

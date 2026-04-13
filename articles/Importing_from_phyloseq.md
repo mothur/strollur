@@ -30,6 +30,7 @@ rdata_object
 #> Total number of seqs: 28216678 
 #> 
 #> Total number of samples: 26 
+#> Total number of sequence classifications: 19216 
 #> Your dataset includes metadata
 ```
 

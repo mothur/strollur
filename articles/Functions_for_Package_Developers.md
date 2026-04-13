@@ -67,8 +67,12 @@ miseq
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
 #> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
 #> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
 #> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata
@@ -205,8 +209,12 @@ miseq
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
 #> Total number of otus: 517 
+#> Total number of otu bin classifications: 517 
 #> Total number of asvs: 2324 
+#> Total number of asv bin classifications: 2324 
 #> Total number of phylotypes: 61 
+#> Total number of phylotype bin classifications: 61 
+#> Total number of sequence classifications: 2324 
 #> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata
@@ -291,8 +299,12 @@ miseq
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
 #> Total number of otus: 418 
+#> Total number of otu bin classifications: 418 
 #> Total number of asvs: 2324 
+#> Total number of asv bin classifications: 2324 
 #> Total number of phylotypes: 61 
+#> Total number of phylotype bin classifications: 61 
+#> Total number of sequence classifications: 2324 
 #> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata
@@ -362,8 +374,12 @@ miseq
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
 #> Total number of otus: 409 
+#> Total number of otu bin classifications: 409 
 #> Total number of asvs: 2224 
+#> Total number of asv bin classifications: 2224 
 #> Total number of phylotypes: 60 
+#> Total number of phylotype bin classifications: 60 
+#> Total number of sequence classifications: 2224 
 #> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata
@@ -427,8 +443,12 @@ miseq
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
 #> Total number of otus: 275 
+#> Total number of otu bin classifications: 275 
 #> Total number of asvs: 1373 
+#> Total number of asv bin classifications: 1373 
 #> Total number of phylotypes: 50 
+#> Total number of phylotype bin classifications: 50 
+#> Total number of sequence classifications: 1373 
 #> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata
@@ -491,8 +511,12 @@ miseq
 #> Total number of samples: 18 
 #> Total number of treatments: 2 
 #> Total number of otus: 266 
+#> Total number of otu bin classifications: 266 
 #> Total number of asvs: 1335 
+#> Total number of asv bin classifications: 1335 
 #> Total number of phylotypes: 49 
+#> Total number of phylotype bin classifications: 49 
+#> Total number of sequence classifications: 1335 
 #> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata
@@ -558,8 +582,12 @@ miseq
 #> Total number of samples: 18 
 #> Total number of treatments: 2 
 #> Total number of otus: 229 
+#> Total number of otu bin classifications: 229 
 #> Total number of asvs: 1221 
+#> Total number of asv bin classifications: 1221 
 #> Total number of phylotypes: 48 
+#> Total number of phylotype bin classifications: 48 
+#> Total number of sequence classifications: 1221 
 #> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata

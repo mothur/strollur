@@ -88,6 +88,7 @@ data
 #> 
 #> Total number of samples: 34 
 #> Total number of asvs: 759 
+#> Total number of asv bin classifications: 759 
 #> Your dataset includes metadata 
 #> 
 ```

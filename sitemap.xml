@@ -91,6 +91,7 @@
 <url><loc>https://mothur.org/strollur/reference/xdev_get_by_sample.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_get_list_vector.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_get_sequences.html</loc></url>
+<url><loc>https://mothur.org/strollur/reference/xdev_has_sequence_taxonomy.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_merge_bins.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_merge_sequences.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_names.html</loc></url>
