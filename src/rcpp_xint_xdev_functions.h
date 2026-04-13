@@ -1349,6 +1349,7 @@ Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name, int processors)
 //' For internal use only, deserialize_dobject an instance of the C++ 'Dataset'
 //'  class.
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @keywords internal
 //[[Rcpp::export]]
 void xint_deserialize_dobject(Rcpp::Environment data);
 
@@ -1358,6 +1359,7 @@ void xint_deserialize_dobject(Rcpp::Environment data);
 //' For internal use only, xint_serialize_dobject an instance of the C++ 'Dataset'
 //' class.
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @keywords internal
 //[[Rcpp::export]]
 void xint_serialize_dobject(Rcpp::Environment data);
 

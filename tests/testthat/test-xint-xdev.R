@@ -159,6 +159,17 @@ test_that("xdev - not a strollur object tests", {
   )
 })
 
+test_that("xint_copy_pointer", {
+    data <- read_mothur(fasta = strollur_example("final.fasta.gz"))
+    copy_data <- new_dataset("copy")
+
+    expect_equal(xdev_count(copy_data), 0)
+
+    copy_data$data <- xint_copy_pointer(data)
+
+    expect_equal(xdev_count(copy_data), 2425)
+})
+
 test_that("xdev_assign_bin_taxonomy", {
   data <- new_dataset()
 
