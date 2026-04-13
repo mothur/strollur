@@ -316,13 +316,13 @@ xdev_add_report <- function(data, table, type = "metadata", sequence_name = "seq
 #'
 #' @examples
 #'
-#'  data <- new_dataset("miseq_sop", 2)
+#'  data <- new_dataset("miseq_sop")
 #'  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 #'  xdev_add_sequences(data, fasta_data)
 #'
 #' # With the additional parameters to add information about the reference
 #'
-#'  data <- new_dataset("miseq_sop", 2)
+#'  data <- new_dataset("miseq_sop")
 #'  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 #'
 #'  xdev_add_sequences(data, fasta_data,
