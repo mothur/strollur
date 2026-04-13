@@ -11,6 +11,13 @@ assigned_message(num, tag = "sequences")
 
 \item{tag}{string containing item assigned Default = 'sequences'.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Report dataset assignments
+}
+\examples{
+assigned_message(10)
+assigned_message(10, "sequence abundances")
 }

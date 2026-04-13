@@ -17,10 +17,10 @@ status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.o
 
 ## Overview
 
-The **strollur** package stores the data associated with your microbial
-DNA analysis. This includes nucleotide sequences, abundance, sample and
-treatment assignments, taxonomic classifications, sequence bin
-assignments, metadata, trees and various reports. It is designed to
+The **`strollur`** package stores the data associated with your
+microbial DNA analysis. This includes nucleotide sequences, abundance,
+sample and treatment assignments, taxonomic classifications, sequence
+bin assignments, metadata, trees and various reports. It is designed to
 facilitate data analysis across multiple R packages with utility
 functions to import from [mothur](https://mothur.org),
 [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/)
@@ -48,7 +48,6 @@ and
 You can install the CRAN version with:
 
 ``` r
-library(strollur)
 install.packages("strollur")
 ```
 
@@ -109,7 +108,9 @@ data
 #> 
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
-#> Total number of otus: 531
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of sequence classifications: 2425
 ```
 
 ## Getting help
@@ -123,3 +124,9 @@ minimal reproducible example with your issue.
 Is there a feature you’d like to see included, please let us know! Pull
 requests are welcome on
 [GitHub](https://github.com/mothur/strollur/pulls).
+
+## Code of Conduct
+
+Please note that the strollur project is released with a [Contributor
+Code of Conduct](https://mothur.org/strollur/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.

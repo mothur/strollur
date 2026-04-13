@@ -9,19 +9,18 @@
 #' counts by sample for each ASV. The sample names are stored as row names and
 #' the sequence nucleotide strings are stored as column names.
 #'
-#' To generate the dada2 sequence table you can follow
+#' To generate the dada2 sequence table from your own files you can follow
 #' \href{https://benjjneb.github.io/dada2/tutorial.html}{this dada2 tutorial}.
+#'
 #' @param sequence_table A dada2 sequence table
 #' @param dataset_name A string containing a name for your dataset.
 #' @examples
-#' \dontrun{
-#' # Follow the dada2 tutorial above to generate seqtab from your fastq files.
 #'
-#' # dim(seqtab)
-#' # [1]  20 293
+#' seqtab <- readRDS(strollur_example("dada2.rds"))
+#' dim(seqtab)
 #'
-#' # data <- read_dada2(seqtab, "dada2")
-#' }
+#' data <- read_dada2(sequence_table = seqtab, dataset_name = "dada2 example")
+#'
 #' @return A `strollur` object
 #' @export
 read_dada2 <- function(sequence_table, dataset_name = "") {

@@ -17,6 +17,9 @@ removing each bin}
 
 \item{bin_type}{a string indicating the type of clusters.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, the remove bins function allows
 you to remove bins from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

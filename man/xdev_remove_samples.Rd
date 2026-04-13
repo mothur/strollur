@@ -15,6 +15,9 @@ remove.}
 \item{reason, }{string containing the reason for removal.
 Default = "remove_samples".}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, the remove samples function allows
 you to remove samples from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

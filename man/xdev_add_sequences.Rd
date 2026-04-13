@@ -44,13 +44,13 @@ Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html
 }
 \examples{
 
- data <- new_dataset("miseq_sop", 2)
+ data <- new_dataset("miseq_sop")
  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
  xdev_add_sequences(data, fasta_data)
 
 # With the additional parameters to add information about the reference
 
- data <- new_dataset("miseq_sop", 2)
+ data <- new_dataset("miseq_sop")
  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
  xdev_add_sequences(data, fasta_data,

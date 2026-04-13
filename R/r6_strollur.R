@@ -72,7 +72,12 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
-    #' Get summary of `strollur` object
+    #' Print summary of `strollur` object
+    #' @examples
+    #' miseq <- miseq_sop_example()
+    #' miseq
+    #'
+    #' @return No return value, called for side effects.
     print = function() {
       if (names(self, type = "dataset")[1] != "") {
         cat(names(self, type = "dataset")[1])
@@ -242,6 +247,7 @@ strollur <- R6Class("strollur",
     #'
     #' # To the total abundance for each treatment
     #' miseq$abundance(type = "treatments")
+    #' @return data.frame
     abundance = function(type = "sequences",
                          bin_type = "otu",
                          by_sample = FALSE) {
@@ -353,6 +359,7 @@ strollur <- R6Class("strollur",
     #'   reference = resource_reference
     #' )
     #'
+    #' @return Updated `strollur` object - invisible(self)
     add = function(table,
                    type = "sequences",
                    report_type = NULL,
@@ -453,7 +460,7 @@ strollur <- R6Class("strollur",
     #'  "final.opti_mcc.jclass.ave.tre"))
     #'
     #'  data$add_sample_tree(tree)
-    #'
+    #' @return Updated `strollur` object
     add_sample_tree = function(tree) {
       if (!inherits(tree, "phylo")) {
         .abort_incorrect_type("phylo", tree)
@@ -517,6 +524,7 @@ strollur <- R6Class("strollur",
     #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'
+    #' @return Updated `strollur` object
     add_sequence_tree = function(tree) {
       if (!inherits(tree, "phylo")) {
         .abort_incorrect_type("phylo", tree)
@@ -705,7 +713,7 @@ strollur <- R6Class("strollur",
     #'
     #' data$assign(table = sample_assignments, type = "treatments")
     #'
-    #' @return double - The number of items assigned
+    #' @return Updated `strollur` object
     assign = function(table,
                       type = "bins",
                       bin_type = "otu",
@@ -800,6 +808,12 @@ strollur <- R6Class("strollur",
 
     #' @description
     #' Clear data from datasest
+    #' @examples
+    #' miseq <- miseq_sop_example()
+    #' miseq
+    #' miseq$clear()
+    #' miseq
+    #' @return Updated `strollur` object
     clear = function() {
       clear(self)
 
@@ -924,6 +938,7 @@ strollur <- R6Class("strollur",
     #'  data$add_sample_tree(tree)
     #'  data$get_sample_tree()
     #'
+    #' @return ape::tree
     get_sample_tree = function() {
       if (!is.null(self$sample_tree)) {
         # prune tree if needed
@@ -952,6 +967,7 @@ strollur <- R6Class("strollur",
     #'  data$add_sequence_tree(tree)
     #'  data$get_sequence_tree()
     #'
+    #' @return ape::tree
     get_sequence_tree = function() {
       if (!is.null(self$sequence_tree)) {
         # prune tree if needed

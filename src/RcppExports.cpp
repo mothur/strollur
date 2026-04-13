@@ -12,28 +12,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// get_available_processors
-int get_available_processors();
-RcppExport SEXP _strollur_get_available_processors() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(get_available_processors());
-    return rcpp_result_gen;
-END_RCPP
-}
-// new_dataset
-Rcpp::Environment new_dataset(string dataset_name, Rcpp::Nullable<int> processors);
-RcppExport SEXP _strollur_new_dataset(SEXP dataset_nameSEXP, SEXP processorsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< string >::type dataset_name(dataset_nameSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<int> >::type processors(processorsSEXP);
-    rcpp_result_gen = Rcpp::wrap(new_dataset(dataset_name, processors));
-    return rcpp_result_gen;
-END_RCPP
-}
 // new_reference
 Rcpp::List new_reference(string reference_name, string reference_version, string reference_usage, string reference_note, string reference_url);
 RcppExport SEXP _strollur_new_reference(SEXP reference_nameSEXP, SEXP reference_versionSEXP, SEXP reference_usageSEXP, SEXP reference_noteSEXP, SEXP reference_urlSEXP) {
@@ -590,8 +568,6 @@ END_RCPP
 RcppExport SEXP run_testthat_tests(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_strollur_get_available_processors", (DL_FUNC) &_strollur_get_available_processors, 0},
-    {"_strollur_new_dataset", (DL_FUNC) &_strollur_new_dataset, 2},
     {"_strollur_new_reference", (DL_FUNC) &_strollur_new_reference, 5},
     {"_strollur_copy_dataset", (DL_FUNC) &_strollur_copy_dataset, 1},
     {"_strollur_clear", (DL_FUNC) &_strollur_clear, 1},

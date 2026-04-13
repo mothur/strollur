@@ -11,6 +11,9 @@ xdev_set_dataset_name(data, dataset_name)
 
 \item{dataset_name, }{a string containing the desired name}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, set the name of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 }

@@ -9,6 +9,9 @@ clear(data)
 \arguments{
 \item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }

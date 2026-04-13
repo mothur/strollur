@@ -24,10 +24,6 @@ A list containing artifact
 }
 \description{
 Read a \href{https://qiime2.org}{qiime2} qza containing bin data
-
-# nolint start
-To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
-# nolint end
 }
 \examples{
 

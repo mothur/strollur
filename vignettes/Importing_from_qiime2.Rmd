@@ -15,8 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-
-*strollur* includes the function `read_qiime2()` as well as several functions to read [qiime2](https://qiime2.org) output files individually. To create a dataset from the outputs of the [qiime2 moving-pictures example](https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html), run the following:
+*strollur* includes the function `read_qiime2()` as well as several functions to read [qiime2](https://qiime2.org) output files individually. To create a dataset from the outputs of the qiime2, run the following:
 
 ```{r}
 qza_files <- c(

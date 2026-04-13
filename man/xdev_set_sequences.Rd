@@ -21,6 +21,9 @@ xdev_set_sequences(
 \item{comments, }{a vector of strings containing sequence comments.
 (Optional)}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, the set sequences function allows
 you to change the nucleotide strings of sequences in a
