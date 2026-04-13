@@ -118,7 +118,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
   }
 
   # create new blank dataset
-  data <- strollur$new(dataset_name)
+  data <- new_dataset(dataset_name)
 
   # add sequence nucleotide strings
   if (!is.null(fasta)) {
