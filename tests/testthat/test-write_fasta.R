@@ -2,7 +2,7 @@ test_that("write_fasta - errors", {
   expect_error(write_fasta("Bad_type"))
 
   # no file name with nameless dataset
-  data <- strollur$new()
+  data <- new_dataset()
   expect_error(write_fasta(data))
 })
 

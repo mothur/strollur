@@ -452,6 +452,78 @@ string Dataset::degapSeq(const string& sequence) const{
     return degappedSeq;
 }
 /******************************************************************************/
+double Dataset::assignSequenceTaxonomyTidy(const vector<string>& sequence_names,
+                                            const vector<int>& levels,
+                                            const vector<string>& taxes,
+                                            const vector<float>& confidences) {
+    double numSeqsTaxonomyAssigned = 0;
+
+    if (!hasSequenceData) {
+        addSequences(unique(sequence_names));
+    }
+
+    // allocate space
+    if (taxonomies.size() != names.size()) {
+        taxonomies.resize(names.size(), "");
+    }
+
+    string assembledTax = "";
+    int index = -1;
+    // get first index
+    if (!sequence_names.empty()) {
+        auto it = seqIndex.find(sequence_names[0]);
+
+        if (it != seqIndex.end()) {
+            numSeqsTaxonomyAssigned++;
+            index = it->second;
+        }
+    }
+
+    for (size_t i = 0; i < levels.size(); i++) {
+
+        // start of new sequences taxonomies, ignore first one
+        if ((levels[i] == 1) && (i != 0)) {
+
+            // can occur if last sequence was missing from dataset
+            if (index != -1) {
+                // update last sequences full taxonomy
+                taxonomies[index] = assembledTax;
+                assembledTax = "";
+            }
+
+            auto it = seqIndex.find(sequence_names[i]);
+
+            if (it != seqIndex.end()) {
+                numSeqsTaxonomyAssigned++;
+                index = it->second;
+                assembledTax = taxes[i] + "(" + toString(confidences[i]) + ");";
+            }
+            else{
+                string message = "[WARNING]: " + sequence_names[i] + " is not in your dataset,";
+                message += " ignoring.";
+                RcppThread::Rcout << endl << message << endl;
+                index = -1;
+            }
+        }
+        else{
+            assembledTax += taxes[i] + "(" + toString(confidences[i]) + ");";
+        }
+    }
+
+    // get last sequences taxonomy
+    if (index != -1) {
+        // update last sequences full taxonomy
+        taxonomies[index] = assembledTax;
+    }
+
+    hasSequenceTaxonomy = true;
+
+    for (auto & binTable : binTables) {
+        binTable.runClassify = true;
+    }
+    return numSeqsTaxonomyAssigned;
+}
+/******************************************************************************/
 double Dataset::assignSequenceTaxonomy(const vector<string>& n,
                                        const vector<string>& t){
 
@@ -538,7 +610,6 @@ const Rcpp::DataFrame Dataset::fillTaxReport(const string& mode) {
     for (size_t i = 0; i < taxes.size(); i++) {
         const int numLevels = split(taxes[i], ';',
                               back_inserter(taxons[i]));
-
         if (numLevels > maxLevel) { maxLevel = numLevels; }
 
         confidences[i] = util.removeConfidences(taxons[i]);
@@ -575,17 +646,29 @@ const Rcpp::DataFrame Dataset::fillTaxReport(const string& mode) {
 
     if (!hasConfidences) {
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("id") = dfIds,
-            Rcpp::_["level"] = levels,
-            Rcpp::_["taxon"] = dfTaxs);
+            Rcpp::Named("sequence_names") = dfIds,
+            Rcpp::_["levels"] = levels,
+            Rcpp::_["taxonomies"] = dfTaxs);
+
+        if (mode != "sequence") {
+            vector<string> newNames = {"bin_names", "levels", "taxonomies"};
+            df.attr("names") = newNames;
+        }
+
         return df;
     }
 
     Rcpp::DataFrame df = Rcpp::DataFrame::create(
-        Rcpp::Named("id") = dfIds,
-        Rcpp::_["level"] = levels,
-        Rcpp::_["taxon"] = dfTaxs,
-        Rcpp::_["confidence"] = dfConfidences);
+        Rcpp::Named("sequence_names") = dfIds,
+        Rcpp::_["levels"] = levels,
+        Rcpp::_["taxonomies"] = dfTaxs,
+        Rcpp::_["confidences"] = dfConfidences);
+
+    if (mode != "sequence") {
+        vector<string> newNames = {"bin_names", "levels",
+                                   "taxonomies", "confidences"};
+        df.attr("names") = newNames;
+    }
 
     return df;
 }

@@ -16,7 +16,7 @@
 #' ))
 #'
 #' # create a new empty `strollur` object
-#' data <- strollur$new()
+#' data <- new_dataset()
 #'
 #' # assign sequence classifications
 #' assign(data = data, table = classification_data, type = "sequence_taxonomy")

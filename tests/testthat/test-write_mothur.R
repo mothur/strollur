@@ -96,7 +96,7 @@ test_that("write_mothur - bin_data only", {
 })
 
 test_that("write_mothur - report_data only", {
-  data <- strollur$new()
+  data <- new_dataset()
 
   xdev_add_report(
     data,
@@ -121,7 +121,7 @@ test_that("write_mothur - report_data only", {
 
   unzip(zip_file, exdir = get_full_name("tmp"), junkpaths = TRUE)
 
-  data2 <- strollur$new()
+  data2 <- new_dataset()
 
   seq_col <- list("QueryName", "Name")
   names(seq_col) <- outputs
@@ -153,7 +153,7 @@ test_that("write_mothur - report_data only", {
     report(data2, "alignment_report")
   )
 
-  data <- strollur$new()
+  data <- new_dataset()
 
   xdev_add_report(data, readr::read_tsv(
     strollur_example("chimera_report.tsv"),
@@ -169,7 +169,7 @@ test_that("write_mothur - report_data only", {
 
   unzip(zip_file, exdir = get_full_name("tmp"), junkpaths = TRUE)
 
-  data2 <- strollur$new()
+  data2 <- new_dataset()
 
   xdev_add_report(data2, readr::read_tsv(
     outputs[2],

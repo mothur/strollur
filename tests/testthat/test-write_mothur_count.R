@@ -2,7 +2,7 @@ test_that("write_mothur_count - errors", {
   expect_error(write_mothur_count("Bad_type"))
 
   # no file name with nameless dataset
-  data <- strollur$new()
+  data <- new_dataset()
   expect_error(write_mothur_count(data))
 })
 

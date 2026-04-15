@@ -116,7 +116,7 @@ data$add(
 ## ------------------------------------------------
 
 
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
 
  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
  assign(data = data, table = df, type = "bins", bin_type = "otu")
@@ -131,7 +131,7 @@ data$add(
 ## ------------------------------------------------
 
 
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
 
@@ -311,7 +311,7 @@ data$get_bin_types()
 
  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
 
  # assign abundance 'otu' bins
  data$assign(table = df, type = "bins", bin_type = "otu")
@@ -325,7 +325,7 @@ data$get_bin_types()
 ## ------------------------------------------------
 
 
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
  data$get_sequence_tree()
@@ -774,7 +774,7 @@ Updated `strollur` object
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
 
  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
  assign(data = data, table = df, type = "bins", bin_type = "otu")
@@ -811,7 +811,7 @@ Updated `strollur` object
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
 
@@ -1160,7 +1160,7 @@ ape::tree
 
  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
 
  # assign abundance 'otu' bins
  data$assign(table = df, type = "bins", bin_type = "otu")
@@ -1189,7 +1189,7 @@ ape::tree
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
  data$get_sequence_tree()

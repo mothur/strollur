@@ -160,7 +160,7 @@ strollur <- R6Class("strollur",
           cat(
             paste0(
               "Total number of ", bin_type, " bin classifications: ",
-              length(unique(bin_tax_report[["id"]]))
+              length(unique(bin_tax_report[["bin_names"]]))
             ),
             "\n"
           )
@@ -175,7 +175,7 @@ strollur <- R6Class("strollur",
         cat(
           paste0(
             "Total number of sequence classifications: ",
-            length(unique(seq_tax_report[["id"]]))
+            length(unique(seq_tax_report[["sequence_names"]]))
           ),
           "\n"
         )
@@ -451,7 +451,7 @@ strollur <- R6Class("strollur",
     #' @param tree a phylo tree object created by ape::read.tree.
     #' @examples
     #'
-    #'  data <- strollur$new("my_dataset")
+    #'  data <- new_dataset("my_dataset")
     #'
     #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
@@ -520,7 +520,7 @@ strollur <- R6Class("strollur",
     #' @param tree a phylo tree object created by ape::read.tree.
     #' @examples
     #'
-    #'  data <- strollur$new("my_dataset")
+    #'  data <- new_dataset("my_dataset")
     #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'
@@ -930,7 +930,7 @@ strollur <- R6Class("strollur",
     #'
     #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'
-    #'  data <- strollur$new("my_dataset")
+    #'  data <- new_dataset("my_dataset")
     #'
     #'  # assign abundance 'otu' bins
     #'  data$assign(table = df, type = "bins", bin_type = "otu")
@@ -962,7 +962,7 @@ strollur <- R6Class("strollur",
     #' Get phylo tree relating the sequences in your strollur object.
     #' @examples
     #'
-    #'  data <- strollur$new("my_dataset")
+    #'  data <- new_dataset("my_dataset")
     #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'  data$get_sequence_tree()
