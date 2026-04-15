@@ -51,7 +51,7 @@ xdev_assign_sequence_abundance(data = data,
                           table = data.frame(sequence_names = sequence_names,
                                              abundances = abundances,
                                              samples = samples))
-#> ℹ Assigned 4 sequence abundances.
+#> Assigned 4 sequence abundances.
 #> [1] 4
 
 seqs_to_update <- c("seq4")

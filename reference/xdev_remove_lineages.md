@@ -39,11 +39,11 @@ data <- read_mothur(fasta = strollur_example("final.fasta.gz"),
                        design = strollur_example("mouse.time.design"),
                        otu_list = strollur_example("final.opti_mcc.list.gz"),
                        dataset_name = "miseq_sop")
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 19 samples to treatments.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 19 samples to treatments.
 
 contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
  "Eukaryota")

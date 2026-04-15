@@ -1,4 +1,4 @@
-# Importing_from_phyloseq
+# Importing from phyloseq
 
 ``` r
 library(strollur)
@@ -10,9 +10,9 @@ library(strollur)
 library(phyloseq)
 ```
 
-rdataset includes functionality for the reading and writing of phyloseq
-objects. To convert a phyloseq object to a rdataset object, you need to
-run the
+`strollur` includes functionality for the reading and writing of
+phyloseq objects. To convert a phyloseq object to a strollur object, you
+need to run the
 [`read_phyloseq()`](https://mothur.org/strollur/reference/read_phyloseq.md)
 function.
 
@@ -20,10 +20,10 @@ function.
 # Using the phyloseq example data
 phylo_object <- readRDS(strollur_example("GlobalPatterns.RDS"))
 rdata_object <- read_phyloseq(phylo_object)
-#> ℹ Added 19216 sequences.
-#> ℹ Assigned 19216 sequence abundances.
-#> ℹ Assigned 19216 sequence taxonomies.
-#> ℹ Added metadata.
+#> Added 19216 sequences.
+#> Assigned 19216 sequence abundances.
+#> Assigned 19216 sequence taxonomies.
+#> Added metadata.
 rdata_object
 #> 
 #> Number of unique seqs: 19216 
@@ -34,7 +34,7 @@ rdata_object
 #> Your dataset includes metadata
 ```
 
-Now that are phyloseq object is converted into a rdataset object, we can
+Now that are phyloseq object is converted into a strollur object, we can
 utilize functions like
 [`count()`](https://mothur.org/strollur/reference/count.md),
 [`abundance()`](https://mothur.org/strollur/reference/abundance.md), and
@@ -56,7 +56,7 @@ head(abundance(rdata_object, "sequences"))
 #> 6         246140          4
 ```
 
-Furthermore, we can output rdataset objects as phyloseq objects using
+Furthermore, we can output strollur objects as phyloseq objects using
 the
 [`write_phyloseq()`](https://mothur.org/strollur/reference/write_phyloseq.md)
 function.
@@ -73,18 +73,18 @@ phyloseq_object
 
 # With the miseq example data
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 miseq_phyloseq <- write_phyloseq(miseq)
 miseq_phyloseq
 #> phyloseq-class experiment-level object

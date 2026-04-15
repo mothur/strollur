@@ -20,13 +20,13 @@ data <- read_mothur(
   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
   dataset_name = "miseq_sop"
 )
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
 ```
 
 To view a summary of data:
@@ -106,7 +106,7 @@ sequences to your data set using the
 
 ``` r
 add(my_data, table = fasta_data, type = "sequences")
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 #> [1] 2425
 my_data
 #> my_data:
@@ -143,7 +143,7 @@ function:
 
 ``` r
 assign(my_data, table = sample_table, type = "sequence_abundance")
-#> ℹ Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence abundances.
 #> [1] 2425
 my_data
 #> my_data:
@@ -181,7 +181,7 @@ set as follows:
 
 ``` r
 assign(my_data, table = classification_data, type = "sequence_taxonomy")
-#> ℹ Assigned 2425 sequence taxonomies.
+#> Assigned 2425 sequence taxonomies.
 #> [1] 2425
 ```
 
@@ -202,17 +202,17 @@ follows:
 
 ``` r
 assign(my_data, table = otu_data, type = "bins", bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 #> [1] 531
 assign(my_data, table = asv_data, type = "bins", bin_type = "asv")
-#> ℹ Assigned 2425 asv bins.
+#> Assigned 2425 asv bins.
 #> [1] 2425
 assign(
   my_data,
   table = phylotype_data,
   type = "bins", bin_type = "phylotype"
 )
-#> ℹ Assigned 63 phylotype bins.
+#> Assigned 63 phylotype bins.
 #> [1] 63
 my_data
 #> my_data:
@@ -261,7 +261,7 @@ follows:
 
 ``` r
 assign(my_data, table = otu_taxonomy_data, type = "bin_taxonomy")
-#> ℹ Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin taxonomies.
 #> [1] 531
 ```
 

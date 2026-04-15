@@ -44,7 +44,7 @@
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
-    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing from phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
 </li>
@@ -120,13 +120,17 @@ strollur has a function for reading FASTA files named
 a data.frame.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">fasta_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    2425 obs. of  2 variables:</span></span>
+<span><span class="co">#&gt;  $ sequence_names: chr  "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...</span></span>
+<span><span class="co">#&gt;  $ sequences     : chr  "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-"| __truncated__ "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--TCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-G-CT-G-T-T-AA-G-T-"| __truncated__ ...</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequences"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span></span>
+<span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
@@ -167,7 +171,7 @@ from our data set.</p>
 <span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="va">resource_reference</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span></span>
+<span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
@@ -218,6 +222,29 @@ contigs_report the <em>sequence_name</em> column is called
 <em>Name</em>, so we will add one more line to the add function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_contigs_report.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">contigs_report</span><span class="op">)</span></span>
+<span><span class="co">#&gt; spc_tbl_ [2,425 × 8] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ Name           : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_18044_1900" "M00967_43_000000000-A3JHG_1_1101_15533_5293" "M00967_43_000000000-A3JHG_1_1101_18278_3345" "M00967_43_000000000-A3JHG_1_1101_22681_5598" ...</span></span>
+<span><span class="co">#&gt;  $ Length         : num [1:2425] 253 253 253 253 253 252 253 253 253 253 ...</span></span>
+<span><span class="co">#&gt;  $ Overlap_Length : num [1:2425] 249 249 249 250 249 249 249 249 249 249 ...</span></span>
+<span><span class="co">#&gt;  $ Overlap_Start  : num [1:2425] 2 2 2 2 2 2 2 2 2 2 ...</span></span>
+<span><span class="co">#&gt;  $ Overlap_End    : num [1:2425] 251 251 251 252 251 251 251 251 251 251 ...</span></span>
+<span><span class="co">#&gt;  $ MisMatches     : num [1:2425] 5 0 1 1 0 14 0 0 3 0 ...</span></span>
+<span><span class="co">#&gt;  $ Num_Ns         : num [1:2425] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;  $ Expected_Errors: num [1:2425] 0.07459 0.00215 0.00484 0.00379 0.0022 ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "spec")=</span></span>
+<span><span class="co">#&gt;   .. cols(</span></span>
+<span><span class="co">#&gt;   ..   Name = <span style="color: #BB0000;">col_character()</span>,</span></span>
+<span><span class="co">#&gt;   ..   Length = <span style="color: #00BB00;">col_double()</span>,</span></span>
+<span><span class="co">#&gt;   ..   Overlap_Length = <span style="color: #00BB00;">col_double()</span>,</span></span>
+<span><span class="co">#&gt;   ..   Overlap_Start = <span style="color: #00BB00;">col_double()</span>,</span></span>
+<span><span class="co">#&gt;   ..   Overlap_End = <span style="color: #00BB00;">col_double()</span>,</span></span>
+<span><span class="co">#&gt;   ..   MisMatches = <span style="color: #00BB00;">col_double()</span>,</span></span>
+<span><span class="co">#&gt;   ..   Num_Ns = <span style="color: #00BB00;">col_double()</span>,</span></span>
+<span><span class="co">#&gt;   ..   Expected_Errors = <span style="color: #00BB00;">col_double()</span></span></span>
+<span><span class="co">#&gt;   .. )</span></span>
+<span><span class="co">#&gt;  - attr(*, "problems")=&lt;externalptr&gt;</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">contigs_report</span>,</span>
@@ -225,7 +252,7 @@ contigs_report the <em>sequence_name</em> column is called
 <span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span></span>
+<span><span class="co">#&gt; Added a contigs_report.</span></span>
 <span><span class="co">#&gt; [1] 1</span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
@@ -254,13 +281,23 @@ learn how to add metadata. We can add metadata to our data set by
 setting the type = “metadata”.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_metadata.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span></span>
+<span><span class="co">#&gt; spc_tbl_ [19 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...</span></span>
+<span><span class="co">#&gt;  $ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "spec")=</span></span>
+<span><span class="co">#&gt;   .. cols(</span></span>
+<span><span class="co">#&gt;   ..   sample = <span style="color: #BB0000;">col_character()</span>,</span></span>
+<span><span class="co">#&gt;   ..   days_post_wean = <span style="color: #00BB00;">col_double()</span></span></span>
+<span><span class="co">#&gt;   .. )</span></span>
+<span><span class="co">#&gt;  - attr(*, "problems")=&lt;externalptr&gt;</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">metadata</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"metadata"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added metadata.</span></span>
+<span><span class="co">#&gt; Added metadata.</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -278,7 +315,7 @@ the type = “references”.</p>
 <span>  table <span class="op">=</span> <span class="va">reference</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"references"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span></span>
+<span><span class="co">#&gt; Added 2 resource references.</span></span>
 <span><span class="co">#&gt; [1] 2</span></span></code></pre></div>
 </div>
 </div>
@@ -296,9 +333,23 @@ sample data using the assign function with the type =
 “sequence_abundance”.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_abundance_by_sample.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">abundance_table</span><span class="op">)</span></span>
+<span><span class="co">#&gt; spc_tbl_ [5,539 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ sequence_names: chr [1:5539] "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...</span></span>
+<span><span class="co">#&gt;  $ abundances    : num [1:5539] 1 1 1 1 1 1 22 19 12 9 ...</span></span>
+<span><span class="co">#&gt;  $ samples       : chr [1:5539] "F3D150" "F3D142" "F3D3" "F3D8" ...</span></span>
+<span><span class="co">#&gt;  $ treatments    : chr [1:5539] "Late" "Late" "Early" "Early" ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "spec")=</span></span>
+<span><span class="co">#&gt;   .. cols(</span></span>
+<span><span class="co">#&gt;   ..   names = <span style="color: #BB0000;">col_character()</span>,</span></span>
+<span><span class="co">#&gt;   ..   abundances = <span style="color: #00BB00;">col_double()</span>,</span></span>
+<span><span class="co">#&gt;   ..   samples = <span style="color: #BB0000;">col_character()</span>,</span></span>
+<span><span class="co">#&gt;   ..   treatments = <span style="color: #BB0000;">col_character()</span></span></span>
+<span><span class="co">#&gt;   .. )</span></span>
+<span><span class="co">#&gt;  - attr(*, "problems")=&lt;externalptr&gt;</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span></span>
+<span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span></span>
 <span><span class="va">data</span></span>
@@ -334,9 +385,19 @@ reference the bin clusters you are adding. Let’s add some <a href="https://en.
 Taxonomic Unit</a> clusters and set the bin_type = “otu”.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_list_otu.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">bin_table</span><span class="op">)</span></span>
+<span><span class="co">#&gt; spc_tbl_ [2,425 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ bin_names     : chr [1:2425] "Otu001" "Otu001" "Otu001" "Otu001" ...</span></span>
+<span><span class="co">#&gt;  $ sequence_names: chr [1:2425] "M00967_43_000000000-A3JHG_1_1111_20933_6700" "M00967_43_000000000-A3JHG_1_1113_17095_9759" "M00967_43_000000000-A3JHG_1_1114_22144_24942" "M00967_43_000000000-A3JHG_1_1112_5981_8948" ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "spec")=</span></span>
+<span><span class="co">#&gt;   .. cols(</span></span>
+<span><span class="co">#&gt;   ..   otu_id = <span style="color: #BB0000;">col_character()</span>,</span></span>
+<span><span class="co">#&gt;   ..   seq_id = <span style="color: #BB0000;">col_character()</span></span></span>
+<span><span class="co">#&gt;   .. )</span></span>
+<span><span class="co">#&gt;  - attr(*, "problems")=&lt;externalptr&gt;</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
 <span><span class="co">#&gt; [1] 531</span></span>
 <span></span>
 <span><span class="va">data</span></span>
@@ -377,30 +438,50 @@ taxonomy to our sequences.</p>
 <code class="sourceCode R"><span><span class="va">sequence_classification_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span></span>
 <span>  taxonomy <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sequence_classification_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; spc_tbl_ [2,425 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ sequence_names: chr [1:2425] "M00967_43_000000000-A3JHG_1_2102_17714_13657" "M00967_43_000000000-A3JHG_1_2109_7813_4701" "M00967_43_000000000-A3JHG_1_1113_19457_3875" "M00967_43_000000000-A3JHG_1_1112_18411_17052" ...</span></span>
+<span><span class="co">#&gt;  $ taxonomies    : chr [1:2425] "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);Lachnospiraceae(99);Lachnospiraceae_unclassified(99);" "Bacteria(99);Firmicutes(94);Clostridia(93);Clostridiales(93);Lachnospiraceae(90);Lachnospiraceae_unclassified(90);" "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);Lachnospiraceae(100);Johnsonella(93);" "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(98);\"Bacteroidales\"(98);\"Porphyromonadaceae\"(97);\"Por"| __truncated__ ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "spec")=</span></span>
+<span><span class="co">#&gt;   .. cols(</span></span>
+<span><span class="co">#&gt;   ..   X1 = <span style="color: #BB0000;">col_character()</span>,</span></span>
+<span><span class="co">#&gt;   ..   X2 = <span style="color: #BB0000;">col_character()</span></span></span>
+<span><span class="co">#&gt;   .. )</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">sequence_classification_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span></code></pre></div>
 <p>Note, when you assign taxonomy to sequences that are assigned to
 bins, strollur will automatically assign the bin taxonomies to be the
 consensus taxonomy of the sequences in the bins. You can also set bin
 taxonomies independently by setting the type = “bin_taxonomy”.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">otu_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">otu_taxonomy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
 <span>  <span class="st">"final.cons.taxonomy"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">otu_taxonomy_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; spc_tbl_ [531 × 3] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ bin_names : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...</span></span>
+<span><span class="co">#&gt;  $ abundances: num [1:531] 12288 8892 7794 7476 7450 ...</span></span>
+<span><span class="co">#&gt;  $ taxonomies: chr [1:531] "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);Barnesiella(100);" ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "spec")=</span></span>
+<span><span class="co">#&gt;   .. cols(</span></span>
+<span><span class="co">#&gt;   ..   OTU = <span style="color: #BB0000;">col_character()</span>,</span></span>
+<span><span class="co">#&gt;   ..   Size = <span style="color: #00BB00;">col_double()</span>,</span></span>
+<span><span class="co">#&gt;   ..   Taxonomy = <span style="color: #BB0000;">col_character()</span></span></span>
+<span><span class="co">#&gt;   .. )</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  table <span class="op">=</span> <span class="va">otu_data</span>,</span>
+<span>  table <span class="op">=</span> <span class="va">otu_taxonomy_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
 <span><span class="co">#&gt; [1] 531</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -411,13 +492,23 @@ bins in your clusters. Let’s assign bin representatives to our
 <em>otu</em> bins.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bin_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_representative_sequences.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">bin_reps</span><span class="op">)</span></span>
+<span><span class="co">#&gt; spc_tbl_ [531 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ bin_names     : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...</span></span>
+<span><span class="co">#&gt;  $ sequence_names: chr [1:531] "M00967_43_000000000-A3JHG_1_1108_14299_17220" "M00967_43_000000000-A3JHG_1_1106_22705_6123" "M00967_43_000000000-A3JHG_1_1101_15533_5293" "M00967_43_000000000-A3JHG_1_1105_25642_17588" ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "spec")=</span></span>
+<span><span class="co">#&gt;   .. cols(</span></span>
+<span><span class="co">#&gt;   ..   bin_names = <span style="color: #BB0000;">col_character()</span>,</span></span>
+<span><span class="co">#&gt;   ..   sequence_names = <span style="color: #BB0000;">col_character()</span></span></span>
+<span><span class="co">#&gt;   .. )</span></span>
+<span><span class="co">#&gt;  - attr(*, "problems")=&lt;externalptr&gt;</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">bin_reps</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_representatives"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
 <span><span class="co">#&gt; [1] 531</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -428,13 +519,22 @@ you can also assign samples to treatments by setting type =
 “treatments”.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_sample_design.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sample_assignments</span><span class="op">)</span></span>
+<span><span class="co">#&gt; spc_tbl_ [19 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ samples   : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...</span></span>
+<span><span class="co">#&gt;  $ treatments: chr [1:19] "Early" "Early" "Late" "Late" ...</span></span>
+<span><span class="co">#&gt;  - attr(*, "spec")=</span></span>
+<span><span class="co">#&gt;   .. cols(</span></span>
+<span><span class="co">#&gt;   ..   samples = <span style="color: #BB0000;">col_character()</span>,</span></span>
+<span><span class="co">#&gt;   ..   treatments = <span style="color: #BB0000;">col_character()</span></span></span>
+<span><span class="co">#&gt;   .. )</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">sample_assignments</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"treatments"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span></span>
+<span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
 <span><span class="co">#&gt; [1] 19</span></span></code></pre></div>
 </div>
 </div>

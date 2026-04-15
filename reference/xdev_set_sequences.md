@@ -48,7 +48,7 @@ data <- new_dataset(dataset_name = "my_dataset")
 xdev_add_sequences(data = data,
               table = data.frame(sequence_names = c("seq1", "seq2",
                                                   "seq3", "seq4")))
-#> ℹ Added 4 sequences.
+#> Added 4 sequences.
 #> [1] 4
 
 xdev_set_sequences(data = data,

@@ -24,7 +24,7 @@
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
-    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing from phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -130,7 +130,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span>  <span class="va">otu_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.list.gz"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu">xdev_assign_bins</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># To add abundance only bin assignments:</span></span></span>
@@ -139,7 +139,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span>  <span class="va">otu_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_mothur_rabund.html">read_mothur_rabund</a></span><span class="op">(</span>rabund <span class="op">=</span> <span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.rabund"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu">xdev_assign_bins</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># To add abundance bin assignments parsed by sample:</span></span></span>
@@ -148,7 +148,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span>  <span class="va">otu_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_shared_otu.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu">xdev_assign_bins</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

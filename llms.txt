@@ -302,12 +302,6 @@ these functions
 - [`has_sequence_strings()`](https://mothur.org/strollur/reference/has_sequence_strings.md)
   : has_sequence_strings
 
-- [`added_message()`](https://mothur.org/strollur/reference/added_message.md)
-  : added_message
-
-- [`assigned_message()`](https://mothur.org/strollur/reference/assigned_message.md)
-  : assigned_message
-
 - [`remove_file()`](https://mothur.org/strollur/reference/remove_file.md)
   : remove_file
 
@@ -343,6 +337,9 @@ these functions
 
 - [`xdev_assign_sequence_taxonomy()`](https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy.md)
   : xdev_assign_sequence_taxonomy
+
+- [`xdev_assign_sequence_taxonomy_tidy()`](https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy_tidy.md)
+  : xdev_assign_sequence_taxonomy_tidy
 
 - [`xdev_assign_treatments()`](https://mothur.org/strollur/reference/xdev_assign_treatments.md)
   : xdev_assign_treatments
@@ -421,7 +418,8 @@ these functions
   Importing](https://mothur.org/strollur/articles/General_Importing.md):
 - [Importing from
   mothur](https://mothur.org/strollur/articles/Importing_from_mothur.md):
-- [Importing_from_phyloseq](https://mothur.org/strollur/articles/Importing_from_phyloseq.md):
+- [Importing from
+  phyloseq](https://mothur.org/strollur/articles/Importing_from_phyloseq.md):
 - [Importing from
   qiime2](https://mothur.org/strollur/articles/Importing_from_qiime2.md):
 - [Getting Started](https://mothur.org/strollur/articles/strollur.md):

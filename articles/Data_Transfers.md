@@ -14,18 +14,18 @@ Example](https://mothur.org/wiki/miseq_sop/).
 
 ``` r
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 miseq
 #> miseq_sop:
 #> 
@@ -111,7 +111,7 @@ greedy clustering (dgc) algorithm.
 dgc_data <- read_mothur_list(list = strollur_example("final.dgc.list.gz"))
 
 assign(miseq_from_rds, table = dgc_data, bin_type = "dgc")
-#> ℹ Assigned 361 dgc bins.
+#> Assigned 361 dgc bins.
 #> [1] 361
 miseq_from_rds
 #> miseq_sop:
@@ -283,19 +283,19 @@ function to create a new dataset object from the exported table.
 
 ``` r
 miseq_import <- import_dataset(table = table)
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 2425 asv bin taxonomies.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 63 phylotype bin taxonomies.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 2425 sequence abundances.
+#> Assigned 531 otu bins.
+#> Assigned 531 otu bin representative sequences.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 2425 asv bins.
+#> Assigned 2425 asv bin taxonomies.
+#> Assigned 63 phylotype bins.
+#> Assigned 63 phylotype bin taxonomies.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 miseq_import
 #> miseq_sop:
 #> 
@@ -351,7 +351,7 @@ miseq_deep_copy, and mise_shallow_copy.
 
 ``` r
 assign(miseq_shallow_copy, table = dgc_data, bin_type = "dgc")
-#> ℹ Assigned 361 dgc bins.
+#> Assigned 361 dgc bins.
 #> [1] 361
 
 miseq

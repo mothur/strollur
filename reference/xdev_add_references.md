@@ -71,6 +71,6 @@ data <- new_dataset("just for fun", 2)
 reference_table <- readr::read_csv(strollur_example("references.csv"),
                              col_names = TRUE, show_col_types = FALSE)
 xdev_add_references(data, reference_table)
-#> ℹ Added 2 resource references.
+#> Added 2 resource references.
 #> [1] 2
 ```

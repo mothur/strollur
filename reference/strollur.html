@@ -30,7 +30,7 @@ analysis across multiple R packages."><meta property="og:image" content="https:/
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
-    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing from phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -394,7 +394,7 @@ messages. Default = TRUE.</p></dd>
 <div class="section">
 <h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/strollur.html">strollur</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
+<span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span></span>
 <span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_shared.html">read_mothur_shared</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.shared"</span><span class="op">)</span><span class="op">)</span></span>
 <span> <span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
@@ -428,7 +428,7 @@ messages. Default = TRUE.</p></dd>
 <div class="section">
 <h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/strollur.html">strollur</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
+<span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sequence_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span></span></code></pre></div><p></p></div>
@@ -768,7 +768,7 @@ Default = FALSE.</p></dd>
 <span></span>
 <span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_shared.html">read_mothur_shared</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.shared"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/strollur.html">strollur</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
+<span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span></span>
 <span> <span class="co"># assign abundance 'otu' bins</span></span>
 <span> <span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
@@ -793,7 +793,7 @@ Default = FALSE.</p></dd>
 <div class="section">
 <h4 id="examples-11">Examples<a class="anchor" aria-label="anchor" href="#examples-11"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
-<span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/strollur.html">strollur</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
+<span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sequence_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span> <span class="va">data</span><span class="op">$</span><span class="fu">get_sequence_tree</span><span class="op">(</span><span class="op">)</span></span>
@@ -1067,18 +1067,18 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span><span class="va">miseq</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> miseq_sop:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1116,18 +1116,18 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To the total abundance for each sequence</span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
@@ -1212,19 +1212,19 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"example_dataset"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span>table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  table <span class="op">=</span> <span class="va">contigs_report</span>, type <span class="op">=</span> <span class="st">"reports"</span>,</span></span>
 <span class="r-in"><span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To add metadata related to your study</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_metadata.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span>table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To add FASTA data with a resource reference</span></span></span>
 <span class="r-in"><span></span></span>
@@ -1249,7 +1249,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span></span>
 <span class="r-in"><span>  reference <span class="op">=</span> <span class="va">resource_reference</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -1257,11 +1257,11 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">strollur</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_mothur_shared.html">read_mothur_shared</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.shared"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span></span></span>
@@ -1274,10 +1274,10 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">strollur</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre.gz"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sequence_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -1296,7 +1296,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">abundance_by_sample</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Assign sequence classifications</span></span></span>
 <span class="r-in"><span></span></span>
@@ -1305,7 +1305,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">sequence_classifications</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Assigning bins</span></span></span>
 <span class="r-in"><span></span></span>
@@ -1330,19 +1330,19 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign 'otu' bins using sequence names</span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">otu_data</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign 'asv' bins using sequence names</span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">asv_data</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign 'phylotype' bins using sequence names</span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">phylo_data</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign 'otu' bin representative sequences</span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">bin_reps</span>, type <span class="op">=</span> <span class="st">"bin_representatives"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To assign abundance only bins</span></span></span>
 <span class="r-in"><span></span></span>
@@ -1354,7 +1354,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign abundance only otus parsed by sample</span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">otu_data</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Assigning bin classifications</span></span></span>
 <span class="r-in"><span></span></span>
@@ -1368,7 +1368,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span>  table <span class="op">=</span> <span class="va">otu_data</span>,</span></span>
 <span class="r-in"><span>  type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Assign treatments</span></span></span>
 <span class="r-in"><span></span></span>
@@ -1376,7 +1376,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span>   <span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_sample_design.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">sample_assignments</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -1384,18 +1384,18 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span><span class="va">miseq</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> miseq_sop:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1440,18 +1440,18 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the total number of sequences</span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
@@ -1520,18 +1520,18 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">get_bin_types</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "otu"       "asv"       "phylotype"</span>
 <span class="r-in"><span></span></span>
@@ -1546,11 +1546,11 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_mothur_shared.html">read_mothur_shared</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.shared"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">strollur</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># assign abundance 'otu' bins</span></span></span>
 <span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sample_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">get_sample_tree</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -1568,10 +1568,10 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">strollur</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre.gz"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sequence_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
 <span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">get_sequence_tree</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Phylogenetic tree with 2425 tips and 2424 internal nodes.</span>
@@ -1588,18 +1588,18 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the name of the dataset</span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span></span>
@@ -4572,18 +4572,18 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the FASTA data</span></span></span>
 <span class="r-in"><span></span></span>
@@ -4641,28 +4641,28 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co"># To get a report about sequence classifications</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             id level                taxon</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783     1             Bacteria</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M00967_43_000000000-A3JHG_1_2101_16474_12783     2      "Bacteroidetes"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M00967_43_000000000-A3JHG_1_2101_16474_12783     3        "Bacteroidia"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 M00967_43_000000000-A3JHG_1_2101_16474_12783     4      "Bacteroidales"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 M00967_43_000000000-A3JHG_1_2101_16474_12783     5 "Porphyromonadaceae"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   confidence</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5         88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                 sequence_names levels           taxonomies</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783      1             Bacteria</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M00967_43_000000000-A3JHG_1_2101_16474_12783      2      "Bacteroidetes"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M00967_43_000000000-A3JHG_1_2101_16474_12783      3        "Bacteroidia"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 M00967_43_000000000-A3JHG_1_2101_16474_12783      4      "Bacteroidales"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 M00967_43_000000000-A3JHG_1_2101_16474_12783      5 "Porphyromonadaceae"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   confidences</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5          88</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about bin classifications for 'otu' data</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       id level                taxon confidence</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Otu001     1             Bacteria        100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Otu001     2      "Bacteroidetes"        100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Otu001     3        "Bacteroidia"        100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 Otu001     4      "Bacteroidales"        100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 Otu001     5 "Porphyromonadaceae"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   bin_names levels           taxonomies confidences</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    Otu001      1             Bacteria         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Otu001      2      "Bacteroidetes"         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Otu001      3        "Bacteroidia"         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    Otu001      4      "Bacteroidales"         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    Otu001      5 "Porphyromonadaceae"         100</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the 'otu' bin representative sequences</span></span></span>
 <span class="r-in"><span></span></span>
@@ -4722,18 +4722,18 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the summary of your FASTA data</span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>

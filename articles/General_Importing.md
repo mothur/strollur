@@ -42,13 +42,17 @@ We will use it to read the sequence data into a data.frame.
 
 ``` r
 fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+str(fasta_data)
+#> 'data.frame':    2425 obs. of  2 variables:
+#>  $ sequence_names: chr  "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...
+#>  $ sequences     : chr  "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-"| __truncated__ "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--TCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-G-CT-G-T-T-AA-G-T-"| __truncated__ ...
 
 add(
   data,
   table = fasta_data,
   type = "sequences"
 )
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 #> [1] 2425
 data
 #> my_data:
@@ -93,7 +97,7 @@ add(
   type = "sequences",
   reference = resource_reference
 )
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 #> [1] 2425
 data
 #> my_data:
@@ -149,6 +153,29 @@ the add function.
 
 ``` r
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
+str(contigs_report)
+#> spc_tbl_ [2,425 × 8] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+#>  $ Name           : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_18044_1900" "M00967_43_000000000-A3JHG_1_1101_15533_5293" "M00967_43_000000000-A3JHG_1_1101_18278_3345" "M00967_43_000000000-A3JHG_1_1101_22681_5598" ...
+#>  $ Length         : num [1:2425] 253 253 253 253 253 252 253 253 253 253 ...
+#>  $ Overlap_Length : num [1:2425] 249 249 249 250 249 249 249 249 249 249 ...
+#>  $ Overlap_Start  : num [1:2425] 2 2 2 2 2 2 2 2 2 2 ...
+#>  $ Overlap_End    : num [1:2425] 251 251 251 252 251 251 251 251 251 251 ...
+#>  $ MisMatches     : num [1:2425] 5 0 1 1 0 14 0 0 3 0 ...
+#>  $ Num_Ns         : num [1:2425] 0 0 0 0 0 0 0 0 0 0 ...
+#>  $ Expected_Errors: num [1:2425] 0.07459 0.00215 0.00484 0.00379 0.0022 ...
+#>  - attr(*, "spec")=
+#>   .. cols(
+#>   ..   Name = col_character(),
+#>   ..   Length = col_double(),
+#>   ..   Overlap_Length = col_double(),
+#>   ..   Overlap_Start = col_double(),
+#>   ..   Overlap_End = col_double(),
+#>   ..   MisMatches = col_double(),
+#>   ..   Num_Ns = col_double(),
+#>   ..   Expected_Errors = col_double()
+#>   .. )
+#>  - attr(*, "problems")=<externalptr>
+
 add(
   data,
   table = contigs_report,
@@ -156,7 +183,7 @@ add(
   report_type = "contigs_report",
   table_names = list(sequence_name = "Name")
 )
-#> ℹ Added a contigs_report.
+#> Added a contigs_report.
 #> [1] 1
 data
 #> my_data:
@@ -186,13 +213,23 @@ type = “metadata”.
 
 ``` r
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
+str(metadata)
+#> spc_tbl_ [19 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+#>  $ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...
+#>  $ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...
+#>  - attr(*, "spec")=
+#>   .. cols(
+#>   ..   sample = col_character(),
+#>   ..   days_post_wean = col_double()
+#>   .. )
+#>  - attr(*, "problems")=<externalptr>
 
 add(
   data,
   table = metadata,
   type = "metadata"
 )
-#> ℹ Added metadata.
+#> Added metadata.
 #> [1] 1
 ```
 
@@ -211,7 +248,7 @@ add(
   table = reference,
   type = "references"
 )
-#> ℹ Added 2 resource references.
+#> Added 2 resource references.
 #> [1] 2
 ```
 
@@ -229,9 +266,23 @@ data using the assign function with the type = “sequence_abundance”.
 
 ``` r
 abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+str(abundance_table)
+#> spc_tbl_ [5,539 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+#>  $ sequence_names: chr [1:5539] "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...
+#>  $ abundances    : num [1:5539] 1 1 1 1 1 1 22 19 12 9 ...
+#>  $ samples       : chr [1:5539] "F3D150" "F3D142" "F3D3" "F3D8" ...
+#>  $ treatments    : chr [1:5539] "Late" "Late" "Early" "Early" ...
+#>  - attr(*, "spec")=
+#>   .. cols(
+#>   ..   names = col_character(),
+#>   ..   abundances = col_double(),
+#>   ..   samples = col_character(),
+#>   ..   treatments = col_character()
+#>   .. )
+#>  - attr(*, "problems")=<externalptr>
 
 assign(data, table = abundance_table, type = "sequence_abundance")
-#> ℹ Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence abundances.
 #> [1] 2425
 
 data
@@ -269,9 +320,19 @@ and set the bin_type = “otu”.
 
 ``` r
 bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
+str(bin_table)
+#> spc_tbl_ [2,425 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+#>  $ bin_names     : chr [1:2425] "Otu001" "Otu001" "Otu001" "Otu001" ...
+#>  $ sequence_names: chr [1:2425] "M00967_43_000000000-A3JHG_1_1111_20933_6700" "M00967_43_000000000-A3JHG_1_1113_17095_9759" "M00967_43_000000000-A3JHG_1_1114_22144_24942" "M00967_43_000000000-A3JHG_1_1112_5981_8948" ...
+#>  - attr(*, "spec")=
+#>   .. cols(
+#>   ..   otu_id = col_character(),
+#>   ..   seq_id = col_character()
+#>   .. )
+#>  - attr(*, "problems")=<externalptr>
 
 assign(data, table = bin_table, type = "bins", bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 #> [1] 531
 
 data
@@ -316,13 +377,22 @@ to our sequences.
 sequence_classification_data <- read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
+str(sequence_classification_data)
+#> spc_tbl_ [2,425 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+#>  $ sequence_names: chr [1:2425] "M00967_43_000000000-A3JHG_1_2102_17714_13657" "M00967_43_000000000-A3JHG_1_2109_7813_4701" "M00967_43_000000000-A3JHG_1_1113_19457_3875" "M00967_43_000000000-A3JHG_1_1112_18411_17052" ...
+#>  $ taxonomies    : chr [1:2425] "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);Lachnospiraceae(99);Lachnospiraceae_unclassified(99);" "Bacteria(99);Firmicutes(94);Clostridia(93);Clostridiales(93);Lachnospiraceae(90);Lachnospiraceae_unclassified(90);" "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);Lachnospiraceae(100);Johnsonella(93);" "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(98);\"Bacteroidales\"(98);\"Porphyromonadaceae\"(97);\"Por"| __truncated__ ...
+#>  - attr(*, "spec")=
+#>   .. cols(
+#>   ..   X1 = col_character(),
+#>   ..   X2 = col_character()
+#>   .. )
 
 assign(
   data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
 )
-#> ℹ Assigned 2425 sequence taxonomies.
+#> Assigned 2425 sequence taxonomies.
 #> [1] 2425
 ```
 
@@ -332,17 +402,28 @@ consensus taxonomy of the sequences in the bins. You can also set bin
 taxonomies independently by setting the type = “bin_taxonomy”.
 
 ``` r
-otu_data <- read_mothur_cons_taxonomy(strollur_example(
+otu_taxonomy_data <- read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
+str(otu_taxonomy_data)
+#> spc_tbl_ [531 × 3] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+#>  $ bin_names : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...
+#>  $ abundances: num [1:531] 12288 8892 7794 7476 7450 ...
+#>  $ taxonomies: chr [1:531] "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);Barnesiella(100);" ...
+#>  - attr(*, "spec")=
+#>   .. cols(
+#>   ..   OTU = col_character(),
+#>   ..   Size = col_double(),
+#>   ..   Taxonomy = col_character()
+#>   .. )
 
 assign(
   data,
-  table = otu_data,
+  table = otu_taxonomy_data,
   type = "bin_taxonomy",
   bin_type = "otu"
 )
-#> ℹ Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin taxonomies.
 #> [1] 531
 ```
 
@@ -353,13 +434,23 @@ in your clusters. Let’s assign bin representatives to our *otu* bins.
 
 ``` r
 bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
+str(bin_reps)
+#> spc_tbl_ [531 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+#>  $ bin_names     : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...
+#>  $ sequence_names: chr [1:531] "M00967_43_000000000-A3JHG_1_1108_14299_17220" "M00967_43_000000000-A3JHG_1_1106_22705_6123" "M00967_43_000000000-A3JHG_1_1101_15533_5293" "M00967_43_000000000-A3JHG_1_1105_25642_17588" ...
+#>  - attr(*, "spec")=
+#>   .. cols(
+#>   ..   bin_names = col_character(),
+#>   ..   sequence_names = col_character()
+#>   .. )
+#>  - attr(*, "problems")=<externalptr>
 
 assign(
   data,
   table = bin_reps,
   type = "bin_representatives"
 )
-#> ℹ Assigned 531 otu bin representative sequences.
+#> Assigned 531 otu bin representative sequences.
 #> [1] 531
 ```
 
@@ -370,13 +461,22 @@ can also assign samples to treatments by setting type = “treatments”.
 
 ``` r
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
+str(sample_assignments)
+#> spc_tbl_ [19 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+#>  $ samples   : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...
+#>  $ treatments: chr [1:19] "Early" "Early" "Late" "Late" ...
+#>  - attr(*, "spec")=
+#>   .. cols(
+#>   ..   samples = col_character(),
+#>   ..   treatments = col_character()
+#>   .. )
 
 assign(
   data,
   table = sample_assignments,
   type = "treatments"
 )
-#> ℹ Assigned 19 samples to treatments.
+#> Assigned 19 samples to treatments.
 #> [1] 19
 ```
 

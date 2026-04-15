@@ -36,6 +36,6 @@ dim(seqtab)
 #> [1]  19 279
 
 data <- read_dada2(sequence_table = seqtab, dataset_name = "dada2 example")
-#> ℹ Added 279 sequences.
-#> ℹ Assigned 279 sequence abundances.
+#> Added 279 sequences.
+#> Assigned 279 sequence abundances.
 ```

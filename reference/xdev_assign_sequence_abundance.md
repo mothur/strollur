@@ -64,6 +64,6 @@ data <- new_dataset("my_dataset")
 sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 
 xdev_assign_sequence_abundance(data = data, table = sequence_abundance)
-#> ℹ Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence abundances.
 #> [1] 2425
 ```

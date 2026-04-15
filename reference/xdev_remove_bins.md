@@ -44,7 +44,7 @@ No return value, called for side effects.
 
   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_names,
                                abundances = abundances), bin_type = "otu")
-#> ℹ Assigned 3 otu bins.
+#> Assigned 3 otu bins.
 #> [1] 3
 
   count(data = data, type = "bins", bin_type = "otu")

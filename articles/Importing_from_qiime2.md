@@ -19,11 +19,11 @@ data <- read_qiime2(
   metadata = strollur_example("sample_metadata.tsv"),
   dataset_name = "qiime_moving_pictures"
 )
-#> ℹ Added metadata.
-#> ℹ Added 759 sequences.
-#> ℹ Assigned 759 sequence abundances.
-#> ℹ Assigned 759 asv bins.
-#> ℹ Assigned 759 asv bin taxonomies.
+#> Added metadata.
+#> Added 759 sequences.
+#> Assigned 759 sequence abundances.
+#> Assigned 759 asv bins.
+#> Assigned 759 asv bin taxonomies.
 ```
 
 To view a summary of data:
@@ -104,7 +104,7 @@ add(
   table = fasta_data,
   type = "sequences"
 )
-#> ℹ Added 759 sequences.
+#> Added 759 sequences.
 #> [1] 759
 ```
 
@@ -132,7 +132,7 @@ assign(
   type = "sequence_abundance",
   table_names = list(sequence_name = "bin_names")
 )
-#> ℹ Assigned 759 sequence abundances.
+#> Assigned 759 sequence abundances.
 #> [1] 759
 
 assign(
@@ -142,7 +142,7 @@ assign(
   bin_type = "asv",
   table_names = list(sequence_name = "bin_names")
 )
-#> ℹ Assigned 759 asv bins.
+#> Assigned 759 asv bins.
 #> [1] 759
 
 my_data
@@ -180,7 +180,7 @@ assign(
   type = "sequence_taxonomy",
   table_names = list(sequence_name = "bin_names")
 )
-#> ℹ Assigned 759 sequence taxonomies.
+#> Assigned 759 sequence taxonomies.
 #> [1] 759
 ```
 
@@ -233,7 +233,7 @@ To add the metadata to the my_data dataset, run the following:
 
 ``` r
 add(my_data, table = metadata, type = "metadata")
-#> ℹ Added metadata.
+#> Added metadata.
 #> [1] 1
 ```
 

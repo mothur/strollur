@@ -53,7 +53,7 @@ data <- new_dataset()
 
 # assign sequence abundances parsed by sample
 assign(data, table = sample_table, type = "sequence_abundance")
-#> ℹ Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence abundances.
 #> [1] 2425
 
 # print summary of data

@@ -50,7 +50,7 @@ data <- new_dataset(dataset_name = "my_dataset")
 
 xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
                                            abundances = abunds))
-#> ℹ Assigned 4 sequence abundances.
+#> Assigned 4 sequence abundances.
 #> [1] 4
 abundance(data = data, type = "sequences")
 #>   sequence_names abundances

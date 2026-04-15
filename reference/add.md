@@ -110,7 +110,7 @@ fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
 
 # Add FASTA sequence data
 add(data = data, table = fasta_data, type = "sequences")
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 #> [1] 2425
 
 # To add FASTA data with a resource reference
@@ -137,7 +137,7 @@ add(
   type = "sequences",
   reference = resource_reference
 )
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 #> [1] 2425
 
 # Add contigs assembly report with a 'sequence_name' column named 'Name'
@@ -149,7 +149,7 @@ add(
   table = contigs_report, type = "reports",
   report_type = "contigs_report", list(sequence_name = "Name")
 )
-#> ℹ Added a contigs_report.
+#> Added a contigs_report.
 #> [1] 1
 
 # To add metadata related to your study
@@ -157,6 +157,6 @@ add(
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 add(data, table = metadata, type = "metadata")
-#> ℹ Added metadata.
+#> Added metadata.
 #> [1] 1
 ```

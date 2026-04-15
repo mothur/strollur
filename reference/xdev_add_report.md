@@ -55,12 +55,12 @@ data <- new_dataset("just for fun", 2)
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
 xdev_add_report(data, contigs_report, "contigs_report", "Name")
-#> ℹ Added a contigs_report.
+#> Added a contigs_report.
 
 # To add metadata related to your study
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 xdev_add_report(data, metadata, "metadata")
-#> ℹ Added metadata.
+#> Added metadata.
 ```

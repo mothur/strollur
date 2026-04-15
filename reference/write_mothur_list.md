@@ -28,20 +28,20 @@ vector containing the names of the files created
 
 ``` r
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 write_mothur_list(miseq, tempfile())
-#> [1] "/tmp/Rtmp5CtWbg/file1b547c9ce7fe.otu.list"      
-#> [2] "/tmp/Rtmp5CtWbg/file1b547c9ce7fe.asv.list"      
-#> [3] "/tmp/Rtmp5CtWbg/file1b547c9ce7fe.phylotype.list"
+#> [1] "/tmp/Rtmp1sax1K/file1bf932357c39.otu.list"      
+#> [2] "/tmp/Rtmp1sax1K/file1bf932357c39.asv.list"      
+#> [3] "/tmp/Rtmp1sax1K/file1bf932357c39.phylotype.list"
 ```

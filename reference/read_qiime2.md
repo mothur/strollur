@@ -62,11 +62,11 @@ data <- read_qiime2(
   metadata = strollur_example("sample_metadata.tsv"),
   dataset_name = "qiime2_moving_pictures"
 )
-#> ℹ Added metadata.
-#> ℹ Added 759 sequences.
-#> ℹ Assigned 759 sequence abundances.
-#> ℹ Assigned 759 asv bins.
-#> ℹ Assigned 759 asv bin taxonomies.
+#> Added metadata.
+#> Added 759 sequences.
+#> Assigned 759 sequence abundances.
+#> Assigned 759 asv bins.
+#> Assigned 759 asv bin taxonomies.
 data
 #> qiime2_moving_pictures:
 #> 

@@ -56,7 +56,7 @@ assign(data = data,
                           abundances = abundances,
                           samples = samples),
        type = "sequence_abundance")
-#> ℹ Assigned 10 sequence abundances.
+#> Assigned 10 sequence abundances.
 #> [1] 10
 
 # For the sake of example let's merge the first 3 sequences.

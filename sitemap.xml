@@ -16,9 +16,7 @@
 <url><loc>https://mothur.org/strollur/news/index.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/abundance.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/add.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/added_message.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/assign.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/assigned_message.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/clear.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/copy_dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/count.html</loc></url>
@@ -78,6 +76,7 @@
 <url><loc>https://mothur.org/strollur/reference/xdev_assign_bins.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_assign_sequence_abundance.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy.html</loc></url>
+<url><loc>https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy_tidy.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_assign_treatments.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_count.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_get_abundances_by_sample.html</loc></url>

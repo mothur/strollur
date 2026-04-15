@@ -26,7 +26,7 @@ strollur object"><meta property="og:image" content="https://mothur.org/strollur/
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
-    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing from phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -157,7 +157,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add FASTA sequence data</span></span></span>
 <span class="r-in"><span><span class="fu">add</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To add FASTA data with a resource reference</span></span></span>
@@ -184,7 +184,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span></span>
 <span class="r-in"><span>  reference <span class="op">=</span> <span class="va">resource_reference</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add contigs assembly report with a 'sequence_name' column named 'Name'</span></span></span>
@@ -196,7 +196,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span>  table <span class="op">=</span> <span class="va">contigs_report</span>, type <span class="op">=</span> <span class="st">"reports"</span>,</span></span>
 <span class="r-in"><span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To add metadata related to your study</span></span></span>
@@ -204,7 +204,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_metadata.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">add</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

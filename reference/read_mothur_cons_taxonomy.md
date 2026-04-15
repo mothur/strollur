@@ -38,7 +38,7 @@ data <- new_dataset()
 
 # assign abundance only 'otu' bins
 assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 #> [1] 531
 
 # assign consensus taxonomies to 'otu' bins
@@ -46,6 +46,6 @@ assign(
   data = data, table = otu_data,
   type = "bin_taxonomy", bin_type = "otu"
 )
-#> ℹ Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin taxonomies.
 #> [1] 531
 ```

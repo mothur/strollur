@@ -345,7 +345,7 @@ Updated \`strollur\` object
 
 #### Examples
 
-     data <- strollur$new("my_dataset")
+     data <- new_dataset("my_dataset")
 
      df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
      assign(data = data, table = df, type = "bins", bin_type = "otu")
@@ -377,7 +377,7 @@ Updated \`strollur\` object
 
 #### Examples
 
-     data <- strollur$new("my_dataset")
+     data <- new_dataset("my_dataset")
      tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
      data$add_sequence_tree(tree)
 
@@ -718,7 +718,7 @@ ape::tree
 
      df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
-     data <- strollur$new("my_dataset")
+     data <- new_dataset("my_dataset")
 
      # assign abundance 'otu' bins
      data$assign(table = df, type = "bins", bin_type = "otu")
@@ -742,7 +742,7 @@ ape::tree
 
 #### Examples
 
-     data <- strollur$new("my_dataset")
+     data <- new_dataset("my_dataset")
      tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
      data$add_sequence_tree(tree)
      data$get_sequence_tree()
@@ -996,18 +996,18 @@ data <- new_dataset("soil")
 ## ------------------------------------------------
 
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 miseq
 #> miseq_sop:
 #> 
@@ -1045,18 +1045,18 @@ miseq
 
 
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 
 # To the total abundance for each sequence
 miseq$abundance(type = "sequences") |> head(n = 5)
@@ -1141,19 +1141,19 @@ contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 data <- new_dataset(dataset_name = "example_dataset")
 
 data$add(table = fasta_data, type = "sequences")
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 data$add(
   table = contigs_report, type = "reports",
   report_type = "contigs_report", list(sequence_name = "Name")
 )
-#> ℹ Added a contigs_report.
+#> Added a contigs_report.
 
 # To add metadata related to your study
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 data$add(table = metadata, type = "metadata")
-#> ℹ Added metadata.
+#> Added metadata.
 
 # To add FASTA data with a resource reference
 
@@ -1178,7 +1178,7 @@ data$add(
   type = "sequences",
   reference = resource_reference
 )
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 
 
 ## ------------------------------------------------
@@ -1186,11 +1186,11 @@ data$add(
 ## ------------------------------------------------
 
 
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
 
  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
  assign(data = data, table = df, type = "bins", bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 #> [1] 531
 
  tree <- ape::read.tree(strollur_example(
@@ -1203,10 +1203,10 @@ data$add(
 ## ------------------------------------------------
 
 
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 
 
 ## ------------------------------------------------
@@ -1225,7 +1225,7 @@ abundance_by_sample <- read_mothur_count(strollur_example(
 ))
 
 data$assign(table = abundance_by_sample, type = "sequence_abundance")
-#> ℹ Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence abundances.
 
 # Assign sequence classifications
 
@@ -1234,7 +1234,7 @@ sequence_classifications <- read_mothur_taxonomy(strollur_example(
 ))
 
 data$assign(table = sequence_classifications, type = "sequence_taxonomy")
-#> ℹ Assigned 2425 sequence taxonomies.
+#> Assigned 2425 sequence taxonomies.
 
 # Assigning bins
 
@@ -1259,19 +1259,19 @@ bin_reps <- readRDS(strollur_example(
 
 # assign 'otu' bins using sequence names
 data$assign(table = otu_data, bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 
 # assign 'asv' bins using sequence names
 data$assign(table = asv_data, bin_type = "asv")
-#> ℹ Assigned 2425 asv bins.
+#> Assigned 2425 asv bins.
 
 # assign 'phylotype' bins using sequence names
 data$assign(table = phylo_data, bin_type = "phylotype")
-#> ℹ Assigned 63 phylotype bins.
+#> Assigned 63 phylotype bins.
 
 # assign 'otu' bin representative sequences
 data$assign(table = bin_reps, type = "bin_representatives")
-#> ℹ Assigned 531 otu bin representative sequences.
+#> Assigned 531 otu bin representative sequences.
 
 # To assign abundance only bins
 
@@ -1283,7 +1283,7 @@ otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
 # assign abundance only otus parsed by sample
 data$assign(table = otu_data, bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 
 # Assigning bin classifications
 
@@ -1297,7 +1297,7 @@ data$assign(
   table = otu_data,
   type = "bin_taxonomy", bin_type = "otu"
 )
-#> ℹ Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin taxonomies.
 
 # Assign treatments
 
@@ -1305,7 +1305,7 @@ sample_assignments <- readRDS(
    strollur_example("miseq_sample_design.rds"))
 
 data$assign(table = sample_assignments, type = "treatments")
-#> ℹ Assigned 19 samples to treatments.
+#> Assigned 19 samples to treatments.
 
 
 ## ------------------------------------------------
@@ -1313,18 +1313,18 @@ data$assign(table = sample_assignments, type = "treatments")
 ## ------------------------------------------------
 
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 miseq
 #> miseq_sop:
 #> 
@@ -1369,18 +1369,18 @@ miseq
 
 
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 
 # To get the total number of sequences
 miseq$count(type = "sequences")
@@ -1449,18 +1449,18 @@ miseq$count(
 
 
 data <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 data$get_bin_types()
 #> [1] "otu"       "asv"       "phylotype"
 
@@ -1475,11 +1475,11 @@ data$get_bin_types()
 
  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
 
  # assign abundance 'otu' bins
  data$assign(table = df, type = "bins", bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 
  data$add_sample_tree(tree)
  data$get_sample_tree()
@@ -1497,10 +1497,10 @@ data$get_bin_types()
 ## ------------------------------------------------
 
 
- data <- strollur$new("my_dataset")
+ data <- new_dataset("my_dataset")
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
  data$get_sequence_tree()
 #> 
 #> Phylogenetic tree with 2425 tips and 2424 internal nodes.
@@ -1517,18 +1517,18 @@ data$get_bin_types()
 
 
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 
 # To get the name of the dataset
 miseq$names(type = "dataset")
@@ -4501,18 +4501,18 @@ miseq$names(type = "reports")
 
 
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 
 # To get the FASTA data
 
@@ -4570,28 +4570,28 @@ miseq$report(type = "sample_assignments") |> head(n = 5)
 # To get a report about sequence classifications
 
 miseq$report(type = "sequence_taxonomy") |> head(n = 5)
-#>                                             id level                taxon
-#> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783     1             Bacteria
-#> 2 M00967_43_000000000-A3JHG_1_2101_16474_12783     2      "Bacteroidetes"
-#> 3 M00967_43_000000000-A3JHG_1_2101_16474_12783     3        "Bacteroidia"
-#> 4 M00967_43_000000000-A3JHG_1_2101_16474_12783     4      "Bacteroidales"
-#> 5 M00967_43_000000000-A3JHG_1_2101_16474_12783     5 "Porphyromonadaceae"
-#>   confidence
-#> 1        100
-#> 2        100
-#> 3         99
-#> 4         99
-#> 5         88
+#>                                 sequence_names levels           taxonomies
+#> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783      1             Bacteria
+#> 2 M00967_43_000000000-A3JHG_1_2101_16474_12783      2      "Bacteroidetes"
+#> 3 M00967_43_000000000-A3JHG_1_2101_16474_12783      3        "Bacteroidia"
+#> 4 M00967_43_000000000-A3JHG_1_2101_16474_12783      4      "Bacteroidales"
+#> 5 M00967_43_000000000-A3JHG_1_2101_16474_12783      5 "Porphyromonadaceae"
+#>   confidences
+#> 1         100
+#> 2         100
+#> 3          99
+#> 4          99
+#> 5          88
 
 # To get a report about bin classifications for 'otu' data
 
 miseq$report(type = "bin_taxonomy", bin_type = "otu") |> head(n = 5)
-#>       id level                taxon confidence
-#> 1 Otu001     1             Bacteria        100
-#> 2 Otu001     2      "Bacteroidetes"        100
-#> 3 Otu001     3        "Bacteroidia"        100
-#> 4 Otu001     4      "Bacteroidales"        100
-#> 5 Otu001     5 "Porphyromonadaceae"        100
+#>   bin_names levels           taxonomies confidences
+#> 1    Otu001      1             Bacteria         100
+#> 2    Otu001      2      "Bacteroidetes"         100
+#> 3    Otu001      3        "Bacteroidia"         100
+#> 4    Otu001      4      "Bacteroidales"         100
+#> 5    Otu001      5 "Porphyromonadaceae"         100
 
 # To get the 'otu' bin representative sequences
 
@@ -4651,18 +4651,18 @@ miseq$report(type = "contigs_report") |> head(n = 5)
 
 
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 
 # To get the summary of your FASTA data
 miseq$summary(type = "sequences")

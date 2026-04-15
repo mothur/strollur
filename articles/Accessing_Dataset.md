@@ -16,18 +16,18 @@ Example](https://mothur.org/wiki/miseq_sop/).
 
 ``` r
 miseq <- miseq_sop_example()
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
-#> ℹ Assigned 531 otu bin representative sequences.
-#> ℹ Added metadata.
-#> ℹ Added 2 resource references.
-#> ℹ Added a contigs_report.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
 ```
 
 To print a summary of the miseq dataset, run the following:
@@ -568,28 +568,28 @@ sequence_classification <- report(
   type = "sequence_taxonomy"
 )
 head(sequence_classification, n = 10)
-#>                                              id level
-#> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783     1
-#> 2  M00967_43_000000000-A3JHG_1_2101_16474_12783     2
-#> 3  M00967_43_000000000-A3JHG_1_2101_16474_12783     3
-#> 4  M00967_43_000000000-A3JHG_1_2101_16474_12783     4
-#> 5  M00967_43_000000000-A3JHG_1_2101_16474_12783     5
-#> 6  M00967_43_000000000-A3JHG_1_2101_16474_12783     6
-#> 7   M00967_43_000000000-A3JHG_1_1113_12711_3318     1
-#> 8   M00967_43_000000000-A3JHG_1_1113_12711_3318     2
-#> 9   M00967_43_000000000-A3JHG_1_1113_12711_3318     3
-#> 10  M00967_43_000000000-A3JHG_1_1113_12711_3318     4
-#>                                taxon confidence
-#> 1                           Bacteria        100
-#> 2                    "Bacteroidetes"        100
-#> 3                      "Bacteroidia"         99
-#> 4                    "Bacteroidales"         99
-#> 5               "Porphyromonadaceae"         88
-#> 6  "Porphyromonadaceae"_unclassified         88
-#> 7                           Bacteria        100
-#> 8                         Firmicutes        100
-#> 9                         Clostridia        100
-#> 10                     Clostridiales        100
+#>                                  sequence_names levels
+#> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783      1
+#> 2  M00967_43_000000000-A3JHG_1_2101_16474_12783      2
+#> 3  M00967_43_000000000-A3JHG_1_2101_16474_12783      3
+#> 4  M00967_43_000000000-A3JHG_1_2101_16474_12783      4
+#> 5  M00967_43_000000000-A3JHG_1_2101_16474_12783      5
+#> 6  M00967_43_000000000-A3JHG_1_2101_16474_12783      6
+#> 7   M00967_43_000000000-A3JHG_1_1113_12711_3318      1
+#> 8   M00967_43_000000000-A3JHG_1_1113_12711_3318      2
+#> 9   M00967_43_000000000-A3JHG_1_1113_12711_3318      3
+#> 10  M00967_43_000000000-A3JHG_1_1113_12711_3318      4
+#>                           taxonomies confidences
+#> 1                           Bacteria         100
+#> 2                    "Bacteroidetes"         100
+#> 3                      "Bacteroidia"          99
+#> 4                    "Bacteroidales"          99
+#> 5               "Porphyromonadaceae"          88
+#> 6  "Porphyromonadaceae"_unclassified          88
+#> 7                           Bacteria         100
+#> 8                         Firmicutes         100
+#> 9                         Clostridia         100
+#> 10                     Clostridiales         100
 ```
 
 To get the consensus taxonomies assigned to the bins in your dataset,
@@ -604,17 +604,17 @@ bin_classification <- report(
   bin_type = "otu"
 )
 head(bin_classification, n = 10)
-#>        id level                             taxon confidence
-#> 1  Otu001     1                          Bacteria        100
-#> 2  Otu001     2                   "Bacteroidetes"        100
-#> 3  Otu001     3                     "Bacteroidia"        100
-#> 4  Otu001     4                   "Bacteroidales"        100
-#> 5  Otu001     5              "Porphyromonadaceae"        100
-#> 6  Otu001     6 "Porphyromonadaceae"_unclassified        100
-#> 7  Otu002     1                          Bacteria        100
-#> 8  Otu002     2                   "Bacteroidetes"        100
-#> 9  Otu002     3                     "Bacteroidia"        100
-#> 10 Otu002     4                   "Bacteroidales"        100
+#>    bin_names levels                        taxonomies confidences
+#> 1     Otu001      1                          Bacteria         100
+#> 2     Otu001      2                   "Bacteroidetes"         100
+#> 3     Otu001      3                     "Bacteroidia"         100
+#> 4     Otu001      4                   "Bacteroidales"         100
+#> 5     Otu001      5              "Porphyromonadaceae"         100
+#> 6     Otu001      6 "Porphyromonadaceae"_unclassified         100
+#> 7     Otu002      1                          Bacteria         100
+#> 8     Otu002      2                   "Bacteroidetes"         100
+#> 9     Otu002      3                     "Bacteroidia"         100
+#> 10    Otu002      4                   "Bacteroidales"         100
 ```
 
 To get the sequence bin assignments for the *otu* bins, run the
@@ -863,8 +863,10 @@ Thanks for following along. Next, find out how to import your own data
 using the links below:
 
 - [General
-  Importing](https://mothur.org/strollur/articles/vignettes/General_Importing.md)
+  Importing](https://mothur.org/strollur/articles/General_Importing.html)
 - [Importing data from
-  qiime2](https://mothur.org/strollur/articles/vignettes/Importing_from_qiime2.md)
+  mothur](https://mothur.org/strollur/articles/Importing_from_mothur.html)
 - [Importing data from
-  mothur](https://mothur.org/strollur/articles/vignettes/Importing_from_mothur.md)
+  qiime2](https://mothur.org/strollur/articles/Importing_from_qiime2.html)
+- [Importing data from
+  phyloseq](https://mothur.org/strollur/articles/Importing_from_phyloseq.html)

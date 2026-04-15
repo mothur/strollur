@@ -32,6 +32,6 @@ data <- new_dataset()
 
 # assign abundance only 'otu' bins parsed by sample
 assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 #> [1] 531
 ```

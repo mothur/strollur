@@ -142,13 +142,13 @@ data <- read_mothur(
   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
   dataset_name = "miseq_sop"
 )
-#> ℹ Added 2425 sequences.
-#> ℹ Assigned 2425 sequence abundances.
-#> ℹ Assigned 2425 sequence taxonomies.
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 2425 asv bins.
-#> ℹ Assigned 63 phylotype bins.
-#> ℹ Assigned 19 samples to treatments.
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
 
 # For dataset's with only otu data:
 
@@ -161,7 +161,7 @@ data <- read_mothur(
   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
   dataset_name = "miseq_sop"
 )
-#> ℹ Assigned 531 otu bins.
-#> ℹ Assigned 19 samples to treatments.
-#> ℹ Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
 ```

@@ -78,7 +78,7 @@ double containing the number of bins assigned
   otu_data <- read_mothur_list(list = strollur_example("final.opti_mcc.list.gz"))
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 #> [1] 531
 
   # To add abundance only bin assignments:
@@ -87,7 +87,7 @@ double containing the number of bins assigned
   otu_data <- read_mothur_rabund(rabund = strollur_example("final.opti_mcc.rabund"))
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 #> [1] 531
 
   # To add abundance bin assignments parsed by sample:
@@ -96,6 +96,6 @@ double containing the number of bins assigned
   otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 #> [1] 531
 ```

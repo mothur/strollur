@@ -61,7 +61,7 @@ sequence_classifications <- read_mothur_taxonomy(strollur_example(
 data <- new_dataset("my_dataset", 2)
 
 xdev_assign_sequence_taxonomy(data, sequence_classifications)
-#> ℹ Assigned 2425 sequence taxonomies.
+#> Assigned 2425 sequence taxonomies.
 #> [1] 2425
 
 # With the reference parameter you can add information about the reference
@@ -73,6 +73,6 @@ reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
 "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
 
 xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
-#> ℹ Assigned 2425 sequence taxonomies.
+#> Assigned 2425 sequence taxonomies.
 #> [1] 2425
 ```

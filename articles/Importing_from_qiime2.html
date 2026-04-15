@@ -44,7 +44,7 @@
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
-    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing from phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
 </li>
@@ -100,11 +100,11 @@ create a dataset from the outputs of the qiime2, run the following:</p>
 <span>  metadata <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"sample_metadata.tsv"</span><span class="op">)</span>,</span>
 <span>  dataset_name <span class="op">=</span> <span class="st">"qiime_moving_pictures"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added metadata.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 759 sequences.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 759 sequence abundances.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 759 asv bins.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 759 asv bin taxonomies.</span></span></code></pre></div>
+<span><span class="co">#&gt; Added metadata.</span></span>
+<span><span class="co">#&gt; Added 759 sequences.</span></span>
+<span><span class="co">#&gt; Assigned 759 sequence abundances.</span></span>
+<span><span class="co">#&gt; Assigned 759 asv bins.</span></span>
+<span><span class="co">#&gt; Assigned 759 asv bin taxonomies.</span></span></code></pre></div>
 <p>To view a summary of data:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span></span>
@@ -171,7 +171,7 @@ sequences to your dataset using the <code><a href="../reference/add.html">add()<
 <span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequences"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 759 sequences.</span></span>
+<span><span class="co">#&gt; Added 759 sequences.</span></span>
 <span><span class="co">#&gt; [1] 759</span></span></code></pre></div>
 <p>You can remove the fasta_artifact using the unlink function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -192,7 +192,7 @@ abundance table.</p>
 <span>  type <span class="op">=</span> <span class="st">"sequence_abundance"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"bin_names"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 759 sequence abundances.</span></span>
+<span><span class="co">#&gt; Assigned 759 sequence abundances.</span></span>
 <span><span class="co">#&gt; [1] 759</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
@@ -202,7 +202,7 @@ abundance table.</p>
 <span>  bin_type <span class="op">=</span> <span class="st">"asv"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"bin_names"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 759 asv bins.</span></span>
+<span><span class="co">#&gt; Assigned 759 asv bins.</span></span>
 <span><span class="co">#&gt; [1] 759</span></span>
 <span></span>
 <span><span class="va">my_data</span></span>
@@ -237,7 +237,7 @@ classification table.</p>
 <span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span>,</span>
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"bin_names"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 759 sequence taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 759 sequence taxonomies.</span></span>
 <span><span class="co">#&gt; [1] 759</span></span></code></pre></div>
 <p>Now, lets add a tree that shows the relationships between the
 sequences (features).</p>
@@ -270,7 +270,7 @@ function.</p>
 <p>To add the metadata to the my_data dataset, run the following:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added metadata.</span></span>
+<span><span class="co">#&gt; Added metadata.</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 <p>To view a summary of your imported dataset, ‘my_data’, run the
 following:</p>

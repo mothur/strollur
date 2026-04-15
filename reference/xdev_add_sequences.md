@@ -62,7 +62,7 @@ double containing the number of sequences added
  data <- new_dataset("miseq_sop")
  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
  xdev_add_sequences(data, fasta_data)
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 #> [1] 2425
 
 # With the additional parameters to add information about the reference
@@ -75,7 +75,7 @@ double containing the number of sequences added
                "1.38.1",
                "alignment by mothur2 v1.0 using default options",
                "https://mothur.org/wiki/silva_reference_files/"))
-#> ℹ Added 2425 sequences.
+#> Added 2425 sequences.
 #> [1] 2425
 
 # You can also add references using the 'add_references' function.

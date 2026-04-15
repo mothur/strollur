@@ -182,12 +182,6 @@ these functions
 - [`has_sequence_strings()`](https://mothur.org/strollur/reference/has_sequence_strings.md)
   : has_sequence_strings
 
-- [`added_message()`](https://mothur.org/strollur/reference/added_message.md)
-  : added_message
-
-- [`assigned_message()`](https://mothur.org/strollur/reference/assigned_message.md)
-  : assigned_message
-
 - [`remove_file()`](https://mothur.org/strollur/reference/remove_file.md)
   : remove_file
 
@@ -223,6 +217,9 @@ these functions
 
 - [`xdev_assign_sequence_taxonomy()`](https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy.md)
   : xdev_assign_sequence_taxonomy
+
+- [`xdev_assign_sequence_taxonomy_tidy()`](https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy_tidy.md)
+  : xdev_assign_sequence_taxonomy_tidy
 
 - [`xdev_assign_treatments()`](https://mothur.org/strollur/reference/xdev_assign_treatments.md)
   : xdev_assign_treatments

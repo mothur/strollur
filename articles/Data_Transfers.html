@@ -44,7 +44,7 @@
     <li><a class="dropdown-item" href="../articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="../articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
-    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing_from_phyloseq</a></li>
+    <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing from phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
   </ul>
 </li>
@@ -93,18 +93,18 @@ recommend you start there.</p>
 dataset object from the <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">Miseq SOP Example</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 19 samples to treatments.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added metadata.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span></span>
+<span><span class="co">#&gt; Added 2425 sequences.</span></span>
+<span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
+<span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
+<span><span class="co">#&gt; Assigned 2425 asv bins.</span></span>
+<span><span class="co">#&gt; Assigned 63 phylotype bins.</span></span>
+<span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
+<span><span class="co">#&gt; Added metadata.</span></span>
+<span><span class="co">#&gt; Added 2 resource references.</span></span>
+<span><span class="co">#&gt; Added a contigs_report.</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -183,7 +183,7 @@ greedy clustering (dgc) algorithm.</p>
 <code class="sourceCode R"><span><span class="va">dgc_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.dgc.list.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">miseq_from_rds</span>, table <span class="op">=</span> <span class="va">dgc_data</span>, bin_type <span class="op">=</span> <span class="st">"dgc"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 361 dgc bins.</span></span>
+<span><span class="co">#&gt; Assigned 361 dgc bins.</span></span>
 <span><span class="co">#&gt; [1] 361</span></span>
 <span><span class="va">miseq_from_rds</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
@@ -347,19 +347,19 @@ and look at the table created.</p>
 from the exported table.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">miseq_import</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_dataset.html">import_dataset</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">table</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2425 sequences.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence taxonomies.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 sequence abundances.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bins.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin representative sequences.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 531 otu bin taxonomies.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bins.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 2425 asv bin taxonomies.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bins.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 63 phylotype bin taxonomies.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added metadata.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added 2 resource references.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Added a contigs_report.</span></span>
+<span><span class="co">#&gt; Added 2425 sequences.</span></span>
+<span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 2425 asv bins.</span></span>
+<span><span class="co">#&gt; Assigned 2425 asv bin taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 63 phylotype bins.</span></span>
+<span><span class="co">#&gt; Assigned 63 phylotype bin taxonomies.</span></span>
+<span><span class="co">#&gt; Added metadata.</span></span>
+<span><span class="co">#&gt; Added 2 resource references.</span></span>
+<span><span class="co">#&gt; Added a contigs_report.</span></span>
 <span><span class="va">miseq_import</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -408,7 +408,7 @@ how deep and shallow copying differ.</p>
 miseq_deep_copy, and mise_shallow_copy.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">miseq_shallow_copy</span>, table <span class="op">=</span> <span class="va">dgc_data</span>, bin_type <span class="op">=</span> <span class="st">"dgc"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Assigned 361 dgc bins.</span></span>
+<span><span class="co">#&gt; Assigned 361 dgc bins.</span></span>
 <span><span class="co">#&gt; [1] 361</span></span>
 <span></span>
 <span><span class="va">miseq</span></span>

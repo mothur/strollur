@@ -67,12 +67,12 @@ data <- new_dataset(dataset_name = "my_dataset")
 
 # assign otu abundances
 xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+#> Assigned 531 otu bins.
 #> [1] 531
 
 # assign otu classifications
 xdev_assign_bin_taxonomy(data = data, table = otu_data,
                          bin_type = "otu")
-#> ℹ Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin taxonomies.
 #> [1] 531
 ```
