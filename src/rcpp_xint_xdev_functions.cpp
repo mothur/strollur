@@ -591,6 +591,63 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
     return numAssigned;
 }
 /******************************************************************************/
+double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
+                                          const Rcpp::DataFrame& table,
+                                          Rcpp::Nullable<Rcpp::List> reference,
+                                          const string& sequence_name,
+                                          const string& level,
+                                          const string& taxonomy,
+                                          const string& confidence,
+                                          const bool verbose){
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    vector<string> sequence_names, taxonomies;
+    vector<float> confidences;
+    vector<int> levels;
+
+    sequence_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                            sequence_name));
+    taxonomies = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                        taxonomy));
+    levels = Rcpp::as<vector<int>>(xint_fill_required_parameters(table,
+                                                                 level));
+    confidences = Rcpp::as<vector<float>>(xint_fill_required_parameters(table,
+                                                                        confidence));
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+
+    const double numAssigned = d.get()->assignSequenceTaxonomyTidy(sequence_names,
+                                     levels, taxonomies, confidences);
+
+    if (verbose) {
+        Rcpp::Environment strollur_env("package:strollur");
+        const Rcpp::Function message = strollur_env["assigned_message"];
+        message(numAssigned, " sequence taxonomies.");
+    }
+
+
+    if (reference.isNotNull()) {
+
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
+        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
+        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
+        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
+        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+    }
+
+    return numAssigned;
+}
+/******************************************************************************/
 double xdev_assign_treatments(const Rcpp::Environment& data,
                               const Rcpp::DataFrame& table,
                               const string& sample,

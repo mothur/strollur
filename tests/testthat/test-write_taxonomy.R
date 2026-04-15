@@ -2,7 +2,7 @@ test_that("write_taxonomy - errors", {
   expect_error(write_taxonomy("Bad_type"))
 
   # no file name with nameless dataset
-  data <- strollur$new()
+  data <- new_dataset()
   expect_error(write_taxonomy(data))
 })
 

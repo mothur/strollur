@@ -42,6 +42,7 @@ First, let's add some [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/)
 
 ```{r}
 fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+str(fasta_data)
 
 add(
   data,
@@ -102,6 +103,8 @@ You can use the table_names parameter to tell strollur what the specific column 
 
 ```{r} 
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
+str(contigs_report)
+
 add(
   data,
   table = contigs_report,
@@ -119,6 +122,7 @@ Now that we have added our custom contigs assembly report, let's learn how to ad
 
 ```{r}
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
+str(metadata)
 
 add(
   data,
@@ -155,6 +159,7 @@ After adding your FASTA sequences, you can assign abundance and sample data usin
     
 ```{r}
 abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+str(abundance_table)
 
 assign(data, table = abundance_table, type = "sequence_abundance")
 
@@ -168,6 +173,7 @@ As you can see we now have abundances, samples and treatments added to the data 
 
 ```{r}
 bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
+str(bin_table)
 
 assign(data, table = bin_table, type = "bins", bin_type = "otu")
 
@@ -187,6 +193,7 @@ Now that we have assigned our sequences to bins, let's assign taxonomy to our se
 sequence_classification_data <- read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
+str(sequence_classification_data)
 
 assign(
   data,
@@ -198,13 +205,14 @@ assign(
 Note, when you assign taxonomy to sequences that are assigned to bins, strollur will automatically assign the bin taxonomies to be the consensus taxonomy of the sequences in the bins. You can also set bin taxonomies independently by setting the type = "bin_taxonomy".
 
 ```{r}
-otu_data <- read_mothur_cons_taxonomy(strollur_example(
+otu_taxonomy_data <- read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
+str(otu_taxonomy_data)
 
 assign(
   data,
-  table = otu_data,
+  table = otu_taxonomy_data,
   type = "bin_taxonomy",
   bin_type = "otu"
 )
@@ -217,6 +225,7 @@ strollur allows you to assign a bin representative sequences to the bins in your
 
 ```{r}
 bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
+str(bin_reps)
 
 assign(
   data,
@@ -232,6 +241,7 @@ In our case the abundance_table included treatment assignments, but you can also
 
 ```{r}
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
+str(sample_assignments)
 
 assign(
   data,

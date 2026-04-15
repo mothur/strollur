@@ -582,7 +582,7 @@ test_that("Tests assignSequenceTaxonomy forces reclassify", {
     "Bacteria", "Bacteria_unclassified", "Bacteria_unclassified",
     "Bacteria", "Bacteroidetes", "Bacteroidia"
   )
-  expect_equal(report[["taxon"]], expected)
+  expect_equal(report[["taxonomies"]], expected)
 
   assign(
     data,
@@ -597,5 +597,5 @@ test_that("Tests assignSequenceTaxonomy forces reclassify", {
     "Bacteria", "Bacteroidetes", "Bacteroidetes_unclassified"
   )
 
-  expect_equal(report[["taxon"]], expected)
+  expect_equal(report[["taxonomies"]], expected)
 })
