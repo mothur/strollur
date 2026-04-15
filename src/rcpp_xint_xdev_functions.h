@@ -14,6 +14,8 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame& df,
                                    const string& default_column_name,
                                    const string& given_column_name,
                                    const string& type = "string");
+void xint_added_message(double num = -1, string tag = "sequences");
+void xint_assigned_message(double num = -1, string tag = "sequences");
 /******************************************************************************/
 //' @title Get a data.frame containing the requested abundance data
 //' @name xdev_abundance
@@ -416,7 +418,60 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
                                  const string& sequence_name = "sequence_names",
                                  const string& taxonomy = "taxonomies",
                                  bool verbose = true);
-
+/******************************************************************************/
+//' @title xdev_assign_sequence_taxonomy_tidy
+//' @description
+//' Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//'
+//' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+//'  the consensus taxonomy for each bin for you.
+//'
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//'
+//' @param table, a data.frame containing sequence taxonomy assignments
+//'
+//' @param reference, a list created by the function [new_reference]. Optional.
+//'
+//' @param sequence_name, a string containing the name of the column in 'table'
+//' that contains the sequence names. Default column name is 'sequence_names'.
+//' @param level, a string containing the name of the column in 'table' that
+//' contains the taxonomy levels. Default column name is 'levels'.
+//' @param taxonomy, a string containing the name of the column in 'table' that
+//' contains the sequence taxonomies. Default column name is 'taxonomies'.
+//' @param confidence, a string containing the name of the column in 'table'
+//' that contains the taxonomies confidence. Default column name is 'confidences'.
+//' @param verbose, a boolean whether or not you want progress messages.
+//' Default = TRUE.
+//'
+//' @examples
+//'
+//' sequence_classifications <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
+//'
+//' data <- new_dataset("my_dataset")
+//'
+//' xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications)
+//'
+//' # With the reference parameter you can add information about the reference
+//' # you used to classify your sequences. You can also add references using the
+//' # 'add_references' function.
+//'
+//' reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+//'               "classification by mothur2 v1.0 using default options", "",
+//' "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
+//'
+//' xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications, reference)
+//'
+//' @return double containing the number of sequence taxonomies assigned
+//' @export
+//[[Rcpp::export]]
+double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
+                                     const Rcpp::DataFrame& table,
+                                     Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
+                                     const string& sequence_name = "sequence_names",
+                                     const string& level = "levels",
+                                     const string& taxonomy = "taxonomies",
+                                     const string& confidence = "confidences",
+                                     const bool verbose = true);
 /******************************************************************************/
 //' @title xdev_assign_sequence_abundance
 //' @description

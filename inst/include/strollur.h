@@ -506,6 +506,11 @@ public:
 
     double assignSequenceTaxonomy(const vector<string>& names,
                                   const vector<string>& taxonomies);
+    double assignSequenceTaxonomyTidy(const vector<string>& sequence_names,
+                                      const vector<int>& levels,
+                                      const vector<string>& taxonomies,
+                                      const vector<float>& confidences);
+
     double assignBinRepresentativeSequences(const vector<string>& binNames,
                                   const vector<string>& repNames,
                                   const string& type = "otu");

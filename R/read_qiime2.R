@@ -131,7 +131,7 @@ read_qiime2 <- function(qza, metadata = NULL,
   }
 
   # create new blank `strollur` object
-  data <- strollur$new(name = dataset_name)
+  data <- new_dataset(dataset_name = dataset_name)
 
   # read metadata
   if (!is.null(metadata)) {

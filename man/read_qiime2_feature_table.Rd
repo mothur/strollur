@@ -37,7 +37,7 @@ artifact$data
 
 # to create a `strollur` object with your data
 
-data <- strollur$new("my_data")
+data <- new_dataset("my_data")
 
 assign(data = data, table = artifact$data, type = "bins")
 

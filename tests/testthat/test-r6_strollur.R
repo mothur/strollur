@@ -221,7 +221,7 @@ test_that("dataset - intialize from dataset object", {
 })
 
 test_that("dataset - addSeqs, assign samples", {
-  data <- strollur$new("mydata")
+  data <- new_dataset("mydata")
 
   # missing data and names
   expect_error(xdev_add_sequences(data))
@@ -433,7 +433,7 @@ test_that("dataset - addSeqs, assign samples", {
 })
 
 test_that("dataset - assign bins and bin_taxonomy", {
-  data <- strollur$new("test")
+  data <- new_dataset("test")
 
   otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
 
@@ -452,7 +452,7 @@ test_that("dataset - assign bins and bin_taxonomy", {
 })
 
 test_that("dataset - assign_sequence_abundance, remove_sequences", {
-  data <- strollur$new("mydata")
+  data <- new_dataset("mydata")
 
   # missing data and names
   expect_error(xdev_assign_sequence_abundance(data))
@@ -639,7 +639,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
     abunds
   )
 
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
   bin_ids <- c("bin1", "bin1", "bin1", "bin2", "bin2", "bin3")
   samples <- c(
     "sample1", "sample2", "sample5",
@@ -672,7 +672,7 @@ test_that("dataset - get_list get_rabund, get_bin_assignments", {
   expect_true(has_sample(dataset_t, "sample1"))
   expect_false(has_sample(dataset_t, "non_existant_sample"))
 
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
   bin_ids <- c(
     "bin1", "bin1", "bin1", "bin1",
     "bin2", "bin2", "bin2", "bin2", "bin2", "bin2", "bin2", "bin2",
@@ -749,7 +749,7 @@ test_that("dataset - ", {
   tax4 <- "Bacteria(100);Proteobacteria(87);Gammaproteobacteria(82);"
   taxonomies <- c(tax1, tax2, tax3, tax4)
 
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
 
   url <- paste0(
     "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset",
@@ -785,13 +785,13 @@ test_that("dataset - ", {
     "seq3", "seq3", "seq3",
     "seq4", "seq4", "seq4"
   )
-  expect_equal(report$id, ids)
-  expect_equal(report$taxon[1:6], c(
+  expect_equal(report$sequence_names, ids)
+  expect_equal(report$taxonomies[1:6], c(
     "Bacteria", "Bacteroidetes",
     "Bacteroidia", "Bacteria",
     "Proteobacteria", "Betaproteobacteria"
   ))
-  expect_equal(report$confidence[7:12], c(100, 99, 90, 100, 87, 82))
+  expect_equal(report$confidences[7:12], c(100, 99, 90, 100, 87, 82))
 
   # same length without confidences
   tax1 <- "Bacteria;Bacteroidetes;Bacteroidia;"
@@ -800,15 +800,15 @@ test_that("dataset - ", {
   tax4 <- "Bacteria;Proteobacteria;Gammaproteobacteria;"
   taxonomies <- c(tax1, tax2, tax3, tax4)
   #---------------------------------------------------------#
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
   assign(data = dataset_t, table = data.frame(
     sequence_names = names,
     taxonomies = taxonomies
   ), type = "sequence_taxonomy")
   report <- report(dataset_t, "sequence_taxonomy")
 
-  expect_equal(report$id, ids)
-  expect_equal(report$taxon[7:12], c(
+  expect_equal(report$sequence_names, ids)
+  expect_equal(report$taxonomies[7:12], c(
     "Bacteria", "Firmicutes",
     "Bacilli", "Bacteria",
     "Proteobacteria", "Gammaproteobacteria"
@@ -821,7 +821,7 @@ test_that("dataset - ", {
   tax4 <- "Bacteria;Proteobacteria;"
   taxonomies <- c(tax1, tax2, tax3, tax4)
   #---------------------------------------------------------#
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
   xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
     taxonomies = taxonomies
@@ -834,8 +834,8 @@ test_that("dataset - ", {
     "seq3", "seq3", "seq3", "seq3", "seq3",
     "seq4", "seq4", "seq4", "seq4", "seq4"
   )
-  expect_equal(report$id, ids)
-  expect_equal(report$taxon[1:10], c(
+  expect_equal(report$sequence_names, ids)
+  expect_equal(report$taxonomies[1:10], c(
     "Bacteria", "Bacteroidetes",
     "Bacteroidia", "Bacteroidales",
     "Bacteroidales_unclassified",
@@ -844,7 +844,7 @@ test_that("dataset - ", {
     "Betaproteobacteria_unclassified",
     "Betaproteobacteria_unclassified"
   ))
-  expect_equal(report$taxon[11:20], c(
+  expect_equal(report$taxonomies[11:20], c(
     "Bacteria", "Firmicutes",
     "Bacilli", "Lactobacillales",
     "Streptococcaceae",
@@ -863,7 +863,7 @@ test_that("dataset - ", {
   tax4 <- "Bacteria(100);Proteobacteria(95);"
   taxonomies <- c(tax1, tax2, tax3, tax4)
   #---------------------------------------------------------#
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
   xdev_assign_sequence_taxonomy(dataset_t, data.frame(
     sequence_names = names,
     taxonomies = taxonomies
@@ -876,8 +876,8 @@ test_that("dataset - ", {
     "seq3", "seq3", "seq3", "seq3", "seq3",
     "seq4", "seq4", "seq4", "seq4", "seq4"
   )
-  expect_equal(report$id, ids)
-  expect_equal(report$taxon[1:10], c(
+  expect_equal(report$sequence_names, ids)
+  expect_equal(report$taxonomies[1:10], c(
     "Bacteria", "Bacteroidetes",
     "Bacteroidia(sub_category)",
     "Bacteroidales",
@@ -887,7 +887,7 @@ test_that("dataset - ", {
     "Betaproteobacteria_unclassified",
     "Betaproteobacteria_unclassified"
   ))
-  expect_equal(report$taxon[11:20], c(
+  expect_equal(report$taxonomies[11:20], c(
     "Bacteria", "Firmicutes",
     "Bacilli", "Lactobacillales",
     "Streptococcaceae",
@@ -896,11 +896,11 @@ test_that("dataset - ", {
     "Proteobacteria_unclassified",
     "Proteobacteria_unclassified"
   ))
-  expect_equal(report$confidence[1:10], c(
+  expect_equal(report$confidences[1:10], c(
     100, 95, 87, 85, 85, 100, 95, 87,
     87, 87
   ))
-  expect_equal(report$confidence[11:20], c(
+  expect_equal(report$confidences[11:20], c(
     100, 95, 87, 87, 85, 100, 95, 95,
     95, 95
   ))
@@ -919,7 +919,7 @@ test_that("dataset - ", {
     "bin2", "bin2", "bin2", "bin2"
   )
 
-  expect_equal(ids, report$id)
+  expect_equal(ids, report$bin_names)
   expect_equal(c(
     "Bacteria", "Bacteroidetes",
     "Bacteroidia(sub_category)",
@@ -986,8 +986,8 @@ test_that("dataset - ", {
     "bin4", "bin4", "bin4", "bin4"
   )
 
-  expect_equal(report$id, ids)
-  expect_equal(report$taxon, c(
+  expect_equal(report$bin_names, ids)
+  expect_equal(report$taxonomies, c(
     "Bacteria", "Bacteroidetes",
     "Bacteroidia", "Bacteroidales",
     "Bacteria", "Proteobacteria",
@@ -1014,8 +1014,8 @@ test_that("dataset - ", {
 
   report <- report(dataset_t, "bin_taxonomy")
 
-  expect_equal(report$id, ids)
-  expect_equal(report$taxon, c(
+  expect_equal(report$bin_names, ids)
+  expect_equal(report$taxonomies, c(
     "Bacteria", "Bacteroidetes",
     "Bacteroidia", "Bacteroidia_unclassified",
     "Bacteria", "Proteobacteria",
@@ -1025,7 +1025,7 @@ test_that("dataset - ", {
     "Bacteria", "Proteobacteria",
     "Gammaproteobacteria", "Gammaproteobacteria_unclassified"
   ))
-  expect_equal(report$confidence, c(
+  expect_equal(report$confidences, c(
     100, 95, 94, 94, 100, 90, 87, 80,
     100, 100, 100, 89, 100, 65, 60, 60
   ))
@@ -1065,7 +1065,7 @@ test_that("dataset - ", {
 })
 
 test_that("dataset - add_metadata, get_metadata", {
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
 
   expect_equal(report(dataset_t, "metadata"), data.frame())
 
@@ -1092,7 +1092,7 @@ test_that("dataset - add_metadata, get_metadata", {
 })
 
 test_that("dataset - add_references, get_references", {
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
 
   expect_equal(report(dataset_t, "references"), data.frame())
   expect_error(xdev_add_references(dataset_t, reference = c("bad_type")))
@@ -1121,7 +1121,7 @@ test_that("dataset - add_references, get_references", {
     "custom reference created by trimming silva.bacteria.fasta to the V4 region"
   )
 
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
 
   mothur_url <- "https://github.com/mothur/mothur/releases/tag/v1.48.2"
 
@@ -1156,7 +1156,7 @@ test_that("dataset - add_references, get_references", {
 })
 
 test_that("dataset - add reports, get reports", {
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
 
   align_report <- readRDS(strollur_example("test_alignment_data.rds"))
 
@@ -1206,7 +1206,7 @@ test_that("dataset - add reports, get reports", {
 })
 
 test_that("dataset - add / get _contigs_assembly_report,", {
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
 
   report <- readRDS(strollur_example("test_contigs_data.rds"))
   expect_error(xdev_add_report(dataset_t, report, "contigs_report", "badName"))
@@ -1240,7 +1240,7 @@ test_that("dataset - add / get _contigs_assembly_report,", {
 })
 
 test_that("dataset - add / get _chimera_report,", {
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
 
   report <- readr::read_tsv(strollur_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
@@ -1269,7 +1269,7 @@ test_that("dataset - add / get _chimera_report,", {
 })
 
 test_that("dataset - get_sequence_summary,", {
-  dataset_t <- strollur$new("my_dataset")
+  dataset_t <- new_dataset("my_dataset")
 
   report <- readRDS(strollur_example("test_contigs_data.rds"))
   xdev_add_report(dataset_t, report, "contigs_report", "Name")
@@ -1306,7 +1306,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
-  dataset_t <- strollur$new()
+  dataset_t <- new_dataset()
 
   expect_error(dataset_t$add_sequence_tree(tree = c("bad_type")))
 
@@ -1317,7 +1317,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   expect_equal(dataset_t$get_sequence_tree(), NULL)
 
   # add full tree
-  dataset_t <- strollur$new()
+  dataset_t <- new_dataset()
   xdev_add_sequences(dataset_t, data.frame(sequence_names = names))
 
   l <- lapply(strsplit(seqs, split = ""), "[")
@@ -1354,13 +1354,13 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   names(l) <- names[1:3]
 
   # should alert that the tree is missing reads, and not save it
-  dataset_t <- strollur$new()
+  dataset_t <- new_dataset()
   xdev_add_sequences(dataset_t, data.frame(sequence_names = names))
   dataset_t$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
   expect_equal(dataset_t$get_sequence_tree(), NULL)
 
   # add tree from file
-  dataset_t <- strollur$new()
+  dataset_t <- new_dataset()
   dataset_t$add_sequence_tree(read.tree(
     strollur_example("final.phylip.tre.gz")
   ))
@@ -1375,7 +1375,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   )
 
   # add tree with extra sequences, forcing prune
-  dataset_t <- strollur$new()
+  dataset_t <- new_dataset()
   xdev_add_sequences(dataset_t, data.frame(sequence_names = names))
 
   seqs <- c(seqs, "ACTGC")
@@ -1398,7 +1398,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
 })
 
 test_that("dataset - add_sample_tree / get_sample_tree,", {
-  dataset_t <- strollur$new()
+  dataset_t <- new_dataset()
   expect_null(dataset_t$get_sample_tree())
 
   sample_tree <- ape::read.tree(
@@ -1690,7 +1690,7 @@ test_that("dataset - assign_bin_representative_sequences", {
   expect_equal(df[[2]], rep_names)
   expect_equal(df[[3]], xdev_get_sequences(dataset_t)[1:num_bins])
 
-  d <- strollur$new()
+  d <- new_dataset()
   expect_equal(report(d, "bin_representatives"), data.frame())
   expect_equal(report(d, "sample_assignments"), data.frame())
 

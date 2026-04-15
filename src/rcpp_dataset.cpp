@@ -52,38 +52,6 @@ Rcpp::List new_reference(string reference_name,
      );
  }
 /******************************************************************************/
-//' @title copy_dataset
-//' @description
-//' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object from an existing dataset.
-//'
-//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//' @examples
-//'
-//' miseq <- miseq_sop_example()
-//'
-//' # to create a new dataset that is a copy of miseq
-//'
-//' data <- copy_dataset(miseq)
-//'
-//' @returns a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
-//' @export
-//[[Rcpp::export]]
-Rcpp::Environment copy_dataset(Rcpp::Environment data) {
-
-    // strollur$new()
-    Rcpp::Environment strollur_env("package:strollur");
-    Rcpp::Environment dataset_class_env = strollur_env["strollur"];
-    Rcpp::Function constructor = dataset_class_env["new"];
-    Rcpp::XPtr<Dataset> d = data["data"];
-
-    Rcpp::Environment copy = constructor(d.get()->datasetName,
-                                         d.get()->processors,
-                                         data);
-
-    return copy;
-}
-/******************************************************************************/
 //' @title clear
 //' @description
 //' Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

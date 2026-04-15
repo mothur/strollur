@@ -27,17 +27,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// copy_dataset
-Rcpp::Environment copy_dataset(Rcpp::Environment data);
-RcppExport SEXP _strollur_copy_dataset(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(copy_dataset(data));
-    return rcpp_result_gen;
-END_RCPP
-}
 // clear
 void clear(Rcpp::Environment data);
 RcppExport SEXP _strollur_clear(SEXP dataSEXP) {
@@ -233,6 +222,24 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const string& >::type taxonomy(taxonomySEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
     rcpp_result_gen = Rcpp::wrap(xdev_assign_sequence_taxonomy(data, table, reference, sequence_name, taxonomy, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_assign_sequence_taxonomy_tidy
+double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data, const Rcpp::DataFrame& table, Rcpp::Nullable<Rcpp::List> reference, const string& sequence_name, const string& level, const string& taxonomy, const string& confidence, const bool verbose);
+RcppExport SEXP _strollur_xdev_assign_sequence_taxonomy_tidy(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP sequence_nameSEXP, SEXP levelSEXP, SEXP taxonomySEXP, SEXP confidenceSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DataFrame& >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< const string& >::type sequence_name(sequence_nameSEXP);
+    Rcpp::traits::input_parameter< const string& >::type level(levelSEXP);
+    Rcpp::traits::input_parameter< const string& >::type taxonomy(taxonomySEXP);
+    Rcpp::traits::input_parameter< const string& >::type confidence(confidenceSEXP);
+    Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_assign_sequence_taxonomy_tidy(data, table, reference, sequence_name, level, taxonomy, confidence, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -569,7 +576,6 @@ RcppExport SEXP run_testthat_tests(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_strollur_new_reference", (DL_FUNC) &_strollur_new_reference, 5},
-    {"_strollur_copy_dataset", (DL_FUNC) &_strollur_copy_dataset, 1},
     {"_strollur_clear", (DL_FUNC) &_strollur_clear, 1},
     {"_strollur_export_dataset", (DL_FUNC) &_strollur_export_dataset, 1},
     {"_strollur_get_bin_types", (DL_FUNC) &_strollur_get_bin_types, 1},
@@ -584,6 +590,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_assign_bin_representative_sequences", (DL_FUNC) &_strollur_xdev_assign_bin_representative_sequences, 7},
     {"_strollur_xdev_assign_bin_taxonomy", (DL_FUNC) &_strollur_xdev_assign_bin_taxonomy, 7},
     {"_strollur_xdev_assign_sequence_taxonomy", (DL_FUNC) &_strollur_xdev_assign_sequence_taxonomy, 6},
+    {"_strollur_xdev_assign_sequence_taxonomy_tidy", (DL_FUNC) &_strollur_xdev_assign_sequence_taxonomy_tidy, 8},
     {"_strollur_xdev_assign_sequence_abundance", (DL_FUNC) &_strollur_xdev_assign_sequence_abundance, 7},
     {"_strollur_xdev_assign_treatments", (DL_FUNC) &_strollur_xdev_assign_treatments, 5},
     {"_strollur_xdev_count", (DL_FUNC) &_strollur_xdev_count, 5},

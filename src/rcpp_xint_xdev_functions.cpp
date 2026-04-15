@@ -1,7 +1,22 @@
 
 
 #include "rcpp_xint_xdev_functions.h"
+/******************************************************************************/
+void xint_added_message(double num, string tag) {
+    string message = "Added ";
+    if (num != -1) {
+        message += toString(num) + " " + tag + ".";
+    } else {
+        message += tag + ".";
+    }
 
+    RcppThread::Rcout << message << endl;
+}
+/******************************************************************************/
+void xint_assigned_message(double num, string tag) {
+    string message = "Assigned " + toString(num) + tag;
+    RcppThread::Rcout << message << endl;
+}
 /******************************************************************************/
 SEXP xint_fill_required_parameters(const Rcpp::DataFrame& df,
                                    const string& given_column_name,
@@ -153,9 +168,7 @@ double xdev_add_references(const Rcpp::Environment& data,
     double numAdded = d.get()->addReferences(refs);
 
     if (verbose) {
-        Rcpp::Environment strollur_env("package:strollur");
-        Rcpp::Function message = strollur_env["added_message"];
-        message(numAdded, "resource references");
+        xint_added_message(numAdded, "resource references");
     }
 
     return numAdded;
@@ -177,9 +190,7 @@ void xdev_add_report(const Rcpp::Environment& data,
     if (type == "metadata") {
         d.get()->addMetadata(table);
         if (verbose) {
-            Rcpp::Environment strollur_env("package:strollur");
-            Rcpp::Function message = strollur_env["added_message"];
-            message(R_NilValue, type);
+            xint_added_message(-1, type);
         }
     }
     else{
@@ -213,10 +224,8 @@ void xdev_add_report(const Rcpp::Environment& data,
                 vector<string> missingSeqs = setDiff(datasetSeqNames, sequenceNames);
 
                 if (missingSeqs.size() == 0) {
-                    // preserve order of dataset
-                    Rcpp::Environment strollur_env("package:strollur");
-                    Rcpp::Function sort = strollur_env["sort_dataframe"];
-
+                    Rcpp::Environment pkg = Rcpp::Environment::namespace_env("strollur");
+                    Rcpp::Function sort = pkg["sort_dataframe"];
                     table = sort(table, datasetSeqNames, sequence_name);
                 }else {
                     string message = "Your report does not contain an entry for ";
@@ -233,9 +242,7 @@ void xdev_add_report(const Rcpp::Environment& data,
             d.get()->addReport(table, type);
 
             if (verbose) {
-                Rcpp::Environment strollur_env("package:strollur");
-                Rcpp::Function message = strollur_env["added_message"];
-                message(R_NilValue, "a " + type);
+                xint_added_message(-1, "a " + type);
             }
         }
     }
@@ -282,9 +289,7 @@ double xdev_add_sequences(const Rcpp::Environment& data,
                             sequences, comments, ref);
 
     if (verbose) {
-        Rcpp::Environment strollur_env("package:strollur");
-        const Rcpp::Function message = strollur_env["added_message"];
-        message(numAdded);
+        xint_added_message(numAdded);
     }
 
     return numAdded;
@@ -346,9 +351,7 @@ double xdev_assign_bins(const Rcpp::Environment& data,
 
     if (verbose) {
         string tag = " " + bin_type +" bins.";
-        Rcpp::Environment strollur_env("package:strollur");
-        Rcpp::Function message = strollur_env["assigned_message"];
-        message(numBinsAssigned, tag);
+        xint_assigned_message(numBinsAssigned, tag);
     }
 
 
@@ -395,9 +398,7 @@ double xdev_assign_bin_representative_sequences(const Rcpp::Environment& data,
 
     if (verbose) {
         const string tag = " " + bin_type +" bin representative sequences.";
-        Rcpp::Environment strollur_env("package:strollur");
-        Rcpp::Function message = strollur_env["assigned_message"];
-        message(numAssigned, tag);
+        xint_assigned_message(numAssigned, tag);
     }
 
 
@@ -453,9 +454,7 @@ double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
 
     if (verbose) {
         string tag = " " + bin_type +" bin taxonomies.";
-        Rcpp::Environment strollur_env("package:strollur");
-        Rcpp::Function message = strollur_env["assigned_message"];
-        message(numAssigned, tag);
+        xint_assigned_message(numAssigned, tag);
     }
 
 
@@ -535,9 +534,7 @@ double xdev_assign_sequence_abundance(const Rcpp::Environment& data,
 
     if (verbose) {
         string tag = " sequence abundances.";
-        Rcpp::Environment strollur_env("package:strollur");
-        Rcpp::Function message = strollur_env["assigned_message"];
-        message(numAssigned, tag);
+        xint_assigned_message(numAssigned, tag);
     }
 
     return numAssigned;
@@ -566,9 +563,62 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
                                taxonomies);
 
     if (verbose) {
-        Rcpp::Environment strollur_env("package:strollur");
-        const Rcpp::Function message = strollur_env["assigned_message"];
-        message(numAssigned, " sequence taxonomies.");
+        xint_assigned_message(numAssigned, " sequence taxonomies.");
+    }
+
+
+    if (reference.isNotNull()) {
+
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
+        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
+        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
+        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
+        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+    }
+
+    return numAssigned;
+}
+/******************************************************************************/
+double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
+                                          const Rcpp::DataFrame& table,
+                                          Rcpp::Nullable<Rcpp::List> reference,
+                                          const string& sequence_name,
+                                          const string& level,
+                                          const string& taxonomy,
+                                          const string& confidence,
+                                          const bool verbose){
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    vector<string> sequence_names, taxonomies;
+    vector<float> confidences;
+    vector<int> levels;
+
+    sequence_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                            sequence_name));
+    taxonomies = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                        taxonomy));
+    levels = Rcpp::as<vector<int>>(xint_fill_required_parameters(table,
+                                                                 level));
+    confidences = Rcpp::as<vector<float>>(xint_fill_required_parameters(table,
+                                                                        confidence));
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+
+    const double numAssigned = d.get()->assignSequenceTaxonomyTidy(sequence_names,
+                                     levels, taxonomies, confidences);
+
+    if (verbose) {
+        xint_assigned_message(numAssigned, " sequence taxonomies.");
     }
 
 
@@ -628,9 +678,7 @@ double xdev_assign_treatments(const Rcpp::Environment& data,
     const double numAssigned = d.get()->assignTreatments(samples, treatments);
 
     if (verbose) {
-        Rcpp::Environment strollur_env("package:strollur");
-        const Rcpp::Function message = strollur_env["assigned_message"];
-        message(numAssigned, " samples to treatments.");
+        xint_assigned_message(numAssigned, " samples to treatments.");
     }
 
     return numAssigned;

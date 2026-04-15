@@ -34,26 +34,6 @@ new_reference <- function(reference_name, reference_version = "", reference_usag
     .Call(`_strollur_new_reference`, reference_name, reference_version, reference_usage, reference_note, reference_url)
 }
 
-#' @title copy_dataset
-#' @description
-#' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object from an existing dataset.
-#'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @examples
-#'
-#' miseq <- miseq_sop_example()
-#'
-#' # to create a new dataset that is a copy of miseq
-#'
-#' data <- copy_dataset(miseq)
-#'
-#' @returns a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
-#' @export
-copy_dataset <- function(data) {
-    .Call(`_strollur_copy_dataset`, data)
-}
-
 #' @title clear
 #' @description
 #' Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -518,6 +498,54 @@ xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = 
 #' @export
 xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequence_name = "sequence_names", taxonomy = "taxonomies", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_sequence_taxonomy`, data, table, reference, sequence_name, taxonomy, verbose)
+}
+
+#' @title xdev_assign_sequence_taxonomy_tidy
+#' @description
+#' Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'
+#' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+#'  the consensus taxonomy for each bin for you.
+#'
+#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'
+#' @param table, a data.frame containing sequence taxonomy assignments
+#'
+#' @param reference, a list created by the function [new_reference]. Optional.
+#'
+#' @param sequence_name, a string containing the name of the column in 'table'
+#' that contains the sequence names. Default column name is 'sequence_names'.
+#' @param level, a string containing the name of the column in 'table' that
+#' contains the taxonomy levels. Default column name is 'levels'.
+#' @param taxonomy, a string containing the name of the column in 'table' that
+#' contains the sequence taxonomies. Default column name is 'taxonomies'.
+#' @param confidence, a string containing the name of the column in 'table'
+#' that contains the taxonomies confidence. Default column name is 'confidences'.
+#' @param verbose, a boolean whether or not you want progress messages.
+#' Default = TRUE.
+#'
+#' @examples
+#'
+#' sequence_classifications <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
+#'
+#' data <- new_dataset("my_dataset")
+#'
+#' xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications)
+#'
+#' # With the reference parameter you can add information about the reference
+#' # you used to classify your sequences. You can also add references using the
+#' # 'add_references' function.
+#'
+#' reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+#'               "classification by mothur2 v1.0 using default options", "",
+#' "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
+#'
+#' xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications, reference)
+#'
+#' @return double containing the number of sequence taxonomies assigned
+#' @export
+xdev_assign_sequence_taxonomy_tidy <- function(data, table, reference = NULL, sequence_name = "sequence_names", level = "levels", taxonomy = "taxonomies", confidence = "confidences", verbose = TRUE) {
+    .Call(`_strollur_xdev_assign_sequence_taxonomy_tidy`, data, table, reference, sequence_name, level, taxonomy, confidence, verbose)
 }
 
 #' @title xdev_assign_sequence_abundance

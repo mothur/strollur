@@ -43,15 +43,15 @@ write_phyloseq <- function(data) {
   if (nrow(report(data = data, type = "sequence_taxonomy")) > 0) {
     df <- report(data = data, type = "sequence_taxonomy")
 
-    if (any(colnames(df) == "confidence")) {
-      df$taxon <- paste0(df$taxon, "(", df$confidence, ")")
-      df$confidence <- NULL
+    if (any(colnames(df) == "confidences")) {
+      df$taxonomies <- paste0(df$taxonomies, "(", df$confidences, ")")
+      df$confidences <- NULL
     }
     taxas <-
       reshape(df,
         direction = "wide",
-        timevar = "level",
-        idvar = "id",
+        timevar = "levels",
+        idvar = "sequence_names",
       )
 
     colnames(taxas) <- c("id", paste("level_", seq(1, ncol(taxas) - 1),

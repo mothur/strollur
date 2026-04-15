@@ -19,9 +19,9 @@ knitr::opts_chunk$set(
 *strollur* includes several functions designed for package developers. These functions provide additional access to the back end data and allow developers to merge, remove and set data directly. The function names begin with *'xdev_'* or *'xint_'* to clearly indicate that they are designed for development or for internal use, and not for the general user. 
 
 ### Under The Hood 
-The `dataset` object is an R6 object to keep the memory usage low. An R6 class is inherently passed by reference rather than by value. You can make a deep copy of your dataset using the `copy_dataset()` function. Note, if you use an assignment operator to copy it's a shallow copy. 
+The `strollur` object is an R6 object to keep the memory usage low. An R6 class is inherently passed by reference rather than by value. You can make a deep copy of your dataset using the `copy_dataset()` function. Note, if you use an assignment operator to copy it's a shallow copy. 
 
-The `dataset` object has several public fields, but I'd like to bring special attention to the *data* field. *data* is an Rcpp external pointer (safe pointer) to 'Dataset' c++ class (class definitions found in stroller.h). This format allows package developers an easy access point to the underlying C++ code with additional functionality. While many of the most frequently used functions have exported Rcpp functions, you can also write your own functions to access any public function in the 'Dataset' class. 
+The `strollur` object has several public fields, but I'd like to bring special attention to the *data* field. *data* is an Rcpp external pointer (safe pointer) to 'Dataset' c++ class (class definitions found in stroller.h). This format allows package developers an easy access point to the underlying C++ code with additional functionality. While many of the most frequently used functions have exported Rcpp functions, you can also write your own functions to access any public function in the 'Dataset' class. 
 
 ### Setting functions
 

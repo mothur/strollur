@@ -722,6 +722,83 @@ test_that("Tests removeBins, getScrapReport, getScrapSummary", {
 })
 
 
+test_that("Tests assignSequenceTaxonomyTidy", {
+  names <- c(
+    "seq1", "seq1", "seq1",
+    "seq2", "seq2", "seq2",
+    "seq3", "seq3", "seq3",
+    "seq4", "seq4", "seq4"
+  )
+  taxonomies <- c(
+    "Bacteria", "Bacteroidetes", "Bacteroidia",
+    "Bacteria", "Proteobacteria", "Betaproteobacteria",
+    "Bacteria", "Firmicutes", "Bacilli",
+    "Bacteria", "Firmicutes", "Bacilli"
+  )
+  levels <- c(1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3)
+  confidences <- c(100, 95, 90, 100, 89, 85, 100, 99, 90, 100, 87, 85)
+
+  table <- data.frame(
+    sequence_names = names,
+    levels = levels,
+    taxonomies = taxonomies,
+    confidences = confidences
+  )
+
+  data <- new_dataset("testdata")
+
+  # assign sequence taxonomy
+  xdev_assign_sequence_taxonomy_tidy(
+    data = data,
+    table = table
+  )
+
+  sequence_taxonomy_report <- report(data, "sequence_taxonomy")
+
+  expect_equal(sort_dataframe(
+    sequence_taxonomy_report,
+    table$sequence_names,
+    "sequence_names"
+  ), table)
+
+  expect_equal(sequence_taxonomy_report[[3]], c(
+    "Bacteria", "Bacteroidetes",
+    "Bacteroidia", "Bacteria",
+    "Proteobacteria",
+    "Betaproteobacteria",
+    "Bacteria", "Firmicutes",
+    "Bacilli", "Bacteria",
+    "Firmicutes", "Bacilli"
+  ))
+
+  expect_equal(sequence_taxonomy_report[[4]], c(
+    100, 95, 90, 100, 89, 85,
+    100, 99, 90, 100, 87, 85
+  ))
+
+  expect_equal(nrow(sequence_taxonomy_report), 12)
+
+  # test extra reads in taxonomy
+  clear(data)
+
+  xdev_add_sequences(data,
+    table = data.frame(
+      sequence_names = c("seq1", "seq2"),
+      sequences = c("ATGC", "ATGC")
+    )
+  )
+
+  # assign sequence taxonomy - should ignore seq3 and seq4
+  xdev_assign_sequence_taxonomy_tidy(
+    data = data,
+    table = table
+  )
+
+  sequence_taxonomy_report <- report(data, "sequence_taxonomy")
+
+  expect_equal(nrow(sequence_taxonomy_report), 6)
+})
+
 test_that("Tests assignSequenceTaxonomy, assignBinTaxonomy, removeLineages", {
   names <- c("seq1", "seq2", "seq3", "seq4")
   otus <- c("otu1", "otu1", "otu2", "otu2")

@@ -59,7 +59,7 @@ test_that("import - miseq_sop_example", {
   exported_miseq <- export_dataset(miseq)
   expect_equal(sum(exported_miseq$sequence_data$include_sequence), 825)
 
-  data <- strollur$new()
+  data <- new_dataset()
   abunds <- c(1, 10, 100)
   bins <- c("otu1", "otu2", "otu3")
 
@@ -183,7 +183,7 @@ test_that("import - errors and warnings", {
   expect_equal(count(data, "samples"), count(just_bins, "samples"))
   expect_equal(length(names(data)), 531)
 
-  data <- strollur$new()
+  data <- new_dataset()
 
   table <- export_dataset(data)
   expect_equal(length(table), 0)

@@ -7,7 +7,7 @@ test_that("test read_mothur_rabund - errors", {
 test_that("test read_mothur_rabund", {
   table <- read_mothur_rabund(strollur_example("final.opti_mcc.rabund"))
 
-  data <- strollur$new()
+  data <- new_dataset()
   assign(data = data, table = table, type = "bins")
 
   expect_equal(count(data), 2425)
