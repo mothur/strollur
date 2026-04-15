@@ -34,26 +34,6 @@ new_reference <- function(reference_name, reference_version = "", reference_usag
     .Call(`_strollur_new_reference`, reference_name, reference_version, reference_usage, reference_note, reference_url)
 }
 
-#' @title copy_dataset
-#' @description
-#' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object from an existing dataset.
-#'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @examples
-#'
-#' miseq <- miseq_sop_example()
-#'
-#' # to create a new dataset that is a copy of miseq
-#'
-#' data <- copy_dataset(miseq)
-#'
-#' @returns a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
-#' @export
-copy_dataset <- function(data) {
-    .Call(`_strollur_copy_dataset`, data)
-}
-
 #' @title clear
 #' @description
 #' Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

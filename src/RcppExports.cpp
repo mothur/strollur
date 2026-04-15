@@ -27,17 +27,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// copy_dataset
-Rcpp::Environment copy_dataset(Rcpp::Environment data);
-RcppExport SEXP _strollur_copy_dataset(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(copy_dataset(data));
-    return rcpp_result_gen;
-END_RCPP
-}
 // clear
 void clear(Rcpp::Environment data);
 RcppExport SEXP _strollur_clear(SEXP dataSEXP) {
@@ -587,7 +576,6 @@ RcppExport SEXP run_testthat_tests(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_strollur_new_reference", (DL_FUNC) &_strollur_new_reference, 5},
-    {"_strollur_copy_dataset", (DL_FUNC) &_strollur_copy_dataset, 1},
     {"_strollur_clear", (DL_FUNC) &_strollur_clear, 1},
     {"_strollur_export_dataset", (DL_FUNC) &_strollur_export_dataset, 1},
     {"_strollur_get_bin_types", (DL_FUNC) &_strollur_get_bin_types, 1},

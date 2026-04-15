@@ -14,6 +14,8 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame& df,
                                    const string& default_column_name,
                                    const string& given_column_name,
                                    const string& type = "string");
+void xint_added_message(double num = -1, string tag = "sequences");
+void xint_assigned_message(double num = -1, string tag = "sequences");
 /******************************************************************************/
 //' @title Get a data.frame containing the requested abundance data
 //' @name xdev_abundance

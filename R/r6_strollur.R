@@ -50,11 +50,15 @@ strollur <- R6Class("strollur",
                           processors = parallelly::availableCores(),
                           dataset = NULL) {
       if (is.null(dataset)) {
-        self$data <- xint_new_pointer(name, processors)
+        self$data <- xint_new_pointer(dataset_name = name, processors)
         self$sequence_tree <- NULL
         private$processors <- processors
         self$sample_tree <- NULL
       } else {
+        if (!inherits(dataset, "strollur")) {
+          stop("dataset must be a strollur object.")
+        }
+
         # copy of dataset backend
         self$data <- xint_copy_pointer(dataset)
         xdev_set_num_processors(self, processors)
