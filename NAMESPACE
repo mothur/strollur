@@ -2,9 +2,7 @@
 
 export(abundance)
 export(add)
-export(added_message)
 export(assign)
-export(assigned_message)
 export(clear)
 export(copy_dataset)
 export(count)
