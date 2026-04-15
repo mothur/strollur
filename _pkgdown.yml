@@ -46,8 +46,6 @@ reference:
   - strollur_example
   - get_available_processors
   - has_sequence_strings
-  - added_message
-  - assigned_message
   - remove_file
   - sort_dataframe
   - starts_with("xdev_")
