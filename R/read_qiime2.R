@@ -76,9 +76,9 @@ read_qiime2 <- function(qza, metadata = NULL,
 
         # create data.frame from sparse otu data
         data_found[["bin_shared_assignments"]] <- data.frame(
-          bin_names = hdata$otus[hdata$counts$i],
-          abundances = hdata$counts$v,
-          samples = hdata$samples[hdata$counts$j]
+          bin_name = hdata$otus[hdata$counts$i],
+          abundance = hdata$counts$v,
+          sample = hdata$samples[hdata$counts$j]
         )
       }
     } else if (
@@ -97,7 +97,7 @@ read_qiime2 <- function(qza, metadata = NULL,
       ) {
         # read fasta file
         df <- read_fasta(file.path(data_dir, fasta_file))
-        names(df) <- c("bin_names", "sequences")
+        names(df) <- c("bin_name", "sequence")
 
         data_found[["bin_representatives"]] <- df
       }
@@ -109,7 +109,7 @@ read_qiime2 <- function(qza, metadata = NULL,
           sep = "\t", header = TRUE, quote = ""
         )
         df <- df[, -c(3)]
-        names(df) <- c("bin_names", "taxonomies")
+        names(df) <- c("bin_name", "taxonomy")
         data_found[["bin_taxonomy"]] <- df
       }
     } else if (artifact$format == "NewickDirectoryFormat") {
@@ -147,7 +147,7 @@ read_qiime2 <- function(qza, metadata = NULL,
     if ("bin_representatives" %in% data_names) {
       add(
         data = data, table = data_found[["bin_representatives"]],
-        type = "sequences", table_names = list(sequence_name = "bin_names")
+        type = "sequence", table_names = list(sequence_name = "bin_name")
       )
     }
 
@@ -156,7 +156,7 @@ read_qiime2 <- function(qza, metadata = NULL,
       xdev_assign_sequence_abundance(
         data = data,
         table = data_found[["bin_shared_assignments"]],
-        sequence_name = "bin_names"
+        sequence_name = "bin_name"
       )
     }
 

@@ -1,6 +1,8 @@
 #ifndef RCPP_strollur_H_GEN_
 #define RCPP_strollur_H_GEN_
 
+#include <ctime>
+
 // io libraries
 #include <string.h>
 #include <iostream>
@@ -596,11 +598,11 @@ public:
     vector<vector<string> > getSequencesBySample(vector<string> samples,
                                                        bool degap = false) const;
 
-    const Rcpp::DataFrame getSummary(const string& type = "sequences",
+    const Rcpp::DataFrame getSummary(const string& type = "sequence",
                                      const string& reportType = "");
 
     double getTotal(const vector<string>& samples = nullVector) const;
-    Rcpp::DataFrame getTotals(const string& type = "samples") const;
+    Rcpp::DataFrame getTotals(const string& type = "sample") const;
     vector<string> getTreatments() const;
     double getUniqueTotal(const vector<string>& samples = nullVector) const;
 

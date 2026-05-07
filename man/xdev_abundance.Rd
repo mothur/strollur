@@ -4,7 +4,7 @@
 \alias{xdev_abundance}
 \title{Get a data.frame containing the requested abundance data}
 \usage{
-xdev_abundance(data, type = "sequences", bin_type = "otu", by_sample = FALSE)
+xdev_abundance(data, type = "sequence", bin_type = "otu", by_sample = FALSE)
 }
 \arguments{
 \item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}

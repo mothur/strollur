@@ -3,7 +3,7 @@
 \docType{package}
 \name{strollur-package}
 \alias{strollur-package}
-\title{strollur: Store and Transfer Data Used with the Analysis of Amplicon Sequence Data}
+\title{strollur: Store and Transfer Data Used with Amplicon Sequence Analysis}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 

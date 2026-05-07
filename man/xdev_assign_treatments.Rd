@@ -7,8 +7,8 @@
 xdev_assign_treatments(
   data,
   table,
-  sample = "samples",
-  treatment = "treatments",
+  sample = "sample",
+  treatment = "treatment",
   verbose = TRUE
 )
 }
@@ -18,10 +18,10 @@ xdev_assign_treatments(
 \item{table, }{a data.frame containing sample treatment assignments}
 
 \item{sample, }{a string containing the name of the column in 'table'
-that contains the samples. Default column name is 'samples'.}
+that contains the samples. Default column name is 'sample'.}
 
 \item{treatment, }{a string containing the name of the column in 'table'
-that contains the treatments. Default column name is 'treatments'.}
+that contains the treatments. Default column name is 'treatment'.}
 
 \item{verbose, }{a boolean indicating whether or not you want progress
 messages. Default = TRUE.}

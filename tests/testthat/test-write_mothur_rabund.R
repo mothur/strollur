@@ -26,13 +26,13 @@ test_that("write_mothur_rabund", {
   df <- read_mothur_rabund(outputs[1])
 
   expected <- xdev_abundance(
-    data = miseq, type = "bins",
+    data = miseq, type = "bin",
     bin_type = bin_types[1]
   )
-  names(expected) <- c("bin_names", "abundances")
+  names(expected) <- c("bin_name", "abundance")
 
   expect_equal(ncol(df), ncol(expected))
-  expect_equal(df$abundances, expected$abundances)
+  expect_equal(df$abundance, expected$abundance)
 
   # cleanup
   for (output in outputs) {

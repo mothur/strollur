@@ -77,17 +77,17 @@ classification_data <- read_mothur_taxonomy(taxonomy = strollur_example("final.t
 
 data <- new_dataset(dataset_name = "microbial RNA example")
 
-add(data, table = fasta_data, type = "sequences")
-#> ℹ Added 2425 sequences.
+add(data, table = fasta_data, type = "sequence")
+#> Added 2425 sequences.
 #> [1] 2425
 assign(data, table = abundance_table, type = "sequence_abundance")
-#> ℹ Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence abundances.
 #> [1] 2425
-assign(data, table = bin_table, type = "bins", bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+assign(data, table = bin_table, type = "bin", bin_type = "otu")
+#> Assigned 531 otu bins.
 #> [1] 531
 assign(data, table = classification_data, type = "sequence_taxonomy")
-#> ℹ Assigned 2425 sequence taxonomies.
+#> Assigned 2425 sequence taxonomies.
 #> [1] 2425
 
 data

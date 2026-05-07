@@ -8,8 +8,8 @@ xdev_assign_sequence_taxonomy(
   data,
   table,
   reference = NULL,
-  sequence_name = "sequence_names",
-  taxonomy = "taxonomies",
+  sequence_name = "sequence_name",
+  taxonomy = "taxonomy",
   verbose = TRUE
 )
 }
@@ -21,10 +21,10 @@ xdev_assign_sequence_taxonomy(
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
 \item{sequence_name, }{a string containing the name of the column in 'table'
-that contains the sequence names. Default column name is 'sequence_names'.}
+that contains the sequence names. Default column name is 'sequence_name'.}
 
 \item{taxonomy, }{a string containing the name of the column in 'table' that
-contains the sequence taxonomies. Default column name is 'taxonomies'.}
+contains the sequence taxonomies. Default column name is 'taxonomy'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}

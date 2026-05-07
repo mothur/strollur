@@ -12,7 +12,7 @@
 #' @param phyloseq_object the phyloseq object that is returned when using
 #' any read function in the phyloseq package. It has to be of type "phyloseq"
 #' @param treatment_column_name the column name inside your phyloseq object
-#' within your sample data that is used to descrbe treatments. It must
+#' within your sample data that is used to describe treatments. It must
 #' be a character. Defaults to NULL.
 #' @param dataset_name A string containing a name for your dataset.
 #' @return a strollur object.
@@ -37,7 +37,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
   if (!is.null(phyloseq::get_sample(phyloseq_object))) {
     sample_df <- phyloseq::get_sample(phyloseq_object)
     xdev_add_sequences(rdaset_object, data.frame(
-      sequence_names =
+      sequence_name =
         unique(rownames(sample_df))
     ))
   }
@@ -47,19 +47,19 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
     shaped <- phyloseq::otu_table(phyloseq_object)@.Data
     names <- rownames(shaped)
     shaped <- cbind(names, shaped)
-    colnames(shaped)[1] <- "sequence_names"
+    colnames(shaped)[1] <- "sequence_name"
     shared_table <- reshape(
       data.frame(shaped),
       varying = as.integer(2:ncol(shaped)),
-      v.names = "abundances",
+      v.names = "abundance",
       direction = "long",
       times = colnames(shaped)[-1],
-      timevar = "samples",
+      timevar = "sample",
     )
-    shared_table$abundances <- as.numeric(shared_table$abundances)
+    shared_table$abundance <- as.numeric(shared_table$abundance)
     xdev_assign_sequence_abundance(
       rdaset_object,
-      shared_table[, c("sequence_names", "abundances", "samples")]
+      shared_table[, c("sequence_name", "abundance", "sample")]
     )
   }
 
@@ -68,7 +68,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
   if (!is.null(phyloseq_object@tax_table)) {
     tax_table_phylo <- phyloseq::tax_table(phyloseq_object)@.Data
     taxas <- apply(tax_table_phylo, 1, paste, collapse = ";")
-    taxas <- data.frame(sequence_names = names(taxas), taxonomies = taxas)
+    taxas <- data.frame(sequence_name = names(taxas), taxonomy = taxas)
     rownames(taxas) <- NULL
     xdev_assign_sequence_taxonomy(rdaset_object, taxas)
   }
@@ -106,7 +106,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
           )
         )
       )
-      colnames(treatment_df) <- c("samples", "treatments")
+      colnames(treatment_df) <- c("sample", "treatment")
       xdev_assign_treatments(data = rdaset_object, table = treatment_df)
     }
   }

@@ -26,7 +26,7 @@ Read a mothur formatted
 # seq4	4	0	0	4
 
 # returns
-# id   sample abundance
+# sequence_name   sample abundance
 # <char>  <char>     <int>
 #  1:   seq1 sample2       250
 #  2:   seq1 sample3       400

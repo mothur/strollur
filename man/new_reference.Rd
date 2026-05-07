@@ -66,13 +66,13 @@ to aid in reproducibility.
 }
 \examples{
 
-silva_resource <- new_reference(vendor = "SILVA", name =
+silva_resource <- new_reference( vendor = "SILVA", name =
 "silva.bacteria.fasta", version = "1.38.1", usage = "alignment of sequences",
 note = "alignment reference trimmed to V4 region", documentation_url =
 "https://mothur.org/wiki/silva_reference_files/", method_url =
-"https://mothur.org/blog/2024/SILVA-v138_2-reference-files/")
+"https://mothur.org/blog/2024/SILVA-v138_2-reference-files/" )
 
-phylotypr_resource <- new_reference(vendor = "Schloss Lab - University of
+phylotypr_resource <- new_reference( vendor = "Schloss Lab - University of
 Michigan", name = "R phylotypr package", version = "0.1.1", usage =
 "classification of sequences", note = "classification using Bayesian method",
 parameter = "kmer_size = 8, num_bootstraps = 100, min_confidence = 80",
@@ -84,6 +84,7 @@ Sequences into the New Bacterial Taxonomy}, journal = {Applied and
 Environmental Microbiology}, volume = {73}, number = {16}, pages =
 {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL =
 {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint =
-{https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}")
+{https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}"
+)
 
 }

@@ -46,15 +46,18 @@ test_that("write_mothur - miseq", {
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
   expect_equal(names(data, "dataset"), "miseq_sop")
-  expect_equal(count(data, "sequences", distinct = TRUE), 2425)
-  expect_equal(count(data, "sequences"), 113963)
-  expect_equal(count(data, "treatments"), 2)
-  expect_equal(count(data, "samples"), 19)
-  expect_equal(count(data, "bins", "otu"), 531)
-  expect_equal(count(data, "bins", "asv"), 2425)
-  expect_equal(count(data, "bins", "phylotype"), 63)
+  expect_equal(count(data, "sequence", distinct = TRUE), 2425)
+  expect_equal(count(data, "sequence"), 113963)
+  expect_equal(count(data, "treatment"), 2)
+  expect_equal(count(data, "sample"), 19)
+  expect_equal(count(data, "bin", "otu"), 531)
+  expect_equal(count(data, "bin", "asv"), 2425)
+  expect_equal(count(data, "bin", "phylotype"), 63)
   expect_equal(report(data, "metadata"), report(miseq, "metadata"))
-  expect_equal(report(data, "references"), report(miseq, "references"))
+  expect_equal(
+    report(data, "resource_reference"),
+    report(miseq, "resource_reference")
+  )
 })
 
 test_that("write_mothur - bin_data only", {
@@ -85,13 +88,13 @@ test_that("write_mothur - bin_data only", {
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
   expect_equal(names(data, "dataset"), "miseq_sop")
-  expect_equal(count(data, "sequences", distinct = TRUE), 2425)
-  expect_equal(count(data, "sequences"), 113963)
-  expect_equal(count(data, "treatments"), 2)
-  expect_equal(count(data, "samples"), 19)
-  expect_equal(count(data, "bins", "otu"), 531)
-  expect_equal(count(data, "bins", "asv"), 2425)
-  expect_equal(count(data, "bins", "phylotype"), 63)
+  expect_equal(count(data, "sequence", distinct = TRUE), 2425)
+  expect_equal(count(data, "sequence"), 113963)
+  expect_equal(count(data, "treatment"), 2)
+  expect_equal(count(data, "sample"), 19)
+  expect_equal(count(data, "bin", "otu"), 531)
+  expect_equal(count(data, "bin", "asv"), 2425)
+  expect_equal(count(data, "bin", "phylotype"), 63)
 })
 
 test_that("write_mothur - report_data only", {
@@ -114,7 +117,7 @@ test_that("write_mothur - report_data only", {
   outputs <- write_mothur(data,
     dir_path = get_full_name("tmp"),
     compress = TRUE,
-    tags = c("reports")
+    tags = c("report")
   )
   zip_file <- get_full_name("tmp.zip")
 
@@ -141,8 +144,8 @@ test_that("write_mothur - report_data only", {
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
   expect_equal(names(data, "dataset"), "")
-  expect_equal(count(data, "sequences", distinct = TRUE), 5)
-  expect_equal(count(data, "sequences"), 5)
+  expect_equal(count(data, "sequence", distinct = TRUE), 5)
+  expect_equal(count(data, "sequence"), 5)
   expect_equal(
     report(data, "contigs_report"),
     report(data2, "contigs_report")
@@ -182,8 +185,8 @@ test_that("write_mothur - report_data only", {
   unlink(get_full_name("tmp/"), recursive = TRUE)
 
   expect_equal(names(data, "dataset"), "")
-  expect_equal(count(data, "sequences", distinct = TRUE), 71)
-  expect_equal(count(data, "sequences"), 71)
+  expect_equal(count(data, "sequence", distinct = TRUE), 71)
+  expect_equal(count(data, "sequence"), 71)
   expect_equal(
     report(data, "chimera_report"),
     report(data2, "chimera_report")

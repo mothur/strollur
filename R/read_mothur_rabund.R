@@ -17,7 +17,7 @@
 #' data <- new_dataset()
 #'
 #' # assign abundance only 'otu' bins
-#' assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
+#' assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export
@@ -34,7 +34,7 @@ read_mothur_rabund <- function(rabund) {
   df <- df[, -c(1, 2)]
 
   data.frame(
-    bin_names = names(df),
-    abundances = t(df)
+    bin_name = names(df),
+    abundance = t(df)
   )
 }

@@ -69,7 +69,7 @@ void xint_assigned_message(double num = -1, string tag = "sequences");
 //' @export
 //[[Rcpp::export]]
 Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
-                               const string& type = "sequences",
+                               const string& type = "sequence",
                                const string& bin_type = "otu",
                                bool by_sample = false);
 /******************************************************************************/
@@ -105,10 +105,10 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
 //' @param documentation_url, a string containing the name of the column in
 //'   'table' that contains the reference documentation urls. Default column
 //'   name is 'documentation_url'.
-//'  @param parameter, a string containing the name of the column in
+//' @param parameter, a string containing the name of the column in
 //' 'table' that contains the reference parameters. Default column name is
 //'  'parameter'.
-//'  @param citation, a string containing the name of the column in
+//' @param citation, a string containing the name of the column in
 //' 'table' that contains the reference citations. Default column name is
 //'  'citation'.
 //'
@@ -192,14 +192,17 @@ void xdev_add_report(const Rcpp::Environment& data,
 //' comments(optional).
 //'
 //' @param reference, a list created by the function [new_reference]. Optional.
+//'
 //' @param sequence_name, a string containing the name of the column in 'table'
-//' that contains the sequence names. Default column name is 'sequence_names'.
+//' that contains the sequence names. Default column name is 'sequence_name'.
+//'
 //' @param sequence, a string containing the name of the column in 'table' that
 //' contains the sequence nucleotide strings. Default column name is
-//' 'sequences'.
+//' 'sequence'.
+//'
 //' @param comment, a string containing the name of the column in
 //' 'table' that contains the sequence comments. Default column name is
-//' 'comments'.
+//' 'comment'.
 //'
 //' @param verbose, a boolean whether or not you want progress messages.
 //' Default = TRUE.
@@ -229,9 +232,9 @@ void xdev_add_report(const Rcpp::Environment& data,
 double xdev_add_sequences(const Rcpp::Environment& data,
                       const Rcpp::DataFrame& table,
                       Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
-                      const string& sequence_name = "sequence_names",
-                      const string& sequence = "sequences",
-                      const string& comment = "comments",
+                      const string& sequence_name = "sequence_name",
+                      const string& sequence = "sequence",
+                      const string& comment = "comment",
                       bool verbose = true);
 /******************************************************************************/
 //' @title xdev_assign_bins
@@ -246,16 +249,16 @@ double xdev_add_sequences(const Rcpp::Environment& data,
 //' @param reference, a list created by the function [new_reference]. Optional.
 //'
 //' @param bin_name, a string containing the name of the column in 'table' that
-//' contains the bin names. Default column name is 'bin_names'.
+//' contains the bin names. Default column name is 'bin_name'.
 //' @param abundance, a string containing the name of the column in 'table'
-//' that contains the bin abundances. Default column name is 'abundances'. Note:
-//'  You must provide either abundances or sequence_names in the table.
+//' that contains the bin abundances. Default column name is 'abundance'. Note:
+//'  You must provide either abundance or sequence_name in the table.
 //' @param sample, a string containing the name of the column in 'table' that
 //' contains the sample names for datasets where the abundances are broken down
-//' by sample. Default column name is 'samples'.
+//' by sample. Default column name is 'sample'.
 //' @param sequence_name, a string containing the name of the column in 'table'
-//' that contains the sequence names. Default column name is 'sequence_names'.
-//' Note: You must provide either abundances or sequence_names in the table.
+//' that contains the sequence names. Default column name is 'sequence_name'.
+//' Note: You must provide either abundance or sequence_name in the table.
 //'
 //' @param verbose, a boolean whether or not you want progress messages.
 //' Default = TRUE.
@@ -290,10 +293,10 @@ double xdev_assign_bins(const Rcpp::Environment& data,
                     const Rcpp::DataFrame& table,
                     const string& bin_type = "otu",
                     Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
-                    const string& bin_name = "bin_names",
-                    const string& abundance = "abundances",
-                    const string& sample = "samples",
-                    const string& sequence_name = "sequence_names",
+                    const string& bin_name = "bin_name",
+                    const string& abundance = "abundance",
+                    const string& sample = "sample",
+                    const string& sequence_name = "sequence_name",
                     bool verbose = true);
 /******************************************************************************/
 //' @title xdev_assign_bin_representative_sequences
@@ -310,9 +313,9 @@ double xdev_assign_bins(const Rcpp::Environment& data,
 //' @param reference, a list created by the function [new_reference]. Optional.
 //'
 //' @param bin_name, a string containing the name of the column in 'table' that
-//' contains the bin names. Default column name is 'bin_names'.
+//' contains the bin names. Default column name is 'bin_name'.
 //' @param sequence_name a string containing the name of the column in 'table' that
-//' contains the bin names. Default column name is 'sequence_names'.
+//' contains the bin names. Default column name is 'sequence_name'.
 //'
 //' @param verbose, a boolean whether or not you want progress messages.
 //' Default = TRUE.
@@ -335,8 +338,8 @@ double xdev_assign_bin_representative_sequences(const Rcpp::Environment& data,
                                             const Rcpp::DataFrame& table,
                                             const string& bin_type = "otu",
                                             Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
-                                            const string& bin_name = "bin_names",
-                                            const string& sequence_name = "sequence_names",
+                                            const string& bin_name = "bin_name",
+                                            const string& sequence_name = "sequence_name",
                                             bool verbose = true);
 /******************************************************************************/
 //' @title xdev_assign_bin_taxonomy
@@ -354,9 +357,9 @@ double xdev_assign_bin_representative_sequences(const Rcpp::Environment& data,
 //' @param reference, a list created by the function [new_reference]. Optional.
 //'
 //' @param bin_name, a string containing the name of the column in 'table' that
-//' contains the bin names. Default column name is 'bin_names'.
+//' contains the bin names. Default column name is 'bin_name'.
 //' @param taxonomy, a string containing the name of the column in 'table' that
-//' contains the bin taxonomies. Default column name is 'taxonomies'.
+//' contains the bin taxonomies. Default column name is 'taxonomy'.
 //'
 //' @param verbose, a boolean whether or not you want progress messages.
 //' Default = TRUE.
@@ -382,8 +385,8 @@ double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
                             const Rcpp::DataFrame& table,
                             const string& bin_type = "otu",
                             Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
-                            const string& bin_name = "bin_names",
-                            const string& taxonomy = "taxonomies",
+                            const string& bin_name = "bin_name",
+                            const string& taxonomy = "taxonomy",
                             bool verbose = true);
 /******************************************************************************/
 //' @title xdev_assign_sequence_taxonomy
@@ -400,9 +403,9 @@ double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
 //' @param reference, a list created by the function [new_reference]. Optional.
 //'
 //' @param sequence_name, a string containing the name of the column in 'table'
-//' that contains the sequence names. Default column name is 'sequence_names'.
+//' that contains the sequence names. Default column name is 'sequence_name'.
 //' @param taxonomy, a string containing the name of the column in 'table' that
-//' contains the sequence taxonomies. Default column name is 'taxonomies'.
+//' contains the sequence taxonomies. Default column name is 'taxonomy'.
 //'
 //' @param verbose, a boolean whether or not you want progress messages.
 //' Default = TRUE.
@@ -432,8 +435,8 @@ double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
 double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
                                  const Rcpp::DataFrame& table,
                                  Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
-                                 const string& sequence_name = "sequence_names",
-                                 const string& taxonomy = "taxonomies",
+                                 const string& sequence_name = "sequence_name",
+                                 const string& taxonomy = "taxonomy",
                                  bool verbose = true);
 /******************************************************************************/
 //' @title xdev_assign_sequence_taxonomy_tidy
@@ -450,13 +453,13 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
 //' @param reference, a list created by the function [new_reference]. Optional.
 //'
 //' @param sequence_name, a string containing the name of the column in 'table'
-//' that contains the sequence names. Default column name is 'sequence_names'.
+//' that contains the sequence names. Default column name is 'sequence_name'.
 //' @param level, a string containing the name of the column in 'table' that
-//' contains the taxonomy levels. Default column name is 'levels'.
+//' contains the taxonomy levels. Default column name is 'level'.
 //' @param taxonomy, a string containing the name of the column in 'table' that
-//' contains the sequence taxonomies. Default column name is 'taxonomies'.
+//' contains the sequence taxonomies. Default column name is 'taxonomy'.
 //' @param confidence, a string containing the name of the column in 'table'
-//' that contains the taxonomies confidence. Default column name is 'confidences'.
+//' that contains the taxonomies confidence. Default column name is 'confidence'.
 //' @param verbose, a boolean whether or not you want progress messages.
 //' Default = TRUE.
 //'
@@ -485,10 +488,10 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
 double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
                                      const Rcpp::DataFrame& table,
                                      Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
-                                     const string& sequence_name = "sequence_names",
-                                     const string& level = "levels",
-                                     const string& taxonomy = "taxonomies",
-                                     const string& confidence = "confidences",
+                                     const string& sequence_name = "sequence_name",
+                                     const string& level = "level",
+                                     const string& taxonomy = "taxonomy",
+                                     const string& confidence = "confidence",
                                      const bool verbose = true);
 /******************************************************************************/
 //' @title xdev_assign_sequence_abundance
@@ -501,14 +504,14 @@ double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
 //' @param table, a data.frame containing sequence abundance assignments
 //'
 //' @param sequence_name, a string containing the name of the column in 'table'
-//'  that contains the sequence names. Default column name is 'sequence_names'.
+//'  that contains the sequence names. Default column name is 'sequence_name'.
 //' @param abundance, a string containing the name of the column in 'table'
-//'  that contains the sequence abundances. Default column name is 'abundances'.
+//'  that contains the sequence abundances. Default column name is 'abundance'.
 //' @param sample, a string containing the name of the column in 'table'
-//' that contains the sequence samples. Default column name is 'samples'.
+//' that contains the sequence samples. Default column name is 'sample'.
 //' (Optional)
 //' @param treatment, a string containing the name of the column in 'table'
-//' that contains the sequence treatments. Default column name is 'treatments'.
+//' that contains the sequence treatments. Default column name is 'treatment'.
 //'
 //' @param verbose, a boolean whether or not you want progress messages.
 //' Default = TRUE.
@@ -525,10 +528,10 @@ double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 double xdev_assign_sequence_abundance(const Rcpp::Environment& data,
                                   const Rcpp::DataFrame& table,
-                                  const string& sequence_name = "sequence_names",
-                                  const string& abundance = "abundances",
-                                  const string& sample = "samples",
-                                  const string& treatment = "treatments",
+                                  const string& sequence_name = "sequence_name",
+                                  const string& abundance = "abundance",
+                                  const string& sample = "sample",
+                                  const string& treatment = "treatment",
                                   bool verbose = true);
 /******************************************************************************/
 //' @title xdev_assign_treatments
@@ -540,9 +543,9 @@ double xdev_assign_sequence_abundance(const Rcpp::Environment& data,
 //' @param table, a data.frame containing sample treatment assignments
 //'
 //' @param sample, a string containing the name of the column in 'table'
-//' that contains the samples. Default column name is 'samples'.
+//' that contains the samples. Default column name is 'sample'.
 //' @param treatment, a string containing the name of the column in 'table'
-//' that contains the treatments. Default column name is 'treatments'.
+//' that contains the treatments. Default column name is 'treatment'.
 //'
 //' @param verbose, a boolean indicating whether or not you want progress
 //'  messages. Default = TRUE.
@@ -563,8 +566,8 @@ double xdev_assign_sequence_abundance(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 double xdev_assign_treatments(const Rcpp::Environment& data,
                           const Rcpp::DataFrame& table,
-                          const string& sample = "samples",
-                          const string& treatment = "treatments",
+                          const string& sample = "sample",
+                          const string& treatment = "treatment",
                           bool verbose = true);
 /******************************************************************************/
 //' @title xdev_count
@@ -575,8 +578,8 @@ double xdev_assign_treatments(const Rcpp::Environment& data,
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @param type, string containing the type of data you want the number of.
-//' Options include: "sequences", "samples", "treatments", "bins" and
-//' "references". Default = "sequences".
+//' Options include: "sequence", "sample", "treatment", "bin" and
+//' "resource_reference". Default = "sequence".
 //'
 //' @param bin_type, string containing the bin type you would like the number of
 //' bins for. Default = "otu".
@@ -586,13 +589,13 @@ double xdev_assign_treatments(const Rcpp::Environment& data,
 //' samples you want the count for. Default = NULL.
 //'
 //' @param distinct, Boolean. distinct is used when 'type' =
-//' "sequences" or 'type' = "bins". When 'type' = "sequences" and distinct is
-//' TRUE the number of unique sequences is returned. When 'type' = "sequences"
+//' "sequence" or 'type' = "bin". When 'type' = "sequence" and distinct is
+//' TRUE the number of unique sequences is returned. When 'type' = "sequence"
 //' and distinct is FALSE total number of sequences is returned. This can also
 //' be combined with samples to find the number of unique sequences found only
 //' in a given set of samples, or to find the total number of sequences in a
 //' given set of samples.
-//' When 'type' = "bins", you can set distinct = TRUE to return the number of
+//' When 'type' = "bin", you can set distinct = TRUE to return the number of
 //' bins that ONLY contain sequences from the given samples. When distinct is
 //' FALSE the count returned contains bins with sequences from a given samples,
 //' but those bins may also contain other samples.
@@ -602,53 +605,53 @@ double xdev_assign_treatments(const Rcpp::Environment& data,
 //' miseq <- miseq_sop_example()
 //'
 //' # To get the total number of sequences
-//' xdev_count(data = miseq, type = "sequences")
+//' xdev_count(data = miseq, type = "sequence")
 //'
 //' # To get number of unique sequences
-//' xdev_count(data = miseq, type = "sequences", distinct = TRUE)
+//' xdev_count(data = miseq, type = "sequence", distinct = TRUE)
 //'
 //' # To get number of unique sequences from samples 'F3D0' and 'F3D1'
 //' # Note these sequences will be present in both samples but may be
 //' # be present in other samples as well
-//' xdev_count(data = miseq, type = "sequences", samples = c("F3D0", "F3D1"))
+//' xdev_count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"))
 //'
 //' # To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
 //' # Note these sequences are present in both samples and NOT present in
 //' # other samples
-//' xdev_count(data = miseq, type = "sequences", samples = c("F3D0", "F3D1"),
+//' xdev_count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"),
 //' distinct = TRUE)
 //'
 //' # To get the number of samples in the dataset
-//' xdev_count(data = miseq, type = "samples")
+//' xdev_count(data = miseq, type = "sample")
 //'
 //' # To get the number of treatments in the dataset
-//' xdev_count(data = miseq, type = "treatments")
+//' xdev_count(data = miseq, type = "treatment")
 //'
 //' # To get the number of "otu" bins in the dataset
-//' xdev_count(data = miseq, type = "bins", bin_type = "otu")
+//' xdev_count(data = miseq, type = "bin", bin_type = "otu")
 //'
 //' # To get the number of "asv" bins in the dataset
-//' xdev_count(data = miseq, type = "bins", bin_type = "asv")
+//' xdev_count(data = miseq, type = "bin", bin_type = "asv")
 //'
 //' # To get the number of "phylotype" bins in the dataset
-//' xdev_count(data = miseq, type = "bins", bin_type = "phylotype")
+//' xdev_count(data = miseq, type = "bin", bin_type = "phylotype")
 //'
 //' # To get number of bins from samples 'F3D0' and 'F3D1'
 //' # Note these bins will have sequences from both samples but there may be
 //' # other samples present as well
-//' xdev_count(data = miseq, type = "bins", samples = c("F3D0", "F3D1"))
+//' xdev_count(data = miseq, type = "bin", samples = c("F3D0", "F3D1"))
 //'
 //' # To get number of bins unique to samples 'F3D0' and 'F3D1'
 //' # Note these bins will have sequences from both samples and NO other samples
 //' # will be present in the bins.
-//' xdev_count(data = miseq, type = "bins", samples = c("F3D0", "F3D1"),
+//' xdev_count(data = miseq, type = "bin", samples = c("F3D0", "F3D1"),
 //' distinct = TRUE)
 //'
 //' @return double
 //' @export
 //[[Rcpp::export]]
 double xdev_count(const Rcpp::Environment& data,
-            const string& type = "sequences",
+            const string& type = "sequence",
             const string& bin_type = "otu",
             Rcpp::Nullable<Rcpp::List> samples = R_NilValue,
             bool distinct = false);
@@ -700,7 +703,7 @@ vector<string> xdev_get_list_vector(const Rcpp::Environment& data,
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @param type, string containing the type of data you want the totals of.
-//' Options include: "sequence_names", "sequences". Default = "sequence_names".
+//' Options include: "sequence_name", "sequence". Default = "sequence_name".
 //'
 //' @param samples a vector of strings containing the names of the samples you
 //' would like sequence names for. By default all samples are included.
@@ -712,17 +715,17 @@ vector<string> xdev_get_list_vector(const Rcpp::Environment& data,
 //' data <- miseq_sop_example()
 //'
 //' # To get the sequence names parsed by sample
-//' xdev_get_by_sample(data, "sequence_names")
+//' xdev_get_by_sample(data, "sequence_name")
 //'
 //' # To get the sequence nucleotide strings parsed by sample
-//' parsed_sequences <- xdev_get_by_sample(data, "sequences")
+//' parsed_sequences <- xdev_get_by_sample(data, "sequence")
 //'
 //' @return 2D vector of strings ([num_seqs][num_samples]) containing data
 //' requested parsed by sample.
 //' @export
 //[[Rcpp::export]]
 vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
-                                      const string& type = "sequence_names",
+                                      const string& type = "sequence_name",
                                       const Rcpp::CharacterVector& samples = Rcpp::CharacterVector::create(),
                                       bool degap = false);
 /******************************************************************************/
@@ -834,9 +837,9 @@ void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_na
 //'
 //'
 //' assign(data = data,
-//'        table = data.frame(sequence_names = sequence_names,
-//'                           abundances = abundances,
-//'                           samples = samples),
+//'        table = data.frame(sequence_name = sequence_names,
+//'                           abundance = abundances,
+//'                           sample = samples),
 //'        type = "sequence_abundance")
 //'
 //' # For the sake of example let's merge the first 3 sequences.
@@ -853,7 +856,7 @@ void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_na
 //' # You can see from the get_num_sequences function that the merged sequence's
 //' # abundances are added to the first sequence.
 //'
-//' count(data = data, type = "sequences")
+//' count(data = data, type = "sequence")
 //'
 //' @return No return value, called for side effects.
 //' @export
@@ -869,18 +872,18 @@ void xdev_merge_sequences(const Rcpp::Environment& data, const vector<string>& s
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @param type, string containing the type of data you would like. Options
-//' include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
-//' Default = "sequences".
+//' include: "dataset", "sequence", "bin", "sample", "treatment", "report".
+//' Default = "sequence".
 //'
 //' @param bin_type, string containing the bin type you would like the names
 //' for. Default = "otu".
 //'
 //' @param samples, vector of strings. samples is only used when 'type' =
-//' "sequences" or 'type' = "bins" . samples should contain the names of the
+//' "sequence" or 'type' = "bin" . samples should contain the names of the
 //' samples you want names for. Default = NULL.
 //'
 //' @param distinct, Boolean. distinct is used when 'type' =
-//' "sequences" or 'type' = "bins" and the samples parameter is used. The
+//' "sequence" or 'type' = "bin" and the samples parameter is used. The
 //' distinct parameter allows you to get the names that are unique to a given
 //' set of samples. When distinct is TRUE, the names function will return the
 //' names that ONLY contain data from the given samples. When distinct is FALSE
@@ -895,38 +898,38 @@ void xdev_merge_sequences(const Rcpp::Environment& data, const vector<string>& s
 //' xdev_names(data = miseq, type = "dataset")
 //'
 //' # To get the names of the sequences in the dataset
-//' xdev_names(data = miseq, type = "sequences")
+//' xdev_names(data = miseq, type = "sequence")
 //'
 //' # To get the names of the sequences that are unique to sample 'F3D0'
-//' xdev_names(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE)
+//' xdev_names(data = miseq, type = "sequence", samples = c("F3D0"), distinct = TRUE)
 //'
 //' # To get the names of the sequences that include sample 'F3D0'
-//' xdev_names(data = miseq, type = "sequences", samples = c("F3D0"))
+//' xdev_names(data = miseq, type = "sequence", samples = c("F3D0"))
 //'
 //' # To get the names of the samples in the dataset
-//' xdev_names(data = miseq, type = "samples")
+//' xdev_names(data = miseq, type = "sample")
 //'
 //' # To get the names of the treatments in the dataset
-//' xdev_names(data = miseq, type = "treatments")
+//' xdev_names(data = miseq, type = "treatment")
 //'
 //' # To get the names of the bins in the dataset
-//' xdev_names(data = miseq, type = "bins")
+//' xdev_names(data = miseq, type = "bin")
 //'
 //' # To get the names of the bins in the dataset that are unique to 'F3D0'
-//' xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = TRUE)
+//' xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = TRUE)
 //'
 //' # To get the names of the bins in the dataset that include sequences
 //' # from 'F3D0'
-//' xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = FALSE)
+//' xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = FALSE)
 //'
 //' # To get the names of the reports in the dataset
-//' xdev_names(data = miseq, type = "reports")
+//' xdev_names(data = miseq, type = "report")
 //'
 //' @return vector of strings, containing the names requested
 //' @export
 //[[Rcpp::export]]
 vector<string> xdev_names(const Rcpp::Environment& data,
-                           const string& type = "sequences",
+                           const string& type = "sequence",
                            const string& bin_type = "otu",
                            Rcpp::Nullable<Rcpp::List> samples = R_NilValue,
                            bool distinct = false);
@@ -952,10 +955,10 @@ vector<string> xdev_names(const Rcpp::Environment& data,
 //'   bin_names <- c("bin1", "bin2", "bin3")
 //'   abundances <- c(110, 525, 80)
 //'
-//'   xdev_assign_bins(data = data, table = data.frame(bin_names = bin_names,
-//'                                abundances = abundances), bin_type = "otu")
+//'   xdev_assign_bins(data = data, table = data.frame(bin_name = bin_names,
+//'                                abundance = abundances), bin_type = "otu")
 //'
-//'   count(data = data, type = "bins", bin_type = "otu")
+//'   count(data = data, type = "bin", bin_type = "otu")
 //'
 //'   bins_to_remove <- c("bin1")
 //'   trash_tag <- c("bad_bin")
@@ -964,7 +967,7 @@ vector<string> xdev_names(const Rcpp::Environment& data,
 //'                    bin_names = bins_to_remove,
 //'                    trash_tags = trash_tag)
 //'
-//'   count(data = data, type = "bins", bin_type = "otu")
+//'   count(data = data, type = "bin", bin_type = "otu")
 //'
 //' @return No return value, called for side effects.
 //' @export
@@ -1020,13 +1023,13 @@ void xdev_remove_lineages(const Rcpp::Environment& data, const vector<string>& c
 //'
 //' data <- miseq_sop_example()
 //'
-//' count(data = data, type = "samples")
+//' count(data = data, type = "sample")
 //'
 //' # To remove samples 'F3D0' and 'F3D1'
 //'
 //' xdev_remove_samples(data, c("F3D0", "F3D1"))
 //'
-//' count(data = data, type = "samples")
+//' count(data = data, type = "sample")
 //'
 //' @return No return value, called for side effects.
 //' @export
@@ -1050,7 +1053,7 @@ void xdev_remove_samples(const Rcpp::Environment& data, const vector<string>& sa
 //'
 //' data <- miseq_sop_example()
 //'
-//' count(data = data, type = "sequences")
+//' count(data = data, type = "sequence")
 //'
 //' # For the sake of example let's remove the first 3 sequences from
 //' # miseq_sop_example:
@@ -1071,7 +1074,7 @@ void xdev_remove_samples(const Rcpp::Environment& data, const vector<string>& sa
 //' # You can see from the get_num_sequences function that the removed
 //' # sequence's abundances are removed from the dataset.
 //'
-//' count(data = data, type = "sequences")
+//' count(data = data, type = "sequence")
 //'
 //' @return No return value, called for side effects.
 //' @export
@@ -1087,12 +1090,12 @@ void xdev_remove_sequences(const Rcpp::Environment& data,
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @param type, string containing the type of report you would like. Options
-//' include: "fasta", "sequences", "sequence_bin_assignments",
-//' "sequence_taxonomy", "bin_taxonomy", "bin_representatives",
-//'  "sample_assignments", "metadata", "references", "sequence_scrap",
+//' include: "fasta", "sequence", "sequence_bin_assignment",
+//' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
+//'  "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
 //' "bin_scrap". If you have added custom reports for alignment,
 //' contigs_assembly or chimeras, you can get those as well.
-//'  Default = "sequences".
+//'  Default = "sequence".
 //'
 //' @param bin_type, string containing the bin type you would like a bin_taxonomy
 //' report for. Default = "otu".
@@ -1110,18 +1113,18 @@ void xdev_remove_sequences(const Rcpp::Environment& data,
 //'
 //' # To get a report about the FASTA data
 //'
-//' sequence_report <- xdev_report(data = miseq, type = "sequences")
+//' sequence_report <- xdev_report(data = miseq, type = "sequence")
 //' head(sequence_report, n = 10)
 //'
 //' # To get the sequence bin assignments
 //'
-//' bin_assignments <- xdev_report(data = miseq, type = "sequence_bin_assignments",
+//' bin_assignments <- xdev_report(data = miseq, type = "sequence_bin_assignment",
 //'                           bin_type = "otu")
 //' head(bin_assignments, n = 10)
 //'
 //' # To get the sample treatment assignments
 //'
-//' xdev_report(data = miseq, type = "sample_assignments")
+//' xdev_report(data = miseq, type = "sample_assignment")
 //'
 //' # To get a report about sequence classifications
 //'
@@ -1150,7 +1153,7 @@ void xdev_remove_sequences(const Rcpp::Environment& data,
 //'
 //' # To get the 'otu' bin representative sequences
 //'
-//' otu_bin_reps <- xdev_report(data = miseq, type = "bin_representatives",
+//' otu_bin_reps <- xdev_report(data = miseq, type = "bin_representative",
 //'                        bin_type = "otu")
 //' head(otu_bin_reps, n = 10)
 //'
@@ -1174,7 +1177,7 @@ void xdev_remove_sequences(const Rcpp::Environment& data,
 //'
 //' # To get the resource references associated with your data:
 //'
-//' references <- xdev_report(data = miseq, type = "references")
+//' references <- xdev_report(data = miseq, type = "resource_reference")
 //'
 //' # To get our custom report containing the contigs assembly data:
 //'
@@ -1184,8 +1187,9 @@ void xdev_remove_sequences(const Rcpp::Environment& data,
 //' @return data.frame
 //' @export
 //[[Rcpp::export]]
-Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type = "sequences",
-                        const string& bin_type = "otu");
+Rcpp::DataFrame xdev_report(const Rcpp::Environment& data,
+                            const string& type = "sequence",
+                            const string& bin_type = "otu");
 // ****************** setting *******************
 
 //' @title xdev_set_abundance
@@ -1209,9 +1213,9 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type = 
 //'
 //' data <- new_dataset(dataset_name = "my_dataset")
 //'
-//' xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
-//'                                            abundances = abunds))
-//' abundance(data = data, type = "sequences")
+//' xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_name = names,
+//'                                            abundance = abunds))
+//' abundance(data = data, type = "sequence")
 //'
 //' seqs_to_update <- c("seq1", "seq3")
 //' new_abunds <- c(1000, 100)
@@ -1220,7 +1224,7 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type = 
 //'                    sequence_names = seqs_to_update,
 //'                    sequence_abundances = new_abunds)
 //'
-//' abundance(data = data, type = "sequences")
+//' abundance(data = data, type = "sequence")
 //'
 //' @return No return value, called for side effects.
 //' @export
@@ -1254,9 +1258,9 @@ void xdev_set_abundance(const Rcpp::Environment& data,
 //' abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 //'
 //' xdev_assign_sequence_abundance(data = data,
-//'                           table = data.frame(sequence_names = sequence_names,
-//'                                              abundances = abundances,
-//'                                              samples = samples))
+//'                           table = data.frame(sequence_name = sequence_names,
+//'                                              abundance = abundances,
+//'                                              sample = samples))
 //'
 //' seqs_to_update <- c("seq4")
 //' new_abunds <- list(c(20, 10, 4))
@@ -1291,7 +1295,7 @@ void xdev_set_abundances(const Rcpp::Environment& data,
 //' data <- new_dataset(dataset_name = "my_dataset")
 //'
 //' xdev_add_sequences(data = data,
-//'               table = data.frame(sequence_names = c("seq1", "seq2",
+//'               table = data.frame(sequence_name = c("seq1", "seq2",
 //'                                                   "seq3", "seq4")))
 //'
 //' xdev_set_sequences(data = data,
@@ -1349,7 +1353,7 @@ void xdev_set_num_processors(const Rcpp::Environment& data, int processors);
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @param type, string containing the type of data you want the number of.
-//' Options include: "sequences", "reports" and "scrap". Default = "sequences".
+//' Options include: "sequence", "report" and "scrap". Default = "sequence".
 //'
 //' @param report_type, string containing the report type you would summarized.
 //' For example, the miseq_sop_example includes contigs assembly data and can be
@@ -1360,17 +1364,17 @@ void xdev_set_num_processors(const Rcpp::Environment& data, int processors);
 //'  data <- miseq_sop_example()
 //'
 //'  # summarize FASTA data
-//'  xdev_summarize(data = data, type = "sequences")
+//'  xdev_summarize(data = data, type = "sequence")
 //'
 //'  # summarize contigs_report
-//'  xdev_summarize(data = data, type = "reports",
+//'  xdev_summarize(data = data, type = "report",
 //'                  report_type = "contigs_report")
 //'
 //'  # remove sample 'F3D0'
 //'  xdev_remove_samples(data = data, samples = c("F3D0"))
 //'
 //'  # summarize FASTA data after removal of sample F3D0
-//'  xdev_summarize(data = data, type = "sequences")
+//'  xdev_summarize(data = data, type = "sequence")
 //'
 //'  # summarize scrapped data
 //'  xdev_summarize(data = data, type = "scrap")
@@ -1379,7 +1383,7 @@ void xdev_set_num_processors(const Rcpp::Environment& data, int processors);
 //' @export
 //[[Rcpp::export]]
 Rcpp::DataFrame xdev_summarize(const Rcpp::Environment& data,
-                               const string& type = "sequences",
+                               const string& type = "sequence",
                                Rcpp::Nullable<Rcpp::CharacterVector> report_type = R_NilValue);
 
 // ***************** internal ******************

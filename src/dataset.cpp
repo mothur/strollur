@@ -136,25 +136,25 @@ Rcpp::List Dataset::exportDataset(){
         vector<string> sequenceDataLabels;
 
         sequenceData.push_back(getIndexes(names));
-        sequenceDataLabels.push_back("sequence_ids");
+        sequenceDataLabels.push_back("sequence_id");
         sequenceData.push_back(names);
-        sequenceDataLabels.push_back("sequence_names");
+        sequenceDataLabels.push_back("sequence_name");
 
         if (!allBlank(seqs)) {
             sequenceData.push_back(seqs);
-            sequenceDataLabels.push_back("sequences");
+            sequenceDataLabels.push_back("sequence");
         }
         if (!allBlank(comments)) {
             sequenceData.push_back(comments);
-            sequenceDataLabels.push_back("comments");
+            sequenceDataLabels.push_back("comment");
         }
         if (!allBlank(taxonomies)) {
             sequenceData.push_back(taxonomies);
-            sequenceDataLabels.push_back("taxonomies");
+            sequenceDataLabels.push_back("taxonomy");
         }
         if (!allBlank(trashCodes)) {
             sequenceData.push_back(trashCodes);
-            sequenceDataLabels.push_back("trash_codes");
+            sequenceDataLabels.push_back("trash_code");
         }
         sequenceData.push_back(tableSeqs);
         sequenceDataLabels.push_back("include_sequence");
@@ -170,13 +170,13 @@ Rcpp::List Dataset::exportDataset(){
             // sequence report data.frame
             // starts, ends, lengths, ambigs, polymers, numns
             Rcpp::DataFrame sequenceReport = Rcpp::DataFrame::create(
-                Rcpp::Named("sequence_ids") = getIndexes(names),
-                Rcpp::_["starts"] = starts,
-                Rcpp::_["ends"] = ends,
-                Rcpp::_["lengths"] = lengths,
-                Rcpp::_["ambigs"] = ambigs,
-                Rcpp::_["longest_homopolymers"] = polymers,
-                Rcpp::_["num_ns"] = numns);
+                Rcpp::Named("sequence_id") = getIndexes(names),
+                Rcpp::_["start"] = starts,
+                Rcpp::_["end"] = ends,
+                Rcpp::_["length"] = lengths,
+                Rcpp::_["ambig"] = ambigs,
+                Rcpp::_["longest_homopolymer"] = polymers,
+                Rcpp::_["num_n"] = numns);
 
             results.push_back(sequenceReport);
             resultsLabels.push_back("sequence_report");
@@ -206,7 +206,7 @@ Rcpp::List Dataset::exportDataset(){
 
     if (!references.empty()) {
         results.push_back(getReferences());
-        resultsLabels.push_back("references");
+        resultsLabels.push_back("resource_reference");
     }
 
     if (metadata.hasReport) {
@@ -646,12 +646,12 @@ const Rcpp::DataFrame Dataset::fillTaxReport(const string& mode) {
 
     if (!hasConfidences) {
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("sequence_names") = dfIds,
-            Rcpp::_["levels"] = levels,
-            Rcpp::_["taxonomies"] = dfTaxs);
+            Rcpp::Named("sequence_name") = dfIds,
+            Rcpp::_["level"] = levels,
+            Rcpp::_["taxonomy"] = dfTaxs);
 
         if (mode != "sequence") {
-            vector<string> newNames = {"bin_names", "levels", "taxonomies"};
+            vector<string> newNames = {"bin_name", "level", "taxonomy"};
             df.attr("names") = newNames;
         }
 
@@ -659,14 +659,14 @@ const Rcpp::DataFrame Dataset::fillTaxReport(const string& mode) {
     }
 
     Rcpp::DataFrame df = Rcpp::DataFrame::create(
-        Rcpp::Named("sequence_names") = dfIds,
-        Rcpp::_["levels"] = levels,
-        Rcpp::_["taxonomies"] = dfTaxs,
-        Rcpp::_["confidences"] = dfConfidences);
+        Rcpp::Named("sequence_name") = dfIds,
+        Rcpp::_["level"] = levels,
+        Rcpp::_["taxonomy"] = dfTaxs,
+        Rcpp::_["confidence"] = dfConfidences);
 
     if (mode != "sequence") {
-        vector<string> newNames = {"bin_names", "levels",
-                                   "taxonomies", "confidences"};
+        vector<string> newNames = {"bin_name", "level",
+                                   "taxonomy", "confidence"};
         df.attr("names") = newNames;
     }
 
@@ -715,15 +715,15 @@ Rcpp::DataFrame Dataset::getFastaReport() const {
 
     if (allBlank(c)) {
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("sequence_names") = n,
-            Rcpp::_["sequences"] = s);
+            Rcpp::Named("sequence_name") = n,
+            Rcpp::_["sequence"] = s);
 
         return df;
     }else{
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("sequence_names") = n,
-            Rcpp::_["sequences"] = s,
-            Rcpp::_["comments"] = c);
+            Rcpp::Named("sequence_name") = n,
+            Rcpp::_["sequence"] = s,
+            Rcpp::_["comment"] = c);
 
         return df;
     }
@@ -1002,8 +1002,8 @@ Rcpp::DataFrame Dataset::getSampleTreatmentAssignments() const{
 
     if (!sampleToTreatment.empty()) {
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("samples") = getKeys(sampleToTreatment),
-            Rcpp::_["treatments"] = getValues(sampleToTreatment));
+            Rcpp::Named("sample") = getKeys(sampleToTreatment),
+            Rcpp::_["treatment"] = getValues(sampleToTreatment));
         return df;
     }
 
@@ -1203,7 +1203,7 @@ const Rcpp::DataFrame Dataset::getSummary(const string& type, const string& repo
 
     Rcpp::DataFrame result = Rcpp::DataFrame::create();
 
-    if (type == "sequences") {
+    if (type == "sequence") {
         if (hasSeqs()) {
             Summary* summary = new Summary(processors);
 
@@ -1221,7 +1221,7 @@ const Rcpp::DataFrame Dataset::getSummary(const string& type, const string& repo
 
             delete summary;
         }
-    }else if (type == "reports") {
+    }else if (type == "report") {
         const auto it = reports.find(reportType);
 
         // do we have this report type
@@ -1283,10 +1283,10 @@ Rcpp::DataFrame Dataset::getTotals(const string& type) const {
     vector<double> totals;
     vector<string> names;
 
-    if (type == "samples") {
+    if (type == "sample") {
         totals = count.getSampleTotals();
         names = getSamples();
-    }else if (type == "treatments") {
+    }else if (type == "treatment") {
         totals = count.getTreatmentTotals();
         names = getTreatments();
     }
@@ -1294,7 +1294,7 @@ Rcpp::DataFrame Dataset::getTotals(const string& type) const {
     if (!totals.empty()) {
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named(type) = names,
-            Rcpp::_["abundances"] = totals);
+            Rcpp::_["abundance"] = totals);
         return df;
     }
     return Rcpp::DataFrame::create();

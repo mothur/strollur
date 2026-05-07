@@ -8,7 +8,7 @@ test_that("summary tests", {
   miseq <- miseq_sop_example()
 
   # To get the summary of your FASTA data
-  df <- summary(data = miseq, type = "sequences", verbose = FALSE)
+  df <- summary(data = miseq, type = "sequence", verbose = FALSE)
   headers <- c(
     "starts", "ends", "nbases", "ambigs",
     "polymers", "numns", "numseqs"
@@ -33,7 +33,7 @@ test_that("summary tests", {
 
   # summarize contigs_report
   df <- summary(
-    data = miseq, type = "reports",
+    data = miseq, type = "report",
     report_type = "contigs_report", verbose = FALSE
   )
 
@@ -53,7 +53,7 @@ test_that("summary tests", {
   xdev_remove_samples(data = miseq, samples = c("F3D0"))
 
   # summarize FASTA data after removal of sample F3D0
-  df <- summary(data = miseq, type = "sequences")
+  df <- summary(data = miseq, type = "sequence")
 
   expect_equal(starts, df[[1]])
   expect_equal(ends, df[[2]])
@@ -75,25 +75,25 @@ test_that("add, assign, abundance error tests", {
 
   # no report type provided
   expect_error(add(
-    data = data, table = contigs_report, type = "reports",
+    data = data, table = contigs_report, type = "report",
     table_names = list(sequence_name = "Name")
   ))
 
   # invalid type
   expect_error(add(
-    data = data, table = contigs_report, type = "bins",
+    data = data, table = contigs_report, type = "bin",
     table_names = list(sequence_name = "Name")
   ))
 
   # invalid type
   expect_error(assign(
-    data = data, table = contigs_report, type = "reports",
+    data = data, table = contigs_report, type = "report",
     table_names = list(sequence_name = "Name")
   ))
 
   # invalid type
   expect_error(abundance(
     data = data, table = contigs_report,
-    type = "reports"
+    type = "report"
   ))
 })

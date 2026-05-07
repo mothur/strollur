@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The strollur package stores data associated with your microbial DNA analysis. This tutorial will familiarize you some of with the functions available in the strollur package. If you haven’t reviewed the “Getting Started” tutorial, we recommend you start there.
+The strollur package stores data associated with your Amplicon Sequence analysis. This tutorial will familiarize you some of with the functions available in the strollur package. If you haven’t reviewed the “Getting Started” tutorial, we recommend you start there.
 
 ## Creating a new dataset
 
@@ -47,7 +47,7 @@ str(fasta_data)
 add(
   data,
   table = fasta_data,
-  type = "sequences"
+  type = "sequence"
 )
 data
 ```
@@ -57,28 +57,31 @@ If you want to include a resource reference about your fasta data you can use th
 ```{r}
 clear(data)
 
-resource_url <- "https://mothur.org/wiki/silva_reference_files/"
+documentation_url <- "https://mothur.org/wiki/silva_reference_files/"
+method_url <- "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"
 
-resource_reference <- new_reference(
-  reference_name = "silva.bacteria.fasta",
-  reference_version = "1.38.1",
-  reference_usage = "alignment by mothur2 v1.0",
-  reference_note = "aligned with default options",
-  reference_url = resource_url
+silva_resource <- new_reference(
+  vendor = "SILVA",
+  name = "silva.bacteria.fasta",
+  version = "1.38.1",
+  usage = "alignment of sequences",
+  note = "reference trimmed to V4 region",
+  documentation_url = documentation_url,
+  method_url = method_url
 )
 
 add(
   data,
   table = fasta_data,
-  type = "sequences",
-  reference = resource_reference
+  type = "sequence",
+  reference = silva_resource
 )
 data
 ```
 
 #### Adding Custom Reports
 
-You may want to add custom reports to your data set such as an contigs assembly report, chimera report or alignment report. You can do so by setting type = "reports". You must also provide a report_type. 
+You may want to add custom reports to your data set such as an contigs assembly report, chimera report or alignment report. You can do so by setting type = "report". You must also provide a report_type. 
 
 This is also a good time to explain what the table_names parameter does for you. strollur expects the columns in custom reports to have specific names. If your table's names differ from what strollur is expecting, you will see an error like that below.
 
@@ -88,7 +91,7 @@ contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 add(
   data,
   table = contigs_report,
-  type = "reports",
+  type = "report",
   report_type = "contigs_report"
 )
 
@@ -108,7 +111,7 @@ str(contigs_report)
 add(
   data,
   table = contigs_report,
-  type = "reports",
+  type = "report",
   report_type = "contigs_report",
   table_names = list(sequence_name = "Name")
 )
@@ -134,7 +137,7 @@ add(
 
 #### Adding Resource References
 
-We can add additional resource references to our data set by setting the type = "references".
+We can add additional resource references to our data set by setting the type = "resource_reference".
 
 ```{r}
 reference <- readr::read_csv(strollur_example("references.csv"),
@@ -144,7 +147,7 @@ reference <- readr::read_csv(strollur_example("references.csv"),
 add(
   data,
   table = reference,
-  type = "references"
+  type = "resource_reference"
 )
 ```
 
@@ -169,13 +172,13 @@ data
 
 #### Assigning Bins
 
-As you can see we now have abundances, samples and treatments added to the data set. Next, let's assign the sequences to bins using type = "bins". When you assign sequences to bins you must provide a *bin_type*. The bin_type is a tag of your choosing used to reference the bin clusters you are adding. Let's add some [Operational Taxonomic Unit](https://en.wikipedia.org/wiki/Operational_taxonomic_unit) clusters and set the bin_type = "otu".
+As you can see we now have abundances, samples and treatments added to the data set. Next, let's assign the sequences to bins using type = "bin". When you assign sequences to bins you must provide a *bin_type*. The bin_type is a tag of your choosing used to reference the bin clusters you are adding. Let's add some [Operational Taxonomic Unit](https://en.wikipedia.org/wiki/Operational_taxonomic_unit) clusters and set the bin_type = "otu".
 
 ```{r}
 bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
 str(bin_table)
 
-assign(data, table = bin_table, type = "bins", bin_type = "otu")
+assign(data, table = bin_table, type = "bin", bin_type = "otu")
 
 data
 ```
@@ -230,14 +233,14 @@ str(bin_reps)
 assign(
   data,
   table = bin_reps,
-  type = "bin_representatives"
+  type = "bin_representative"
 )
 ```
 
 
 #### Assigning Treatments
 
-In our case the abundance_table included treatment assignments, but you can also assign samples to treatments by setting type = "treatments".
+In our case the abundance_table included treatment assignments, but you can also assign samples to treatments by setting type = "treatment".
 
 ```{r}
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
@@ -246,7 +249,7 @@ str(sample_assignments)
 assign(
   data,
   table = sample_assignments,
-  type = "treatments"
+  type = "treatment"
 )
 ```
 

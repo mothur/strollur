@@ -6,7 +6,7 @@ test_that("test report - errors", {
   # add references, custom report and metadata
   contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
   add(data,
-    table = contigs_report, type = "reports",
+    table = contigs_report, type = "report",
     report_type = "contigs_report", list(sequence_name = "Name")
   )
 
@@ -30,28 +30,28 @@ test_that("test report - type = fasta", {
   comments <- c("sdf", "wer", "tyu")
 
   add(data, table = data.frame(
-    sequence_names = names,
-    sequences = seqs,
-    comments = comments
+    sequence_name = names,
+    sequence = seqs,
+    comment = comments
   ))
 
   fasta <- report(data, type = "fasta")
 
   expect_equal(ncol(fasta), 3)
-  expect_equal(fasta$sequence_names, names)
-  expect_equal(fasta$sequences, seqs)
-  expect_equal(fasta$comments, comments)
+  expect_equal(fasta$sequence_name, names)
+  expect_equal(fasta$sequence, seqs)
+  expect_equal(fasta$comment, comments)
 
   data <- new_dataset()
 
   add(data, table = data.frame(
-    sequence_names = names,
-    sequences = seqs
+    sequence_name = names,
+    sequence = seqs
   ))
 
   fasta <- report(data, type = "fasta")
 
   expect_equal(ncol(fasta), 2)
-  expect_equal(fasta$sequence_names, names)
-  expect_equal(fasta$sequences, seqs)
+  expect_equal(fasta$sequence_name, names)
+  expect_equal(fasta$sequence, seqs)
 })

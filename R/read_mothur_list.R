@@ -20,7 +20,7 @@
 #' data <- new_dataset()
 #'
 #' # assign sequences to 'otu' bins
-#' assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
+#' assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export
@@ -54,7 +54,7 @@ read_mothur_list <- function(list) {
   }
 
   data.frame(
-    bin_names = otu_assignments,
-    sequence_names = sequence_names
+    bin_name = otu_assignments,
+    sequence_name = sequence_names
   )
 }

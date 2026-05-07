@@ -50,12 +50,14 @@ that contains the reference names. Default column name is 'name'.}
  'method_url'.}
 
 \item{documentation_url, }{a string containing the name of the column in
-  'table' that contains the reference documentation urls. Default column
-  name is 'documentation_url'.
- @param parameter, a string containing the name of the column in
+'table' that contains the reference documentation urls. Default column
+name is 'documentation_url'.}
+
+\item{parameter, }{a string containing the name of the column in
 'table' that contains the reference parameters. Default column name is
- 'parameter'.
- @param citation, a string containing the name of the column in
+ 'parameter'.}
+
+\item{citation, }{a string containing the name of the column in
 'table' that contains the reference citations. Default column name is
  'citation'.}
 

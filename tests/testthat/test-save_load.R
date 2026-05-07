@@ -23,40 +23,40 @@ test_that("clone - deep copy of dataset object", {
 
   expect_equal(names(dataset, "dataset"), names(temp, "dataset"))
   expect_equal(
-    count(dataset, "sequences", distinct = TRUE),
-    count(temp, "sequences", distinct = TRUE)
+    count(dataset, "sequence", distinct = TRUE),
+    count(temp, "sequence", distinct = TRUE)
   )
   expect_equal(
-    count(dataset, "sequences"),
-    count(temp, "sequences")
+    count(dataset, "sequence"),
+    count(temp, "sequence")
   )
   expect_equal(
-    count(dataset, "treatments"),
-    count(temp, "treatments")
+    count(dataset, "treatment"),
+    count(temp, "treatment")
   )
   expect_equal(
-    count(dataset, "samples"),
-    count(temp, "samples")
+    count(dataset, "sample"),
+    count(temp, "sample")
   )
   expect_equal(
-    count(dataset, "bins", "otu"),
-    count(temp, "bins", "otu")
+    count(dataset, "bin", "otu"),
+    count(temp, "bin", "otu")
   )
   expect_equal(
-    count(dataset, "bins", "phylotype"),
-    count(temp, "bins", "phylotype")
+    count(dataset, "bin", "phylotype"),
+    count(temp, "bin", "phylotype")
   )
   expect_equal(
-    count(dataset, "bins", "asv"),
-    count(temp, "bins", "asv")
+    count(dataset, "bin", "asv"),
+    count(temp, "bin", "asv")
   )
   expect_equal(
-    abundance(dataset, "samples"),
-    abundance(temp, "samples")
+    abundance(dataset, "sample"),
+    abundance(temp, "sample")
   )
   expect_equal(
-    abundance(dataset, "treatments"),
-    abundance(temp, "treatments")
+    abundance(dataset, "treatment"),
+    abundance(temp, "treatment")
   )
 
   expect_error(load_dataset("non_existant_file.rds"))

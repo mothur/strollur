@@ -13,12 +13,12 @@
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param type, string containing the type of report you would like. Options
-#' include: "fasta", "sequences", "sequence_bin_assignments",
-#' "sequence_taxonomy", "bin_taxonomy", "bin_representatives",
-#'  "sample_assignments", "metadata", "references", "sequence_scrap",
+#' include: "fasta", "sequence", "sequence_bin_assignment",
+#' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
+#'  "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
 #' "bin_scrap". If you have added custom reports for alignment,
 #' contigs_assembly or chimeras, you can get those as well.
-#'  Default = "sequences".
+#'  Default = "sequence".
 #'
 #' @param bin_type, string containing the bin type you would like a bin_taxonomy
 #' report for. Default = "otu".
@@ -33,16 +33,16 @@
 #'
 #' # To get a report about the FASTA data
 #'
-#' report(data = miseq, type = "sequences") |> head(n = 5)
+#' report(data = miseq, type = "sequence") |> head(n = 5)
 #'
 #' # To get the sequence bin assignments
 #'
-#' report(data = miseq, type = "sequence_bin_assignments", bin_type = "otu") |>
+#' report(data = miseq, type = "sequence_bin_assignment", bin_type = "otu") |>
 #'   head(n = 5)
 #'
 #' # To get the sample treatment assignments
 #'
-#' report(data = miseq, type = "sample_assignments")
+#' report(data = miseq, type = "sample_assignment")
 #'
 #' # To get a report about sequence classifications
 #'
@@ -55,7 +55,7 @@
 #' # To get the 'otu' bin representative sequences
 #'
 #' report(
-#'   data = miseq, type = "bin_representatives",
+#'   data = miseq, type = "bin_representative",
 #'   bin_type = "otu"
 #' ) |> head(n = 5)
 #'
@@ -73,7 +73,7 @@
 #'
 #' # To get the resource references associated with your data:
 #'
-#' references <- report(data = miseq, type = "references")
+#' references <- report(data = miseq, type = "resource_reference")
 #'
 #' # To get our custom report containing the contigs assembly data:
 #'
@@ -81,7 +81,7 @@
 #'
 #' @return data.frame
 #' @export
-report <- function(data, type = "sequences", bin_type = "otu") {
+report <- function(data, type = "sequence", bin_type = "otu") {
   if (!inherits(data, "strollur")) {
     stop("data must be a strollur object.")
   }

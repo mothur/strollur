@@ -32,6 +32,6 @@ otu_data <- read_mothur_list(strollur_example("final.opti_mcc.list.gz"))
 data <- new_dataset()
 
 # assign sequences to 'otu' bins
-assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
+assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 
 }

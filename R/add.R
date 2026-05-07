@@ -12,7 +12,7 @@
 #' @param table, a data.frame containing the data you wish to add.
 #'
 #' @param type, a string containing the type of data. Options include:
-#' 'sequences', 'references' 'metadata' and 'reports'.
+#' 'sequence', 'resource_reference' 'metadata' and 'report'.
 #'
 #' @param report_type, a string containing the type of report you are adding.
 #' Options include: 'metadata' and custom reports.
@@ -20,9 +20,9 @@
 #' @param table_names, named list used to indicate the names of the columns in
 #' the table. By default:
 #'
-#' table_names <- list(sequence_name = "sequence_names",
-#'                     comment = "comments",
-#'                     sequence = "sequences",
+#' table_names <- list(sequence_name = "sequence_name",
+#'                     comment = "comment",
+#'                     sequence = "sequence",
 #'                     reference_name = "name",
 #'                     reference_vendor = "vendor",
 #'                     reference_version = "version",
@@ -35,15 +35,15 @@
 #'
 #' In table_names, 'sequence_name' is a string containing the name of the column
 #' in 'table' that contains the sequence names. It is used when you are adding
-#' FASTA data. Default column name is 'sequence_names'.
+#' FASTA data. Default column name is 'sequence_name'.
 #'
 #' In table_names, 'sequence' is a string containing the name of the column in
 #' 'table' that contains the sequence nucleotide strings. It is used when you
-#' are adding FASTA data. Default column name is 'sequences'.
+#' are adding FASTA data. Default column name is 'sequence'.
 #'
 #' In table_names, 'comment' is a string containing the name of the column in
 #' 'table' that contains the sequence comments. It is used when you are adding
-#' FASTA data. Default column name is 'comments'.
+#' FASTA data. Default column name is 'comment'.
 #'
 #' In table_names, 'reference_vendor' is a string containing the name of the
 #' column in 'table' that contains the reference vendor names. It is used when
@@ -95,7 +95,7 @@
 #' fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
 #'
 #' # Add FASTA sequence data
-#' add(data = data, table = fasta_data, type = "sequences")
+#' add(data = data, table = fasta_data, type = "sequence")
 #'
 #' # To add FASTA data with a resource reference
 #'
@@ -103,9 +103,9 @@
 #' data <- new_dataset(dataset_name = "example_dataset")
 #'
 #' # Create a resource reference for the FASTA data silva_resource <-
-#' new_reference( vendor = "SILVA", name = "silva.bacteria.fasta", version =
-#' "1.38.1", usage = "alignment of sequences", note = "reference trimmed to V4
-#' region", method_url =
+#' silva_resource <- new_reference( vendor = "SILVA", name =
+#' "silva.bacteria.fasta", version = "1.38.1", usage = "alignment of sequences",
+#' note = "reference trimmed to V4 region", method_url =
 #' "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/",
 #' documentation_url = "https://mothur.org/wiki/silva_reference_files/" )
 #'
@@ -114,7 +114,7 @@
 #' add(
 #'   data,
 #'   table = fasta_data,
-#'   type = "sequences",
+#'   type = "sequence",
 #'   reference = silva_resource
 #' )
 #'
@@ -124,7 +124,7 @@
 #'
 #' add(
 #'   data,
-#'   table = contigs_report, type = "reports",
+#'   table = contigs_report, type = "report",
 #'   report_type = "contigs_report", list(sequence_name = "Name")
 #' )
 #'
@@ -137,12 +137,12 @@
 #' @return double - The number of items added
 #' @export
 add <- function(data, table,
-                type = "sequences",
+                type = "sequence",
                 report_type = NULL,
                 table_names = list(
-                  sequence_name = "sequence_names",
-                  sequence = "sequences",
-                  comment = "comments",
+                  sequence_name = "sequence_name",
+                  sequence = "sequence",
+                  comment = "comment",
                   reference_vendor = "vendor",
                   reference_name = "name",
                   reference_version = "version",
@@ -162,9 +162,9 @@ add <- function(data, table,
   type <- as.character(substitute(type))
 
   default_tn <- list(
-    sequence_name = "sequence_names",
-    sequence = "sequences",
-    comment = "comments",
+    sequence_name = "sequence_name",
+    sequence = "sequence",
+    comment = "comment",
     reference_vendor = "vendor",
     reference_name = "name",
     reference_version = "version",
@@ -179,7 +179,7 @@ add <- function(data, table,
   table_names <- modifyList(default_tn, table_names)
 
   num_added <- 0
-  if (type == "sequences") {
+  if (type == "sequence") {
     num_added <- xdev_add_sequences(
       data = data, table = table,
       sequence_name = table_names[["sequence_name"]],
@@ -188,7 +188,7 @@ add <- function(data, table,
       reference = reference,
       verbose = verbose
     )
-  } else if (type == "reports") {
+  } else if (type == "report") {
     num_added <- 1
 
     if (!is.null(report_type)) {
@@ -208,7 +208,7 @@ add <- function(data, table,
       type = type,
       verbose = verbose
     )
-  } else if (type == "references") {
+  } else if (type == "resource_reference") {
     num_added <- xdev_add_references(
       data = data, table = table,
       name = table_names[["reference_name"]],

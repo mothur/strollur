@@ -49,7 +49,7 @@ The miseq example data set is already aligned, filtered and screened, but for th
 ```{r}
 f3d0_names <- names(
   miseq,
-  type = "sequences",
+  type = "sequence",
   samples = c("F3D0"),
   distinct = TRUE
 )
@@ -70,7 +70,7 @@ xdev_set_sequences(
 
 f3d0_sequences <- xdev_get_by_sample(
   miseq,
-  type = "sequences", samples = c("F3D0")
+  type = "sequence", samples = c("F3D0")
 )
 f3d0_sequences[[1]][300:305]
 ```
@@ -82,11 +82,11 @@ Now that we know how to set sequence strings, let's learn how to set sequence ab
 ```{r}
 abundance_table <- abundance(
   miseq,
-  type = "sequences", by_sample = TRUE
+  type = "sequence", by_sample = TRUE
 )
 head(abundance_table, n = 10)
 
-num_samples <- count(miseq, type = "samples")
+num_samples <- count(miseq, type = "sample")
 new_abunds <- rep(list(rep(0, num_samples)), length(f3d0_names))
 
 xdev_set_abundances(
@@ -122,7 +122,7 @@ Similarly, you may want to merge bins and the `xdev_merge_bins()` function will 
 random_bin_names <- sample(
   names(
     miseq,
-    type = "bins",
+    type = "bin",
     bin_type = "otu"
   ),
   size = 100, replace = FALSE
@@ -169,7 +169,7 @@ Similarly, lets randomly select and remove 10 phylotype bins with the `xdev_remo
 random_bin_names <- sample(
   names(
     miseq,
-    type = "bins", bin_type = "phylotype"
+    type = "bin", bin_type = "phylotype"
   ),
   size = 10, replace = FALSE
 )

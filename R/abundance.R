@@ -11,8 +11,8 @@
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
-#' Options include: "sequences", "bins", "samples" and "treatments".
-#' Default = "sequences".
+#' Options include: "sequence", "bin", "sample" and "treatment".
+#' Default = "sequence".
 #'
 #' @param bin_type, string containing the bin type you would like the abundance
 #' data for. Default = "otu".
@@ -25,33 +25,33 @@
 #' miseq <- miseq_sop_example()
 #'
 #' # To the total abundance for each sequence
-#' abundance(data = miseq, type = "sequences")
+#' abundance(data = miseq, type = "sequence")
 #'
 #' # To the total abundance for each sequence parsed by sample
-#' abundance(data = miseq, type = "sequences", by_sample = TRUE)
+#' abundance(data = miseq, type = "sequence", by_sample = TRUE)
 #'
 #' # To the total abundance for each "otu" bin
-#' abundance(data = miseq, type = "bins", bin_type = "otu")
+#' abundance(data = miseq, type = "bin", bin_type = "otu")
 #'
 #' # To the total abundance for each "otu" bin parsed by sample
-#' abundance(data = miseq, type = "bins", bin_type = "otu", by_sample = TRUE)
+#' abundance(data = miseq, type = "bin", bin_type = "otu", by_sample = TRUE)
 #'
 #' # To the total abundance for each "asv" bin
-#' abundance(data = miseq, type = "bins", bin_type = "asv")
+#' abundance(data = miseq, type = "bin", bin_type = "asv")
 #'
 #' # To the total abundance for each "asv" bin parsed by sample
-#' abundance(data = miseq, type = "bins", bin_type = "asv", by_sample = TRUE)
+#' abundance(data = miseq, type = "bin", bin_type = "asv", by_sample = TRUE)
 #'
 #' # To the total abundance for each sample
-#' abundance(data = miseq, type = "samples")
+#' abundance(data = miseq, type = "sample")
 #'
 #' # To the total abundance for each treatment
-#' abundance(data = miseq, type = "treatments")
+#' abundance(data = miseq, type = "treatment")
 #'
 #' @return data.frame
 #' @export
 abundance <- function(data,
-                      type = "sequences",
+                      type = "sequence",
                       bin_type = "otu",
                       by_sample = FALSE) {
   if (!inherits(data, "strollur")) {

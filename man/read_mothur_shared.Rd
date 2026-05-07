@@ -27,6 +27,6 @@ otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 data <- new_dataset()
 
 # assign abundance only 'otu' bins parsed by sample
-assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
+assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 
 }
