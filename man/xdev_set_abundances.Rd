@@ -36,9 +36,9 @@ samples <- c("sample2", "sample3", "sample4", "sample2", "sample3",
 abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
 
 xdev_assign_sequence_abundance(data = data,
-                          table = data.frame(sequence_names = sequence_names,
-                                             abundances = abundances,
-                                             samples = samples))
+                          table = data.frame(sequence_name = sequence_names,
+                                             abundance = abundances,
+                                             sample = samples))
 
 seqs_to_update <- c("seq4")
 new_abunds <- list(c(20, 10, 4))

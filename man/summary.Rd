@@ -5,14 +5,14 @@
 \title{Summarize the sequences data, custom reports, and scrapped data in a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
-summary(data, type = "sequences", report_type = NULL, verbose = TRUE)
+summary(data, type = "sequence", report_type = NULL, verbose = TRUE)
 }
 \arguments{
 \item{data, }{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the number of.
-Options include: "sequences", "reports" and "scrap". Default = "sequences".}
+Options include: "sequence", "report" and "scrap". Default = "sequence".}
 
 \item{report_type, }{string containing the report type you would summarized.
 For example, the miseq_sop_example includes contigs assembly data and can be
@@ -33,16 +33,16 @@ Summarize the sequences data, custom reports, and scrapped data in a
 miseq <- miseq_sop_example()
 
 # To get the summary of your FASTA data
-summary(data = miseq, type = "sequences")
+summary(data = miseq, type = "sequence")
 
 # summarize contigs_report
-summary(data = miseq, type = "reports", report_type = "contigs_report")
+summary(data = miseq, type = "report", report_type = "contigs_report")
 
 # remove sample 'F3D0' to produce a scrap report
 xdev_remove_samples(data = miseq, samples = c("F3D0"))
 
 # summarize FASTA data after removal of sample F3D0
-summary(data = miseq, type = "sequences")
+summary(data = miseq, type = "sequence")
 
 # summarize scrapped data -
 # sequences and bins scrapped by removing the sample "F3D0"

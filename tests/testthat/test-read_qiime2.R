@@ -26,10 +26,10 @@ test_that("test read_qiime2", {
   expect_equal(names(data, type = "dataset"), "qiime_moving_pictures")
   expect_equal(count(data), 157298)
   expect_equal(count(data, distinct = TRUE), 759)
-  expect_equal(count(data, type = "bins", bin_type = "asv"), 759)
-  expect_equal(count(data, type = "bins", bin_type = "otu"), 0)
+  expect_equal(count(data, type = "bin", bin_type = "asv"), 759)
+  expect_equal(count(data, type = "bin", bin_type = "otu"), 0)
 
-  sample_totals <- abundance(data, type = "samples")
+  sample_totals <- abundance(data, type = "sample")
 
   sample_abunds <- c(
     7865, 7245, 8270, 6486, 6755, 8756, 7922, 7068, 4112,
@@ -48,8 +48,8 @@ test_that("test read_qiime2", {
     "L6S20", "L6S68", "L6S93"
   )
 
-  expect_equal(sample_totals$abundances, sample_abunds)
-  expect_equal(sample_totals$samples, sample_names)
+  expect_equal(sample_totals$abundance, sample_abunds)
+  expect_equal(sample_totals$sample, sample_names)
 })
 
 test_that("test read_qiime2", {

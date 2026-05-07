@@ -4,18 +4,18 @@
 \alias{xdev_report}
 \title{xdev_report}
 \usage{
-xdev_report(data, type = "sequences", bin_type = "otu")
+xdev_report(data, type = "sequence", bin_type = "otu")
 }
 \arguments{
 \item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of report you would like. Options
-include: "fasta", "sequences", "sequence_bin_assignments",
-"sequence_taxonomy", "bin_taxonomy", "bin_representatives",
- "sample_assignments", "metadata", "references", "sequence_scrap",
+include: "fasta", "sequence", "sequence_bin_assignment",
+"sequence_taxonomy", "bin_taxonomy", "bin_representative",
+ "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
- Default = "sequences".}
+ Default = "sequence".}
 
 \item{bin_type, }{string containing the bin type you would like a bin_taxonomy
 report for. Default = "otu".}
@@ -39,18 +39,19 @@ head(fasta, n = 10)
 
 # To get a report about the FASTA data
 
-sequence_report <- xdev_report(data = miseq, type = "sequences")
+sequence_report <- xdev_report(data = miseq, type = "sequence")
 head(sequence_report, n = 10)
 
 # To get the sequence bin assignments
 
-bin_assignments <- xdev_report(data = miseq, type = "sequence_bin_assignments",
-                          bin_type = "otu")
+bin_assignments <- xdev_report(data = miseq,
+                               type = "sequence_bin_assignment",
+                               bin_type = "otu")
 head(bin_assignments, n = 10)
 
 # To get the sample treatment assignments
 
-xdev_report(data = miseq, type = "sample_assignments")
+xdev_report(data = miseq, type = "sample_assignment")
 
 # To get a report about sequence classifications
 
@@ -61,41 +62,47 @@ head(sequence_taxonomy_report, n = 10)
 # To get a report about bin classifications for 'otu' data
 
 otu_taxonomy_report <- xdev_report(data = miseq,
-                                       type = "bin_taxonomy",
-                                       bin_type = "otu")
+                                   type = "bin_taxonomy",
+                                   bin_type = "otu")
 head(otu_taxonomy_report, n = 10)
 
 # To get a report about bin classifications for 'asv' data
 
-asv_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
-                              bin_type = "asv")
+asv_taxonomy_report <- xdev_report(data = miseq,
+                                   type = "bin_taxonomy",
+                                   bin_type = "asv")
 head(asv_taxonomy_report, n = 10)
 
 # To get a report about bin classifications for 'phylotype' data
 
-phylotype_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
-                                    bin_type = "phylotype")
+phylotype_taxonomy_report <- xdev_report(data = miseq,
+                                         type = "bin_taxonomy",
+                                         bin_type = "phylotype")
 head(phylotype_taxonomy_report, n = 10)
 
 # To get the 'otu' bin representative sequences
 
-otu_bin_reps <- xdev_report(data = miseq, type = "bin_representatives",
-                       bin_type = "otu")
+otu_bin_reps <- xdev_report(data = miseq,
+                            type = "bin_representative",
+                            bin_type = "otu")
 head(otu_bin_reps, n = 10)
 
 # To get a report about the sequences removed during your analysis:
 
-scrapped_sequence_report <- xdev_report(data = miseq, type = "sequence_scrap")
+scrapped_sequence_report <- xdev_report(data = miseq,
+                                        type = "sequence_scrap")
 
 # To get a report about the "otu" bins removed during your analysis:
 
-scrapped_otu_report <- xdev_report(data = miseq, type = "bin_scrap",
-                              bin_type = "otu")
+scrapped_otu_report <- xdev_report(data = miseq,
+                                   type = "bin_scrap",
+                                   bin_type = "otu")
 
 # To get a report about the "phylotype" bins removed during your analysis:
 
-scrapped_phylotype_report <- xdev_report(data = miseq, type = "bin_scrap",
-                                    bin_type = "phylotype")
+scrapped_phylotype_report <- xdev_report(data = miseq,
+                                         type = "bin_scrap",
+                                         bin_type = "phylotype")
 
 # To get the metadata associated with your data:
 
@@ -103,7 +110,7 @@ metadata <- xdev_report(data = miseq, type = "metadata")
 
 # To get the resource references associated with your data:
 
-references <- xdev_report(data = miseq, type = "references")
+references <- xdev_report(data = miseq, type = "resource_reference")
 
 # To get our custom report containing the contigs assembly data:
 

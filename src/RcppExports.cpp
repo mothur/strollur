@@ -12,21 +12,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// new_reference
-Rcpp::List new_reference(string reference_name, string reference_version, string reference_usage, string reference_note, string reference_url);
-RcppExport SEXP _strollur_new_reference(SEXP reference_nameSEXP, SEXP reference_versionSEXP, SEXP reference_usageSEXP, SEXP reference_noteSEXP, SEXP reference_urlSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< string >::type reference_name(reference_nameSEXP);
-    Rcpp::traits::input_parameter< string >::type reference_version(reference_versionSEXP);
-    Rcpp::traits::input_parameter< string >::type reference_usage(reference_usageSEXP);
-    Rcpp::traits::input_parameter< string >::type reference_note(reference_noteSEXP);
-    Rcpp::traits::input_parameter< string >::type reference_url(reference_urlSEXP);
-    rcpp_result_gen = Rcpp::wrap(new_reference(reference_name, reference_version, reference_usage, reference_note, reference_url));
-    return rcpp_result_gen;
-END_RCPP
-}
 // clear
 void clear(Rcpp::Environment data);
 RcppExport SEXP _strollur_clear(SEXP dataSEXP) {
@@ -108,20 +93,24 @@ BEGIN_RCPP
 END_RCPP
 }
 // xdev_add_references
-double xdev_add_references(const Rcpp::Environment& data, const Rcpp::DataFrame& table, const string& reference_name, const string& reference_version, const string& reference_usage, const string& reference_note, const string& reference_url, bool verbose);
-RcppExport SEXP _strollur_xdev_add_references(SEXP dataSEXP, SEXP tableSEXP, SEXP reference_nameSEXP, SEXP reference_versionSEXP, SEXP reference_usageSEXP, SEXP reference_noteSEXP, SEXP reference_urlSEXP, SEXP verboseSEXP) {
+double xdev_add_references(const Rcpp::Environment& data, const Rcpp::DataFrame& table, const string& name, const string& vendor, const string& version, const string& usage, const string& note, const string& method_url, const string& documentation_url, const string& parameter, const string& citation, bool verbose);
+RcppExport SEXP _strollur_xdev_add_references(SEXP dataSEXP, SEXP tableSEXP, SEXP nameSEXP, SEXP vendorSEXP, SEXP versionSEXP, SEXP usageSEXP, SEXP noteSEXP, SEXP method_urlSEXP, SEXP documentation_urlSEXP, SEXP parameterSEXP, SEXP citationSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const Rcpp::DataFrame& >::type table(tableSEXP);
-    Rcpp::traits::input_parameter< const string& >::type reference_name(reference_nameSEXP);
-    Rcpp::traits::input_parameter< const string& >::type reference_version(reference_versionSEXP);
-    Rcpp::traits::input_parameter< const string& >::type reference_usage(reference_usageSEXP);
-    Rcpp::traits::input_parameter< const string& >::type reference_note(reference_noteSEXP);
-    Rcpp::traits::input_parameter< const string& >::type reference_url(reference_urlSEXP);
+    Rcpp::traits::input_parameter< const string& >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< const string& >::type vendor(vendorSEXP);
+    Rcpp::traits::input_parameter< const string& >::type version(versionSEXP);
+    Rcpp::traits::input_parameter< const string& >::type usage(usageSEXP);
+    Rcpp::traits::input_parameter< const string& >::type note(noteSEXP);
+    Rcpp::traits::input_parameter< const string& >::type method_url(method_urlSEXP);
+    Rcpp::traits::input_parameter< const string& >::type documentation_url(documentation_urlSEXP);
+    Rcpp::traits::input_parameter< const string& >::type parameter(parameterSEXP);
+    Rcpp::traits::input_parameter< const string& >::type citation(citationSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(xdev_add_references(data, table, reference_name, reference_version, reference_usage, reference_note, reference_url, verbose));
+    rcpp_result_gen = Rcpp::wrap(xdev_add_references(data, table, name, vendor, version, usage, note, method_url, documentation_url, parameter, citation, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -575,7 +564,6 @@ END_RCPP
 RcppExport SEXP run_testthat_tests(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_strollur_new_reference", (DL_FUNC) &_strollur_new_reference, 5},
     {"_strollur_clear", (DL_FUNC) &_strollur_clear, 1},
     {"_strollur_export_dataset", (DL_FUNC) &_strollur_export_dataset, 1},
     {"_strollur_get_bin_types", (DL_FUNC) &_strollur_get_bin_types, 1},
@@ -583,7 +571,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_has_sequence_strings", (DL_FUNC) &_strollur_has_sequence_strings, 1},
     {"_strollur_is_aligned", (DL_FUNC) &_strollur_is_aligned, 1},
     {"_strollur_xdev_abundance", (DL_FUNC) &_strollur_xdev_abundance, 4},
-    {"_strollur_xdev_add_references", (DL_FUNC) &_strollur_xdev_add_references, 8},
+    {"_strollur_xdev_add_references", (DL_FUNC) &_strollur_xdev_add_references, 12},
     {"_strollur_xdev_add_report", (DL_FUNC) &_strollur_xdev_add_report, 5},
     {"_strollur_xdev_add_sequences", (DL_FUNC) &_strollur_xdev_add_sequences, 7},
     {"_strollur_xdev_assign_bins", (DL_FUNC) &_strollur_xdev_assign_bins, 9},

@@ -31,7 +31,7 @@ write_mothur_list <- function(data, file_root = NULL) {
   outputs <- c()
 
   for (type in bin_types) {
-    df <- xdev_report(data, "sequence_bin_assignments", type)
+    df <- xdev_report(data, "sequence_bin_assignment", type)
 
     if (nrow(df) != 0) {
       output_file <- paste0(file_root, ".", type, ".list")

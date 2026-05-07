@@ -33,6 +33,6 @@ read_mothur_taxonomy <- function(taxonomy) {
     show_col_types = FALSE
   )
 
-  names(df) <- c("sequence_names", "taxonomies")
+  names(df) <- c("sequence_name", "taxonomy")
   df
 }

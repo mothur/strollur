@@ -30,7 +30,7 @@ write_fasta <- function(data, filename = NULL, degap = FALSE) {
     filename <- paste0(filename, ".fasta")
   }
 
-  sequence_names <- names(data, "sequences")
+  sequence_names <- xdev_names(data, "sequence")
 
   # data contains sequences
   if (length(sequence_names) != 0) {

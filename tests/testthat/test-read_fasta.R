@@ -41,13 +41,13 @@ test_that("test read_fasta - comments", {
   remove_file("file_with_comments.fasta")
 
   expect_equal(names(results), c(
-    "sequence_names",
-    "sequences", "comments"
+    "sequence_name",
+    "sequence", "comment"
   ))
-  expect_equal(results$sequence_names, c("seq1", "seq2", "seq3"))
-  expect_equal(rep(seq1, 3), results$sequences)
+  expect_equal(results$sequence_name, c("seq1", "seq2", "seq3"))
+  expect_equal(rep(seq1, 3), results$sequence)
   expect_equal(
     c("my very cool comment", "my next comment", ""),
-    results$comments
+    results$comment
   )
 })

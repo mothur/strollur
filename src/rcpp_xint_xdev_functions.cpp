@@ -18,6 +18,18 @@ void xint_assigned_message(double num, string tag) {
     RcppThread::Rcout << message << endl;
 }
 /******************************************************************************/
+void fillReference(Reference& ref, Rcpp::List ref_list) {
+    ref.name = Rcpp::as<string>(ref_list["name"]);
+    ref.vendor = Rcpp::as<string>(ref_list["vendor"]);
+    ref.version = Rcpp::as<string>(ref_list["version"]);
+    ref.usage = Rcpp::as<string>(ref_list["usage"]);
+    ref.note = Rcpp::as<string>(ref_list["note"]);
+    ref.method_url = Rcpp::as<string>(ref_list["method_url"]);
+    ref.documentation_url = Rcpp::as<string>(ref_list["documentation_url"]);
+    ref.parameter = Rcpp::as<string>(ref_list["parameter"]);
+    ref.citation = Rcpp::as<string>(ref_list["citation"]);
+}
+/******************************************************************************/
 SEXP xint_fill_required_parameters(const Rcpp::DataFrame& df,
                                    const string& given_column_name,
                                    const string& type) {
@@ -74,22 +86,22 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
 
     const Rcpp::XPtr<Dataset> d = data["data"];
 
-    if (type == "sequences") {
+    if (type == "sequence") {
         // data.frame containing 2, 3 or 4 columns: sequence_names, abundances,
         //' samples (if assigned), and treatments (if assigned)
         return d.get()->getSequenceAbundances(by_sample);
     }
-    else if (type == "bins") {
+    else if (type == "bin") {
         // data.frame containing 2, 3 or 4 columns: bin_names, abundances,
         //' samples (if assigned), and treatments (if assigned)
         return d.get()->getBinAbundances(bin_type, by_sample);
     }
-    else if ((type == "samples") || (type == "treatments")){
+    else if ((type == "sample") || (type == "treatment")){
         return d.get()->getTotals(type);
     }
     else {
         string message = type + " is not a valid type for the abundance function";
-        message += ". Types include: 'bins', 'sequences', samples' and 'treatments'.";
+        message += ". Types include: 'bin', 'sequence', sample' and 'treatment'.";
         RcppThread::Rcout << endl << message << endl;
     }
 
@@ -99,11 +111,15 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
 /******************************************************************************/
 double xdev_add_references(const Rcpp::Environment& data,
                            const Rcpp::DataFrame& table,
-                           const string& reference_name,
-                           const string& reference_version,
-                           const string& reference_usage,
-                           const string& reference_note,
-                           const string& reference_url,
+                           const string& name,
+                           const string& vendor,
+                           const string& version,
+                           const string& usage,
+                           const string& note,
+                           const string& method_url,
+                           const string& documentation_url,
+                           const string& parameter,
+                           const string& citation,
                            bool verbose) {
 
     if (!data.inherits("strollur")) {
@@ -111,28 +127,48 @@ double xdev_add_references(const Rcpp::Environment& data,
         throw Rcpp::exception(message.c_str());
     }
 
-    vector<string> reference_names, reference_versions, reference_usages;
-    vector<string> reference_notes, reference_urls;
+    vector<string> reference_vendors, reference_names, reference_versions;
+    vector<string> reference_usages, reference_notes, reference_method_urls, reference_urls;
+    vector<string> reference_parameters, reference_citations;
 
     reference_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
-                                                                             reference_name));
+                                                                             name));
+    reference_vendors = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                                "vendor",
+                                                                                vendor));
     reference_versions = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                                "reference_versions",
-                                                                                reference_version));
+                                                                                "version",
+                                                                                version));
     reference_usages = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                              "reference_usages",
-                                                                              reference_usage));
+                                                                              "usage",
+                                                                              usage));
     reference_notes = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                             "reference_notes",
-                                                                             reference_note));
+                                                                              "note",
+                                                                              note));
+    reference_method_urls = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                             "method_url",
+                                                                             method_url));
     reference_urls = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                            "reference_urls",
-                                                                            reference_url));
+                                                                            "documentation_url",
+                                                                            documentation_url));
 
+    reference_parameters = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                    "parameter",
+                                                    parameter));
 
-    bool hasVersions = false, hasUsages = false, hasNotes = false, hasUrls = false;
+    reference_citations = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table, "citation",
+                                                                                citation));
+    bool hasParameters = false, hasVersions = false, hasUsages = false, hasNotes = false;
+    bool hasMethods = false, hasUrls = false, hasVendors = false, hasCitations = false;
+
+    if (reference_vendors.size() == reference_names.size()) {
+        hasVendors = true;
+    }
     if (reference_versions.size() == reference_names.size()) {
         hasVersions = true;
+    }
+    if (reference_method_urls.size() == reference_names.size()) {
+        hasMethods = true;
     }
     if (reference_usages.size() == reference_names.size()) {
         hasUsages = true;
@@ -140,14 +176,26 @@ double xdev_add_references(const Rcpp::Environment& data,
     if (reference_notes.size() == reference_names.size()) {
         hasNotes = true;
     }
+    if (reference_method_urls.size() == reference_names.size()) {
+        hasMethods = true;
+    }
     if (reference_urls.size() == reference_names.size()) {
         hasUrls = true;
+    }
+    if (reference_parameters.size() == reference_names.size()) {
+        hasParameters = true;
+    }
+    if (reference_citations.size() == reference_names.size()) {
+        hasCitations = true;
     }
 
     vector<Reference> refs;
     for (size_t i = 0; i < reference_names.size(); i++) {
 
         Reference ref(reference_names[i]);
+        if (hasVendors) {
+            ref.vendor = reference_vendors[i];
+        }
         if (hasVersions) {
             ref.version = reference_versions[i];
         }
@@ -157,8 +205,17 @@ double xdev_add_references(const Rcpp::Environment& data,
         if (hasNotes) {
             ref.note = reference_notes[i];
         }
+        if (hasMethods) {
+            ref.method_url = reference_method_urls[i];
+        }
         if (hasUrls) {
-            ref.url = reference_urls[i];
+            ref.documentation_url = reference_urls[i];
+        }
+        if (hasParameters) {
+            ref.parameter = reference_parameters[i];
+        }
+        if (hasCitations) {
+            ref.citation = reference_citations[i];
         }
         refs.push_back(ref);
     }
@@ -265,10 +322,10 @@ double xdev_add_sequences(const Rcpp::Environment& data,
     sequence_names = Rcpp::as<vector<string>>(
         xint_fill_required_parameters(table, sequence_name));
     sequences = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                       "sequences",
+                                                                       "sequence",
                                                                        sequence));
     comments = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                      "comments",
+                                                                      "comment",
                                                                       comment));
 
     Rcpp::XPtr<Dataset> d = data["data"];
@@ -277,12 +334,7 @@ double xdev_add_sequences(const Rcpp::Environment& data,
     if (reference.isNotNull()) {
 
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
-
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
     }
 
     const double numAdded = d.get()->addSequences(sequence_names,
@@ -290,6 +342,9 @@ double xdev_add_sequences(const Rcpp::Environment& data,
 
     if (verbose) {
         xint_added_message(numAdded);
+        if (reference.isNotNull()) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAdded;
@@ -317,13 +372,13 @@ double xdev_assign_bins(const Rcpp::Environment& data,
     bin_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                        bin_name));
     samples = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                     "samples",
+                                                                     "sample",
                                                                      sample));
     sequence_names = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                            "sequence_names",
+                                                                            "sequence_name",
                                                                             sequence_name));
     abundances = Rcpp::as<vector<float>>(xint_fill_optional_parameters(table,
-                                                                       "abundances",
+                                                                       "abundance",
                                                                        abundance,
                                                                        "float"));
 
@@ -354,20 +409,20 @@ double xdev_assign_bins(const Rcpp::Environment& data,
         xint_assigned_message(numBinsAssigned, tag);
     }
 
-
     if (reference.isNotNull()) {
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numBinsAssigned;
@@ -406,15 +461,16 @@ double xdev_assign_bin_representative_sequences(const Rcpp::Environment& data,
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAssigned;
@@ -462,15 +518,16 @@ double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAssigned;
@@ -494,13 +551,13 @@ double xdev_assign_sequence_abundance(const Rcpp::Environment& data,
     sequence_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
                                                                             sequence_name));
     samples = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                     "samples",
+                                                                     "sample",
                                                                      sample));
     treatments = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                        "treatments",
+                                                                        "treatment",
                                                                         treatment));
     abundances = Rcpp::as<vector<float>>(xint_fill_optional_parameters(table,
-                                                                       "abundances",
+                                                                       "abundance",
                                                                        abundance,
                                                                        "float"));
     if (sequence_names.size() != abundances.size()) {
@@ -572,15 +629,16 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAssigned;
@@ -627,15 +685,16 @@ double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAssigned;
@@ -702,9 +761,9 @@ double xdev_count(const Rcpp::Environment& data,
         s = Rcpp::as<vector<string>>(samples);
     }
 
-    // types include "sequences", "samples", "treatments", "bins"
+    // types include "sequence", "sample", "treatment", "bin"
 
-    if (type == "sequences") {
+    if (type == "sequence") {
         // no sequence data and asked for samples. we can't find the number of
         // sequences in the given samples without sequence data because there is
         // not a correlation between otu sample abundance counts and # of seqs
@@ -720,13 +779,13 @@ double xdev_count(const Rcpp::Environment& data,
 
         return d.get()->getTotal(s);
     }
-    else if (type == "samples") {
+    else if (type == "sample") {
         return d.get()->getNumSamples();
     }
-    else if (type == "treatments") {
+    else if (type == "treatment") {
         return d.get()->getNumTreatments();
     }
-    else if (type == "bins") {
+    else if (type == "bin") {
         if (!s.empty()) {
             if (d.get()->hasSamples(s)) {
                 return d.get()->getNumBins(bin_type,
@@ -740,11 +799,11 @@ double xdev_count(const Rcpp::Environment& data,
             return d.get()->getNumBins(bin_type);
         }
     }
-    else if (type == "references") {
+    else if (type == "resource_reference") {
         return d.get()->getNumResourceReferences();
     }else{
-        string message = "Invalid type. Types include: 'sequences', 'samples'";
-        message += ", 'treatments' and 'bins'";
+        string message = "Invalid type. Types include: 'sequence', 'sample'";
+        message += ", 'treatment', 'bin' and 'resource_reference'.";
         throw Rcpp::exception(message.c_str());
     }
 
@@ -786,16 +845,16 @@ vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
 
     const Rcpp::XPtr<Dataset> d = data["data"];
 
-    if (type == "sequence_names") {
+    if (type == "sequence_name") {
         return d.get()->getSequenceNamesBySample(Rcpp::as<vector<string>>(samples));
     }
-    else if (type == "sequences") {
+    else if (type == "sequence") {
         return d.get()->getSequencesBySample(Rcpp::as<vector<string>>(samples),
                                              degap);
     }
     else {
-        string message = "Invalid type. Types include: 'sequence_names' and ";
-        message += "'sequences'";
+        string message = "Invalid type. Types include: 'sequence_name' and ";
+        message += "'sequence'";
         throw Rcpp::exception(message.c_str());
     }
     return null2DVector;
@@ -866,20 +925,20 @@ vector<string> xdev_names(const Rcpp::Environment& data,
         s = Rcpp::as<vector<string>>(samples);
     }
 
-    // types -> "dataset", "sequences", "bins", "samples",
-    //            "treatments", "reports"
+    // types -> "dataset", "sequence", "bin", "sample",
+    //            "treatment", "report"
 
     vector<string> names;
-    if (type == "sequences") {
+    if (type == "sequence") {
         return d.get()->getSequenceNames(s, distinct);
     }
-    else if (type == "samples") {
+    else if (type == "sample") {
         return d.get()->getSamples();
     }
-    else if (type == "treatments") {
+    else if (type == "treatment") {
         return d.get()->getTreatments();
     }
-    else if (type == "bins") {
+    else if (type == "bin") {
         if (!s.empty()) {
             if (d.get()->hasSamples(s)) {
                 return d.get()->getBinIds(bin_type,
@@ -894,14 +953,14 @@ vector<string> xdev_names(const Rcpp::Environment& data,
                          nullVector, distinct);
         }
     }
-    else if (type == "reports") {
+    else if (type == "report") {
         return d.get()->getReportTypes();
     }
     else if (type == "dataset") {
         names.push_back(d.get()->datasetName);
     }else{
-        string message = "Invalid type. Types include: 'dataset', 'sequences'";
-        message += ", 'bins', 'samples', 'treatments' and 'reports'";
+        string message = "Invalid type. Types include: 'dataset', 'sequence'";
+        message += ", 'bin', 'sample', 'treatment' and 'report'";
         throw Rcpp::exception(message.c_str());
     }
 
@@ -966,7 +1025,7 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
     const Rcpp::XPtr<Dataset> d = data["data"];
 
     // sequence_data reports contain the starts, ends, ambigs,...
-    if (type == "sequences") {
+    if (type == "sequence") {
         return d.get()->getSequenceReport();
     }
     // sequence fasta data
@@ -974,15 +1033,15 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
         return d.get()->getFastaReport();
     }
     // sequence bin assignments report
-    else if (type == "sequence_bin_assignments") {
+    else if (type == "sequence_bin_assignment") {
         return d.get()->getList(bin_type);
     }
     // sample treatment assignments report
-    else if (type == "sample_assignments") {
+    else if (type == "sample_assignment") {
         return d.get()->getSampleTreatmentAssignments();
     }
     // representative sequences assignments report
-    else if (type == "bin_representatives") {
+    else if (type == "bin_representative") {
         return d.get()->getBinRepresentativeSequences(bin_type);
     }
     // sequence classification report
@@ -1006,7 +1065,7 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
         return d.get()->getMetadata();
     }
     // references
-    else if (type == "references") {
+    else if (type == "resource_reference") {
         return d.get()->getReferences();
     }
     else {
@@ -1122,10 +1181,10 @@ Rcpp::DataFrame xdev_summarize(const Rcpp::Environment& data, const string& type
         }
     }
 
-    const vector<string> typeOptions = {"sequences", "reports", "scrap"};
+    const vector<string> typeOptions = {"sequence", "report", "scrap"};
     if (!vectorContains(typeOptions, type)) {
         string message = type + " is not a valid type option. Options include:";
-        message += " 'sequences', 'reports' and 'scrap'.";
+        message += " 'sequence', 'report' and 'scrap'.";
         RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }

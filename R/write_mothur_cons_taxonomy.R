@@ -42,11 +42,11 @@ write_mothur_cons_taxonomy <- function(data, file_root = NULL) {
 
       df <- data.frame(
         bin_name = unique(df[[1]]),
-        bin_abundance = xdev_abundance(
+        abundance = xdev_abundance(
           data = data,
-          type = "bins", bin_type = type
+          type = "bin", bin_type = type
         )[[2]],
-        bin_taxonomy = tapply(df[[3]], df[[1]],
+        taxonomy = tapply(df[[3]], df[[1]],
           paste,
           collapse = ""
         )

@@ -8,10 +8,10 @@ xdev_assign_sequence_taxonomy_tidy(
   data,
   table,
   reference = NULL,
-  sequence_name = "sequence_names",
-  level = "levels",
-  taxonomy = "taxonomies",
-  confidence = "confidences",
+  sequence_name = "sequence_name",
+  level = "level",
+  taxonomy = "taxonomy",
+  confidence = "confidence",
   verbose = TRUE
 )
 }
@@ -23,16 +23,16 @@ xdev_assign_sequence_taxonomy_tidy(
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
 \item{sequence_name, }{a string containing the name of the column in 'table'
-that contains the sequence names. Default column name is 'sequence_names'.}
+that contains the sequence names. Default column name is 'sequence_name'.}
 
 \item{level, }{a string containing the name of the column in 'table' that
-contains the taxonomy levels. Default column name is 'levels'.}
+contains the taxonomy levels. Default column name is 'level'.}
 
 \item{taxonomy, }{a string containing the name of the column in 'table' that
-contains the sequence taxonomies. Default column name is 'taxonomies'.}
+contains the sequence taxonomies. Default column name is 'taxonomy'.}
 
 \item{confidence, }{a string containing the name of the column in 'table'
-that contains the taxonomies confidence. Default column name is 'confidences'.}
+that contains the taxonomies confidence. Default column name is 'confidence'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}
@@ -43,12 +43,13 @@ double containing the number of sequence taxonomies assigned
 \description{
 Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 
-Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+Note, if you assign sequence taxonomies and assign bins, strollur will find
  the consensus taxonomy for each bin for you.
 }
 \examples{
 
 sequence_classifications <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
+str(sequence_classifications)
 
 data <- new_dataset("my_dataset")
 

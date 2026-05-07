@@ -32,9 +32,9 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
   # create new dataset object
   data <- new_dataset(dataset_name)
   xdev_add_sequences(data, data.frame(
-    sequence_names = seq_names,
-    sequences = colnames(sequence_table),
-    comments = rep("dada2", num_seqs)
+    sequence_name = seq_names,
+    sequence = colnames(sequence_table),
+    comment = rep("dada2", num_seqs)
   ))
 
   sample_names <- rownames(sequence_table)
@@ -55,9 +55,9 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
   }
 
   xdev_assign_sequence_abundance(data, data.frame(
-    sequence_names = names,
-    abundances = abundances,
-    samples = samples
+    sequence_name = names,
+    abundance = abundances,
+    sample = samples
   ))
   data
 }

@@ -33,7 +33,7 @@ write_mothur_shared <- function(data, file_root = NULL) {
 
   for (type in bin_types) {
     df <- xdev_abundance(
-      data = data, type = "bins",
+      data = data, type = "bin",
       bin_type = type, by_sample = TRUE
     )
 
@@ -67,16 +67,16 @@ write_mothur_shared <- function(data, file_root = NULL) {
         # add label column before samples
         # To fix build warnings, we have to make bindings for:
         # label, num_bins, samples
-        label <- num_bins <- samples <- NULL
+        label <- num_bin <- sample <- NULL
 
         df <- df |>
           mutate(label = rep(1, num_samples)) |>
-          relocate(label, .before = samples)
+          relocate(label, .before = sample)
 
         # add numotus column after samples
         df <- df |>
           mutate(num_bins = rep(number_of_bins, num_samples)) |>
-          relocate(num_bins, .after = samples)
+          relocate(num_bins, .after = sample)
 
         readr::write_tsv(df, output_file)
       }

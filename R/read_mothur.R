@@ -133,8 +133,8 @@ read_mothur <- function(fasta = NULL, count = NULL,
     # you did not add fasta seqs
     if (is.null(fasta)) {
       xdev_add_sequences(data = data, table = data.frame(
-        sequence_names =
-          unique(count_table$sequence_names)
+        sequence_name =
+          unique(count_table$sequence_name)
       ))
     }
 

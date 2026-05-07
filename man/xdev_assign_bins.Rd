@@ -9,10 +9,10 @@ xdev_assign_bins(
   table,
   bin_type = "otu",
   reference = NULL,
-  bin_name = "bin_names",
-  abundance = "abundances",
-  sample = "samples",
-  sequence_name = "sequence_names",
+  bin_name = "bin_name",
+  abundance = "abundance",
+  sample = "sample",
+  sequence_name = "sequence_name",
   verbose = TRUE
 )
 }
@@ -26,19 +26,19 @@ xdev_assign_bins(
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
 \item{bin_name, }{a string containing the name of the column in 'table' that
-contains the bin names. Default column name is 'bin_names'.}
+contains the bin names. Default column name is 'bin_name'.}
 
 \item{abundance, }{a string containing the name of the column in 'table'
-that contains the bin abundances. Default column name is 'abundances'. Note:
- You must provide either abundances or sequence_names in the table.}
+that contains the bin abundances. Default column name is 'abundance'. Note:
+ You must provide either abundance or sequence_name in the table.}
 
 \item{sample, }{a string containing the name of the column in 'table' that
 contains the sample names for datasets where the abundances are broken down
-by sample. Default column name is 'samples'.}
+by sample. Default column name is 'sample'.}
 
 \item{sequence_name, }{a string containing the name of the column in 'table'
-that contains the sequence names. Default column name is 'sequence_names'.
-Note: You must provide either abundances or sequence_names in the table.}
+that contains the sequence names. Default column name is 'sequence_name'.
+Note: You must provide either abundance or sequence_name in the table.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}

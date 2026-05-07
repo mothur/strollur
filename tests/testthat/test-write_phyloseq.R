@@ -38,11 +38,11 @@ test_that("write phyloseq creates phyloseq object", {
   miseq <- miseq_sop_example()
   recreated_phylo_object <- write_phyloseq(miseq)
   data <- read_phyloseq(recreated_phylo_object,
-    treatment_column_name = "treatments"
+    treatment_column_name = "treatment"
   )
   expect_identical(
-    report(miseq, "sample_assignments"),
-    report(data, "sample_assignments")
+    report(miseq, "sample_assignment"),
+    report(data, "sample_assignment")
   )
 })
 

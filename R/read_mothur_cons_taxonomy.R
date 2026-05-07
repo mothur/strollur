@@ -20,7 +20,7 @@
 #' data <- new_dataset()
 #'
 #' # assign abundance only 'otu' bins
-#' assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
+#' assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 #'
 #' # assign consensus taxonomies to 'otu' bins
 #' assign(
@@ -41,6 +41,6 @@ read_mothur_cons_taxonomy <- function(taxonomy) {
     show_col_types = FALSE
   )
 
-  names(df) <- c("bin_names", "abundances", "taxonomies")
+  names(df) <- c("bin_name", "abundance", "taxonomy")
   df
 }

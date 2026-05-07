@@ -5,19 +5,19 @@
 \title{Get a data.frame containing the given report in a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
-report(data, type = "sequences", bin_type = "otu")
+report(data, type = "sequence", bin_type = "otu")
 }
 \arguments{
 \item{data, }{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of report you would like. Options
-include: "fasta", "sequences", "sequence_bin_assignments",
-"sequence_taxonomy", "bin_taxonomy", "bin_representatives",
- "sample_assignments", "metadata", "references", "sequence_scrap",
+include: "fasta", "sequence", "sequence_bin_assignment",
+"sequence_taxonomy", "bin_taxonomy", "bin_representative",
+ "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
- Default = "sequences".}
+ Default = "sequence".}
 
 \item{bin_type, }{string containing the bin type you would like a bin_taxonomy
 report for. Default = "otu".}
@@ -42,16 +42,16 @@ report(data = miseq, type = "fasta") |> head(n = 5)
 
 # To get a report about the FASTA data
 
-report(data = miseq, type = "sequences") |> head(n = 5)
+report(data = miseq, type = "sequence") |> head(n = 5)
 
 # To get the sequence bin assignments
 
-report(data = miseq, type = "sequence_bin_assignments", bin_type = "otu") |>
+report(data = miseq, type = "sequence_bin_assignment", bin_type = "otu") |>
   head(n = 5)
 
 # To get the sample treatment assignments
 
-report(data = miseq, type = "sample_assignments")
+report(data = miseq, type = "sample_assignment")
 
 # To get a report about sequence classifications
 
@@ -64,7 +64,7 @@ report(data = miseq, type = "bin_taxonomy", bin_type = "otu") |> head(n = 10)
 # To get the 'otu' bin representative sequences
 
 report(
-  data = miseq, type = "bin_representatives",
+  data = miseq, type = "bin_representative",
   bin_type = "otu"
 ) |> head(n = 5)
 
@@ -82,7 +82,7 @@ metadata <- report(data = miseq, type = "metadata")
 
 # To get the resource references associated with your data:
 
-references <- report(data = miseq, type = "references")
+references <- report(data = miseq, type = "resource_reference")
 
 # To get our custom report containing the contigs assembly data:
 

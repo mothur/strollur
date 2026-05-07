@@ -14,10 +14,10 @@ test_that("test add - errors", {
 
   # test bad report_type
   expect_error(
-    add(data, table = fasta_data, type = reports),
+    add(data, table = fasta_data, type = report),
     "'report_type' is required when adding a report."
   )
 
   add(data, table = fasta_data)
-  expect_equal(count(data, type = "sequences"), 2425)
+  expect_equal(count(data, type = "sequence"), 2425)
 })

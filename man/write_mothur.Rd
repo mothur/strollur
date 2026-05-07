@@ -16,7 +16,7 @@ should be written. Default = current working directory.}
 
 \item{tags}{a vector of strings containing the items you wish to write
 Options are 'sequence_data', 'bin_data', 'metadata',
-'references', 'sequence_tree', 'sample_tree' and 'reports'.
+'resource_reference', 'sequence_tree', 'sample_tree' and 'report'.
  By default, everything is written to files.}
 }
 \value{

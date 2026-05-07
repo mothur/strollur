@@ -23,37 +23,37 @@ test_that("names - samples & treatments & reports", {
     "F3D6", "F3D7", "F3D8", "F3D9"
   )
 
-  expect_equal(names(miseq, type = "samples"), samples)
+  expect_equal(names(miseq, type = "sample"), samples)
 
   treatments <- c("Early", "Late")
 
-  expect_equal(names(miseq, type = "treatments"), treatments)
+  expect_equal(names(miseq, type = "treatment"), treatments)
 
   reports <- c("contigs_report")
 
-  expect_equal(names(miseq, type = "reports"), reports)
+  expect_equal(names(miseq, type = "report"), reports)
 })
 
 test_that("names - bins", {
   miseq <- miseq_sop_example()
 
-  expect_equal(length(names(miseq, type = "bins", bin_type = "otu")), 531)
-  expect_equal(length(names(miseq, type = "bins", bin_type = "asv")), 2425)
+  expect_equal(length(names(miseq, type = "bin", bin_type = "otu")), 531)
+  expect_equal(length(names(miseq, type = "bin", bin_type = "asv")), 2425)
   expect_equal(
-    length(names(miseq, type = "bins", bin_type = "phylotype")),
+    length(names(miseq, type = "bin", bin_type = "phylotype")),
     63
   )
 
   # with samples parameter
-  expect_equal(length(names(miseq, "bins", samples = c("F3D0", "F3D1"))), 125)
+  expect_equal(length(names(miseq, "bin", samples = c("F3D0", "F3D1"))), 125)
 
   # with samples parameter - distinct = true
-  expect_equal(length(names(miseq, "bins", "otu", c("F3D0", "F3D1"), TRUE)), 1)
+  expect_equal(length(names(miseq, "bin", "otu", c("F3D0", "F3D1"), TRUE)), 1)
 
   # bad sample
   message <- capture_output(names(
     miseq,
-    type = "bins",
+    type = "bin",
     samples = c("bad_sample", "F3D1")
   ))
   expect_true(grepl("samples requested, ignoring.", message))
@@ -62,14 +62,14 @@ test_that("names - bins", {
 test_that("names - sequences", {
   miseq <- miseq_sop_example()
 
-  expect_equal(length(names(miseq, type = "sequences")), 2425)
+  expect_equal(length(names(miseq, type = "sequence")), 2425)
 
   # with samples parameter - distinct = false
   expect_equal(length(names(miseq, samples = c("F3D0", "F3D1"))), 133)
 
   # with samples parameter - distinct = true
   expect_equal(
-    length(names(miseq, "sequences", "w", c("F3D0", "F3D1"), TRUE)),
+    length(names(miseq, "sequence", "w", c("F3D0", "F3D1"), TRUE)),
     2
   )
 })

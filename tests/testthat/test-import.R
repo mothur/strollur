@@ -4,7 +4,7 @@ test_that("import - miseq_sop_example", {
   # full dataset
   miseq <- miseq_sop_example()
 
-  expect_equal(count(miseq, "bins", "phylotype"), 63)
+  expect_equal(count(miseq, "bin", "phylotype"), 63)
   expect_equal(count(miseq, distinct = TRUE), 2425)
 
   exported_miseq <- export_dataset(miseq)
@@ -14,27 +14,27 @@ test_that("import - miseq_sop_example", {
   expect_equal(names(dataset_t, "dataset"), names(miseq, "dataset"))
   expect_equal(count(dataset_t, distinct = TRUE), count(miseq, distinct = TRUE))
   expect_equal(count(dataset_t), count(miseq))
-  expect_equal(count(dataset_t, "treatments"), count(miseq, "treatments"))
-  expect_equal(count(dataset_t, "samples"), count(miseq, "samples"))
+  expect_equal(count(dataset_t, "treatment"), count(miseq, "treatment"))
+  expect_equal(count(dataset_t, "sample"), count(miseq, "sample"))
   expect_equal(
-    count(dataset_t, type = "bins", bin_type = "otu"),
-    count(miseq, type = "bins", bin_type = "otu")
+    count(dataset_t, type = "bin", bin_type = "otu"),
+    count(miseq, type = "bin", bin_type = "otu")
   )
   expect_equal(
-    count(dataset_t, "bins", "phylotype"), count(miseq, "bins", "phylotype")
+    count(dataset_t, "bin", "phylotype"), count(miseq, "bin", "phylotype")
   )
-  expect_equal(count(dataset_t, "bins", "asv"), count(miseq, "bins", "asv"))
+  expect_equal(count(dataset_t, "bin", "asv"), count(miseq, "bin", "asv"))
   expect_equal(
-    abundance(dataset_t, type = "samples"),
-    abundance(miseq, type = "samples")
+    abundance(dataset_t, type = "sample"),
+    abundance(miseq, type = "sample")
   )
   expect_equal(
-    abundance(dataset_t, "treatments"),
-    abundance(miseq, "treatments")
+    abundance(dataset_t, "treatment"),
+    abundance(miseq, "treatment")
   )
 
-  dfd <- report(dataset_t, "bin_representatives")
-  dfm <- report(miseq, "bin_representatives")
+  dfd <- report(dataset_t, "bin_representative")
+  dfm <- report(miseq, "bin_representative")
 
   for (otu in dfm[[1]]) {
     expect_equal(
@@ -52,7 +52,7 @@ test_that("import - miseq_sop_example", {
     reasons_to_remove, "phylotype"
   )
 
-  expect_equal(count(miseq, "bins", bin_type = "phylotype"), 61)
+  expect_equal(count(miseq, "bin", bin_type = "phylotype"), 61)
   expect_equal(count(miseq, distinct = TRUE), 825)
   expect_equal(count(miseq), 39177)
 
@@ -65,23 +65,23 @@ test_that("import - miseq_sop_example", {
 
   xdev_assign_bins(
     data = data,
-    table = data.frame(bin_names = bins, abundances = abunds)
+    table = data.frame(bin_name = bins, abundance = abunds)
   )
 
-  expect_equal(count(data, "bins"), 3)
+  expect_equal(count(data, "bin"), 3)
   expect_equal(count(data, distinct = TRUE), 3)
   expect_equal(count(data), 111)
-  expect_equal(count(data, "samples"), 0)
-  expect_equal(count(data, "treatments"), 0)
+  expect_equal(count(data, "sample"), 0)
+  expect_equal(count(data, "treatment"), 0)
 
   table <- export_dataset(data)
   dataset2 <- import_dataset(table)
 
-  expect_equal(count(dataset2, "bins"), 3)
+  expect_equal(count(dataset2, "bin"), 3)
   expect_equal(count(dataset2, distinct = TRUE), 3)
   expect_equal(count(dataset2), 111)
-  expect_equal(count(dataset2, "samples"), 0)
-  expect_equal(count(dataset2, "treatments"), 0)
+  expect_equal(count(dataset2, "sample"), 0)
+  expect_equal(count(dataset2, "treatment"), 0)
 })
 
 test_that("import - no sequence data", {
@@ -94,14 +94,14 @@ test_that("import - no sequence data", {
     dataset_name = "just_bins"
   )
 
-  expect_equal(count(just_bins, "bins"), 531)
+  expect_equal(count(just_bins, "bin"), 531)
   expect_equal(count(just_bins), 113963)
 
   table <- export_dataset(just_bins)
 
   dataset <- import_dataset(table)
 
-  expect_equal(count(dataset, "bins"), 531)
+  expect_equal(count(dataset, "bin"), 531)
   expect_equal(count(dataset), 113963)
 
   expect_equal(
@@ -110,9 +110,9 @@ test_that("import - no sequence data", {
   )
 
   expect_equal(count(dataset), count(just_bins))
-  expect_equal(count(dataset, "treatments"), count(just_bins, "treatments"))
-  expect_equal(count(dataset, "samples"), count(just_bins, "samples"))
-  expect_equal(length(names(dataset, "sequences")), 531)
+  expect_equal(count(dataset, "treatment"), count(just_bins, "treatment"))
+  expect_equal(count(dataset, "sample"), count(just_bins, "sample"))
+  expect_equal(length(names(dataset, "sequence")), 531)
 
   expect_error(import_dataset(table, c("sequence_data")))
   expect_error(import_dataset(table, c("metadata")))
@@ -134,7 +134,7 @@ test_that("import - no bin data", {
     dataset_name = "just_seqs"
   )
 
-  expect_equal(count(just_seqs, "bins"), 0)
+  expect_equal(count(just_seqs, "bin"), 0)
   expect_equal(count(just_seqs), 113963)
   expect_equal(count(just_seqs, distinct = TRUE), 2425)
 
@@ -142,15 +142,15 @@ test_that("import - no bin data", {
 
   dataset <- import_dataset(table)
 
-  expect_equal(count(dataset, "bins"), 0)
+  expect_equal(count(dataset, "bin"), 0)
   expect_equal(count(dataset), 113963)
   expect_equal(count(dataset, distinct = TRUE), 2425)
 
   expect_equal(names(dataset, "dataset"), names(just_seqs, "dataset"))
 
   expect_equal(count(dataset), count(just_seqs))
-  expect_equal(count(dataset, "treatments"), count(just_seqs, "treatments"))
-  expect_equal(count(dataset, "samples"), count(just_seqs, "samples"))
+  expect_equal(count(dataset, "treatment"), count(just_seqs, "treatment"))
+  expect_equal(count(dataset, "sample"), count(just_seqs, "sample"))
   expect_equal(length(names(dataset)), 2425)
 
   expect_error(import_dataset(table, c("bin_data")))
@@ -166,21 +166,21 @@ test_that("import - errors and warnings", {
     dataset_name = "just_bins"
   )
 
-  expect_equal(count(just_bins, "bins", "otu"), 531)
+  expect_equal(count(just_bins, "bin", "otu"), 531)
   expect_equal(count(just_bins), 113963)
 
   table <- export_dataset(just_bins)
 
   data <- import_dataset(table)
 
-  expect_equal(count(data, "bins", "otu"), 531)
+  expect_equal(count(data, "bin", "otu"), 531)
   expect_equal(count(data), 113963)
 
   expect_equal(names(data, "dataset"), names(just_bins, "dataset"))
 
   expect_equal(count(data), count(just_bins))
-  expect_equal(count(data, "treatments"), count(just_bins, "treatments"))
-  expect_equal(count(data, "samples"), count(just_bins, "samples"))
+  expect_equal(count(data, "treatment"), count(just_bins, "treatment"))
+  expect_equal(count(data, "sample"), count(just_bins, "sample"))
   expect_equal(length(names(data)), 531)
 
   data <- new_dataset()

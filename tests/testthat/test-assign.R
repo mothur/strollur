@@ -12,7 +12,7 @@ test_that("test assign - errors", {
   # test no quotes on type
   assign(data, table = table, type = sequence_abundance)
 
-  expect_equal(count(data, type = "sequences"), 113963)
+  expect_equal(count(data, type = "sequence"), 113963)
 
   expect_error(assign(data, table = table, type = "bad_type"))
 })
@@ -29,12 +29,12 @@ test_that("test assign - bin reps", {
     dataset_name = "test"
   )
 
-  expect_equal(count(data, type = "bins"), 531)
+  expect_equal(count(data, type = "bin"), 531)
 
   assign(data,
     table = bin_reps,
-    type = "bin_representatives", bin_type = "otu"
+    type = "bin_representative", bin_type = "otu"
   )
 
-  expect_equal(nrow(report(data, type = bin_representatives)), 531)
+  expect_equal(nrow(report(data, type = bin_representative)), 531)
 })

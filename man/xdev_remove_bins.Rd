@@ -31,10 +31,12 @@ you to remove bins from a \href{https://mothur.org/strollur/reference/strollur.h
   bin_names <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
 
-  xdev_assign_bins(data = data, table = data.frame(bin_names = bin_names,
-                               abundances = abundances), bin_type = "otu")
+  xdev_assign_bins(data = data,
+                   table = data.frame(bin_name = bin_names,
+                                      abundance = abundances),
+                   bin_type = "otu")
 
-  count(data = data, type = "bins", bin_type = "otu")
+  count(data = data, type = "bin", bin_type = "otu")
 
   bins_to_remove <- c("bin1")
   trash_tag <- c("bad_bin")
@@ -43,6 +45,6 @@ you to remove bins from a \href{https://mothur.org/strollur/reference/strollur.h
                    bin_names = bins_to_remove,
                    trash_tags = trash_tag)
 
-  count(data = data, type = "bins", bin_type = "otu")
+  count(data = data, type = "bin", bin_type = "otu")
 
 }

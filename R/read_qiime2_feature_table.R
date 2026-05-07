@@ -22,7 +22,7 @@
 #'
 #' data <- new_dataset("my_data")
 #'
-#' assign(data = data, table = artifact$data, type = "bins")
+#' assign(data = data, table = artifact$data, type = "bin")
 #'
 #' data
 #'
@@ -60,9 +60,9 @@ read_qiime2_feature_table <- function(qza, dir_path = NULL,
 
       # create data.frame from sparse otu data
       artifact[["data"]] <- data.frame(
-        bin_names = hdata$otus[hdata$counts$i],
-        abundances = hdata$counts$v,
-        samples = hdata$samples[hdata$counts$j]
+        bin_name = hdata$otus[hdata$counts$i],
+        abundance = hdata$counts$v,
+        sample = hdata$samples[hdata$counts$j]
       )
 
       if (remove_unpacked_artifacts) {

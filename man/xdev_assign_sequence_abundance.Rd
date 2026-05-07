@@ -7,10 +7,10 @@
 xdev_assign_sequence_abundance(
   data,
   table,
-  sequence_name = "sequence_names",
-  abundance = "abundances",
-  sample = "samples",
-  treatment = "treatments",
+  sequence_name = "sequence_name",
+  abundance = "abundance",
+  sample = "sample",
+  treatment = "treatment",
   verbose = TRUE
 )
 }
@@ -20,17 +20,17 @@ xdev_assign_sequence_abundance(
 \item{table, }{a data.frame containing sequence abundance assignments}
 
 \item{sequence_name, }{a string containing the name of the column in 'table'
-that contains the sequence names. Default column name is 'sequence_names'.}
+that contains the sequence names. Default column name is 'sequence_name'.}
 
 \item{abundance, }{a string containing the name of the column in 'table'
-that contains the sequence abundances. Default column name is 'abundances'.}
+that contains the sequence abundances. Default column name is 'abundance'.}
 
 \item{sample, }{a string containing the name of the column in 'table'
-that contains the sequence samples. Default column name is 'samples'.
+that contains the sequence samples. Default column name is 'sample'.
 (Optional)}
 
 \item{treatment, }{a string containing the name of the column in 'table'
-that contains the sequence treatments. Default column name is 'treatments'.}
+that contains the sequence treatments. Default column name is 'treatment'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}

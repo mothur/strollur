@@ -9,7 +9,7 @@
 #' should be written. Default = current working directory.
 #' @param tags a vector of strings containing the items you wish to write
 #' Options are 'sequence_data', 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree' and 'reports'.
+#' 'resource_reference', 'sequence_tree', 'sample_tree' and 'report'.
 #'  By default, everything is written to files.
 #'
 #' @param compress boolean, Default = TRUE.
@@ -86,7 +86,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
       wrote_count <- TRUE
     }
 
-    if (count(data, "treatments") != 0) {
+    if (count(data, "treatment") != 0) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)
@@ -115,7 +115,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     ))
     outputs <- c(outputs, output)
 
-    if ((count(data, "treatments") != 0) && !wrote_design) {
+    if ((count(data, "treatment") != 0) && !wrote_design) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)
@@ -136,8 +136,8 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     }
   }
 
-  if (!ht || ("reports" %in% tags)) {
-    report_types <- xdev_names(data, type = "reports")
+  if (!ht || ("report" %in% tags)) {
+    report_types <- xdev_names(data, type = "report")
 
     if (length(report_types) != 0) {
       for (type in report_types) {
@@ -152,13 +152,13 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     }
   }
 
-  if (!ht || ("references" %in% tags)) {
-    references <- xdev_report(data, type = "references")
+  if (!ht || ("resource_reference" %in% tags)) {
+    references <- xdev_report(data, type = "resource_reference")
 
     if (nrow(references) != 0) {
       filename <- file.path(
         dir_path,
-        paste0(dataset_name, ".references",
+        paste0(dataset_name, ".resource_reference",
           collapse = ""
         )
       )
