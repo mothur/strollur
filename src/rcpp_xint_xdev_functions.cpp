@@ -18,6 +18,18 @@ void xint_assigned_message(double num, string tag) {
     RcppThread::Rcout << message << endl;
 }
 /******************************************************************************/
+void fillReference(Reference& ref, Rcpp::List ref_list) {
+    ref.name = Rcpp::as<string>(ref_list["name"]);
+    ref.vendor = Rcpp::as<string>(ref_list["vendor"]);
+    ref.version = Rcpp::as<string>(ref_list["version"]);
+    ref.usage = Rcpp::as<string>(ref_list["usage"]);
+    ref.note = Rcpp::as<string>(ref_list["note"]);
+    ref.method_url = Rcpp::as<string>(ref_list["method_url"]);
+    ref.documentation_url = Rcpp::as<string>(ref_list["documentation_url"]);
+    ref.parameter = Rcpp::as<string>(ref_list["parameter"]);
+    ref.citation = Rcpp::as<string>(ref_list["citation"]);
+}
+/******************************************************************************/
 SEXP xint_fill_required_parameters(const Rcpp::DataFrame& df,
                                    const string& given_column_name,
                                    const string& type) {
@@ -99,11 +111,15 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
 /******************************************************************************/
 double xdev_add_references(const Rcpp::Environment& data,
                            const Rcpp::DataFrame& table,
-                           const string& reference_name,
-                           const string& reference_version,
-                           const string& reference_usage,
-                           const string& reference_note,
-                           const string& reference_url,
+                           const string& name,
+                           const string& vendor,
+                           const string& version,
+                           const string& usage,
+                           const string& note,
+                           const string& method_url,
+                           const string& documentation_url,
+                           const string& parameter,
+                           const string& citation,
                            bool verbose) {
 
     if (!data.inherits("strollur")) {
@@ -111,28 +127,48 @@ double xdev_add_references(const Rcpp::Environment& data,
         throw Rcpp::exception(message.c_str());
     }
 
-    vector<string> reference_names, reference_versions, reference_usages;
-    vector<string> reference_notes, reference_urls;
+    vector<string> reference_vendors, reference_names, reference_versions;
+    vector<string> reference_usages, reference_notes, reference_method_urls, reference_urls;
+    vector<string> reference_parameters, reference_citations;
 
     reference_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
-                                                                             reference_name));
+                                                                             name));
+    reference_vendors = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                                "vendor",
+                                                                                vendor));
     reference_versions = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                                "reference_versions",
-                                                                                reference_version));
+                                                                                "version",
+                                                                                version));
     reference_usages = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                              "reference_usages",
-                                                                              reference_usage));
+                                                                              "usage",
+                                                                              usage));
     reference_notes = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                             "reference_notes",
-                                                                             reference_note));
+                                                                              "note",
+                                                                              note));
+    reference_method_urls = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                                             "method_url",
+                                                                             method_url));
     reference_urls = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
-                                                                            "reference_urls",
-                                                                            reference_url));
+                                                                            "documentation_url",
+                                                                            documentation_url));
 
+    reference_parameters = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table,
+                                                    "parameter",
+                                                    parameter));
 
-    bool hasVersions = false, hasUsages = false, hasNotes = false, hasUrls = false;
+    reference_citations = Rcpp::as<vector<string>>(xint_fill_optional_parameters(table, "citation",
+                                                                                citation));
+    bool hasParameters = false, hasVersions = false, hasUsages = false, hasNotes = false;
+    bool hasMethods = false, hasUrls = false, hasVendors = false, hasCitations = false;
+
+    if (reference_vendors.size() == reference_names.size()) {
+        hasVendors = true;
+    }
     if (reference_versions.size() == reference_names.size()) {
         hasVersions = true;
+    }
+    if (reference_method_urls.size() == reference_names.size()) {
+        hasMethods = true;
     }
     if (reference_usages.size() == reference_names.size()) {
         hasUsages = true;
@@ -140,14 +176,26 @@ double xdev_add_references(const Rcpp::Environment& data,
     if (reference_notes.size() == reference_names.size()) {
         hasNotes = true;
     }
+    if (reference_method_urls.size() == reference_names.size()) {
+        hasMethods = true;
+    }
     if (reference_urls.size() == reference_names.size()) {
         hasUrls = true;
+    }
+    if (reference_parameters.size() == reference_names.size()) {
+        hasParameters = true;
+    }
+    if (reference_citations.size() == reference_names.size()) {
+        hasCitations = true;
     }
 
     vector<Reference> refs;
     for (size_t i = 0; i < reference_names.size(); i++) {
 
         Reference ref(reference_names[i]);
+        if (hasVendors) {
+            ref.vendor = reference_vendors[i];
+        }
         if (hasVersions) {
             ref.version = reference_versions[i];
         }
@@ -157,8 +205,17 @@ double xdev_add_references(const Rcpp::Environment& data,
         if (hasNotes) {
             ref.note = reference_notes[i];
         }
+        if (hasMethods) {
+            ref.method_url = reference_method_urls[i];
+        }
         if (hasUrls) {
-            ref.url = reference_urls[i];
+            ref.documentation_url = reference_urls[i];
+        }
+        if (hasParameters) {
+            ref.parameter = reference_parameters[i];
+        }
+        if (hasCitations) {
+            ref.citation = reference_citations[i];
         }
         refs.push_back(ref);
     }
@@ -277,12 +334,7 @@ double xdev_add_sequences(const Rcpp::Environment& data,
     if (reference.isNotNull()) {
 
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
-
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
     }
 
     const double numAdded = d.get()->addSequences(sequence_names,
@@ -290,6 +342,9 @@ double xdev_add_sequences(const Rcpp::Environment& data,
 
     if (verbose) {
         xint_added_message(numAdded);
+        if (reference.isNotNull()) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAdded;
@@ -354,20 +409,20 @@ double xdev_assign_bins(const Rcpp::Environment& data,
         xint_assigned_message(numBinsAssigned, tag);
     }
 
-
     if (reference.isNotNull()) {
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numBinsAssigned;
@@ -406,15 +461,16 @@ double xdev_assign_bin_representative_sequences(const Rcpp::Environment& data,
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAssigned;
@@ -462,15 +518,16 @@ double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAssigned;
@@ -572,15 +629,16 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAssigned;
@@ -627,15 +685,16 @@ double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
         Reference ref;
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
 
-        ref.name = Rcpp::as<string>(ref_list["reference_name"]);
-        ref.version = Rcpp::as<string>(ref_list["reference_version"]);
-        ref.usage = Rcpp::as<string>(ref_list["reference_usage"]);
-        ref.note = Rcpp::as<string>(ref_list["reference_note"]);
-        ref.url = Rcpp::as<string>(ref_list["reference_url"]);
+        fillReference(ref, ref_list);
+
         vector<Reference> refs;
         refs.push_back(ref);
 
         d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return numAssigned;

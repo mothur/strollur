@@ -949,43 +949,48 @@ vector<string> Dataset::getReportTypes() {
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getReferences() const {
 
-    if (!references.empty()) {
+    size_t n = references.size();
+    if (n == 0) return Rcpp::DataFrame::create();
 
-        vector<string> refNames(references.size(), "NA");
-        vector<string> refNotes(references.size(), "NA");
-        vector<string> refUrls(references.size(), "NA");
-        vector<string> refUsages(references.size(), "NA");
-        vector<string> refVersions(references.size(), "NA");
+    Rcpp::CharacterVector refVendors(n), refNames(n), refMethods(n), refUrls(n),
+    refUsages(n), refNotes(n), refVersions(n), refCreationDates(n);
+    Rcpp::CharacterVector refParameters(n), refCitations(n);
 
-        for (size_t i = 0; i < references.size(); i++) {
-            if (!references[i].name.empty()) {
-                refNames[i] = references[i].name;
-            }
-            if (!references[i].version.empty()) {
-                refVersions[i] = references[i].version;
-            }
-            if (!references[i].note.empty()) {
-                refNotes[i] = references[i].note;
-            }
-            if (!references[i].url.empty()) {
-                refUrls[i] = references[i].url;
-            }
-            if (!references[i].usage.empty()) {
-                refUsages[i] = references[i].usage;
-            }
+    for (size_t i = 0; i < n; i++) {
+        // Fill strings, defaulting to "NA" if empty
+        refVendors[i]    = references[i].vendor.empty()    ? "NA" : references[i].vendor;
+        refNames[i]    = references[i].name.empty()    ? "NA" : references[i].name;
+        refVersions[i] = references[i].version.empty() ? "NA" : references[i].version;
+        refMethods[i]  = references[i].method_url.empty()  ? "NA" : references[i].method_url;
+        refUrls[i]     = references[i].documentation_url.empty()     ? "NA" : references[i].documentation_url;
+        refUsages[i]   = references[i].usage.empty()   ? "NA" : references[i].usage;
+        refNotes[i]   = references[i].note.empty()   ? "NA" : references[i].note;
+        refParameters[i]  = references[i].parameter.empty() ? "NA" : references[i].parameter;
+        refCitations[i]   = references[i].citation.empty() ? "NA" : references[i].citation;
+
+        // Handle Date conversion
+        struct tm* dt = std::localtime(&references[i].creation_date);
+        char buffer[16];
+        if (std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", dt)) {
+            refCreationDates[i] = buffer;
+        } else {
+            refCreationDates[i] = "NA";
         }
-
-        Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("reference_names") = refNames,
-            Rcpp::_["reference_versions"] = refVersions,
-            Rcpp::_["reference_usages"] = refUsages,
-            Rcpp::_["reference_notes"] = refNotes,
-            Rcpp::_["reference_urls"] = refUrls);
-
-        return df;
     }
 
-    return Rcpp::DataFrame::create();
+    return Rcpp::DataFrame::create(
+        Rcpp::Named("vendor")          = refVendors,
+        Rcpp::Named("name")          = refNames,
+        Rcpp::Named("version")       = refVersions,
+        Rcpp::Named("usage")         = refUsages,
+        Rcpp::Named("note")         = refNotes,
+        Rcpp::Named("method_url")        = refMethods,
+        Rcpp::Named("documentation_url")           = refUrls,
+        Rcpp::Named("parameter")     = refParameters,
+        Rcpp::Named("citation")     = refCitations,
+        Rcpp::Named("creation_date") = refCreationDates,
+        Rcpp::Named("stringsAsFactors")         = false
+    );
 }
 /******************************************************************************/
 vector<string> Dataset::getSamples() const {

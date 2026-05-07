@@ -308,19 +308,18 @@ test_that("dataset - addSeqs, assign samples", {
     data,
     data.frame(sequence_names = names, sequences = seqs),
     new_reference(
-      "silva.bacteria.fasta", "1.38.1", "",
-      "alignment by mothur2 v1.0", url
+      name = "silva.bacteria.fasta", version = "1.38.1",
+      usage = "alignment by mothur2 v1.0", documentation_url = url
     )
   )
 
   references <- report(data, "references")
 
   expect_equal(nrow(references), 1)
-  expect_equal(references[[1, "reference_names"]], "silva.bacteria.fasta")
-  expect_equal(references[[1, "reference_versions"]], "1.38.1")
-  expect_equal(references[[1, "reference_usages"]], "NA")
-  expect_equal(references[[1, "reference_notes"]], "alignment by mothur2 v1.0")
-  expect_equal(references[[1, "reference_urls"]], url)
+  expect_equal(references[[1, "name"]], "silva.bacteria.fasta")
+  expect_equal(references[[1, "version"]], "1.38.1")
+  expect_equal(references[[1, "usage"]], "alignment by mothur2 v1.0")
+  expect_equal(references[[1, "documentation_url"]], url)
 
   data$assign(
     table = data.frame(
@@ -761,9 +760,10 @@ test_that("dataset - ", {
     dataset_t,
     data.frame(sequence_names = names, taxonomies = taxonomies),
     new_reference(
-      "trainset9_032012.pds.zip", "9_032012",
-      "classification by mothur2 v1.0 using default options", "",
-      url
+      name = "trainset9_032012.pds.zip",
+      version = "9_032012",
+      usage = "classification by mothur2 v1.0 using default options",
+      documentation_url = url
     )
   )
 
@@ -771,11 +771,10 @@ test_that("dataset - ", {
 
   note <- "classification by mothur2 v1.0 using default options"
   expect_equal(nrow(references), 1)
-  expect_equal(references[[1, 1]], "trainset9_032012.pds.zip")
-  expect_equal(references[[1, 2]], "9_032012")
-  expect_equal(references[[1, 3]], note)
-  expect_equal(references[[1, 4]], "NA")
-  expect_equal(references[[1, 5]], url)
+  expect_equal(references$name[1], "trainset9_032012.pds.zip")
+  expect_equal(references$version[1], "9_032012")
+  expect_equal(references$usage[1], note)
+  expect_equal(references$documentation_url[1], url)
 
   report <- report(dataset_t, "sequence_taxonomy")
 
@@ -958,24 +957,24 @@ test_that("dataset - ", {
     table = data.frame(bin_names = bin_ids, taxonomies = taxonomies),
     type = "bin_taxonomy", bin_type = "otu",
     reference = new_reference(
-      reference_name = "trainset9_032012.pds.zip",
-      reference_version = "9_032012",
-      reference_usage = "classification by mothur2 v1.0",
-      reference_url = url
+      name = "trainset9_032012.pds.zip",
+      version = "9_032012",
+      usage = "classification by mothur2 v1.0",
+      documentation_url = url
     )
   )
 
   references <- report(dataset_t, "references")
 
   expect_equal(nrow(references), 1)
-  expect_equal(references[[1, "reference_names"]], "trainset9_032012.pds.zip")
-  expect_equal(references[[1, "reference_versions"]], "9_032012")
-  expect_equal(references[[1, "reference_notes"]], "NA")
+  expect_equal(references[[1, "name"]], "trainset9_032012.pds.zip")
+  expect_equal(references[[1, "version"]], "9_032012")
+  expect_equal(references[[1, "note"]], "NA")
   expect_equal(
-    references[[1, "reference_usages"]],
+    references[[1, "usage"]],
     "classification by mothur2 v1.0"
   )
-  expect_equal(references[[1, "reference_urls"]], url)
+  expect_equal(references[[1, "documentation_url"]], url)
 
   report <- report(dataset_t, "bin_taxonomy")
 
@@ -1113,12 +1112,12 @@ test_that("dataset - add_references, get_references", {
 
   # random spot checks
   expect_equal(nrow(references), 2)
-  expect_equal(references[[1, 1]], "trainset9_032012.pds.zip")
-  expect_equal(references[[2, 1]], "silva.v4.fasta")
-  expect_equal(references[[1, 4]], "NA")
+  expect_equal(references[[1, "name"]], "R phylotypr package")
+  expect_equal(references[[2, "name"]], "silva.bacteria.fasta")
+  expect_equal(references[[1, "note"]], "classification using Bayesian method")
   expect_equal(
-    references[[2, 4]],
-    "custom reference created by trimming silva.bacteria.fasta to the V4 region"
+    references[[2, "note"]],
+    "alignment reference trimmed to V4 region"
   )
 
   dataset_t <- new_dataset("my_dataset")
@@ -1135,8 +1134,10 @@ test_that("dataset - add_references, get_references", {
   )
 
   xdev_add_references(
-    dataset_t, ref, "reference_name", "reference_version",
-    "reference_usage", "reference_note", "reference_url"
+    dataset_t, ref,
+    name = "reference_name", version = "reference_version",
+    usage = "reference_usage", note = "reference_note",
+    documentation_url = "reference_url"
   )
 
   references <- report(dataset_t, "references")
@@ -1147,12 +1148,15 @@ test_that("dataset - add_references, get_references", {
   references <- report(dataset_t, "references")
   expect_equal(nrow(references), 3)
 
-  expect_equal(references[[2, 1]], "trainset9_032012.pds.zip")
-  expect_equal(references[[3, 1]], "silva.v4.fasta")
-  expect_equal(references[[1, 1]], "mothur software package")
-  expect_equal(references[[2, 2]], "NA")
-  expect_equal(references[[3, 2]], "1.38.1")
-  expect_equal(references[[1, 4]], "This is my mothur note")
+  expect_equal(references[[2, "name"]], "R phylotypr package")
+  expect_equal(references[[2, "vendor"]],
+               "Schloss Lab - University of Michigan")
+  expect_equal(references[[3, "name"]], "silva.bacteria.fasta")
+  expect_equal(references[[1, "name"]], "mothur software package")
+  expect_equal(references[[2, "version"]], "0.1.1")
+  expect_equal(references[[3, "version"]], "1.38.1")
+  expect_equal(references[[1, "documentation_url"]],
+               "https://github.com/mothur/mothur/releases/tag/v1.48.2")
 })
 
 test_that("dataset - add reports, get reports", {
@@ -1605,9 +1609,10 @@ test_that("dataset - export,", {
   metadata_names <- c("sample", "days_post_wean")
 
   references_names <- c(
-    "reference_names", "reference_versions",
-    "reference_usages", "reference_notes",
-    "reference_urls"
+    "vendor", "name", "version",
+    "usage", "note", "method_url",
+    "documentation_url", "parameter", "citation",
+    "creation_date"
   )
 
   expect_equal(names(miseq_table), table_names)

@@ -14,6 +14,7 @@ SEXP xint_fill_optional_parameters(const Rcpp::DataFrame& df,
                                    const string& default_column_name,
                                    const string& given_column_name,
                                    const string& type = "string");
+
 void xint_added_message(double num = -1, string tag = "sequences");
 void xint_assigned_message(double num = -1, string tag = "sequences");
 /******************************************************************************/
@@ -81,30 +82,42 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @param table, a data.frame containing reference_names, reference_versions
-//' (optional), reference_usages (optional), reference_notes (optional), and
-//' reference_urls (optional).
+//' (optional), reference_usages (optional), reference_parameters (optional),
+//' reference_methods (optional), and reference_urls (optional).
 //'
-//' @param reference_name, a string containing the name of the column in 'table'
-//' that contains the reference names. Default column name is 'reference_names'.
-//' @param reference_version, a string containing the name of the column in
+//' @param name, a string containing the name of the column in 'table'
+//' that contains the reference names. Default column name is 'name'.
+//' @param vendor, a string containing the name of the column in
+//'   'table' that contains the reference vendors. Default column name is
+//'   'vendor'.
+//' @param version, a string containing the name of the column in
 //' 'table' that contains the reference versions. Default column name is
-//' 'reference_versions'.
-//' @param reference_usage, a string containing the name of the column in
+//' 'version'.
+//' @param usage, a string containing the name of the column in
 //' 'table' that contains the reference usages. Default column name is
-//'  reference_usages'.
-//' @param reference_note, a string containing the name of the column in
+//'  'usage'.
+//' @param note, a string containing the name of the column in
 //' 'table' that contains the reference notes. Default column name is
-//'  reference_notes'.
-//' @param reference_url, a string containing the name of the column in
-//' 'table' that contains the reference urls. Default column name is
-//'  reference_urls'.
+//'  'note'.
+//' @param method_url, a string containing the name of the column in
+//' 'table' that contains the reference methods. Default column name is
+//'  'method_url'.
+//' @param documentation_url, a string containing the name of the column in
+//'   'table' that contains the reference documentation urls. Default column
+//'   name is 'documentation_url'.
+//'  @param parameter, a string containing the name of the column in
+//' 'table' that contains the reference parameters. Default column name is
+//'  'parameter'.
+//'  @param citation, a string containing the name of the column in
+//' 'table' that contains the reference citations. Default column name is
+//'  'citation'.
 //'
 //' @param verbose, a boolean whether or not you want progress messages.
 //' Default = TRUE.
 //'
 //' @examples
 //'
-//' data <- new_dataset("just for fun", 2)
+//' data <- new_dataset("just for fun")
 //' reference_table <- readr::read_csv(strollur_example("references.csv"),
 //'                              col_names = TRUE, show_col_types = FALSE)
 //' xdev_add_references(data, reference_table)
@@ -114,11 +127,15 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 double xdev_add_references(const Rcpp::Environment& data,
                        const Rcpp::DataFrame& table,
-                       const string& reference_name = "reference_names",
-                       const string& reference_version = "reference_versions",
-                       const string& reference_usage = "reference_usages",
-                       const string& reference_note = "reference_notes",
-                       const string& reference_url = "reference_urls",
+                       const string& name = "name",
+                       const string& vendor = "vendor",
+                       const string& version = "version",
+                       const string& usage = "usage",
+                       const string& note = "note",
+                       const string& method_url = "method_url",
+                       const string& documentation_url = "documentation_url",
+                       const string& parameter = "parameter",
+                       const string& citation = "citation",
                        bool verbose = true);
 /******************************************************************************/
 //' @title Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -373,7 +390,7 @@ double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
 //' @description
 //' Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
-//' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+//' Note, if you assign sequence taxonomies and assign bins, strollur will find
 //'  the consensus taxonomy for each bin for you.
 //'
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -423,7 +440,7 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
 //' @description
 //' Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
-//' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+//' Note, if you assign sequence taxonomies and assign bins, strollur will find
 //'  the consensus taxonomy for each bin for you.
 //'
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -446,6 +463,7 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
 //' @examples
 //'
 //' sequence_classifications <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
+//' str(sequence_classifications)
 //'
 //' data <- new_dataset("my_dataset")
 //'

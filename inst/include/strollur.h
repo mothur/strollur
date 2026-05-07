@@ -42,25 +42,49 @@ const vector<double> nullDoubleVector;  // used to pass blank double
 const vector< vector<double> > null2DDoubleVector;  // used to pass blank vector
 
 /******************************************************************************/
+// format allows for resource references for databases and tooling
 struct Reference {
-    string name, version, note, url, usage;
+    string vendor;      // Entity that created original resource eg RDP.
+    string name;        // Name of resource. eg rdp_trainset9.
+    string version;     // The version of database provided by original entity eg. 9
+    string method_url;  // Url to publication describing method eg. "doi: 10.1128/AEM.00062-07"
+    string documentation_url; // url to resource eg where you can download
+    string usage;       // How is resource used eg. classification
+    string note;       // Additional notes about resource
+    string citation;    // Citation in bibtex format
+    string parameter;  // parameters used by resource, num_bootstraps=100
+    time_t creation_date;
 
-    Reference() : name(""), version(""), note(""), url(""), usage("") {}
+
+    Reference() : vendor(""), name(""), version(""), method_url(""),
+    documentation_url(""), usage(""), note(""), citation(""), parameter("") {
+        auto duration = std::chrono::system_clock::now().time_since_epoch();
+        creation_date = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
+    }
     ~Reference() {}
 
-    Reference(string n, string v = "", string u = "",
-              string no = "", string ur = "") {
+    Reference(string n, string ven = "", string v = "", string u = "",
+              string mu = "", string ur = "", string no = "",
+              string ar = "", string pa_param = "") {
+        vendor = ven;
         name = n;
         version = v;
-        note = no;
-        url = ur;
+        method_url = mu;
+        documentation_url = ur;
         usage = u;
+        note = no;
+        citation = ar;
+        parameter = pa_param;
+
+        auto duration = std::chrono::system_clock::now().time_since_epoch();
+        creation_date = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
     }
 
     // This method lets Cereal know how to serialize.
     template<class Archive>
     void serialize(Archive & archive) {
-        archive(name, version, usage, note, url);
+        archive(vendor, name, version, usage, method_url, documentation_url,
+                creation_date, parameter, note, citation);
     }
 };
 
@@ -664,6 +688,7 @@ private:
                         bool removeFromBin = true);
     const Rcpp::DataFrame fillTaxReport(const string& mode);
     int getBinTableIndex(const string& type) const;
+
 
     friend class cereal::access; // Grants Cereal access
 

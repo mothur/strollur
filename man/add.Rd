@@ -11,9 +11,10 @@ add(
   type = "sequences",
   report_type = NULL,
   table_names = list(sequence_name = "sequence_names", sequence = "sequences", comment =
-    "comments", reference_name = "reference_names", reference_version =
-    "reference_versions", reference_usage = "reference_usages", reference_note =
-    "reference_notes", reference_url = "reference_urls"),
+    "comments", reference_vendor = "vendor", reference_name = "name", reference_version =
+    "version", reference_usage = "usage", reference_note = "note", reference_method_url =
+    "method_url", reference_documentation_url = "documentation_url", reference_parameter
+    = "parameter", reference_citation = "citation"),
   reference = NULL,
   verbose = TRUE
 )
@@ -36,11 +37,15 @@ the table. By default:
 table_names <- list(sequence_name = "sequence_names",
                     comment = "comments",
                     sequence = "sequences",
-                    reference_name = "reference_names",
-                    reference_version = "reference_versions",
-                    reference_usage = "reference_usages",
-                    reference_note = "reference_notes",
-                    reference_url = "reference_urls")
+                    reference_name = "name",
+                    reference_vendor = "vendor",
+                    reference_version = "version",
+                    reference_usage = "usage",
+                    reference_note = "note",
+                    reference_documentation_url = "documentation_url",
+                    reference_method_url = "method_url",
+                    reference_parameter = "parameter",
+                    reference_citation = "citation")
 
 In table_names, 'sequence_name' is a string containing the name of the column
 in 'table' that contains the sequence names. It is used when you are adding
@@ -54,25 +59,40 @@ In table_names, 'comment' is a string containing the name of the column in
 'table' that contains the sequence comments. It is used when you are adding
 FASTA data. Default column name is 'comments'.
 
+In table_names, 'reference_vendor' is a string containing the name of the
+column in 'table' that contains the reference vendor names. It is used when
+you are adding reference data. Default column name is 'vendor'.
 In table_names, 'reference_name' is a string containing the name of the
 column in 'table' that contains the reference names. It is used when you are
-adding reference data. Default column name is 'reference_names'.
+adding reference data. Default column name is 'name'.
 
 In table_names, 'reference_version' is a string containing the name of the
 column in 'table' that contains the reference versions. Default column name
-is 'reference_versions'.
+is 'version'.
 
 In table_names, 'reference_usage' is a string containing the name of the
 column in 'table' that contains the reference usages. Default column name is
-'reference_usages'.
+'usage'.
 
 In table_names, 'reference_note' is a string containing the name of the
 column in 'table' that contains the reference notes. Default column name is
- 'reference_notes'.
+ 'note'.
 
-In table_names, 'reference_url' is a string containing the name of the column
-in 'table' that contains the reference urls. Default column name is
- 'reference_urls'.}
+In table_names, 'reference_method_url' is a string containing the name of the
+column in 'table' that contains the reference method urls. Default column
+name is 'method_url'.
+
+In table_names, 'reference_documentation_url' is a string containing the name
+of the column in 'table' that contains the reference urls. Default column
+name is 'documentation_url'.
+
+In table_names, 'reference_parameter' is a string containing the name of the
+column in 'table' that contains the reference parameters. Default column name
+is 'parameter'.
+
+In table_names, 'reference_citation' is a string containing the name of the
+column in 'table' that contains the reference citations. Default column name
+is 'citation'.}
 
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
@@ -102,16 +122,12 @@ add(data = data, table = fasta_data, type = "sequences")
 # Create a new empty strollur object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
-# Create a resource reference for the FASTA data
-resource_url <- "https://mothur.org/wiki/silva_reference_files/"
-resource_reference <-
-  new_reference(
-    reference_name = "silva.bacteria.fasta",
-    reference_version = "1.38.1",
-    reference_usage = "alignment by mothur2 v1.0",
-    reference_note = "default options",
-    reference_url = resource_url
-  )
+# Create a resource reference for the FASTA data silva_resource <-
+new_reference(vendor = "SILVA", name = "silva.bacteria.fasta", version =
+"1.38.1", usage = "alignment of sequences", note = "reference trimmed to V4
+region", method_url =
+"https://mothur.org/blog/2024/SILVA-v138_2-reference-files/",
+documentation_url = "https://mothur.org/wiki/silva_reference_files/")
 
 # Add FASTA data with a resource reference
 
@@ -119,7 +135,7 @@ add(
   data,
   table = fasta_data,
   type = "sequences",
-  reference = resource_reference
+  reference = silva_resource
 )
 
 # Add contigs assembly report with a 'sequence_name' column named 'Name'

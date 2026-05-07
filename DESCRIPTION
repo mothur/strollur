@@ -1,6 +1,6 @@
 Package: strollur
 Type: Package
-Title: Store and Transfer Data Used in the Analysis of Microbial RNA
+Title: Store and Transfer Data Used with Amplicon Sequence Analysis
 Version: 1.0.0
 Date: 2025-05-09
 Authors@R: c(person("Sarah", "Westcott", role = c("aut", "cre"), 

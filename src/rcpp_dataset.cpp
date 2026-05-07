@@ -7,51 +7,6 @@
 #include "dataset.h"
 
 /******************************************************************************/
-//' @title new_reference
-//' @description
-//' Create a reference you can add to your dataset
-//'
-//' @param reference_name, a string containing the name of the reference used
-//' in the preparing of the sequences. For example: 'silva.bacteria.fasta'.
-//'
-//' @param reference_version, a string containing the version of the reference
-//' used in the preparing of the sequences. For example: '1.38.1'. Default = "".
-//'
-//' @param reference_usage, a string containing the usage of the reference in
-//' your analysis. For example: 'alignment using mothur2' Default = NULL.
-//'
-//' @param reference_note, a string containing the any additional notes about
-//' the reference. Default = "".
-//'
-//' @param reference_url, a string containing a web address where the
-//' reference may be downloaded. Default = "".
-//' @examples
-//'
-//' reference <- new_reference("silva.bacteria.fasta",
-//'                            "1.38.1",
-//'                            "alignment by mothur2 v1.0 using default options",
-//'                            "",
-//'                            "https://mothur.org/wiki/silva_reference_files/")
-//'
-//' @returns a list
-//' @export
-//' @seealso [add()]
-//[[Rcpp::export]]
-Rcpp::List new_reference(string reference_name,
-                         string reference_version = "",
-                         string reference_usage = "",
-                         string reference_note = "",
-                         string reference_url = "") {
-
-     return Rcpp::List::create(
-         Rcpp::Named("reference_name") = reference_name,
-         Rcpp::Named("reference_version") = reference_version,
-         Rcpp::Named("reference_usage") = reference_usage,
-         Rcpp::Named("reference_note") = reference_note,
-         Rcpp::Named("reference_url") = reference_url
-     );
- }
-/******************************************************************************/
 //' @title clear
 //' @description
 //' Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

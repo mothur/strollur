@@ -25,7 +25,6 @@ test_that("write_mothur - miseq", {
     sequence_tree = outputs[18],
     dataset_name = "miseq_sop"
   )
-
   xdev_add_references(data, readr::read_tsv(outputs[16],
     col_names = TRUE,
     show_col_types = FALSE

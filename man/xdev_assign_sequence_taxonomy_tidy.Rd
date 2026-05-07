@@ -43,12 +43,13 @@ double containing the number of sequence taxonomies assigned
 \description{
 Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 
-Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+Note, if you assign sequence taxonomies and assign bins, strollur will find
  the consensus taxonomy for each bin for you.
 }
 \examples{
 
 sequence_classifications <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
+str(sequence_classifications)
 
 data <- new_dataset("my_dataset")
 

@@ -12,6 +12,8 @@
 #include <RcppThread.h>
 #include <cli/progress.h>
 
+#include <ctime>
+
 // [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::depends(RcppThread)]]
 
@@ -51,6 +53,55 @@ struct pieceOfWork {
     pieceOfWork() { start = 0; end = 0; }
     ~pieceOfWork() {}
 };
+/**********************************************************************/
+// trim from start (in place)
+static inline void ltrim(string &s) {
+    s.erase(s.begin(), find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !isspace(ch);
+    }));
+}
+/**********************************************************************/
+// trim from end (in place)
+static inline void rtrim(string &s) {
+    s.erase(find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !isspace(ch);
+    }).base(), s.end());
+}
+/**********************************************************************/
+// trim from both ends (in place)
+static inline void trimWhiteSpace(string &s) {
+    ltrim(s);
+    rtrim(s);
+}
+/**********************************************************************/
+static inline void wrapIfNeeded(Rcpp::CharacterVector& s) {
+
+    for (int i = 0; i < s.size(); i++) {
+        string swrapped = Rcpp::as<string>(s[i]);
+
+        if (swrapped.find_first_of(" ") != string::npos) {
+            swrapped = "\"" + swrapped + "\"";
+            s[i] = swrapped;
+        }
+    }
+
+}
+/**********************************************************************/
+template<typename string>
+std::string convertMapToString(const map<string, string>& myMap) {
+    if (myMap.empty()) { return ""; }
+
+    std::string results = "";
+
+    for (auto const& [key, val] : myMap) {
+        results += key + " = " + val + ", ";
+    }
+    // remove ", "
+    results.pop_back();
+    results.pop_back();
+
+    return results;
+}
 /**********************************************************************/
 template<typename T>
 vector<T> setDiff(vector<T> x, vector<T> y) {
