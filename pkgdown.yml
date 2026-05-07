@@ -1,4 +1,4 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -10,7 +10,7 @@ articles:
   Importing_from_phyloseq: Importing_from_phyloseq.html
   Importing_from_qiime2: Importing_from_qiime2.html
   strollur: strollur.html
-last_built: 2026-04-15T19:39Z
+last_built: 2026-05-07T21:03Z
 urls:
   reference: https://mothur.org/strollur/reference
   article: https://mothur.org/strollur/articles

@@ -9,7 +9,7 @@ type in a
 ``` r
 xdev_count(
   data,
-  type = "sequences",
+  type = "sequence",
   bin_type = "otu",
   samples = NULL,
   distinct = FALSE
@@ -26,8 +26,8 @@ xdev_count(
 - type, :
 
   string containing the type of data you want the number of. Options
-  include: "sequences", "samples", "treatments", "bins" and
-  "references". Default = "sequences".
+  include: "sequence", "sample", "treatment", "bin" and
+  "resource_reference". Default = "sequence".
 
 - bin_type, :
 
@@ -36,23 +36,23 @@ xdev_count(
 
 - samples, :
 
-  vector of strings. samples is only used when 'type' = "sequences" or
-  'type' = "bins" . samples should contain the names of the samples you
+  vector of strings. samples is only used when 'type' = "sequence" or
+  'type' = "bin" . samples should contain the names of the samples you
   want the count for. Default = NULL.
 
 - distinct, :
 
-  Boolean. distinct is used when 'type' = "sequences" or 'type' =
-  "bins". When 'type' = "sequences" and distinct is TRUE the number of
-  unique sequences is returned. When 'type' = "sequences" and distinct
-  is FALSE total number of sequences is returned. This can also be
-  combined with samples to find the number of unique sequences found
-  only in a given set of samples, or to find the total number of
-  sequences in a given set of samples. When 'type' = "bins", you can set
-  distinct = TRUE to return the number of bins that ONLY contain
-  sequences from the given samples. When distinct is FALSE the count
-  returned contains bins with sequences from a given samples, but those
-  bins may also contain other samples. Default = FALSE.
+  Boolean. distinct is used when 'type' = "sequence" or 'type' = "bin".
+  When 'type' = "sequence" and distinct is TRUE the number of unique
+  sequences is returned. When 'type' = "sequence" and distinct is FALSE
+  total number of sequences is returned. This can also be combined with
+  samples to find the number of unique sequences found only in a given
+  set of samples, or to find the total number of sequences in a given
+  set of samples. When 'type' = "bin", you can set distinct = TRUE to
+  return the number of bins that ONLY contain sequences from the given
+  samples. When distinct is FALSE the count returned contains bins with
+  sequences from a given samples, but those bins may also contain other
+  samples. Default = FALSE.
 
 ## Value
 
@@ -61,6 +61,7 @@ double
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -76,56 +77,56 @@ miseq <- miseq_sop_example()
 #> Added a contigs_report.
 
 # To get the total number of sequences
-xdev_count(data = miseq, type = "sequences")
+xdev_count(data = miseq, type = "sequence")
 #> [1] 113963
 
 # To get number of unique sequences
-xdev_count(data = miseq, type = "sequences", distinct = TRUE)
+xdev_count(data = miseq, type = "sequence", distinct = TRUE)
 #> [1] 2425
 
 # To get number of unique sequences from samples 'F3D0' and 'F3D1'
 # Note these sequences will be present in both samples but may be
 # be present in other samples as well
-xdev_count(data = miseq, type = "sequences", samples = c("F3D0", "F3D1"))
+xdev_count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"))
 #> [1] 9385
 
 # To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
 # Note these sequences are present in both samples and NOT present in
 # other samples
-xdev_count(data = miseq, type = "sequences", samples = c("F3D0", "F3D1"),
+xdev_count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"),
 distinct = TRUE)
 #> [1] 2
 
 # To get the number of samples in the dataset
-xdev_count(data = miseq, type = "samples")
+xdev_count(data = miseq, type = "sample")
 #> [1] 19
 
 # To get the number of treatments in the dataset
-xdev_count(data = miseq, type = "treatments")
+xdev_count(data = miseq, type = "treatment")
 #> [1] 2
 
 # To get the number of "otu" bins in the dataset
-xdev_count(data = miseq, type = "bins", bin_type = "otu")
+xdev_count(data = miseq, type = "bin", bin_type = "otu")
 #> [1] 531
 
 # To get the number of "asv" bins in the dataset
-xdev_count(data = miseq, type = "bins", bin_type = "asv")
+xdev_count(data = miseq, type = "bin", bin_type = "asv")
 #> [1] 2425
 
 # To get the number of "phylotype" bins in the dataset
-xdev_count(data = miseq, type = "bins", bin_type = "phylotype")
+xdev_count(data = miseq, type = "bin", bin_type = "phylotype")
 #> [1] 63
 
 # To get number of bins from samples 'F3D0' and 'F3D1'
 # Note these bins will have sequences from both samples but there may be
 # other samples present as well
-xdev_count(data = miseq, type = "bins", samples = c("F3D0", "F3D1"))
+xdev_count(data = miseq, type = "bin", samples = c("F3D0", "F3D1"))
 #> [1] 125
 
 # To get number of bins unique to samples 'F3D0' and 'F3D1'
 # Note these bins will have sequences from both samples and NO other samples
 # will be present in the bins.
-xdev_count(data = miseq, type = "bins", samples = c("F3D0", "F3D1"),
+xdev_count(data = miseq, type = "bin", samples = c("F3D0", "F3D1"),
 distinct = TRUE)
 #> [1] 1
 ```

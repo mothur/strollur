@@ -55,7 +55,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xdev_report</span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequences"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xdev_report</span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequence"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -68,12 +68,12 @@
 
 <dt id="arg-type-">type, <a class="anchor" aria-label="anchor" href="#arg-type-"></a></dt>
 <dd><p>string containing the type of report you would like. Options
-include: "fasta", "sequences", "sequence_bin_assignments",
-"sequence_taxonomy", "bin_taxonomy", "bin_representatives",
- "sample_assignments", "metadata", "references", "sequence_scrap",
+include: "fasta", "sequence", "sequence_bin_assignment",
+"sequence_taxonomy", "bin_taxonomy", "bin_representative",
+ "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
- Default = "sequences".</p></dd>
+ Default = "sequence".</p></dd>
 
 
 <dt id="arg-bin-type-">bin_type, <a class="anchor" aria-label="anchor" href="#arg-bin-type-"></a></dt>
@@ -109,7 +109,7 @@ report for. Default = "otu".</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fasta</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fasta</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                  sequence_names</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                   sequence_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   M00967_43_000000000-A3JHG_1_1113_12711_3318</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3   M00967_43_000000000-A3JHG_1_2108_14707_9807</span>
@@ -120,7 +120,7 @@ report for. Default = "otu".</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8   M00967_43_000000000-A3JHG_1_1114_8059_18290</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9    M00967_43_000000000-A3JHG_1_2112_9811_9982</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10  M00967_43_000000000-A3JHG_1_2103_25452_6018</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                                                                                                                                  sequences</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                                                                                                                                   sequence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-C-A-G-C-G-G--TA-A-AA-TT-G-A-GA-GG--CT-C-AA-C-C-T-C-T-T-C--CC-G-C-CGTT-GAAAC-TG-A-TTGTC-TTGA-GT-GG-GC-GA-G-A---AG-T-A-TGTGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-A-ACTGACG-CTGA-AGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-AC-C-C-GG-GG--CT-C-AA-C---C-C-TGG-G-AGT-G-C-TTTT-GAAAC-TG-T-GCGGC-TAGA-GT-GT-CG-GA-G-G---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-GA-T-G-ACTGACG-CTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3  TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GC-C-C-GT-GG--CT-C-AA-C-C-G-C-G-G-A-ACC-G-C-TTTG-GAAAC-TG-C-GAGGC-TGGA-GT-GC-TG-GA-G-A---GG-T-A-AGCGGAATTCCTGGTGT-AGCGGT-GAAATGCGTAG-AT-A-TC-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTTA-CTG-G-AC-AG-T-G-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-GAACAGG</span>
@@ -134,7 +134,7 @@ report for. Default = "otu".</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about the FASTA data</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">sequence_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sequence_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sequence_report</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                              id start end length ambig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783     1 375    253     0</span>
@@ -161,8 +161,9 @@ report for. Default = "otu".</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the sequence bin assignments</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bin_assignments</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence_bin_assignments"</span>,</span></span>
-<span class="r-in"><span>                          bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bin_assignments</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
+<span class="r-in"><span>                               type <span class="op">=</span> <span class="st">"sequence_bin_assignment"</span>,</span></span>
+<span class="r-in"><span>                               bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bin_assignments</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    otu_id                                       seq_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  Otu001  M00967_43_000000000-A3JHG_1_1111_20933_6700</span>
@@ -178,114 +179,117 @@ report for. Default = "otu".</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the sample treatment assignments</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample_assignments"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    samples treatments</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     F3D0      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     F3D1      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   F3D141       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   F3D142       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   F3D143       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   F3D144       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   F3D145       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   F3D146       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   F3D147       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  F3D148       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  F3D149       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  F3D150       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13    F3D2      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    F3D3      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    F3D5      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16    F3D6      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17    F3D7      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18    F3D8      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19    F3D9      Early</span>
+<span class="r-in"><span><span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample_assignment"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sample treatment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    F3D0     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    F3D1     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  F3D141      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  F3D142      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  F3D143      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  F3D144      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  F3D145      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  F3D146      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  F3D147      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 F3D148      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 F3D149      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 F3D150      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   F3D2     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   F3D3     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   F3D5     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   F3D6     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   F3D7     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   F3D8     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   F3D9     Early</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about sequence classifications</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sequence_taxonomy_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
 <span class="r-in"><span>                                       type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sequence_taxonomy_report</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                  sequence_names levels</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  M00967_43_000000000-A3JHG_1_2101_16474_12783      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  M00967_43_000000000-A3JHG_1_2101_16474_12783      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  M00967_43_000000000-A3JHG_1_2101_16474_12783      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  M00967_43_000000000-A3JHG_1_2101_16474_12783      5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  M00967_43_000000000-A3JHG_1_2101_16474_12783      6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   M00967_43_000000000-A3JHG_1_1113_12711_3318      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   M00967_43_000000000-A3JHG_1_1113_12711_3318      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   M00967_43_000000000-A3JHG_1_1113_12711_3318      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  M00967_43_000000000-A3JHG_1_1113_12711_3318      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           taxonomies confidences</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           Bacteria         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                    "Bacteroidetes"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                      "Bacteroidia"          99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                    "Bacteroidales"          99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5               "Porphyromonadaceae"          88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  "Porphyromonadaceae"_unclassified          88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                           Bacteria         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                         Firmicutes         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                         Clostridia         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                     Clostridiales         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                   sequence_name level</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  M00967_43_000000000-A3JHG_1_2101_16474_12783     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  M00967_43_000000000-A3JHG_1_2101_16474_12783     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  M00967_43_000000000-A3JHG_1_2101_16474_12783     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  M00967_43_000000000-A3JHG_1_2101_16474_12783     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  M00967_43_000000000-A3JHG_1_2101_16474_12783     6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   M00967_43_000000000-A3JHG_1_1113_12711_3318     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   M00967_43_000000000-A3JHG_1_1113_12711_3318     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   M00967_43_000000000-A3JHG_1_1113_12711_3318     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  M00967_43_000000000-A3JHG_1_1113_12711_3318     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                             taxonomy confidence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           Bacteria        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                    "Bacteroidetes"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                      "Bacteroidia"         99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                    "Bacteroidales"         99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5               "Porphyromonadaceae"         88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  "Porphyromonadaceae"_unclassified         88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                           Bacteria        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                         Firmicutes        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                         Clostridia        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                     Clostridiales        100</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about bin classifications for 'otu' data</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">otu_taxonomy_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
-<span class="r-in"><span>                                       type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span></span>
-<span class="r-in"><span>                                       bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                                   type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span></span>
+<span class="r-in"><span>                                   bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">otu_taxonomy_report</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    bin_names levels                        taxonomies confidences</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     Otu001      1                          Bacteria         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     Otu001      2                   "Bacteroidetes"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     Otu001      3                     "Bacteroidia"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     Otu001      4                   "Bacteroidales"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     Otu001      5              "Porphyromonadaceae"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     Otu001      6 "Porphyromonadaceae"_unclassified         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     Otu002      1                          Bacteria         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     Otu002      2                   "Bacteroidetes"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     Otu002      3                     "Bacteroidia"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    Otu002      4                   "Bacteroidales"         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    bin_name level                          taxonomy confidence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    Otu001     1                          Bacteria        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Otu001     2                   "Bacteroidetes"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Otu001     3                     "Bacteroidia"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    Otu001     4                   "Bacteroidales"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    Otu001     5              "Porphyromonadaceae"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    Otu001     6 "Porphyromonadaceae"_unclassified        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    Otu002     1                          Bacteria        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    Otu002     2                   "Bacteroidetes"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    Otu002     3                     "Bacteroidia"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   Otu002     4                   "Bacteroidales"        100</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about bin classifications for 'asv' data</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">asv_taxonomy_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span></span>
-<span class="r-in"><span>                              bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">asv_taxonomy_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
+<span class="r-in"><span>                                   type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span></span>
+<span class="r-in"><span>                                   bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">asv_taxonomy_report</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    bin_names levels                        taxonomies confidences</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    Asv0001      1                          Bacteria         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Asv0001      2                   "Bacteroidetes"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Asv0001      3                     "Bacteroidia"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    Asv0001      4                   "Bacteroidales"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    Asv0001      5              "Porphyromonadaceae"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    Asv0001      6 "Porphyromonadaceae"_unclassified         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    Asv0002      1                          Bacteria         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    Asv0002      2                   "Bacteroidetes"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    Asv0002      3                     "Bacteroidia"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   Asv0002      4                   "Bacteroidales"         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    bin_name level                          taxonomy confidence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Asv0001     1                          Bacteria        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Asv0001     2                   "Bacteroidetes"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Asv0001     3                     "Bacteroidia"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   Asv0001     4                   "Bacteroidales"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   Asv0001     5              "Porphyromonadaceae"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   Asv0001     6 "Porphyromonadaceae"_unclassified        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   Asv0002     1                          Bacteria        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   Asv0002     2                   "Bacteroidetes"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   Asv0002     3                     "Bacteroidia"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  Asv0002     4                   "Bacteroidales"        100</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about bin classifications for 'phylotype' data</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">phylotype_taxonomy_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span></span>
-<span class="r-in"><span>                                    bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">phylotype_taxonomy_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
+<span class="r-in"><span>                                         type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span></span>
+<span class="r-in"><span>                                         bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">phylotype_taxonomy_report</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    bin_names levels                   taxonomies confidences</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    Phylo01      1                     Bacteria         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Phylo01      2                   Firmicutes         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Phylo01      3                   Clostridia         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    Phylo01      4                Clostridiales         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    Phylo01      5              Lachnospiraceae         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    Phylo01      6 Lachnospiraceae_unclassified         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    Phylo02      1                     Bacteria         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    Phylo02      2              "Bacteroidetes"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    Phylo02      3                "Bacteroidia"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   Phylo02      4              "Bacteroidales"         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    bin_name level                     taxonomy confidence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Phylo01     1                     Bacteria        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Phylo01     2                   Firmicutes        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Phylo01     3                   Clostridia        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   Phylo01     4                Clostridiales        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   Phylo01     5              Lachnospiraceae        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   Phylo01     6 Lachnospiraceae_unclassified        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   Phylo02     1                     Bacteria        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   Phylo02     2              "Bacteroidetes"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   Phylo02     3                "Bacteroidia"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  Phylo02     4              "Bacteroidales"        100</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the 'otu' bin representative sequences</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">otu_bin_reps</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin_representatives"</span>,</span></span>
-<span class="r-in"><span>                       bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">otu_bin_reps</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
+<span class="r-in"><span>                            type <span class="op">=</span> <span class="st">"bin_representative"</span>,</span></span>
+<span class="r-in"><span>                            bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">otu_bin_reps</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    otu_names                         representative_names</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    otu_names                          representative_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     Otu001 M00967_43_000000000-A3JHG_1_1108_14299_17220</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2     Otu002  M00967_43_000000000-A3JHG_1_1106_22705_6123</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3     Otu003  M00967_43_000000000-A3JHG_1_1101_15533_5293</span>
@@ -296,7 +300,7 @@ report for. Default = "otu".</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8     Otu008  M00967_43_000000000-A3JHG_1_1110_5315_13833</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9     Otu009 M00967_43_000000000-A3JHG_1_2109_27297_13184</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10    Otu010  M00967_43_000000000-A3JHG_1_1101_9620_19745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                                                                                                                   representative_sequences</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                                                                                                                    representative_sequence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-TG-C-C-GG-GG--CT-C-AA-C-C-C-C-G-G-A-ACT-G-C-TTTG-GAAAC-TG-T-ACAGC-TAGA-GT-GC-AG-GA-G-G---GG-T-G-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTCA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-CA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-G-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TCTG-GAAAC-TG-T-AAAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-C-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3  TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GA-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TTTG-GAAAC-TG-T-ATAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG</span>
@@ -310,17 +314,20 @@ report for. Default = "otu".</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about the sequences removed during your analysis:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">scrapped_sequence_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence_scrap"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">scrapped_sequence_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
+<span class="r-in"><span>                                        type <span class="op">=</span> <span class="st">"sequence_scrap"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about the "otu" bins removed during your analysis:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">scrapped_otu_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin_scrap"</span>,</span></span>
-<span class="r-in"><span>                              bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">scrapped_otu_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
+<span class="r-in"><span>                                   type <span class="op">=</span> <span class="st">"bin_scrap"</span>,</span></span>
+<span class="r-in"><span>                                   bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about the "phylotype" bins removed during your analysis:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">scrapped_phylotype_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin_scrap"</span>,</span></span>
-<span class="r-in"><span>                                    bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">scrapped_phylotype_report</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
+<span class="r-in"><span>                                         type <span class="op">=</span> <span class="st">"bin_scrap"</span>,</span></span>
+<span class="r-in"><span>                                         bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the metadata associated with your data:</span></span></span>
 <span class="r-in"><span></span></span>
@@ -328,7 +335,7 @@ report for. Default = "otu".</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the resource references associated with your data:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">references</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"references"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">references</span> <span class="op">&lt;-</span> <span class="fu">xdev_report</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"resource_reference"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get our custom report containing the contigs assembly data:</span></span></span>
 <span class="r-in"><span></span></span>

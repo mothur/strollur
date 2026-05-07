@@ -27,6 +27,7 @@ boolean indicating whether the dataset has a given sample
 ## Examples
 
 ``` r
+
 data <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.

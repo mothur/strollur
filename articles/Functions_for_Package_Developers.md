@@ -35,6 +35,7 @@ take a close look at functions you will need to do so using the
 data set.
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -85,6 +86,7 @@ To change the data set name you can use the
 function.
 
 ``` r
+
 names(miseq, type = "dataset")
 #> [1] "miseq_sop"
 xdev_set_dataset_name(miseq, dataset_name = "modified_miseq")
@@ -100,9 +102,10 @@ sequences *exclusive* to sample ‘F3D0’ to ‘NNNN’. First we will get the
 names of the sequences only present in sample ‘F3D0’.
 
 ``` r
+
 f3d0_names <- names(
   miseq,
-  type = "sequences",
+  type = "sequence",
   samples = c("F3D0"),
   distinct = TRUE
 )
@@ -116,6 +119,7 @@ sample ‘F3D0’ to ‘NNNN’. Then we can use the
 get all the sequences in present in sample ‘F3D0’ for closer inspection.
 
 ``` r
+
 nnnn_neucleotides <- rep("NNNN", length(f3d0_names))
 comments <- rep("example_set_sequences", length(f3d0_names))
 
@@ -127,7 +131,7 @@ xdev_set_sequences(
 
 f3d0_sequences <- xdev_get_by_sample(
   miseq,
-  type = "sequences", samples = c("F3D0")
+  type = "sequence", samples = c("F3D0")
 )
 f3d0_sequences[[1]][300:305]
 #> [1] "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-T-TA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-GC-C-C-AA-AG--CT-C-AA-C-T-T-C-G-G-G-ACT-G-C-TTTT-GAAAC-TG-T-GTAAC-TAGA-GT-GC-AG-GA-G-G---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGC-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG"
@@ -158,24 +162,25 @@ whole data set and create the inputs for
 [`xdev_set_abundances()`](https://mothur.org/strollur/reference/xdev_set_abundances.md).
 
 ``` r
+
 abundance_table <- abundance(
   miseq,
-  type = "sequences", by_sample = TRUE
+  type = "sequence", by_sample = TRUE
 )
 head(abundance_table, n = 10)
-#>                                  sequence_names abundances samples treatments
-#> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783          1  F3D150       Late
-#> 2   M00967_43_000000000-A3JHG_1_1113_12711_3318          1  F3D142       Late
-#> 3   M00967_43_000000000-A3JHG_1_2108_14707_9807          1    F3D3      Early
-#> 4   M00967_43_000000000-A3JHG_1_1110_4126_16552          1    F3D8      Early
-#> 5   M00967_43_000000000-A3JHG_1_2102_8408_13436          1    F3D7      Early
-#> 6  M00967_43_000000000-A3JHG_1_1107_22580_21773          1    F3D3      Early
-#> 7  M00967_43_000000000-A3JHG_1_1108_14299_17220         22  F3D146       Late
-#> 8  M00967_43_000000000-A3JHG_1_1108_14299_17220         19  F3D147       Late
-#> 9  M00967_43_000000000-A3JHG_1_1108_14299_17220         12  F3D148       Late
-#> 10 M00967_43_000000000-A3JHG_1_1108_14299_17220          9  F3D149       Late
+#>                                   sequence_name abundance sample treatment
+#> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783         1 F3D150      Late
+#> 2   M00967_43_000000000-A3JHG_1_1113_12711_3318         1 F3D142      Late
+#> 3   M00967_43_000000000-A3JHG_1_2108_14707_9807         1   F3D3     Early
+#> 4   M00967_43_000000000-A3JHG_1_1110_4126_16552         1   F3D8     Early
+#> 5   M00967_43_000000000-A3JHG_1_2102_8408_13436         1   F3D7     Early
+#> 6  M00967_43_000000000-A3JHG_1_1107_22580_21773         1   F3D3     Early
+#> 7  M00967_43_000000000-A3JHG_1_1108_14299_17220        22 F3D146      Late
+#> 8  M00967_43_000000000-A3JHG_1_1108_14299_17220        19 F3D147      Late
+#> 9  M00967_43_000000000-A3JHG_1_1108_14299_17220        12 F3D148      Late
+#> 10 M00967_43_000000000-A3JHG_1_1108_14299_17220         9 F3D149      Late
 
-num_samples <- count(miseq, type = "samples")
+num_samples <- count(miseq, type = "sample")
 new_abunds <- rep(list(rep(0, num_samples)), length(f3d0_names))
 
 xdev_set_abundances(
@@ -241,6 +246,7 @@ will throw errors accordingly. Let’s take a look at how to use the
 function for your reference.
 
 ``` r
+
 random_sequence_names <- sample(names(miseq),
   size = 100, replace = FALSE
 )
@@ -258,10 +264,11 @@ function will allow you to do so. For this example we will randomly
 select 100 ‘otu’ bins to merge.
 
 ``` r
+
 random_bin_names <- sample(
   names(
     miseq,
-    type = "bins",
+    type = "bin",
     bin_type = "otu"
   ),
   size = 100, replace = FALSE
@@ -336,6 +343,7 @@ has already been screened for chimeras, overlap, sequence length and
 ambiguous bases, so let’s randomly select 100 sequences to remove.
 
 ``` r
+
 random_sequence_names <- sample(names(miseq),
   size = 100, replace = FALSE
 )
@@ -396,10 +404,11 @@ the sequences from the data set also effects the bins in the ‘otu’ and
 ‘asv’ clusters.
 
 ``` r
+
 random_bin_names <- sample(
   names(
     miseq,
-    type = "bins", bin_type = "phylotype"
+    type = "bin", bin_type = "phylotype"
   ),
   size = 10, replace = FALSE
 )
@@ -469,6 +478,7 @@ already has the mock community removed so for the sake of example we
 will remove sample ‘F3D142’.
 
 ``` r
+
 xdev_remove_samples(
   miseq,
   samples = c("F3D142"), reason = "remove_samples_example"
@@ -530,6 +540,7 @@ we will remove all sequences assigned to
 ‘Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;’.
 
 ``` r
+
 bad_tax <- paste0(
   "Bacteria;Firmicutes;Clostridia;Clostridiales;",
   "Clostridiales_unclassified;"

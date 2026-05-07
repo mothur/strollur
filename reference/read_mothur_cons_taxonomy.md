@@ -26,6 +26,7 @@ taxonomies.
 ## Examples
 
 ``` r
+
 # You can add the otu assignments and bin taxonomies to the your data set
 # using the following:
 
@@ -37,7 +38,7 @@ otu_data <- read_mothur_cons_taxonomy(strollur_example(
 data <- new_dataset()
 
 # assign abundance only 'otu' bins
-assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
+assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
 #> [1] 531
 

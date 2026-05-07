@@ -22,6 +22,7 @@ data.frame
 ## Examples
 
 ``` r
+
 # mothur count file
 # Representative_Sequence     total   sample2  sample3  sample4
 # seq1  1150  250  400  500
@@ -30,7 +31,7 @@ data.frame
 # seq4  4  0  0  4
 
 # returns
-# id   sample abundance
+# sequence_name   sample abundance
 # <char>  <char>     <int>
 #  1:   seq1 sample2       250
 #  2:   seq1 sample3       400

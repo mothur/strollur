@@ -29,6 +29,7 @@ The 'new' method in the
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.

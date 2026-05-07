@@ -46,8 +46,8 @@ Adding and using data
   analysis.
 
 - [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
-  : strollur: Store and Transfer Data Used in the Analysis of Microbial
-  RNA
+  : strollur: Store and Transfer Data Used with Amplicon Sequence
+  Analysis
 
 ## Importing Data
 

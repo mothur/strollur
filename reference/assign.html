@@ -64,10 +64,10 @@ representative sequences, bin classifications or treatments to a
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assign</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">table</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"sequence_names"</span>, abundance <span class="op">=</span> <span class="st">"abundances"</span>, sample <span class="op">=</span></span>
-<span>    <span class="st">"samples"</span>, treatment <span class="op">=</span> <span class="st">"treatments"</span>, taxonomy <span class="op">=</span> <span class="st">"taxonomies"</span>, bin_name <span class="op">=</span> <span class="st">"bin_names"</span><span class="op">)</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"sequence_name"</span>, abundance <span class="op">=</span> <span class="st">"abundance"</span>, sample <span class="op">=</span></span>
+<span>    <span class="st">"sample"</span>, treatment <span class="op">=</span> <span class="st">"treatment"</span>, taxonomy <span class="op">=</span> <span class="st">"taxonomy"</span>, bin_name <span class="op">=</span> <span class="st">"bin_name"</span><span class="op">)</span>,</span>
 <span>  reference <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -88,9 +88,9 @@ representative sequences, bin classifications or treatments to a
 
 <dt id="arg-type-">type, <a class="anchor" aria-label="anchor" href="#arg-type-"></a></dt>
 <dd><p>a string containing the type of data. Options include:
-'sequence_abundance', 'sequence_taxonomy', 'bins',
- 'bin_representatives', 'bin_taxonomy' and 'treatments'.
- Default = "bins".</p></dd>
+'sequence_abundance', 'sequence_taxonomy', 'bin',
+ 'bin_representative', 'bin_taxonomy' and 'treatment'.
+ Default = "bin".</p></dd>
 
 
 <dt id="arg-bin-type-">bin_type, <a class="anchor" aria-label="anchor" href="#arg-bin-type-"></a></dt>
@@ -101,28 +101,28 @@ bins for. Default = "otu".</p></dd>
 <dt id="arg-table-names-">table_names, <a class="anchor" aria-label="anchor" href="#arg-table-names-"></a></dt>
 <dd><p>named list used to indicate the names of the columns in
 the table. By default:</p>
-<p>table_names &lt;- list(sequence_name = "sequence_names",
-                    abundance = "abundances",
-                    sample = "samples",
-                    treatment = "treatments",
-                    taxonomy = "taxonomies",
-                    bin_name = "bin_names")</p>
+<p>table_names &lt;- list(sequence_name = "sequence_name",
+                    abundance = "abundance",
+                    sample = "sample",
+                    treatment = "treatment",
+                    taxonomy = "taxonomy",
+                    bin_name = "bin_name")</p>
 <p>In table_names, 'sequence_name' is a string containing the name of the column
 in 'table' that contains the sequence names. Default column name is
-'sequence_names'.</p>
+'sequence_name'.</p>
 <p>In table_names, 'abundance' is a string containing the name of the column in
-'table' that contains the abundances. Default column name is 'abundances'.</p>
+'table' that contains the abundances. Default column name is 'abundance'.</p>
 <p>In table_names, 'sample' is a string containing the name of the column in
-'table' that contains the samples. Default column name is 'samples'.</p>
+'table' that contains the samples. Default column name is 'sample'.</p>
 <p>In table_names, 'treatment' is a string containing the name of the
 column in 'table' that contains the treatment names. Default column name is
- 'treatments'.</p>
+ 'treatment'.</p>
 <p>In table_names, 'taxonomy' is a string containing the name of the
 column in 'table' that contains the classifications. Default column name
-is 'taxonomies'.</p>
+is 'taxonomy'.</p>
 <p>In table_names, 'bin_name' is a string containing the name of the
 column in 'table' that contains the bin names. Default column name is
-'bin_names'.</p></dd>
+'bin_name'.</p></dd>
 
 
 <dt id="arg-reference-">reference, <a class="anchor" aria-label="anchor" href="#arg-reference-"></a></dt>
@@ -194,7 +194,7 @@ Default = TRUE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 63</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign 'otu' bin representative sequences</span></span></span>
-<span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_reps</span>, type <span class="op">=</span> <span class="st">"bin_representatives"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_reps</span>, type <span class="op">=</span> <span class="st">"bin_representative"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
 <span class="r-in"><span></span></span>
@@ -231,7 +231,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sample_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_sample_design.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">sample_assignments</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">sample_assignments</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 19</span>
 <span class="r-in"><span></span></span>

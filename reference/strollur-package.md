@@ -1,4 +1,4 @@
-# strollur: Store and Transfer Data Used in the Analysis of Microbial RNA
+# strollur: Store and Transfer Data Used with Amplicon Sequence Analysis
 
 Stores the data associated with your microbial RNA analysis. This
 includes nucleotide sequences, abundance, sample and treatment

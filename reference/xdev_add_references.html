@@ -58,11 +58,15 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xdev_add_references</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">table</span>,</span>
-<span>  reference_name <span class="op">=</span> <span class="st">"reference_names"</span>,</span>
-<span>  reference_version <span class="op">=</span> <span class="st">"reference_versions"</span>,</span>
-<span>  reference_usage <span class="op">=</span> <span class="st">"reference_usages"</span>,</span>
-<span>  reference_note <span class="op">=</span> <span class="st">"reference_notes"</span>,</span>
-<span>  reference_url <span class="op">=</span> <span class="st">"reference_urls"</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"name"</span>,</span>
+<span>  vendor <span class="op">=</span> <span class="st">"vendor"</span>,</span>
+<span>  version <span class="op">=</span> <span class="st">"version"</span>,</span>
+<span>  usage <span class="op">=</span> <span class="st">"usage"</span>,</span>
+<span>  note <span class="op">=</span> <span class="st">"note"</span>,</span>
+<span>  method_url <span class="op">=</span> <span class="st">"method_url"</span>,</span>
+<span>  documentation_url <span class="op">=</span> <span class="st">"documentation_url"</span>,</span>
+<span>  parameter <span class="op">=</span> <span class="st">"parameter"</span>,</span>
+<span>  citation <span class="op">=</span> <span class="st">"citation"</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -77,37 +81,61 @@
 
 <dt id="arg-table-">table, <a class="anchor" aria-label="anchor" href="#arg-table-"></a></dt>
 <dd><p>a data.frame containing reference_names, reference_versions
-(optional), reference_usages (optional), reference_notes (optional), and
-reference_urls (optional).</p></dd>
+(optional), reference_usages (optional), reference_parameters (optional),
+reference_methods (optional), and reference_urls (optional).</p></dd>
 
 
-<dt id="arg-reference-name-">reference_name, <a class="anchor" aria-label="anchor" href="#arg-reference-name-"></a></dt>
+<dt id="arg-name-">name, <a class="anchor" aria-label="anchor" href="#arg-name-"></a></dt>
 <dd><p>a string containing the name of the column in 'table'
-that contains the reference names. Default column name is 'reference_names'.</p></dd>
+that contains the reference names. Default column name is 'name'.</p></dd>
 
 
-<dt id="arg-reference-version-">reference_version, <a class="anchor" aria-label="anchor" href="#arg-reference-version-"></a></dt>
+<dt id="arg-vendor-">vendor, <a class="anchor" aria-label="anchor" href="#arg-vendor-"></a></dt>
+<dd><p>a string containing the name of the column in
+'table' that contains the reference vendors. Default column name is
+'vendor'.</p></dd>
+
+
+<dt id="arg-version-">version, <a class="anchor" aria-label="anchor" href="#arg-version-"></a></dt>
 <dd><p>a string containing the name of the column in
 'table' that contains the reference versions. Default column name is
-'reference_versions'.</p></dd>
+'version'.</p></dd>
 
 
-<dt id="arg-reference-usage-">reference_usage, <a class="anchor" aria-label="anchor" href="#arg-reference-usage-"></a></dt>
+<dt id="arg-usage-">usage, <a class="anchor" aria-label="anchor" href="#arg-usage-"></a></dt>
 <dd><p>a string containing the name of the column in
 'table' that contains the reference usages. Default column name is
- reference_usages'.</p></dd>
+ 'usage'.</p></dd>
 
 
-<dt id="arg-reference-note-">reference_note, <a class="anchor" aria-label="anchor" href="#arg-reference-note-"></a></dt>
+<dt id="arg-note-">note, <a class="anchor" aria-label="anchor" href="#arg-note-"></a></dt>
 <dd><p>a string containing the name of the column in
 'table' that contains the reference notes. Default column name is
- reference_notes'.</p></dd>
+ 'note'.</p></dd>
 
 
-<dt id="arg-reference-url-">reference_url, <a class="anchor" aria-label="anchor" href="#arg-reference-url-"></a></dt>
+<dt id="arg-method-url-">method_url, <a class="anchor" aria-label="anchor" href="#arg-method-url-"></a></dt>
 <dd><p>a string containing the name of the column in
-'table' that contains the reference urls. Default column name is
- reference_urls'.</p></dd>
+'table' that contains the reference methods. Default column name is
+ 'method_url'.</p></dd>
+
+
+<dt id="arg-documentation-url-">documentation_url, <a class="anchor" aria-label="anchor" href="#arg-documentation-url-"></a></dt>
+<dd><p>a string containing the name of the column in
+'table' that contains the reference documentation urls. Default column
+name is 'documentation_url'.</p></dd>
+
+
+<dt id="arg-parameter-">parameter, <a class="anchor" aria-label="anchor" href="#arg-parameter-"></a></dt>
+<dd><p>a string containing the name of the column in
+'table' that contains the reference parameters. Default column name is
+ 'parameter'.</p></dd>
+
+
+<dt id="arg-citation-">citation, <a class="anchor" aria-label="anchor" href="#arg-citation-"></a></dt>
+<dd><p>a string containing the name of the column in
+'table' that contains the reference citations. Default column name is
+ 'citation'.</p></dd>
 
 
 <dt id="arg-verbose-">verbose, <a class="anchor" aria-label="anchor" href="#arg-verbose-"></a></dt>
@@ -123,7 +151,7 @@ Default = TRUE.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"just for fun"</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"just for fun"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">reference_table</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"references.csv"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                             col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">xdev_add_references</span><span class="op">(</span><span class="va">data</span>, <span class="va">reference_table</span><span class="op">)</span></span></span>

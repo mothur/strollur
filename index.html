@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Store and Transfer Data Used in the Analysis of Microbial RNA • strollur</title>
+<title>Store and Transfer Data Used with Amplicon Sequence Analysis • strollur</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Store and Transfer Data Used in the Analysis of Microbial RNA">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Store and Transfer Data Used with Amplicon Sequence Analysis">
 <meta name="description" content="Stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
 <meta property="og:description" content="Stores the data associated with your microbial RNA analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from [mothur](https://mothur.org), [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/) and [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).">
 <meta property="og:image" content="https://mothur.org/strollur/logo.png">
@@ -130,17 +130,17 @@
 <span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"microbial RNA example"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/add.html">add</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ℹ Added 2425 sequences.</span></span>
+<span><span class="fu"><a href="reference/add.html">add</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ℹ Assigned 2425 sequence abundances.</span></span>
+<span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ℹ Assigned 531 otu bins.</span></span>
+<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
 <span><span class="co">#&gt; [1] 531</span></span>
 <span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">classification_data</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ℹ Assigned 2425 sequence taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span></span>
 <span><span class="va">data</span></span>

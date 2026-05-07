@@ -31,6 +31,7 @@ A list containing artifact
 ## Examples
 
 ``` r
+
 artifact <- read_qiime2_taxonomy(strollur_example(
   "taxonomy.qza"
 ))
@@ -38,7 +39,7 @@ artifact <- read_qiime2_taxonomy(strollur_example(
 # access the taxonomy table
 
 artifact$data
-#>                            bin_names
+#>                             bin_name
 #> 1   48a6cea7eaf29dcb52dc2985933f4249
 #> 2   1f50ac250618ced095a2a5c34bae7651
 #> 3   1ea96d595539133266a3dbd49daac1e4
@@ -798,7 +799,7 @@ artifact$data
 #> 757 d1dbb266dc8841470f3c42fe8f465507
 #> 758 167baae5fe04a754df7eb073c07adaa7
 #> 759 0dcaf9358eddf685864afb883cdf2363
-#>                                                                                                                                 taxonomies
+#>                                                                                                                                   taxonomy
 #> 1                                     k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__Coprococcus; s__
 #> 2             k__Bacteria; p__Proteobacteria; c__Epsilonproteobacteria; o__Campylobacterales; f__Campylobacteraceae; g__Campylobacter; s__
 #> 3                                 k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__[Tissierellaceae]; g__Peptoniphilus; s__

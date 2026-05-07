@@ -8,7 +8,7 @@ Get the names of a given type of data in a
 ``` r
 xdev_names(
   data,
-  type = "sequences",
+  type = "sequence",
   bin_type = "otu",
   samples = NULL,
   distinct = FALSE
@@ -25,8 +25,8 @@ xdev_names(
 - type, :
 
   string containing the type of data you would like. Options include:
-  "dataset", "sequences", "bins", "samples", "treatments", "reports".
-  Default = "sequences".
+  "dataset", "sequence", "bin", "sample", "treatment", "report". Default
+  = "sequence".
 
 - bin_type, :
 
@@ -35,13 +35,13 @@ xdev_names(
 
 - samples, :
 
-  vector of strings. samples is only used when 'type' = "sequences" or
-  'type' = "bins" . samples should contain the names of the samples you
+  vector of strings. samples is only used when 'type' = "sequence" or
+  'type' = "bin" . samples should contain the names of the samples you
   want names for. Default = NULL.
 
 - distinct, :
 
-  Boolean. distinct is used when 'type' = "sequences" or 'type' = "bins"
+  Boolean. distinct is used when 'type' = "sequence" or 'type' = "bin"
   and the samples parameter is used. The distinct parameter allows you
   to get the names that are unique to a given set of samples. When
   distinct is TRUE, the names function will return the names that ONLY
@@ -56,6 +56,7 @@ vector of strings, containing the names requested
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -75,7 +76,7 @@ xdev_names(data = miseq, type = "dataset")
 #> [1] "miseq_sop"
 
 # To get the names of the sequences in the dataset
-xdev_names(data = miseq, type = "sequences")
+xdev_names(data = miseq, type = "sequence")
 #>    [1] "M00967_43_000000000-A3JHG_1_2101_16474_12783"
 #>    [2] "M00967_43_000000000-A3JHG_1_1113_12711_3318" 
 #>    [3] "M00967_43_000000000-A3JHG_1_2108_14707_9807" 
@@ -2503,7 +2504,7 @@ xdev_names(data = miseq, type = "sequences")
 #> [2425] "M00967_43_000000000-A3JHG_1_1107_26400_19526"
 
 # To get the names of the sequences that are unique to sample 'F3D0'
-xdev_names(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE)
+xdev_names(data = miseq, type = "sequence", samples = c("F3D0"), distinct = TRUE)
 #>   [1] "M00967_43_000000000-A3JHG_1_2103_25452_6018" 
 #>   [2] "M00967_43_000000000-A3JHG_1_1101_9620_19745" 
 #>   [3] "M00967_43_000000000-A3JHG_1_2109_17345_6668" 
@@ -2607,7 +2608,7 @@ xdev_names(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRU
 #> [101] "M00967_43_000000000-A3JHG_1_1103_22490_21890"
 
 # To get the names of the sequences that include sample 'F3D0'
-xdev_names(data = miseq, type = "sequences", samples = c("F3D0"))
+xdev_names(data = miseq, type = "sequence", samples = c("F3D0"))
 #>   [1] "M00967_43_000000000-A3JHG_1_2103_25452_6018" 
 #>   [2] "M00967_43_000000000-A3JHG_1_1109_13330_21597"
 #>   [3] "M00967_43_000000000-A3JHG_1_1110_5315_13833" 
@@ -2919,17 +2920,17 @@ xdev_names(data = miseq, type = "sequences", samples = c("F3D0"))
 #> [309] "M00967_43_000000000-A3JHG_1_2107_18723_18535"
 
 # To get the names of the samples in the dataset
-xdev_names(data = miseq, type = "samples")
+xdev_names(data = miseq, type = "sample")
 #>  [1] "F3D0"   "F3D1"   "F3D141" "F3D142" "F3D143" "F3D144" "F3D145" "F3D146"
 #>  [9] "F3D147" "F3D148" "F3D149" "F3D150" "F3D2"   "F3D3"   "F3D5"   "F3D6"  
 #> [17] "F3D7"   "F3D8"   "F3D9"  
 
 # To get the names of the treatments in the dataset
-xdev_names(data = miseq, type = "treatments")
+xdev_names(data = miseq, type = "treatment")
 #> [1] "Early" "Late" 
 
 # To get the names of the bins in the dataset
-xdev_names(data = miseq, type = "bins")
+xdev_names(data = miseq, type = "bin")
 #>   [1] "Otu001" "Otu002" "Otu003" "Otu004" "Otu005" "Otu006" "Otu007" "Otu008"
 #>   [9] "Otu009" "Otu010" "Otu011" "Otu012" "Otu013" "Otu014" "Otu015" "Otu016"
 #>  [17] "Otu017" "Otu018" "Otu019" "Otu020" "Otu021" "Otu022" "Otu023" "Otu024"
@@ -2999,13 +3000,13 @@ xdev_names(data = miseq, type = "bins")
 #> [529] "Otu529" "Otu530" "Otu531"
 
 # To get the names of the bins in the dataset that are unique to 'F3D0'
-xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = TRUE)
+xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = TRUE)
 #>  [1] "Otu330" "Otu339" "Otu341" "Otu345" "Otu347" "Otu354" "Otu364" "Otu431"
 #>  [9] "Otu466" "Otu469" "Otu470" "Otu491" "Otu493" "Otu529"
 
 # To get the names of the bins in the dataset that include sequences
 # from 'F3D0'
-xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = FALSE)
+xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = FALSE)
 #>   [1] "Otu001" "Otu002" "Otu003" "Otu004" "Otu005" "Otu006" "Otu007" "Otu008"
 #>   [9] "Otu009" "Otu010" "Otu011" "Otu012" "Otu013" "Otu014" "Otu015" "Otu016"
 #>  [17] "Otu017" "Otu018" "Otu019" "Otu020" "Otu021" "Otu022" "Otu023" "Otu024"
@@ -3032,6 +3033,6 @@ xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = FALSE)
 #> [185] "Otu431" "Otu466" "Otu469" "Otu470" "Otu491" "Otu493" "Otu529"
 
 # To get the names of the reports in the dataset
-xdev_names(data = miseq, type = "reports")
+xdev_names(data = miseq, type = "report")
 #> [1] "contigs_report"
 ```

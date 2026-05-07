@@ -9,6 +9,7 @@ SOP Example](https://mothur.org/wiki/miseq_sop/), run the following:
 ## Using `read_mothur()`
 
 ``` r
+
 data <- read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),
@@ -32,6 +33,7 @@ data <- read_mothur(
 To view a summary of data:
 
 ``` r
+
 data
 #> miseq_sop:
 #> 
@@ -87,6 +89,7 @@ To create a data set and read the individual file types, you can use the
 functions below. First let’s create a data set named my_data.
 
 ``` r
+
 my_data <- new_dataset(dataset_name = "my_data")
 ```
 
@@ -96,6 +99,7 @@ to your data set you can use the
 function:
 
 ``` r
+
 fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
 ```
 
@@ -105,7 +109,8 @@ sequences to your data set using the
 [`add()`](https://mothur.org/strollur/reference/add.md) function:
 
 ``` r
-add(my_data, table = fasta_data, type = "sequences")
+
+add(my_data, table = fasta_data, type = "sequence")
 #> Added 2425 sequences.
 #> [1] 2425
 my_data
@@ -131,6 +136,7 @@ file](https://mothur.org/wiki/count_file/) file using the
 function:
 
 ``` r
+
 sample_table <- read_mothur_count(
   filename = strollur_example("final.count_table.gz")
 )
@@ -142,6 +148,7 @@ using the [`assign()`](https://mothur.org/strollur/reference/assign.md)
 function:
 
 ``` r
+
 assign(my_data, table = sample_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
 #> [1] 2425
@@ -170,6 +177,7 @@ file](https://mothur.org/wiki/taxonomy_file/) file using the
 function:
 
 ``` r
+
 classification_data <- read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
@@ -180,6 +188,7 @@ taxonomies. You can add the sequence classification data to your data
 set as follows:
 
 ``` r
+
 assign(my_data, table = classification_data, type = "sequence_taxonomy")
 #> Assigned 2425 sequence taxonomies.
 #> [1] 2425
@@ -191,6 +200,7 @@ file](https://mothur.org/wiki/list_file/) file using the
 function:
 
 ``` r
+
 otu_data <- read_mothur_list(list = strollur_example("final.opti_mcc.list.gz"))
 asv_data <- read_mothur_list(list = strollur_example("final.asv.list.gz"))
 phylotype_data <- read_mothur_list(list = strollur_example("final.tx.list.gz"))
@@ -201,16 +211,17 @@ names and sequence names. You can add the bin data to your data set as
 follows:
 
 ``` r
-assign(my_data, table = otu_data, type = "bins", bin_type = "otu")
+
+assign(my_data, table = otu_data, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
 #> [1] 531
-assign(my_data, table = asv_data, type = "bins", bin_type = "asv")
+assign(my_data, table = asv_data, type = "bin", bin_type = "asv")
 #> Assigned 2425 asv bins.
 #> [1] 2425
 assign(
   my_data,
   table = phylotype_data,
-  type = "bins", bin_type = "phylotype"
+  type = "bin", bin_type = "phylotype"
 )
 #> Assigned 63 phylotype bins.
 #> [1] 63
@@ -249,6 +260,7 @@ file using the
 function:
 
 ``` r
+
 otu_taxonomy_data <- read_mothur_cons_taxonomy(
   taxonomy =
     strollur_example("final.cons.taxonomy")
@@ -260,6 +272,7 @@ taxonomies. You can add the bin taxonomic data to your data set as
 follows:
 
 ``` r
+
 assign(my_data, table = otu_taxonomy_data, type = "bin_taxonomy")
 #> Assigned 531 otu bin taxonomies.
 #> [1] 531

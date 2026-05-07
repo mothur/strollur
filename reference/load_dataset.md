@@ -27,6 +27,7 @@ a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 ## Examples
 
 ``` r
+
 data <- load_dataset(strollur_example("miseq_sop.rds"))
 data
 #> miseq_sop:
@@ -46,6 +47,13 @@ data
 #> 
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata 

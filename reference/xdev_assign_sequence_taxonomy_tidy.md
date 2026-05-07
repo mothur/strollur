@@ -3,7 +3,7 @@
 Assign sequence classifications to a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
-Note, if you assign sequence taxonomies and assign bins, 'Dataset' will
+Note, if you assign sequence taxonomies and assign bins, strollur will
 find the consensus taxonomy for each bin for you.
 
 ## Usage
@@ -13,10 +13,10 @@ xdev_assign_sequence_taxonomy_tidy(
   data,
   table,
   reference = NULL,
-  sequence_name = "sequence_names",
-  level = "levels",
-  taxonomy = "taxonomies",
-  confidence = "confidences",
+  sequence_name = "sequence_name",
+  level = "level",
+  taxonomy = "taxonomy",
+  confidence = "confidence",
   verbose = TRUE
 )
 ```
@@ -39,22 +39,22 @@ xdev_assign_sequence_taxonomy_tidy(
 - sequence_name, :
 
   a string containing the name of the column in 'table' that contains
-  the sequence names. Default column name is 'sequence_names'.
+  the sequence names. Default column name is 'sequence_name'.
 
 - level, :
 
   a string containing the name of the column in 'table' that contains
-  the taxonomy levels. Default column name is 'levels'.
+  the taxonomy levels. Default column name is 'level'.
 
 - taxonomy, :
 
   a string containing the name of the column in 'table' that contains
-  the sequence taxonomies. Default column name is 'taxonomies'.
+  the sequence taxonomies. Default column name is 'taxonomy'.
 
 - confidence, :
 
   a string containing the name of the column in 'table' that contains
-  the taxonomies confidence. Default column name is 'confidences'.
+  the taxonomies confidence. Default column name is 'confidence'.
 
 - verbose, :
 
@@ -67,7 +67,14 @@ double containing the number of sequence taxonomies assigned
 ## Examples
 
 ``` r
+
 sequence_classifications <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
+str(sequence_classifications)
+#> 'data.frame':    14550 obs. of  4 variables:
+#>  $ sequence_name: chr  "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_2101_16474_12783" ...
+#>  $ level        : int  1 2 3 4 5 6 1 2 3 4 ...
+#>  $ taxonomy     : chr  "Bacteria" "\"Bacteroidetes\"" "\"Bacteroidia\"" "\"Bacteroidales\"" ...
+#>  $ confidence   : int  100 100 99 99 88 88 100 100 100 100 ...
 
 data <- new_dataset("my_dataset")
 
@@ -85,5 +92,6 @@ reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
 
 xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications, reference)
 #> Assigned 2425 sequence taxonomies.
+#> Added 1 resource references.
 #> [1] 2425
 ```

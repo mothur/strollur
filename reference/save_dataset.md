@@ -32,6 +32,7 @@ A file containing the \`strollur\` object
 ## Examples
 
 ``` r
+
 data <- read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),

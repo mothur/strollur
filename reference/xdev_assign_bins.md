@@ -11,10 +11,10 @@ xdev_assign_bins(
   table,
   bin_type = "otu",
   reference = NULL,
-  bin_name = "bin_names",
-  abundance = "abundances",
-  sample = "samples",
-  sequence_name = "sequence_names",
+  bin_name = "bin_name",
+  abundance = "abundance",
+  sample = "sample",
+  sequence_name = "sequence_name",
   verbose = TRUE
 )
 ```
@@ -41,25 +41,25 @@ xdev_assign_bins(
 - bin_name, :
 
   a string containing the name of the column in 'table' that contains
-  the bin names. Default column name is 'bin_names'.
+  the bin names. Default column name is 'bin_name'.
 
 - abundance, :
 
   a string containing the name of the column in 'table' that contains
-  the bin abundances. Default column name is 'abundances'. Note: You
-  must provide either abundances or sequence_names in the table.
+  the bin abundances. Default column name is 'abundance'. Note: You must
+  provide either abundance or sequence_name in the table.
 
 - sample, :
 
   a string containing the name of the column in 'table' that contains
   the sample names for datasets where the abundances are broken down by
-  sample. Default column name is 'samples'.
+  sample. Default column name is 'sample'.
 
 - sequence_name, :
 
   a string containing the name of the column in 'table' that contains
-  the sequence names. Default column name is 'sequence_names'. Note: You
-  must provide either abundances or sequence_names in the table.
+  the sequence names. Default column name is 'sequence_name'. Note: You
+  must provide either abundance or sequence_name in the table.
 
 - verbose, :
 
@@ -72,6 +72,7 @@ double containing the number of bins assigned
 ## Examples
 
 ``` r
+
   # To assign sequences to bins:
 
   data <- new_dataset(dataset_name = "miseq_sop")

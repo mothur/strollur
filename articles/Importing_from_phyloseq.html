@@ -116,11 +116,11 @@ can utilize functions like <code><a href="../reference/count.html">count()</a></
 <code><a href="../reference/abundance.html">abundance()</a></code>, and <code><a href="../reference/names.html">names()</a></code> to inspect the
 data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">rdata_object</span>, <span class="st">"samples"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">rdata_object</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 26</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">rdata_object</span>, <span class="st">"sequences"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">rdata_object</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "549322" "522457" "951"    "244423" "586076" "246140"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span><span class="va">rdata_object</span>, <span class="st">"sequences"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span><span class="va">rdata_object</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   sequence_names abundances</span></span>
 <span><span class="co">#&gt; 1         549322        259</span></span>
 <span><span class="co">#&gt; 2         522457          8</span></span>

@@ -46,6 +46,7 @@ A \`strollur\` object
 ## Examples
 
 ``` r
+
 # Using the example files from moving-pictures, we add FASTA data, assign
 # taxonomy and abundance for features, and add a newick tree and
 # metadata.

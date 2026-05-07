@@ -178,15 +178,15 @@ Default = all available</p></dd>
 <h3 id="method-abundance-">Method <code><a href="abundance.html">abundance()</a></code><a class="anchor" aria-label="anchor" href="#method-abundance-"></a></h3>
 <p>Get the abundance data for sequences, bins, samples, and treatments.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, by_sample <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, by_sample <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type, </code></dt>
 <dd><p>string containing the type of data you want the number of.
-Options include: "sequences", "bins", "samples" and "treatments".
-Default = "sequences".</p></dd>
+Options include: "sequence", "bin", "sample" and "treatment".
+Default = "sequence".</p></dd>
 
 
 <dt><code>bin_type, </code></dt>
@@ -211,30 +211,30 @@ will be parsed by sample. Default = FALSE.</p></dd>
 <span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To the total abundance for each sequence</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To the total abundance for each sequence parsed by sample</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To the total abundance for each "otu" bin</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To the total abundance for each "otu" bin parsed by sample</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To the total abundance for each "asv" bin</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To the total abundance for each "asv" bin parsed by sample</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To the total abundance for each sample</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To the total abundance for each treatment</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -244,12 +244,13 @@ will be parsed by sample. Default = FALSE.</p></dd>
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span></span>
 <span>  <span class="va">table</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  report_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"sequence_names"</span>, sequence <span class="op">=</span> <span class="st">"sequences"</span>, comment <span class="op">=</span></span>
-<span>    <span class="st">"comments"</span>, reference_name <span class="op">=</span> <span class="st">"reference_names"</span>, reference_version <span class="op">=</span></span>
-<span>    <span class="st">"reference_versions"</span>, reference_usage <span class="op">=</span> <span class="st">"reference_usages"</span>, reference_note <span class="op">=</span></span>
-<span>    <span class="st">"reference_notes"</span>, reference_url <span class="op">=</span> <span class="st">"reference_urls"</span><span class="op">)</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"sequence_name"</span>, sequence <span class="op">=</span> <span class="st">"sequence"</span>, comment <span class="op">=</span></span>
+<span>    <span class="st">"comment"</span>, reference_vendor <span class="op">=</span> <span class="st">"vendor"</span>, reference_name <span class="op">=</span> <span class="st">"name"</span>, reference_version <span class="op">=</span></span>
+<span>    <span class="st">"version"</span>, reference_usage <span class="op">=</span> <span class="st">"usage"</span>, reference_note <span class="op">=</span> <span class="st">"note"</span>, reference_method_url <span class="op">=</span></span>
+<span>    <span class="st">"method_url"</span>, reference_documentation_url <span class="op">=</span> <span class="st">"documentation_url"</span>, reference_parameter</span>
+<span>    <span class="op">=</span> <span class="st">"parameter"</span>, reference_citation <span class="op">=</span> <span class="st">"citation"</span><span class="op">)</span>,</span>
 <span>  reference <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -263,7 +264,7 @@ will be parsed by sample. Default = FALSE.</p></dd>
 
 <dt><code>type, </code></dt>
 <dd><p>a string containing the type of data. Options include:
-'sequences', 'references' 'metadata' and 'reports'.</p></dd>
+'sequence', 'resource_reference' 'metadata' and 'report'.</p></dd>
 
 
 <dt><code>report_type, </code></dt>
@@ -274,38 +275,54 @@ adding. Options include: 'metadata' and custom reports.</p></dd>
 <dt><code>table_names, </code></dt>
 <dd><p>named list used to indicate the names of the columns
  in the table. By default:</p>
-<p>table_names &lt;- list(sequence_name = "sequence_names",
-                    comment = "comments",
-                    sequence = "sequences",
-                    reference_name = "reference_names",
-                    reference_version = "reference_versions",
-                    reference_usage = "reference_usages",
-                    reference_note = "reference_notes",
-                    reference_url = "reference_urls")</p>
+<p>table_names &lt;- list(sequence_name = "sequence_name",
+                    comment = "comment",
+                    sequence = "sequence",
+                    reference_name = "name",
+                    reference_vendor = "vendor",
+                    reference_version = "version",
+                    reference_usage = "usage",
+                    reference_note = "note",
+                    reference_documentation_url = "documentation_url",
+                    reference_method_url = "method_url",
+                    reference_parameter = "parameter",
+                    reference_citation = "citation")</p>
 <p>In table_names, 'sequence_name' is a string containing the name of the
 column in 'table' that contains the sequence names. It is used when you
-are adding FASTA data. Default column name is 'sequence_names'.</p>
+are adding FASTA data. Default column name is 'sequence_name'.</p>
 <p>In table_names, 'sequence' is a string containing the name of the column
 in 'table' that contains the sequence nucleotide strings. It is used when
-you are adding FASTA data. Default column name is 'sequences'.</p>
+you are adding FASTA data. Default column name is 'sequence'.</p>
 <p>In table_names, 'comment' is a string containing the name of the column
 in 'table' that contains the sequence comments. It is used when you are
-adding FASTA data. Default column name is 'comments'.</p>
-<p>In table_names, 'reference_name' is a string containing the name of the
+adding FASTA data. Default column name is 'comment'.</p>
+<p>In table_names, 'reference_vendor' is a string containing the name of the
+column in 'table' that contains the reference vendor names. It is used
+when ' you are adding reference data. Default column name is 'vendor'.</p>
+<p>In table_names, 'reference_name' is a string containing the name of the '
 column in 'table' that contains the reference names. It is used when you
-are adding reference data. Default column name is 'reference_names'.</p>
+are ' adding reference data. Default column name is 'name'.</p>
 <p>In table_names, 'reference_version' is a string containing the name of
-the column in 'table' that contains the reference versions. Default
-column name is 'reference_versions'.</p>
+the ' column in 'table' that contains the reference versions. Default
+column name is 'version'.</p>
 <p>In table_names, 'reference_usage' is a string containing the name of the
 column in 'table' that contains the reference usages. Default column name
-is 'reference_usages'.</p>
+is 'usage'.</p>
 <p>In table_names, 'reference_note' is a string containing the name of the
 column in 'table' that contains the reference notes. Default column name
-is 'reference_notes'.</p>
-<p>In table_names, 'reference_url' is a string containing the name of the
-column in 'table' that contains the reference urls. Default column name
-is 'reference_urls'.</p></dd>
+is 'note'.</p>
+<p>In table_names, 'reference_method_url' is a string containing the name of
+the column in 'table' that contains the reference method urls. Default
+column name is 'method_url'.</p>
+<p>In table_names, 'reference_documentation_url' is a string containing the
+name of the column in 'table' that contains the reference urls. Default
+column name is 'documentation_url'.</p>
+<p>In table_names, 'reference_parameter' is a string containing the name of
+the column in 'table' that contains the reference parameters. Default
+column name is 'parameter'.</p>
+<p>In table_names, 'reference_citation' is a string containing the name of
+the column in 'table' that contains the reference citations. Default
+column name is 'citation'.</p></dd>
 
 
 <dt><code>reference, </code></dt>
@@ -333,9 +350,9 @@ messages. Default = TRUE.</p></dd>
 <span><span class="co"># Create a new empty `strollur` object named 'example_dataset'</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"example_dataset"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span>table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span>table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span></span>
-<span>  table <span class="op">=</span> <span class="va">contigs_report</span>, type <span class="op">=</span> <span class="st">"reports"</span>,</span>
+<span>  table <span class="op">=</span> <span class="va">contigs_report</span>, type <span class="op">=</span> <span class="st">"report"</span>,</span>
 <span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -354,18 +371,18 @@ messages. Default = TRUE.</p></dd>
 <span><span class="va">resource_url</span> <span class="op">&lt;-</span> <span class="st">"https://mothur.org/wiki/silva_reference_files/"</span></span>
 <span><span class="va">resource_reference</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/new_reference.html">new_reference</a></span><span class="op">(</span></span>
-<span>    reference_name <span class="op">=</span> <span class="st">"silva.bacteria.fasta"</span>,</span>
-<span>    reference_version <span class="op">=</span> <span class="st">"1.38.1"</span>,</span>
-<span>    reference_usage <span class="op">=</span> <span class="st">"alignment by mothur2 v1.0"</span>,</span>
-<span>    reference_note <span class="op">=</span> <span class="st">"default options"</span>,</span>
-<span>    reference_url <span class="op">=</span> <span class="va">resource_url</span></span>
+<span>    name <span class="op">=</span> <span class="st">"silva.bacteria.fasta"</span>,</span>
+<span>    version <span class="op">=</span> <span class="st">"1.38.1"</span>,</span>
+<span>    usage <span class="op">=</span> <span class="st">"alignment by mothur2 v1.0"</span>,</span>
+<span>    note <span class="op">=</span> <span class="st">"default options"</span>,</span>
+<span>    documentation_url <span class="op">=</span> <span class="va">resource_url</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Add FASTA data with a resource reference</span></span>
 <span></span>
 <span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span></span>
 <span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="va">resource_reference</span></span>
 <span><span class="op">)</span></span>
 <span></span></code></pre></div><p></p></div>
@@ -397,7 +414,7 @@ messages. Default = TRUE.</p></dd>
 <span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span></span>
 <span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_shared.html">read_mothur_shared</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.shared"</span><span class="op">)</span><span class="op">)</span></span>
-<span> <span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
+<span> <span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span></span>
 <span> <span class="va">tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
 <span> <span class="st">"final.opti_mcc.jclass.ave.tre"</span><span class="op">)</span><span class="op">)</span></span>
@@ -442,10 +459,10 @@ representative sequences, bin classifications or treatments.</p><div class="sect
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span></span>
 <span>  <span class="va">table</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"sequence_names"</span>, abundance <span class="op">=</span> <span class="st">"abundances"</span>, sample <span class="op">=</span></span>
-<span>    <span class="st">"samples"</span>, treatment <span class="op">=</span> <span class="st">"treatments"</span>, taxonomy <span class="op">=</span> <span class="st">"taxonomies"</span>, bin_name <span class="op">=</span> <span class="st">"bin_names"</span><span class="op">)</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"sequence_name"</span>, abundance <span class="op">=</span> <span class="st">"abundance"</span>, sample <span class="op">=</span></span>
+<span>    <span class="st">"sample"</span>, treatment <span class="op">=</span> <span class="st">"treatment"</span>, taxonomy <span class="op">=</span> <span class="st">"taxonomy"</span>, bin_name <span class="op">=</span> <span class="st">"bin_name"</span><span class="op">)</span>,</span>
 <span>  reference <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -459,9 +476,9 @@ representative sequences, bin classifications or treatments.</p><div class="sect
 
 <dt><code>type, </code></dt>
 <dd><p>a string containing the type of data. Options include:
-'sequence_abundance', 'sequence_taxonomy', 'bins',
- 'bin_representatives', 'bin_taxonomy' and 'treatments'.
- Default = "bins".</p></dd>
+'sequence_abundance', 'sequence_taxonomy', 'bin',
+ 'bin_representative', 'bin_taxonomy' and 'treatment'.
+ Default = "bin".</p></dd>
 
 
 <dt><code>bin_type, </code></dt>
@@ -472,26 +489,26 @@ of bins for. Default = "otu".</p></dd>
 <dt><code>table_names, </code></dt>
 <dd><p>named list used to indicate the names of the columns
   in the table. By default:</p>
-<p>table_names &lt;- list(sequence_name = "sequence_names", abundance =
-  "abundances", sample = "samples", treatment = "treatments", taxonomy =
-  "taxonomies", bin_name = "bin_names")</p>
+<p>table_names &lt;- list(sequence_name = "sequence_name", abundance =
+  "abundance", sample = "sample", treatment = "treatment", taxonomy =
+  "taxonomy", bin_name = "bin_name")</p>
 <p>In table_names, 'sequence_name' is a string containing the name of the
   column in 'table' that contains the sequence names. Default column name
-  is 'sequence_names'.</p>
+  is 'sequence_name'.</p>
 <p>In table_names, 'abundance' is a string containing the name of the
   column in 'table' that contains the abundances. Default column name is
-  'abundances'.</p>
+  'abundance'.</p>
 <p>In table_names, 'sample' is a string containing the name of the column
-  in 'table' that contains the samples. Default column name is 'samples'.</p>
+  in 'table' that contains the samples. Default column name is 'sample'.</p>
 <p>In table_names, 'treatment' is a string containing the name of the
   column in 'table' that contains the treatment names. Default column
-  name is 'treatments'.</p>
+  name is 'treatment'.</p>
 <p>In table_names, 'taxonomy' is a string containing the name of the
   column in 'table' that contains the classifications. Default column
-  name is 'taxonomies'.</p>
+  name is 'taxonomy'.</p>
 <p>In table_names, 'bin_name' is a string containing the name of the
   column in 'table' that contains the bin names. Default column name is
-  'bin_names'.</p></dd>
+  'bin_name'.</p></dd>
 
 
 <dt><code>reference, </code></dt>
@@ -564,7 +581,7 @@ messages. Default = TRUE.</p></dd>
 <span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">phylo_data</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># assign 'otu' bin representative sequences</span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">bin_reps</span>, type <span class="op">=</span> <span class="st">"bin_representatives"</span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">bin_reps</span>, type <span class="op">=</span> <span class="st">"bin_representative"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To assign abundance only bins</span></span>
 <span></span>
@@ -595,7 +612,7 @@ messages. Default = TRUE.</p></dd>
 <span><span class="va">sample_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span></span>
 <span>   <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_sample_design.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">sample_assignments</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">sample_assignments</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
 <span></span></code></pre></div><p></p></div>
 </div>
 
@@ -625,7 +642,7 @@ messages. Default = TRUE.</p></dd>
 <p>Find the number of sequences, samples, treatments or bins of a given type</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span></span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -636,8 +653,8 @@ messages. Default = TRUE.</p></dd>
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type, </code></dt>
 <dd><p>string containing the type of data you want the number of.
-Options include: "sequences", "samples", "treatments", "bins", and
- "references". Default = "sequences".</p></dd>
+Options include: "sequence", "sample", "treatment", "bin", and
+ "resource_reference". Default = "sequence".</p></dd>
 
 
 <dt><code>bin_type, </code></dt>
@@ -647,19 +664,19 @@ of bins for. Default = "otu".</p></dd>
 
 <dt><code>samples, </code></dt>
 <dd><p>vector of strings. samples is only used when 'type' =
-"sequences" or 'type' = "bins" . samples should contain the names of
+"sequence" or 'type' = "bin" . samples should contain the names of
 the samples you want the count for. Default = NULL.</p></dd>
 
 
 <dt><code>distinct, </code></dt>
-<dd><p>Boolean. distinct is used when 'type' = "sequences" or
-'type' = "bins". When 'type' = "sequences" and distinct is TRUE the
-number of unique sequences is returned. When 'type' = "sequences" and
+<dd><p>Boolean. distinct is used when 'type' = "sequence" or
+'type' = "bin". When 'type' = "sequence" and distinct is TRUE the
+number of unique sequences is returned. When 'type' = "sequence" and
 distinct is FALSE the total number of sequences is returned. This can
 also be combined with samples to find the number of unique sequences
 found ONLY in a given set of samples, or to find the number of unique
 sequences in given set of samples that may also be present in other
-samples. When 'type' = "bins", you can set distinct = TRUE to return
+samples. When 'type' = "bin", you can set distinct = TRUE to return
 the number of bins that ONLY contain sequences from the given samples.
 When distinct is FALSE the count returned contains bins with sequences
 from a given samples, but those bins may also contain other samples.
@@ -678,43 +695,43 @@ Default = FALSE.</p></dd>
 <span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the total number of sequences</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get number of unique sequences</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get number of unique sequences from samples 'F3D0' and 'F3D1'</span></span>
 <span><span class="co"># Note these sequences will be present in both samples but may be</span></span>
 <span><span class="co"># be present in other samples as well</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get number of unique sequences exclusive to samples 'F3D0' and</span></span>
 <span><span class="co"># 'F3D1'. Note sequences are present in both samples and NOT present in</span></span>
 <span><span class="co"># any other samples.</span></span>
 <span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>            samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the number of samples in the dataset</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the number of treatments in the dataset</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the number of "otu" bins in the dataset</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the number of "asv" bins in the dataset</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the number of "phylotype" bins in the dataset</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get number of "otu" bins from samples 'F3D0' and 'F3D1'</span></span>
 <span><span class="co"># Note these bins will have sequences from both samples but there may be</span></span>
 <span><span class="co"># other samples present as well</span></span>
 <span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span></span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span></span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get number of "otu" bins unique to samples 'F3D0' and 'F3D1'</span></span>
@@ -722,7 +739,7 @@ Default = FALSE.</p></dd>
 <span><span class="co"># samples will be present in the bins.</span></span>
 <span></span>
 <span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span></span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span></code></pre></div><p></p></div>
@@ -771,7 +788,7 @@ Default = FALSE.</p></dd>
 <span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span>
 <span></span>
 <span> <span class="co"># assign abundance 'otu' bins</span></span>
-<span> <span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
+<span> <span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span></span>
 <span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sample_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span>
 <span> <span class="va">data</span><span class="op">$</span><span class="fu">get_sample_tree</span><span class="op">(</span><span class="op">)</span></span>
@@ -806,7 +823,7 @@ Default = FALSE.</p></dd>
 <p>Get the names of a given type of data</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span></span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -817,8 +834,8 @@ Default = FALSE.</p></dd>
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type, </code></dt>
 <dd><p>string containing the type of data you would like. Options
-include: "dataset", "sequences", "bins", "samples", "treatments",
-"reports". Default = "sequences".</p></dd>
+include: "dataset", "sequence", "bin", "sample", "treatment",
+"report". Default = "sequence".</p></dd>
 
 
 <dt><code>bin_type, </code></dt>
@@ -828,13 +845,13 @@ for. Default = "otu".</p></dd>
 
 <dt><code>samples, </code></dt>
 <dd><p>vector of strings. samples is only used when 'type' =
-"sequences" or 'type' = "bins" . samples should contain the names of
+"sequence" or 'type' = "bin" . samples should contain the names of
 the samples you want names for. Default = NULL.</p></dd>
 
 
 <dt><code>distinct, </code></dt>
-<dd><p>Boolean. distinct is used when 'type' = "sequences" or
-'type' = "bins" and the samples parameter is used. The distinct
+<dd><p>Boolean. distinct is used when 'type' = "sequence" or
+'type' = "bin" and the samples parameter is used. The distinct
 parameter allows you to get the names that present given set of
 samples. When distinct is TRUE, the names function will return the
 names that ONLY contain data from the given samples. When distinct is
@@ -857,31 +874,31 @@ ALSO contain data from other samples. Default = FALSE.</p></dd>
 <span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the names of the sequences</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the names of the sequences present sample 'F3D0'</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#' # To get the names of the sequences unique to sample 'F3D0'</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the names of the samples</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the names of the treatments</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the names of the bins</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the names of the bins that are unique to 'F3D0'</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the names of the bins that include sequences from 'F3D0'</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the names of the reports</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"reports"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
 <span></span></code></pre></div><p></p></div>
 </div>
 
@@ -890,19 +907,19 @@ ALSO contain data from other samples. Default = FALSE.</p></dd>
 <h3 id="method-report-">Method <code><a href="report.html">report()</a></code><a class="anchor" aria-label="anchor" href="#method-report-"></a></h3>
 <p>Get a data.frame containing the given report</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type, </code></dt>
 <dd><p>string containing the type of report you would like. Options
-include: "fasta", "sequences", "sequence_bin_assignments",
-"sequence_taxonomy", "bin_taxonomy", "bin_representatives",
- "sample_assignments", "metadata", "references", "sequence_scrap",
+include: "fasta", "sequence", "sequence_bin_assignment",
+"sequence_taxonomy", "bin_taxonomy", "bin_representative",
+ "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
- Default = "sequences".</p></dd>
+ Default = "sequence".</p></dd>
 
 
 <dt><code>bin_type, </code></dt>
@@ -927,16 +944,16 @@ bin_taxonomy report for. Default = "otu".</p></dd>
 <span></span>
 <span><span class="co"># To get a report about the FASTA data</span></span>
 <span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the sequence bin assignments</span></span>
 <span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence_bin_assignments"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence_bin_assignment"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the sample treatment assignments</span></span>
 <span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample_assignments"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample_assignment"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get a report about sequence classifications</span></span>
 <span></span>
@@ -948,7 +965,7 @@ bin_taxonomy report for. Default = "otu".</p></dd>
 <span></span>
 <span><span class="co"># To get the 'otu' bin representative sequences</span></span>
 <span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin_representatives"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin_representative"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get a report about the sequences removed during your analysis:</span></span>
@@ -965,7 +982,7 @@ bin_taxonomy report for. Default = "otu".</p></dd>
 <span></span>
 <span><span class="co"># To get the resource references associated with your data:</span></span>
 <span></span>
-<span><span class="va">references</span> <span class="op">&lt;-</span> <span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"references"</span><span class="op">)</span></span>
+<span><span class="va">references</span> <span class="op">&lt;-</span> <span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"resource_reference"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get our custom report containing the contigs assembly data:</span></span>
 <span></span>
@@ -978,15 +995,15 @@ bin_taxonomy report for. Default = "otu".</p></dd>
 <h3 id="method-summary-">Method <code><a href="summary.html">summary()</a></code><a class="anchor" aria-label="anchor" href="#method-summary-"></a></h3>
 <p>Summarize the sequences data, custom reports, and scrapped data</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, report_type <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, report_type <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type, </code></dt>
 <dd><p>string containing the type of data you want the number of.
-Options include: "sequences", "reports" and "scrap".
- Default = "sequences".</p></dd>
+Options include: "sequence", "report" and "scrap".
+ Default = "sequence".</p></dd>
 
 
 <dt><code>report_type, </code></dt>
@@ -1014,10 +1031,10 @@ Get summary of the sequence reports</p>
 <span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the summary of your FASTA data</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># summarize contigs_report</span></span>
-<span><span class="va">miseq</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"reports"</span>, report_type <span class="op">=</span> <span class="st">"contigs_report"</span><span class="op">)</span></span>
+<span><span class="va">miseq</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"report"</span>, report_type <span class="op">=</span> <span class="st">"contigs_report"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># remove sample 'F3D0' to produce a scrap report</span></span>
 <span><span class="fu"><a href="../reference/xdev_remove_samples.html">xdev_remove_samples</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span><span class="op">)</span></span>
@@ -1130,7 +1147,7 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To the total abundance for each sequence</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                 sequence_names abundances</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783          1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318          1</span>
@@ -1139,16 +1156,16 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436          1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To the total abundance for each sequence parsed by sample</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 sequence_names abundances samples treatments</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783          1  F3D150       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318          1  F3D142       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807          1    F3D3      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  M00967_43_000000000-A3JHG_1_1110_4126_16552          1    F3D8      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436          1    F3D7      Early</span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                  sequence_name abundance sample treatment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783         1 F3D150      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318         1 F3D142      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807         1   F3D3     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  M00967_43_000000000-A3JHG_1_1110_4126_16552         1   F3D8     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436         1   F3D7     Early</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To the total abundance for each "otu" bin</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   otu_id abundance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Otu001     12288</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 Otu002      8892</span>
@@ -1157,17 +1174,17 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 Otu005      7450</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To the total abundance for each "otu" bin parsed by sample</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   bin_names abundances samples treatments</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    Otu001        499    F3D0      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Otu001        351    F3D1      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Otu001        388  F3D141       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    Otu001        244  F3D142       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    Otu001        189  F3D143       Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   bin_name abundance sample treatment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Otu001       499   F3D0     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Otu001       351   F3D1     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Otu001       388 F3D141      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   Otu001       244 F3D142      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   Otu001       189 F3D143      Late</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To the total abundance for each "asv" bin</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    asv_id abundance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Asv0001     12196</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 Asv0002      8829</span>
@@ -1176,29 +1193,29 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 Asv0005      7307</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To the total abundance for each "asv" bin parsed by sample</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   bin_names abundances samples treatments</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Asv0001        495    F3D0      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Asv0001        340    F3D1      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Asv0001        386  F3D141       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   Asv0001        242  F3D142       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   Asv0001        188  F3D143       Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   bin_name abundance sample treatment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  Asv0001       495   F3D0     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  Asv0001       340   F3D1     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  Asv0001       386 F3D141      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Asv0001       242 F3D142      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  Asv0001       188 F3D143      Late</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To the total abundance for each sample</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   samples abundances</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    F3D0       6191</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    F3D1       4652</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  F3D141       4656</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  F3D142       2423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  F3D143       2403</span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample abundance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   F3D0      6191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   F3D1      4652</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 F3D141      4656</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 F3D142      2423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 F3D143      2403</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To the total abundance for each treatment</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   treatments abundances</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Early      55634</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       Late      58329</span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">abundance</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   treatment abundance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     Early     55634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      Late     58329</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `strollur$add`</span></span></span>
@@ -1211,10 +1228,10 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co"># Create a new empty `strollur` object named 'example_dataset'</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"example_dataset"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span>table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span>table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  table <span class="op">=</span> <span class="va">contigs_report</span>, type <span class="op">=</span> <span class="st">"reports"</span>,</span></span>
+<span class="r-in"><span>  table <span class="op">=</span> <span class="va">contigs_report</span>, type <span class="op">=</span> <span class="st">"report"</span>,</span></span>
 <span class="r-in"><span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
@@ -1235,21 +1252,22 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="va">resource_url</span> <span class="op">&lt;-</span> <span class="st">"https://mothur.org/wiki/silva_reference_files/"</span></span></span>
 <span class="r-in"><span><span class="va">resource_reference</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="new_reference.html">new_reference</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    reference_name <span class="op">=</span> <span class="st">"silva.bacteria.fasta"</span>,</span></span>
-<span class="r-in"><span>    reference_version <span class="op">=</span> <span class="st">"1.38.1"</span>,</span></span>
-<span class="r-in"><span>    reference_usage <span class="op">=</span> <span class="st">"alignment by mothur2 v1.0"</span>,</span></span>
-<span class="r-in"><span>    reference_note <span class="op">=</span> <span class="st">"default options"</span>,</span></span>
-<span class="r-in"><span>    reference_url <span class="op">=</span> <span class="va">resource_url</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"silva.bacteria.fasta"</span>,</span></span>
+<span class="r-in"><span>    version <span class="op">=</span> <span class="st">"1.38.1"</span>,</span></span>
+<span class="r-in"><span>    usage <span class="op">=</span> <span class="st">"alignment by mothur2 v1.0"</span>,</span></span>
+<span class="r-in"><span>    note <span class="op">=</span> <span class="st">"default options"</span>,</span></span>
+<span class="r-in"><span>    documentation_url <span class="op">=</span> <span class="va">resource_url</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add FASTA data with a resource reference</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span></span>
-<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span></span>
 <span class="r-in"><span>  reference <span class="op">=</span> <span class="va">resource_reference</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 1 resource references.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -1260,7 +1278,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_mothur_shared.html">read_mothur_shared</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.shared"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
 <span class="r-in"><span></span></span>
@@ -1341,7 +1359,7 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign 'otu' bin representative sequences</span></span></span>
-<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">bin_reps</span>, type <span class="op">=</span> <span class="st">"bin_representatives"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">bin_reps</span>, type <span class="op">=</span> <span class="st">"bin_representative"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To assign abundance only bins</span></span></span>
@@ -1375,7 +1393,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="va">sample_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_sample_design.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">sample_assignments</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">sample_assignments</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -1454,52 +1472,52 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the total number of sequences</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 113963</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get number of unique sequences</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get number of unique sequences from samples 'F3D0' and 'F3D1'</span></span></span>
 <span class="r-in"><span><span class="co"># Note these sequences will be present in both samples but may be</span></span></span>
 <span class="r-in"><span><span class="co"># be present in other samples as well</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9385</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get number of unique sequences exclusive to samples 'F3D0' and</span></span></span>
 <span class="r-in"><span><span class="co"># 'F3D1'. Note sequences are present in both samples and NOT present in</span></span></span>
 <span class="r-in"><span><span class="co"># any other samples.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>,</span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>,</span></span>
 <span class="r-in"><span>            samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of samples in the dataset</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 19</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of treatments in the dataset</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of "otu" bins in the dataset</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of "asv" bins in the dataset</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of "phylotype" bins in the dataset</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 63</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get number of "otu" bins from samples 'F3D0' and 'F3D1'</span></span></span>
 <span class="r-in"><span><span class="co"># Note these bins will have sequences from both samples but there may be</span></span></span>
 <span class="r-in"><span><span class="co"># other samples present as well</span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 125</span>
 <span class="r-in"><span></span></span>
@@ -1508,7 +1526,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co"># samples will be present in the bins.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">count</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span></span>
 <span class="r-in"><span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
@@ -1549,7 +1567,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span> <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span><span class="st">"my_dataset"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># assign abundance 'otu' bins</span></span></span>
-<span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">assign</span><span class="op">(</span>table <span class="op">=</span> <span class="va">df</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">data</span><span class="op">$</span><span class="fu">add_sample_tree</span><span class="op">(</span><span class="va">tree</span><span class="op">)</span></span></span>
@@ -1606,7 +1624,7 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "miseq_sop"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the names of the sequences</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [1] "M00967_43_000000000-A3JHG_1_2101_16474_12783"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [2] "M00967_43_000000000-A3JHG_1_1113_12711_3318" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [3] "M00967_43_000000000-A3JHG_1_2108_14707_9807" </span>
@@ -4034,7 +4052,7 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2425] "M00967_43_000000000-A3JHG_1_1107_26400_19526"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the names of the sequences present sample 'F3D0'</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "M00967_43_000000000-A3JHG_1_2103_25452_6018" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [2] "M00967_43_000000000-A3JHG_1_1109_13330_21597"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [3] "M00967_43_000000000-A3JHG_1_1110_5315_13833" </span>
@@ -4346,7 +4364,7 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [309] "M00967_43_000000000-A3JHG_1_2107_18723_18535"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#' # To get the names of the sequences unique to sample 'F3D0'</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "M00967_43_000000000-A3JHG_1_2103_25452_6018" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [2] "M00967_43_000000000-A3JHG_1_1101_9620_19745" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [3] "M00967_43_000000000-A3JHG_1_2109_17345_6668" </span>
@@ -4450,17 +4468,17 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [101] "M00967_43_000000000-A3JHG_1_1103_22490_21890"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the names of the samples</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "F3D0"   "F3D1"   "F3D141" "F3D142" "F3D143" "F3D144" "F3D145" "F3D146"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "F3D147" "F3D148" "F3D149" "F3D150" "F3D2"   "F3D3"   "F3D5"   "F3D6"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] "F3D7"   "F3D8"   "F3D9"  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the names of the treatments</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Early" "Late" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the names of the bins</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "Otu001" "Otu002" "Otu003" "Otu004" "Otu005" "Otu006" "Otu007" "Otu008"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [9] "Otu009" "Otu010" "Otu011" "Otu012" "Otu013" "Otu014" "Otu015" "Otu016"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [17] "Otu017" "Otu018" "Otu019" "Otu020" "Otu021" "Otu022" "Otu023" "Otu024"</span>
@@ -4530,12 +4548,12 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [529] "Otu529" "Otu530" "Otu531"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the names of the bins that are unique to 'F3D0'</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Otu330" "Otu339" "Otu341" "Otu345" "Otu347" "Otu354" "Otu364" "Otu431"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Otu466" "Otu469" "Otu470" "Otu491" "Otu493" "Otu529"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the names of the bins that include sequences from 'F3D0'</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bins"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>, distinct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "Otu001" "Otu002" "Otu003" "Otu004" "Otu005" "Otu006" "Otu007" "Otu008"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [9] "Otu009" "Otu010" "Otu011" "Otu012" "Otu013" "Otu014" "Otu015" "Otu016"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [17] "Otu017" "Otu018" "Otu019" "Otu020" "Otu021" "Otu022" "Otu023" "Otu024"</span>
@@ -4562,7 +4580,7 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [185] "Otu431" "Otu466" "Otu469" "Otu470" "Otu491" "Otu493" "Otu529"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the names of the reports</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"reports"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "contigs_report"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -4588,13 +4606,13 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span><span class="co"># To get the FASTA data</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 sequence_names</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                  sequence_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4  M00967_43_000000000-A3JHG_1_1110_4126_16552</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                                                                                                                                 sequences</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                                                                                                                                  sequence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-C-A-G-C-G-G--TA-A-AA-TT-G-A-GA-GG--CT-C-AA-C-C-T-C-T-T-C--CC-G-C-CGTT-GAAAC-TG-A-TTGTC-TTGA-GT-GG-GC-GA-G-A---AG-T-A-TGTGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-A-ACTGACG-CTGA-AGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-AC-C-C-GG-GG--CT-C-AA-C---C-C-TGG-G-AGT-G-C-TTTT-GAAAC-TG-T-GCGGC-TAGA-GT-GT-CG-GA-G-G---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-GA-T-G-ACTGACG-CTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GC-C-C-GT-GG--CT-C-AA-C-C-G-C-G-G-A-ACC-G-C-TTTG-GAAAC-TG-C-GAGGC-TGGA-GT-GC-TG-GA-G-A---GG-T-A-AGCGGAATTCCTGGTGT-AGCGGT-GAAATGCGTAG-AT-A-TC-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTTA-CTG-G-AC-AG-T-G-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-GAACAGG</span>
@@ -4603,7 +4621,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about the FASTA data</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                             id start end length ambig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783     1 375    253     0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318     1 375    253     0</span>
@@ -4619,7 +4637,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the sequence bin assignments</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence_bin_assignments"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence_bin_assignment"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   otu_id                                       seq_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 Otu001  M00967_43_000000000-A3JHG_1_1111_20933_6700</span>
@@ -4630,51 +4648,51 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the sample treatment assignments</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample_assignments"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   samples treatments</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    F3D0      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    F3D1      Early</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  F3D141       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  F3D142       Late</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  F3D143       Late</span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sample_assignment"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample treatment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   F3D0     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   F3D1     Early</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 F3D141      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 F3D142      Late</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 F3D143      Late</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about sequence classifications</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 sequence_names levels           taxonomies</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783      1             Bacteria</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M00967_43_000000000-A3JHG_1_2101_16474_12783      2      "Bacteroidetes"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M00967_43_000000000-A3JHG_1_2101_16474_12783      3        "Bacteroidia"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 M00967_43_000000000-A3JHG_1_2101_16474_12783      4      "Bacteroidales"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 M00967_43_000000000-A3JHG_1_2101_16474_12783      5 "Porphyromonadaceae"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   confidences</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5          88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                  sequence_name level             taxonomy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783     1             Bacteria</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 M00967_43_000000000-A3JHG_1_2101_16474_12783     2      "Bacteroidetes"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 M00967_43_000000000-A3JHG_1_2101_16474_12783     3        "Bacteroidia"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 M00967_43_000000000-A3JHG_1_2101_16474_12783     4      "Bacteroidales"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 M00967_43_000000000-A3JHG_1_2101_16474_12783     5 "Porphyromonadaceae"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   confidence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         88</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get a report about bin classifications for 'otu' data</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   bin_names levels           taxonomies confidences</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    Otu001      1             Bacteria         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Otu001      2      "Bacteroidetes"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Otu001      3        "Bacteroidia"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    Otu001      4      "Bacteroidales"         100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    Otu001      5 "Porphyromonadaceae"         100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   bin_name level             taxonomy confidence</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   Otu001     1             Bacteria        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Otu001     2      "Bacteroidetes"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   Otu001     3        "Bacteroidia"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   Otu001     4      "Bacteroidales"        100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   Otu001     5 "Porphyromonadaceae"        100</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the 'otu' bin representative sequences</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin_representatives"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"bin_representative"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   otu_names                         representative_names</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   otu_names                          representative_name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    Otu001 M00967_43_000000000-A3JHG_1_1108_14299_17220</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    Otu002  M00967_43_000000000-A3JHG_1_1106_22705_6123</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    Otu003  M00967_43_000000000-A3JHG_1_1101_15533_5293</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4    Otu004 M00967_43_000000000-A3JHG_1_1105_25642_17588</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5    Otu005  M00967_43_000000000-A3JHG_1_2102_7041_13746</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                                                                                                                  representative_sequences</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                                                                                                                   representative_sequence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-TG-C-C-GG-GG--CT-C-AA-C-C-C-C-G-G-A-ACT-G-C-TTTG-GAAAC-TG-T-ACAGC-TAGA-GT-GC-AG-GA-G-G---GG-T-G-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTCA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-CA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-G-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TCTG-GAAAC-TG-T-AAAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-C-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GA-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TTTG-GAAAC-TG-T-ATAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG</span>
@@ -4697,7 +4715,7 @@ Get summary of the sequence reports</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the resource references associated with your data:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">references</span> <span class="op">&lt;-</span> <span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"references"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">references</span> <span class="op">&lt;-</span> <span class="va">miseq</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"resource_reference"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get our custom report containing the contigs assembly data:</span></span></span>
 <span class="r-in"><span></span></span>
@@ -4736,7 +4754,7 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the summary of your FASTA data</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends   nbases ambigs polymers numns    numseqs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375 249.0000      0 3.000000     0      1.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075</span>
@@ -4757,7 +4775,7 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375 252.4472      0 4.368699     0      0.000</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># summarize contigs_report</span></span></span>
-<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"reports"</span>, report_type <span class="op">=</span> <span class="st">"contigs_report"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"report"</span>, report_type <span class="op">=</span> <span class="st">"contigs_report"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:       0.0000452496 250.0000   0.000000      0    248.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000</span>

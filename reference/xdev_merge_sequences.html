@@ -106,9 +106,9 @@ Default = "merged"</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="assign.html">assign</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>,</span></span>
-<span class="r-in"><span>       table <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sequence_names <span class="op">=</span> <span class="va">sequence_names</span>,</span></span>
-<span class="r-in"><span>                          abundances <span class="op">=</span> <span class="va">abundances</span>,</span></span>
-<span class="r-in"><span>                          samples <span class="op">=</span> <span class="va">samples</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>       table <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="va">sequence_names</span>,</span></span>
+<span class="r-in"><span>                          abundance <span class="op">=</span> <span class="va">abundances</span>,</span></span>
+<span class="r-in"><span>                          sample <span class="op">=</span> <span class="va">samples</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>       type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 10 sequence abundances.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
@@ -130,7 +130,7 @@ Default = "merged"</p></dd>
 <span class="r-in"><span><span class="co"># You can see from the get_num_sequences function that the merged sequence's</span></span></span>
 <span class="r-in"><span><span class="co"># abundances are added to the first sequence.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="count.html">count</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="count.html">count</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

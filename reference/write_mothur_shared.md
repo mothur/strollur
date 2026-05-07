@@ -28,6 +28,7 @@ vector containing the names of the files created
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -42,7 +43,7 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_shared(miseq, tempfile())
-#> [1] "/tmp/Rtmp1sax1K/file1bf9468ca753.otu.shared"      
-#> [2] "/tmp/Rtmp1sax1K/file1bf9468ca753.asv.shared"      
-#> [3] "/tmp/Rtmp1sax1K/file1bf9468ca753.phylotype.shared"
+#> [1] "/tmp/Rtmpt3sFxG/file3d89488715f3.otu.shared"      
+#> [2] "/tmp/Rtmpt3sFxG/file3d89488715f3.asv.shared"      
+#> [3] "/tmp/Rtmpt3sFxG/file3d89488715f3.phylotype.shared"
 ```

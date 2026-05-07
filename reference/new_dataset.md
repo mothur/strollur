@@ -32,6 +32,7 @@ The 'new' method in the
 ## Examples
 
 ``` r
+
 data <- new_dataset()
 
 # to create a new dataset named "soil" and allow for all available

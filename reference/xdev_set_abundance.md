@@ -43,16 +43,17 @@ No return value, called for side effects.
 ## Examples
 
 ``` r
+
 names <- c("seq1", "seq2", "seq3",  "seq4")
 abunds <- c(1250, 65, 50, 4)
 
 data <- new_dataset(dataset_name = "my_dataset")
 
-xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
-                                           abundances = abunds))
+xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_name = names,
+                                           abundance = abunds))
 #> Assigned 4 sequence abundances.
 #> [1] 4
-abundance(data = data, type = "sequences")
+abundance(data = data, type = "sequence")
 #>   sequence_names abundances
 #> 1           seq1       1250
 #> 2           seq2         65
@@ -66,7 +67,7 @@ xdev_set_abundance(data = data,
                    sequence_names = seqs_to_update,
                    sequence_abundances = new_abunds)
 
-abundance(data = data, type = "sequences")
+abundance(data = data, type = "sequence")
 #>   sequence_names abundances
 #> 1           seq1       1000
 #> 2           seq2         65

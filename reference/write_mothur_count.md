@@ -27,6 +27,7 @@ name of count file
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -41,5 +42,5 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_count(miseq, tempfile())
-#> [1] "/tmp/Rtmp1sax1K/file1bf93f84c641"
+#> [1] "/tmp/Rtmpt3sFxG/file3d891ebb5d9a"
 ```

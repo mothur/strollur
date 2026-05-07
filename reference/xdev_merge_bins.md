@@ -38,6 +38,7 @@ No return value, called for side effects.
 ## Examples
 
 ``` r
+
  data <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.

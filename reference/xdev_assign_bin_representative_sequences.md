@@ -10,8 +10,8 @@ xdev_assign_bin_representative_sequences(
   table,
   bin_type = "otu",
   reference = NULL,
-  bin_name = "bin_names",
-  sequence_name = "sequence_names",
+  bin_name = "bin_name",
+  sequence_name = "sequence_name",
   verbose = TRUE
 )
 ```
@@ -38,12 +38,12 @@ xdev_assign_bin_representative_sequences(
 - bin_name, :
 
   a string containing the name of the column in 'table' that contains
-  the bin names. Default column name is 'bin_names'.
+  the bin names. Default column name is 'bin_name'.
 
 - sequence_name:
 
   a string containing the name of the column in 'table' that contains
-  the bin names. Default column name is 'sequence_names'.
+  the bin names. Default column name is 'sequence_name'.
 
 - verbose, :
 
@@ -56,6 +56,7 @@ double containing the number of representative sequences assigned
 ## Examples
 
 ``` r
+
   miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.

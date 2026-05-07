@@ -1,6 +1,6 @@
 # General Importing
 
-The strollur package stores data associated with your microbial DNA
+The strollur package stores data associated with your Amplicon Sequence
 analysis. This tutorial will familiarize you some of with the functions
 available in the strollur package. If you haven’t reviewed the “Getting
 Started” tutorial, we recommend you start there.
@@ -10,6 +10,7 @@ Started” tutorial, we recommend you start there.
 First let’s create an empty data set named my_data.
 
 ``` r
+
 data <- new_dataset(dataset_name = "my_data")
 ```
 
@@ -41,16 +42,17 @@ strollur has a function for reading FASTA files named
 We will use it to read the sequence data into a data.frame.
 
 ``` r
+
 fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 str(fasta_data)
 #> 'data.frame':    2425 obs. of  2 variables:
-#>  $ sequence_names: chr  "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...
-#>  $ sequences     : chr  "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-"| __truncated__ "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--TCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-G-CT-G-T-T-AA-G-T-"| __truncated__ ...
+#>  $ sequence_name: chr  "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...
+#>  $ sequence     : chr  "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-"| __truncated__ "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--TCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-G-CT-G-T-T-AA-G-T-"| __truncated__ ...
 
 add(
   data,
   table = fasta_data,
-  type = "sequences"
+  type = "sequence"
 )
 #> Added 2425 sequences.
 #> [1] 2425
@@ -79,25 +81,30 @@ let’s use the
 remove all data from our data set.
 
 ``` r
+
 clear(data)
 
-resource_url <- "https://mothur.org/wiki/silva_reference_files/"
+documentation_url <- "https://mothur.org/wiki/silva_reference_files/"
+method_url <- "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"
 
-resource_reference <- new_reference(
-  reference_name = "silva.bacteria.fasta",
-  reference_version = "1.38.1",
-  reference_usage = "alignment by mothur2 v1.0",
-  reference_note = "aligned with default options",
-  reference_url = resource_url
+silva_resource <- new_reference(
+  vendor = "SILVA",
+  name = "silva.bacteria.fasta",
+  version = "1.38.1",
+  usage = "alignment of sequences",
+  note = "reference trimmed to V4 region",
+  documentation_url = documentation_url,
+  method_url = method_url
 )
 
 add(
   data,
   table = fasta_data,
-  type = "sequences",
-  reference = resource_reference
+  type = "sequence",
+  reference = silva_resource
 )
 #> Added 2425 sequences.
+#> Added 1 resource references.
 #> [1] 2425
 data
 #> my_data:
@@ -122,7 +129,7 @@ data
 
 You may want to add custom reports to your data set such as an contigs
 assembly report, chimera report or alignment report. You can do so by
-setting type = “reports”. You must also provide a report_type.
+setting type = “report”. You must also provide a report_type.
 
 This is also a good time to explain what the table_names parameter does
 for you. strollur expects the columns in custom reports to have specific
@@ -130,12 +137,13 @@ names. If your table’s names differ from what strollur is expecting, you
 will see an error like that below.
 
 ``` r
+
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
 add(
   data,
   table = contigs_report,
-  type = "reports",
+  type = "report",
   report_type = "contigs_report"
 )
 
@@ -152,6 +160,7 @@ column is called in your custom report table. In the contigs_report the
 the add function.
 
 ``` r
+
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 str(contigs_report)
 #> spc_tbl_ [2,425 × 8] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
@@ -174,12 +183,12 @@ str(contigs_report)
 #>   ..   Num_Ns = col_double(),
 #>   ..   Expected_Errors = col_double()
 #>   .. )
-#>  - attr(*, "problems")=<externalptr>
+#>  - attr(*, "problems")=<pointer: (nil)>
 
 add(
   data,
   table = contigs_report,
-  type = "reports",
+  type = "report",
   report_type = "contigs_report",
   table_names = list(sequence_name = "Name")
 )
@@ -212,6 +221,7 @@ how to add metadata. We can add metadata to our data set by setting the
 type = “metadata”.
 
 ``` r
+
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 str(metadata)
 #> spc_tbl_ [19 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
@@ -222,7 +232,7 @@ str(metadata)
 #>   ..   sample = col_character(),
 #>   ..   days_post_wean = col_double()
 #>   .. )
-#>  - attr(*, "problems")=<externalptr>
+#>  - attr(*, "problems")=<pointer: (nil)>
 
 add(
   data,
@@ -236,9 +246,10 @@ add(
 #### Adding Resource References
 
 We can add additional resource references to our data set by setting the
-type = “references”.
+type = “resource_reference”.
 
 ``` r
+
 reference <- readr::read_csv(strollur_example("references.csv"),
   col_names = TRUE, show_col_types = FALSE
 )
@@ -246,7 +257,7 @@ reference <- readr::read_csv(strollur_example("references.csv"),
 add(
   data,
   table = reference,
-  type = "references"
+  type = "resource_reference"
 )
 #> Added 2 resource references.
 #> [1] 2
@@ -265,13 +276,14 @@ After adding your FASTA sequences, you can assign abundance and sample
 data using the assign function with the type = “sequence_abundance”.
 
 ``` r
+
 abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 str(abundance_table)
 #> spc_tbl_ [5,539 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-#>  $ sequence_names: chr [1:5539] "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...
-#>  $ abundances    : num [1:5539] 1 1 1 1 1 1 22 19 12 9 ...
-#>  $ samples       : chr [1:5539] "F3D150" "F3D142" "F3D3" "F3D8" ...
-#>  $ treatments    : chr [1:5539] "Late" "Late" "Early" "Early" ...
+#>  $ sequence_name: chr [1:5539] "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...
+#>  $ abundance    : num [1:5539] 1 1 1 1 1 1 22 19 12 9 ...
+#>  $ sample       : chr [1:5539] "F3D150" "F3D142" "F3D3" "F3D8" ...
+#>  $ treatment    : chr [1:5539] "Late" "Late" "Early" "Early" ...
 #>  - attr(*, "spec")=
 #>   .. cols(
 #>   ..   names = col_character(),
@@ -279,7 +291,7 @@ str(abundance_table)
 #>   ..   samples = col_character(),
 #>   ..   treatments = col_character()
 #>   .. )
-#>  - attr(*, "problems")=<externalptr>
+#>  - attr(*, "problems")=<pointer: (nil)>
 
 assign(data, table = abundance_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
@@ -312,26 +324,27 @@ data
 
 As you can see we now have abundances, samples and treatments added to
 the data set. Next, let’s assign the sequences to bins using type =
-“bins”. When you assign sequences to bins you must provide a *bin_type*.
+“bin”. When you assign sequences to bins you must provide a *bin_type*.
 The bin_type is a tag of your choosing used to reference the bin
 clusters you are adding. Let’s add some [Operational Taxonomic
 Unit](https://en.wikipedia.org/wiki/Operational_taxonomic_unit) clusters
 and set the bin_type = “otu”.
 
 ``` r
+
 bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
 str(bin_table)
 #> spc_tbl_ [2,425 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-#>  $ bin_names     : chr [1:2425] "Otu001" "Otu001" "Otu001" "Otu001" ...
-#>  $ sequence_names: chr [1:2425] "M00967_43_000000000-A3JHG_1_1111_20933_6700" "M00967_43_000000000-A3JHG_1_1113_17095_9759" "M00967_43_000000000-A3JHG_1_1114_22144_24942" "M00967_43_000000000-A3JHG_1_1112_5981_8948" ...
+#>  $ bin_name     : chr [1:2425] "Otu001" "Otu001" "Otu001" "Otu001" ...
+#>  $ sequence_name: chr [1:2425] "M00967_43_000000000-A3JHG_1_1111_20933_6700" "M00967_43_000000000-A3JHG_1_1113_17095_9759" "M00967_43_000000000-A3JHG_1_1114_22144_24942" "M00967_43_000000000-A3JHG_1_1112_5981_8948" ...
 #>  - attr(*, "spec")=
 #>   .. cols(
 #>   ..   otu_id = col_character(),
 #>   ..   seq_id = col_character()
 #>   .. )
-#>  - attr(*, "problems")=<externalptr>
+#>  - attr(*, "problems")=<pointer: (nil)>
 
-assign(data, table = bin_table, type = "bins", bin_type = "otu")
+assign(data, table = bin_table, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
 #> [1] 531
 
@@ -374,13 +387,14 @@ Now that we have assigned our sequences to bins, let’s assign taxonomy
 to our sequences.
 
 ``` r
+
 sequence_classification_data <- read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
 str(sequence_classification_data)
 #> spc_tbl_ [2,425 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-#>  $ sequence_names: chr [1:2425] "M00967_43_000000000-A3JHG_1_2102_17714_13657" "M00967_43_000000000-A3JHG_1_2109_7813_4701" "M00967_43_000000000-A3JHG_1_1113_19457_3875" "M00967_43_000000000-A3JHG_1_1112_18411_17052" ...
-#>  $ taxonomies    : chr [1:2425] "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);Lachnospiraceae(99);Lachnospiraceae_unclassified(99);" "Bacteria(99);Firmicutes(94);Clostridia(93);Clostridiales(93);Lachnospiraceae(90);Lachnospiraceae_unclassified(90);" "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);Lachnospiraceae(100);Johnsonella(93);" "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(98);\"Bacteroidales\"(98);\"Porphyromonadaceae\"(97);\"Por"| __truncated__ ...
+#>  $ sequence_name: chr [1:2425] "M00967_43_000000000-A3JHG_1_2102_17714_13657" "M00967_43_000000000-A3JHG_1_2109_7813_4701" "M00967_43_000000000-A3JHG_1_1113_19457_3875" "M00967_43_000000000-A3JHG_1_1112_18411_17052" ...
+#>  $ taxonomy     : chr [1:2425] "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);Lachnospiraceae(99);Lachnospiraceae_unclassified(99);" "Bacteria(99);Firmicutes(94);Clostridia(93);Clostridiales(93);Lachnospiraceae(90);Lachnospiraceae_unclassified(90);" "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);Lachnospiraceae(100);Johnsonella(93);" "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(98);\"Bacteroidales\"(98);\"Porphyromonadaceae\"(97);\"Por"| __truncated__ ...
 #>  - attr(*, "spec")=
 #>   .. cols(
 #>   ..   X1 = col_character(),
@@ -402,14 +416,15 @@ consensus taxonomy of the sequences in the bins. You can also set bin
 taxonomies independently by setting the type = “bin_taxonomy”.
 
 ``` r
+
 otu_taxonomy_data <- read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 str(otu_taxonomy_data)
 #> spc_tbl_ [531 × 3] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-#>  $ bin_names : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...
-#>  $ abundances: num [1:531] 12288 8892 7794 7476 7450 ...
-#>  $ taxonomies: chr [1:531] "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);Barnesiella(100);" ...
+#>  $ bin_name : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...
+#>  $ abundance: num [1:531] 12288 8892 7794 7476 7450 ...
+#>  $ taxonomy : chr [1:531] "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);\""| __truncated__ "Bacteria(100);\"Bacteroidetes\"(100);\"Bacteroidia\"(100);\"Bacteroidales\"(100);\"Porphyromonadaceae\"(100);Barnesiella(100);" ...
 #>  - attr(*, "spec")=
 #>   .. cols(
 #>   ..   OTU = col_character(),
@@ -433,22 +448,23 @@ strollur allows you to assign a bin representative sequences to the bins
 in your clusters. Let’s assign bin representatives to our *otu* bins.
 
 ``` r
+
 bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
 str(bin_reps)
 #> spc_tbl_ [531 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-#>  $ bin_names     : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...
-#>  $ sequence_names: chr [1:531] "M00967_43_000000000-A3JHG_1_1108_14299_17220" "M00967_43_000000000-A3JHG_1_1106_22705_6123" "M00967_43_000000000-A3JHG_1_1101_15533_5293" "M00967_43_000000000-A3JHG_1_1105_25642_17588" ...
+#>  $ bin_name     : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...
+#>  $ sequence_name: chr [1:531] "M00967_43_000000000-A3JHG_1_1108_14299_17220" "M00967_43_000000000-A3JHG_1_1106_22705_6123" "M00967_43_000000000-A3JHG_1_1101_15533_5293" "M00967_43_000000000-A3JHG_1_1105_25642_17588" ...
 #>  - attr(*, "spec")=
 #>   .. cols(
 #>   ..   bin_names = col_character(),
 #>   ..   sequence_names = col_character()
 #>   .. )
-#>  - attr(*, "problems")=<externalptr>
+#>  - attr(*, "problems")=<pointer: (nil)>
 
 assign(
   data,
   table = bin_reps,
-  type = "bin_representatives"
+  type = "bin_representative"
 )
 #> Assigned 531 otu bin representative sequences.
 #> [1] 531
@@ -457,14 +473,15 @@ assign(
 #### Assigning Treatments
 
 In our case the abundance_table included treatment assignments, but you
-can also assign samples to treatments by setting type = “treatments”.
+can also assign samples to treatments by setting type = “treatment”.
 
 ``` r
+
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 str(sample_assignments)
 #> spc_tbl_ [19 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
-#>  $ samples   : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...
-#>  $ treatments: chr [1:19] "Early" "Early" "Late" "Late" ...
+#>  $ sample   : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...
+#>  $ treatment: chr [1:19] "Early" "Early" "Late" "Late" ...
 #>  - attr(*, "spec")=
 #>   .. cols(
 #>   ..   samples = col_character(),
@@ -474,7 +491,7 @@ str(sample_assignments)
 assign(
   data,
   table = sample_assignments,
-  type = "treatments"
+  type = "treatment"
 )
 #> Assigned 19 samples to treatments.
 #> [1] 19
@@ -486,6 +503,7 @@ Lastly, strollur allows you to add tree that relate your samples or
 sequences. Let’s look at some examples together.
 
 ``` r
+
 sample_tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
 sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 

@@ -34,6 +34,7 @@ No return value, called for side effects.
 ## Examples
 
 ``` r
+
 sequence_names <- c("seq1", "seq2", "seq3", "seq3",
                "seq4", "seq4", "seq5", "seq6",
                "seq7", "seq8", "seq9", "seq9",
@@ -52,9 +53,9 @@ data <- new_dataset("my_data")
 
 
 assign(data = data,
-       table = data.frame(sequence_names = sequence_names,
-                          abundances = abundances,
-                          samples = samples),
+       table = data.frame(sequence_name = sequence_names,
+                          abundance = abundances,
+                          sample = samples),
        type = "sequence_abundance")
 #> Assigned 10 sequence abundances.
 #> [1] 10
@@ -76,6 +77,6 @@ report(data = data, type = "sequence_scrap")
 # You can see from the get_num_sequences function that the merged sequence's
 # abundances are added to the first sequence.
 
-count(data = data, type = "sequences")
+count(data = data, type = "sequence")
 #> [1] 100
 ```

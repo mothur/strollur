@@ -6,7 +6,7 @@ Get a data.frame containing the given report in a
 ## Usage
 
 ``` r
-xdev_report(data, type = "sequences", bin_type = "otu")
+xdev_report(data, type = "sequence", bin_type = "otu")
 ```
 
 ## Arguments
@@ -19,11 +19,11 @@ xdev_report(data, type = "sequences", bin_type = "otu")
 - type, :
 
   string containing the type of report you would like. Options include:
-  "fasta", "sequences", "sequence_bin_assignments", "sequence_taxonomy",
-  "bin_taxonomy", "bin_representatives", "sample_assignments",
-  "metadata", "references", "sequence_scrap", "bin_scrap". If you have
-  added custom reports for alignment, contigs_assembly or chimeras, you
-  can get those as well. Default = "sequences".
+  "fasta", "sequence", "sequence_bin_assignment", "sequence_taxonomy",
+  "bin_taxonomy", "bin_representative", "sample_assignment", "metadata",
+  "resource_reference", "sequence_scrap", "bin_scrap". If you have added
+  custom reports for alignment, contigs_assembly or chimeras, you can
+  get those as well. Default = "sequence".
 
 - bin_type, :
 
@@ -37,6 +37,7 @@ data.frame
 ## Examples
 
 ``` r
+
 # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
 
 miseq <- miseq_sop_example()
@@ -57,7 +58,7 @@ miseq <- miseq_sop_example()
 
 fasta <- xdev_report(data = miseq, type = "fasta")
 head(fasta, n = 10)
-#>                                  sequence_names
+#>                                   sequence_name
 #> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783
 #> 2   M00967_43_000000000-A3JHG_1_1113_12711_3318
 #> 3   M00967_43_000000000-A3JHG_1_2108_14707_9807
@@ -68,7 +69,7 @@ head(fasta, n = 10)
 #> 8   M00967_43_000000000-A3JHG_1_1114_8059_18290
 #> 9    M00967_43_000000000-A3JHG_1_2112_9811_9982
 #> 10  M00967_43_000000000-A3JHG_1_2103_25452_6018
-#>                                                                                                                                                                                                                                                                                                                                                                                  sequences
+#>                                                                                                                                                                                                                                                                                                                                                                                   sequence
 #> 1  TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-C-A-G-C-G-G--TA-A-AA-TT-G-A-GA-GG--CT-C-AA-C-C-T-C-T-T-C--CC-G-C-CGTT-GAAAC-TG-A-TTGTC-TTGA-GT-GG-GC-GA-G-A---AG-T-A-TGTGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-A-ACTGACG-CTGA-AGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG
 #> 2  TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-AC-C-C-GG-GG--CT-C-AA-C---C-C-TGG-G-AGT-G-C-TTTT-GAAAC-TG-T-GCGGC-TAGA-GT-GT-CG-GA-G-G---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-GA-T-G-ACTGACG-CTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG
 #> 3  TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GC-C-C-GT-GG--CT-C-AA-C-C-G-C-G-G-A-ACC-G-C-TTTG-GAAAC-TG-C-GAGGC-TGGA-GT-GC-TG-GA-G-A---GG-T-A-AGCGGAATTCCTGGTGT-AGCGGT-GAAATGCGTAG-AT-A-TC-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTTA-CTG-G-AC-AG-T-G-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-GAACAGG
@@ -82,7 +83,7 @@ head(fasta, n = 10)
 
 # To get a report about the FASTA data
 
-sequence_report <- xdev_report(data = miseq, type = "sequences")
+sequence_report <- xdev_report(data = miseq, type = "sequence")
 head(sequence_report, n = 10)
 #>                                              id start end length ambig
 #> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783     1 375    253     0
@@ -109,8 +110,9 @@ head(sequence_report, n = 10)
 
 # To get the sequence bin assignments
 
-bin_assignments <- xdev_report(data = miseq, type = "sequence_bin_assignments",
-                          bin_type = "otu")
+bin_assignments <- xdev_report(data = miseq,
+                               type = "sequence_bin_assignment",
+                               bin_type = "otu")
 head(bin_assignments, n = 10)
 #>    otu_id                                       seq_id
 #> 1  Otu001  M00967_43_000000000-A3JHG_1_1111_20933_6700
@@ -126,114 +128,117 @@ head(bin_assignments, n = 10)
 
 # To get the sample treatment assignments
 
-xdev_report(data = miseq, type = "sample_assignments")
-#>    samples treatments
-#> 1     F3D0      Early
-#> 2     F3D1      Early
-#> 3   F3D141       Late
-#> 4   F3D142       Late
-#> 5   F3D143       Late
-#> 6   F3D144       Late
-#> 7   F3D145       Late
-#> 8   F3D146       Late
-#> 9   F3D147       Late
-#> 10  F3D148       Late
-#> 11  F3D149       Late
-#> 12  F3D150       Late
-#> 13    F3D2      Early
-#> 14    F3D3      Early
-#> 15    F3D5      Early
-#> 16    F3D6      Early
-#> 17    F3D7      Early
-#> 18    F3D8      Early
-#> 19    F3D9      Early
+xdev_report(data = miseq, type = "sample_assignment")
+#>    sample treatment
+#> 1    F3D0     Early
+#> 2    F3D1     Early
+#> 3  F3D141      Late
+#> 4  F3D142      Late
+#> 5  F3D143      Late
+#> 6  F3D144      Late
+#> 7  F3D145      Late
+#> 8  F3D146      Late
+#> 9  F3D147      Late
+#> 10 F3D148      Late
+#> 11 F3D149      Late
+#> 12 F3D150      Late
+#> 13   F3D2     Early
+#> 14   F3D3     Early
+#> 15   F3D5     Early
+#> 16   F3D6     Early
+#> 17   F3D7     Early
+#> 18   F3D8     Early
+#> 19   F3D9     Early
 
 # To get a report about sequence classifications
 
 sequence_taxonomy_report <- xdev_report(data = miseq,
                                        type = "sequence_taxonomy")
 head(sequence_taxonomy_report, n = 10)
-#>                                  sequence_names levels
-#> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783      1
-#> 2  M00967_43_000000000-A3JHG_1_2101_16474_12783      2
-#> 3  M00967_43_000000000-A3JHG_1_2101_16474_12783      3
-#> 4  M00967_43_000000000-A3JHG_1_2101_16474_12783      4
-#> 5  M00967_43_000000000-A3JHG_1_2101_16474_12783      5
-#> 6  M00967_43_000000000-A3JHG_1_2101_16474_12783      6
-#> 7   M00967_43_000000000-A3JHG_1_1113_12711_3318      1
-#> 8   M00967_43_000000000-A3JHG_1_1113_12711_3318      2
-#> 9   M00967_43_000000000-A3JHG_1_1113_12711_3318      3
-#> 10  M00967_43_000000000-A3JHG_1_1113_12711_3318      4
-#>                           taxonomies confidences
-#> 1                           Bacteria         100
-#> 2                    "Bacteroidetes"         100
-#> 3                      "Bacteroidia"          99
-#> 4                    "Bacteroidales"          99
-#> 5               "Porphyromonadaceae"          88
-#> 6  "Porphyromonadaceae"_unclassified          88
-#> 7                           Bacteria         100
-#> 8                         Firmicutes         100
-#> 9                         Clostridia         100
-#> 10                     Clostridiales         100
+#>                                   sequence_name level
+#> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783     1
+#> 2  M00967_43_000000000-A3JHG_1_2101_16474_12783     2
+#> 3  M00967_43_000000000-A3JHG_1_2101_16474_12783     3
+#> 4  M00967_43_000000000-A3JHG_1_2101_16474_12783     4
+#> 5  M00967_43_000000000-A3JHG_1_2101_16474_12783     5
+#> 6  M00967_43_000000000-A3JHG_1_2101_16474_12783     6
+#> 7   M00967_43_000000000-A3JHG_1_1113_12711_3318     1
+#> 8   M00967_43_000000000-A3JHG_1_1113_12711_3318     2
+#> 9   M00967_43_000000000-A3JHG_1_1113_12711_3318     3
+#> 10  M00967_43_000000000-A3JHG_1_1113_12711_3318     4
+#>                             taxonomy confidence
+#> 1                           Bacteria        100
+#> 2                    "Bacteroidetes"        100
+#> 3                      "Bacteroidia"         99
+#> 4                    "Bacteroidales"         99
+#> 5               "Porphyromonadaceae"         88
+#> 6  "Porphyromonadaceae"_unclassified         88
+#> 7                           Bacteria        100
+#> 8                         Firmicutes        100
+#> 9                         Clostridia        100
+#> 10                     Clostridiales        100
 
 # To get a report about bin classifications for 'otu' data
 
 otu_taxonomy_report <- xdev_report(data = miseq,
-                                       type = "bin_taxonomy",
-                                       bin_type = "otu")
+                                   type = "bin_taxonomy",
+                                   bin_type = "otu")
 head(otu_taxonomy_report, n = 10)
-#>    bin_names levels                        taxonomies confidences
-#> 1     Otu001      1                          Bacteria         100
-#> 2     Otu001      2                   "Bacteroidetes"         100
-#> 3     Otu001      3                     "Bacteroidia"         100
-#> 4     Otu001      4                   "Bacteroidales"         100
-#> 5     Otu001      5              "Porphyromonadaceae"         100
-#> 6     Otu001      6 "Porphyromonadaceae"_unclassified         100
-#> 7     Otu002      1                          Bacteria         100
-#> 8     Otu002      2                   "Bacteroidetes"         100
-#> 9     Otu002      3                     "Bacteroidia"         100
-#> 10    Otu002      4                   "Bacteroidales"         100
+#>    bin_name level                          taxonomy confidence
+#> 1    Otu001     1                          Bacteria        100
+#> 2    Otu001     2                   "Bacteroidetes"        100
+#> 3    Otu001     3                     "Bacteroidia"        100
+#> 4    Otu001     4                   "Bacteroidales"        100
+#> 5    Otu001     5              "Porphyromonadaceae"        100
+#> 6    Otu001     6 "Porphyromonadaceae"_unclassified        100
+#> 7    Otu002     1                          Bacteria        100
+#> 8    Otu002     2                   "Bacteroidetes"        100
+#> 9    Otu002     3                     "Bacteroidia"        100
+#> 10   Otu002     4                   "Bacteroidales"        100
 
 # To get a report about bin classifications for 'asv' data
 
-asv_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
-                              bin_type = "asv")
+asv_taxonomy_report <- xdev_report(data = miseq,
+                                   type = "bin_taxonomy",
+                                   bin_type = "asv")
 head(asv_taxonomy_report, n = 10)
-#>    bin_names levels                        taxonomies confidences
-#> 1    Asv0001      1                          Bacteria         100
-#> 2    Asv0001      2                   "Bacteroidetes"         100
-#> 3    Asv0001      3                     "Bacteroidia"         100
-#> 4    Asv0001      4                   "Bacteroidales"         100
-#> 5    Asv0001      5              "Porphyromonadaceae"         100
-#> 6    Asv0001      6 "Porphyromonadaceae"_unclassified         100
-#> 7    Asv0002      1                          Bacteria         100
-#> 8    Asv0002      2                   "Bacteroidetes"         100
-#> 9    Asv0002      3                     "Bacteroidia"         100
-#> 10   Asv0002      4                   "Bacteroidales"         100
+#>    bin_name level                          taxonomy confidence
+#> 1   Asv0001     1                          Bacteria        100
+#> 2   Asv0001     2                   "Bacteroidetes"        100
+#> 3   Asv0001     3                     "Bacteroidia"        100
+#> 4   Asv0001     4                   "Bacteroidales"        100
+#> 5   Asv0001     5              "Porphyromonadaceae"        100
+#> 6   Asv0001     6 "Porphyromonadaceae"_unclassified        100
+#> 7   Asv0002     1                          Bacteria        100
+#> 8   Asv0002     2                   "Bacteroidetes"        100
+#> 9   Asv0002     3                     "Bacteroidia"        100
+#> 10  Asv0002     4                   "Bacteroidales"        100
 
 # To get a report about bin classifications for 'phylotype' data
 
-phylotype_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
-                                    bin_type = "phylotype")
+phylotype_taxonomy_report <- xdev_report(data = miseq,
+                                         type = "bin_taxonomy",
+                                         bin_type = "phylotype")
 head(phylotype_taxonomy_report, n = 10)
-#>    bin_names levels                   taxonomies confidences
-#> 1    Phylo01      1                     Bacteria         100
-#> 2    Phylo01      2                   Firmicutes         100
-#> 3    Phylo01      3                   Clostridia         100
-#> 4    Phylo01      4                Clostridiales         100
-#> 5    Phylo01      5              Lachnospiraceae         100
-#> 6    Phylo01      6 Lachnospiraceae_unclassified         100
-#> 7    Phylo02      1                     Bacteria         100
-#> 8    Phylo02      2              "Bacteroidetes"         100
-#> 9    Phylo02      3                "Bacteroidia"         100
-#> 10   Phylo02      4              "Bacteroidales"         100
+#>    bin_name level                     taxonomy confidence
+#> 1   Phylo01     1                     Bacteria        100
+#> 2   Phylo01     2                   Firmicutes        100
+#> 3   Phylo01     3                   Clostridia        100
+#> 4   Phylo01     4                Clostridiales        100
+#> 5   Phylo01     5              Lachnospiraceae        100
+#> 6   Phylo01     6 Lachnospiraceae_unclassified        100
+#> 7   Phylo02     1                     Bacteria        100
+#> 8   Phylo02     2              "Bacteroidetes"        100
+#> 9   Phylo02     3                "Bacteroidia"        100
+#> 10  Phylo02     4              "Bacteroidales"        100
 
 # To get the 'otu' bin representative sequences
 
-otu_bin_reps <- xdev_report(data = miseq, type = "bin_representatives",
-                       bin_type = "otu")
+otu_bin_reps <- xdev_report(data = miseq,
+                            type = "bin_representative",
+                            bin_type = "otu")
 head(otu_bin_reps, n = 10)
-#>    otu_names                         representative_names
+#>    otu_names                          representative_name
 #> 1     Otu001 M00967_43_000000000-A3JHG_1_1108_14299_17220
 #> 2     Otu002  M00967_43_000000000-A3JHG_1_1106_22705_6123
 #> 3     Otu003  M00967_43_000000000-A3JHG_1_1101_15533_5293
@@ -244,7 +249,7 @@ head(otu_bin_reps, n = 10)
 #> 8     Otu008  M00967_43_000000000-A3JHG_1_1110_5315_13833
 #> 9     Otu009 M00967_43_000000000-A3JHG_1_2109_27297_13184
 #> 10    Otu010  M00967_43_000000000-A3JHG_1_1101_9620_19745
-#>                                                                                                                                                                                                                                                                                                                                                                   representative_sequences
+#>                                                                                                                                                                                                                                                                                                                                                                    representative_sequence
 #> 1  TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-TG-C-C-GG-GG--CT-C-AA-C-C-C-C-G-G-A-ACT-G-C-TTTG-GAAAC-TG-T-ACAGC-TAGA-GT-GC-AG-GA-G-G---GG-T-G-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTCA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG
 #> 2  TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-CA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-G-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TCTG-GAAAC-TG-T-AAAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-C-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG
 #> 3  TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GA-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TTTG-GAAAC-TG-T-ATAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG
@@ -258,17 +263,20 @@ head(otu_bin_reps, n = 10)
 
 # To get a report about the sequences removed during your analysis:
 
-scrapped_sequence_report <- xdev_report(data = miseq, type = "sequence_scrap")
+scrapped_sequence_report <- xdev_report(data = miseq,
+                                        type = "sequence_scrap")
 
 # To get a report about the "otu" bins removed during your analysis:
 
-scrapped_otu_report <- xdev_report(data = miseq, type = "bin_scrap",
-                              bin_type = "otu")
+scrapped_otu_report <- xdev_report(data = miseq,
+                                   type = "bin_scrap",
+                                   bin_type = "otu")
 
 # To get a report about the "phylotype" bins removed during your analysis:
 
-scrapped_phylotype_report <- xdev_report(data = miseq, type = "bin_scrap",
-                                    bin_type = "phylotype")
+scrapped_phylotype_report <- xdev_report(data = miseq,
+                                         type = "bin_scrap",
+                                         bin_type = "phylotype")
 
 # To get the metadata associated with your data:
 
@@ -276,7 +284,7 @@ metadata <- xdev_report(data = miseq, type = "metadata")
 
 # To get the resource references associated with your data:
 
-references <- xdev_report(data = miseq, type = "references")
+references <- xdev_report(data = miseq, type = "resource_reference")
 
 # To get our custom report containing the contigs assembly data:
 

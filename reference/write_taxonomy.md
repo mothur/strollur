@@ -26,6 +26,7 @@ name of taxonomy file
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -40,5 +41,5 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_taxonomy(miseq, tempfile())
-#> [1] "/tmp/Rtmp1sax1K/file1bf998a1ef"
+#> [1] "/tmp/Rtmpt3sFxG/file3d8916dbf50f"
 ```

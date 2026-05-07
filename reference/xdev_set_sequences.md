@@ -43,10 +43,11 @@ No return value, called for side effects.
 ## Examples
 
 ``` r
+
 data <- new_dataset(dataset_name = "my_dataset")
 
 xdev_add_sequences(data = data,
-              table = data.frame(sequence_names = c("seq1", "seq2",
+              table = data.frame(sequence_name = c("seq1", "seq2",
                                                   "seq3", "seq4")))
 #> Added 4 sequences.
 #> [1] 4

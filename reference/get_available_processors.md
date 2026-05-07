@@ -15,6 +15,7 @@ Integer
 ## Examples
 
 ``` r
+
 get_available_processors()
 #> system 
 #>      4 

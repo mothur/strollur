@@ -23,6 +23,7 @@ Rcpp::List, containing the data in the 'Dataset
 ## Examples
 
 ``` r
+
 dataset <- new_dataset("my_dataset", 2)
 export_dataset(dataset)
 #> named list()

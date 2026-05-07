@@ -100,6 +100,7 @@ A new \`strollur\` object.
 
 #### Examples
 
+
     # to create an empty strollur object, run the following:
 
     data <- new_dataset("soil")
@@ -131,15 +132,15 @@ Get the abundance data for sequences, bins, samples, and treatments.
 
 #### Usage
 
-    strollur$abundance(type = "sequences", bin_type = "otu", by_sample = FALSE)
+    strollur$abundance(type = "sequence", bin_type = "otu", by_sample = FALSE)
 
 #### Arguments
 
 - `type, `:
 
   string containing the type of data you want the number of. Options
-  include: "sequences", "bins", "samples" and "treatments". Default =
-  "sequences".
+  include: "sequence", "bin", "sample" and "treatment". Default =
+  "sequence".
 
 - `bin_type, `:
 
@@ -157,33 +158,34 @@ data.frame
 
 #### Examples
 
+
     miseq <- miseq_sop_example()
 
     # To the total abundance for each sequence
-    miseq$abundance(type = "sequences") |> head(n = 5)
+    miseq$abundance(type = "sequence") |> head(n = 5)
 
     # To the total abundance for each sequence parsed by sample
-    miseq$abundance(type = "sequences", by_sample = TRUE) |> head(n = 5)
+    miseq$abundance(type = "sequence", by_sample = TRUE) |> head(n = 5)
 
     # To the total abundance for each "otu" bin
-    miseq$abundance(type = "bins", bin_type = "otu") |> head(n = 5)
+    miseq$abundance(type = "bin", bin_type = "otu") |> head(n = 5)
 
     # To the total abundance for each "otu" bin parsed by sample
-    miseq$abundance(type = "bins", bin_type = "otu", by_sample = TRUE) |>
+    miseq$abundance(type = "bin", bin_type = "otu", by_sample = TRUE) |>
     head(n = 5)
 
     # To the total abundance for each "asv" bin
-    miseq$abundance(type = "bins", bin_type = "asv") |> head(n = 5)
+    miseq$abundance(type = "bin", bin_type = "asv") |> head(n = 5)
 
     # To the total abundance for each "asv" bin parsed by sample
-    miseq$abundance(type = "bins", bin_type = "asv", by_sample = TRUE) |>
+    miseq$abundance(type = "bin", bin_type = "asv", by_sample = TRUE) |>
     head(n = 5)
 
     # To the total abundance for each sample
-    miseq$abundance(type = "samples") |> head(n = 5)
+    miseq$abundance(type = "sample") |> head(n = 5)
 
     # To the total abundance for each treatment
-    miseq$abundance(type = "treatments")
+    miseq$abundance(type = "treatment")
 
 ------------------------------------------------------------------------
 
@@ -195,12 +197,13 @@ Add sequences, reports, metadata or resource references
 
     strollur$add(
       table,
-      type = "sequences",
+      type = "sequence",
       report_type = NULL,
-      table_names = list(sequence_name = "sequence_names", sequence = "sequences", comment =
-        "comments", reference_name = "reference_names", reference_version =
-        "reference_versions", reference_usage = "reference_usages", reference_note =
-        "reference_notes", reference_url = "reference_urls"),
+      table_names = list(sequence_name = "sequence_name", sequence = "sequence", comment =
+        "comment", reference_vendor = "vendor", reference_name = "name", reference_version =
+        "version", reference_usage = "usage", reference_note = "note", reference_method_url =
+        "method_url", reference_documentation_url = "documentation_url", reference_parameter
+        = "parameter", reference_citation = "citation"),
       reference = NULL,
       verbose = TRUE
     )
@@ -213,8 +216,8 @@ Add sequences, reports, metadata or resource references
 
 - `type, `:
 
-  a string containing the type of data. Options include: 'sequences',
-  'references' 'metadata' and 'reports'.
+  a string containing the type of data. Options include: 'sequence',
+  'resource_reference' 'metadata' and 'report'.
 
 - `report_type, `:
 
@@ -226,45 +229,63 @@ Add sequences, reports, metadata or resource references
   named list used to indicate the names of the columns in the table. By
   default:
 
-  table_names \<- list(sequence_name = "sequence_names", comment =
-  "comments", sequence = "sequences", reference_name =
-  "reference_names", reference_version = "reference_versions",
-  reference_usage = "reference_usages", reference_note =
-  "reference_notes", reference_url = "reference_urls")
+  table_names \<- list(sequence_name = "sequence_name", comment =
+  "comment", sequence = "sequence", reference_name = "name",
+  reference_vendor = "vendor", reference_version = "version",
+  reference_usage = "usage", reference_note = "note",
+  reference_documentation_url = "documentation_url",
+  reference_method_url = "method_url", reference_parameter =
+  "parameter", reference_citation = "citation")
 
   In table_names, 'sequence_name' is a string containing the name of the
   column in 'table' that contains the sequence names. It is used when
-  you are adding FASTA data. Default column name is 'sequence_names'.
+  you are adding FASTA data. Default column name is 'sequence_name'.
 
   In table_names, 'sequence' is a string containing the name of the
   column in 'table' that contains the sequence nucleotide strings. It is
   used when you are adding FASTA data. Default column name is
-  'sequences'.
+  'sequence'.
 
   In table_names, 'comment' is a string containing the name of the
   column in 'table' that contains the sequence comments. It is used when
-  you are adding FASTA data. Default column name is 'comments'.
+  you are adding FASTA data. Default column name is 'comment'.
+
+  In table_names, 'reference_vendor' is a string containing the name of
+  the column in 'table' that contains the reference vendor names. It is
+  used when ' you are adding reference data. Default column name is
+  'vendor'.
 
   In table_names, 'reference_name' is a string containing the name of
-  the column in 'table' that contains the reference names. It is used
-  when you are adding reference data. Default column name is
-  'reference_names'.
+  the ' column in 'table' that contains the reference names. It is used
+  when you are ' adding reference data. Default column name is 'name'.
 
   In table_names, 'reference_version' is a string containing the name of
-  the column in 'table' that contains the reference versions. Default
-  column name is 'reference_versions'.
+  the ' column in 'table' that contains the reference versions. Default
+  column name is 'version'.
 
   In table_names, 'reference_usage' is a string containing the name of
   the column in 'table' that contains the reference usages. Default
-  column name is 'reference_usages'.
+  column name is 'usage'.
 
   In table_names, 'reference_note' is a string containing the name of
   the column in 'table' that contains the reference notes. Default
-  column name is 'reference_notes'.
+  column name is 'note'.
 
-  In table_names, 'reference_url' is a string containing the name of the
-  column in 'table' that contains the reference urls. Default column
-  name is 'reference_urls'.
+  In table_names, 'reference_method_url' is a string containing the name
+  of the column in 'table' that contains the reference method urls.
+  Default column name is 'method_url'.
+
+  In table_names, 'reference_documentation_url' is a string containing
+  the name of the column in 'table' that contains the reference urls.
+  Default column name is 'documentation_url'.
+
+  In table_names, 'reference_parameter' is a string containing the name
+  of the column in 'table' that contains the reference parameters.
+  Default column name is 'parameter'.
+
+  In table_names, 'reference_citation' is a string containing the name
+  of the column in 'table' that contains the reference citations.
+  Default column name is 'citation'.
 
 - `reference, `:
 
@@ -281,15 +302,16 @@ Updated \`strollur\` object - invisible(self)
 
 #### Examples
 
+
     fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
     contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
     # Create a new empty `strollur` object named 'example_dataset'
     data <- new_dataset(dataset_name = "example_dataset")
 
-    data$add(table = fasta_data, type = "sequences")
+    data$add(table = fasta_data, type = "sequence")
     data$add(
-      table = contigs_report, type = "reports",
+      table = contigs_report, type = "report",
       report_type = "contigs_report", list(sequence_name = "Name")
     )
 
@@ -308,18 +330,18 @@ Updated \`strollur\` object - invisible(self)
     resource_url <- "https://mothur.org/wiki/silva_reference_files/"
     resource_reference <-
       new_reference(
-        reference_name = "silva.bacteria.fasta",
-        reference_version = "1.38.1",
-        reference_usage = "alignment by mothur2 v1.0",
-        reference_note = "default options",
-        reference_url = resource_url
+        name = "silva.bacteria.fasta",
+        version = "1.38.1",
+        usage = "alignment by mothur2 v1.0",
+        note = "default options",
+        documentation_url = resource_url
       )
 
     # Add FASTA data with a resource reference
 
     data$add(
       table = fasta_data,
-      type = "sequences",
+      type = "sequence",
       reference = resource_reference
     )
 
@@ -345,10 +367,11 @@ Updated \`strollur\` object
 
 #### Examples
 
+
      data <- new_dataset("my_dataset")
 
      df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
-     assign(data = data, table = df, type = "bins", bin_type = "otu")
+     assign(data = data, table = df, type = "bin", bin_type = "otu")
 
      tree <- ape::read.tree(strollur_example(
      "final.opti_mcc.jclass.ave.tre"))
@@ -377,6 +400,7 @@ Updated \`strollur\` object
 
 #### Examples
 
+
      data <- new_dataset("my_dataset")
      tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
      data$add_sequence_tree(tree)
@@ -392,10 +416,10 @@ representative sequences, bin classifications or treatments.
 
     strollur$assign(
       table,
-      type = "bins",
+      type = "bin",
       bin_type = "otu",
-      table_names = list(sequence_name = "sequence_names", abundance = "abundances", sample =
-        "samples", treatment = "treatments", taxonomy = "taxonomies", bin_name = "bin_names"),
+      table_names = list(sequence_name = "sequence_name", abundance = "abundance", sample =
+        "sample", treatment = "treatment", taxonomy = "taxonomy", bin_name = "bin_name"),
       reference = NULL,
       verbose = TRUE
     )
@@ -409,9 +433,8 @@ representative sequences, bin classifications or treatments.
 - `type, `:
 
   a string containing the type of data. Options include:
-  'sequence_abundance', 'sequence_taxonomy', 'bins',
-  'bin_representatives', 'bin_taxonomy' and 'treatments'. Default =
-  "bins".
+  'sequence_abundance', 'sequence_taxonomy', 'bin',
+  'bin_representative', 'bin_taxonomy' and 'treatment'. Default = "bin".
 
 - `bin_type, `:
 
@@ -423,33 +446,32 @@ representative sequences, bin classifications or treatments.
   named list used to indicate the names of the columns in the table. By
   default:
 
-  table_names \<- list(sequence_name = "sequence_names", abundance =
-  "abundances", sample = "samples", treatment = "treatments", taxonomy =
-  "taxonomies", bin_name = "bin_names")
+  table_names \<- list(sequence_name = "sequence_name", abundance =
+  "abundance", sample = "sample", treatment = "treatment", taxonomy =
+  "taxonomy", bin_name = "bin_name")
 
   In table_names, 'sequence_name' is a string containing the name of the
   column in 'table' that contains the sequence names. Default column
-  name is 'sequence_names'.
+  name is 'sequence_name'.
 
   In table_names, 'abundance' is a string containing the name of the
   column in 'table' that contains the abundances. Default column name is
-  'abundances'.
+  'abundance'.
 
   In table_names, 'sample' is a string containing the name of the column
-  in 'table' that contains the samples. Default column name is
-  'samples'.
+  in 'table' that contains the samples. Default column name is 'sample'.
 
   In table_names, 'treatment' is a string containing the name of the
   column in 'table' that contains the treatment names. Default column
-  name is 'treatments'.
+  name is 'treatment'.
 
   In table_names, 'taxonomy' is a string containing the name of the
   column in 'table' that contains the classifications. Default column
-  name is 'taxonomies'.
+  name is 'taxonomy'.
 
   In table_names, 'bin_name' is a string containing the name of the
   column in 'table' that contains the bin names. Default column name is
-  'bin_names'.
+  'bin_name'.
 
 - `reference, `:
 
@@ -465,6 +487,7 @@ representative sequences, bin classifications or treatments.
 Updated \`strollur\` object
 
 #### Examples
+
 
     # create a new empty strollur object named 'example_dataset'
 
@@ -517,7 +540,7 @@ Updated \`strollur\` object
     data$assign(table = phylo_data, bin_type = "phylotype")
 
     # assign 'otu' bin representative sequences
-    data$assign(table = bin_reps, type = "bin_representatives")
+    data$assign(table = bin_reps, type = "bin_representative")
 
     # To assign abundance only bins
 
@@ -548,7 +571,7 @@ Updated \`strollur\` object
     sample_assignments <- readRDS(
        strollur_example("miseq_sample_design.rds"))
 
-    data$assign(table = sample_assignments, type = "treatments")
+    data$assign(table = sample_assignments, type = "treatment")
 
 ------------------------------------------------------------------------
 
@@ -581,7 +604,7 @@ type
 #### Usage
 
     strollur$count(
-      type = "sequences",
+      type = "sequence",
       bin_type = "otu",
       samples = NULL,
       distinct = FALSE
@@ -592,8 +615,8 @@ type
 - `type, `:
 
   string containing the type of data you want the number of. Options
-  include: "sequences", "samples", "treatments", "bins", and
-  "references". Default = "sequences".
+  include: "sequence", "sample", "treatment", "bin", and
+  "resource_reference". Default = "sequence".
 
 - `bin_type, `:
 
@@ -602,24 +625,24 @@ type
 
 - `samples, `:
 
-  vector of strings. samples is only used when 'type' = "sequences" or
-  'type' = "bins" . samples should contain the names of the samples you
+  vector of strings. samples is only used when 'type' = "sequence" or
+  'type' = "bin" . samples should contain the names of the samples you
   want the count for. Default = NULL.
 
 - `distinct, `:
 
-  Boolean. distinct is used when 'type' = "sequences" or 'type' =
-  "bins". When 'type' = "sequences" and distinct is TRUE the number of
-  unique sequences is returned. When 'type' = "sequences" and distinct
-  is FALSE the total number of sequences is returned. This can also be
-  combined with samples to find the number of unique sequences found
-  ONLY in a given set of samples, or to find the number of unique
-  sequences in given set of samples that may also be present in other
-  samples. When 'type' = "bins", you can set distinct = TRUE to return
-  the number of bins that ONLY contain sequences from the given samples.
-  When distinct is FALSE the count returned contains bins with sequences
-  from a given samples, but those bins may also contain other samples.
-  Default = FALSE.
+  Boolean. distinct is used when 'type' = "sequence" or 'type' = "bin".
+  When 'type' = "sequence" and distinct is TRUE the number of unique
+  sequences is returned. When 'type' = "sequence" and distinct is FALSE
+  the total number of sequences is returned. This can also be combined
+  with samples to find the number of unique sequences found ONLY in a
+  given set of samples, or to find the number of unique sequences in
+  given set of samples that may also be present in other samples. When
+  'type' = "bin", you can set distinct = TRUE to return the number of
+  bins that ONLY contain sequences from the given samples. When distinct
+  is FALSE the count returned contains bins with sequences from a given
+  samples, but those bins may also contain other samples. Default =
+  FALSE.
 
 #### Returns
 
@@ -627,46 +650,47 @@ double
 
 #### Examples
 
+
     miseq <- miseq_sop_example()
 
     # To get the total number of sequences
-    miseq$count(type = "sequences")
+    miseq$count(type = "sequence")
 
     # To get number of unique sequences
-    miseq$count(type = "sequences", distinct = TRUE)
+    miseq$count(type = "sequence", distinct = TRUE)
 
     # To get number of unique sequences from samples 'F3D0' and 'F3D1'
     # Note these sequences will be present in both samples but may be
     # be present in other samples as well
-    miseq$count(type = "sequences", samples = c("F3D0", "F3D1"))
+    miseq$count(type = "sequence", samples = c("F3D0", "F3D1"))
 
     # To get number of unique sequences exclusive to samples 'F3D0' and
     # 'F3D1'. Note sequences are present in both samples and NOT present in
     # any other samples.
 
-    miseq$count(type = "sequences",
+    miseq$count(type = "sequence",
                 samples = c("F3D0", "F3D1"), distinct = TRUE )
 
     # To get the number of samples in the dataset
-    miseq$count(type = "samples")
+    miseq$count(type = "sample")
 
     # To get the number of treatments in the dataset
-    miseq$count(type = "treatments")
+    miseq$count(type = "treatment")
 
     # To get the number of "otu" bins in the dataset
-    miseq$count(type = "bins", bin_type = "otu")
+    miseq$count(type = "bin", bin_type = "otu")
 
     # To get the number of "asv" bins in the dataset
-    miseq$count(type = "bins", bin_type = "asv")
+    miseq$count(type = "bin", bin_type = "asv")
 
     # To get the number of "phylotype" bins in the dataset
-    miseq$count(type = "bins", bin_type = "phylotype")
+    miseq$count(type = "bin", bin_type = "phylotype")
 
     # To get number of "otu" bins from samples 'F3D0' and 'F3D1'
     # Note these bins will have sequences from both samples but there may be
     # other samples present as well
     miseq$count(
-      type = "bins", bin_type = "otu", samples = c("F3D0", "F3D1")
+      type = "bin", bin_type = "otu", samples = c("F3D0", "F3D1")
     )
 
     # To get number of "otu" bins unique to samples 'F3D0' and 'F3D1'
@@ -674,7 +698,7 @@ double
     # samples will be present in the bins.
 
     miseq$count(
-      type = "bins", bin_type = "otu",
+      type = "bin", bin_type = "otu",
       samples = c("F3D0", "F3D1"), distinct = TRUE
     )
 
@@ -693,6 +717,7 @@ Get bin table types
 vector of strings
 
 #### Examples
+
 
     data <- miseq_sop_example()
     data$get_bin_types()
@@ -713,6 +738,7 @@ ape::tree
 
 #### Examples
 
+
      tree <- ape::read.tree(strollur_example(
       "final.opti_mcc.jclass.ave.tre"))
 
@@ -721,7 +747,7 @@ ape::tree
      data <- new_dataset("my_dataset")
 
      # assign abundance 'otu' bins
-     data$assign(table = df, type = "bins", bin_type = "otu")
+     data$assign(table = df, type = "bin", bin_type = "otu")
 
      data$add_sample_tree(tree)
      data$get_sample_tree()
@@ -742,6 +768,7 @@ ape::tree
 
 #### Examples
 
+
      data <- new_dataset("my_dataset")
      tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
      data$add_sequence_tree(tree)
@@ -756,7 +783,7 @@ Get the names of a given type of data
 #### Usage
 
     strollur$names(
-      type = "sequences",
+      type = "sequence",
       bin_type = "otu",
       samples = NULL,
       distinct = FALSE
@@ -767,8 +794,8 @@ Get the names of a given type of data
 - `type, `:
 
   string containing the type of data you would like. Options include:
-  "dataset", "sequences", "bins", "samples", "treatments", "reports".
-  Default = "sequences".
+  "dataset", "sequence", "bin", "sample", "treatment", "report". Default
+  = "sequence".
 
 - `bin_type, `:
 
@@ -777,13 +804,13 @@ Get the names of a given type of data
 
 - `samples, `:
 
-  vector of strings. samples is only used when 'type' = "sequences" or
-  'type' = "bins" . samples should contain the names of the samples you
+  vector of strings. samples is only used when 'type' = "sequence" or
+  'type' = "bin" . samples should contain the names of the samples you
   want names for. Default = NULL.
 
 - `distinct, `:
 
-  Boolean. distinct is used when 'type' = "sequences" or 'type' = "bins"
+  Boolean. distinct is used when 'type' = "sequence" or 'type' = "bin"
   and the samples parameter is used. The distinct parameter allows you
   to get the names that present given set of samples. When distinct is
   TRUE, the names function will return the names that ONLY contain data
@@ -797,37 +824,38 @@ vector of strings, containing the names requested
 
 #### Examples
 
+
     miseq <- miseq_sop_example()
 
     # To get the name of the dataset
     miseq$names(type = "dataset")
 
     # To get the names of the sequences
-    miseq$names(type = "sequences")
+    miseq$names(type = "sequence")
 
     # To get the names of the sequences present sample 'F3D0'
-    miseq$names(type = "sequences", samples = c("F3D0"))
+    miseq$names(type = "sequence", samples = c("F3D0"))
 
     #' # To get the names of the sequences unique to sample 'F3D0'
-    miseq$names(type = "sequences", samples = c("F3D0"), distinct = TRUE)
+    miseq$names(type = "sequence", samples = c("F3D0"), distinct = TRUE)
 
     # To get the names of the samples
-    miseq$names(type = "samples")
+    miseq$names(type = "sample")
 
     # To get the names of the treatments
-    miseq$names(type = "treatments")
+    miseq$names(type = "treatment")
 
     # To get the names of the bins
-    miseq$names(type = "bins")
+    miseq$names(type = "bin")
 
     # To get the names of the bins that are unique to 'F3D0'
-    miseq$names(type = "bins", samples = c("F3D0"), distinct = TRUE)
+    miseq$names(type = "bin", samples = c("F3D0"), distinct = TRUE)
 
     # To get the names of the bins that include sequences from 'F3D0'
-    miseq$names(type = "bins", samples = c("F3D0"), distinct = FALSE)
+    miseq$names(type = "bin", samples = c("F3D0"), distinct = FALSE)
 
     # To get the names of the reports
-    miseq$names(type = "reports")
+    miseq$names(type = "report")
 
 ------------------------------------------------------------------------
 
@@ -837,18 +865,18 @@ Get a data.frame containing the given report
 
 #### Usage
 
-    strollur$report(type = "sequences", bin_type = "otu")
+    strollur$report(type = "sequence", bin_type = "otu")
 
 #### Arguments
 
 - `type, `:
 
   string containing the type of report you would like. Options include:
-  "fasta", "sequences", "sequence_bin_assignments", "sequence_taxonomy",
-  "bin_taxonomy", "bin_representatives", "sample_assignments",
-  "metadata", "references", "sequence_scrap", "bin_scrap". If you have
-  added custom reports for alignment, contigs_assembly or chimeras, you
-  can get those as well. Default = "sequences".
+  "fasta", "sequence", "sequence_bin_assignment", "sequence_taxonomy",
+  "bin_taxonomy", "bin_representative", "sample_assignment", "metadata",
+  "resource_reference", "sequence_scrap", "bin_scrap". If you have added
+  custom reports for alignment, contigs_assembly or chimeras, you can
+  get those as well. Default = "sequence".
 
 - `bin_type, `:
 
@@ -861,6 +889,7 @@ data.frame
 
 #### Examples
 
+
     miseq <- miseq_sop_example()
 
     # To get the FASTA data
@@ -869,16 +898,16 @@ data.frame
 
     # To get a report about the FASTA data
 
-    miseq$report(type = "sequences") |> head(n = 5)
+    miseq$report(type = "sequence") |> head(n = 5)
 
     # To get the sequence bin assignments
 
-    miseq$report(type = "sequence_bin_assignments", bin_type = "otu") |>
+    miseq$report(type = "sequence_bin_assignment", bin_type = "otu") |>
     head(n = 5)
 
     # To get the sample treatment assignments
 
-    miseq$report(type = "sample_assignments") |> head(n = 5)
+    miseq$report(type = "sample_assignment") |> head(n = 5)
 
     # To get a report about sequence classifications
 
@@ -890,7 +919,7 @@ data.frame
 
     # To get the 'otu' bin representative sequences
 
-    miseq$report(type = "bin_representatives", bin_type = "otu") |>
+    miseq$report(type = "bin_representative", bin_type = "otu") |>
     head(n = 5)
 
     # To get a report about the sequences removed during your analysis:
@@ -907,7 +936,7 @@ data.frame
 
     # To get the resource references associated with your data:
 
-    references <- miseq$report(type = "references")
+    references <- miseq$report(type = "resource_reference")
 
     # To get our custom report containing the contigs assembly data:
 
@@ -921,14 +950,14 @@ Summarize the sequences data, custom reports, and scrapped data
 
 #### Usage
 
-    strollur$summary(type = "sequences", report_type = NULL, verbose = TRUE)
+    strollur$summary(type = "sequence", report_type = NULL, verbose = TRUE)
 
 #### Arguments
 
 - `type, `:
 
   string containing the type of data you want the number of. Options
-  include: "sequences", "reports" and "scrap". Default = "sequences".
+  include: "sequence", "report" and "scrap". Default = "sequence".
 
 - `report_type, `:
 
@@ -947,13 +976,14 @@ data.frame Get summary of the sequence reports
 
 #### Examples
 
+
     miseq <- miseq_sop_example()
 
     # To get the summary of your FASTA data
-    miseq$summary(type = "sequences")
+    miseq$summary(type = "sequence")
 
     # summarize contigs_report
-    miseq$summary(type = "reports", report_type = "contigs_report")
+    miseq$summary(type = "report", report_type = "contigs_report")
 
     # remove sample 'F3D0' to produce a scrap report
     xdev_remove_samples(data = miseq, samples = c("F3D0"))
@@ -981,6 +1011,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+
 ## ------------------------------------------------
 ## Method `strollur$new`
 ## ------------------------------------------------
@@ -1059,7 +1090,7 @@ miseq <- miseq_sop_example()
 #> Added a contigs_report.
 
 # To the total abundance for each sequence
-miseq$abundance(type = "sequences") |> head(n = 5)
+miseq$abundance(type = "sequence") |> head(n = 5)
 #>                                 sequence_names abundances
 #> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783          1
 #> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318          1
@@ -1068,16 +1099,16 @@ miseq$abundance(type = "sequences") |> head(n = 5)
 #> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436          1
 
 # To the total abundance for each sequence parsed by sample
-miseq$abundance(type = "sequences", by_sample = TRUE) |> head(n = 5)
-#>                                 sequence_names abundances samples treatments
-#> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783          1  F3D150       Late
-#> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318          1  F3D142       Late
-#> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807          1    F3D3      Early
-#> 4  M00967_43_000000000-A3JHG_1_1110_4126_16552          1    F3D8      Early
-#> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436          1    F3D7      Early
+miseq$abundance(type = "sequence", by_sample = TRUE) |> head(n = 5)
+#>                                  sequence_name abundance sample treatment
+#> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783         1 F3D150      Late
+#> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318         1 F3D142      Late
+#> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807         1   F3D3     Early
+#> 4  M00967_43_000000000-A3JHG_1_1110_4126_16552         1   F3D8     Early
+#> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436         1   F3D7     Early
 
 # To the total abundance for each "otu" bin
-miseq$abundance(type = "bins", bin_type = "otu") |> head(n = 5)
+miseq$abundance(type = "bin", bin_type = "otu") |> head(n = 5)
 #>   otu_id abundance
 #> 1 Otu001     12288
 #> 2 Otu002      8892
@@ -1086,17 +1117,17 @@ miseq$abundance(type = "bins", bin_type = "otu") |> head(n = 5)
 #> 5 Otu005      7450
 
 # To the total abundance for each "otu" bin parsed by sample
-miseq$abundance(type = "bins", bin_type = "otu", by_sample = TRUE) |>
+miseq$abundance(type = "bin", bin_type = "otu", by_sample = TRUE) |>
 head(n = 5)
-#>   bin_names abundances samples treatments
-#> 1    Otu001        499    F3D0      Early
-#> 2    Otu001        351    F3D1      Early
-#> 3    Otu001        388  F3D141       Late
-#> 4    Otu001        244  F3D142       Late
-#> 5    Otu001        189  F3D143       Late
+#>   bin_name abundance sample treatment
+#> 1   Otu001       499   F3D0     Early
+#> 2   Otu001       351   F3D1     Early
+#> 3   Otu001       388 F3D141      Late
+#> 4   Otu001       244 F3D142      Late
+#> 5   Otu001       189 F3D143      Late
 
 # To the total abundance for each "asv" bin
-miseq$abundance(type = "bins", bin_type = "asv") |> head(n = 5)
+miseq$abundance(type = "bin", bin_type = "asv") |> head(n = 5)
 #>    asv_id abundance
 #> 1 Asv0001     12196
 #> 2 Asv0002      8829
@@ -1105,29 +1136,29 @@ miseq$abundance(type = "bins", bin_type = "asv") |> head(n = 5)
 #> 5 Asv0005      7307
 
 # To the total abundance for each "asv" bin parsed by sample
-miseq$abundance(type = "bins", bin_type = "asv", by_sample = TRUE) |>
+miseq$abundance(type = "bin", bin_type = "asv", by_sample = TRUE) |>
 head(n = 5)
-#>   bin_names abundances samples treatments
-#> 1   Asv0001        495    F3D0      Early
-#> 2   Asv0001        340    F3D1      Early
-#> 3   Asv0001        386  F3D141       Late
-#> 4   Asv0001        242  F3D142       Late
-#> 5   Asv0001        188  F3D143       Late
+#>   bin_name abundance sample treatment
+#> 1  Asv0001       495   F3D0     Early
+#> 2  Asv0001       340   F3D1     Early
+#> 3  Asv0001       386 F3D141      Late
+#> 4  Asv0001       242 F3D142      Late
+#> 5  Asv0001       188 F3D143      Late
 
 # To the total abundance for each sample
-miseq$abundance(type = "samples") |> head(n = 5)
-#>   samples abundances
-#> 1    F3D0       6191
-#> 2    F3D1       4652
-#> 3  F3D141       4656
-#> 4  F3D142       2423
-#> 5  F3D143       2403
+miseq$abundance(type = "sample") |> head(n = 5)
+#>   sample abundance
+#> 1   F3D0      6191
+#> 2   F3D1      4652
+#> 3 F3D141      4656
+#> 4 F3D142      2423
+#> 5 F3D143      2403
 
 # To the total abundance for each treatment
-miseq$abundance(type = "treatments")
-#>   treatments abundances
-#> 1      Early      55634
-#> 2       Late      58329
+miseq$abundance(type = "treatment")
+#>   treatment abundance
+#> 1     Early     55634
+#> 2      Late     58329
 
 ## ------------------------------------------------
 ## Method `strollur$add`
@@ -1140,10 +1171,10 @@ contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 # Create a new empty `strollur` object named 'example_dataset'
 data <- new_dataset(dataset_name = "example_dataset")
 
-data$add(table = fasta_data, type = "sequences")
+data$add(table = fasta_data, type = "sequence")
 #> Added 2425 sequences.
 data$add(
-  table = contigs_report, type = "reports",
+  table = contigs_report, type = "report",
   report_type = "contigs_report", list(sequence_name = "Name")
 )
 #> Added a contigs_report.
@@ -1164,21 +1195,22 @@ data <- new_dataset(dataset_name = "example_dataset")
 resource_url <- "https://mothur.org/wiki/silva_reference_files/"
 resource_reference <-
   new_reference(
-    reference_name = "silva.bacteria.fasta",
-    reference_version = "1.38.1",
-    reference_usage = "alignment by mothur2 v1.0",
-    reference_note = "default options",
-    reference_url = resource_url
+    name = "silva.bacteria.fasta",
+    version = "1.38.1",
+    usage = "alignment by mothur2 v1.0",
+    note = "default options",
+    documentation_url = resource_url
   )
 
 # Add FASTA data with a resource reference
 
 data$add(
   table = fasta_data,
-  type = "sequences",
+  type = "sequence",
   reference = resource_reference
 )
 #> Added 2425 sequences.
+#> Added 1 resource references.
 
 
 ## ------------------------------------------------
@@ -1189,7 +1221,7 @@ data$add(
  data <- new_dataset("my_dataset")
 
  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
- assign(data = data, table = df, type = "bins", bin_type = "otu")
+ assign(data = data, table = df, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
 #> [1] 531
 
@@ -1270,7 +1302,7 @@ data$assign(table = phylo_data, bin_type = "phylotype")
 #> Assigned 63 phylotype bins.
 
 # assign 'otu' bin representative sequences
-data$assign(table = bin_reps, type = "bin_representatives")
+data$assign(table = bin_reps, type = "bin_representative")
 #> Assigned 531 otu bin representative sequences.
 
 # To assign abundance only bins
@@ -1304,7 +1336,7 @@ data$assign(
 sample_assignments <- readRDS(
    strollur_example("miseq_sample_design.rds"))
 
-data$assign(table = sample_assignments, type = "treatments")
+data$assign(table = sample_assignments, type = "treatment")
 #> Assigned 19 samples to treatments.
 
 
@@ -1383,52 +1415,52 @@ miseq <- miseq_sop_example()
 #> Added a contigs_report.
 
 # To get the total number of sequences
-miseq$count(type = "sequences")
+miseq$count(type = "sequence")
 #> [1] 113963
 
 # To get number of unique sequences
-miseq$count(type = "sequences", distinct = TRUE)
+miseq$count(type = "sequence", distinct = TRUE)
 #> [1] 2425
 
 # To get number of unique sequences from samples 'F3D0' and 'F3D1'
 # Note these sequences will be present in both samples but may be
 # be present in other samples as well
-miseq$count(type = "sequences", samples = c("F3D0", "F3D1"))
+miseq$count(type = "sequence", samples = c("F3D0", "F3D1"))
 #> [1] 9385
 
 # To get number of unique sequences exclusive to samples 'F3D0' and
 # 'F3D1'. Note sequences are present in both samples and NOT present in
 # any other samples.
 
-miseq$count(type = "sequences",
+miseq$count(type = "sequence",
             samples = c("F3D0", "F3D1"), distinct = TRUE )
 #> [1] 2
 
 # To get the number of samples in the dataset
-miseq$count(type = "samples")
+miseq$count(type = "sample")
 #> [1] 19
 
 # To get the number of treatments in the dataset
-miseq$count(type = "treatments")
+miseq$count(type = "treatment")
 #> [1] 2
 
 # To get the number of "otu" bins in the dataset
-miseq$count(type = "bins", bin_type = "otu")
+miseq$count(type = "bin", bin_type = "otu")
 #> [1] 531
 
 # To get the number of "asv" bins in the dataset
-miseq$count(type = "bins", bin_type = "asv")
+miseq$count(type = "bin", bin_type = "asv")
 #> [1] 2425
 
 # To get the number of "phylotype" bins in the dataset
-miseq$count(type = "bins", bin_type = "phylotype")
+miseq$count(type = "bin", bin_type = "phylotype")
 #> [1] 63
 
 # To get number of "otu" bins from samples 'F3D0' and 'F3D1'
 # Note these bins will have sequences from both samples but there may be
 # other samples present as well
 miseq$count(
-  type = "bins", bin_type = "otu", samples = c("F3D0", "F3D1")
+  type = "bin", bin_type = "otu", samples = c("F3D0", "F3D1")
 )
 #> [1] 125
 
@@ -1437,7 +1469,7 @@ miseq$count(
 # samples will be present in the bins.
 
 miseq$count(
-  type = "bins", bin_type = "otu",
+  type = "bin", bin_type = "otu",
   samples = c("F3D0", "F3D1"), distinct = TRUE
 )
 #> [1] 1
@@ -1478,7 +1510,7 @@ data$get_bin_types()
  data <- new_dataset("my_dataset")
 
  # assign abundance 'otu' bins
- data$assign(table = df, type = "bins", bin_type = "otu")
+ data$assign(table = df, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
 
  data$add_sample_tree(tree)
@@ -1535,7 +1567,7 @@ miseq$names(type = "dataset")
 #> [1] "miseq_sop"
 
 # To get the names of the sequences
-miseq$names(type = "sequences")
+miseq$names(type = "sequence")
 #>    [1] "M00967_43_000000000-A3JHG_1_2101_16474_12783"
 #>    [2] "M00967_43_000000000-A3JHG_1_1113_12711_3318" 
 #>    [3] "M00967_43_000000000-A3JHG_1_2108_14707_9807" 
@@ -3963,7 +3995,7 @@ miseq$names(type = "sequences")
 #> [2425] "M00967_43_000000000-A3JHG_1_1107_26400_19526"
 
 # To get the names of the sequences present sample 'F3D0'
-miseq$names(type = "sequences", samples = c("F3D0"))
+miseq$names(type = "sequence", samples = c("F3D0"))
 #>   [1] "M00967_43_000000000-A3JHG_1_2103_25452_6018" 
 #>   [2] "M00967_43_000000000-A3JHG_1_1109_13330_21597"
 #>   [3] "M00967_43_000000000-A3JHG_1_1110_5315_13833" 
@@ -4275,7 +4307,7 @@ miseq$names(type = "sequences", samples = c("F3D0"))
 #> [309] "M00967_43_000000000-A3JHG_1_2107_18723_18535"
 
 #' # To get the names of the sequences unique to sample 'F3D0'
-miseq$names(type = "sequences", samples = c("F3D0"), distinct = TRUE)
+miseq$names(type = "sequence", samples = c("F3D0"), distinct = TRUE)
 #>   [1] "M00967_43_000000000-A3JHG_1_2103_25452_6018" 
 #>   [2] "M00967_43_000000000-A3JHG_1_1101_9620_19745" 
 #>   [3] "M00967_43_000000000-A3JHG_1_2109_17345_6668" 
@@ -4379,17 +4411,17 @@ miseq$names(type = "sequences", samples = c("F3D0"), distinct = TRUE)
 #> [101] "M00967_43_000000000-A3JHG_1_1103_22490_21890"
 
 # To get the names of the samples
-miseq$names(type = "samples")
+miseq$names(type = "sample")
 #>  [1] "F3D0"   "F3D1"   "F3D141" "F3D142" "F3D143" "F3D144" "F3D145" "F3D146"
 #>  [9] "F3D147" "F3D148" "F3D149" "F3D150" "F3D2"   "F3D3"   "F3D5"   "F3D6"  
 #> [17] "F3D7"   "F3D8"   "F3D9"  
 
 # To get the names of the treatments
-miseq$names(type = "treatments")
+miseq$names(type = "treatment")
 #> [1] "Early" "Late" 
 
 # To get the names of the bins
-miseq$names(type = "bins")
+miseq$names(type = "bin")
 #>   [1] "Otu001" "Otu002" "Otu003" "Otu004" "Otu005" "Otu006" "Otu007" "Otu008"
 #>   [9] "Otu009" "Otu010" "Otu011" "Otu012" "Otu013" "Otu014" "Otu015" "Otu016"
 #>  [17] "Otu017" "Otu018" "Otu019" "Otu020" "Otu021" "Otu022" "Otu023" "Otu024"
@@ -4459,12 +4491,12 @@ miseq$names(type = "bins")
 #> [529] "Otu529" "Otu530" "Otu531"
 
 # To get the names of the bins that are unique to 'F3D0'
-miseq$names(type = "bins", samples = c("F3D0"), distinct = TRUE)
+miseq$names(type = "bin", samples = c("F3D0"), distinct = TRUE)
 #>  [1] "Otu330" "Otu339" "Otu341" "Otu345" "Otu347" "Otu354" "Otu364" "Otu431"
 #>  [9] "Otu466" "Otu469" "Otu470" "Otu491" "Otu493" "Otu529"
 
 # To get the names of the bins that include sequences from 'F3D0'
-miseq$names(type = "bins", samples = c("F3D0"), distinct = FALSE)
+miseq$names(type = "bin", samples = c("F3D0"), distinct = FALSE)
 #>   [1] "Otu001" "Otu002" "Otu003" "Otu004" "Otu005" "Otu006" "Otu007" "Otu008"
 #>   [9] "Otu009" "Otu010" "Otu011" "Otu012" "Otu013" "Otu014" "Otu015" "Otu016"
 #>  [17] "Otu017" "Otu018" "Otu019" "Otu020" "Otu021" "Otu022" "Otu023" "Otu024"
@@ -4491,7 +4523,7 @@ miseq$names(type = "bins", samples = c("F3D0"), distinct = FALSE)
 #> [185] "Otu431" "Otu466" "Otu469" "Otu470" "Otu491" "Otu493" "Otu529"
 
 # To get the names of the reports
-miseq$names(type = "reports")
+miseq$names(type = "report")
 #> [1] "contigs_report"
 
 
@@ -4517,13 +4549,13 @@ miseq <- miseq_sop_example()
 # To get the FASTA data
 
 miseq$report(type = "fasta") |> head(n = 5)
-#>                                 sequence_names
+#>                                  sequence_name
 #> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783
 #> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318
 #> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807
 #> 4  M00967_43_000000000-A3JHG_1_1110_4126_16552
 #> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436
-#>                                                                                                                                                                                                                                                                                                                                                                                 sequences
+#>                                                                                                                                                                                                                                                                                                                                                                                  sequence
 #> 1 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-C-A-G-C-G-G--TA-A-AA-TT-G-A-GA-GG--CT-C-AA-C-C-T-C-T-T-C--CC-G-C-CGTT-GAAAC-TG-A-TTGTC-TTGA-GT-GG-GC-GA-G-A---AG-T-A-TGTGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-A-ACTGACG-CTGA-AGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG
 #> 2 TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-AC-C-C-GG-GG--CT-C-AA-C---C-C-TGG-G-AGT-G-C-TTTT-GAAAC-TG-T-GCGGC-TAGA-GT-GT-CG-GA-G-G---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-GA-T-G-ACTGACG-CTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG
 #> 3 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GC-C-C-GT-GG--CT-C-AA-C-C-G-C-G-G-A-ACC-G-C-TTTG-GAAAC-TG-C-GAGGC-TGGA-GT-GC-TG-GA-G-A---GG-T-A-AGCGGAATTCCTGGTGT-AGCGGT-GAAATGCGTAG-AT-A-TC-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTTA-CTG-G-AC-AG-T-G-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-GAACAGG
@@ -4532,7 +4564,7 @@ miseq$report(type = "fasta") |> head(n = 5)
 
 # To get a report about the FASTA data
 
-miseq$report(type = "sequences") |> head(n = 5)
+miseq$report(type = "sequence") |> head(n = 5)
 #>                                             id start end length ambig
 #> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783     1 375    253     0
 #> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318     1 375    253     0
@@ -4548,7 +4580,7 @@ miseq$report(type = "sequences") |> head(n = 5)
 
 # To get the sequence bin assignments
 
-miseq$report(type = "sequence_bin_assignments", bin_type = "otu") |>
+miseq$report(type = "sequence_bin_assignment", bin_type = "otu") |>
 head(n = 5)
 #>   otu_id                                       seq_id
 #> 1 Otu001  M00967_43_000000000-A3JHG_1_1111_20933_6700
@@ -4559,51 +4591,51 @@ head(n = 5)
 
 # To get the sample treatment assignments
 
-miseq$report(type = "sample_assignments") |> head(n = 5)
-#>   samples treatments
-#> 1    F3D0      Early
-#> 2    F3D1      Early
-#> 3  F3D141       Late
-#> 4  F3D142       Late
-#> 5  F3D143       Late
+miseq$report(type = "sample_assignment") |> head(n = 5)
+#>   sample treatment
+#> 1   F3D0     Early
+#> 2   F3D1     Early
+#> 3 F3D141      Late
+#> 4 F3D142      Late
+#> 5 F3D143      Late
 
 # To get a report about sequence classifications
 
 miseq$report(type = "sequence_taxonomy") |> head(n = 5)
-#>                                 sequence_names levels           taxonomies
-#> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783      1             Bacteria
-#> 2 M00967_43_000000000-A3JHG_1_2101_16474_12783      2      "Bacteroidetes"
-#> 3 M00967_43_000000000-A3JHG_1_2101_16474_12783      3        "Bacteroidia"
-#> 4 M00967_43_000000000-A3JHG_1_2101_16474_12783      4      "Bacteroidales"
-#> 5 M00967_43_000000000-A3JHG_1_2101_16474_12783      5 "Porphyromonadaceae"
-#>   confidences
-#> 1         100
-#> 2         100
-#> 3          99
-#> 4          99
-#> 5          88
+#>                                  sequence_name level             taxonomy
+#> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783     1             Bacteria
+#> 2 M00967_43_000000000-A3JHG_1_2101_16474_12783     2      "Bacteroidetes"
+#> 3 M00967_43_000000000-A3JHG_1_2101_16474_12783     3        "Bacteroidia"
+#> 4 M00967_43_000000000-A3JHG_1_2101_16474_12783     4      "Bacteroidales"
+#> 5 M00967_43_000000000-A3JHG_1_2101_16474_12783     5 "Porphyromonadaceae"
+#>   confidence
+#> 1        100
+#> 2        100
+#> 3         99
+#> 4         99
+#> 5         88
 
 # To get a report about bin classifications for 'otu' data
 
 miseq$report(type = "bin_taxonomy", bin_type = "otu") |> head(n = 5)
-#>   bin_names levels           taxonomies confidences
-#> 1    Otu001      1             Bacteria         100
-#> 2    Otu001      2      "Bacteroidetes"         100
-#> 3    Otu001      3        "Bacteroidia"         100
-#> 4    Otu001      4      "Bacteroidales"         100
-#> 5    Otu001      5 "Porphyromonadaceae"         100
+#>   bin_name level             taxonomy confidence
+#> 1   Otu001     1             Bacteria        100
+#> 2   Otu001     2      "Bacteroidetes"        100
+#> 3   Otu001     3        "Bacteroidia"        100
+#> 4   Otu001     4      "Bacteroidales"        100
+#> 5   Otu001     5 "Porphyromonadaceae"        100
 
 # To get the 'otu' bin representative sequences
 
-miseq$report(type = "bin_representatives", bin_type = "otu") |>
+miseq$report(type = "bin_representative", bin_type = "otu") |>
 head(n = 5)
-#>   otu_names                         representative_names
+#>   otu_names                          representative_name
 #> 1    Otu001 M00967_43_000000000-A3JHG_1_1108_14299_17220
 #> 2    Otu002  M00967_43_000000000-A3JHG_1_1106_22705_6123
 #> 3    Otu003  M00967_43_000000000-A3JHG_1_1101_15533_5293
 #> 4    Otu004 M00967_43_000000000-A3JHG_1_1105_25642_17588
 #> 5    Otu005  M00967_43_000000000-A3JHG_1_2102_7041_13746
-#>                                                                                                                                                                                                                                                                                                                                                                  representative_sequences
+#>                                                                                                                                                                                                                                                                                                                                                                   representative_sequence
 #> 1 TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-TG-C-C-GG-GG--CT-C-AA-C-C-C-C-G-G-A-ACT-G-C-TTTG-GAAAC-TG-T-ACAGC-TAGA-GT-GC-AG-GA-G-G---GG-T-G-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTCA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG
 #> 2 TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-CA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-G-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TCTG-GAAAC-TG-T-AAAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-C-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG
 #> 3 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GA-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TTTG-GAAAC-TG-T-ATAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG
@@ -4626,7 +4658,7 @@ metadata <- miseq$report(type = "metadata") |> head(n = 5)
 
 # To get the resource references associated with your data:
 
-references <- miseq$report(type = "references")
+references <- miseq$report(type = "resource_reference")
 
 # To get our custom report containing the contigs assembly data:
 
@@ -4665,7 +4697,7 @@ miseq <- miseq_sop_example()
 #> Added a contigs_report.
 
 # To get the summary of your FASTA data
-miseq$summary(type = "sequences")
+miseq$summary(type = "sequence")
 #>             starts ends   nbases ambigs polymers numns    numseqs
 #> Minimum:         1  375 249.0000      0 3.000000     0      1.000
 #> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
@@ -4686,7 +4718,7 @@ miseq$summary(type = "sequences")
 #> Mean:            1  375 252.4472      0 4.368699     0      0.000
 
 # summarize contigs_report
-miseq$summary(type = "reports", report_type = "contigs_report")
+miseq$summary(type = "report", report_type = "contigs_report")
 #>             Expected_Errors   Length MisMatches Num_Ns Overlap_End
 #> Minimum:       0.0000452496 250.0000   0.000000      0    248.0000
 #> 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000

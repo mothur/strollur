@@ -7,6 +7,7 @@ files individually. To create a dataset from the outputs of the qiime2,
 run the following:
 
 ``` r
+
 qza_files <- c(
   strollur_example("rep_seqs.qza"),
   strollur_example("table.qza"),
@@ -29,6 +30,7 @@ data <- read_qiime2(
 To view a summary of data:
 
 ``` r
+
 data
 #> qiime_moving_pictures:
 #> 
@@ -66,6 +68,7 @@ To create a dataset and read the individual files, you can use the
 functions below. First let’s create a dataset named my_data.
 
 ``` r
+
 my_data <- new_dataset(dataset_name = "my_data")
 ```
 
@@ -76,6 +79,7 @@ versioning and provenance information. Let’s take a look at the
 rep_seqs.qza file first.
 
 ``` r
+
 fasta_artifact <- unpack_qiime2_artifact(qza = strollur_example("rep_seqs.qza"))
 ```
 
@@ -86,6 +90,7 @@ dataset you can use the
 function:
 
 ``` r
+
 fasta_file <- file.path(
   getwd(), "rep_seqs", fasta_artifact$uuid, "data",
   "dna-sequences.fasta"
@@ -95,14 +100,15 @@ fasta_data <- read_fasta(fasta = fasta_file)
 
 fasta_data is a data.frame containing sequence names, sequence
 nucleotide strings, and comments if provided. You can add the FASTA
-sequences to your dataset using the
+sequences to your strollur object using the
 [`add()`](https://mothur.org/strollur/reference/add.md) function:
 
 ``` r
+
 add(
   my_data,
   table = fasta_data,
-  type = "sequences"
+  type = "sequence"
 )
 #> Added 759 sequences.
 #> [1] 759
@@ -111,6 +117,7 @@ add(
 You can remove the fasta_artifact using the unlink function:
 
 ``` r
+
 unlink(file.path(getwd(), "rep_seqs"), recursive = TRUE)
 ```
 
@@ -124,13 +131,14 @@ clusters. Let’s use the
 function to extract the abundance table.
 
 ``` r
+
 abundance <- read_qiime2_feature_table(strollur_example("table.qza"))
 
 assign(
   my_data,
   table = abundance$data,
   type = "sequence_abundance",
-  table_names = list(sequence_name = "bin_names")
+  table_names = list(sequence_name = "bin_name")
 )
 #> Assigned 759 sequence abundances.
 #> [1] 759
@@ -138,9 +146,9 @@ assign(
 assign(
   my_data,
   table = abundance$data,
-  type = "bins",
+  type = "bin",
   bin_type = "asv",
-  table_names = list(sequence_name = "bin_names")
+  table_names = list(sequence_name = "bin_name")
 )
 #> Assigned 759 asv bins.
 #> [1] 759
@@ -172,13 +180,14 @@ taxonomy.qza file. We will use the
 function to extract the feature classification table.
 
 ``` r
+
 taxonomy <- read_qiime2_taxonomy(strollur_example("taxonomy.qza"))
 
 assign(
   my_data,
   table = taxonomy$data,
   type = "sequence_taxonomy",
-  table_names = list(sequence_name = "bin_names")
+  table_names = list(sequence_name = "bin_name")
 )
 #> Assigned 759 sequence taxonomies.
 #> [1] 759
@@ -188,6 +197,7 @@ Now, lets add a tree that shows the relationships between the sequences
 (features).
 
 ``` r
+
 tree_artifact <- unpack_qiime2_artifact(
   qza =
     strollur_example("rooted-tree.qza")
@@ -199,6 +209,7 @@ We can read the tree using the
 function.
 
 ``` r
+
 tree_file <- file.path(
   getwd(), "rooted-tree", tree_artifact$uuid, "data",
   "tree.nwk"
@@ -209,12 +220,14 @@ sequence_tree <- ape::read.tree(tree_file)
 You can add the tree to your dataset as follows:
 
 ``` r
+
 my_data$add_sequence_tree(tree = sequence_tree)
 ```
 
 You can remove the tree_artifact using the following:
 
 ``` r
+
 unlink(file.path(getwd(), "rooted-tree"), recursive = TRUE)
 ```
 
@@ -223,6 +236,7 @@ Lastly, let’s read the metadata provided by qiime2 using the
 function.
 
 ``` r
+
 metadata <- read_qiime2_metadata(
   metadata =
     strollur_example("sample_metadata.tsv")
@@ -232,6 +246,7 @@ metadata <- read_qiime2_metadata(
 To add the metadata to the my_data dataset, run the following:
 
 ``` r
+
 add(my_data, table = metadata, type = "metadata")
 #> Added metadata.
 #> [1] 1
@@ -241,6 +256,7 @@ To view a summary of your imported dataset, ‘my_data’, run the
 following:
 
 ``` r
+
 my_data
 #> my_data:
 #> 

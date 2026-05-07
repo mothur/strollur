@@ -27,6 +27,7 @@ No return value, called for side effects.
 ## Examples
 
 ``` r
+
 data <- new_dataset(dataset_name = "my_dataset")
 xdev_set_dataset_name(data = data, dataset_name = "new_dataset_name")
 ```

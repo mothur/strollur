@@ -28,6 +28,7 @@ vector containing the names of the files created
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -42,7 +43,7 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_cons_taxonomy(miseq, tempfile())
-#> [1] "/tmp/Rtmp1sax1K/file1bf9a3f5fe9.otu.cons.taxonomy"      
-#> [2] "/tmp/Rtmp1sax1K/file1bf9a3f5fe9.asv.cons.taxonomy"      
-#> [3] "/tmp/Rtmp1sax1K/file1bf9a3f5fe9.phylotype.cons.taxonomy"
+#> [1] "/tmp/Rtmpt3sFxG/file3d8913301322.otu.cons.taxonomy"      
+#> [2] "/tmp/Rtmpt3sFxG/file3d8913301322.asv.cons.taxonomy"      
+#> [3] "/tmp/Rtmpt3sFxG/file3d8913301322.phylotype.cons.taxonomy"
 ```

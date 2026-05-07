@@ -6,7 +6,7 @@ Summarize the sequences data, custom reports, and scrapped data in a
 ## Usage
 
 ``` r
-xdev_summarize(data, type = "sequences", report_type = NULL)
+xdev_summarize(data, type = "sequence", report_type = NULL)
 ```
 
 ## Arguments
@@ -19,7 +19,7 @@ xdev_summarize(data, type = "sequences", report_type = NULL)
 - type, :
 
   string containing the type of data you want the number of. Options
-  include: "sequences", "reports" and "scrap". Default = "sequences".
+  include: "sequence", "report" and "scrap". Default = "sequence".
 
 - report_type, :
 
@@ -34,6 +34,7 @@ data.frame()
 ## Examples
 
 ``` r
+
  data <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -49,7 +50,7 @@ data.frame()
 #> Added a contigs_report.
 
  # summarize FASTA data
- xdev_summarize(data = data, type = "sequences")
+ xdev_summarize(data = data, type = "sequence")
 #>             starts ends   nbases ambigs polymers numns    numseqs
 #> Minimum:         1  375 249.0000      0 3.000000     0      1.000
 #> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
@@ -61,7 +62,7 @@ data.frame()
 #> Mean:            1  375 252.4472      0 4.368699     0      0.000
 
  # summarize contigs_report
- xdev_summarize(data = data, type = "reports",
+ xdev_summarize(data = data, type = "report",
                  report_type = "contigs_report")
 #>             Expected_Errors   Length MisMatches Num_Ns Overlap_End
 #> Minimum:       0.0000452496 250.0000   0.000000      0    248.0000
@@ -86,7 +87,7 @@ data.frame()
  xdev_remove_samples(data = data, samples = c("F3D0"))
 
  # summarize FASTA data after removal of sample F3D0
- xdev_summarize(data = data, type = "sequences")
+ xdev_summarize(data = data, type = "sequence")
 #>             starts ends   nbases ambigs polymers numns  numseqs
 #> Minimum:         1  375 249.0000      0 3.000000     0      1.0
 #> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2695.3

@@ -9,7 +9,7 @@ parsed by sample
 ``` r
 xdev_get_by_sample(
   data,
-  type = "sequence_names",
+  type = "sequence_name",
   samples = as.character(c()),
   degap = FALSE
 )
@@ -25,7 +25,7 @@ xdev_get_by_sample(
 - type, :
 
   string containing the type of data you want the totals of. Options
-  include: "sequence_names", "sequences". Default = "sequence_names".
+  include: "sequence_name", "sequence". Default = "sequence_name".
 
 - samples:
 
@@ -45,6 +45,7 @@ requested parsed by sample.
 ## Examples
 
 ``` r
+
 data <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -60,7 +61,7 @@ data <- miseq_sop_example()
 #> Added a contigs_report.
 
 # To get the sequence names parsed by sample
-xdev_get_by_sample(data, "sequence_names")
+xdev_get_by_sample(data, "sequence_name")
 #> [[1]]
 #>   [1] "M00967_43_000000000-A3JHG_1_2103_25452_6018" 
 #>   [2] "M00967_43_000000000-A3JHG_1_1109_13330_21597"
@@ -5640,5 +5641,5 @@ xdev_get_by_sample(data, "sequence_names")
 #> 
 
 # To get the sequence nucleotide strings parsed by sample
-parsed_sequences <- xdev_get_by_sample(data, "sequences")
+parsed_sequences <- xdev_get_by_sample(data, "sequence")
 ```

@@ -21,7 +21,7 @@ read_phyloseq(phyloseq_object, treatment_column_name = NULL, dataset_name = "")
 - treatment_column_name:
 
   the column name inside your phyloseq object within your sample data
-  that is used to descrbe treatments. It must be a character. Defaults
+  that is used to describe treatments. It must be a character. Defaults
   to NULL.
 
 - dataset_name:

@@ -60,7 +60,7 @@ a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> obj
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xdev_count</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -77,8 +77,8 @@ a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> obj
 
 <dt id="arg-type-">type, <a class="anchor" aria-label="anchor" href="#arg-type-"></a></dt>
 <dd><p>string containing the type of data you want the number of.
-Options include: "sequences", "samples", "treatments", "bins" and
-"references". Default = "sequences".</p></dd>
+Options include: "sequence", "sample", "treatment", "bin" and
+"resource_reference". Default = "sequence".</p></dd>
 
 
 <dt id="arg-bin-type-">bin_type, <a class="anchor" aria-label="anchor" href="#arg-bin-type-"></a></dt>
@@ -88,19 +88,19 @@ bins for. Default = "otu".</p></dd>
 
 <dt id="arg-samples-">samples, <a class="anchor" aria-label="anchor" href="#arg-samples-"></a></dt>
 <dd><p>vector of strings. samples is only used when 'type' =
-"sequences" or 'type' = "bins" . samples should contain the names of the
+"sequence" or 'type' = "bin" . samples should contain the names of the
 samples you want the count for. Default = NULL.</p></dd>
 
 
 <dt id="arg-distinct-">distinct, <a class="anchor" aria-label="anchor" href="#arg-distinct-"></a></dt>
 <dd><p>Boolean. distinct is used when 'type' =
-"sequences" or 'type' = "bins". When 'type' = "sequences" and distinct is
-TRUE the number of unique sequences is returned. When 'type' = "sequences"
+"sequence" or 'type' = "bin". When 'type' = "sequence" and distinct is
+TRUE the number of unique sequences is returned. When 'type' = "sequence"
 and distinct is FALSE total number of sequences is returned. This can also
 be combined with samples to find the number of unique sequences found only
 in a given set of samples, or to find the total number of sequences in a
 given set of samples.
-When 'type' = "bins", you can set distinct = TRUE to return the number of
+When 'type' = "bin", you can set distinct = TRUE to return the number of
 bins that ONLY contain sequences from the given samples. When distinct is
 FALSE the count returned contains bins with sequences from a given samples,
 but those bins may also contain other samples.
@@ -130,56 +130,56 @@ Default = FALSE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the total number of sequences</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 113963</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get number of unique sequences</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequences"</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence"</span>, distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get number of unique sequences from samples 'F3D0' and 'F3D1'</span></span></span>
 <span class="r-in"><span><span class="co"># Note these sequences will be present in both samples but may be</span></span></span>
 <span class="r-in"><span><span class="co"># be present in other samples as well</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9385</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'</span></span></span>
 <span class="r-in"><span><span class="co"># Note these sequences are present in both samples and NOT present in</span></span></span>
 <span class="r-in"><span><span class="co"># other samples</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of samples in the dataset</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 19</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of treatments in the dataset</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of "otu" bins in the dataset</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of "asv" bins in the dataset</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the number of "phylotype" bins in the dataset</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 63</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get number of bins from samples 'F3D0' and 'F3D1'</span></span></span>
 <span class="r-in"><span><span class="co"># Note these bins will have sequences from both samples but there may be</span></span></span>
 <span class="r-in"><span><span class="co"># other samples present as well</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bins"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 125</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get number of bins unique to samples 'F3D0' and 'F3D1'</span></span></span>
 <span class="r-in"><span><span class="co"># Note these bins will have sequences from both samples and NO other samples</span></span></span>
 <span class="r-in"><span><span class="co"># will be present in the bins.</span></span></span>
-<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bins"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="fu">xdev_count</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"bin"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>distinct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span></span></span>

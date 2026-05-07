@@ -24,6 +24,7 @@ A data.frame containing the sequences names and sequences taxonomies.
 ## Examples
 
 ``` r
+
 # You can add the sequences and their taxonomies to the your data set
 # using the following:
 

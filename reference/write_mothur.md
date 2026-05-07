@@ -27,9 +27,9 @@ write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 - tags:
 
   a vector of strings containing the items you wish to write Options are
-  'sequence_data', 'bin_data', 'metadata', 'references',
-  'sequence_tree', 'sample_tree' and 'reports'. By default, everything
-  is written to files.
+  'sequence_data', 'bin_data', 'metadata', 'resource_reference',
+  'sequence_tree', 'sample_tree' and 'report'. By default, everything is
+  written to files.
 
 ## Value
 
@@ -38,6 +38,7 @@ a vector of file names
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.

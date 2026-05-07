@@ -61,12 +61,13 @@ strollur object"><meta property="og:image" content="https://mothur.org/strollur/
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">table</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  report_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"sequence_names"</span>, sequence <span class="op">=</span> <span class="st">"sequences"</span>, comment <span class="op">=</span></span>
-<span>    <span class="st">"comments"</span>, reference_name <span class="op">=</span> <span class="st">"reference_names"</span>, reference_version <span class="op">=</span></span>
-<span>    <span class="st">"reference_versions"</span>, reference_usage <span class="op">=</span> <span class="st">"reference_usages"</span>, reference_note <span class="op">=</span></span>
-<span>    <span class="st">"reference_notes"</span>, reference_url <span class="op">=</span> <span class="st">"reference_urls"</span><span class="op">)</span>,</span>
+<span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"sequence_name"</span>, sequence <span class="op">=</span> <span class="st">"sequence"</span>, comment <span class="op">=</span></span>
+<span>    <span class="st">"comment"</span>, reference_vendor <span class="op">=</span> <span class="st">"vendor"</span>, reference_name <span class="op">=</span> <span class="st">"name"</span>, reference_version <span class="op">=</span></span>
+<span>    <span class="st">"version"</span>, reference_usage <span class="op">=</span> <span class="st">"usage"</span>, reference_note <span class="op">=</span> <span class="st">"note"</span>, reference_method_url <span class="op">=</span></span>
+<span>    <span class="st">"method_url"</span>, reference_documentation_url <span class="op">=</span> <span class="st">"documentation_url"</span>, reference_parameter</span>
+<span>    <span class="op">=</span> <span class="st">"parameter"</span>, reference_citation <span class="op">=</span> <span class="st">"citation"</span><span class="op">)</span>,</span>
 <span>  reference <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -87,7 +88,7 @@ strollur object"><meta property="og:image" content="https://mothur.org/strollur/
 
 <dt id="arg-type-">type, <a class="anchor" aria-label="anchor" href="#arg-type-"></a></dt>
 <dd><p>a string containing the type of data. Options include:
-'sequences', 'references' 'metadata' and 'reports'.</p></dd>
+'sequence', 'resource_reference' 'metadata' and 'report'.</p></dd>
 
 
 <dt id="arg-report-type-">report_type, <a class="anchor" aria-label="anchor" href="#arg-report-type-"></a></dt>
@@ -98,38 +99,54 @@ Options include: 'metadata' and custom reports.</p></dd>
 <dt id="arg-table-names-">table_names, <a class="anchor" aria-label="anchor" href="#arg-table-names-"></a></dt>
 <dd><p>named list used to indicate the names of the columns in
 the table. By default:</p>
-<p>table_names &lt;- list(sequence_name = "sequence_names",
-                    comment = "comments",
-                    sequence = "sequences",
-                    reference_name = "reference_names",
-                    reference_version = "reference_versions",
-                    reference_usage = "reference_usages",
-                    reference_note = "reference_notes",
-                    reference_url = "reference_urls")</p>
+<p>table_names &lt;- list(sequence_name = "sequence_name",
+                    comment = "comment",
+                    sequence = "sequence",
+                    reference_name = "name",
+                    reference_vendor = "vendor",
+                    reference_version = "version",
+                    reference_usage = "usage",
+                    reference_note = "note",
+                    reference_documentation_url = "documentation_url",
+                    reference_method_url = "method_url",
+                    reference_parameter = "parameter",
+                    reference_citation = "citation")</p>
 <p>In table_names, 'sequence_name' is a string containing the name of the column
 in 'table' that contains the sequence names. It is used when you are adding
-FASTA data. Default column name is 'sequence_names'.</p>
+FASTA data. Default column name is 'sequence_name'.</p>
 <p>In table_names, 'sequence' is a string containing the name of the column in
 'table' that contains the sequence nucleotide strings. It is used when you
-are adding FASTA data. Default column name is 'sequences'.</p>
+are adding FASTA data. Default column name is 'sequence'.</p>
 <p>In table_names, 'comment' is a string containing the name of the column in
 'table' that contains the sequence comments. It is used when you are adding
-FASTA data. Default column name is 'comments'.</p>
-<p>In table_names, 'reference_name' is a string containing the name of the
+FASTA data. Default column name is 'comment'.</p>
+<p>In table_names, 'reference_vendor' is a string containing the name of the
+column in 'table' that contains the reference vendor names. It is used when
+you are adding reference data. Default column name is 'vendor'.
+In table_names, 'reference_name' is a string containing the name of the
 column in 'table' that contains the reference names. It is used when you are
-adding reference data. Default column name is 'reference_names'.</p>
+adding reference data. Default column name is 'name'.</p>
 <p>In table_names, 'reference_version' is a string containing the name of the
 column in 'table' that contains the reference versions. Default column name
-is 'reference_versions'.</p>
+is 'version'.</p>
 <p>In table_names, 'reference_usage' is a string containing the name of the
 column in 'table' that contains the reference usages. Default column name is
-'reference_usages'.</p>
+'usage'.</p>
 <p>In table_names, 'reference_note' is a string containing the name of the
 column in 'table' that contains the reference notes. Default column name is
- 'reference_notes'.</p>
-<p>In table_names, 'reference_url' is a string containing the name of the column
-in 'table' that contains the reference urls. Default column name is
- 'reference_urls'.</p></dd>
+ 'note'.</p>
+<p>In table_names, 'reference_method_url' is a string containing the name of the
+column in 'table' that contains the reference method urls. Default column
+name is 'method_url'.</p>
+<p>In table_names, 'reference_documentation_url' is a string containing the name
+of the column in 'table' that contains the reference urls. Default column
+name is 'documentation_url'.</p>
+<p>In table_names, 'reference_parameter' is a string containing the name of the
+column in 'table' that contains the reference parameters. Default column name
+is 'parameter'.</p>
+<p>In table_names, 'reference_citation' is a string containing the name of the
+column in 'table' that contains the reference citations. Default column name
+is 'citation'.</p></dd>
 
 
 <dt id="arg-reference-">reference, <a class="anchor" aria-label="anchor" href="#arg-reference-"></a></dt>
@@ -156,7 +173,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_fasta.html">read_fasta</a></span><span class="op">(</span>fasta <span class="op">=</span> <span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add FASTA sequence data</span></span></span>
-<span class="r-in"><span><span class="fu">add</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">add</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
 <span class="r-in"><span></span></span>
@@ -165,26 +182,23 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span><span class="co"># Create a new empty strollur object named 'example_dataset'</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"example_dataset"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Create a resource reference for the FASTA data</span></span></span>
-<span class="r-in"><span><span class="va">resource_url</span> <span class="op">&lt;-</span> <span class="st">"https://mothur.org/wiki/silva_reference_files/"</span></span></span>
-<span class="r-in"><span><span class="va">resource_reference</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="new_reference.html">new_reference</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    reference_name <span class="op">=</span> <span class="st">"silva.bacteria.fasta"</span>,</span></span>
-<span class="r-in"><span>    reference_version <span class="op">=</span> <span class="st">"1.38.1"</span>,</span></span>
-<span class="r-in"><span>    reference_usage <span class="op">=</span> <span class="st">"alignment by mothur2 v1.0"</span>,</span></span>
-<span class="r-in"><span>    reference_note <span class="op">=</span> <span class="st">"default options"</span>,</span></span>
-<span class="r-in"><span>    reference_url <span class="op">=</span> <span class="va">resource_url</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Create a resource reference for the FASTA data silva_resource &lt;-</span></span></span>
+<span class="r-in"><span><span class="va">silva_resource</span> <span class="op">&lt;-</span> <span class="fu"><a href="new_reference.html">new_reference</a></span><span class="op">(</span> vendor <span class="op">=</span> <span class="st">"SILVA"</span>, name <span class="op">=</span></span></span>
+<span class="r-in"><span><span class="st">"silva.bacteria.fasta"</span>, version <span class="op">=</span> <span class="st">"1.38.1"</span>, usage <span class="op">=</span> <span class="st">"alignment of sequences"</span>,</span></span>
+<span class="r-in"><span>note <span class="op">=</span> <span class="st">"reference trimmed to V4 region"</span>, method_url <span class="op">=</span></span></span>
+<span class="r-in"><span><span class="st">"https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"</span>,</span></span>
+<span class="r-in"><span>documentation_url <span class="op">=</span> <span class="st">"https://mothur.org/wiki/silva_reference_files/"</span> <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add FASTA data with a resource reference</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">add</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">data</span>,</span></span>
 <span class="r-in"><span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span></span>
-<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span></span>
-<span class="r-in"><span>  reference <span class="op">=</span> <span class="va">resource_reference</span></span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span></span>
+<span class="r-in"><span>  reference <span class="op">=</span> <span class="va">silva_resource</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 1 resource references.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add contigs assembly report with a 'sequence_name' column named 'Name'</span></span></span>
@@ -193,7 +207,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">add</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">data</span>,</span></span>
-<span class="r-in"><span>  table <span class="op">=</span> <span class="va">contigs_report</span>, type <span class="op">=</span> <span class="st">"reports"</span>,</span></span>
+<span class="r-in"><span>  table <span class="op">=</span> <span class="va">contigs_report</span>, type <span class="op">=</span> <span class="st">"report"</span>,</span></span>
 <span class="r-in"><span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>

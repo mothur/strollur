@@ -10,9 +10,9 @@ xdev_add_sequences(
   data,
   table,
   reference = NULL,
-  sequence_name = "sequence_names",
-  sequence = "sequences",
-  comment = "comments",
+  sequence_name = "sequence_name",
+  sequence = "sequence",
+  comment = "comment",
   verbose = TRUE
 )
 ```
@@ -36,17 +36,17 @@ xdev_add_sequences(
 - sequence_name, :
 
   a string containing the name of the column in 'table' that contains
-  the sequence names. Default column name is 'sequence_names'.
+  the sequence names. Default column name is 'sequence_name'.
 
 - sequence, :
 
   a string containing the name of the column in 'table' that contains
-  the sequence nucleotide strings. Default column name is 'sequences'.
+  the sequence nucleotide strings. Default column name is 'sequence'.
 
 - comment, :
 
   a string containing the name of the column in 'table' that contains
-  the sequence comments. Default column name is 'comments'.
+  the sequence comments. Default column name is 'comment'.
 
 - verbose, :
 
@@ -59,6 +59,7 @@ double containing the number of sequences added
 ## Examples
 
 ``` r
+
  data <- new_dataset("miseq_sop")
  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
  xdev_add_sequences(data, fasta_data)
@@ -76,6 +77,7 @@ double containing the number of sequences added
                "alignment by mothur2 v1.0 using default options",
                "https://mothur.org/wiki/silva_reference_files/"))
 #> Added 2425 sequences.
+#> Added 1 resource references.
 #> [1] 2425
 
 # You can also add references using the 'add_references' function.

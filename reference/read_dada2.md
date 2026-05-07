@@ -31,6 +31,7 @@ A \`strollur\` object
 ## Examples
 
 ``` r
+
 seqtab <- readRDS(strollur_example("dada2.rds"))
 dim(seqtab)
 #> [1]  19 279

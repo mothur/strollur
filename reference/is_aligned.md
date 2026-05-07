@@ -24,6 +24,7 @@ Boolean
 ## Examples
 
 ``` r
+
 dataset <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.

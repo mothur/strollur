@@ -58,7 +58,7 @@ strollur object"><meta property="og:image" content="https://mothur.org/strollur/
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xdev_summarize</span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequences"</span>, report_type <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xdev_summarize</span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequence"</span>, report_type <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -71,7 +71,7 @@ strollur object"><meta property="og:image" content="https://mothur.org/strollur/
 
 <dt id="arg-type-">type, <a class="anchor" aria-label="anchor" href="#arg-type-"></a></dt>
 <dd><p>string containing the type of data you want the number of.
-Options include: "sequences", "reports" and "scrap". Default = "sequences".</p></dd>
+Options include: "sequence", "report" and "scrap". Default = "sequence".</p></dd>
 
 
 <dt id="arg-report-type-">report_type, <a class="anchor" aria-label="anchor" href="#arg-report-type-"></a></dt>
@@ -103,7 +103,7 @@ accessed with report_type = "contigs_report". Default = NULL.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># summarize FASTA data</span></span></span>
-<span class="r-in"><span> <span class="fu">xdev_summarize</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="fu">xdev_summarize</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends   nbases ambigs polymers numns    numseqs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375 249.0000      0 3.000000     0      1.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075</span>
@@ -115,7 +115,7 @@ accessed with report_type = "contigs_report". Default = NULL.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375 252.4472      0 4.368699     0      0.000</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># summarize contigs_report</span></span></span>
-<span class="r-in"><span> <span class="fu">xdev_summarize</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"reports"</span>,</span></span>
+<span class="r-in"><span> <span class="fu">xdev_summarize</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"report"</span>,</span></span>
 <span class="r-in"><span>                 report_type <span class="op">=</span> <span class="st">"contigs_report"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:       0.0000452496 250.0000   0.000000      0    248.0000</span>
@@ -140,7 +140,7 @@ accessed with report_type = "contigs_report". Default = NULL.</p></dd>
 <span class="r-in"><span> <span class="fu"><a href="xdev_remove_samples.html">xdev_remove_samples</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># summarize FASTA data after removal of sample F3D0</span></span></span>
-<span class="r-in"><span> <span class="fu">xdev_summarize</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="fu">xdev_summarize</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends   nbases ambigs polymers numns  numseqs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375 249.0000      0 3.000000     0      1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2695.3</span>

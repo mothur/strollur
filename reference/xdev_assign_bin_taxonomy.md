@@ -14,8 +14,8 @@ xdev_assign_bin_taxonomy(
   table,
   bin_type = "otu",
   reference = NULL,
-  bin_name = "bin_names",
-  taxonomy = "taxonomies",
+  bin_name = "bin_name",
+  taxonomy = "taxonomy",
   verbose = TRUE
 )
 ```
@@ -42,12 +42,12 @@ xdev_assign_bin_taxonomy(
 - bin_name, :
 
   a string containing the name of the column in 'table' that contains
-  the bin names. Default column name is 'bin_names'.
+  the bin names. Default column name is 'bin_name'.
 
 - taxonomy, :
 
   a string containing the name of the column in 'table' that contains
-  the bin taxonomies. Default column name is 'taxonomies'.
+  the bin taxonomies. Default column name is 'taxonomy'.
 
 - verbose, :
 
@@ -60,6 +60,7 @@ double containing the number of bins assigned
 ## Examples
 
 ``` r
+
 otu_data <- read_mothur_cons_taxonomy(strollur_example(
                         "final.cons.taxonomy"))
 

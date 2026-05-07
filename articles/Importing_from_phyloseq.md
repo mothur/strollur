@@ -1,6 +1,7 @@
 # Importing from phyloseq
 
 ``` r
+
 library(strollur)
 #> 
 #> Attaching package: 'strollur'
@@ -17,6 +18,7 @@ need to run the
 function.
 
 ``` r
+
 # Using the phyloseq example data
 phylo_object <- readRDS(strollur_example("GlobalPatterns.RDS"))
 rdata_object <- read_phyloseq(phylo_object)
@@ -42,11 +44,12 @@ utilize functions like
 the data.
 
 ``` r
-count(rdata_object, "samples")
+
+count(rdata_object, type = "sample")
 #> [1] 26
-head(names(rdata_object, "sequences"))
+head(names(rdata_object, type = "sequence"))
 #> [1] "549322" "522457" "951"    "244423" "586076" "246140"
-head(abundance(rdata_object, "sequences"))
+head(abundance(rdata_object, type = "sequence"))
 #>   sequence_names abundances
 #> 1         549322        259
 #> 2         522457          8
@@ -62,6 +65,7 @@ the
 function.
 
 ``` r
+
 phyloseq_object <- write_phyloseq(rdata_object)
 phyloseq_object
 #> phyloseq-class experiment-level object

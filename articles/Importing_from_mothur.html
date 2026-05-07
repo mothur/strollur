@@ -177,7 +177,7 @@ to your data set you can use the <code><a href="../reference/read_fasta.html">re
 nucleotide strings, and comments if provided. You can add the FASTA
 sequences to your data set using the <code><a href="../reference/add.html">add()</a></code> function:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequences"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span><span class="va">my_data</span></span>
@@ -248,16 +248,16 @@ using the <code><a href="../reference/read_mothur_list.html">read_mothur_list()<
 names and sequence names. You can add the bin data to your data set as
 follows:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
 <span><span class="co">#&gt; [1] 531</span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">asv_data</span>, type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">asv_data</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 asv bins.</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">my_data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">phylotype_data</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span></span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 63 phylotype bins.</span></span>
 <span><span class="co">#&gt; [1] 63</span></span>

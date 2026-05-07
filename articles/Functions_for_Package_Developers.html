@@ -179,7 +179,7 @@ get the names of the sequences only present in sample ‘F3D0’.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f3d0_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -201,7 +201,7 @@ sample ‘F3D0’ for closer inspection.</p>
 <span></span>
 <span><span class="va">f3d0_sequences</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/xdev_get_by_sample.html">xdev_get_by_sample</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span></span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">f3d0_sequences</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">300</span><span class="op">:</span><span class="fl">305</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-T-TA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-GC-C-C-AA-AG--CT-C-AA-C-T-T-C-G-G-G-ACT-G-C-TTTT-GAAAC-TG-T-GTAAC-TAGA-GT-GC-AG-GA-G-G---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGC-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG"</span></span>
@@ -230,22 +230,22 @@ inputs for <code><a href="../reference/xdev_set_abundances.html">xdev_set_abunda
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">abundance_table</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                  sequence_names abundances samples treatments</span></span>
-<span><span class="co">#&gt; 1  M00967_43_000000000-A3JHG_1_2101_16474_12783          1  F3D150       Late</span></span>
-<span><span class="co">#&gt; 2   M00967_43_000000000-A3JHG_1_1113_12711_3318          1  F3D142       Late</span></span>
-<span><span class="co">#&gt; 3   M00967_43_000000000-A3JHG_1_2108_14707_9807          1    F3D3      Early</span></span>
-<span><span class="co">#&gt; 4   M00967_43_000000000-A3JHG_1_1110_4126_16552          1    F3D8      Early</span></span>
-<span><span class="co">#&gt; 5   M00967_43_000000000-A3JHG_1_2102_8408_13436          1    F3D7      Early</span></span>
-<span><span class="co">#&gt; 6  M00967_43_000000000-A3JHG_1_1107_22580_21773          1    F3D3      Early</span></span>
-<span><span class="co">#&gt; 7  M00967_43_000000000-A3JHG_1_1108_14299_17220         22  F3D146       Late</span></span>
-<span><span class="co">#&gt; 8  M00967_43_000000000-A3JHG_1_1108_14299_17220         19  F3D147       Late</span></span>
-<span><span class="co">#&gt; 9  M00967_43_000000000-A3JHG_1_1108_14299_17220         12  F3D148       Late</span></span>
-<span><span class="co">#&gt; 10 M00967_43_000000000-A3JHG_1_1108_14299_17220          9  F3D149       Late</span></span>
+<span><span class="co">#&gt;                                   sequence_name abundance sample treatment</span></span>
+<span><span class="co">#&gt; 1  M00967_43_000000000-A3JHG_1_2101_16474_12783         1 F3D150      Late</span></span>
+<span><span class="co">#&gt; 2   M00967_43_000000000-A3JHG_1_1113_12711_3318         1 F3D142      Late</span></span>
+<span><span class="co">#&gt; 3   M00967_43_000000000-A3JHG_1_2108_14707_9807         1   F3D3     Early</span></span>
+<span><span class="co">#&gt; 4   M00967_43_000000000-A3JHG_1_1110_4126_16552         1   F3D8     Early</span></span>
+<span><span class="co">#&gt; 5   M00967_43_000000000-A3JHG_1_2102_8408_13436         1   F3D7     Early</span></span>
+<span><span class="co">#&gt; 6  M00967_43_000000000-A3JHG_1_1107_22580_21773         1   F3D3     Early</span></span>
+<span><span class="co">#&gt; 7  M00967_43_000000000-A3JHG_1_1108_14299_17220        22 F3D146      Late</span></span>
+<span><span class="co">#&gt; 8  M00967_43_000000000-A3JHG_1_1108_14299_17220        19 F3D147      Late</span></span>
+<span><span class="co">#&gt; 9  M00967_43_000000000-A3JHG_1_1108_14299_17220        12 F3D148      Late</span></span>
+<span><span class="co">#&gt; 10 M00967_43_000000000-A3JHG_1_1108_14299_17220         9 F3D149      Late</span></span>
 <span></span>
-<span><span class="va">num_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span>
+<span><span class="va">num_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="va">new_abunds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">num_samples</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">f3d0_names</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/xdev_set_abundances.html">xdev_set_abundances</a></span><span class="op">(</span></span>
@@ -325,7 +325,7 @@ this example we will randomly select 100 ‘otu’ bins to merge.</p>
 <code class="sourceCode R"><span><span class="va">random_bin_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>    <span class="va">miseq</span>,</span>
-<span>    type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>    type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>    bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -456,7 +456,7 @@ effects the bins in the ‘otu’ and ‘asv’ clusters.</p>
 <code class="sourceCode R"><span><span class="va">random_bin_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>    <span class="va">miseq</span>,</span>
-<span>    type <span class="op">=</span> <span class="st">"bins"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span></span>
+<span>    type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>

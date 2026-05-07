@@ -6,7 +6,7 @@ Summarize the sequences data, custom reports, and scrapped data in a
 ## Usage
 
 ``` r
-summary(data, type = "sequences", report_type = NULL, verbose = TRUE)
+summary(data, type = "sequence", report_type = NULL, verbose = TRUE)
 ```
 
 ## Arguments
@@ -19,7 +19,7 @@ summary(data, type = "sequences", report_type = NULL, verbose = TRUE)
 - type, :
 
   string containing the type of data you want the number of. Options
-  include: "sequences", "reports" and "scrap". Default = "sequences".
+  include: "sequence", "report" and "scrap". Default = "sequence".
 
 - report_type, :
 
@@ -39,6 +39,7 @@ data.frame
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -54,7 +55,7 @@ miseq <- miseq_sop_example()
 #> Added a contigs_report.
 
 # To get the summary of your FASTA data
-summary(data = miseq, type = "sequences")
+summary(data = miseq, type = "sequence")
 #>             starts ends   nbases ambigs polymers numns    numseqs
 #> Minimum:         1  375 249.0000      0 3.000000     0      1.000
 #> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2850.075
@@ -75,7 +76,7 @@ summary(data = miseq, type = "sequences")
 #> Mean:            1  375 252.4472      0 4.368699     0      0.000
 
 # summarize contigs_report
-summary(data = miseq, type = "reports", report_type = "contigs_report")
+summary(data = miseq, type = "report", report_type = "contigs_report")
 #>             Expected_Errors   Length MisMatches Num_Ns Overlap_End
 #> Minimum:       0.0000452496 250.0000   0.000000      0    248.0000
 #> 2.5%-tile:     0.0016101600 252.0000   0.000000      0    251.0000
@@ -117,7 +118,7 @@ summary(data = miseq, type = "reports", report_type = "contigs_report")
 xdev_remove_samples(data = miseq, samples = c("F3D0"))
 
 # summarize FASTA data after removal of sample F3D0
-summary(data = miseq, type = "sequences")
+summary(data = miseq, type = "sequence")
 #>             starts ends   nbases ambigs polymers numns  numseqs
 #> Minimum:         1  375 249.0000      0 3.000000     0      1.0
 #> 2.5%-tile:       1  375 252.0000      0 3.000000     0   2695.3

@@ -32,6 +32,7 @@ No return value, called for side effects.
 ## Examples
 
 ``` r
+
 data <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -46,13 +47,13 @@ data <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 
-count(data = data, type = "samples")
+count(data = data, type = "sample")
 #> [1] 19
 
 # To remove samples 'F3D0' and 'F3D1'
 
 xdev_remove_samples(data, c("F3D0", "F3D1"))
 
-count(data = data, type = "samples")
+count(data = data, type = "sample")
 #> [1] 17
 ```

@@ -10,7 +10,7 @@ xdev_add_report(
   data,
   table,
   type = "metadata",
-  sequence_name = "sequence_names",
+  sequence_name = "sequence_name",
   verbose = TRUE
 )
 ```
@@ -49,6 +49,7 @@ No return value, called for side effects.
 ## Examples
 
 ``` r
+
 # To add a custom report including your contigs assembly data
 
 data <- new_dataset("just for fun", 2)

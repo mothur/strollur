@@ -9,8 +9,8 @@ Assign samples to treatments in a
 xdev_assign_treatments(
   data,
   table,
-  sample = "samples",
-  treatment = "treatments",
+  sample = "sample",
+  treatment = "treatment",
   verbose = TRUE
 )
 ```
@@ -29,12 +29,12 @@ xdev_assign_treatments(
 - sample, :
 
   a string containing the name of the column in 'table' that contains
-  the samples. Default column name is 'samples'.
+  the samples. Default column name is 'sample'.
 
 - treatment, :
 
   a string containing the name of the column in 'table' that contains
-  the treatments. Default column name is 'treatments'.
+  the treatments. Default column name is 'treatment'.
 
 - verbose, :
 
@@ -48,6 +48,7 @@ double containing the number of samples assigned to treatments
 ## Examples
 
 ``` r
+
 data <- new_dataset("my_dataset")
 sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 

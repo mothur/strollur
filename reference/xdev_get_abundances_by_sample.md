@@ -29,6 +29,7 @@ xdev_get_abundances_by_sample(data, samples = as.character(c()))
 ## Examples
 
 ``` r
+
 data <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.

@@ -32,6 +32,7 @@ No return value, called for side effects.
 ## Examples
 
 ``` r
+
 data <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -46,7 +47,7 @@ data <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 
-count(data = data, type = "sequences")
+count(data = data, type = "sequence")
 #> [1] 113963
 
 # For the sake of example let's remove the first 3 sequences from
@@ -72,6 +73,6 @@ report(data = data, type = "sequence_scrap")
 # You can see from the get_num_sequences function that the removed
 # sequence's abundances are removed from the dataset.
 
-count(data = data, type = "sequences")
+count(data = data, type = "sequence")
 #> [1] 113960
 ```

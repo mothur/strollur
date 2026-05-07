@@ -27,6 +27,7 @@ name of design file
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -41,5 +42,5 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_design(miseq, tempfile())
-#> [1] "/tmp/Rtmp1sax1K/file1bf95fd7d95d"
+#> [1] "/tmp/Rtmpt3sFxG/file3d894f69c591"
 ```

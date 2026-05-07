@@ -32,6 +32,7 @@ name of FASTA file
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -46,5 +47,5 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_fasta(miseq, tempfile())
-#> [1] "/tmp/Rtmp1sax1K/file1bf938f64d2d"
+#> [1] "/tmp/Rtmpt3sFxG/file3d892f991f88"
 ```

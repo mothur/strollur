@@ -3,7 +3,7 @@
 Assign sequence classifications to a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
-Note, if you assign sequence taxonomies and assign bins, 'Dataset' will
+Note, if you assign sequence taxonomies and assign bins, strollur will
 find the consensus taxonomy for each bin for you.
 
 ## Usage
@@ -13,8 +13,8 @@ xdev_assign_sequence_taxonomy(
   data,
   table,
   reference = NULL,
-  sequence_name = "sequence_names",
-  taxonomy = "taxonomies",
+  sequence_name = "sequence_name",
+  taxonomy = "taxonomy",
   verbose = TRUE
 )
 ```
@@ -37,12 +37,12 @@ xdev_assign_sequence_taxonomy(
 - sequence_name, :
 
   a string containing the name of the column in 'table' that contains
-  the sequence names. Default column name is 'sequence_names'.
+  the sequence names. Default column name is 'sequence_name'.
 
 - taxonomy, :
 
   a string containing the name of the column in 'table' that contains
-  the sequence taxonomies. Default column name is 'taxonomies'.
+  the sequence taxonomies. Default column name is 'taxonomy'.
 
 - verbose, :
 
@@ -55,6 +55,7 @@ double containing the number of sequence assigned
 ## Examples
 
 ``` r
+
 sequence_classifications <- read_mothur_taxonomy(strollur_example(
                         "final.taxonomy.gz"))
 
@@ -74,5 +75,6 @@ reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
 
 xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
 #> Assigned 2425 sequence taxonomies.
+#> Added 1 resource references.
 #> [1] 2425
 ```

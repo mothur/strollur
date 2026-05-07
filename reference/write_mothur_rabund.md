@@ -28,6 +28,7 @@ vector containing the names of the files created
 ## Examples
 
 ``` r
+
 miseq <- miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
@@ -42,7 +43,7 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_rabund(miseq, tempfile())
-#> [1] "/tmp/Rtmp1sax1K/file1bf91f46404d.otu.rabund"      
-#> [2] "/tmp/Rtmp1sax1K/file1bf91f46404d.asv.rabund"      
-#> [3] "/tmp/Rtmp1sax1K/file1bf91f46404d.phylotype.rabund"
+#> [1] "/tmp/Rtmpt3sFxG/file3d891b7b2f9.otu.rabund"      
+#> [2] "/tmp/Rtmpt3sFxG/file3d891b7b2f9.asv.rabund"      
+#> [3] "/tmp/Rtmpt3sFxG/file3d891b7b2f9.phylotype.rabund"
 ```

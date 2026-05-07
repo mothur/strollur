@@ -173,11 +173,11 @@ look at how use it.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "miseq_sop"</span></span></code></pre></div>
 <p>To get the names of the sequences in your dataset, set the type
-parameter to ‘sequences’:</p>
+parameter to ‘sequence’:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_sequences</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">all_sequences</span><span class="op">)</span></span>
@@ -193,7 +193,7 @@ parameter to ‘sequences’:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">include_f3d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -210,7 +210,7 @@ parameter to ‘sequences’:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exclusive_f3d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -229,7 +229,7 @@ bin_type. The miseq example contains 3 bin types: <em>otu</em>,
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">otu_bins</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">otu_bins</span><span class="op">)</span></span>
@@ -241,7 +241,7 @@ bin_type. The miseq example contains 3 bin types: <em>otu</em>,
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">include_f3d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -254,7 +254,7 @@ sample ‘F3D0’:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exclusive_f3d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -264,17 +264,17 @@ sample ‘F3D0’:</p>
 <span><span class="co">#&gt; [1] "Otu330" "Otu339" "Otu341" "Otu345" "Otu347"</span></span></code></pre></div>
 <p>To get the names of the samples</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "F3D0"   "F3D1"   "F3D141" "F3D142" "F3D143" "F3D144" "F3D145" "F3D146"</span></span>
 <span><span class="co">#&gt;  [9] "F3D147" "F3D148" "F3D149" "F3D150" "F3D2"   "F3D3"   "F3D5"   "F3D6"  </span></span>
 <span><span class="co">#&gt; [17] "F3D7"   "F3D8"   "F3D9"</span></span></code></pre></div>
 <p>To get the names of the treatments</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Early" "Late"</span></span></code></pre></div>
 <p>To get the names of the custom reports</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"reports"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "contigs_report"</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -287,7 +287,7 @@ the following:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 113963</span></span></code></pre></div>
@@ -296,7 +296,7 @@ the following:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2425</span></span></code></pre></div>
@@ -306,7 +306,7 @@ in the sample but may be be present in other samples as well.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -316,7 +316,7 @@ sample ‘F3D0’:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -328,7 +328,7 @@ the ‘otu’ bin type.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 531</span></span></code></pre></div>
@@ -339,7 +339,7 @@ well.</em></p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -351,7 +351,7 @@ NO other samples </em> <em>will be present in the bins.</em></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -359,11 +359,11 @@ NO other samples </em> <em>will be present in the bins.</em></p>
 <span><span class="co">#&gt; [1] 14</span></span></code></pre></div>
 <p>To get the number of samples in the dataset:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 19</span></span></code></pre></div>
 <p>To get the number of treatments in the dataset:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -374,13 +374,13 @@ NO other samples </em> <em>will be present in the bins.</em></p>
 <code><a href="../reference/abundance.html">abundance()</a></code> function. The abundance function can be used to
 access the abundance data for sequences, bins, samples, and treatments.
 It returns a data.frame containing the requested abundance data.</p>
-<p>To the total abundance for each sequence, set the type = ‘sequences’.
+<p>To the total abundance for each sequence, set the type = ‘sequence’.
 This will return a 2 column data.frame containing sequence_names and
 abundances.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sequence_abundance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  by_sample <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sequence_abundance</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -401,21 +401,21 @@ sequence_names, abundances, samples and treatments (if assigned).</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sequence_abundance_by_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  by_sample <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sequence_abundance_by_sample</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                  sequence_names abundances samples treatments</span></span>
-<span><span class="co">#&gt; 1  M00967_43_000000000-A3JHG_1_2101_16474_12783          1  F3D150       Late</span></span>
-<span><span class="co">#&gt; 2   M00967_43_000000000-A3JHG_1_1113_12711_3318          1  F3D142       Late</span></span>
-<span><span class="co">#&gt; 3   M00967_43_000000000-A3JHG_1_2108_14707_9807          1    F3D3      Early</span></span>
-<span><span class="co">#&gt; 4   M00967_43_000000000-A3JHG_1_1110_4126_16552          1    F3D8      Early</span></span>
-<span><span class="co">#&gt; 5   M00967_43_000000000-A3JHG_1_2102_8408_13436          1    F3D7      Early</span></span>
-<span><span class="co">#&gt; 6  M00967_43_000000000-A3JHG_1_1107_22580_21773          1    F3D3      Early</span></span>
-<span><span class="co">#&gt; 7  M00967_43_000000000-A3JHG_1_1108_14299_17220         22  F3D146       Late</span></span>
-<span><span class="co">#&gt; 8  M00967_43_000000000-A3JHG_1_1108_14299_17220         19  F3D147       Late</span></span>
-<span><span class="co">#&gt; 9  M00967_43_000000000-A3JHG_1_1108_14299_17220         12  F3D148       Late</span></span>
-<span><span class="co">#&gt; 10 M00967_43_000000000-A3JHG_1_1108_14299_17220          9  F3D149       Late</span></span></code></pre></div>
+<span><span class="co">#&gt;                                   sequence_name abundance sample treatment</span></span>
+<span><span class="co">#&gt; 1  M00967_43_000000000-A3JHG_1_2101_16474_12783         1 F3D150      Late</span></span>
+<span><span class="co">#&gt; 2   M00967_43_000000000-A3JHG_1_1113_12711_3318         1 F3D142      Late</span></span>
+<span><span class="co">#&gt; 3   M00967_43_000000000-A3JHG_1_2108_14707_9807         1   F3D3     Early</span></span>
+<span><span class="co">#&gt; 4   M00967_43_000000000-A3JHG_1_1110_4126_16552         1   F3D8     Early</span></span>
+<span><span class="co">#&gt; 5   M00967_43_000000000-A3JHG_1_2102_8408_13436         1   F3D7     Early</span></span>
+<span><span class="co">#&gt; 6  M00967_43_000000000-A3JHG_1_1107_22580_21773         1   F3D3     Early</span></span>
+<span><span class="co">#&gt; 7  M00967_43_000000000-A3JHG_1_1108_14299_17220        22 F3D146      Late</span></span>
+<span><span class="co">#&gt; 8  M00967_43_000000000-A3JHG_1_1108_14299_17220        19 F3D147      Late</span></span>
+<span><span class="co">#&gt; 9  M00967_43_000000000-A3JHG_1_1108_14299_17220        12 F3D148      Late</span></span>
+<span><span class="co">#&gt; 10 M00967_43_000000000-A3JHG_1_1108_14299_17220         9 F3D149      Late</span></span></code></pre></div>
 <p>To get the total abundance of the bins in your dataset, you need to
 specify the bin_type. The miseq example contains 3 bin types:
 <em>otu</em>, <em>asv</em> and <em>phylotype</em>. Let’s find the
@@ -424,7 +424,7 @@ abundance data of bins for the <em>otu</em> bin type. This will return a
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bin_abundance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
 <span>  by_sample <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -446,58 +446,58 @@ abundances, samples and treatments (if assigned).</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bin_abundance_by_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
 <span>  by_sample <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bin_abundance_by_sample</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    bin_names abundances samples treatments</span></span>
-<span><span class="co">#&gt; 1     Otu001        499    F3D0      Early</span></span>
-<span><span class="co">#&gt; 2     Otu001        351    F3D1      Early</span></span>
-<span><span class="co">#&gt; 3     Otu001        388  F3D141       Late</span></span>
-<span><span class="co">#&gt; 4     Otu001        244  F3D142       Late</span></span>
-<span><span class="co">#&gt; 5     Otu001        189  F3D143       Late</span></span>
-<span><span class="co">#&gt; 6     Otu001        346  F3D144       Late</span></span>
-<span><span class="co">#&gt; 7     Otu001        566  F3D145       Late</span></span>
-<span><span class="co">#&gt; 8     Otu001        270  F3D146       Late</span></span>
-<span><span class="co">#&gt; 9     Otu001       1316  F3D147       Late</span></span>
-<span><span class="co">#&gt; 10    Otu001        750  F3D148       Late</span></span></code></pre></div>
+<span><span class="co">#&gt;    bin_name abundance sample treatment</span></span>
+<span><span class="co">#&gt; 1    Otu001       499   F3D0     Early</span></span>
+<span><span class="co">#&gt; 2    Otu001       351   F3D1     Early</span></span>
+<span><span class="co">#&gt; 3    Otu001       388 F3D141      Late</span></span>
+<span><span class="co">#&gt; 4    Otu001       244 F3D142      Late</span></span>
+<span><span class="co">#&gt; 5    Otu001       189 F3D143      Late</span></span>
+<span><span class="co">#&gt; 6    Otu001       346 F3D144      Late</span></span>
+<span><span class="co">#&gt; 7    Otu001       566 F3D145      Late</span></span>
+<span><span class="co">#&gt; 8    Otu001       270 F3D146      Late</span></span>
+<span><span class="co">#&gt; 9    Otu001      1316 F3D147      Late</span></span>
+<span><span class="co">#&gt; 10   Otu001       750 F3D148      Late</span></span></code></pre></div>
 <p>To access the distribution of sequences across the samples in your
-dataset, set the type = ‘samples’. This will return a 2 column
-data.frame containing sample names and abundances.</p>
+dataset, set the type = ‘sample’. This will return a 2 column data.frame
+containing sample names and abundances.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"samples"</span></span>
+<span>  type <span class="op">=</span> <span class="st">"sample"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt;    samples abundances</span></span>
-<span><span class="co">#&gt; 1     F3D0       6191</span></span>
-<span><span class="co">#&gt; 2     F3D1       4652</span></span>
-<span><span class="co">#&gt; 3   F3D141       4656</span></span>
-<span><span class="co">#&gt; 4   F3D142       2423</span></span>
-<span><span class="co">#&gt; 5   F3D143       2403</span></span>
-<span><span class="co">#&gt; 6   F3D144       3449</span></span>
-<span><span class="co">#&gt; 7   F3D145       5532</span></span>
-<span><span class="co">#&gt; 8   F3D146       3831</span></span>
-<span><span class="co">#&gt; 9   F3D147      12430</span></span>
-<span><span class="co">#&gt; 10  F3D148       9465</span></span>
-<span><span class="co">#&gt; 11  F3D149      10014</span></span>
-<span><span class="co">#&gt; 12  F3D150       4126</span></span>
-<span><span class="co">#&gt; 13    F3D2      15686</span></span>
-<span><span class="co">#&gt; 14    F3D3       5199</span></span>
-<span><span class="co">#&gt; 15    F3D5       3469</span></span>
-<span><span class="co">#&gt; 16    F3D6       6394</span></span>
-<span><span class="co">#&gt; 17    F3D7       4055</span></span>
-<span><span class="co">#&gt; 18    F3D8       4253</span></span>
-<span><span class="co">#&gt; 19    F3D9       5735</span></span></code></pre></div>
+<span><span class="co">#&gt;    sample abundance</span></span>
+<span><span class="co">#&gt; 1    F3D0      6191</span></span>
+<span><span class="co">#&gt; 2    F3D1      4652</span></span>
+<span><span class="co">#&gt; 3  F3D141      4656</span></span>
+<span><span class="co">#&gt; 4  F3D142      2423</span></span>
+<span><span class="co">#&gt; 5  F3D143      2403</span></span>
+<span><span class="co">#&gt; 6  F3D144      3449</span></span>
+<span><span class="co">#&gt; 7  F3D145      5532</span></span>
+<span><span class="co">#&gt; 8  F3D146      3831</span></span>
+<span><span class="co">#&gt; 9  F3D147     12430</span></span>
+<span><span class="co">#&gt; 10 F3D148      9465</span></span>
+<span><span class="co">#&gt; 11 F3D149     10014</span></span>
+<span><span class="co">#&gt; 12 F3D150      4126</span></span>
+<span><span class="co">#&gt; 13   F3D2     15686</span></span>
+<span><span class="co">#&gt; 14   F3D3      5199</span></span>
+<span><span class="co">#&gt; 15   F3D5      3469</span></span>
+<span><span class="co">#&gt; 16   F3D6      6394</span></span>
+<span><span class="co">#&gt; 17   F3D7      4055</span></span>
+<span><span class="co">#&gt; 18   F3D8      4253</span></span>
+<span><span class="co">#&gt; 19   F3D9      5735</span></span></code></pre></div>
 <p>To access the distribution of sequences across the treatments in your
-dataset, set the type = ‘treatments’. This will return a 2 column
+dataset, set the type = ‘treatment’. This will return a 2 column
 data.frame containing treatment names and abundances.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatments"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   treatments abundances</span></span>
-<span><span class="co">#&gt; 1      Early      55634</span></span>
-<span><span class="co">#&gt; 2       Late      58329</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   treatment abundance</span></span>
+<span><span class="co">#&gt; 1     Early     55634</span></span>
+<span><span class="co">#&gt; 2      Late     58329</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="report">report<a class="anchor" aria-label="anchor" href="#report"></a>
@@ -518,13 +518,13 @@ provided).</p>
 <span>  type <span class="op">=</span> <span class="st">"fasta"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fasta_report</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                 sequence_names</span></span>
+<span><span class="co">#&gt;                                  sequence_name</span></span>
 <span><span class="co">#&gt; 1 M00967_43_000000000-A3JHG_1_2101_16474_12783</span></span>
 <span><span class="co">#&gt; 2  M00967_43_000000000-A3JHG_1_1113_12711_3318</span></span>
 <span><span class="co">#&gt; 3  M00967_43_000000000-A3JHG_1_2108_14707_9807</span></span>
 <span><span class="co">#&gt; 4  M00967_43_000000000-A3JHG_1_1110_4126_16552</span></span>
 <span><span class="co">#&gt; 5  M00967_43_000000000-A3JHG_1_2102_8408_13436</span></span>
-<span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                 sequences</span></span>
+<span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                  sequence</span></span>
 <span><span class="co">#&gt; 1 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-C-A-G-C-G-G--TA-A-AA-TT-G-A-GA-GG--CT-C-AA-C-C-T-C-T-T-C--CC-G-C-CGTT-GAAAC-TG-A-TTGTC-TTGA-GT-GG-GC-GA-G-A---AG-T-A-TGTGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-A-ACTGACG-CTGA-AGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG</span></span>
 <span><span class="co">#&gt; 2 TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-AC-C-C-GG-GG--CT-C-AA-C---C-C-TGG-G-AGT-G-C-TTTT-GAAAC-TG-T-GCGGC-TAGA-GT-GT-CG-GA-G-G---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-GA-T-G-ACTGACG-CTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG</span></span>
 <span><span class="co">#&gt; 3 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GC-C-C-GT-GG--CT-C-AA-C-C-G-C-G-G-A-ACC-G-C-TTTG-GAAAC-TG-C-GAGGC-TGGA-GT-GC-TG-GA-G-A---GG-T-A-AGCGGAATTCCTGGTGT-AGCGGT-GAAATGCGTAG-AT-A-TC-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTTA-CTG-G-AC-AG-T-G-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-GAACAGG</span></span>
@@ -533,11 +533,11 @@ provided).</p>
 <p>If you want to take a closer look at the sequences, you can request a
 report containing the sequence names, starts, ends, lengths, ambiguous
 bases, longest homopolymers, and number of N’s. To get a sequence
-report, set type = “sequences”.</p>
+report, set type = “sequence”.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sequence_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequences"</span></span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sequence_report</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                             id start end length ambig</span></span>
@@ -564,28 +564,28 @@ levels, taxons and confidence scores(if provided).</p>
 <span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sequence_classification</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                  sequence_names levels</span></span>
-<span><span class="co">#&gt; 1  M00967_43_000000000-A3JHG_1_2101_16474_12783      1</span></span>
-<span><span class="co">#&gt; 2  M00967_43_000000000-A3JHG_1_2101_16474_12783      2</span></span>
-<span><span class="co">#&gt; 3  M00967_43_000000000-A3JHG_1_2101_16474_12783      3</span></span>
-<span><span class="co">#&gt; 4  M00967_43_000000000-A3JHG_1_2101_16474_12783      4</span></span>
-<span><span class="co">#&gt; 5  M00967_43_000000000-A3JHG_1_2101_16474_12783      5</span></span>
-<span><span class="co">#&gt; 6  M00967_43_000000000-A3JHG_1_2101_16474_12783      6</span></span>
-<span><span class="co">#&gt; 7   M00967_43_000000000-A3JHG_1_1113_12711_3318      1</span></span>
-<span><span class="co">#&gt; 8   M00967_43_000000000-A3JHG_1_1113_12711_3318      2</span></span>
-<span><span class="co">#&gt; 9   M00967_43_000000000-A3JHG_1_1113_12711_3318      3</span></span>
-<span><span class="co">#&gt; 10  M00967_43_000000000-A3JHG_1_1113_12711_3318      4</span></span>
-<span><span class="co">#&gt;                           taxonomies confidences</span></span>
-<span><span class="co">#&gt; 1                           Bacteria         100</span></span>
-<span><span class="co">#&gt; 2                    "Bacteroidetes"         100</span></span>
-<span><span class="co">#&gt; 3                      "Bacteroidia"          99</span></span>
-<span><span class="co">#&gt; 4                    "Bacteroidales"          99</span></span>
-<span><span class="co">#&gt; 5               "Porphyromonadaceae"          88</span></span>
-<span><span class="co">#&gt; 6  "Porphyromonadaceae"_unclassified          88</span></span>
-<span><span class="co">#&gt; 7                           Bacteria         100</span></span>
-<span><span class="co">#&gt; 8                         Firmicutes         100</span></span>
-<span><span class="co">#&gt; 9                         Clostridia         100</span></span>
-<span><span class="co">#&gt; 10                     Clostridiales         100</span></span></code></pre></div>
+<span><span class="co">#&gt;                                   sequence_name level</span></span>
+<span><span class="co">#&gt; 1  M00967_43_000000000-A3JHG_1_2101_16474_12783     1</span></span>
+<span><span class="co">#&gt; 2  M00967_43_000000000-A3JHG_1_2101_16474_12783     2</span></span>
+<span><span class="co">#&gt; 3  M00967_43_000000000-A3JHG_1_2101_16474_12783     3</span></span>
+<span><span class="co">#&gt; 4  M00967_43_000000000-A3JHG_1_2101_16474_12783     4</span></span>
+<span><span class="co">#&gt; 5  M00967_43_000000000-A3JHG_1_2101_16474_12783     5</span></span>
+<span><span class="co">#&gt; 6  M00967_43_000000000-A3JHG_1_2101_16474_12783     6</span></span>
+<span><span class="co">#&gt; 7   M00967_43_000000000-A3JHG_1_1113_12711_3318     1</span></span>
+<span><span class="co">#&gt; 8   M00967_43_000000000-A3JHG_1_1113_12711_3318     2</span></span>
+<span><span class="co">#&gt; 9   M00967_43_000000000-A3JHG_1_1113_12711_3318     3</span></span>
+<span><span class="co">#&gt; 10  M00967_43_000000000-A3JHG_1_1113_12711_3318     4</span></span>
+<span><span class="co">#&gt;                             taxonomy confidence</span></span>
+<span><span class="co">#&gt; 1                           Bacteria        100</span></span>
+<span><span class="co">#&gt; 2                    "Bacteroidetes"        100</span></span>
+<span><span class="co">#&gt; 3                      "Bacteroidia"         99</span></span>
+<span><span class="co">#&gt; 4                    "Bacteroidales"         99</span></span>
+<span><span class="co">#&gt; 5               "Porphyromonadaceae"         88</span></span>
+<span><span class="co">#&gt; 6  "Porphyromonadaceae"_unclassified         88</span></span>
+<span><span class="co">#&gt; 7                           Bacteria        100</span></span>
+<span><span class="co">#&gt; 8                         Firmicutes        100</span></span>
+<span><span class="co">#&gt; 9                         Clostridia        100</span></span>
+<span><span class="co">#&gt; 10                     Clostridiales        100</span></span></code></pre></div>
 <p>To get the consensus taxonomies assigned to the bins in your dataset,
 you need to specify the bin_type. The miseq example contains 3 bin
 types: <em>otu</em>, <em>asv</em> and <em>phylotype</em>. Let’s find the
@@ -597,23 +597,23 @@ consensus taxonomies of bins for the <em>otu</em> bin type.</p>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bin_classification</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    bin_names levels                        taxonomies confidences</span></span>
-<span><span class="co">#&gt; 1     Otu001      1                          Bacteria         100</span></span>
-<span><span class="co">#&gt; 2     Otu001      2                   "Bacteroidetes"         100</span></span>
-<span><span class="co">#&gt; 3     Otu001      3                     "Bacteroidia"         100</span></span>
-<span><span class="co">#&gt; 4     Otu001      4                   "Bacteroidales"         100</span></span>
-<span><span class="co">#&gt; 5     Otu001      5              "Porphyromonadaceae"         100</span></span>
-<span><span class="co">#&gt; 6     Otu001      6 "Porphyromonadaceae"_unclassified         100</span></span>
-<span><span class="co">#&gt; 7     Otu002      1                          Bacteria         100</span></span>
-<span><span class="co">#&gt; 8     Otu002      2                   "Bacteroidetes"         100</span></span>
-<span><span class="co">#&gt; 9     Otu002      3                     "Bacteroidia"         100</span></span>
-<span><span class="co">#&gt; 10    Otu002      4                   "Bacteroidales"         100</span></span></code></pre></div>
+<span><span class="co">#&gt;    bin_name level                          taxonomy confidence</span></span>
+<span><span class="co">#&gt; 1    Otu001     1                          Bacteria        100</span></span>
+<span><span class="co">#&gt; 2    Otu001     2                   "Bacteroidetes"        100</span></span>
+<span><span class="co">#&gt; 3    Otu001     3                     "Bacteroidia"        100</span></span>
+<span><span class="co">#&gt; 4    Otu001     4                   "Bacteroidales"        100</span></span>
+<span><span class="co">#&gt; 5    Otu001     5              "Porphyromonadaceae"        100</span></span>
+<span><span class="co">#&gt; 6    Otu001     6 "Porphyromonadaceae"_unclassified        100</span></span>
+<span><span class="co">#&gt; 7    Otu002     1                          Bacteria        100</span></span>
+<span><span class="co">#&gt; 8    Otu002     2                   "Bacteroidetes"        100</span></span>
+<span><span class="co">#&gt; 9    Otu002     3                     "Bacteroidia"        100</span></span>
+<span><span class="co">#&gt; 10   Otu002     4                   "Bacteroidales"        100</span></span></code></pre></div>
 <p>To get the sequence bin assignments for the <em>otu</em> bins, run
 the following:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sequence_bin_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequence_bin_assignments"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence_bin_assignment"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sequence_bin_assignments</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -629,37 +629,37 @@ the following:</p>
 <span><span class="co">#&gt; 9  Otu001 M00967_43_000000000-A3JHG_1_2114_12634_10967</span></span>
 <span><span class="co">#&gt; 10 Otu001 M00967_43_000000000-A3JHG_1_1102_18640_14309</span></span></code></pre></div>
 <p>To get the sample treatment assignments, set type =
-“sample_assignments”.</p>
+“sample_assignment”.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample_treatment_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sample_assignments"</span></span>
+<span>  type <span class="op">=</span> <span class="st">"sample_assignment"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample_treatment_assignments</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   samples treatments</span></span>
-<span><span class="co">#&gt; 1    F3D0      Early</span></span>
-<span><span class="co">#&gt; 2    F3D1      Early</span></span>
-<span><span class="co">#&gt; 3  F3D141       Late</span></span>
-<span><span class="co">#&gt; 4  F3D142       Late</span></span>
-<span><span class="co">#&gt; 5  F3D143       Late</span></span></code></pre></div>
+<span><span class="co">#&gt;   sample treatment</span></span>
+<span><span class="co">#&gt; 1   F3D0     Early</span></span>
+<span><span class="co">#&gt; 2   F3D1     Early</span></span>
+<span><span class="co">#&gt; 3 F3D141      Late</span></span>
+<span><span class="co">#&gt; 4 F3D142      Late</span></span>
+<span><span class="co">#&gt; 5 F3D143      Late</span></span></code></pre></div>
 <p>If you assigned bin representative sequences, you can access the
-report by setting type = “bin_representatives”. The miseq example
+report by setting type = “bin_representative”. The miseq example
 includes bin representatives for the <em>otu</em> bins. Let’s take a
 look:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">otu_bin_representatives</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"bin_representatives"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"bin_representative"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">otu_bin_representatives</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   otu_names                         representative_names</span></span>
+<span><span class="co">#&gt;   otu_names                          representative_name</span></span>
 <span><span class="co">#&gt; 1    Otu001 M00967_43_000000000-A3JHG_1_1108_14299_17220</span></span>
 <span><span class="co">#&gt; 2    Otu002  M00967_43_000000000-A3JHG_1_1106_22705_6123</span></span>
 <span><span class="co">#&gt; 3    Otu003  M00967_43_000000000-A3JHG_1_1101_15533_5293</span></span>
 <span><span class="co">#&gt; 4    Otu004 M00967_43_000000000-A3JHG_1_1105_25642_17588</span></span>
 <span><span class="co">#&gt; 5    Otu005  M00967_43_000000000-A3JHG_1_2102_7041_13746</span></span>
-<span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                  representative_sequences</span></span>
+<span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                   representative_sequence</span></span>
 <span><span class="co">#&gt; 1 TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-TG-C-C-GG-GG--CT-C-AA-C-C-C-C-G-G-A-ACT-G-C-TTTG-GAAAC-TG-T-ACAGC-TAGA-GT-GC-AG-GA-G-G---GG-T-G-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTCA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG</span></span>
 <span><span class="co">#&gt; 2 TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-CA-GAC-G-G-C-TG-T-G-C-AA-G-T-C-T-G-G-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TCTG-GAAAC-TG-T-AAAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-C-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG</span></span>
 <span><span class="co">#&gt; 3 TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GA-T-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GG-C-G-GG-GG--CC-C-AA-C-C-C-C-C-G-G-ACT-G-C-TTTG-GAAAC-TG-T-ATAGC-TGGA-GT-GC-AG-GA-G-A---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG</span></span>
@@ -668,7 +668,7 @@ look:</p>
 <p>The miseq example contains a custum report. To access the custom
 reports, first let’s find the names.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"reports"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "contigs_report"</span></span></code></pre></div>
 <p>To access the custom contigs assembly report, set type =
 “contigs_report”.</p>
@@ -705,21 +705,30 @@ reports, first let’s find the names.</p>
 <span><span class="co">#&gt; 4 F3D142            142</span></span>
 <span><span class="co">#&gt; 5 F3D143            143</span></span></code></pre></div>
 <p>To get the resource references associated with your dataset, set type
-= “references”.</p>
+= “resource_reference”.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"references"</span></span>
+<span>  type <span class="op">=</span> <span class="st">"resource_reference"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt;            reference_names reference_versions         reference_usages</span></span>
-<span><span class="co">#&gt; 1 trainset9_032012.pds.zip                 NA classification by mothur</span></span>
-<span><span class="co">#&gt; 2           silva.v4.fasta             1.38.1                alignment</span></span>
-<span><span class="co">#&gt;                                                              reference_notes</span></span>
-<span><span class="co">#&gt; 1                                                                         NA</span></span>
-<span><span class="co">#&gt; 2 custom reference created by trimming silva.bacteria.fasta to the V4 region</span></span>
-<span><span class="co">#&gt;                                                            reference_urls</span></span>
-<span><span class="co">#&gt; 1 https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip</span></span>
-<span><span class="co">#&gt; 2                          https://mothur.org/wiki/silva_reference_files/</span></span></code></pre></div>
+<span><span class="co">#&gt;                                 vendor                 name version</span></span>
+<span><span class="co">#&gt; 1 Schloss Lab - University of Michigan  R phylotypr package   0.1.1</span></span>
+<span><span class="co">#&gt; 2                                SILVA silva.bacteria.fasta  1.38.1</span></span>
+<span><span class="co">#&gt;                         usage                                     note</span></span>
+<span><span class="co">#&gt; 1 classification of sequences     classification using Bayesian method</span></span>
+<span><span class="co">#&gt; 2      alignment of sequences alignment reference trimmed to V4 region</span></span>
+<span><span class="co">#&gt;                 method_url                              documentation_url</span></span>
+<span><span class="co">#&gt; 1 doi:10.1128/mra.01144-24                  https://mothur.org/phylotypr/</span></span>
+<span><span class="co">#&gt; 2                       NA https://mothur.org/wiki/silva_reference_files/</span></span>
+<span><span class="co">#&gt;                                          parameter</span></span>
+<span><span class="co">#&gt; 1 kmer_size=8,num_bootstraps=100,min_confidence=80</span></span>
+<span><span class="co">#&gt; 2                                               NA</span></span>
+<span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 citation</span></span>
+<span><span class="co">#&gt; 1 @article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy}, journal = {Applied and Environmental Microbiology}, volume = {73}, number = {16}, pages = {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL = {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint = {https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}</span></span>
+<span><span class="co">#&gt; 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NA</span></span>
+<span><span class="co">#&gt;   creation_date</span></span>
+<span><span class="co">#&gt; 1    2026-05-07</span></span>
+<span><span class="co">#&gt; 2    2026-05-07</span></span></code></pre></div>
 <p>Lastly, if sequences or bins have been removed over the course of
 your analysis you can see a report about the scrapped data by setting
 type = “sequence_scrap” or “bin_scrap”. The miseq example does not
@@ -744,14 +753,14 @@ sequences, custom reports, and scrapped data.</p>
 <p>To get a summary for our custom reports, first let’s find the report
 names.</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"reports"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "contigs_report"</span></span></code></pre></div>
 <p>You can see we have a custom report so let get the summary by setting
 report_type = “contigs_report”.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"reports"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"report"</span>,</span>
 <span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;             Expected_Errors   Length MisMatches Num_Ns Overlap_End</span></span>
