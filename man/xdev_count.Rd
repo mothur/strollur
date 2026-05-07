@@ -23,7 +23,7 @@ Options include: "sequence", "sample", "treatment", "bin" and
 bins for. Default = "otu".}
 
 \item{samples, }{vector of strings. samples is only used when 'type' =
-"sequences" or 'type' = "bins" . samples should contain the names of the
+"sequence" or 'type' = "bin" . samples should contain the names of the
 samples you want the count for. Default = NULL.}
 
 \item{distinct, }{Boolean. distinct is used when 'type' =

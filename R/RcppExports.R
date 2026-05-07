@@ -112,8 +112,8 @@ is_aligned <- function(data) {
 #' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
-#' Options include: "sequences", "bins".
-#' Default = "sequences".
+#' Options include: "sequence", "bin".
+#' Default = "sequence".
 #'
 #' @param bin_type, string containing the bin type you would like the number of
 #' bins for. Default = "otu".
@@ -126,28 +126,28 @@ is_aligned <- function(data) {
 #' miseq <- miseq_sop_example()
 #'
 #' # To the total abundance for each sequence
-#' xdev_abundance(data = miseq, type = "sequences")
+#' xdev_abundance(data = miseq, type = "sequence")
 #'
 #' # To the total abundance for each sequence parsed by sample
-#' xdev_abundance(data = miseq, type = "sequences", by_sample = TRUE)
+#' xdev_abundance(data = miseq, type = "sequence", by_sample = TRUE)
 #'
 #' # To the total abundance for each "otu" bin
-#' xdev_abundance(data = miseq, type = "bins", bin_type = "otu")
+#' xdev_abundance(data = miseq, type = "bin", bin_type = "otu")
 #'
 #' # To the total abundance for each "otu" bin parsed by sample
-#' xdev_abundance(data = miseq, type = "bins", bin_type = "otu", by_sample = TRUE)
+#' xdev_abundance(data = miseq, type = "bin", bin_type = "otu", by_sample = TRUE)
 #'
 #' # To the total abundance for each "asv" bin
-#' xdev_abundance(data = miseq, type = "bins", bin_type = "asv")
+#' xdev_abundance(data = miseq, type = "bin", bin_type = "asv")
 #'
 #' # To the total abundance for each "asv" bin parsed by sample
-#' xdev_abundance(data = miseq, type = "bins", bin_type = "asv", by_sample = TRUE)
+#' xdev_abundance(data = miseq, type = "bin", bin_type = "asv", by_sample = TRUE)
 #'
 #' # To the total abundance of each sample
-#' xdev_abundance(data = miseq, type = "samples")
+#' xdev_abundance(data = miseq, type = "sample")
 #'
 #' # To the total abundance of each treatment
-#' xdev_abundance(data = miseq, type = "treatments")
+#' xdev_abundance(data = miseq, type = "treatment")
 #'
 #' @return data.frame
 #' @export
@@ -247,7 +247,7 @@ xdev_add_references <- function(data, table, name = "name", vendor = "vendor", v
 #'
 #' @return No return value, called for side effects.
 #' @export
-xdev_add_report <- function(data, table, type = "metadata", sequence_name = "sequence_names", verbose = TRUE) {
+xdev_add_report <- function(data, table, type = "metadata", sequence_name = "sequence_name", verbose = TRUE) {
     invisible(.Call(`_strollur_xdev_add_report`, data, table, type, sequence_name, verbose))
 }
 
@@ -614,7 +614,7 @@ xdev_assign_treatments <- function(data, table, sample = "sample", treatment = "
 #' bins for. Default = "otu".
 #'
 #' @param samples, vector of strings. samples is only used when 'type' =
-#' "sequences" or 'type' = "bins" . samples should contain the names of the
+#' "sequence" or 'type' = "bin" . samples should contain the names of the
 #' samples you want the count for. Default = NULL.
 #'
 #' @param distinct, Boolean. distinct is used when 'type' =
@@ -973,8 +973,10 @@ xdev_names <- function(data, type = "sequence", bin_type = "otu", samples = NULL
 #'   bin_names <- c("bin1", "bin2", "bin3")
 #'   abundances <- c(110, 525, 80)
 #'
-#'   xdev_assign_bins(data = data, table = data.frame(bin_name = bin_names,
-#'                                abundance = abundances), bin_type = "otu")
+#'   xdev_assign_bins(data = data,
+#'                    table = data.frame(bin_name = bin_names,
+#'                                       abundance = abundances),
+#'                    bin_type = "otu")
 #'
 #'   count(data = data, type = "bin", bin_type = "otu")
 #'
@@ -1135,8 +1137,9 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #'
 #' # To get the sequence bin assignments
 #'
-#' bin_assignments <- xdev_report(data = miseq, type = "sequence_bin_assignment",
-#'                           bin_type = "otu")
+#' bin_assignments <- xdev_report(data = miseq,
+#'                                type = "sequence_bin_assignment",
+#'                                bin_type = "otu")
 #' head(bin_assignments, n = 10)
 #'
 #' # To get the sample treatment assignments
@@ -1152,41 +1155,47 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #' # To get a report about bin classifications for 'otu' data
 #'
 #' otu_taxonomy_report <- xdev_report(data = miseq,
-#'                                        type = "bin_taxonomy",
-#'                                        bin_type = "otu")
+#'                                    type = "bin_taxonomy",
+#'                                    bin_type = "otu")
 #' head(otu_taxonomy_report, n = 10)
 #'
 #' # To get a report about bin classifications for 'asv' data
 #'
-#' asv_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
-#'                               bin_type = "asv")
+#' asv_taxonomy_report <- xdev_report(data = miseq,
+#'                                    type = "bin_taxonomy",
+#'                                    bin_type = "asv")
 #' head(asv_taxonomy_report, n = 10)
 #'
 #' # To get a report about bin classifications for 'phylotype' data
 #'
-#' phylotype_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
-#'                                     bin_type = "phylotype")
+#' phylotype_taxonomy_report <- xdev_report(data = miseq,
+#'                                          type = "bin_taxonomy",
+#'                                          bin_type = "phylotype")
 #' head(phylotype_taxonomy_report, n = 10)
 #'
 #' # To get the 'otu' bin representative sequences
 #'
-#' otu_bin_reps <- xdev_report(data = miseq, type = "bin_representative",
-#'                        bin_type = "otu")
+#' otu_bin_reps <- xdev_report(data = miseq,
+#'                             type = "bin_representative",
+#'                             bin_type = "otu")
 #' head(otu_bin_reps, n = 10)
 #'
 #' # To get a report about the sequences removed during your analysis:
 #'
-#' scrapped_sequence_report <- xdev_report(data = miseq, type = "sequence_scrap")
+#' scrapped_sequence_report <- xdev_report(data = miseq,
+#'                                         type = "sequence_scrap")
 #'
 #' # To get a report about the "otu" bins removed during your analysis:
 #'
-#' scrapped_otu_report <- xdev_report(data = miseq, type = "bin_scrap",
-#'                               bin_type = "otu")
+#' scrapped_otu_report <- xdev_report(data = miseq,
+#'                                    type = "bin_scrap",
+#'                                    bin_type = "otu")
 #'
 #' # To get a report about the "phylotype" bins removed during your analysis:
 #'
-#' scrapped_phylotype_report <- xdev_report(data = miseq, type = "bin_scrap",
-#'                                     bin_type = "phylotype")
+#' scrapped_phylotype_report <- xdev_report(data = miseq,
+#'                                          type = "bin_scrap",
+#'                                          bin_type = "phylotype")
 #'
 #' # To get the metadata associated with your data:
 #'

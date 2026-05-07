@@ -28,8 +28,8 @@ void xint_assigned_message(double num = -1, string tag = "sequences");
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @param type, string containing the type of data you want the number of.
-//' Options include: "sequences", "bins".
-//' Default = "sequences".
+//' Options include: "sequence", "bin".
+//' Default = "sequence".
 //'
 //' @param bin_type, string containing the bin type you would like the number of
 //' bins for. Default = "otu".
@@ -42,28 +42,28 @@ void xint_assigned_message(double num = -1, string tag = "sequences");
 //' miseq <- miseq_sop_example()
 //'
 //' # To the total abundance for each sequence
-//' xdev_abundance(data = miseq, type = "sequences")
+//' xdev_abundance(data = miseq, type = "sequence")
 //'
 //' # To the total abundance for each sequence parsed by sample
-//' xdev_abundance(data = miseq, type = "sequences", by_sample = TRUE)
+//' xdev_abundance(data = miseq, type = "sequence", by_sample = TRUE)
 //'
 //' # To the total abundance for each "otu" bin
-//' xdev_abundance(data = miseq, type = "bins", bin_type = "otu")
+//' xdev_abundance(data = miseq, type = "bin", bin_type = "otu")
 //'
 //' # To the total abundance for each "otu" bin parsed by sample
-//' xdev_abundance(data = miseq, type = "bins", bin_type = "otu", by_sample = TRUE)
+//' xdev_abundance(data = miseq, type = "bin", bin_type = "otu", by_sample = TRUE)
 //'
 //' # To the total abundance for each "asv" bin
-//' xdev_abundance(data = miseq, type = "bins", bin_type = "asv")
+//' xdev_abundance(data = miseq, type = "bin", bin_type = "asv")
 //'
 //' # To the total abundance for each "asv" bin parsed by sample
-//' xdev_abundance(data = miseq, type = "bins", bin_type = "asv", by_sample = TRUE)
+//' xdev_abundance(data = miseq, type = "bin", bin_type = "asv", by_sample = TRUE)
 //'
 //' # To the total abundance of each sample
-//' xdev_abundance(data = miseq, type = "samples")
+//' xdev_abundance(data = miseq, type = "sample")
 //'
 //' # To the total abundance of each treatment
-//' xdev_abundance(data = miseq, type = "treatments")
+//' xdev_abundance(data = miseq, type = "treatment")
 //'
 //' @return data.frame
 //' @export
@@ -179,7 +179,7 @@ double xdev_add_references(const Rcpp::Environment& data,
 void xdev_add_report(const Rcpp::Environment& data,
                  Rcpp::DataFrame table,
                  const string& type = "metadata",
-                 const string& sequence_name = "sequence_names",
+                 const string& sequence_name = "sequence_name",
                  bool verbose = true);
 /******************************************************************************/
 //' @title xdev_add_sequences
@@ -585,7 +585,7 @@ double xdev_assign_treatments(const Rcpp::Environment& data,
 //' bins for. Default = "otu".
 //'
 //' @param samples, vector of strings. samples is only used when 'type' =
-//' "sequences" or 'type' = "bins" . samples should contain the names of the
+//' "sequence" or 'type' = "bin" . samples should contain the names of the
 //' samples you want the count for. Default = NULL.
 //'
 //' @param distinct, Boolean. distinct is used when 'type' =
@@ -748,7 +748,9 @@ vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
 //' a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-vector<string> xdev_get_sequences(const Rcpp::Environment& data, const string& sample = "", bool degap = false);
+vector<string> xdev_get_sequences(const Rcpp::Environment& data,
+                                  const string& sample = "",
+                                  bool degap = false);
 /******************************************************************************/
 //' @title xdev_has_sequence_taxonomy
 //' @description
@@ -861,9 +863,9 @@ void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_na
 //' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
-void xdev_merge_sequences(const Rcpp::Environment& data, const vector<string>& sequence_names,
+void xdev_merge_sequences(const Rcpp::Environment& data,
+                          const vector<string>& sequence_names,
                           const string& reason = "merged");
-
 /******************************************************************************/
 //' @title xdev_names
 //' @description
@@ -955,8 +957,10 @@ vector<string> xdev_names(const Rcpp::Environment& data,
 //'   bin_names <- c("bin1", "bin2", "bin3")
 //'   abundances <- c(110, 525, 80)
 //'
-//'   xdev_assign_bins(data = data, table = data.frame(bin_name = bin_names,
-//'                                abundance = abundances), bin_type = "otu")
+//'   xdev_assign_bins(data = data,
+//'                    table = data.frame(bin_name = bin_names,
+//'                                       abundance = abundances),
+//'                    bin_type = "otu")
 //'
 //'   count(data = data, type = "bin", bin_type = "otu")
 //'
@@ -972,8 +976,10 @@ vector<string> xdev_names(const Rcpp::Environment& data,
 //' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
-void xdev_remove_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
-                      const vector<string>& trash_tags, const string& bin_type = "otu");
+void xdev_remove_bins(const Rcpp::Environment& data,
+                      const vector<string>& bin_names,
+                      const vector<string>& trash_tags,
+                      const string& bin_type = "otu");
 
 //' @title xdev_remove_lineages
 //' @description
@@ -1003,7 +1009,8 @@ void xdev_remove_bins(const Rcpp::Environment& data, const vector<string>& bin_n
 //' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
-void xdev_remove_lineages(const Rcpp::Environment& data, const vector<string>& contaminants,
+void xdev_remove_lineages(const Rcpp::Environment& data,
+                          const vector<string>& contaminants,
                           const string& reason = "contaminant");
 
 //' @title xdev_remove_samples
@@ -1034,7 +1041,8 @@ void xdev_remove_lineages(const Rcpp::Environment& data, const vector<string>& c
 //' @return No return value, called for side effects.
 //' @export
 //[[Rcpp::export]]
-void xdev_remove_samples(const Rcpp::Environment& data, const vector<string>& samples,
+void xdev_remove_samples(const Rcpp::Environment& data,
+                         const vector<string>& samples,
                          const string& reason = "remove_samples");
 
 //' @title xdev_remove_sequences
@@ -1118,8 +1126,9 @@ void xdev_remove_sequences(const Rcpp::Environment& data,
 //'
 //' # To get the sequence bin assignments
 //'
-//' bin_assignments <- xdev_report(data = miseq, type = "sequence_bin_assignment",
-//'                           bin_type = "otu")
+//' bin_assignments <- xdev_report(data = miseq,
+//'                                type = "sequence_bin_assignment",
+//'                                bin_type = "otu")
 //' head(bin_assignments, n = 10)
 //'
 //' # To get the sample treatment assignments
@@ -1135,41 +1144,47 @@ void xdev_remove_sequences(const Rcpp::Environment& data,
 //' # To get a report about bin classifications for 'otu' data
 //'
 //' otu_taxonomy_report <- xdev_report(data = miseq,
-//'                                        type = "bin_taxonomy",
-//'                                        bin_type = "otu")
+//'                                    type = "bin_taxonomy",
+//'                                    bin_type = "otu")
 //' head(otu_taxonomy_report, n = 10)
 //'
 //' # To get a report about bin classifications for 'asv' data
 //'
-//' asv_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
-//'                               bin_type = "asv")
+//' asv_taxonomy_report <- xdev_report(data = miseq,
+//'                                    type = "bin_taxonomy",
+//'                                    bin_type = "asv")
 //' head(asv_taxonomy_report, n = 10)
 //'
 //' # To get a report about bin classifications for 'phylotype' data
 //'
-//' phylotype_taxonomy_report <- xdev_report(data = miseq, type = "bin_taxonomy",
-//'                                     bin_type = "phylotype")
+//' phylotype_taxonomy_report <- xdev_report(data = miseq,
+//'                                          type = "bin_taxonomy",
+//'                                          bin_type = "phylotype")
 //' head(phylotype_taxonomy_report, n = 10)
 //'
 //' # To get the 'otu' bin representative sequences
 //'
-//' otu_bin_reps <- xdev_report(data = miseq, type = "bin_representative",
-//'                        bin_type = "otu")
+//' otu_bin_reps <- xdev_report(data = miseq,
+//'                             type = "bin_representative",
+//'                             bin_type = "otu")
 //' head(otu_bin_reps, n = 10)
 //'
 //' # To get a report about the sequences removed during your analysis:
 //'
-//' scrapped_sequence_report <- xdev_report(data = miseq, type = "sequence_scrap")
+//' scrapped_sequence_report <- xdev_report(data = miseq,
+//'                                         type = "sequence_scrap")
 //'
 //' # To get a report about the "otu" bins removed during your analysis:
 //'
-//' scrapped_otu_report <- xdev_report(data = miseq, type = "bin_scrap",
-//'                               bin_type = "otu")
+//' scrapped_otu_report <- xdev_report(data = miseq,
+//'                                    type = "bin_scrap",
+//'                                    bin_type = "otu")
 //'
 //' # To get a report about the "phylotype" bins removed during your analysis:
 //'
-//' scrapped_phylotype_report <- xdev_report(data = miseq, type = "bin_scrap",
-//'                                     bin_type = "phylotype")
+//' scrapped_phylotype_report <- xdev_report(data = miseq,
+//'                                          type = "bin_scrap",
+//'                                          bin_type = "phylotype")
 //'
 //' # To get the metadata associated with your data:
 //'

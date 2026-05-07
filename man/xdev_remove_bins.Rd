@@ -31,8 +31,10 @@ you to remove bins from a \href{https://mothur.org/strollur/reference/strollur.h
   bin_names <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
 
-  xdev_assign_bins(data = data, table = data.frame(bin_name = bin_names,
-                               abundance = abundances), bin_type = "otu")
+  xdev_assign_bins(data = data,
+                   table = data.frame(bin_name = bin_names,
+                                      abundance = abundances),
+                   bin_type = "otu")
 
   count(data = data, type = "bin", bin_type = "otu")
 
