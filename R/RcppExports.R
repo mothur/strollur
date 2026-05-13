@@ -1461,6 +1461,6 @@ xint_deserialize_dobject <- function(data) {
 #' @keywords internal
 #' @noRd
 xint_serialize_dobject <- function(data) {
-    invisible(.Call(`_strollur_xint_serialize_dobject`, data))
+    .Call(`_strollur_xint_serialize_dobject`, data)
 }
 

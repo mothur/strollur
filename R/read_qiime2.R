@@ -74,11 +74,16 @@ read_qiime2 <- function(qza, metadata = NULL,
         # read biom file
         hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
 
-        # create data.frame from sparse otu data
+        counts_matrix <- hdata$counts
+        sample_indices <- rep(
+          seq_len(ncol(counts_matrix)),
+          diff(counts_matrix@p)
+        )
+
         data_found[["bin_shared_assignments"]] <- data.frame(
-          bin_name = hdata$otus[hdata$counts$i],
-          abundance = hdata$counts$v,
-          sample = hdata$samples[hdata$counts$j]
+          bin_name  = hdata$otus[counts_matrix@i + 1],
+          abundance = counts_matrix@x,
+          sample    = hdata$samples[sample_indices]
         )
       }
     } else if (

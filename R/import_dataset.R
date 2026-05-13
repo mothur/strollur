@@ -93,7 +93,7 @@ import_dataset <- function(table) {
         table[[b]]$bin_id <- table[[bt]]$bin_id[matched_indices]
         table[[b]] <- na.omit(table[[b]])
 
-        obrs <- paste0(type, "_bin_representative_sequences")
+        obrs <- paste0(type, "_bin_representative_sequence")
         if (obrs %in% names) {
           # filter seqs from _bin_representative_sequences
           matched_indices <- match(
@@ -189,12 +189,6 @@ import_dataset <- function(table) {
           data = data, table = table[[sequence_bin_assignment]],
           bin_type = type
         )
-      } else {
-        # does not want sequence data, just bins and abundances
-        xdev_assign_bins(
-          data = data, table = table[[bin_type]],
-          bin_type = type
-        )
       }
 
       otu_bin_rep_table <- paste0(type, "_bin_representative_sequence")
@@ -238,8 +232,11 @@ import_dataset <- function(table) {
   }
 
   # add references
-  if ("reference" %in% names) {
-    add(data = data, table = table$reference, type = "resource_reference")
+  if ("resource_reference" %in% names) {
+    add(
+      data = data, table = table$resource_reference,
+      type = "resource_reference"
+    )
   }
 
   # list all report names

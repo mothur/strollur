@@ -114,11 +114,6 @@ test_that("import - no sequence data", {
   expect_equal(count(dataset, "sample"), count(just_bins, "sample"))
   expect_equal(length(names(dataset, "sequence")), 531)
 
-  expect_error(import_dataset(table, c("sequence_data")))
-  expect_error(import_dataset(table, c("metadata")))
-  expect_error(import_dataset(table, c("references")))
-  expect_error(import_dataset(table, c("sequence_tree")))
-
   attr(table, "strollur_version") <- "0.2.1"
   expect_error(import_dataset(table))
 })

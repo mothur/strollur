@@ -103,11 +103,14 @@
 #' data <- new_dataset(dataset_name = "example_dataset")
 #'
 #' # Create a resource reference for the FASTA data silva_resource <-
-#' silva_resource <- new_reference( vendor = "SILVA", name =
-#' "silva.bacteria.fasta", version = "1.38.1", usage = "alignment of sequences",
-#' note = "reference trimmed to V4 region", method_url =
-#' "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/",
-#' documentation_url = "https://mothur.org/wiki/silva_reference_files/" )
+#' silva_resource <- new_reference(
+#'   vendor = "SILVA", name =
+#'     "silva.bacteria.fasta", version = "1.38.1",
+#'      usage = "alignment of sequences",
+#'   note = "reference trimmed to V4 region", method_url =
+#'     "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/",
+#'   documentation_url = "https://mothur.org/wiki/silva_reference_files/"
+#' )
 #'
 #' # Add FASTA data with a resource reference
 #'

@@ -11,7 +11,6 @@ Description: Stores the data associated with your microbial RNA analysis. This i
 URL: https://github.com/mothur/strollur, https://mothur.org/strollur/
 BugReports: https://github.com/mothur/strollur/issues
 License: GPL (>= 3)
-RoxygenNote: 7.3.3
 biocViews:
 Imports: 
     Rcpp,
@@ -26,12 +25,12 @@ Imports:
     dplyr,
     tidyr,
     yaml,
-    rbiom,
+    rbiom (>= 3.1.0),
     parallelly,
     stats,
     utils
-LinkingTo: Rcpp, RcppThread, cli, testthat, Rcereal
-Depends: R (>= 4.4.0)
+LinkingTo: Rcpp, RcppThread, cli, Rcereal
+Depends: R (>= 4.5.0)
 Suggests: 
     knitr,
     rmarkdown,
@@ -42,3 +41,4 @@ Suggests:
 Config/testthat/edition: 3
 Encoding: UTF-8
 VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0

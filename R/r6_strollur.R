@@ -27,10 +27,10 @@ strollur <- R6Class("strollur",
     #' the class.
     raw = NULL,
 
-    #' @field sequence_tree a tree that relates sequences to eachother
+    #' @field sequence_tree a tree that relates sequences to each other
     sequence_tree = NULL,
 
-    #' @field sample_tree a tree that relates samples to eachother
+    #' @field sample_tree a tree that relates samples to each other
     sample_tree = NULL,
 
     #' @description
@@ -1022,6 +1022,133 @@ strollur <- R6Class("strollur",
       }
       self$sequence_tree
     },
+
+    #' @description
+    #' Determine if two
+    #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+    #'  objects are equal.
+    #'
+    #' @param data, a
+    #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+    #'   object
+    #' @examples
+    #'
+    #' miseq <- miseq_sop_example()
+    #'
+    #' data <- copy_dataset(miseq)
+    #'
+    #' miseq$is_equal(data)
+    #'
+    #' @returns a logical
+    #' @export
+    is_equal = function(data) {
+      if (!inherits(data, "strollur")) {
+        stop("data must be a strollur object.")
+      }
+
+      # compare private members - version, processors
+      if (!identical(self$.private$version, data$.private$version)) {
+        cli_alert("The strollur objects versions are not equivalent.")
+        return(FALSE)
+      }
+      if (!identical(self$.private$processors, data$.private$processors)) {
+        cli_alert("The strollur objects processors are not equivalent.")
+        return(FALSE)
+      }
+
+      # Compare public members - data, raw, sequence_tree and sample_tree
+      # compare raw
+      if (!identical(self$raw, data$raw)) {
+        message <- paste(
+          "The strollur objects public field 'raw' are not",
+          " equivalent."
+        )
+        cli_alert(message)
+        return(FALSE)
+      }
+
+      # compare ape sequence tree, sample_tree
+      # We use ape::all.equal.phylo because tree objects
+      # can be topologically identical but have different memory layouts.
+      seq_tree_self <- self$get_sequence_tree()
+      seq_tree_data <- data$get_sequence_tree()
+      if (is.null(seq_tree_self) && is.null(seq_tree_data)) {
+        # null trees
+      } else if (is.null(seq_tree_self) || is.null(seq_tree_data)) {
+        message <- paste(
+          "The strollur objects public field ",
+          "'sequence_tree' are not equivalent."
+        )
+        cli_alert(message)
+        return(FALSE)
+      } else {
+        # all.equal.phylo returns TRUE or a character vector of differences
+        if (!isTRUE(ape::all.equal.phylo(
+          seq_tree_self,
+          seq_tree_data
+        ))) {
+          message <- paste(
+            "The strollur objects public field ",
+            "'sequence_tree' are not equivalent."
+          )
+          cli_alert(message)
+          return(FALSE)
+        }
+      }
+
+      sample_tree_self <- self$get_sample_tree()
+      sample_tree_data <- data$get_sample_tree()
+      if (is.null(sample_tree_self) && is.null(sample_tree_data)) {
+        # null trees
+      } else if (is.null(sample_tree_self) || is.null(sample_tree_data)) {
+        message <- paste(
+          "The strollur objects public field ",
+          "'sample_tree' are not equivalent."
+        )
+        cli_alert(message)
+        return(FALSE)
+      } else {
+        # all.equal.phylo returns TRUE or a character vector of differences
+        if (!isTRUE(ape::all.equal.phylo(
+          sample_tree_self,
+          sample_tree_data
+        ))) {
+          message <- paste(
+            "The strollur objects public field ",
+            "'sample_tree' are not equivalent."
+          )
+          cli_alert(message)
+          return(FALSE)
+        }
+      }
+
+      # compare data
+      preserve_self_raw <- self$raw
+      preserve_data_raw <- data$raw
+
+      # serialize c++ back end for efficient comparison - sets raw
+      sraw <- xint_serialize_dobject(self)
+      draw <- xint_serialize_dobject(data)
+
+      # compare and reset old raw value
+      if (!identical(sraw, draw)) {
+        self$raw <- preserve_self_raw
+        data$raw <- preserve_data_raw
+
+        message <- paste(
+          "The strollur objects public field 'data' are not",
+          " equivalent."
+        )
+        cli_alert(message)
+        return(FALSE)
+      } else {
+        self$raw <- preserve_self_raw
+        data$raw <- preserve_data_raw
+      }
+
+      TRUE
+    },
+
 
     #' @description
     #' Get the names of a given type of data
