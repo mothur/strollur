@@ -29,6 +29,7 @@ reference:
   - new_reference
   - clear
   - is_aligned
+  - is_equal
   - has_sample
   - get_bin_types
 - title: Data Transfers
