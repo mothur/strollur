@@ -8,6 +8,7 @@ test_that("rcpp_dataset - new_dataset, copy_dataset", {
   dataset2 <- copy_dataset(data)
   expect_equal(names(dataset2, "dataset"), "miseq_sop")
   expect_equal(count(dataset2, "sequence"), 0)
+  expect_error(copy_dataset("not a strollur object"))
 
   xdev_add_sequences(data, data.frame(sequence_name = c("seq1")))
   expect_equal(count(data, "sequence"), 1)

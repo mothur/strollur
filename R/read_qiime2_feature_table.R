@@ -58,11 +58,13 @@ read_qiime2_feature_table <- function(qza, dir_path = NULL,
       # read biom file
       hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
 
-      # create data.frame from sparse otu data
+      counts_matrix <- hdata$counts
+      sample_indices <- rep(seq_len(ncol(counts_matrix)), diff(counts_matrix@p))
+
       artifact[["data"]] <- data.frame(
-        bin_name = hdata$otus[hdata$counts$i],
-        abundance = hdata$counts$v,
-        sample = hdata$samples[hdata$counts$j]
+        bin_name  = hdata$otus[counts_matrix@i + 1],
+        abundance = counts_matrix@x,
+        sample    = hdata$samples[sample_indices]
       )
 
       if (remove_unpacked_artifacts) {

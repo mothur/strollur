@@ -1220,13 +1220,15 @@ void xint_deserialize_dobject(Rcpp::Environment data) {
      d.get()->loadFromSerialized(raw);
 }
 /******************************************************************************/
-void xint_serialize_dobject(Rcpp::Environment data) {
+Rcpp::RawVector xint_serialize_dobject(Rcpp::Environment data) {
     if (!data.inherits("strollur")) {
         string message = "data must be a strollur object.";
         throw Rcpp::exception(message.c_str());
     }
      Rcpp::XPtr<Dataset> d = data["data"];
-     data["raw"] = d.get()->serializeDataset();
+     Rcpp::RawVector raw = d.get()->serializeDataset();
+     data["raw"] = raw;
+     return raw;
 }
 /******************************************************************************/
 

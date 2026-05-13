@@ -1,6 +1,9 @@
 # test "dataset"
 
 test_that("dataset - intialize from read_mothur / print", {
+  expect_error(strollur$new("test", 2, "not a strollur object"),
+    regexp = "dataset must be a strollur object."
+  )
   dataset_t <- read_mothur(
     fasta = strollur_example("final.fasta.gz"),
     count = strollur_example("final.count_table.gz"),

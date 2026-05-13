@@ -15,7 +15,7 @@ test_that("test read_qiime2_feature_table", {
   expect_equal(nrow(bin_data$data), 2290)
   expect_equal(ncol(bin_data$data), 3)
 
-  expect_equal(bin_data$data[264, 2], 44)
-  expect_equal(bin_data$data[264, 1], "b44621e5c80607cdfacbf7a81e1cbe41")
-  expect_equal(bin_data$data[264, 3], "L2S357")
+  expect_equal(bin_data$data[1076, 2], 44)
+  expect_equal(bin_data$data[1076, 1], "b44621e5c80607cdfacbf7a81e1cbe41")
+  expect_equal(bin_data$data[1076, 3], "L2S357")
 })

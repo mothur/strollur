@@ -54,6 +54,7 @@ Dataset::Dataset(const Dataset& dataset) {
     numns = dataset.numns;
 
     taxonomies = dataset.taxonomies;
+    references = dataset.references;
     seqIndex = dataset.seqIndex;
     tableSeqs = dataset.tableSeqs;
 

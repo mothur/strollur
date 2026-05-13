@@ -551,17 +551,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // xint_serialize_dobject
-void xint_serialize_dobject(Rcpp::Environment data);
+Rcpp::RawVector xint_serialize_dobject(Rcpp::Environment data);
 RcppExport SEXP _strollur_xint_serialize_dobject(SEXP dataSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    xint_serialize_dobject(data);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(xint_serialize_dobject(data));
+    return rcpp_result_gen;
 END_RCPP
 }
-
-RcppExport SEXP run_testthat_tests(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_strollur_clear", (DL_FUNC) &_strollur_clear, 1},
@@ -605,7 +604,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xint_new_pointer", (DL_FUNC) &_strollur_xint_new_pointer, 2},
     {"_strollur_xint_deserialize_dobject", (DL_FUNC) &_strollur_xint_deserialize_dobject, 1},
     {"_strollur_xint_serialize_dobject", (DL_FUNC) &_strollur_xint_serialize_dobject, 1},
-    {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
     {NULL, NULL, 0}
 };
 

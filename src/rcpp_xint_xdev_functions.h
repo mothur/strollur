@@ -1456,8 +1456,8 @@ void xint_deserialize_dobject(Rcpp::Environment data);
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @keywords internal
 //' @noRd
-//[[Rcpp::export]]
-void xint_serialize_dobject(Rcpp::Environment data);
+// [[Rcpp::export]]
+Rcpp::RawVector xint_serialize_dobject(Rcpp::Environment data);
 
 /******************************************************************************/
 
