@@ -24,6 +24,10 @@ Useful links:
 
 **Maintainer**: Sarah Westcott <swestcot@umich.edu>
 
+Authors:
+
+- Sarah Westcott <swestcot@umich.edu>
+
 Other contributors:
 
 - Pat Schloss <pschloss@umich.edu>

@@ -1,28 +1,30 @@
-# write_mothur_count
+# is_equal
 
-Write a mothur formatted [count
-file](https://mothur.org/wiki/count_file/)
+Determine if two
+[strollur](https://mothur.org/strollur/reference/strollur.html) objects
+are equal.
 
 ## Usage
 
 ``` r
-write_mothur_count(data, filename = NULL)
+is_equal(data, data2)
 ```
 
 ## Arguments
 
-- data:
+- data, :
 
-  A \`strollur\` object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
-- filename:
+- data2, :
 
-  a string containing the name of the output file. Default =
-  'dataset_name'.count_table
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 ## Value
 
-name of count file
+a logical
 
 ## Examples
 
@@ -41,6 +43,9 @@ miseq <- miseq_sop_example()
 #> Added metadata.
 #> Added 2 resource references.
 #> Added a contigs_report.
-write_mothur_count(miseq, tempfile())
-#> [1] "/tmp/RtmpgGNJbI/file1a92142a1cf4"
+
+data <- copy_dataset(miseq)
+
+is_equal(miseq, data)
+#> [1] TRUE
 ```

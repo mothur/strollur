@@ -24,17 +24,17 @@ Sarah Westcott, <swestcot@umich.edu>
 
 - `sequence_tree`:
 
-  a tree that relates sequences to eachother
+  a tree that relates sequences to each other
 
 - `sample_tree`:
 
-  a tree that relates samples to eachother
+  a tree that relates samples to each other
 
 ## Methods
 
 ### Public methods
 
-- [`strollur$new()`](#method-strollur-new)
+- [`strollur$new()`](#method-strollur-initialize)
 
 - [`strollur$print()`](#method-strollur-print)
 
@@ -58,6 +58,8 @@ Sarah Westcott, <swestcot@umich.edu>
 
 - [`strollur$get_sequence_tree()`](#method-strollur-get_sequence_tree)
 
+- [`strollur$is_equal()`](#method-strollur-is_equal)
+
 - [`strollur$names()`](#method-strollur-names)
 
 - [`strollur$report()`](#method-strollur-report)
@@ -68,7 +70,7 @@ Sarah Westcott, <swestcot@umich.edu>
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `strollur$new()`
 
 Create a new strollur dataset
 
@@ -100,14 +102,13 @@ A new \`strollur\` object.
 
 #### Examples
 
-
     # to create an empty strollur object, run the following:
 
     data <- new_dataset("soil")
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `strollur$print()`
 
 Print summary of \`strollur\` object
 
@@ -126,7 +127,7 @@ No return value, called for side effects.
 
 ------------------------------------------------------------------------
 
-### Method [`abundance()`](https://mothur.org/strollur/reference/abundance.md)
+### `strollur$abundance()`
 
 Get the abundance data for sequences, bins, samples, and treatments.
 
@@ -158,7 +159,6 @@ data.frame
 
 #### Examples
 
-
     miseq <- miseq_sop_example()
 
     # To the total abundance for each sequence
@@ -189,7 +189,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method [`add()`](https://mothur.org/strollur/reference/add.md)
+### `strollur$add()`
 
 Add sequences, reports, metadata or resource references
 
@@ -302,7 +302,6 @@ Updated \`strollur\` object - invisible(self)
 
 #### Examples
 
-
     fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
     contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
@@ -347,7 +346,7 @@ Updated \`strollur\` object - invisible(self)
 
 ------------------------------------------------------------------------
 
-### Method `add_sample_tree()`
+### `strollur$add_sample_tree()`
 
 Add phylo tree relating the samples in your dataset
 
@@ -367,7 +366,6 @@ Updated \`strollur\` object
 
 #### Examples
 
-
      data <- new_dataset("my_dataset")
 
      df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
@@ -380,7 +378,7 @@ Updated \`strollur\` object
 
 ------------------------------------------------------------------------
 
-### Method `add_sequence_tree()`
+### `strollur$add_sequence_tree()`
 
 Add phylo tree relating the sequences in your dataset
 
@@ -400,14 +398,13 @@ Updated \`strollur\` object
 
 #### Examples
 
-
      data <- new_dataset("my_dataset")
      tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
      data$add_sequence_tree(tree)
 
 ------------------------------------------------------------------------
 
-### Method [`assign()`](https://mothur.org/strollur/reference/assign.md)
+### `strollur$assign()`
 
 Assign sequence abundances, sequence classifications, bins, bin
 representative sequences, bin classifications or treatments.
@@ -487,7 +484,6 @@ representative sequences, bin classifications or treatments.
 Updated \`strollur\` object
 
 #### Examples
-
 
     # create a new empty strollur object named 'example_dataset'
 
@@ -575,7 +571,7 @@ Updated \`strollur\` object
 
 ------------------------------------------------------------------------
 
-### Method [`clear()`](https://mothur.org/strollur/reference/clear.md)
+### `strollur$clear()`
 
 Clear data from datasest
 
@@ -596,7 +592,7 @@ Updated \`strollur\` object
 
 ------------------------------------------------------------------------
 
-### Method [`count()`](https://mothur.org/strollur/reference/count.md)
+### `strollur$count()`
 
 Find the number of sequences, samples, treatments or bins of a given
 type
@@ -649,7 +645,6 @@ type
 double
 
 #### Examples
-
 
     miseq <- miseq_sop_example()
 
@@ -704,7 +699,7 @@ double
 
 ------------------------------------------------------------------------
 
-### Method [`get_bin_types()`](https://mothur.org/strollur/reference/get_bin_types.md)
+### `strollur$get_bin_types()`
 
 Get bin table types
 
@@ -718,13 +713,12 @@ vector of strings
 
 #### Examples
 
-
     data <- miseq_sop_example()
     data$get_bin_types()
 
 ------------------------------------------------------------------------
 
-### Method `get_sample_tree()`
+### `strollur$get_sample_tree()`
 
 Get phylo tree relating the samples in your dataset.
 
@@ -737,7 +731,6 @@ Get phylo tree relating the samples in your dataset.
 ape::tree
 
 #### Examples
-
 
      tree <- ape::read.tree(strollur_example(
       "final.opti_mcc.jclass.ave.tre"))
@@ -754,7 +747,7 @@ ape::tree
 
 ------------------------------------------------------------------------
 
-### Method `get_sequence_tree()`
+### `strollur$get_sequence_tree()`
 
 Get phylo tree relating the sequences in your strollur object.
 
@@ -768,7 +761,6 @@ ape::tree
 
 #### Examples
 
-
      data <- new_dataset("my_dataset")
      tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
      data$add_sequence_tree(tree)
@@ -776,7 +768,38 @@ ape::tree
 
 ------------------------------------------------------------------------
 
-### Method [`names()`](https://mothur.org/strollur/reference/names.md)
+### `strollur$is_equal()`
+
+Determine if two
+[strollur](https://mothur.org/strollur/reference/strollur.html) objects
+are equal.
+
+#### Usage
+
+    strollur$is_equal(data)
+
+#### Arguments
+
+- `data, `:
+
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
+
+#### Returns
+
+a logical
+
+#### Examples
+
+    miseq <- miseq_sop_example()
+
+    data <- copy_dataset(miseq)
+
+    miseq$is_equal(data)
+
+------------------------------------------------------------------------
+
+### `strollur$names()`
 
 Get the names of a given type of data
 
@@ -824,7 +847,6 @@ vector of strings, containing the names requested
 
 #### Examples
 
-
     miseq <- miseq_sop_example()
 
     # To get the name of the dataset
@@ -859,7 +881,7 @@ vector of strings, containing the names requested
 
 ------------------------------------------------------------------------
 
-### Method [`report()`](https://mothur.org/strollur/reference/report.md)
+### `strollur$report()`
 
 Get a data.frame containing the given report
 
@@ -888,7 +910,6 @@ Get a data.frame containing the given report
 data.frame
 
 #### Examples
-
 
     miseq <- miseq_sop_example()
 
@@ -944,7 +965,7 @@ data.frame
 
 ------------------------------------------------------------------------
 
-### Method [`summary()`](https://mothur.org/strollur/reference/summary.md)
+### `strollur$summary()`
 
 Summarize the sequences data, custom reports, and scrapped data
 
@@ -976,7 +997,6 @@ data.frame Get summary of the sequence reports
 
 #### Examples
 
-
     miseq <- miseq_sop_example()
 
     # To get the summary of your FASTA data
@@ -994,7 +1014,7 @@ data.frame Get summary of the sequence reports
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `strollur$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -1013,7 +1033,7 @@ The objects of this class are cloneable with this method.
 ``` r
 
 ## ------------------------------------------------
-## Method `strollur$new`
+## Method `strollur$new()`
 ## ------------------------------------------------
 
 
@@ -1023,7 +1043,7 @@ data <- new_dataset("soil")
 
 
 ## ------------------------------------------------
-## Method `strollur$print`
+## Method `strollur$print()`
 ## ------------------------------------------------
 
 miseq <- miseq_sop_example()
@@ -1071,7 +1091,7 @@ miseq
 
 
 ## ------------------------------------------------
-## Method `strollur$abundance`
+## Method `strollur$abundance()`
 ## ------------------------------------------------
 
 
@@ -1161,7 +1181,7 @@ miseq$abundance(type = "treatment")
 #> 2      Late     58329
 
 ## ------------------------------------------------
-## Method `strollur$add`
+## Method `strollur$add()`
 ## ------------------------------------------------
 
 
@@ -1214,7 +1234,7 @@ data$add(
 
 
 ## ------------------------------------------------
-## Method `strollur$add_sample_tree`
+## Method `strollur$add_sample_tree()`
 ## ------------------------------------------------
 
 
@@ -1231,7 +1251,7 @@ data$add(
  data$add_sample_tree(tree)
 
 ## ------------------------------------------------
-## Method `strollur$add_sequence_tree`
+## Method `strollur$add_sequence_tree()`
 ## ------------------------------------------------
 
 
@@ -1242,7 +1262,7 @@ data$add(
 
 
 ## ------------------------------------------------
-## Method `strollur$assign`
+## Method `strollur$assign()`
 ## ------------------------------------------------
 
 
@@ -1341,7 +1361,7 @@ data$assign(table = sample_assignments, type = "treatment")
 
 
 ## ------------------------------------------------
-## Method `strollur$clear`
+## Method `strollur$clear()`
 ## ------------------------------------------------
 
 miseq <- miseq_sop_example()
@@ -1396,7 +1416,7 @@ miseq
 #> 
 
 ## ------------------------------------------------
-## Method `strollur$count`
+## Method `strollur$count()`
 ## ------------------------------------------------
 
 
@@ -1476,7 +1496,7 @@ miseq$count(
 
 
 ## ------------------------------------------------
-## Method `strollur$get_bin_types`
+## Method `strollur$get_bin_types()`
 ## ------------------------------------------------
 
 
@@ -1498,7 +1518,7 @@ data$get_bin_types()
 
 
 ## ------------------------------------------------
-## Method `strollur$get_sample_tree`
+## Method `strollur$get_sample_tree()`
 ## ------------------------------------------------
 
 
@@ -1525,7 +1545,7 @@ data$get_bin_types()
 
 
 ## ------------------------------------------------
-## Method `strollur$get_sequence_tree`
+## Method `strollur$get_sequence_tree()`
 ## ------------------------------------------------
 
 
@@ -1544,7 +1564,32 @@ data$get_bin_types()
 
 
 ## ------------------------------------------------
-## Method `strollur$names`
+## Method `strollur$is_equal()`
+## ------------------------------------------------
+
+
+miseq <- miseq_sop_example()
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
+
+data <- copy_dataset(miseq)
+
+miseq$is_equal(data)
+#> [1] TRUE
+
+
+## ------------------------------------------------
+## Method `strollur$names()`
 ## ------------------------------------------------
 
 
@@ -4528,7 +4573,7 @@ miseq$names(type = "report")
 
 
 ## ------------------------------------------------
-## Method `strollur$report`
+## Method `strollur$report()`
 ## ------------------------------------------------
 
 
@@ -4678,7 +4723,7 @@ miseq$report(type = "contigs_report") |> head(n = 5)
 
 
 ## ------------------------------------------------
-## Method `strollur$summary`
+## Method `strollur$summary()`
 ## ------------------------------------------------
 
 

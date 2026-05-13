@@ -143,18 +143,23 @@ Default = "".</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">silva_resource</span> <span class="op">&lt;-</span> <span class="fu">new_reference</span><span class="op">(</span> vendor <span class="op">=</span> <span class="st">"SILVA"</span>, name <span class="op">=</span></span></span>
-<span class="r-in"><span><span class="st">"silva.bacteria.fasta"</span>, version <span class="op">=</span> <span class="st">"1.38.1"</span>, usage <span class="op">=</span> <span class="st">"alignment of sequences"</span>,</span></span>
-<span class="r-in"><span>note <span class="op">=</span> <span class="st">"alignment reference trimmed to V4 region"</span>, documentation_url <span class="op">=</span></span></span>
-<span class="r-in"><span><span class="st">"https://mothur.org/wiki/silva_reference_files/"</span>, method_url <span class="op">=</span></span></span>
-<span class="r-in"><span><span class="st">"https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">silva_resource</span> <span class="op">&lt;-</span> <span class="fu">new_reference</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  vendor <span class="op">=</span> <span class="st">"SILVA"</span>, name <span class="op">=</span></span></span>
+<span class="r-in"><span>    <span class="st">"silva.bacteria.fasta"</span>, version <span class="op">=</span> <span class="st">"1.38.1"</span>,</span></span>
+<span class="r-in"><span>     usage <span class="op">=</span> <span class="st">"alignment of sequences"</span>,</span></span>
+<span class="r-in"><span>  note <span class="op">=</span> <span class="st">"alignment reference trimmed to V4 region"</span>, documentation_url <span class="op">=</span></span></span>
+<span class="r-in"><span>    <span class="st">"https://mothur.org/wiki/silva_reference_files/"</span>, method_url <span class="op">=</span></span></span>
+<span class="r-in"><span>    <span class="st">"https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">phylotypr_resource</span> <span class="op">&lt;-</span> <span class="fu">new_reference</span><span class="op">(</span> vendor <span class="op">=</span> <span class="st">"Schloss Lab - University of</span></span></span>
+<span class="r-in"><span><span class="va">phylotypr_resource</span> <span class="op">&lt;-</span> <span class="fu">new_reference</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  vendor <span class="op">=</span> <span class="st">"Schloss Lab - University of</span></span></span>
 <span class="r-in"><span><span class="st">Michigan"</span>, name <span class="op">=</span> <span class="st">"R phylotypr package"</span>, version <span class="op">=</span> <span class="st">"0.1.1"</span>, usage <span class="op">=</span></span></span>
-<span class="r-in"><span><span class="st">"classification of sequences"</span>, note <span class="op">=</span> <span class="st">"classification using Bayesian method"</span>,</span></span>
-<span class="r-in"><span>parameter <span class="op">=</span> <span class="st">"kmer_size = 8, num_bootstraps = 100, min_confidence = 80"</span>,</span></span>
-<span class="r-in"><span>documentation_url <span class="op">=</span> <span class="st">"https://mothur.org/phylotypr/"</span>, method_url <span class="op">=</span></span></span>
-<span class="r-in"><span><span class="st">"doi:10.1128/mra.01144-24"</span>, citation <span class="op">=</span> <span class="st">"@article{doi:10.1128/AEM.00062-07,</span></span></span>
+<span class="r-in"><span>    <span class="st">"classification of sequences"</span>,</span></span>
+<span class="r-in"><span>  note <span class="op">=</span> <span class="st">"classification using Bayesian method"</span>,</span></span>
+<span class="r-in"><span>  parameter <span class="op">=</span> <span class="st">"kmer_size = 8, num_bootstraps = 100, min_confidence = 80"</span>,</span></span>
+<span class="r-in"><span>  documentation_url <span class="op">=</span> <span class="st">"https://mothur.org/phylotypr/"</span>, method_url <span class="op">=</span></span></span>
+<span class="r-in"><span>  <span class="st">"doi:10.1128/mra.01144-24"</span>, citation <span class="op">=</span> <span class="st">"@article{doi:10.1128/AEM.00062-07,</span></span></span>
 <span class="r-in"><span><span class="st">author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R.</span></span></span>
 <span class="r-in"><span><span class="st">Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA</span></span></span>
 <span class="r-in"><span><span class="st">Sequences into the New Bacterial Taxonomy}, journal = {Applied and</span></span></span>

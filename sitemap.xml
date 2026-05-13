@@ -28,6 +28,7 @@
 <url><loc>https://mothur.org/strollur/reference/import_dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/index.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/is_aligned.html</loc></url>
+<url><loc>https://mothur.org/strollur/reference/is_equal.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/load_dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/miseq_sop_example.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/names.html</loc></url>
@@ -49,7 +50,6 @@
 <url><loc>https://mothur.org/strollur/reference/read_qiime2_taxonomy.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/remove_file.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/report.html</loc></url>
-<url><loc>https://mothur.org/strollur/reference/run_testthat_tests.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/save_dataset.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/sort_dataframe.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/strollur-package.html</loc></url>

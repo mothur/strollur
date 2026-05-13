@@ -56,6 +56,7 @@ data <- import_dataset(export_dataset(miseq))
 #> Assigned 63 phylotype bins.
 #> Assigned 63 phylotype bin taxonomies.
 #> Added metadata.
+#> Added 2 resource references.
 #> Added a contigs_report.
 data
 #> miseq_sop:
@@ -82,6 +83,7 @@ data
 #> Total number of phylotypes: 63 
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
+#> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata 
 #> 

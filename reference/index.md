@@ -128,6 +128,8 @@ Create datasets and references, clear data
 - [`clear()`](https://mothur.org/strollur/reference/clear.md) : clear
 - [`is_aligned()`](https://mothur.org/strollur/reference/is_aligned.md)
   : is_aligned
+- [`is_equal()`](https://mothur.org/strollur/reference/is_equal.md) :
+  is_equal
 - [`has_sample()`](https://mothur.org/strollur/reference/has_sample.md)
   : has_sample
 - [`get_bin_types()`](https://mothur.org/strollur/reference/get_bin_types.md)

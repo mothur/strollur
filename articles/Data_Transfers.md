@@ -251,7 +251,7 @@ str(table)
 #>   ..$ documentation_url: chr [1:2] "https://mothur.org/phylotypr/" "https://mothur.org/wiki/silva_reference_files/"
 #>   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"
 #>   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"
-#>   ..$ creation_date    : chr [1:2] "2026-05-07" "2026-05-07"
+#>   ..$ creation_date    : chr [1:2] "2026-05-13" "2026-05-13"
 #>  $ metadata                         :'data.frame':   19 obs. of  2 variables:
 #>   ..$ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...
 #>   ..$ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...
@@ -304,6 +304,7 @@ miseq_import <- import_dataset(table = table)
 #> Assigned 63 phylotype bins.
 #> Assigned 63 phylotype bin taxonomies.
 #> Added metadata.
+#> Added 2 resource references.
 #> Added a contigs_report.
 miseq_import
 #> miseq_sop:
@@ -330,6 +331,7 @@ miseq_import
 #> Total number of phylotypes: 63 
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
+#> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata
 ```
@@ -451,6 +453,7 @@ miseq_deep_copy
 #> Total number of phylotypes: 63 
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
+#> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata
 ```
