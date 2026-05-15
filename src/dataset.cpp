@@ -55,6 +55,7 @@ Dataset::Dataset(const Dataset& dataset) {
 
     taxonomies = dataset.taxonomies;
     references = dataset.references;
+    refIndex = dataset.refIndex;
     seqIndex = dataset.seqIndex;
     tableSeqs = dataset.tableSeqs;
 
@@ -227,8 +228,26 @@ Rcpp::List Dataset::exportDataset(){
 }
 /******************************************************************************/
 double Dataset::addReferences(const vector<Reference>& refs) {
-    references.insert(references.end(), refs.begin(), refs.end());
-    return static_cast<double>(refs.size());
+    // check for existing reference of same name.
+    // If exists, message and update, otherwise add
+    int numAdded = 0;
+    for (Reference ref : refs) {
+
+        auto index = refIndex.find(ref.name);
+        if (index != refIndex.end()) {
+            string message = "The dataset already contains a resource_reference ";
+            message += "named '" + ref.name + "', overwriting existing reference.";
+            RcppThread::Rcout << endl << message << endl << endl;
+
+            references[index->second] = ref;
+        }else {
+            refIndex[ref.name] = references.size();
+            references.push_back(ref);
+            numAdded++;
+        }
+    }
+
+    return static_cast<double>(numAdded);
 }
 /******************************************************************************/
 void Dataset::addReport(Rcpp::DataFrame& report, const string& type) {
@@ -248,8 +267,7 @@ void Dataset::addMetadata(const Rcpp::DataFrame& data){
 /******************************************************************************/
 double Dataset::addSequences(const vector<string>& n,
                              vector<string> s,
-                             vector<string> c,
-                             const Reference& reference) {
+                             vector<string> c) {
 
     // must provide the same number of names and seqs
     if (s.empty()) {
@@ -300,10 +318,6 @@ double Dataset::addSequences(const vector<string>& n,
     numUnique += static_cast<double>(n.size());
 
     hasSequenceData = true;
-
-    if (!reference.name.empty()) {
-        references.push_back(reference);
-    }
 
     return static_cast<double>(n.size());
 }

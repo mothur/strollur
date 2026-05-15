@@ -512,8 +512,7 @@ public:
     // add seqs
     double addSequences(const vector<string>& n,
                         vector<string> s = nullVector,
-                        vector<string> c = nullVector,
-                        const Reference& reference = nullReference);
+                        vector<string> c = nullVector);
     double addReferences(const vector<Reference>& refs);
     void addReport(Rcpp::DataFrame& report, const string& type);
     void addMetadata(const Rcpp::DataFrame& metadata);
@@ -652,6 +651,7 @@ private:
     // sequence taxonomy assignments
     vector<string> taxonomies;
     vector<Reference> references;
+    map<string, int> refIndex;
 
     // boolean indicating if sequences is "good"
     vector<bool> tableSeqs;
@@ -699,7 +699,7 @@ private:
     void serialize(Archive& ar) {
         ar(datasetName, processors, alignmentLength, isAligned, hasSequenceData,
            hasSequenceTaxonomy, numUnique, taxonomies, references, tableSeqs,
-           starts, ends, lengths, ambigs, polymers,
+           starts, ends, lengths, ambigs, polymers, refIndex,
            numns, names, seqs, comments, trashCodes,
            seqIndex, badAccnos, uniqueBad, hasList, count,
            binTables, reports, metadata);
