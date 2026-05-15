@@ -2,8 +2,9 @@
 
 test_that("summary tests", {
   # test non dataset type
-  contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
-  expect_equal(class(summary(contigs_report)), "table")
+  # Should we just error for non dataset types?
+  # contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
+  # expect_equal(class(summary(contigs_report)), "table")
 
   miseq <- miseq_sop_example()
 

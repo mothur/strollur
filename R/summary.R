@@ -50,8 +50,19 @@ summary <- function(x, type = "sequence",
 #' @export
 summary <- function(data, type = "sequence",
                     report_type = NULL, verbose = TRUE) {
-  if(!inherits(data, "strollur")) {
-    return(base::summary(data))
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
+  }
+
+  if(all(type != c("sequence", "report", "scrap"))) {
+    stop(paste0(type, " is not a valid type option. Options include: ", 
+           "'sequence', 'report' and 'scrap'."))
+  }
+
+  if(!is.null(report_type)) {
+    if(all(report_type != xdev_names(data = data, type = "report"))) {
+      stop(paste0(report_type), " is not a valid report_type option.")
+    }
   }
 
   dataset_summary <- ""
@@ -62,7 +73,7 @@ summary <- function(data, type = "sequence",
     dataset_summary <- generate_report(data, report_type)
   } 
   else { # scrap reports still use cpp
-    dataset_summary <- xdev_summarize(data, type, report_type)
+    dataset_summary <- xdev_get_scrap_summary(data)
   }
   
   if (verbose) {

@@ -21,6 +21,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Sarah Westcott \email{swestcot@umich.edu}
 
+Authors:
+\itemize{
+  \item Gregory Johnson \email{grejoh@umich.edu} (\href{https://orcid.org/0009-0008-3890-0297}{ORCID})
+}
+
 Other contributors:
 \itemize{
   \item Pat Schloss \email{pschloss@umich.edu} (\href{https://orcid.org/0000-0002-6935-4275}{ORCID}) [copyright holder]

@@ -1322,7 +1322,7 @@ strollur <- R6Class("strollur",
     #' @return data.frame
     summary = function(type = "sequence",
                        report_type = NULL, verbose = TRUE) {
-      dataset_summary <- xdev_summarize(self, type, report_type)
+      dataset_summary <- summary(self, type, report_type)
       if (verbose) {
         print(dataset_summary)
       }
@@ -1342,7 +1342,7 @@ strollur <- R6Class("strollur",
       # if you have summary results to print
       if (!all(xdev_get_sequences(self) == "")) {
         # if you have summary results to print
-        results[["sequence_summary"]] <- xdev_summarize(
+        results[["sequence_summary"]] <- summary(
           data = self,
           type = "sequence"
         )
@@ -1354,7 +1354,7 @@ strollur <- R6Class("strollur",
 
       if (length(report_names) != 0) {
         for (name in report_names) {
-          results[[name]] <- xdev_summarize(
+          results[[name]] <- summary(
             data = self,
             type = "report",
             report_type = name
@@ -1362,7 +1362,7 @@ strollur <- R6Class("strollur",
         }
       }
 
-      df <- xdev_summarize(
+      df <- summary(
         data = self,
         type = "scrap"
       )
