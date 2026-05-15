@@ -9,8 +9,8 @@ xdev_assign_bin_taxonomy(
   table,
   bin_type = "otu",
   reference = NULL,
-  bin_name = "bin_names",
-  taxonomy = "taxonomies",
+  bin_name = "bin_name",
+  taxonomy = "taxonomy",
   verbose = TRUE
 )
 }
@@ -24,16 +24,16 @@ xdev_assign_bin_taxonomy(
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
 \item{bin_name, }{a string containing the name of the column in 'table' that
-contains the bin names. Default column name is 'bin_names'.}
+contains the bin names. Default column name is 'bin_name'.}
 
 \item{taxonomy, }{a string containing the name of the column in 'table' that
-contains the bin taxonomies. Default column name is 'taxonomies'.}
+contains the bin taxonomies. Default column name is 'taxonomy'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
-double containing the number of bins assigned
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

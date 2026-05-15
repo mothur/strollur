@@ -22,6 +22,9 @@ sequence.}
 \item{reason, }{a string containing the trash tag to be applied to any
 sequences set to 0 abundance. Default = "update".}
 }
+\value{
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+}
 \description{
 Designed with package integration in mind, the set abundance function
 allows you to change the abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -34,9 +37,9 @@ abunds <- c(1250, 65, 50, 4)
 
 data <- new_dataset(dataset_name = "my_dataset")
 
-xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_names = names,
-                                           abundances = abunds))
-abundance(data = data, type = "sequences")
+xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_name = names,
+                                           abundance = abunds))
+abundance(data = data, type = "sequence")
 
 seqs_to_update <- c("seq1", "seq3")
 new_abunds <- c(1000, 100)
@@ -45,6 +48,6 @@ xdev_set_abundance(data = data,
                    sequence_names = seqs_to_update,
                    sequence_abundances = new_abunds)
 
-abundance(data = data, type = "sequences")
+abundance(data = data, type = "sequence")
 
 }

@@ -2,10 +2,6 @@
 #' @description
 #' Read a \href{https://qiime2.org}{qiime2} qza containing taxonomy data
 #'
-#' # nolint start
-#' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
-#' # nolint end
-#'
 #' @param qza file name, a qiime2 .qza file containing taxonomy data.
 #' @param dir_path a string containing the name of directory where the artifacts
 #' files should be unpacked. Default = current working directory.
@@ -56,8 +52,8 @@ read_qiime2_taxonomy <- function(qza, dir_path = NULL,
         sep = "\t", header = TRUE, quote = ""
       )
       names(artifact[["data"]]) <- c(
-        "bin_names",
-        "taxonomies", "confidence"
+        "bin_name",
+        "taxonomy", "confidence"
       )
 
       if (remove_unpacked_artifacts) {

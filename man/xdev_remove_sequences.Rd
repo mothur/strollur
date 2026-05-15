@@ -15,6 +15,9 @@ sequences to remove}
 \item{trash_tags}{vector of strings containing the reasons for the sequences
 removals}
 }
+\value{
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+}
 \description{
 Designed with package integration in mind, the remove sequences function
 allows you to remove sequences from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -23,7 +26,7 @@ allows you to remove sequences from a \href{https://mothur.org/strollur/referenc
 
 data <- miseq_sop_example()
 
-count(data = data, type = "sequences")
+count(data = data, type = "sequence")
 
 # For the sake of example let's remove the first 3 sequences from
 # miseq_sop_example:
@@ -44,6 +47,6 @@ report(data = data, type = "sequence_scrap")
 # You can see from the get_num_sequences function that the removed
 # sequence's abundances are removed from the dataset.
 
-count(data = data, type = "sequences")
+count(data = data, type = "sequence")
 
 }

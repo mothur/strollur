@@ -6,7 +6,7 @@
 \usage{
 xdev_get_by_sample(
   data,
-  type = "sequence_names",
+  type = "sequence_name",
   samples = as.character(c()),
   degap = FALSE
 )
@@ -15,7 +15,7 @@ xdev_get_by_sample(
 \item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you want the totals of.
-Options include: "sequence_names", "sequences". Default = "sequence_names".}
+Options include: "sequence_name", "sequence". Default = "sequence_name".}
 
 \item{samples}{a vector of strings containing the names of the samples you
 would like sequence names for. By default all samples are included.}
@@ -35,9 +35,9 @@ Get the requested data in a \href{https://mothur.org/strollur/reference/strollur
 data <- miseq_sop_example()
 
 # To get the sequence names parsed by sample
-xdev_get_by_sample(data, "sequence_names")
+xdev_get_by_sample(data, "sequence_name")
 
 # To get the sequence nucleotide strings parsed by sample
-parsed_sequences <- xdev_get_by_sample(data, "sequences")
+parsed_sequences <- xdev_get_by_sample(data, "sequence")
 
 }

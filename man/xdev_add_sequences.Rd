@@ -8,9 +8,9 @@ xdev_add_sequences(
   data,
   table,
   reference = NULL,
-  sequence_name = "sequence_names",
-  sequence = "sequences",
-  comment = "comments",
+  sequence_name = "sequence_name",
+  sequence = "sequence",
+  comment = "comment",
   verbose = TRUE
 )
 }
@@ -23,34 +23,34 @@ comments(optional).}
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
 \item{sequence_name, }{a string containing the name of the column in 'table'
-that contains the sequence names. Default column name is 'sequence_names'.}
+that contains the sequence names. Default column name is 'sequence_name'.}
 
 \item{sequence, }{a string containing the name of the column in 'table' that
 contains the sequence nucleotide strings. Default column name is
-'sequences'.}
+'sequence'.}
 
 \item{comment, }{a string containing the name of the column in
 'table' that contains the sequence comments. Default column name is
-'comments'.}
+'comment'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
-double containing the number of sequences added
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
- data <- new_dataset("miseq_sop", 2)
+ data <- new_dataset("miseq_sop")
  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
  xdev_add_sequences(data, fasta_data)
 
 # With the additional parameters to add information about the reference
 
- data <- new_dataset("miseq_sop", 2)
+ data <- new_dataset("miseq_sop")
  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 
  xdev_add_sequences(data, fasta_data,

@@ -2,25 +2,25 @@ test_that("write_mothur_count - errors", {
   expect_error(write_mothur_count("Bad_type"))
 
   # no file name with nameless dataset
-  data <- strollur$new()
+  data <- new_dataset()
   expect_error(write_mothur_count(data))
 })
 
 test_that("write_mothur_count - with sample data", {
   miseq <- miseq_sop_example()
 
-  output <- write_mothur_count(miseq, get_full_name("miseq.taxonomy"))
+  output <- write_mothur_count(miseq, get_full_name("miseq.count_table"))
 
   data <- read_mothur(count = output)
 
   remove_file(output)
 
-  expected <- abundance(miseq, type = "sequences", by_sample = TRUE)
+  expected <- abundance(miseq, type = "sequence", by_sample = TRUE)
 
   # remove treatment column since data does not include treatments
   expected <- expected[, -c(4)]
 
-  actual <- abundance(data, type = "sequences", by_sample = TRUE)
+  actual <- abundance(data, type = "sequence", by_sample = TRUE)
 
   # sort to same order
   sorted_indices <- order(expected[[1]])
@@ -44,8 +44,8 @@ test_that("write_mothur_count - without sample data", {
 
   remove_file(output)
 
-  expected <- abundance(data2, , type = "sequences", by_sample = TRUE)
-  actual <- abundance(data, type = "sequences", by_sample = TRUE)
+  expected <- abundance(data2, , type = "sequence", by_sample = TRUE)
+  actual <- abundance(data, type = "sequence", by_sample = TRUE)
 
   # sort to same order
   sorted_indices <- order(expected[[1]])

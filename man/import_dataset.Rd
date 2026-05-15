@@ -2,7 +2,7 @@
 % Please edit documentation in R/import_dataset.R
 \name{import_dataset}
 \alias{import_dataset}
-\title{import_dataset}
+\title{Import strollur object from exported data.frame.}
 \usage{
 import_dataset(table)
 }
@@ -30,5 +30,5 @@ data
 
 }
 \seealso{
-[dataset$export()]
+[export_dataset()]
 }

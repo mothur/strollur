@@ -27,10 +27,10 @@ strollur <- R6Class("strollur",
     #' the class.
     raw = NULL,
 
-    #' @field sequence_tree a tree that relates sequences to eachother
+    #' @field sequence_tree a tree that relates sequences to each other
     sequence_tree = NULL,
 
-    #' @field sample_tree a tree that relates samples to eachother
+    #' @field sample_tree a tree that relates samples to each other
     sample_tree = NULL,
 
     #' @description
@@ -50,11 +50,15 @@ strollur <- R6Class("strollur",
                           processors = parallelly::availableCores(),
                           dataset = NULL) {
       if (is.null(dataset)) {
-        self$data <- xint_new_pointer(name, processors)
+        self$data <- xint_new_pointer(dataset_name = name, processors)
         self$sequence_tree <- NULL
         private$processors <- processors
         self$sample_tree <- NULL
       } else {
+        if (!inherits(dataset, "strollur")) {
+          stop("dataset must be a strollur object.")
+        }
+
         # copy of dataset backend
         self$data <- xint_copy_pointer(dataset)
         xdev_set_num_processors(self, processors)
@@ -72,7 +76,12 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
-    #' Get summary of `strollur` object
+    #' Print summary of `strollur` object
+    #' @examples
+    #' miseq <- miseq_sop_example()
+    #' miseq
+    #'
+    #' @return No return value, called for side effects.
     print = function() {
       if (names(self, type = "dataset")[1] != "") {
         cat(names(self, type = "dataset")[1])
@@ -102,11 +111,11 @@ strollur <- R6Class("strollur",
         print(results[["scrap_summary"]])
       }
 
-      if (count(data = self, type = "sequences", distinct = TRUE) != 0) {
+      if (xdev_count(data = self, type = "sequence", distinct = TRUE) != 0) {
         cat(
           paste("\nNumber of unique seqs:", count(
             data = self,
-            type = "sequences",
+            type = "sequence",
             distinct = TRUE
           )),
           "\n"
@@ -114,49 +123,78 @@ strollur <- R6Class("strollur",
       } else {
         cat("\n")
       }
-      cat(
-        paste("Total number of seqs:", count(data = self, type = "sequences")),
-        "\n\n"
-      )
+      cat(paste(
+        "Total number of seqs:",
+        xdev_count(data = self, type = "sequence")
+      ), "\n\n")
 
       # print number of samples
-      if (count(data = self, type = "samples") != 0) {
+      if (xdev_count(data = self, type = "sample") != 0) {
         cat(paste0(
           "Total number of samples: ",
-          count(data = self, type = "samples")
+          xdev_count(data = self, type = "sample")
         ), "\n")
       }
       # print number of treatments
-      if (count(data = self, type = "treatments") != 0) {
+      if (xdev_count(data = self, type = "treatment") != 0) {
         cat(paste0(
           "Total number of treatments: ",
-          count(data = self, type = "treatments")
+          xdev_count(data = self, type = "treatment")
         ), "\n")
       }
 
       # print number of each bin type
       bin_types <- get_bin_types(self)
       for (bin_type in bin_types) {
-        if (count(data = self, type = "bins", bin_type = bin_type) != 0) {
+        if (xdev_count(data = self, type = "bin", bin_type = bin_type) != 0) {
           cat(
             paste0(
               "Total number of ", bin_type, "s: ",
-              count(data = self, type = "bins", bin_type = bin_type)
+              xdev_count(data = self, type = "bin", bin_type = bin_type)
+            ),
+            "\n"
+          )
+        }
+        bin_tax_report <- xdev_report(
+          data = self,
+          type = "bin_taxonomy",
+          bin_type = bin_type
+        )
+        if (nrow(bin_tax_report) != 0) {
+          cat(
+            paste0(
+              "Total number of ", bin_type, " bin classifications: ",
+              length(unique(bin_tax_report[["bin_name"]]))
             ),
             "\n"
           )
         }
       }
+
+      if (xdev_has_sequence_taxonomy(self)) {
+        seq_tax_report <- xdev_report(
+          data = self,
+          type = "sequence_taxonomy"
+        )
+        cat(
+          paste0(
+            "Total number of sequence classifications: ",
+            length(unique(seq_tax_report[["sequence_name"]]))
+          ),
+          "\n"
+        )
+      }
+
       # print number of resource references
-      if (count(data = self, type = "references") != 0) {
+      if (xdev_count(data = self, type = "resource_reference") != 0) {
         cat(paste0(
           "Total number of resource references: ",
-          count(data = self, type = "references")
+          xdev_count(data = self, type = "resource_reference")
         ), "\n")
       }
 
       exclude <- c("sequence_scrap", "bin_scrap")
-      report_names <- names(data = self, type = "reports")
+      report_names <- names(data = self, type = "report")
       custom_report_names <- report_names[!report_names %in% exclude]
 
       if (length(custom_report_names) != 0) {
@@ -165,7 +203,7 @@ strollur <- R6Class("strollur",
           length(custom_report_names)
         ), "\n")
       }
-      if (nrow(report(self, type = "metadata")) != 0) {
+      if (nrow(xdev_report(self, type = "metadata")) != 0) {
         cat(paste0("Your dataset includes metadata"), "\n")
       }
       cat("\n")
@@ -175,8 +213,8 @@ strollur <- R6Class("strollur",
     #' Get the abundance data for sequences, bins, samples, and treatments.
     #'
     #' @param type, string containing the type of data you want the number of.
-    #'   Options include: "sequences", "bins", "samples" and "treatments".
-    #'   Default = "sequences".
+    #'   Options include: "sequence", "bin", "sample" and "treatment".
+    #'   Default = "sequence".
     #'
     #' @param bin_type, string containing the bin type you would like the
     #'   abundance data for. Default = "otu".
@@ -189,31 +227,32 @@ strollur <- R6Class("strollur",
     #' miseq <- miseq_sop_example()
     #'
     #' # To the total abundance for each sequence
-    #' miseq$abundance(type = "sequences") |> head(n = 5)
+    #' miseq$abundance(type = "sequence") |> head(n = 5)
     #'
     #' # To the total abundance for each sequence parsed by sample
-    #' miseq$abundance(type = "sequences", by_sample = TRUE) |> head(n = 5)
+    #' miseq$abundance(type = "sequence", by_sample = TRUE) |> head(n = 5)
     #'
     #' # To the total abundance for each "otu" bin
-    #' miseq$abundance(type = "bins", bin_type = "otu") |> head(n = 5)
+    #' miseq$abundance(type = "bin", bin_type = "otu") |> head(n = 5)
     #'
     #' # To the total abundance for each "otu" bin parsed by sample
-    #' miseq$abundance(type = "bins", bin_type = "otu", by_sample = TRUE) |>
+    #' miseq$abundance(type = "bin", bin_type = "otu", by_sample = TRUE) |>
     #' head(n = 5)
     #'
     #' # To the total abundance for each "asv" bin
-    #' miseq$abundance(type = "bins", bin_type = "asv") |> head(n = 5)
+    #' miseq$abundance(type = "bin", bin_type = "asv") |> head(n = 5)
     #'
     #' # To the total abundance for each "asv" bin parsed by sample
-    #' miseq$abundance(type = "bins", bin_type = "asv", by_sample = TRUE) |>
+    #' miseq$abundance(type = "bin", bin_type = "asv", by_sample = TRUE) |>
     #' head(n = 5)
     #'
     #' # To the total abundance for each sample
-    #' miseq$abundance(type = "samples") |> head(n = 5)
+    #' miseq$abundance(type = "sample") |> head(n = 5)
     #'
     #' # To the total abundance for each treatment
-    #' miseq$abundance(type = "treatments")
-    abundance = function(type = "sequences",
+    #' miseq$abundance(type = "treatment")
+    #' @return data.frame
+    abundance = function(type = "sequence",
                          bin_type = "otu",
                          by_sample = FALSE) {
       xdev_abundance(self, type, bin_type, by_sample)
@@ -225,7 +264,7 @@ strollur <- R6Class("strollur",
     #' @param table, a data.frame containing the data you wish to add.
     #'
     #' @param type, a string containing the type of data. Options include:
-    #' 'sequences', 'references' 'metadata' and 'reports'.
+    #' 'sequence', 'resource_reference' 'metadata' and 'report'.
     #'
     #' @param report_type, a string containing the type of report you are
     #' adding. Options include: 'metadata' and custom reports.
@@ -233,46 +272,66 @@ strollur <- R6Class("strollur",
     #' @param table_names, named list used to indicate the names of the columns
     #'  in the table. By default:
     #'
-    #' table_names <- list(sequence_name = "sequence_names",
-    #'                     comment = "comments",
-    #'                     sequence = "sequences",
-    #'                     reference_name = "reference_names",
-    #'                     reference_version = "reference_versions",
-    #'                     reference_usage = "reference_usages",
-    #'                     reference_note = "reference_notes",
-    #'                     reference_url = "reference_urls")
+    #' table_names <- list(sequence_name = "sequence_name",
+    #'                     comment = "comment",
+    #'                     sequence = "sequence",
+    #'                     reference_name = "name",
+    #'                     reference_vendor = "vendor",
+    #'                     reference_version = "version",
+    #'                     reference_usage = "usage",
+    #'                     reference_note = "note",
+    #'                     reference_documentation_url = "documentation_url",
+    #'                     reference_method_url = "method_url",
+    #'                     reference_parameter = "parameter",
+    #'                     reference_citation = "citation")
     #'
     #' In table_names, 'sequence_name' is a string containing the name of the
     #' column in 'table' that contains the sequence names. It is used when you
-    #' are adding FASTA data. Default column name is 'sequence_names'.
+    #' are adding FASTA data. Default column name is 'sequence_name'.
     #'
     #' In table_names, 'sequence' is a string containing the name of the column
     #' in 'table' that contains the sequence nucleotide strings. It is used when
-    #' you are adding FASTA data. Default column name is 'sequences'.
+    #' you are adding FASTA data. Default column name is 'sequence'.
     #'
     #' In table_names, 'comment' is a string containing the name of the column
     #' in 'table' that contains the sequence comments. It is used when you are
-    #' adding FASTA data. Default column name is 'comments'.
+    #' adding FASTA data. Default column name is 'comment'.
     #'
-    #' In table_names, 'reference_name' is a string containing the name of the
+    #' In table_names, 'reference_vendor' is a string containing the name of the
+    #' column in 'table' that contains the reference vendor names. It is used
+    #' when ' you are adding reference data. Default column name is 'vendor'.
+    #'
+    #' In table_names, 'reference_name' is a string containing the name of the '
     #' column in 'table' that contains the reference names. It is used when you
-    #' are adding reference data. Default column name is 'reference_names'.
+    #' are ' adding reference data. Default column name is 'name'.
     #'
     #' In table_names, 'reference_version' is a string containing the name of
-    #' the column in 'table' that contains the reference versions. Default
-    #' column name is 'reference_versions'.
+    #' the ' column in 'table' that contains the reference versions. Default
+    #' column name is 'version'.
     #'
     #' In table_names, 'reference_usage' is a string containing the name of the
     #' column in 'table' that contains the reference usages. Default column name
-    #' is 'reference_usages'.
+    #' is 'usage'.
     #'
     #' In table_names, 'reference_note' is a string containing the name of the
     #' column in 'table' that contains the reference notes. Default column name
-    #' is 'reference_notes'.
+    #' is 'note'.
     #'
-    #' In table_names, 'reference_url' is a string containing the name of the
-    #' column in 'table' that contains the reference urls. Default column name
-    #' is 'reference_urls'.
+    #' In table_names, 'reference_method_url' is a string containing the name of
+    #' the column in 'table' that contains the reference method urls. Default
+    #' column name is 'method_url'.
+    #'
+    #' In table_names, 'reference_documentation_url' is a string containing the
+    #' name of the column in 'table' that contains the reference urls. Default
+    #' column name is 'documentation_url'.
+    #'
+    #' In table_names, 'reference_parameter' is a string containing the name of
+    #' the column in 'table' that contains the reference parameters. Default
+    #' column name is 'parameter'.
+    #'
+    #' In table_names, 'reference_citation' is a string containing the name of
+    #' the column in 'table' that contains the reference citations. Default
+    #' column name is 'citation'.
     #'
     #' @param reference, a list created by the function [new_reference].
     #'   Optional.
@@ -288,9 +347,9 @@ strollur <- R6Class("strollur",
     #' # Create a new empty `strollur` object named 'example_dataset'
     #' data <- new_dataset(dataset_name = "example_dataset")
     #'
-    #' data$add(table = fasta_data, type = "sequences")
+    #' data$add(table = fasta_data, type = "sequence")
     #' data$add(
-    #'   table = contigs_report, type = "reports",
+    #'   table = contigs_report, type = "report",
     #'   report_type = "contigs_report", list(sequence_name = "Name")
     #' )
     #'
@@ -309,41 +368,115 @@ strollur <- R6Class("strollur",
     #' resource_url <- "https://mothur.org/wiki/silva_reference_files/"
     #' resource_reference <-
     #'   new_reference(
-    #'     reference_name = "silva.bacteria.fasta",
-    #'     reference_version = "1.38.1",
-    #'     reference_usage = "alignment by mothur2 v1.0",
-    #'     reference_note = "default options",
-    #'     reference_url = resource_url
+    #'     name = "silva.bacteria.fasta",
+    #'     version = "1.38.1",
+    #'     usage = "alignment by mothur2 v1.0",
+    #'     note = "default options",
+    #'     documentation_url = resource_url
     #'   )
     #'
     #' # Add FASTA data with a resource reference
     #'
     #' data$add(
     #'   table = fasta_data,
-    #'   type = "sequences",
+    #'   type = "sequence",
     #'   reference = resource_reference
     #' )
     #'
+    #' @return Updated `strollur` object - invisible(self)
     add = function(table,
-                   type = "sequences",
+                   type = "sequence",
                    report_type = NULL,
                    table_names = list(
-                     sequence_name = "sequence_names",
-                     sequence = "sequences",
-                     comment = "comments",
-                     reference_name = "reference_names",
-                     reference_version = "reference_versions",
-                     reference_usage = "reference_usages",
-                     reference_note = "reference_notes",
-                     reference_url = "reference_urls"
+                     sequence_name = "sequence_name",
+                     sequence = "sequence",
+                     comment = "comment",
+                     reference_vendor = "vendor",
+                     reference_name = "name",
+                     reference_version = "version",
+                     reference_usage = "usage",
+                     reference_note = "note",
+                     reference_method_url = "method_url",
+                     reference_documentation_url = "documentation_url",
+                     reference_parameter = "parameter",
+                     reference_citation = "citation"
                    ),
                    reference = NULL,
                    verbose = TRUE) {
-      add(self,
-        table = table, type = type,
-        report_type = report_type, table_names = table_names,
-        reference = reference, verbose = verbose
+      default_tn <- list(
+        sequence_name = "sequence_name",
+        sequence = "sequence",
+        comment = "comment",
+        reference_vendor = "vendor",
+        reference_name = "name",
+        reference_version = "version",
+        reference_usage = "usage",
+        reference_note = "note",
+        reference_method_url = "method_url",
+        reference_documentation_url = "documentation_url",
+        reference_parameter = "parameter",
+        reference_citation = "citation"
       )
+
+      table_names <- modifyList(default_tn, table_names)
+
+      # allow for type and report_type to be entered without ""
+      type <- as.character(substitute(type))
+      if (!is.null(report_type)) {
+        report_type <- as.character(substitute(report_type))
+      }
+
+      num_added <- 0
+      if (type == "sequence") {
+        num_added <- xdev_add_sequences(
+          data = self, table = table,
+          sequence_name = table_names[["sequence_name"]],
+          sequence = table_names[["sequence"]],
+          comment = table_names[["comment"]],
+          reference = reference,
+          verbose = verbose
+        )
+      } else if (type == "report") {
+        num_added <- 1
+
+        if (!is.null(report_type)) {
+          xdev_add_report(
+            data = self, table = table,
+            type = report_type,
+            sequence_name = table_names[["sequence_name"]],
+            verbose
+          )
+        } else {
+          cli::cli_abort("'report_type' is required when adding a report.")
+        }
+      } else if (type == "metadata") {
+        num_added <- 1
+        xdev_add_report(
+          data = self, table = table,
+          type = type,
+          verbose = verbose
+        )
+      } else if (type == "resource_reference") {
+        num_added <- xdev_add_references(
+          data = self, table = table,
+          name = table_names[["reference_name"]],
+          vendor = table_names[["reference_vendor"]],
+          version = table_names[["reference_version"]],
+          usage = table_names[["reference_usage"]],
+          note = table_names[["reference_note"]],
+          method_url = table_names[["reference_method_url"]],
+          documentation_url = table_names[["reference_documentation_url"]],
+          parameter = table_names[["reference_parameter"]],
+          citation = table_names[["reference_citation"]],
+          verbose = verbose
+        )
+      } else {
+        message <- paste0(
+          type, " is not a valid 'type' for the strollur$add()",
+          " function."
+        )
+        cli::cli_abort(message)
+      }
 
       invisible(self)
     },
@@ -354,23 +487,23 @@ strollur <- R6Class("strollur",
     #' @param tree a phylo tree object created by ape::read.tree.
     #' @examples
     #'
-    #'  data <- strollur$new("my_dataset")
+    #'  data <- new_dataset("my_dataset")
     #'
     #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
-    #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
+    #'  assign(data = data, table = df, type = "bin", bin_type = "otu")
     #'
     #'  tree <- ape::read.tree(strollur_example(
     #'  "final.opti_mcc.jclass.ave.tre"))
     #'
     #'  data$add_sample_tree(tree)
-    #'
+    #' @return Updated `strollur` object
     add_sample_tree = function(tree) {
       if (!inherits(tree, "phylo")) {
         .abort_incorrect_type("phylo", tree)
       }
 
       # if no samples, add sequences in tree to dataset
-      if (count(self, type = "samples") == 0) {
+      if (count(self, type = "sample") == 0) {
         message <- paste0("[Warning]: Your dataset does not contain sample ",
           "data, ignoring sample tree.",
           collapse = ""
@@ -380,14 +513,14 @@ strollur <- R6Class("strollur",
         # make sure the tree includes all "good" samples
         if (identical(
           sort(tree$tip.label),
-          sort(names(self, type = "samples"))
+          sort(names(self, type = "sample"))
         )) {
           # save tree
           self$sample_tree <- tree
         } else {
           # samples in dataset and not in tree
           missing_samples <- setdiff(
-            names(self, type = "samples"),
+            names(self, type = "sample"),
             tree$tip.label
           )
 
@@ -406,7 +539,7 @@ strollur <- R6Class("strollur",
             # samples in tree and not in dataset
             extra_samples <- setdiff(
               tree$tip.label,
-              names(self, type = "samples")
+              names(self, type = "sample")
             )
 
             # if tree contains "extra" names, prune the tree
@@ -423,18 +556,19 @@ strollur <- R6Class("strollur",
     #' @param tree a phylo tree object created by ape::read.tree.
     #' @examples
     #'
-    #'  data <- strollur$new("my_dataset")
+    #'  data <- new_dataset("my_dataset")
     #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'
+    #' @return Updated `strollur` object
     add_sequence_tree = function(tree) {
       if (!inherits(tree, "phylo")) {
         .abort_incorrect_type("phylo", tree)
       }
 
       # if no seqs yet, add sequences in tree to dataset
-      if (count(self, type = "sequences") == 0) {
-        xdev_add_sequences(self, data.frame(sequence_names = tree$tip.label))
+      if (count(self, type = "sequence") == 0) {
+        xdev_add_sequences(self, data.frame(sequence_name = tree$tip.label))
 
         # save tree
         self$sequence_tree <- tree
@@ -442,14 +576,14 @@ strollur <- R6Class("strollur",
         # make sure the tree includes all "good" sequences
         if (identical(
           sort(tree$tip.label),
-          sort(names(self, type = "sequences"))
+          sort(names(self, type = "sequence"))
         )) {
           # save tree
           self$sequence_tree <- tree
         } else {
           # seqs in dataset and not in tree
           missing_seqs <- setdiff(
-            names(self, type = "sequences"),
+            names(self, type = "sequence"),
             tree$tip.label
           )
 
@@ -468,7 +602,7 @@ strollur <- R6Class("strollur",
             # seqs in tree and not in dataset
             extra_seqs <- setdiff(
               tree$tip.label,
-              names(self, type = "sequences")
+              names(self, type = "sequence")
             )
 
             # if tree contains "extra" names, prune the tree
@@ -487,9 +621,9 @@ strollur <- R6Class("strollur",
     #' @param table, a data.frame containing the data you wish to assign
     #'
     #' @param type, a string containing the type of data. Options include:
-    #' 'sequence_abundance', 'sequence_taxonomy', 'bins',
-    #'  'bin_representatives', 'bin_taxonomy' and 'treatments'.
-    #'  Default = "bins".
+    #' 'sequence_abundance', 'sequence_taxonomy', 'bin',
+    #'  'bin_representative', 'bin_taxonomy' and 'treatment'.
+    #'  Default = "bin".
     #'
     #' @param bin_type, string containing the bin type you would like the number
     #'   of bins for. Default = "otu".
@@ -497,32 +631,32 @@ strollur <- R6Class("strollur",
     #' @param table_names, named list used to indicate the names of the columns
     #'   in the table. By default:
     #'
-    #'   table_names <- list(sequence_name = "sequence_names", abundance =
-    #'   "abundances", sample = "samples", treatment = "treatments", taxonomy =
-    #'   "taxonomies", bin_name = "bin_names")
+    #'   table_names <- list(sequence_name = "sequence_name", abundance =
+    #'   "abundance", sample = "sample", treatment = "treatment", taxonomy =
+    #'   "taxonomy", bin_name = "bin_name")
     #'
     #'   In table_names, 'sequence_name' is a string containing the name of the
     #'   column in 'table' that contains the sequence names. Default column name
-    #'   is 'sequence_names'.
+    #'   is 'sequence_name'.
     #'
     #'   In table_names, 'abundance' is a string containing the name of the
     #'   column in 'table' that contains the abundances. Default column name is
-    #'   'abundances'.
+    #'   'abundance'.
     #'
     #'   In table_names, 'sample' is a string containing the name of the column
-    #'   in 'table' that contains the samples. Default column name is 'samples'.
+    #'   in 'table' that contains the samples. Default column name is 'sample'.
     #'
     #'   In table_names, 'treatment' is a string containing the name of the
     #'   column in 'table' that contains the treatment names. Default column
-    #'   name is 'treatments'.
+    #'   name is 'treatment'.
     #'
     #'   In table_names, 'taxonomy' is a string containing the name of the
     #'   column in 'table' that contains the classifications. Default column
-    #'   name is 'taxonomies'.
+    #'   name is 'taxonomy'.
     #'
     #'   In table_names, 'bin_name' is a string containing the name of the
     #'   column in 'table' that contains the bin names. Default column name is
-    #'   'bin_names'.
+    #'   'bin_name'.
     #'
     #' @param reference, a list created by the function [new_reference].
     #'   Optional.
@@ -582,7 +716,7 @@ strollur <- R6Class("strollur",
     #' data$assign(table = phylo_data, bin_type = "phylotype")
     #'
     #' # assign 'otu' bin representative sequences
-    #' data$assign(table = bin_reps, type = "bin_representatives")
+    #' data$assign(table = bin_reps, type = "bin_representative")
     #'
     #' # To assign abundance only bins
     #'
@@ -613,32 +747,109 @@ strollur <- R6Class("strollur",
     #' sample_assignments <- readRDS(
     #'    strollur_example("miseq_sample_design.rds"))
     #'
-    #' data$assign(table = sample_assignments, type = "treatments")
+    #' data$assign(table = sample_assignments, type = "treatment")
     #'
-    #' @return double - The number of items assigned
+    #' @return Updated `strollur` object
     assign = function(table,
-                      type = "bins",
+                      type = "bin",
                       bin_type = "otu",
                       table_names = list(
-                        sequence_name = "sequence_names",
-                        abundance = "abundances",
-                        sample = "samples",
-                        treatment = "treatments",
-                        taxonomy = "taxonomies",
-                        bin_name = "bin_names"
+                        sequence_name = "sequence_name",
+                        abundance = "abundance",
+                        sample = "sample",
+                        treatment = "treatment",
+                        taxonomy = "taxonomy",
+                        bin_name = "bin_name"
                       ),
                       reference = NULL,
                       verbose = TRUE) {
-      assign(self,
-        table = table, type = type,
-        bin_type = bin_type, table_names = table_names,
-        reference = reference, verbose = verbose
+      default_tn <- list(
+        sequence_name = "sequence_name",
+        abundance = "abundance",
+        sample = "sample",
+        treatment = "treatment",
+        taxonomy = "taxonomy",
+        bin_name = "bin_name"
       )
+
+      table_names <- modifyList(default_tn, table_names)
+
+      # allow for type and bin_type to be entered without ""
+      type <- as.character(substitute(type))
+      bin_type <- as.character(substitute(bin_type))
+
+      num <- 0
+      if (type == "bin") {
+        num <- xdev_assign_bins(
+          data = self, table = table,
+          bin_type = bin_type,
+          reference = reference,
+          bin_name = table_names[["bin_name"]],
+          abundance = table_names[["abundance"]],
+          sample = table_names[["sample"]],
+          sequence_name = table_names[["sequence_name"]],
+          verbose = verbose
+        )
+      } else if (type == "bin_taxonomy") {
+        num <- xdev_assign_bin_taxonomy(
+          data = self, table = table,
+          bin_type = bin_type,
+          reference = reference,
+          bin_name = table_names[["bin_name"]],
+          taxonomy = table_names[["taxonomy"]],
+          verbose = verbose
+        )
+      } else if (type == "bin_representative") {
+        num <- xdev_assign_bin_representative_sequences(
+          data = self, table = table,
+          bin_type = bin_type,
+          reference = reference,
+          bin_name = table_names[["bin_name"]],
+          sequence_name = table_names[["sequence_name"]],
+          verbose = verbose
+        )
+      } else if (type == "sequence_taxonomy") {
+        num <- xdev_assign_sequence_taxonomy(
+          data = self, table = table,
+          reference = reference,
+          sequence_name = table_names[["sequence_name"]],
+          taxonomy = table_names[["taxonomy"]],
+          verbose = verbose
+        )
+      } else if (type == "treatment") {
+        num <- xdev_assign_treatments(
+          data = self, table = table,
+          sample = table_names[["sample"]],
+          treatment = table_names[["treatment"]],
+          verbose = verbose
+        )
+      } else if (type == "sequence_abundance") {
+        num <- xdev_assign_sequence_abundance(
+          data = self, table = table,
+          sequence_name = table_names[["sequence_name"]],
+          abundance = table_names[["abundance"]],
+          sample = table_names[["sample"]],
+          treatment = table_names[["treatment"]],
+          verbose = verbose
+        )
+      } else {
+        message <- paste0(
+          type, " is not a valid 'type' for the assign()",
+          " function."
+        )
+        cli::cli_abort(message)
+      }
       invisible(self)
     },
 
     #' @description
     #' Clear data from datasest
+    #' @examples
+    #' miseq <- miseq_sop_example()
+    #' miseq
+    #' miseq$clear()
+    #' miseq
+    #' @return Updated `strollur` object
     clear = function() {
       clear(self)
 
@@ -649,24 +860,24 @@ strollur <- R6Class("strollur",
     #' Find the number of sequences, samples, treatments or bins of a given type
     #'
     #' @param type, string containing the type of data you want the number of.
-    #' Options include: "sequences", "samples", "treatments", "bins", and
-    #'  "references". Default = "sequences".
+    #' Options include: "sequence", "sample", "treatment", "bin", and
+    #'  "resource_reference". Default = "sequence".
     #'
     #' @param bin_type, string containing the bin type you would like the number
     #'   of bins for. Default = "otu".
     #'
     #' @param samples, vector of strings. samples is only used when 'type' =
-    #'   "sequences" or 'type' = "bins" . samples should contain the names of
+    #'   "sequence" or 'type' = "bin" . samples should contain the names of
     #'   the samples you want the count for. Default = NULL.
     #'
-    #' @param distinct, Boolean. distinct is used when 'type' = "sequences" or
-    #'   'type' = "bins". When 'type' = "sequences" and distinct is TRUE the
-    #'   number of unique sequences is returned. When 'type' = "sequences" and
+    #' @param distinct, Boolean. distinct is used when 'type' = "sequence" or
+    #'   'type' = "bin". When 'type' = "sequence" and distinct is TRUE the
+    #'   number of unique sequences is returned. When 'type' = "sequence" and
     #'   distinct is FALSE the total number of sequences is returned. This can
     #'   also be combined with samples to find the number of unique sequences
     #'   found ONLY in a given set of samples, or to find the number of unique
     #'   sequences in given set of samples that may also be present in other
-    #'   samples. When 'type' = "bins", you can set distinct = TRUE to return
+    #'   samples. When 'type' = "bin", you can set distinct = TRUE to return
     #'   the number of bins that ONLY contain sequences from the given samples.
     #'   When distinct is FALSE the count returned contains bins with sequences
     #'   from a given samples, but those bins may also contain other samples.
@@ -677,43 +888,43 @@ strollur <- R6Class("strollur",
     #' miseq <- miseq_sop_example()
     #'
     #' # To get the total number of sequences
-    #' miseq$count(type = "sequences")
+    #' miseq$count(type = "sequence")
     #'
     #' # To get number of unique sequences
-    #' miseq$count(type = "sequences", distinct = TRUE)
+    #' miseq$count(type = "sequence", distinct = TRUE)
     #'
     #' # To get number of unique sequences from samples 'F3D0' and 'F3D1'
     #' # Note these sequences will be present in both samples but may be
     #' # be present in other samples as well
-    #' miseq$count(type = "sequences", samples = c("F3D0", "F3D1"))
+    #' miseq$count(type = "sequence", samples = c("F3D0", "F3D1"))
     #'
     #' # To get number of unique sequences exclusive to samples 'F3D0' and
     #' # 'F3D1'. Note sequences are present in both samples and NOT present in
     #' # any other samples.
     #'
-    #' miseq$count(type = "sequences",
+    #' miseq$count(type = "sequence",
     #'             samples = c("F3D0", "F3D1"), distinct = TRUE )
     #'
     #' # To get the number of samples in the dataset
-    #' miseq$count(type = "samples")
+    #' miseq$count(type = "sample")
     #'
     #' # To get the number of treatments in the dataset
-    #' miseq$count(type = "treatments")
+    #' miseq$count(type = "treatment")
     #'
     #' # To get the number of "otu" bins in the dataset
-    #' miseq$count(type = "bins", bin_type = "otu")
+    #' miseq$count(type = "bin", bin_type = "otu")
     #'
     #' # To get the number of "asv" bins in the dataset
-    #' miseq$count(type = "bins", bin_type = "asv")
+    #' miseq$count(type = "bin", bin_type = "asv")
     #'
     #' # To get the number of "phylotype" bins in the dataset
-    #' miseq$count(type = "bins", bin_type = "phylotype")
+    #' miseq$count(type = "bin", bin_type = "phylotype")
     #'
     #' # To get number of "otu" bins from samples 'F3D0' and 'F3D1'
     #' # Note these bins will have sequences from both samples but there may be
     #' # other samples present as well
     #' miseq$count(
-    #'   type = "bins", bin_type = "otu", samples = c("F3D0", "F3D1")
+    #'   type = "bin", bin_type = "otu", samples = c("F3D0", "F3D1")
     #' )
     #'
     #' # To get number of "otu" bins unique to samples 'F3D0' and 'F3D1'
@@ -721,12 +932,12 @@ strollur <- R6Class("strollur",
     #' # samples will be present in the bins.
     #'
     #' miseq$count(
-    #'   type = "bins", bin_type = "otu",
+    #'   type = "bin", bin_type = "otu",
     #'   samples = c("F3D0", "F3D1"), distinct = TRUE
     #' )
     #'
     #' @return double
-    count = function(type = "sequences",
+    count = function(type = "sequence",
                      bin_type = "otu",
                      samples = NULL,
                      distinct = FALSE) {
@@ -755,21 +966,22 @@ strollur <- R6Class("strollur",
     #'
     #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'
-    #'  data <- strollur$new("my_dataset")
+    #'  data <- new_dataset("my_dataset")
     #'
     #'  # assign abundance 'otu' bins
-    #'  assign(data = data, table = df, type = "bins", bin_type = "otu")
+    #'  data$assign(table = df, type = "bin", bin_type = "otu")
     #'
     #'  data$add_sample_tree(tree)
     #'  data$get_sample_tree()
     #'
+    #' @return ape::tree
     get_sample_tree = function() {
       if (!is.null(self$sample_tree)) {
         # prune tree if needed
         # samples in tree and not in dataset
         extra_samples <- setdiff(
           self$sample_tree$tip.label,
-          names(self, type = "samples")
+          names(self, type = "sample")
         )
 
         if (length(extra_samples) != 0) {
@@ -786,18 +998,19 @@ strollur <- R6Class("strollur",
     #' Get phylo tree relating the sequences in your strollur object.
     #' @examples
     #'
-    #'  data <- strollur$new("my_dataset")
+    #'  data <- new_dataset("my_dataset")
     #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
     #'  data$add_sequence_tree(tree)
     #'  data$get_sequence_tree()
     #'
+    #' @return ape::tree
     get_sequence_tree = function() {
       if (!is.null(self$sequence_tree)) {
         # prune tree if needed
         # seqs in tree and not in dataset
         extra_seqs <- setdiff(
           self$sequence_tree$tip.label,
-          names(self, type = "sequences")
+          names(self, type = "sequence")
         )
 
         if (length(extra_seqs) != 0) {
@@ -811,21 +1024,148 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
+    #' Determine if two
+    #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+    #'  objects are equal.
+    #'
+    #' @param data, a
+    #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+    #'   object
+    #' @examples
+    #'
+    #' miseq <- miseq_sop_example()
+    #'
+    #' data <- copy_dataset(miseq)
+    #'
+    #' miseq$is_equal(data)
+    #'
+    #' @returns a logical
+    #' @export
+    is_equal = function(data) {
+      if (!inherits(data, "strollur")) {
+        stop("data must be a strollur object.")
+      }
+
+      # compare private members - version, processors
+      if (!identical(self$.private$version, data$.private$version)) {
+        cli_alert("The strollur objects versions are not equivalent.")
+        return(FALSE)
+      }
+      if (!identical(self$.private$processors, data$.private$processors)) {
+        cli_alert("The strollur objects processors are not equivalent.")
+        return(FALSE)
+      }
+
+      # Compare public members - data, raw, sequence_tree and sample_tree
+      # compare raw
+      if (!identical(self$raw, data$raw)) {
+        message <- paste(
+          "The strollur objects public field 'raw' are not",
+          " equivalent."
+        )
+        cli_alert(message)
+        return(FALSE)
+      }
+
+      # compare ape sequence tree, sample_tree
+      # We use ape::all.equal.phylo because tree objects
+      # can be topologically identical but have different memory layouts.
+      seq_tree_self <- self$get_sequence_tree()
+      seq_tree_data <- data$get_sequence_tree()
+      if (is.null(seq_tree_self) && is.null(seq_tree_data)) {
+        # null trees
+      } else if (is.null(seq_tree_self) || is.null(seq_tree_data)) {
+        message <- paste(
+          "The strollur objects public field ",
+          "'sequence_tree' are not equivalent."
+        )
+        cli_alert(message)
+        return(FALSE)
+      } else {
+        # all.equal.phylo returns TRUE or a character vector of differences
+        if (!isTRUE(ape::all.equal.phylo(
+          seq_tree_self,
+          seq_tree_data
+        ))) {
+          message <- paste(
+            "The strollur objects public field ",
+            "'sequence_tree' are not equivalent."
+          )
+          cli_alert(message)
+          return(FALSE)
+        }
+      }
+
+      sample_tree_self <- self$get_sample_tree()
+      sample_tree_data <- data$get_sample_tree()
+      if (is.null(sample_tree_self) && is.null(sample_tree_data)) {
+        # null trees
+      } else if (is.null(sample_tree_self) || is.null(sample_tree_data)) {
+        message <- paste(
+          "The strollur objects public field ",
+          "'sample_tree' are not equivalent."
+        )
+        cli_alert(message)
+        return(FALSE)
+      } else {
+        # all.equal.phylo returns TRUE or a character vector of differences
+        if (!isTRUE(ape::all.equal.phylo(
+          sample_tree_self,
+          sample_tree_data
+        ))) {
+          message <- paste(
+            "The strollur objects public field ",
+            "'sample_tree' are not equivalent."
+          )
+          cli_alert(message)
+          return(FALSE)
+        }
+      }
+
+      # compare data
+      preserve_self_raw <- self$raw
+      preserve_data_raw <- data$raw
+
+      # serialize c++ back end for efficient comparison - sets raw
+      sraw <- xint_serialize_dobject(self)
+      draw <- xint_serialize_dobject(data)
+
+      # compare and reset old raw value
+      if (!identical(sraw, draw)) {
+        self$raw <- preserve_self_raw
+        data$raw <- preserve_data_raw
+
+        message <- paste(
+          "The strollur objects public field 'data' are not",
+          " equivalent."
+        )
+        cli_alert(message)
+        return(FALSE)
+      } else {
+        self$raw <- preserve_self_raw
+        data$raw <- preserve_data_raw
+      }
+
+      TRUE
+    },
+
+
+    #' @description
     #' Get the names of a given type of data
     #'
     #' @param type, string containing the type of data you would like. Options
-    #'   include: "dataset", "sequences", "bins", "samples", "treatments",
-    #'   "reports". Default = "sequences".
+    #'   include: "dataset", "sequence", "bin", "sample", "treatment",
+    #'   "report". Default = "sequence".
     #'
     #' @param bin_type, string containing the bin type you would like the names
     #'   for. Default = "otu".
     #'
     #' @param samples, vector of strings. samples is only used when 'type' =
-    #'   "sequences" or 'type' = "bins" . samples should contain the names of
+    #'   "sequence" or 'type' = "bin" . samples should contain the names of
     #'   the samples you want names for. Default = NULL.
     #'
-    #' @param distinct, Boolean. distinct is used when 'type' = "sequences" or
-    #'   'type' = "bins" and the samples parameter is used. The distinct
+    #' @param distinct, Boolean. distinct is used when 'type' = "sequence" or
+    #'   'type' = "bin" and the samples parameter is used. The distinct
     #'   parameter allows you to get the names that present given set of
     #'   samples. When distinct is TRUE, the names function will return the
     #'   names that ONLY contain data from the given samples. When distinct is
@@ -840,34 +1180,34 @@ strollur <- R6Class("strollur",
     #' miseq$names(type = "dataset")
     #'
     #' # To get the names of the sequences
-    #' miseq$names(type = "sequences")
+    #' miseq$names(type = "sequence")
     #'
     #' # To get the names of the sequences present sample 'F3D0'
-    #' miseq$names(type = "sequences", samples = c("F3D0"))
+    #' miseq$names(type = "sequence", samples = c("F3D0"))
     #'
     #' #' # To get the names of the sequences unique to sample 'F3D0'
-    #' miseq$names(type = "sequences", samples = c("F3D0"), distinct = TRUE)
+    #' miseq$names(type = "sequence", samples = c("F3D0"), distinct = TRUE)
     #'
     #' # To get the names of the samples
-    #' miseq$names(type = "samples")
+    #' miseq$names(type = "sample")
     #'
     #' # To get the names of the treatments
-    #' miseq$names(type = "treatments")
+    #' miseq$names(type = "treatment")
     #'
     #' # To get the names of the bins
-    #' miseq$names(type = "bins")
+    #' miseq$names(type = "bin")
     #'
     #' # To get the names of the bins that are unique to 'F3D0'
-    #' miseq$names(type = "bins", samples = c("F3D0"), distinct = TRUE)
+    #' miseq$names(type = "bin", samples = c("F3D0"), distinct = TRUE)
     #'
     #' # To get the names of the bins that include sequences from 'F3D0'
-    #' miseq$names(type = "bins", samples = c("F3D0"), distinct = FALSE)
+    #' miseq$names(type = "bin", samples = c("F3D0"), distinct = FALSE)
     #'
     #' # To get the names of the reports
-    #' miseq$names(type = "reports")
+    #' miseq$names(type = "report")
     #'
     #' @return vector of strings, containing the names requested
-    names = function(type = "sequences",
+    names = function(type = "sequence",
                      bin_type = "otu",
                      samples = NULL,
                      distinct = FALSE) {
@@ -878,12 +1218,12 @@ strollur <- R6Class("strollur",
     #' Get a data.frame containing the given report
     #'
     #' @param type, string containing the type of report you would like. Options
-    #' include: "fasta", "sequences", "sequence_bin_assignments",
-    #' "sequence_taxonomy", "bin_taxonomy", "bin_representatives",
-    #'  "sample_assignments", "metadata", "references", "sequence_scrap",
+    #' include: "fasta", "sequence", "sequence_bin_assignment",
+    #' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
+    #'  "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
     #' "bin_scrap". If you have added custom reports for alignment,
     #' contigs_assembly or chimeras, you can get those as well.
-    #'  Default = "sequences".
+    #'  Default = "sequence".
     #'
     #' @param bin_type, string containing the bin type you would like a
     #'   bin_taxonomy report for. Default = "otu".
@@ -898,16 +1238,16 @@ strollur <- R6Class("strollur",
     #'
     #' # To get a report about the FASTA data
     #'
-    #' miseq$report(type = "sequences") |> head(n = 5)
+    #' miseq$report(type = "sequence") |> head(n = 5)
     #'
     #' # To get the sequence bin assignments
     #'
-    #' miseq$report(type = "sequence_bin_assignments", bin_type = "otu") |>
+    #' miseq$report(type = "sequence_bin_assignment", bin_type = "otu") |>
     #' head(n = 5)
     #'
     #' # To get the sample treatment assignments
     #'
-    #' miseq$report(type = "sample_assignments") |> head(n = 5)
+    #' miseq$report(type = "sample_assignment") |> head(n = 5)
     #'
     #' # To get a report about sequence classifications
     #'
@@ -919,7 +1259,7 @@ strollur <- R6Class("strollur",
     #'
     #' # To get the 'otu' bin representative sequences
     #'
-    #' miseq$report(type = "bin_representatives", bin_type = "otu") |>
+    #' miseq$report(type = "bin_representative", bin_type = "otu") |>
     #' head(n = 5)
     #'
     #' # To get a report about the sequences removed during your analysis:
@@ -936,14 +1276,14 @@ strollur <- R6Class("strollur",
     #'
     #' # To get the resource references associated with your data:
     #'
-    #' references <- miseq$report(type = "references")
+    #' references <- miseq$report(type = "resource_reference")
     #'
     #' # To get our custom report containing the contigs assembly data:
     #'
     #' miseq$report(type = "contigs_report") |> head(n = 5)
     #'
     #' @return data.frame
-    report = function(type = "sequences", bin_type = "otu") {
+    report = function(type = "sequence", bin_type = "otu") {
       xdev_report(self, type, bin_type)
     },
 
@@ -951,8 +1291,8 @@ strollur <- R6Class("strollur",
     #' Summarize the sequences data, custom reports, and scrapped data
     #'
     #' @param type, string containing the type of data you want the number of.
-    #' Options include: "sequences", "reports" and "scrap".
-    #'  Default = "sequences".
+    #' Options include: "sequence", "report" and "scrap".
+    #'  Default = "sequence".
     #'
     #' @param report_type, string containing the report type you would
     #'  summarized. For example, the miseq_sop_example includes contigs assembly
@@ -967,10 +1307,10 @@ strollur <- R6Class("strollur",
     #' miseq <- miseq_sop_example()
     #'
     #' # To get the summary of your FASTA data
-    #' miseq$summary(type = "sequences")
+    #' miseq$summary(type = "sequence")
     #'
     #' # summarize contigs_report
-    #' miseq$summary(type = "reports", report_type = "contigs_report")
+    #' miseq$summary(type = "report", report_type = "contigs_report")
     #'
     #' # remove sample 'F3D0' to produce a scrap report
     #' xdev_remove_samples(data = miseq, samples = c("F3D0"))
@@ -980,7 +1320,7 @@ strollur <- R6Class("strollur",
     #' miseq$summary(type = "scrap")
     #'
     #' @return data.frame
-    summary = function(type = "sequences",
+    summary = function(type = "sequence",
                        report_type = NULL, verbose = TRUE) {
       dataset_summary <- xdev_summarize(self, type, report_type)
       if (verbose) {
@@ -1004,19 +1344,19 @@ strollur <- R6Class("strollur",
         # if you have summary results to print
         results[["sequence_summary"]] <- xdev_summarize(
           data = self,
-          type = "sequences"
+          type = "sequence"
         )
       }
 
       exclude <- c("sequence_scrap", "bin_scrap")
-      report_names <- names(data = self, type = "reports")
+      report_names <- xdev_names(data = self, type = "report")
       report_names <- report_names[!report_names %in% exclude]
 
       if (length(report_names) != 0) {
         for (name in report_names) {
           results[[name]] <- xdev_summarize(
             data = self,
-            type = "reports",
+            type = "report",
             report_type = name
           )
         }
@@ -1030,11 +1370,11 @@ strollur <- R6Class("strollur",
         results[["scrap_summary"]] <- df
       }
 
-      if (count(self, type = "samples") != 0) {
-        results[["sample_summary"]] <- abundance(self, type = "samples")
+      if (count(self, type = "sample") != 0) {
+        results[["sample_summary"]] <- abundance(self, type = "sample")
 
-        if (count(self, "treatments") != 0) {
-          results[["treatment_summary"]] <- abundance(self, type = "treatments")
+        if (count(self, "treatment") != 0) {
+          results[["treatment_summary"]] <- abundance(self, type = "treatment")
         }
       }
 

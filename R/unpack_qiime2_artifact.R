@@ -3,10 +3,6 @@
 #' The unpack_qiime2_artifact function reads .qza files created by
 #' \href{https://qiime2.org}{qiime2}, and returns the artifact.
 #'
-# nolint start
-#' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
-# nolint end
-#'
 #' @param qza filename, a .qza file containing artifact
 #' @param dir_path a string containing the name of directory where the artifacts
 #' files should be written. Default = current working directory.

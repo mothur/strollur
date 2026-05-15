@@ -9,19 +9,18 @@
 #' counts by sample for each ASV. The sample names are stored as row names and
 #' the sequence nucleotide strings are stored as column names.
 #'
-#' To generate the dada2 sequence table you can follow
+#' To generate the dada2 sequence table from your own files you can follow
 #' \href{https://benjjneb.github.io/dada2/tutorial.html}{this dada2 tutorial}.
+#'
 #' @param sequence_table A dada2 sequence table
 #' @param dataset_name A string containing a name for your dataset.
 #' @examples
-#' \dontrun{
-#' # Follow the dada2 tutorial above to generate seqtab from your fastq files.
 #'
-#' # dim(seqtab)
-#' # [1]  20 293
+#' seqtab <- readRDS(strollur_example("dada2.rds"))
+#' dim(seqtab)
 #'
-#' # data <- read_dada2(seqtab, "dada2")
-#' }
+#' data <- read_dada2(sequence_table = seqtab, dataset_name = "dada2 example")
+#'
 #' @return A `strollur` object
 #' @export
 read_dada2 <- function(sequence_table, dataset_name = "") {
@@ -33,9 +32,9 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
   # create new dataset object
   data <- new_dataset(dataset_name)
   xdev_add_sequences(data, data.frame(
-    sequence_names = seq_names,
-    sequences = colnames(sequence_table),
-    comments = rep("dada2", num_seqs)
+    sequence_name = seq_names,
+    sequence = colnames(sequence_table),
+    comment = rep("dada2", num_seqs)
   ))
 
   sample_names <- rownames(sequence_table)
@@ -56,9 +55,9 @@ read_dada2 <- function(sequence_table, dataset_name = "") {
   }
 
   xdev_assign_sequence_abundance(data, data.frame(
-    sequence_names = names,
-    abundances = abundances,
-    samples = samples
+    sequence_name = names,
+    abundance = abundances,
+    sample = samples
   ))
   data
 }

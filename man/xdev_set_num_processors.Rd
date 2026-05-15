@@ -11,6 +11,9 @@ xdev_set_num_processors(data, processors)
 
 \item{processors, }{a integer containing the desired number of processors}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Designed with package integration in mind, set the number of processors used
  to summarize a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

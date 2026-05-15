@@ -17,9 +17,9 @@ status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.o
 
 ## Overview
 
-The **strollur** package stores the data associated with your microbial
-DNA analysis. This includes nucleotide sequences, abundance, sample and
-treatment assignments, taxonomic classifications, sequence bin
+The **`strollur`** package stores the data associated with your amplicon
+sequence analysis. This includes nucleotide sequences, abundance, sample
+and treatment assignments, taxonomic classifications, sequence bin
 assignments, metadata, trees and various reports. It is designed to
 facilitate data analysis across multiple R packages with utility
 functions to import from [mothur](https://mothur.org),
@@ -48,7 +48,6 @@ and
 You can install the CRAN version with:
 
 ``` r
-library(strollur)
 install.packages("strollur")
 ```
 
@@ -76,23 +75,23 @@ abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
 classification_data <- read_mothur_taxonomy(taxonomy = strollur_example("final.taxonomy.gz"))
 
-data <- new_dataset(dataset_name = "microbial RNA example")
+data <- new_dataset(dataset_name = "example")
 
-add(data, table = fasta_data, type = "sequences")
-#> ℹ Added 2425 sequences.
+add(data, table = fasta_data, type = "sequence")
+#> Added 2425 sequences.
 #> [1] 2425
 assign(data, table = abundance_table, type = "sequence_abundance")
-#> ℹ Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence abundances.
 #> [1] 2425
-assign(data, table = bin_table, type = "bins", bin_type = "otu")
-#> ℹ Assigned 531 otu bins.
+assign(data, table = bin_table, type = "bin", bin_type = "otu")
+#> Assigned 531 otu bins.
 #> [1] 531
 assign(data, table = classification_data, type = "sequence_taxonomy")
-#> ℹ Assigned 2425 sequence taxonomies.
+#> Assigned 2425 sequence taxonomies.
 #> [1] 2425
 
 data
-#> microbial RNA example:
+#> example:
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
@@ -109,7 +108,9 @@ data
 #> 
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
-#> Total number of otus: 531
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of sequence classifications: 2425
 ```
 
 ## Getting help
@@ -123,3 +124,9 @@ minimal reproducible example with your issue.
 Is there a feature you’d like to see included, please let us know! Pull
 requests are welcome on
 [GitHub](https://github.com/mothur/strollur/pulls).
+
+## Code of Conduct
+
+Please note that the strollur project is released with a [Contributor
+Code of Conduct](https://mothur.org/strollur/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.

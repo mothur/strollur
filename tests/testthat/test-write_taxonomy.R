@@ -2,7 +2,7 @@ test_that("write_taxonomy - errors", {
   expect_error(write_taxonomy("Bad_type"))
 
   # no file name with nameless dataset
-  data <- strollur$new()
+  data <- new_dataset()
   expect_error(write_taxonomy(data))
 })
 
@@ -15,7 +15,7 @@ test_that("write_taxonomy", {
 
   remove_file(output)
 
-  expect_equal(df[[1]], names(miseq, "sequences"))
+  expect_equal(df[[1]], names(miseq, "sequence"))
   tax1 <- paste0(
     "Bacteria(100);Firmicutes(100);Clostridia(100);Clostridiales(100);",
     "Lachnospiraceae(85);Lachnospiraceae_unclassified(85);"

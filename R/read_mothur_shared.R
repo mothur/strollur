@@ -14,7 +14,7 @@
 #' data <- new_dataset()
 #'
 #' # assign abundance only 'otu' bins parsed by sample
-#' assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
+#' assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export
@@ -51,8 +51,8 @@ read_mothur_shared <- function(shared) {
   }
 
   data.frame(
-    bin_names = otu_assignments,
-    abundances = abundance,
-    samples = sample
+    bin_name = otu_assignments,
+    abundance = abundance,
+    sample = sample
   )
 }

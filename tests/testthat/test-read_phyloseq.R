@@ -26,9 +26,9 @@ test_that("test read_phyloseq", {
   data <- read_phyloseq(phyloseq_object_w_tax)
   row_data <- phyloseq::tax_table(phyloseq_object_w_tax)[9, ]
   rdata_set_data <- report(data, type = "sequence_taxonomy")
-  expect_true(abundance(data)[1, ]$abundances == 12288)
-  expect_true(abundance(data)[2, ]$abundances == 8892)
-  expect_true(abundance(data)[3, ]$abundances == 7794)
+  expect_true(abundance(data)[1, ]$abundance == 12288)
+  expect_true(abundance(data)[2, ]$abundance == 8892)
+  expect_true(abundance(data)[3, ]$abundance == 7794)
 
   expect_true(nrow(rdata_set_data) == 3186)
   expect_true(rdata_set_data[49, 3] == row_data[[1]])

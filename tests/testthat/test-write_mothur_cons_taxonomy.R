@@ -4,7 +4,7 @@ test_that("write_mothur_cons_taxonomy - errors", {
   expect_error(write_mothur_cons_taxonomy("Bad_type"))
 
   # no file name with nameless dataset
-  data <- strollur$new()
+  data <- new_dataset()
   expect_error(write_mothur_cons_taxonomy(data))
 })
 
@@ -25,9 +25,9 @@ test_that("write_mothur_cons_taxonomy", {
 
   df <- read_mothur_cons_taxonomy(outputs[1])
 
-  expect_equal(df[[1]], names(miseq, "bins", bin_types[1]))
-  expect_equal(df[[2]], abundance(
-    data = miseq, type = "bins",
+  expect_equal(df[[1]], xdev_names(miseq, "bin", bin_types[1]))
+  expect_equal(df[[2]], xdev_abundance(
+    data = miseq, type = "bin",
     bin_type = bin_types[1]
   )[[2]])
   tax1 <- paste0(
@@ -40,9 +40,9 @@ test_that("write_mothur_cons_taxonomy", {
 
   df <- read_mothur_cons_taxonomy(outputs[2])
 
-  expect_equal(df[[1]], names(miseq, "bins", bin_types[2]))
-  expect_equal(df[[2]], abundance(
-    data = miseq, type = "bins",
+  expect_equal(df[[1]], xdev_names(miseq, "bin", bin_types[2]))
+  expect_equal(df[[2]], xdev_abundance(
+    data = miseq, type = "bin",
     bin_type = bin_types[2]
   )[[2]])
   tax2 <- paste0(
@@ -55,9 +55,9 @@ test_that("write_mothur_cons_taxonomy", {
 
   df <- read_mothur_cons_taxonomy(outputs[3])
 
-  expect_equal(df[[1]], names(miseq, "bins", bin_types[3]))
-  expect_equal(df[[2]], abundance(
-    data = miseq, type = "bins",
+  expect_equal(df[[1]], xdev_names(miseq, "bin", bin_types[3]))
+  expect_equal(df[[2]], xdev_abundance(
+    data = miseq, type = "bin",
     bin_type = bin_types[3]
   )[[2]])
   tax3 <- paste0(

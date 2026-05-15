@@ -15,9 +15,8 @@
 #' @return name of count file
 #' @export
 write_mothur_count <- function(data, filename = NULL) {
-  # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   if (is.null(filename)) {
@@ -28,7 +27,7 @@ write_mothur_count <- function(data, filename = NULL) {
     filename <- paste0(filename, ".count_table")
   }
 
-  df <- abundance(data, type = "sequences", by_sample = TRUE)
+  df <- abundance(data, type = "sequence", by_sample = TRUE)
 
   if (nrow(df) != 0) {
     # treatment assignments, remove treatment column
@@ -68,19 +67,19 @@ write_mothur_count <- function(data, filename = NULL) {
       # Join the original dataframe with the new mapping to replace
       # sample names
       df <- left_join(df, sample_map,
-        by = c("samples" = "original_sample")
+        by = c("sample" = "original_sample")
       )
 
       # Group by 'ids' and summarize the 'sample_index' and 'abunds'
       # To fix build warnings, we have to make bindings for:
       # abundances, sample_index, sequence_names
-      abundances <- sample_index <- sequence_names <- NULL
+      abundance <- sample_index <- sequence_name <- NULL
 
       df <- df |>
-        group_by(sequence_names) |>
+        group_by(sequence_name) |>
         summarise(
-          total = sum(abundances),
-          sample_abund = paste0(sample_index, ",", abundances,
+          total = sum(abundance),
+          sample_abund = paste0(sample_index, ",", abundance,
             collapse = " "
           )
         )

@@ -1,4 +1,4 @@
-#' @title miseq_sop_example
+#' @title Example strollur object
 #' @description
 #' The miseq_sop_example function will create 'strollur' object using the
 #' analysis files from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
@@ -29,24 +29,23 @@ miseq_sop_example <- function() {
     "miseq_representative_sequences.rds"
   ))
 
-  assign(
+  xdev_assign_bin_representative_sequences(
     data = data, table = representative_seqs,
-    type = "bin_representatives"
+    bin_type = "otu"
   )
 
   metadata <- readRDS(strollur_example("miseq_metadata.rds"))
-  xdev_add_report(data, metadata, "metadata")
+  xdev_add_report(data = data, table = metadata, type = "metadata")
 
   reference <- read_csv(strollur_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  xdev_add_references(data, reference)
+  xdev_add_references(data = data, table = reference)
 
   contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
-  add(
-    data = data, table = contigs_report, type = "reports",
-    report_type = "contigs_report",
-    table_names = list(sequence_name = "Name")
+  xdev_add_report(
+    data = data, table = contigs_report, type = "contigs_report",
+    sequence_name = "Name"
   )
 
   data

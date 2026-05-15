@@ -1,5 +1,5 @@
 # Define an S3 generic - this allows for the additional parameters to summary
-summary <- function(x, type = "sequences",
+summary <- function(x, type = "sequence",
                     bin_type = "otu",
                     verbose = TRUE, ...) {
   UseMethod("summary", x)
@@ -17,7 +17,7 @@ summary <- function(x, type = "sequences",
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param type, string containing the type of data you want the number of.
-#' Options include: "sequences", "reports" and "scrap". Default = "sequences".
+#' Options include: "sequence", "report" and "scrap". Default = "sequence".
 #'
 #' @param report_type, string containing the report type you would summarized.
 #' For example, the miseq_sop_example includes contigs assembly data and can be
@@ -31,16 +31,16 @@ summary <- function(x, type = "sequences",
 #' miseq <- miseq_sop_example()
 #'
 #' # To get the summary of your FASTA data
-#' summary(data = miseq, type = "sequences")
+#' summary(data = miseq, type = "sequence")
 #'
 #' # summarize contigs_report
-#' summary(data = miseq, type = "reports", report_type = "contigs_report")
+#' summary(data = miseq, type = "report", report_type = "contigs_report")
 #'
 #' # remove sample 'F3D0' to produce a scrap report
 #' xdev_remove_samples(data = miseq, samples = c("F3D0"))
 #'
 #' # summarize FASTA data after removal of sample F3D0
-#' summary(data = miseq, type = "sequences")
+#' summary(data = miseq, type = "sequence")
 #'
 #' # summarize scrapped data -
 #' # sequences and bins scrapped by removing the sample "F3D0"
@@ -48,10 +48,22 @@ summary <- function(x, type = "sequences",
 #'
 #' @return data.frame
 #' @export
-summary <- function(data, type = "sequences",
+summary <- function(data, type = "sequence",
                     report_type = NULL, verbose = TRUE) {
-  if(!inherits(data, "strollur")) {
-    return(base::summary(data))
+  if (inherits(data, "strollur")) {
+    # allow for type and report_type to be entered without ""
+    type <- as.character(substitute(type))
+    if (!is.null(report_type)) {
+      report_type <- as.character(substitute(report_type))
+    }
+
+    dataset_summary <- xdev_summarize(data, type, report_type)
+    if (verbose) {
+      print(dataset_summary)
+    }
+    dataset_summary
+  } else {
+    base::summary(data)
   }
 
   dataset_summary <- ""

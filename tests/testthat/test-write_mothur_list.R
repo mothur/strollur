@@ -4,7 +4,7 @@ test_that("write_mothur_list - errors", {
   expect_error(write_mothur_list("Bad_type"))
 
   # no file name with nameless dataset
-  data <- strollur$new()
+  data <- new_dataset()
   expect_error(write_mothur_list(data))
 })
 
@@ -26,7 +26,7 @@ test_that("write_mothur_list", {
   df <- read_mothur_list(outputs[1])
   names(df) <- c("otu_id", "seq_id")
 
-  expect_equal(df, report(miseq, "sequence_bin_assignments", bin_types[1]))
+  expect_equal(df, xdev_report(miseq, "sequence_bin_assignment", bin_types[1]))
 
   # cleanup
   for (output in outputs) {

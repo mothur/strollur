@@ -8,8 +8,8 @@ xdev_assign_sequence_taxonomy(
   data,
   table,
   reference = NULL,
-  sequence_name = "sequence_names",
-  taxonomy = "taxonomies",
+  sequence_name = "sequence_name",
+  taxonomy = "taxonomy",
   verbose = TRUE
 )
 }
@@ -21,21 +21,21 @@ xdev_assign_sequence_taxonomy(
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
 \item{sequence_name, }{a string containing the name of the column in 'table'
-that contains the sequence names. Default column name is 'sequence_names'.}
+that contains the sequence names. Default column name is 'sequence_name'.}
 
 \item{taxonomy, }{a string containing the name of the column in 'table' that
-contains the sequence taxonomies. Default column name is 'taxonomies'.}
+contains the sequence taxonomies. Default column name is 'taxonomy'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
-double containing the number of sequence assigned
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 
-Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+Note, if you assign sequence taxonomies and assign bins, strollur will find
  the consensus taxonomy for each bin for you.
 }
 \examples{

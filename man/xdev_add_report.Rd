@@ -8,7 +8,7 @@ xdev_add_report(
   data,
   table,
   type = "metadata",
-  sequence_name = "sequence_names",
+  sequence_name = "sequence_name",
   verbose = TRUE
 )
 }
@@ -26,6 +26,9 @@ does not require a sequence_name column. Default column name is 'sequence_names'
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}
+}
+\value{
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

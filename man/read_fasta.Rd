@@ -23,10 +23,10 @@ fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
 # fasta_data is a data.frame.
 # To access the names of the sequences in the file, run the following:
 
-fasta_data$sequence_names
+fasta_data$sequence_name
 
 # To access the sequences in the file, run the following:
 
-fasta_data$sequences
+fasta_data$sequence
 
 }

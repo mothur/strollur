@@ -2,7 +2,7 @@
 % Please edit documentation in R/load_dataset.R
 \name{load_dataset}
 \alias{load_dataset}
-\title{load_dataset}
+\title{Load strollur object from .rds file}
 \usage{
 load_dataset(file)
 }
@@ -23,4 +23,7 @@ The load_dataset function will create a
 data <- load_dataset(strollur_example("miseq_sop.rds"))
 data
 
+}
+\seealso{
+[save_dataset()]
 }

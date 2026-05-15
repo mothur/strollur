@@ -7,143 +7,6 @@
 #include "dataset.h"
 
 /******************************************************************************/
-//' @title get_available_processors
-//' @name get_available_processors
-//' @description
-//' Get the number of available cores
-//' @export
-// [[Rcpp::export]]
-int get_available_processors() {
-     // Use Rcpp::Environment and Rcpp::Function to call R code from C++.
-     Rcpp::Environment parallelly_env = Rcpp::Environment::namespace_env("parallelly");
-     Rcpp::Function availableCores = parallelly_env["availableCores"];
-
-     // Call the R function and return the result.
-     return Rcpp::as<int>(availableCores());
-}
-/******************************************************************************/
-//' @title new_dataset
-//' @description
-//' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//'
-//' @param dataset_name string, a string containing the dataset name.
-//' Default = ""
-//' @param processors integer, number of cores to use during summary functions.
-//' Default = all available
-//' @examples
-//'
-//' data <- new_dataset()
-//'
-//' # to create a new dataset named "soil" and allow for all available
-//' # processors during summary functions, run the following:
-//'
-//' data <- new_dataset(dataset_name = "soil")
-//'
-//' # to create a new dataset named "soil" and allow for 2
-//' # processors during summary functions, run the following:
-//'
-//' data <- new_dataset(dataset_name = "soil", processors = 2)
-//'
-//' @returns a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//' @export
-//' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
-//[[Rcpp::export]]
-Rcpp::Environment new_dataset(string dataset_name = "",
-                              Rcpp::Nullable<int> processors = R_NilValue) {
-
-    // strollur$new()
-    Rcpp::Environment strollur_env("package:strollur");
-    Rcpp::Environment dataset_class_env = strollur_env["strollur"];
-    Rcpp::Function constructor = dataset_class_env["new"];
-
-    int num_proc = 1;
-    if (processors.isNotNull()) {
-        num_proc = Rcpp::as<int>(processors);
-    }else{
-        num_proc = get_available_processors();
-    }
-
-    Rcpp::Environment data = constructor(dataset_name, num_proc, R_NilValue);
-    return data;
-}
-/******************************************************************************/
-//' @title new_reference
-//' @description
-//' Create a reference you can add to your dataset
-//'
-//' @param reference_name, a string containing the name of the reference used
-//' in the preparing of the sequences. For example: 'silva.bacteria.fasta'.
-//'
-//' @param reference_version, a string containing the version of the reference
-//' used in the preparing of the sequences. For example: '1.38.1'. Default = "".
-//'
-//' @param reference_usage, a string containing the usage of the reference in
-//' your analysis. For example: 'alignment using mothur2' Default = NULL.
-//'
-//' @param reference_note, a string containing the any additional notes about
-//' the reference. Default = "".
-//'
-//' @param reference_url, a string containing a web address where the
-//' reference may be downloaded. Default = "".
-//' @examples
-//'
-//' reference <- new_reference("silva.bacteria.fasta",
-//'                            "1.38.1",
-//'                            "alignment by mothur2 v1.0 using default options",
-//'                            "",
-//'                            "https://mothur.org/wiki/silva_reference_files/")
-//'
-//' @returns a list
-//' @export
-//' @seealso [add()]
-//[[Rcpp::export]]
-Rcpp::List new_reference(string reference_name,
-                         string reference_version = "",
-                         string reference_usage = "",
-                         string reference_note = "",
-                         string reference_url = "") {
-
-     return Rcpp::List::create(
-         Rcpp::Named("reference_name") = reference_name,
-         Rcpp::Named("reference_version") = reference_version,
-         Rcpp::Named("reference_usage") = reference_usage,
-         Rcpp::Named("reference_note") = reference_note,
-         Rcpp::Named("reference_url") = reference_url
-     );
- }
-/******************************************************************************/
-//' @title copy_dataset
-//' @description
-//' Create a new \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object from an existing dataset.
-//'
-//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//' @examples
-//'
-//' miseq <- miseq_sop_example()
-//'
-//' # to create a new dataset that is a copy of miseq
-//'
-//' data <- copy_dataset(miseq)
-//'
-//' @returns a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//' @seealso The 'new' method in the \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
-//' @export
-//[[Rcpp::export]]
-Rcpp::Environment copy_dataset(Rcpp::Environment data) {
-
-    // strollur$new()
-    Rcpp::Environment strollur_env("package:strollur");
-    Rcpp::Environment dataset_class_env = strollur_env["strollur"];
-    Rcpp::Function constructor = dataset_class_env["new"];
-    Rcpp::XPtr<Dataset> d = data["data"];
-
-    Rcpp::Environment copy = constructor(d.get()->datasetName,
-                                         d.get()->processors,
-                                         data);
-
-    return copy;
-}
-/******************************************************************************/
 //' @title clear
 //' @description
 //' Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -155,14 +18,18 @@ Rcpp::Environment copy_dataset(Rcpp::Environment data) {
 //' data <- miseq_sop_example()
 //' clear(data)
 //'
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void clear(Rcpp::Environment data) {
+Rcpp::Environment clear(Rcpp::Environment& data) {
     Rcpp::XPtr<Dataset> d = data["data"];
+    d.get()->clear();
+
     data["raw"] = R_NilValue;
     data["sequence_tree"] = R_NilValue;
     data["sample_tree"] = R_NilValue;
-    d.get()->clear();
+
+    return data;
 }
 /******************************************************************************/
 //' @title export_dataset

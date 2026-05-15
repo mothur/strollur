@@ -1,4 +1,4 @@
-#' @title load_dataset
+#' @title Load strollur object from .rds file
 #' @description The load_dataset function will create a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'   from an RDS file.
@@ -9,6 +9,7 @@
 #' data <- load_dataset(strollur_example("miseq_sop.rds"))
 #' data
 #'
+#' @seealso [save_dataset()]
 #' @return a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export

@@ -9,8 +9,8 @@ xdev_assign_bin_representative_sequences(
   table,
   bin_type = "otu",
   reference = NULL,
-  bin_name = "bin_names",
-  sequence_name = "sequence_names",
+  bin_name = "bin_name",
+  sequence_name = "sequence_name",
   verbose = TRUE
 )
 }
@@ -25,16 +25,16 @@ Default "otu".}
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
 \item{bin_name, }{a string containing the name of the column in 'table' that
-contains the bin names. Default column name is 'bin_names'.}
+contains the bin names. Default column name is 'bin_name'.}
 
 \item{sequence_name}{a string containing the name of the column in 'table' that
-contains the bin names. Default column name is 'sequence_names'.}
+contains the bin names. Default column name is 'sequence_name'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
-double containing the number of representative sequences assigned
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign representative sequences to bins.

@@ -7,10 +7,6 @@
 #' The read_qiime2 function reads various types of .qza files created by
 #' \href{https://qiime2.org}{qiime2}, and creates a `strollur` object.
 #'
-# nolint start
-#' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
-# nolint end
-#'
 #' @param qza vector of filenames, .qza files containing your data from qiime2.
 #' @param metadata filename, a .tsv file containing metadata
 #' @param dataset_name A string containing a name for your dataset.
@@ -78,11 +74,16 @@ read_qiime2 <- function(qza, metadata = NULL,
         # read biom file
         hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
 
-        # create data.frame from sparse otu data
+        counts_matrix <- hdata$counts
+        sample_indices <- rep(
+          seq_len(ncol(counts_matrix)),
+          diff(counts_matrix@p)
+        )
+
         data_found[["bin_shared_assignments"]] <- data.frame(
-          bin_names = hdata$otus[hdata$counts$i],
-          abundances = hdata$counts$v,
-          samples = hdata$samples[hdata$counts$j]
+          bin_name  = hdata$otus[counts_matrix@i + 1],
+          abundance = counts_matrix@x,
+          sample    = hdata$samples[sample_indices]
         )
       }
     } else if (
@@ -101,7 +102,7 @@ read_qiime2 <- function(qza, metadata = NULL,
       ) {
         # read fasta file
         df <- read_fasta(file.path(data_dir, fasta_file))
-        names(df) <- c("bin_names", "sequences")
+        names(df) <- c("bin_name", "sequence")
 
         data_found[["bin_representatives"]] <- df
       }
@@ -113,7 +114,7 @@ read_qiime2 <- function(qza, metadata = NULL,
           sep = "\t", header = TRUE, quote = ""
         )
         df <- df[, -c(3)]
-        names(df) <- c("bin_names", "taxonomies")
+        names(df) <- c("bin_name", "taxonomy")
         data_found[["bin_taxonomy"]] <- df
       }
     } else if (artifact$format == "NewickDirectoryFormat") {
@@ -135,7 +136,7 @@ read_qiime2 <- function(qza, metadata = NULL,
   }
 
   # create new blank `strollur` object
-  data <- strollur$new(name = dataset_name)
+  data <- new_dataset(dataset_name = dataset_name)
 
   # read metadata
   if (!is.null(metadata)) {
@@ -151,32 +152,33 @@ read_qiime2 <- function(qza, metadata = NULL,
     if ("bin_representatives" %in% data_names) {
       add(
         data = data, table = data_found[["bin_representatives"]],
-        type = "sequences", table_names = list(sequence_name = "bin_names")
+        type = "sequence", table_names = list(sequence_name = "bin_name")
       )
     }
 
     # assign sequence abundance by sample
     if ("bin_shared_assignments" %in% data_names) {
-      assign(
-        data = data, table = data_found[["bin_shared_assignments"]],
-        type = "sequence_abundance",
-        table_names = list(sequence_name = "bin_names")
+      xdev_assign_sequence_abundance(
+        data = data,
+        table = data_found[["bin_shared_assignments"]],
+        sequence_name = "bin_name"
       )
     }
 
     # assign sequences to bins
     if ("bin_shared_assignments" %in% data_names) {
-      assign(
+      xdev_assign_bins(
         data = data, table = data_found[["bin_shared_assignments"]],
-        type = "bins", bin_type = bin_type
+        bin_type = bin_type
       )
     }
 
     # add bin taxonomy
     if ("bin_taxonomy" %in% data_names) {
-      assign(
-        data = data, table = data_found[["bin_taxonomy"]],
-        type = "bin_taxonomy", bin_type = bin_type
+      xdev_assign_bin_taxonomy(
+        data = data,
+        table = data_found[["bin_taxonomy"]],
+        bin_type = bin_type
       )
     }
 

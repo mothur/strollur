@@ -14,7 +14,7 @@
 #' # seq4	4	0	0	4
 #'
 #' # returns
-#' # id   sample abundance
+#' # sequence_name   sample abundance
 #' # <char>  <char>     <int>
 #' #  1:   seq1 sample2       250
 #' #  2:   seq1 sample3       400
@@ -145,16 +145,16 @@ read_mothur_count <- function(filename) {
 
       if (!has_sample_data) {
         return(data.frame(
-          sequence_names = table_names,
-          abundances = table_abunds
+          sequence_name = table_names,
+          abundance = table_abunds
         ))
       }
     }
   }
 
   data.frame(
-    sequence_names = table_names,
-    samples = table_samples,
-    abundances = table_abunds
+    sequence_name = table_names,
+    sample = table_samples,
+    abundance = table_abunds
   )
 }

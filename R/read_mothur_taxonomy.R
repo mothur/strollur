@@ -16,7 +16,7 @@
 #' ))
 #'
 #' # create a new empty `strollur` object
-#' data <- strollur$new()
+#' data <- new_dataset()
 #'
 #' # assign sequence classifications
 #' assign(data = data, table = classification_data, type = "sequence_taxonomy")
@@ -33,6 +33,6 @@ read_mothur_taxonomy <- function(taxonomy) {
     show_col_types = FALSE
   )
 
-  names(df) <- c("sequence_names", "taxonomies")
+  names(df) <- c("sequence_name", "taxonomy")
   df
 }

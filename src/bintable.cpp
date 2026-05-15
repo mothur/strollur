@@ -247,20 +247,20 @@ Rcpp::List BinTable::exportBinTable(const AbundTable& count) {
 
     // ids, bin_names, bin_abundance, bin_taxonomy, trash_codes, binTable
     binData.push_back(binIndexes);
-    binDataLabels.push_back("bin_ids");
+    binDataLabels.push_back("bin_id");
     binData.push_back(binNames);
-    binDataLabels.push_back("bin_names");
+    binDataLabels.push_back("bin_name");
     binData.push_back(getAbundances(count, false));
-    binDataLabels.push_back("abundances");
+    binDataLabels.push_back("abundance");
 
     if (!allBlank(taxonomies)) {
         binData.push_back(taxonomies);
-        binDataLabels.push_back("taxonomies");
+        binDataLabels.push_back("taxonomy");
     }
 
     if (!allBlank(trashCodes)) {
         binData.push_back(trashCodes);
-        binDataLabels.push_back("trash_codes");
+        binDataLabels.push_back("trash_code");
     }
 
     binData.push_back(tableBins);
@@ -272,18 +272,18 @@ Rcpp::List BinTable::exportBinTable(const AbundTable& count) {
 
     // bin_id, seq_id
     const Rcpp::DataFrame binSeqAssignments = Rcpp::DataFrame::create(
-        Rcpp::Named("bin_ids") = getValues(seqBins),
-        Rcpp::_["sequence_ids"] = getKeys(seqBins));
+        Rcpp::Named("bin_id") = getValues(seqBins),
+        Rcpp::_["sequence_id"] = getKeys(seqBins));
     results.push_back(binSeqAssignments);
-    resultLabels.push_back("sequence_bin_assignments");
+    resultLabels.push_back("sequence_bin_assignment");
 
 
     if (hasBinReps) {
         const Rcpp::DataFrame binSeqReps = Rcpp::DataFrame::create(
-            Rcpp::Named("bin_ids") = binIndexes,
-            Rcpp::_["sequence_ids"] = repSequences);
+            Rcpp::Named("bin_id") = binIndexes,
+            Rcpp::_["sequence_id"] = repSequences);
         results.push_back(binSeqReps);
-        resultLabels.push_back("bin_representative_sequences");
+        resultLabels.push_back("bin_representative_sequence");
     }
     results.attr("names") = resultLabels;
 
@@ -431,7 +431,6 @@ vector<string> BinTable::getIds(const AbundTable& count,
     return results;
 }
 /******************************************************************************/
-// 3 column dataframe - bin_id, abundance, sample
 Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>& seqNames,
                                                  const vector<string>& seqs) const {
 
@@ -456,10 +455,16 @@ Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>& seqNa
         }
 
         const string tag = label + "_names";
+
+        if (allBlank(seqs)) {
+            seqDNA.clear();
+            seqDNA.assign(seqids.size(), "NA");
+        }
+
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named(tag.c_str()) = ids,
-            Rcpp::_["representative_names"] = seqids,
-            Rcpp::_["representative_sequences"] = seqDNA);
+            Rcpp::_["representative_name"] = seqids,
+            Rcpp::_["representative_sequence"] = seqDNA);
         return df;
     }
 
@@ -529,20 +534,6 @@ vector<vector<float>> BinTable::getSharedVector(const AbundTable& count) const {
 /******************************************************************************/
 // total abundance for a given binID, optional sample
 float BinTable::getAbundance(const AbundTable& count,
-                                   const string& binId,
-                                   const vector<string>& samples) const {
-
-    const auto it = binIndex.find(binId);
-
-    if (it != binIndex.end()) {
-        return getAbundance(count, it->second, samples);
-    }
-
-    return 0;
-}
-/******************************************************************************/
-// total abundance for a given binID, optional sample
-float BinTable::getAbundance(const AbundTable& count,
                                    const int binId,
                                    const vector<string>& samples) const {
     // if this is a "good" bin
@@ -594,16 +585,6 @@ vector<float> BinTable::getAbundances(const AbundTable& count, const bool onlyGo
 /******************************************************************************/
 // abundances for given binID broken down by sample
 vector<float> BinTable::getAbundances(const AbundTable& count,
-                                            const string& binName) const{
-    const auto it = binIndex.find(binName);
-    if (it != binIndex.end()) {
-        return getAbundances(count, it->second);
-    }
-    return nullFloatVector;
-}
-/******************************************************************************/
-// abundances for given binID broken down by sample
-vector<float> BinTable::getAbundances(const AbundTable& count,
                                             const int binId) const {
     // if this is a "good" bin
     if (tableBins[binId]) {
@@ -628,9 +609,7 @@ vector<float> BinTable::getAbundances(const AbundTable& count,
     return nullFloatVector;
 }
 /******************************************************************************/
-Rcpp::DataFrame BinTable::getAbundanceTable(const AbundTable& count,
-                                                  const bool useNames) const {
-
+Rcpp::DataFrame BinTable::getAbundanceTable(const AbundTable& count) const {
     if (count.hasSamplesData()) {
 
         const bool hasTreatments = (count.getNumTreatments() != 0);
@@ -655,11 +634,7 @@ Rcpp::DataFrame BinTable::getAbundanceTable(const AbundTable& count,
             for (size_t i = 0; i < binAbunds.size(); i++) {
                 // nonzero sample
                 if (binAbunds[i] != 0) {
-                    if (useNames) {
-                        ids.push_back(name);
-                    }else{
-                        ids_index.push_back(index);
-                    }
+                    ids.push_back(name);
                     abunds.push_back(binAbunds[i]);
                     samples.push_back(allSamples[i]);
                     if (hasTreatments) {
@@ -669,52 +644,28 @@ Rcpp::DataFrame BinTable::getAbundanceTable(const AbundTable& count,
             }
         }
 
-        if (useNames) {
-            if (hasTreatments) {
-                Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                    Rcpp::Named("bin_names") = ids,
-                    Rcpp::_["abundances"] = abunds,
-                    Rcpp::_["samples"] = samples,
-                    Rcpp::_["treatments"] = treaments);
-                return df;
-            }else{
-                Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                    Rcpp::Named("bin_names") = ids,
-                    Rcpp::_["abundances"] = abunds,
-                    Rcpp::_["samples"] = samples);
-                return df;
-            }
-        }else {
-            if (hasTreatments) {
-                Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                    Rcpp::Named("bin_ids") = ids_index,
-                    Rcpp::_["abundances"] = abunds,
-                    Rcpp::_["samples"] = samples,
-                    Rcpp::_["treatments"] = treaments);
-                return df;
-            }else{
-                Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                    Rcpp::Named("bin_ids") = ids_index,
-                    Rcpp::_["abundances"] = abunds,
-                    Rcpp::_["samples"] = samples);
-                return df;
-            }
-        }
-    }else{
 
-        if (useNames) {
-            // no sample information
+        if (hasTreatments) {
             Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                Rcpp::Named("bin_names") = getIds(count),
-                Rcpp::_["abundances"] = getAbundances(count));
+                Rcpp::Named("bin_name") = ids,
+                Rcpp::_["abundance"] = abunds,
+                Rcpp::_["sample"] = samples,
+                Rcpp::_["treatment"] = treaments);
             return df;
         }else{
             Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                Rcpp::Named("bin_ids") = getGoodIndexes(count),
-                Rcpp::_["abundances"] = getAbundances(count));
+                Rcpp::Named("bin_name") = ids,
+                Rcpp::_["abundance"] = abunds,
+                Rcpp::_["sample"] = samples);
             return df;
         }
 
+    }else{
+        // no sample information
+        Rcpp::DataFrame df = Rcpp::DataFrame::create(
+            Rcpp::Named("bin_name") = getIds(count),
+            Rcpp::_["abundance"] = getAbundances(count));
+        return df;
     }
 
     return Rcpp::DataFrame::create();

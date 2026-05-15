@@ -6,7 +6,7 @@
 \usage{
 xdev_names(
   data,
-  type = "sequences",
+  type = "sequence",
   bin_type = "otu",
   samples = NULL,
   distinct = FALSE
@@ -16,18 +16,18 @@ xdev_names(
 \item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type, }{string containing the type of data you would like. Options
-include: "dataset", "sequences", "bins", "samples", "treatments", "reports".
-Default = "sequences".}
+include: "dataset", "sequence", "bin", "sample", "treatment", "report".
+Default = "sequence".}
 
 \item{bin_type, }{string containing the bin type you would like the names
 for. Default = "otu".}
 
 \item{samples, }{vector of strings. samples is only used when 'type' =
-"sequences" or 'type' = "bins" . samples should contain the names of the
+"sequence" or 'type' = "bin" . samples should contain the names of the
 samples you want names for. Default = NULL.}
 
 \item{distinct, }{Boolean. distinct is used when 'type' =
-"sequences" or 'type' = "bins" and the samples parameter is used. The
+"sequence" or 'type' = "bin" and the samples parameter is used. The
 distinct parameter allows you to get the names that are unique to a given
 set of samples. When distinct is TRUE, the names function will return the
 names that ONLY contain data from the given samples. When distinct is FALSE
@@ -48,31 +48,31 @@ miseq <- miseq_sop_example()
 xdev_names(data = miseq, type = "dataset")
 
 # To get the names of the sequences in the dataset
-xdev_names(data = miseq, type = "sequences")
+xdev_names(data = miseq, type = "sequence")
 
 # To get the names of the sequences that are unique to sample 'F3D0'
-xdev_names(data = miseq, type = "sequences", samples = c("F3D0"), distinct = TRUE)
+xdev_names(data = miseq, type = "sequence", samples = c("F3D0"), distinct = TRUE)
 
 # To get the names of the sequences that include sample 'F3D0'
-xdev_names(data = miseq, type = "sequences", samples = c("F3D0"))
+xdev_names(data = miseq, type = "sequence", samples = c("F3D0"))
 
 # To get the names of the samples in the dataset
-xdev_names(data = miseq, type = "samples")
+xdev_names(data = miseq, type = "sample")
 
 # To get the names of the treatments in the dataset
-xdev_names(data = miseq, type = "treatments")
+xdev_names(data = miseq, type = "treatment")
 
 # To get the names of the bins in the dataset
-xdev_names(data = miseq, type = "bins")
+xdev_names(data = miseq, type = "bin")
 
 # To get the names of the bins in the dataset that are unique to 'F3D0'
-xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = TRUE)
+xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = TRUE)
 
 # To get the names of the bins in the dataset that include sequences
 # from 'F3D0'
-xdev_names(data = miseq, type = "bins", samples = c("F3D0"), distinct = FALSE)
+xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = FALSE)
 
 # To get the names of the reports in the dataset
-xdev_names(data = miseq, type = "reports")
+xdev_names(data = miseq, type = "report")
 
 }

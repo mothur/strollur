@@ -9,7 +9,7 @@
 #' should be written. Default = current working directory.
 #' @param tags a vector of strings containing the items you wish to write
 #' Options are 'sequence_data', 'bin_data', 'metadata',
-#' 'references', 'sequence_tree', 'sample_tree' and 'reports'.
+#' 'resource_reference', 'sequence_tree', 'sample_tree' and 'report'.
 #'  By default, everything is written to files.
 #'
 #' @param compress boolean, Default = TRUE.
@@ -23,8 +23,8 @@
 #' @export
 write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   dataset_name <- names(data, "dataset")
@@ -86,7 +86,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
       wrote_count <- TRUE
     }
 
-    if (count(data, "treatments") != 0) {
+    if (count(data, "treatment") != 0) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)
@@ -115,7 +115,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     ))
     outputs <- c(outputs, output)
 
-    if ((count(data, "treatments") != 0) && !wrote_design) {
+    if ((count(data, "treatment") != 0) && !wrote_design) {
       filename <- paste0(dataset_name, ".design", collapse = "")
       output <- write_mothur_design(data, file.path(dir_path, filename))
       outputs <- c(outputs, output)
@@ -124,7 +124,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("metadata" %in% tags)) {
-    metadata <- report(data, "metadata")
+    metadata <- xdev_report(data, type = "metadata")
 
     if (nrow(metadata) != 0) {
       filename <- file.path(
@@ -136,8 +136,8 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     }
   }
 
-  if (!ht || ("reports" %in% tags)) {
-    report_types <- names(data, "reports")
+  if (!ht || ("report" %in% tags)) {
+    report_types <- xdev_names(data, type = "report")
 
     if (length(report_types) != 0) {
       for (type in report_types) {
@@ -146,19 +146,19 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
           paste0(dataset_name, ".", type, collapse = "")
         )
 
-        readr::write_tsv(report(data, type), filename)
+        readr::write_tsv(xdev_report(data, type = type), filename)
         outputs <- c(outputs, filename)
       }
     }
   }
 
-  if (!ht || ("references" %in% tags)) {
-    references <- report(data, "references")
+  if (!ht || ("resource_reference" %in% tags)) {
+    references <- xdev_report(data, type = "resource_reference")
 
     if (nrow(references) != 0) {
       filename <- file.path(
         dir_path,
-        paste0(dataset_name, ".references",
+        paste0(dataset_name, ".resource_reference",
           collapse = ""
         )
       )

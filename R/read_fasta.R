@@ -10,11 +10,11 @@
 #' # fasta_data is a data.frame.
 #' # To access the names of the sequences in the file, run the following:
 #'
-#' fasta_data$sequence_names
+#' fasta_data$sequence_name
 #'
 #' # To access the sequences in the file, run the following:
 #'
-#' fasta_data$sequences
+#' fasta_data$sequence
 #'
 #' @return A data.frame containing the FASTA sequence data
 #' @export
@@ -24,7 +24,7 @@ read_fasta <- function(fasta) {
   }
 
   # use microseq to read fasta file
-  df <- readFasta(fasta)
+  df <- microseq::readFasta(fasta)
 
   # extract name from comments
   num_seqs <- nrow(df)
@@ -50,11 +50,11 @@ read_fasta <- function(fasta) {
 
   if (has_comments) {
     return(data.frame(
-      sequence_names = names,
-      sequences = df$Sequence,
-      comments = comments
+      sequence_name = names,
+      sequence = df$Sequence,
+      comment = comments
     ))
   }
 
-  data.frame(sequence_names = names, sequences = df$Sequence)
+  data.frame(sequence_name = names, sequence = df$Sequence)
 }

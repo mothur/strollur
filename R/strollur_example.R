@@ -9,6 +9,8 @@
 #' @examples
 #' strollur_example()
 #' strollur_example("final.fasta.gz")
+#'
+#' @return string, Full path to example files
 #' @export
 strollur_example <- function(file = NULL) {
   path <- ""

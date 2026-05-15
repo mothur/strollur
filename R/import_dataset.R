@@ -1,4 +1,4 @@
-#' @title import_dataset
+#' @title Import strollur object from exported data.frame.
 #' @description The import_dataset function will create a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'   from the exported table of a
@@ -17,7 +17,7 @@
 #'
 #' @return a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @seealso [dataset$export()]
+#' @seealso [export_dataset()]
 #' @export
 import_dataset <- function(table) {
   table_version <- attributes(table)$strollur_version
@@ -51,13 +51,13 @@ import_dataset <- function(table) {
     ]
 
     matched_indices <- match(
-      table$sequence_abundance_table$sequence_ids,
-      table$sequence_data$sequence_ids
+      table$sequence_abundance_table$sequence_id,
+      table$sequence_data$sequence_id
     )
 
     # filter sequence_abundance_table
-    table$sequence_abundance_table$sequence_ids <- table$sequence_data$
-      sequence_ids[matched_indices]
+    table$sequence_abundance_table$sequence_id <- table$sequence_data$
+      sequence_id[matched_indices]
     table$sequence_abundance_table <- na.omit(table$sequence_abundance_table)
   }
 
@@ -72,46 +72,46 @@ import_dataset <- function(table) {
       table[[bt]] <- table[[bt]][table[[bt]]$include_bin, ]
 
       if (has_sequence_data) {
-        b <- paste0(type, "_sequence_bin_assignments")
+        b <- paste0(type, "_sequence_bin_assignment")
 
         # filter seqs from _sequence_bin_assignments
         matched_indices <- match(
-          table[[b]]$sequence_ids,
-          table$sequence_data$sequence_ids
+          table[[b]]$sequence_id,
+          table$sequence_data$sequence_id
         )
 
-        table[[b]]$sequence_ids <- table$sequence_data$sequence_ids[
+        table[[b]]$sequence_id <- table$sequence_data$sequence_id[
           matched_indices
         ]
 
         # filter bins from _sequence_bin_assignments
         matched_indices <- match(
-          table[[b]]$bin_ids,
-          table[[bt]]$bin_ids
+          table[[b]]$bin_id,
+          table[[bt]]$bin_id
         )
 
-        table[[b]]$bin_ids <- table[[bt]]$bin_ids[matched_indices]
+        table[[b]]$bin_id <- table[[bt]]$bin_id[matched_indices]
         table[[b]] <- na.omit(table[[b]])
 
-        obrs <- paste0(type, "_bin_representative_sequences")
+        obrs <- paste0(type, "_bin_representative_sequence")
         if (obrs %in% names) {
           # filter seqs from _bin_representative_sequences
           matched_indices <- match(
-            table[[obrs]]$sequence_ids,
-            table$sequence_data$sequence_ids
+            table[[obrs]]$sequence_id,
+            table$sequence_data$sequence_id
           )
 
-          table[[obrs]]$sequence_ids <- table$sequence_data$sequence_ids[
+          table[[obrs]]$sequence_id <- table$sequence_data$sequence_id[
             matched_indices
           ]
 
           # filter bins from _bin_representative_sequences
           matched_indices <- match(
-            table[[obrs]]$bin_ids,
-            table[[bt]]$bin_ids
+            table[[obrs]]$bin_id,
+            table[[bt]]$bin_id
           )
 
-          table[[obrs]]$bin_ids <- table[[bt]]$bin_ids[matched_indices]
+          table[[obrs]]$bin_id <- table[[bt]]$bin_id[matched_indices]
           table[[obrs]] <- na.omit(table[[obrs]])
         }
       }
@@ -122,14 +122,13 @@ import_dataset <- function(table) {
   if (has_sequence_data) {
     sequence_data_names <- names(table$sequence_data)
 
-    # "sequence_names", "sequences", "comments"
-    add(data = data, table = table$sequence_data, type = "sequences")
+    # "sequence_name", "sequence", "comment"
+    add(data = data, table = table$sequence_data, type = "sequence")
 
-    # "sequence_names", "taxonomies"
-    if ("taxonomies" %in% sequence_data_names) {
-      assign(
-        data = data, table = table$sequence_data,
-        type = "sequence_taxonomy"
+    # "sequence_name", "taxonomy"
+    if ("taxonomy" %in% sequence_data_names) {
+      xdev_assign_sequence_taxonomy(
+        data = data, table = table$sequence_data
       )
     }
 
@@ -137,15 +136,15 @@ import_dataset <- function(table) {
     if ("sequence_abundance_table" %in% names) {
       # create sequence_names from sequence_ids
       matched_indices <- match(
-        table$sequence_abundance_table$sequence_ids,
-        table$sequence_data$sequence_ids
+        table$sequence_abundance_table$sequence_id,
+        table$sequence_data$sequence_id
       )
 
-      table$sequence_abundance_table$sequence_names <-
-        table$sequence_data$sequence_names[matched_indices]
+      table$sequence_abundance_table$sequence_name <-
+        table$sequence_data$sequence_name[matched_indices]
 
 
-      # "sequence_names", "abundances", "samples", "treatments"
+      # "sequence_name", "abundance", "sample", "treatment"
       xdev_assign_sequence_abundance(data, table$sequence_abundance_table)
     }
   }
@@ -161,62 +160,56 @@ import_dataset <- function(table) {
 
       # import bin data, label+"_bin_data",
       # with sequence assignments         or  without sequence assignments
-      # label+"_sequence_bin_assignments" or label+"_bin_abundance_table"
+      # label+"_sequence_bin_assignment" or label+"_bin_abundance_table"
 
-      sequence_bin_assignments <- paste0(type, "_sequence_bin_assignments")
+      sequence_bin_assignment <- paste0(type, "_sequence_bin_assignment")
 
-      if ((sequence_bin_assignments %in% names) && has_sequence_data) {
+      if ((sequence_bin_assignment %in% names) && has_sequence_data) {
         # requested sequence_data and has sequence_data
 
         # create bin_names from bin_ids
         m_indices <- match(
-          table[[sequence_bin_assignments]]$bin_ids,
-          table[[bin_type]]$bin_ids
+          table[[sequence_bin_assignment]]$bin_id,
+          table[[bin_type]]$bin_id
         )
 
-        table[[sequence_bin_assignments]]$bin_names <-
-          table[[bin_type]]$bin_names[m_indices]
+        table[[sequence_bin_assignment]]$bin_name <-
+          table[[bin_type]]$bin_name[m_indices]
 
         # create sequence_names from sequence_ids
         m_indices <- match(
-          table[[sequence_bin_assignments]]$sequence_ids,
-          table$sequence_data$sequence_ids
+          table[[sequence_bin_assignment]]$sequence_id,
+          table$sequence_data$sequence_id
         )
 
-        table[[sequence_bin_assignments]]$sequence_names <-
-          table$sequence_data$sequence_names[m_indices]
+        table[[sequence_bin_assignment]]$sequence_name <-
+          table$sequence_data$sequence_name[m_indices]
 
-        assign(
-          data = data, table = table[[sequence_bin_assignments]],
-          type = "bins", bin_type = type
-        )
-      } else {
-        # does not want sequence data, just bins and abundances
-        assign(
-          data = data, table = table[[bin_type]],
-          type = "bins", bin_type = type
+        xdev_assign_bins(
+          data = data, table = table[[sequence_bin_assignment]],
+          bin_type = type
         )
       }
 
-      otu_bin_rep_table <- paste0(type, "_bin_representative_sequences")
+      otu_bin_rep_table <- paste0(type, "_bin_representative_sequence")
       if ((otu_bin_rep_table %in% names) && has_sequence_data) {
         # create bin_names from bin_ids
         m_indices <- match(
-          table[[otu_bin_rep_table]]$bin_ids,
-          table[[bin_type]]$bin_ids
+          table[[otu_bin_rep_table]]$bin_id,
+          table[[bin_type]]$bin_id
         )
 
-        table[[otu_bin_rep_table]]$bin_names <-
-          table[[bin_type]]$bin_names[m_indices]
+        table[[otu_bin_rep_table]]$bin_name <-
+          table[[bin_type]]$bin_name[m_indices]
 
         # create sequence_names from sequence_ids
         m_indices <- match(
-          table[[otu_bin_rep_table]]$sequence_ids,
-          table$sequence_data$sequence_ids
+          table[[otu_bin_rep_table]]$sequence_id,
+          table$sequence_data$sequence_id
         )
 
-        table[[otu_bin_rep_table]]$sequence_names <-
-          table$sequence_data$sequence_names[m_indices]
+        table[[otu_bin_rep_table]]$sequence_name <-
+          table$sequence_data$sequence_name[m_indices]
 
         xdev_assign_bin_representative_sequences(
           data,
@@ -225,10 +218,9 @@ import_dataset <- function(table) {
         )
       }
 
-      if ("taxonomies" %in% bin_data_names) {
-        assign(
-          data = data, table = table[[bin_type]], type = "bin_taxonomy",
-          bin_type = type
+      if ("taxonomy" %in% bin_data_names) {
+        xdev_assign_bin_taxonomy(
+          data = data, table = table[[bin_type]], bin_type = type
         )
       }
     }
@@ -240,8 +232,11 @@ import_dataset <- function(table) {
   }
 
   # add references
-  if ("references" %in% names) {
-    add(data = data, table = table$references, type = "references")
+  if ("resource_reference" %in% names) {
+    add(
+      data = data, table = table$resource_reference,
+      type = "resource_reference"
+    )
   }
 
   # list all report names
@@ -251,9 +246,9 @@ import_dataset <- function(table) {
   if (length(report_names) != 0) {
     for (name in report_names) {
       name_col <- attr(table[[name]], "sequence_name")
-      add(
-        data = data, table = table[[name]], type = "reports",
-        report_type = name, table_names = list(sequence_name = name_col)
+      xdev_add_report(
+        data = data, table = table[[name]],
+        type = name, sequence_name = name_col
       )
     }
   }

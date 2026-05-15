@@ -16,6 +16,9 @@ in the first sequence name in the vector.}
 \item{reason}{a string indicating why you are merging sequences.
 Default = "merged"}
 }
+\value{
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+}
 \description{
 Designed with package integration in mind, the merge sequences function
 allows you to merge sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
@@ -40,9 +43,9 @@ data <- new_dataset("my_data")
 
 
 assign(data = data,
-       table = data.frame(sequence_names = sequence_names,
-                          abundances = abundances,
-                          samples = samples),
+       table = data.frame(sequence_name = sequence_names,
+                          abundance = abundances,
+                          sample = samples),
        type = "sequence_abundance")
 
 # For the sake of example let's merge the first 3 sequences.
@@ -59,6 +62,6 @@ report(data = data, type = "sequence_scrap")
 # You can see from the get_num_sequences function that the merged sequence's
 # abundances are added to the first sequence.
 
-count(data = data, type = "sequences")
+count(data = data, type = "sequence")
 
 }

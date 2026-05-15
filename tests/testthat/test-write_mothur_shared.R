@@ -4,7 +4,7 @@ test_that("write_mothur_shared - errors", {
   expect_error(write_mothur_shared("Bad_type"))
 
   # no file name with nameless dataset
-  data <- strollur$new()
+  data <- new_dataset()
   expect_error(write_mothur_shared(data))
 })
 
@@ -24,16 +24,16 @@ test_that("write_mothur_shared", {
   expect_equal(write_mothur_shared(miseq, file_root), outputs)
 
   df <- read_mothur_shared(outputs[1])
-  names(df) <- c("bin_names", "abundances", "samples")
+  names(df) <- c("bin_name", "abundance", "sample")
 
-  expected <- abundance(
-    data = miseq, type = "bins",
+  expected <- xdev_abundance(
+    data = miseq, type = "bin",
     bin_type = bin_types[1], by_sample = TRUE
   )
 
   # remove treatment column
   expected <- expected[, -c(4)]
-  names(expected) <- c("bin_names", "abundances", "samples")
+  names(expected) <- c("bin_name", "abundance", "sample")
 
   expect_equal(df, expected)
 

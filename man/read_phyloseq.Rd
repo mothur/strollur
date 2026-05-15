@@ -13,7 +13,7 @@ read_phyloseq(phyloseq_object, treatment_column_name = NULL, dataset_name = "")
 any read function in the phyloseq package. It has to be of type "phyloseq"}
 
 \item{treatment_column_name}{the column name inside your phyloseq object
-within your sample data that is used to descrbe treatments. It must
+within your sample data that is used to describe treatments. It must
 be a character. Defaults to NULL.}
 
 \item{dataset_name}{A string containing a name for your dataset.}

@@ -34,3 +34,6 @@ data <- read_mothur(
 save_dataset(data, "miseq_sop.rds")
 
 }
+\seealso{
+[load_dataset()]
+}

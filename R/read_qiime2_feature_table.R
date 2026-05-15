@@ -2,10 +2,6 @@
 #' @description
 #' Read a \href{https://qiime2.org}{qiime2} qza containing bin data
 #'
-#' # nolint start
-#' To generate the various input files you can follow \href{https://amplicon-docs.qiime2.org/en/latest/tutorials/moving-pictures.html}{qiime2 moving-pictures}.
-#' # nolint end
-#'
 #' @param qza file name, a qiime2 .qza file containing bin data.
 #' @param dir_path a string containing the name of directory where the artifacts
 #' files should be unpacked. Default = current working directory.
@@ -24,9 +20,9 @@
 #'
 #' # to create a `strollur` object with your data
 #'
-#' data <- strollur$new("my_data")
+#' data <- new_dataset("my_data")
 #'
-#' assign(data = data, table = artifact$data, type = "bins")
+#' assign(data = data, table = artifact$data, type = "bin")
 #'
 #' data
 #'
@@ -62,11 +58,13 @@ read_qiime2_feature_table <- function(qza, dir_path = NULL,
       # read biom file
       hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
 
-      # create data.frame from sparse otu data
+      counts_matrix <- hdata$counts
+      sample_indices <- rep(seq_len(ncol(counts_matrix)), diff(counts_matrix@p))
+
       artifact[["data"]] <- data.frame(
-        bin_names = hdata$otus[hdata$counts$i],
-        abundances = hdata$counts$v,
-        samples = hdata$samples[hdata$counts$j]
+        bin_name  = hdata$otus[counts_matrix@i + 1],
+        abundance = counts_matrix@x,
+        sample    = hdata$samples[sample_indices]
       )
 
       if (remove_unpacked_artifacts) {

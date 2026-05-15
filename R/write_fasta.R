@@ -18,9 +18,8 @@
 #' @return name of FASTA file
 #' @export
 write_fasta <- function(data, filename = NULL, degap = FALSE) {
-  # check type
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   if (is.null(filename)) {
@@ -31,7 +30,7 @@ write_fasta <- function(data, filename = NULL, degap = FALSE) {
     filename <- paste0(filename, ".fasta")
   }
 
-  sequence_names <- names(data, "sequences")
+  sequence_names <- xdev_names(data, "sequence")
 
   # data contains sequences
   if (length(sequence_names) != 0) {

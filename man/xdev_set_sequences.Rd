@@ -21,6 +21,9 @@ xdev_set_sequences(
 \item{comments, }{a vector of strings containing sequence comments.
 (Optional)}
 }
+\value{
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+}
 \description{
 Designed with package integration in mind, the set sequences function allows
 you to change the nucleotide strings of sequences in a
@@ -32,7 +35,7 @@ after alignment to overwrite the unaligned sequences with aligned sequences.
 data <- new_dataset(dataset_name = "my_dataset")
 
 xdev_add_sequences(data = data,
-              table = data.frame(sequence_names = c("seq1", "seq2",
+              table = data.frame(sequence_name = c("seq1", "seq2",
                                                   "seq3", "seq4")))
 
 xdev_set_sequences(data = data,

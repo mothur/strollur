@@ -59,12 +59,12 @@ names(miseq, type = "dataset")
 ```
 
 
-To get the names of the sequences in your dataset, set the type parameter to 'sequences':
+To get the names of the sequences in your dataset, set the type parameter to 'sequence':
 
 ```{r}
 all_sequences <- names(
   miseq,
-  type = "sequences",
+  type = "sequence",
   distinct = FALSE
 )
 length(all_sequences)
@@ -77,7 +77,7 @@ To get the names of the sequences *present* in sample 'F3D0':
 ```{r}
 include_f3d0 <- names(
   miseq,
-  type = "sequences",
+  type = "sequence",
   samples = c("F3D0"),
   distinct = FALSE
 )
@@ -91,7 +91,7 @@ To get the names of the sequences *exclusive* to sample 'F3D0':
 ```{r}
 exclusive_f3d0 <- names(
   miseq,
-  type = "sequences",
+  type = "sequence",
   samples = c("F3D0"),
   distinct = TRUE
 )
@@ -105,7 +105,7 @@ To get the names of the bins in your dataset, you need to specify the bin_type. 
 ```{r}
 otu_bins <- names(
   miseq,
-  type = "bins",
+  type = "bin",
   bin_type = "otu"
 )
 length(otu_bins)
@@ -117,7 +117,7 @@ To get the names of the 'otu' bins that include sequences *present* in sample 'F
 ```{r}
 include_f3d0 <- names(
   miseq,
-  type = "bins",
+  type = "bin",
   samples = c("F3D0"),
   distinct = FALSE
 )
@@ -131,7 +131,7 @@ To get the names of the "otu" bins that are *exclusive* to sample 'F3D0':
 ```{r}
 exclusive_f3d0 <- names(
   miseq,
-  type = "bins",
+  type = "bin",
   samples = c("F3D0"),
   distinct = TRUE
 )
@@ -142,18 +142,18 @@ head(exclusive_f3d0, n = 5)
 
 To get the names of the samples
 ```{r}
-names(miseq, type = "samples")
+names(miseq, type = "sample")
 ```
 
 
 To get the names of the treatments
 ```{r}
-names(miseq, type = "treatments")
+names(miseq, type = "treatment")
 ```
 
 To get the names of the custom reports
 ```{r}
-names(miseq, type = "reports")
+names(miseq, type = "report")
 ```
 
 ### count
@@ -164,7 +164,7 @@ To find the *total* number of sequences in the dataset, run the following:
 ```{r}
 count(
   miseq,
-  type = "sequences",
+  type = "sequence",
   distinct = FALSE
 )
 ```
@@ -173,7 +173,7 @@ To find the number of *unique* sequences in the dataset, set 'distinct' to TRUE:
 ```{r}
 count(
   miseq,
-  type = "sequences",
+  type = "sequence",
   distinct = TRUE
 )
 ```
@@ -183,7 +183,7 @@ To get total number of sequences *present* in sample 'F3D0', you can set the sam
 ```{r}
 count(
   miseq,
-  type = "sequences",
+  type = "sequence",
   samples = c("F3D0"),
   distinct = FALSE
 )
@@ -194,7 +194,7 @@ To get number of *unique* sequences *exclusive* to sample 'F3D0':
 ```{r}    
 count(
   miseq,
-  type = "sequences",
+  type = "sequence",
   samples = c("F3D0"),
   distinct = TRUE
 )
@@ -204,7 +204,7 @@ To get the number of the bins in your dataset, you need to specify the bin_type.
 ```{r}
 count(
   miseq,
-  type = "bins",
+  type = "bin",
   bin_type = "otu"
 )
 ```
@@ -215,7 +215,7 @@ To get number of *otu* bins with sequences *present* in sample 'F3D0':
 ```{r}
 count(
   miseq,
-  type = "bins",
+  type = "bin",
   bin_type = "otu",
   samples = c("F3D0"),
   distinct = FALSE
@@ -228,7 +228,7 @@ To get number of *otu* bins *exclusive* to sample 'F3D0':
 ```{r}
 count(
   miseq,
-  type = "bins",
+  type = "bin",
   bin_type = "otu",
   samples = c("F3D0"),
   distinct = TRUE
@@ -237,12 +237,12 @@ count(
 
 To get the number of samples in the dataset:
 ```{r}
-count(miseq, type = "samples")
+count(miseq, type = "sample")
 ```
 
 To get the number of treatments in the dataset:
 ```{r}
-count(miseq, type = "treatments")
+count(miseq, type = "treatment")
 ```
 
 
@@ -251,11 +251,11 @@ count(miseq, type = "treatments")
 
 Now that we are familiar with the `names()` and `count()` functions. Let's learn how we can use the `abundance()` function. The abundance function can be used to access the abundance data for sequences, bins, samples, and treatments. It returns a data.frame containing the requested abundance data.
 
-To the total abundance for each sequence, set the type = 'sequences'. This will return a 2 column data.frame containing sequence_names and abundances.
+To the total abundance for each sequence, set the type = 'sequence'. This will return a 2 column data.frame containing sequence_names and abundances.
 ```{r}
 sequence_abundance <- abundance(
   miseq,
-  type = "sequences",
+  type = "sequence",
   by_sample = FALSE
 )
 head(sequence_abundance, n = 10)
@@ -266,7 +266,7 @@ To the abundance for each sequence parsed by sample, set by_sample = TRUE. This 
 ```{r}
 sequence_abundance_by_sample <- abundance(
   miseq,
-  type = "sequences",
+  type = "sequence",
   by_sample = TRUE
 )
 head(sequence_abundance_by_sample, n = 10)
@@ -277,7 +277,7 @@ To get the total abundance of the bins in your dataset, you need to specify the 
 ```{r}
 bin_abundance <- abundance(
   miseq,
-  type = "bins",
+  type = "bin",
   bin_type = "otu",
   by_sample = FALSE
 )
@@ -289,7 +289,7 @@ To the abundance for each bin parsed by sample, set by_sample = TRUE. This will 
 ```{r}
 bin_abundance_by_sample <- abundance(
   miseq,
-  type = "bins",
+  type = "bin",
   bin_type = "otu",
   by_sample = TRUE
 )
@@ -297,19 +297,19 @@ head(bin_abundance_by_sample, n = 10)
 ```
 
 
-To access the distribution of sequences across the samples in your dataset, set the type = 'samples'. This will return a 2 column data.frame containing sample names and abundances.
+To access the distribution of sequences across the samples in your dataset, set the type = 'sample'. This will return a 2 column data.frame containing sample names and abundances.
 
 ```{r}
 abundance(
   miseq,
-  type = "samples"
+  type = "sample"
 )
 ```
 
-To access the distribution of sequences across the treatments in your dataset, set the type = 'treatments'. This will return a 2 column data.frame containing treatment names and abundances.
+To access the distribution of sequences across the treatments in your dataset, set the type = 'treatment'. This will return a 2 column data.frame containing treatment names and abundances.
 
 ```{r}
-abundance(miseq, type = "treatments")
+abundance(miseq, type = "treatment")
 ```
 
 ### report
@@ -326,12 +326,12 @@ fasta_report <- report(
 head(fasta_report, n = 5)
 ```
 
-If you want to take a closer look at the sequences, you can request a report containing the sequence names, starts, ends, lengths, ambiguous bases, longest homopolymers, and number of N's. To get a sequence report, set type = "sequences".
+If you want to take a closer look at the sequences, you can request a report containing the sequence names, starts, ends, lengths, ambiguous bases, longest homopolymers, and number of N's. To get a sequence report, set type = "sequence".
 
 ```{r}
 sequence_report <- report(
   miseq,
-  type = "sequences"
+  type = "sequence"
 )
 head(sequence_report, n = 5)
 ```
@@ -361,27 +361,27 @@ To get the sequence bin assignments for the *otu* bins, run the following:
 ```{r}
 sequence_bin_assignments <- report(
   miseq,
-  type = "sequence_bin_assignments",
+  type = "sequence_bin_assignment",
   bin_type = "otu"
 )
 head(sequence_bin_assignments, n = 10)
 ```
 
-To get the sample treatment assignments, set type = "sample_assignments".
+To get the sample treatment assignments, set type = "sample_assignment".
 
 ```{r}
 sample_treatment_assignments <- report(
   miseq,
-  type = "sample_assignments"
+  type = "sample_assignment"
 )
 head(sample_treatment_assignments, n = 5)
 ```
 
-If you assigned bin representative sequences, you can access the report by setting type = "bin_representatives". The miseq example includes bin representatives for the *otu* bins. Let's take a look:
+If you assigned bin representative sequences, you can access the report by setting type = "bin_representative". The miseq example includes bin representatives for the *otu* bins. Let's take a look:
 ```{r}
 otu_bin_representatives <- report(
   miseq,
-  type = "bin_representatives",
+  type = "bin_representative",
   bin_type = "otu"
 )
 head(otu_bin_representatives, n = 5)
@@ -390,7 +390,7 @@ head(otu_bin_representatives, n = 5)
 The miseq example contains a custum report. To access the custom reports, first let's find the names. 
 
 ```{r}
-names(miseq, type = "reports")
+names(miseq, type = "report")
 ```
 
 To access the custom contigs assembly report, set type = "contigs_report".
@@ -412,11 +412,11 @@ metadata <- report(
 head(metadata, n = 5)
 ```
 
-To get the resource references associated with your dataset, set type = "references".
+To get the resource references associated with your dataset, set type = "resource_reference".
 ```{r}
 report(
   miseq,
-  type = "references"
+  type = "resource_reference"
 )
 ```
 
@@ -440,7 +440,7 @@ The `summary()` function allows you to summarize sequences, custom reports, and 
 To get a summary for our custom reports, first let's find the report names.
 
 ```{r}
-names(miseq, type = "reports")
+names(miseq, type = "report")
 ```
 
 You can see we have a custom report so let get the summary by setting report_type = "contigs_report".
@@ -448,7 +448,7 @@ You can see we have a custom report so let get the summary by setting report_typ
 ```{r}
 summary(
   miseq,
-  type = "reports",
+  type = "report",
   report_type = "contigs_report"
 )
 ```
@@ -478,6 +478,7 @@ ape::plot.phylo(miseq_sample_tree,
 
 Thanks for following along. Next, find out how to import your own data using the links below:
 
-* [General Importing](vignettes/General_Importing.html)
-* [Importing data from qiime2](vignettes/Importing_from_qiime2.html)
-* [Importing data from mothur](vignettes/Importing_from_mothur.html)
+* [General Importing](https://mothur.org/strollur/articles/General_Importing.html)
+* [Importing data from mothur](https://mothur.org/strollur/articles/Importing_from_mothur.html)
+* [Importing data from qiime2](https://mothur.org/strollur/articles/Importing_from_qiime2.html)
+* [Importing data from phyloseq](https://mothur.org/strollur/articles/Importing_from_phyloseq.html)

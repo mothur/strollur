@@ -29,6 +29,6 @@ otu_data <- read_mothur_rabund(
 data <- new_dataset()
 
 # assign abundance only 'otu' bins
-assign(data = data, table = otu_data, type = "bins", bin_type = "otu")
+assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 
 }

@@ -29,6 +29,7 @@ reference:
   - new_reference
   - clear
   - is_aligned
+  - is_equal
   - has_sample
   - get_bin_types
 - title: Data Transfers
@@ -46,8 +47,6 @@ reference:
   - strollur_example
   - get_available_processors
   - has_sequence_strings
-  - added_message
-  - assigned_message
   - remove_file
   - sort_dataframe
   - starts_with("xdev_")

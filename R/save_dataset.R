@@ -20,11 +20,13 @@
 #'
 #' save_dataset(data, "miseq_sop.rds")
 #'
+#' @seealso [load_dataset()]
+#'
 #' @return A file containing the `strollur` object
 #' @export
 save_dataset <- function(data, file) {
-  if (class(data)[1] != "strollur") {
-    .abort_incorrect_type("strollur", data)
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
   }
 
   xint_serialize_dobject(data)

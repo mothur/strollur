@@ -15,6 +15,9 @@ remove.}
 \item{reason, }{string containing the reason for removal.
 Default = "remove_samples".}
 }
+\value{
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+}
 \description{
 Designed with package integration in mind, the remove samples function allows
 you to remove samples from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -23,12 +26,12 @@ you to remove samples from a \href{https://mothur.org/strollur/reference/strollu
 
 data <- miseq_sop_example()
 
-count(data = data, type = "samples")
+count(data = data, type = "sample")
 
 # To remove samples 'F3D0' and 'F3D1'
 
 xdev_remove_samples(data, c("F3D0", "F3D1"))
 
-count(data = data, type = "samples")
+count(data = data, type = "sample")
 
 }

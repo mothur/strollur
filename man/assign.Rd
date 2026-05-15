@@ -9,10 +9,10 @@ representative sequences, bin classifications or treatments to a
 assign(
   data,
   table,
-  type = "bins",
+  type = "bin",
   bin_type = "otu",
-  table_names = list(sequence_name = "sequence_names", abundance = "abundances", sample =
-    "samples", treatment = "treatments", taxonomy = "taxonomies", bin_name = "bin_names"),
+  table_names = list(sequence_name = "sequence_name", abundance = "abundance", sample =
+    "sample", treatment = "treatment", taxonomy = "taxonomy", bin_name = "bin_name"),
   reference = NULL,
   verbose = TRUE
 )
@@ -24,9 +24,9 @@ assign(
 \item{table, }{a data.frame containing the data you wish to assign}
 
 \item{type, }{a string containing the type of data. Options include:
-'sequence_abundance', 'sequence_taxonomy', 'bins',
- 'bin_representatives', 'bin_taxonomy' and 'treatments'.
- Default = "bins".}
+'sequence_abundance', 'sequence_taxonomy', 'bin',
+ 'bin_representative', 'bin_taxonomy' and 'treatment'.
+ Default = "bin".}
 
 \item{bin_type, }{string containing the bin type you would like the number of
 bins for. Default = "otu".}
@@ -34,34 +34,34 @@ bins for. Default = "otu".}
 \item{table_names, }{named list used to indicate the names of the columns in
 the table. By default:
 
-table_names <- list(sequence_name = "sequence_names",
-                    abundance = "abundances",
-                    sample = "samples",
-                    treatment = "treatments",
-                    taxonomy = "taxonomies",
-                    bin_name = "bin_names")
+table_names <- list(sequence_name = "sequence_name",
+                    abundance = "abundance",
+                    sample = "sample",
+                    treatment = "treatment",
+                    taxonomy = "taxonomy",
+                    bin_name = "bin_name")
 
 In table_names, 'sequence_name' is a string containing the name of the column
 in 'table' that contains the sequence names. Default column name is
-'sequence_names'.
+'sequence_name'.
 
 In table_names, 'abundance' is a string containing the name of the column in
-'table' that contains the abundances. Default column name is 'abundances'.
+'table' that contains the abundances. Default column name is 'abundance'.
 
 In table_names, 'sample' is a string containing the name of the column in
-'table' that contains the samples. Default column name is 'samples'.
+'table' that contains the samples. Default column name is 'sample'.
 
 In table_names, 'treatment' is a string containing the name of the
 column in 'table' that contains the treatment names. Default column name is
- 'treatments'.
+ 'treatment'.
 
 In table_names, 'taxonomy' is a string containing the name of the
 column in 'table' that contains the classifications. Default column name
-is 'taxonomies'.
+is 'taxonomy'.
 
 In table_names, 'bin_name' is a string containing the name of the
 column in 'table' that contains the bin names. Default column name is
-'bin_names'.}
+'bin_name'.}
 
 \item{reference, }{a list created by the function [new_reference]. Optional.}
 
@@ -69,7 +69,8 @@ column in 'table' that contains the bin names. Default column name is
 Default = TRUE.}
 }
 \value{
-double - The number of items assigned
+an updated
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign sequence abundances, sequence classifications, bins, bin
@@ -122,7 +123,7 @@ assign(data, table = asv_data, bin_type = "asv")
 assign(data, table = phylo_data, bin_type = "phylotype")
 
 # assign 'otu' bin representative sequences
-assign(data, table = bin_reps, type = "bin_representatives")
+assign(data, table = bin_reps, type = "bin_representative")
 
 # To assign abundance only bins
 
@@ -153,6 +154,6 @@ assign(
 
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
-assign(data, table = sample_assignments, type = "treatments")
+assign(data, table = sample_assignments, type = "treatment")
 
 }
