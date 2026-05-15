@@ -1201,7 +1201,7 @@ Rcpp::DataFrame Dataset::getSequenceReport() const {
 }
 /******************************************************************************/
 const Rcpp::DataFrame Dataset::getSummary(const string& type, const string& reportType) {
-    return getScrapSummary();
+    // return getScrapSummary();
 
     Rcpp::DataFrame result = Rcpp::DataFrame::create();
 

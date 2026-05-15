@@ -21,11 +21,6 @@ Useful links:
 \author{
 \strong{Maintainer}: Sarah Westcott \email{swestcot@umich.edu}
 
-Authors:
-\itemize{
-  \item Sarah Westcott \email{swestcot@umich.edu}
-}
-
 Other contributors:
 \itemize{
   \item Pat Schloss \email{pschloss@umich.edu} (\href{https://orcid.org/0000-0002-6935-4275}{ORCID}) [copyright holder]

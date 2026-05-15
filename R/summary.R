@@ -50,30 +50,18 @@ summary <- function(x, type = "sequence",
 #' @export
 summary <- function(data, type = "sequence",
                     report_type = NULL, verbose = TRUE) {
-  if (inherits(data, "strollur")) {
-    # allow for type and report_type to be entered without ""
-    type <- as.character(substitute(type))
-    if (!is.null(report_type)) {
-      report_type <- as.character(substitute(report_type))
-    }
-
-    dataset_summary <- xdev_summarize(data, type, report_type)
-    if (verbose) {
-      print(dataset_summary)
-    }
-    dataset_summary
-  } else {
-    base::summary(data)
+  if(!inherits(data, "strollur")) {
+    return(base::summary(data))
   }
 
   dataset_summary <- ""
-  if(type == "sequences") {
+  if(type == "sequence") {
     dataset_summary <- generate_sequence_report(data)
   }
-  else if(type == "reports" && report_type == "contigs_report") {
-    dataset_summary <- generate_contig_report(data)
+  else if(type == "report") {
+    dataset_summary <- generate_report(data, report_type)
   } 
-  else {
+  else { # scrap reports still use cpp
     dataset_summary <- xdev_summarize(data, type, report_type)
   }
   
@@ -104,11 +92,9 @@ generate_sequence_report <- function(dataset) {
   )
 
   # remove weighted counts
-  report_summary$abundance.abundances <- NULL
-  report_summary$abundance.sequence_names <- NULL
+  report_summary$abundance.abundance <- NULL
 
-
-  total_seqs <- count(dataset, "sequences")
+  total_seqs <- count(dataset, "sequence")
   num_seqs <- total_seqs * desired_quantiles + 1 # minimum seqs should be 1
   num_seqs <- c(num_seqs, mean(num_seqs))
   report_summary <- cbind(report_summary, num_seqs)
@@ -120,23 +106,18 @@ generate_sequence_report <- function(dataset) {
   report_summary[, -1]
 }
 
-generate_contig_report <- function(dataset) {
+generate_report <- function(dataset, report_type) {
   desired_quantiles <- c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1)
   desired_tags <- c("Minimum:", "2.5%-tile:", "25%-tile:", "Median:",
   "75%-tile:", "97.5%-tile:", "Maximum:", "Mean:")
 
-  result <- report(dataset, "contigs_report") |>
+  xdev_report(dataset, report_type) |>
       reframe(stat = desired_tags,
         across(
         where(is.numeric),
-        ~ c(quantile(.x, probs = desired_quantiles, na.rm = TRUE),
+        ~ c(ceiling(quantile(.x, probs = desired_quantiles, na.rm = TRUE)),
         mean(.x, na.rm = TRUE)),
         .names = "{.col}"
       )
     )
-  data.frame(Expected_Errors = result$Expected_Errors, 
-                       Length = result$Length, MisMatches = result$MisMatches,
-                       Num_Ns = result$Num_Ns, Overlap_End = result$Overlap_End,
-                       Overlap_Length = result$Overlap_Length,
-                       Overlap_Start = result$Overlap_Start, row.names = result$stat)
 }
