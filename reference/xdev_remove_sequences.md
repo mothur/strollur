@@ -27,7 +27,8 @@ xdev_remove_sequences(data, sequence_names, trash_tags)
 
 ## Value
 
-No return value, called for side effects.
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -60,6 +61,42 @@ trash_codes <- c("example", "removing", "sequences")
 
 xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
                       trash_tags = trash_codes)
+#> miseq_sop:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.00
+#> 25%-tile:        1  375    252      0        4     0  28491.00
+#> Median:          1  375    252      0        4     0  56981.00
+#> 75%-tile:        1  375    253      0        5     0  85471.00
+#> 97.5%-tile:      1  375    253      0        6     0 111112.00
+#> Maximum:         1  375    256      0        6     0 113960.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> scrap_summary:
+#>       type trash_code unique total
+#> 1 sequence    example      1     1
+#> 2 sequence   removing      1     1
+#> 3 sequence  sequences      1     1
+#> 4      asv    example      1     1
+#> 5      asv   removing      1     1
+#> 6      asv  sequences      1     1
+#> 
+#> Number of unique seqs: 2422 
+#> Total number of seqs: 113960 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2422 
+#> Total number of asv bin classifications: 2422 
+#> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2422 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata 
+#> 
 
 # If you look at the scrap report, you the sequences names, listed with the
 # trash codes set to "example", "removing", "sequences".

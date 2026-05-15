@@ -84,7 +84,8 @@ assign(
 
 ## Value
 
-double - The number of items assigned
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -104,7 +105,14 @@ assign(
   table = sequence_classifications, type = "sequence_taxonomy"
 )
 #> Assigned 2425 sequence taxonomies.
-#> [1] 2425
+#> example_dataset:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of sequence classifications: 2425 
+#> 
 
 # Assigning bins
 
@@ -129,22 +137,68 @@ bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
 # assign 'otu' bins using sequence names
 assign(data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> example_dataset:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of sequence classifications: 2425 
+#> 
 
 # assign 'asv' bins using sequence names
 assign(data, table = asv_data, bin_type = "asv")
 #> Assigned 2425 asv bins.
-#> [1] 2425
+#> example_dataset:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of sequence classifications: 2425 
+#> 
 
 # assign 'phylotype' bins using sequence names
 assign(data, table = phylo_data, bin_type = "phylotype")
 #> Assigned 63 phylotype bins.
-#> [1] 63
+#> example_dataset:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2425 
+#> 
 
 # assign 'otu' bin representative sequences
 assign(data, table = bin_reps, type = "bin_representative")
 #> Assigned 531 otu bin representative sequences.
-#> [1] 531
+#> example_dataset:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2425 
+#> 
 
 # To assign abundance only bins
 
@@ -157,7 +211,15 @@ otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 # assign abundance only otus parsed by sample
 assign(data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> example_dataset:
+#> 
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of otus: 531 
+#> 
 
 # Assigning bin classifications
 
@@ -173,7 +235,16 @@ assign(
   type = "bin_taxonomy", bin_type = "otu"
 )
 #> Assigned 531 otu bin taxonomies.
-#> [1] 531
+#> example_dataset:
+#> 
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> 
 
 # Assign treatments
 
@@ -181,5 +252,15 @@ sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
 assign(data, table = sample_assignments, type = "treatment")
 #> Assigned 19 samples to treatments.
-#> [1] 19
+#> example_dataset:
+#> 
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> 
 ```

@@ -29,7 +29,8 @@ xdev_merge_sequences(data, sequence_names, reason = "merged")
 
 ## Value
 
-No return value, called for side effects.
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -58,13 +59,31 @@ assign(data = data,
                           sample = samples),
        type = "sequence_abundance")
 #> Assigned 10 sequence abundances.
-#> [1] 10
+#> my_data:
+#> 
+#> 
+#> Number of unique seqs: 10 
+#> Total number of seqs: 100 
+#> 
+#> Total number of samples: 6 
+#> 
 
 # For the sake of example let's merge the first 3 sequences.
 
 seqs_to_merge <- c("seq1", "seq2", "seq3")
 
 xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
+#> my_data:
+#> 
+#> scrap_summary:
+#>       type trash_code unique total
+#> 1 sequence     merged      2    20
+#> 
+#> Number of unique seqs: 8 
+#> Total number of seqs: 100 
+#> 
+#> Total number of samples: 6 
+#> 
 
 # If you look at the scrap report, you will see the second two sequence
 # names, listed with the trash code set to "merged".

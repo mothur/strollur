@@ -85,7 +85,7 @@ removing each bin</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>No return value, called for side effects.</p>
+    <p>an updated <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</p>
     </div>
 
     <div class="section level2">
@@ -101,7 +101,14 @@ removing each bin</p></dd>
 <span class="r-in"><span>                                      abundance <span class="op">=</span> <span class="va">abundances</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                   bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 3 otu bins.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> my_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 715 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="count.html">count</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
@@ -112,6 +119,18 @@ removing each bin</p></dd>
 <span class="r-in"><span>  <span class="fu">xdev_remove_bins</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>,</span></span>
 <span class="r-in"><span>                   bin_names <span class="op">=</span> <span class="va">bins_to_remove</span>,</span></span>
 <span class="r-in"><span>                   trash_tags <span class="op">=</span> <span class="va">trash_tag</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> my_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> scrap_summary:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       type trash_code unique total</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 sequence    bad_bin      1   110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      otu    bad_bin      1   110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 605 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="count.html">count</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>

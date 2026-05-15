@@ -54,7 +54,8 @@ xdev_add_sequences(
 
 ## Value
 
-double containing the number of sequences added
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -64,7 +65,22 @@ double containing the number of sequences added
  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
  xdev_add_sequences(data, fasta_data)
 #> Added 2425 sequences.
-#> [1] 2425
+#> miseq_sop:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> 
 
 # With the additional parameters to add information about the reference
 
@@ -78,7 +94,23 @@ double containing the number of sequences added
                "https://mothur.org/wiki/silva_reference_files/"))
 #> Added 2425 sequences.
 #> Added 1 resource references.
-#> [1] 2425
+#> miseq_sop:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 1 
+#> 
 
 # You can also add references using the 'add_references' function.
 ```

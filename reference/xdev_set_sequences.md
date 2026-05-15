@@ -38,7 +38,8 @@ xdev_set_sequences(
 
 ## Value
 
-No return value, called for side effects.
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -50,9 +51,31 @@ xdev_add_sequences(data = data,
               table = data.frame(sequence_name = c("seq1", "seq2",
                                                   "seq3", "seq4")))
 #> Added 4 sequences.
-#> [1] 4
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 4 
+#> Total number of seqs: 4 
+#> 
+#> 
 
 xdev_set_sequences(data = data,
                    sequence_names = c("seq1", "seq2","seq3", "seq4"),
                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
+#> my_dataset:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1    5      5      0        1     0    1.00
+#> 2.5%-tile:       1    5      5      0        1     0    1.10
+#> 25%-tile:        1    5      5      0        1     0    2.00
+#> Median:          1    5      5      0        2     0    3.00
+#> 75%-tile:        1    5      5      0        3     0    4.00
+#> 97.5%-tile:      1    5      5      0        1     0    4.90
+#> Maximum:         1    5      5      0        3     0    4.00
+#> Mean:            1    5      5      0        1     0    0.00
+#> 
+#> Number of unique seqs: 4 
+#> Total number of seqs: 4 
+#> 
+#> 
 ```

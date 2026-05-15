@@ -85,6 +85,40 @@ data.frame()
 
  # remove sample 'F3D0'
  xdev_remove_samples(data = data, samples = c("F3D0"))
+#> miseq_sop:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2695.30
+#> 25%-tile:        1  375    252      0        4     0  26944.00
+#> Median:          1  375    252      0        4     0  53887.00
+#> 75%-tile:        1  375    253      0        5     0  80830.00
+#> 97.5%-tile:      1  375    253      0        6     0 105078.70
+#> Maximum:         1  375    256      0        6     0 107772.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> scrap_summary:
+#>        type     trash_code unique total
+#> 1  sequence remove_samples    101   109
+#> 2       otu remove_samples     14    14
+#> 3       asv remove_samples    101   109
+#> 4 phylotype remove_samples      2     2
+#> 
+#> Number of unique seqs: 2324 
+#> Total number of seqs: 107772 
+#> 
+#> Total number of samples: 18 
+#> Total number of treatments: 2 
+#> Total number of otus: 517 
+#> Total number of otu bin classifications: 517 
+#> Total number of asvs: 2324 
+#> Total number of asv bin classifications: 2324 
+#> Total number of phylotypes: 61 
+#> Total number of phylotype bin classifications: 61 
+#> Total number of sequence classifications: 2324 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata 
+#> 
 
  # summarize FASTA data after removal of sample F3D0
  xdev_summarize(data = data, type = "sequence")

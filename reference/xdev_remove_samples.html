@@ -81,7 +81,7 @@ Default = "remove_samples".</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>No return value, called for side effects.</p>
+    <p>an updated <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</p>
     </div>
 
     <div class="section level2">
@@ -107,6 +107,40 @@ Default = "remove_samples".</p></dd>
 <span class="r-in"><span><span class="co"># To remove samples 'F3D0' and 'F3D1'</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">xdev_remove_samples</span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span>, <span class="st">"F3D1"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> miseq_sop:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends nbases ambigs polymers numns   numseqs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375    249      0        3     0      1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375    252      0        3     0   2579.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25%-tile:        1  375    252      0        4     0  25781.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Median:          1  375    252      0        4     0  51561.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75%-tile:        1  375    253      0        5     0  77341.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97.5%-tile:      1  375    253      0        6     0 100543.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum:         1  375    256      0        6     0 103120.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375    252      0        4     0      0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> scrap_summary:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        type     trash_code unique total</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  sequence remove_samples    204   215</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       otu remove_samples     30    31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       asv remove_samples    204   215</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 phylotype remove_samples      4     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2221 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 103120 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of samples: 17 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of treatments: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 501 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 501 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asvs: 2221 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asv bin classifications: 2221 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotypes: 59 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotype bin classifications: 59 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of sequence classifications: 2221 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of resource references: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of custom reports: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Your dataset includes metadata </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="count.html">count</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17</span>

@@ -2,10 +2,10 @@
 
 ## Overview
 
-The **`strollur`** package stores the data associated with your
-microbial DNA analysis. This includes nucleotide sequences, abundance,
-sample and treatment assignments, taxonomic classifications, sequence
-bin assignments, metadata, trees and various reports. It is designed to
+The **`strollur`** package stores the data associated with your amplicon
+sequence analysis. This includes nucleotide sequences, abundance, sample
+and treatment assignments, taxonomic classifications, sequence bin
+assignments, metadata, trees and various reports. It is designed to
 facilitate data analysis across multiple R packages with utility
 functions to import from [mothur](https://mothur.org),
 [qiime2](https://qiime2.org), [dada2](https://benjjneb.github.io/dada2/)
@@ -65,7 +65,7 @@ abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
 classification_data <- read_mothur_taxonomy(taxonomy = strollur_example("final.taxonomy.gz"))
 
-data <- new_dataset(dataset_name = "microbial RNA example")
+data <- new_dataset(dataset_name = "example")
 
 add(data, table = fasta_data, type = "sequence")
 #> Added 2425 sequences.
@@ -81,7 +81,7 @@ assign(data, table = classification_data, type = "sequence_taxonomy")
 #> [1] 2425
 
 data
-#> microbial RNA example:
+#> example:
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
@@ -169,7 +169,7 @@ Adding and using data
   analysis.
 
 - [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
-  : strollur: Store and Transfer Data Used with Amplicon Sequence
+  : strollur: Store and Transfer Data Associated with Amplicon Sequence
   Analysis
 
 ## Importing Data

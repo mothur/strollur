@@ -136,7 +136,8 @@ Default = TRUE.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>double - The number of items assigned</p>
+    <p>an updated
+  <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</p>
     </div>
 
     <div class="section level2">
@@ -156,7 +157,14 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span>  table <span class="op">=</span> <span class="va">sequence_classifications</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> example_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of sequence classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Assigning bins</span></span></span>
 <span class="r-in"><span></span></span>
@@ -181,22 +189,68 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span><span class="co"># assign 'otu' bins using sequence names</span></span></span>
 <span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> example_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of sequence classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign 'asv' bins using sequence names</span></span></span>
 <span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">asv_data</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> example_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asvs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asv bin classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of sequence classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign 'phylotype' bins using sequence names</span></span></span>
 <span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">phylo_data</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> example_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asvs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asv bin classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotypes: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotype bin classifications: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of sequence classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># assign 'otu' bin representative sequences</span></span></span>
 <span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_reps</span>, type <span class="op">=</span> <span class="st">"bin_representative"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> example_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asvs: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asv bin classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotypes: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotype bin classifications: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of sequence classifications: 2425 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To assign abundance only bins</span></span></span>
 <span class="r-in"><span></span></span>
@@ -209,7 +263,15 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span><span class="co"># assign abundance only otus parsed by sample</span></span></span>
 <span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> example_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 113963 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of samples: 19 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Assigning bin classifications</span></span></span>
 <span class="r-in"><span></span></span>
@@ -225,7 +287,16 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span>  type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> example_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 113963 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of samples: 19 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Assign treatments</span></span></span>
 <span class="r-in"><span></span></span>
@@ -233,7 +304,17 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">assign</span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">sample_assignments</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> example_dataset:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 113963 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of samples: 19 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of treatments: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -1111,12 +1111,12 @@ miseq <- miseq_sop_example()
 
 # To the total abundance for each sequence
 miseq$abundance(type = "sequence") |> head(n = 5)
-#>                                 sequence_names abundances
-#> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783          1
-#> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318          1
-#> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807          1
-#> 4  M00967_43_000000000-A3JHG_1_1110_4126_16552          1
-#> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436          1
+#>                                  sequence_name abundance
+#> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783         1
+#> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318         1
+#> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807         1
+#> 4  M00967_43_000000000-A3JHG_1_1110_4126_16552         1
+#> 5  M00967_43_000000000-A3JHG_1_2102_8408_13436         1
 
 # To the total abundance for each sequence parsed by sample
 miseq$abundance(type = "sequence", by_sample = TRUE) |> head(n = 5)
@@ -1243,7 +1243,15 @@ data$add(
  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
  assign(data = data, table = df, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of otus: 531 
+#> 
 
  tree <- ape::read.tree(strollur_example(
  "final.opti_mcc.jclass.ave.tre"))
@@ -4803,6 +4811,40 @@ miseq$summary(type = "report", report_type = "contigs_report")
 
 # remove sample 'F3D0' to produce a scrap report
 xdev_remove_samples(data = miseq, samples = c("F3D0"))
+#> miseq_sop:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2695.30
+#> 25%-tile:        1  375    252      0        4     0  26944.00
+#> Median:          1  375    252      0        4     0  53887.00
+#> 75%-tile:        1  375    253      0        5     0  80830.00
+#> 97.5%-tile:      1  375    253      0        6     0 105078.70
+#> Maximum:         1  375    256      0        6     0 107772.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> scrap_summary:
+#>        type     trash_code unique total
+#> 1  sequence remove_samples    101   109
+#> 2       otu remove_samples     14    14
+#> 3       asv remove_samples    101   109
+#> 4 phylotype remove_samples      2     2
+#> 
+#> Number of unique seqs: 2324 
+#> Total number of seqs: 107772 
+#> 
+#> Total number of samples: 18 
+#> Total number of treatments: 2 
+#> Total number of otus: 517 
+#> Total number of otu bin classifications: 517 
+#> Total number of asvs: 2324 
+#> Total number of asv bin classifications: 2324 
+#> Total number of phylotypes: 61 
+#> Total number of phylotype bin classifications: 61 
+#> Total number of sequence classifications: 2324 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata 
+#> 
 
 # summarize scrapped data -
 # sequences and bins scrapped by removing the sample "F3D0"

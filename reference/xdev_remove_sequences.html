@@ -81,7 +81,7 @@ removals</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>No return value, called for side effects.</p>
+    <p>an updated <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</p>
     </div>
 
     <div class="section level2">
@@ -114,6 +114,42 @@ removals</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">xdev_remove_sequences</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, sequence_names <span class="op">=</span> <span class="va">seqs_to_remove</span>,</span></span>
 <span class="r-in"><span>                      trash_tags <span class="op">=</span> <span class="va">trash_codes</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> miseq_sop:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends nbases ambigs polymers numns   numseqs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375    249      0        3     0      1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375    252      0        3     0   2850.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25%-tile:        1  375    252      0        4     0  28491.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Median:          1  375    252      0        4     0  56981.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75%-tile:        1  375    253      0        5     0  85471.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97.5%-tile:      1  375    253      0        6     0 111112.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Maximum:         1  375    256      0        6     0 113960.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375    252      0        4     0      0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> scrap_summary:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       type trash_code unique total</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 sequence    example      1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 sequence   removing      1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 sequence  sequences      1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      asv    example      1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      asv   removing      1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      asv  sequences      1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2422 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 113960 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of samples: 19 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of treatments: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otus: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of otu bin classifications: 531 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asvs: 2422 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of asv bin classifications: 2422 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotypes: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of phylotype bin classifications: 63 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of sequence classifications: 2422 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of resource references: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of custom reports: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Your dataset includes metadata </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If you look at the scrap report, you the sequences names, listed with the</span></span></span>
 <span class="r-in"><span><span class="co"># trash codes set to "example", "removing", "sequences".</span></span></span>

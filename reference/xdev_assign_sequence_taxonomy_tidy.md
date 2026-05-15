@@ -62,7 +62,8 @@ xdev_assign_sequence_taxonomy_tidy(
 
 ## Value
 
-double containing the number of sequence taxonomies assigned
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -80,7 +81,14 @@ data <- new_dataset("my_dataset")
 
 xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications)
 #> Assigned 2425 sequence taxonomies.
-#> [1] 2425
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of sequence classifications: 2425 
+#> 
 
 # With the reference parameter you can add information about the reference
 # you used to classify your sequences. You can also add references using the
@@ -93,5 +101,13 @@ reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
 xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications, reference)
 #> Assigned 2425 sequence taxonomies.
 #> Added 1 resource references.
-#> [1] 2425
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of sequence classifications: 2425 
+#> Total number of resource references: 1 
+#> 
 ```

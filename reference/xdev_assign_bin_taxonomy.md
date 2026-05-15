@@ -55,7 +55,8 @@ xdev_assign_bin_taxonomy(
 
 ## Value
 
-double containing the number of bins assigned
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -69,11 +70,26 @@ data <- new_dataset(dataset_name = "my_dataset")
 # assign otu abundances
 xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of otus: 531 
+#> 
 
 # assign otu classifications
 xdev_assign_bin_taxonomy(data = data, table = otu_data,
                          bin_type = "otu")
 #> Assigned 531 otu bin taxonomies.
-#> [1] 531
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> 
 ```

@@ -40,7 +40,12 @@ data <- new_dataset()
 # assign abundance only 'otu' bins
 assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of otus: 531 
+#> 
 
 # assign consensus taxonomies to 'otu' bins
 assign(
@@ -48,5 +53,11 @@ assign(
   type = "bin_taxonomy", bin_type = "otu"
 )
 #> Assigned 531 otu bin taxonomies.
-#> [1] 531
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> 
 ```

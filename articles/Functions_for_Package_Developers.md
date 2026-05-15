@@ -128,6 +128,33 @@ xdev_set_sequences(
   sequence_names = f3d0_names,
   sequences = nnnn_neucleotides, comments = comments
 )
+#> modified_miseq:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1    4      4      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      4        6     4 113963.00
+#> Mean:            1  374    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2425 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 
 f3d0_sequences <- xdev_get_by_sample(
   miseq,
@@ -189,6 +216,39 @@ xdev_set_abundances(
   abundances = new_abunds,
   reason = "F3D0_exclusive_sequences"
 )
+#> modified_miseq:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2847.35
+#> 25%-tile:        1  375    252      0        4     0  28464.50
+#> Median:          1  375    252      0        4     0  56928.00
+#> 75%-tile:        1  375    253      0        5     0  85391.50
+#> 97.5%-tile:      1  375    253      0        6     0 111008.65
+#> Maximum:         1  375    256      0        6     0 113854.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> scrap_summary:
+#>        type               trash_code unique total
+#> 1  sequence F3D0_exclusive_sequences    101   109
+#> 2       otu F3D0_exclusive_sequences     14    14
+#> 3       asv F3D0_exclusive_sequences    101   109
+#> 4 phylotype F3D0_exclusive_sequences      2     2
+#> 
+#> Number of unique seqs: 2324 
+#> Total number of seqs: 113854 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 517 
+#> Total number of otu bin classifications: 517 
+#> Total number of asvs: 2324 
+#> Total number of asv bin classifications: 2324 
+#> Total number of phylotypes: 61 
+#> Total number of phylotype bin classifications: 61 
+#> Total number of sequence classifications: 2324 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 miseq
 #> modified_miseq:
 #> 
@@ -280,6 +340,40 @@ xdev_merge_bins(
   reason = "merge_bins_example",
   bin_type = "otu"
 )
+#> modified_miseq:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2847.35
+#> 25%-tile:        1  375    252      0        4     0  28464.50
+#> Median:          1  375    252      0        4     0  56928.00
+#> 75%-tile:        1  375    253      0        5     0  85391.50
+#> 97.5%-tile:      1  375    253      0        6     0 111008.65
+#> Maximum:         1  375    256      0        6     0 113854.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> scrap_summary:
+#>        type               trash_code unique total
+#> 1  sequence F3D0_exclusive_sequences    101   109
+#> 2       otu F3D0_exclusive_sequences     14    14
+#> 3       otu       merge_bins_example     99  6674
+#> 4       asv F3D0_exclusive_sequences    101   109
+#> 5 phylotype F3D0_exclusive_sequences      2     2
+#> 
+#> Number of unique seqs: 2324 
+#> Total number of seqs: 113854 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 418 
+#> Total number of otu bin classifications: 418 
+#> Total number of asvs: 2324 
+#> Total number of asv bin classifications: 2324 
+#> Total number of phylotypes: 61 
+#> Total number of phylotype bin classifications: 61 
+#> Total number of sequence classifications: 2324 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 miseq
 #> modified_miseq:
 #> 
@@ -352,6 +446,44 @@ xdev_remove_sequences(
   sequence_names = random_sequence_names,
   trash_tags = rep("remove_sequences_example", 100)
 )
+#> modified_miseq:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2529.60
+#> 25%-tile:        1  375    252      0        4     0  25287.00
+#> Median:          1  375    252      0        4     0  50573.00
+#> 75%-tile:        1  375    253      0        5     0  75859.00
+#> 97.5%-tile:      1  375    253      0        6     0  98616.40
+#> Maximum:         1  375    256      0        6     0 101144.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> scrap_summary:
+#>        type               trash_code unique total
+#> 1  sequence F3D0_exclusive_sequences    101   109
+#> 2  sequence remove_sequences_example    100 12710
+#> 3       otu F3D0_exclusive_sequences     14    14
+#> 4       otu       merge_bins_example     99  6674
+#> 5       otu remove_sequences_example      9   157
+#> 6       asv F3D0_exclusive_sequences    101   109
+#> 7       asv remove_sequences_example    100 12710
+#> 8 phylotype F3D0_exclusive_sequences      2     2
+#> 9 phylotype remove_sequences_example      1     1
+#> 
+#> Number of unique seqs: 2224 
+#> Total number of seqs: 101144 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 409 
+#> Total number of otu bin classifications: 409 
+#> Total number of asvs: 2224 
+#> Total number of asv bin classifications: 2224 
+#> Total number of phylotypes: 60 
+#> Total number of phylotype bin classifications: 60 
+#> Total number of sequence classifications: 2224 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 miseq
 #> modified_miseq:
 #> 
@@ -418,6 +550,48 @@ xdev_remove_bins(
   trash_tags = rep("remove_bins_example", 10),
   bin_type = "phylotype"
 )
+#> modified_miseq:
+#> 
+#>             starts ends nbases ambigs polymers numns  numseqs
+#> Minimum:         1  375    249      0        3     0     1.00
+#> 2.5%-tile:       1  375    252      0        3     0  1980.90
+#> 25%-tile:        1  375    252      0        4     0 19800.00
+#> Median:          1  375    252      0        4     0 39599.00
+#> 75%-tile:        1  375    253      0        4     0 59398.00
+#> 97.5%-tile:      1  375    253      0        6     0 77217.10
+#> Maximum:         1  375    256      0        6     0 79196.00
+#> Mean:            1  375    252      0        4     0     0.00
+#> scrap_summary:
+#>         type               trash_code unique total
+#> 1   sequence F3D0_exclusive_sequences    101   109
+#> 2   sequence      remove_bins_example    851 21948
+#> 3   sequence remove_sequences_example    100 12710
+#> 4        otu F3D0_exclusive_sequences     14    14
+#> 5        otu       merge_bins_example     99  6674
+#> 6        otu      remove_bins_example    134 15766
+#> 7        otu remove_sequences_example      9   157
+#> 8        asv F3D0_exclusive_sequences    101   109
+#> 9        asv      remove_bins_example    851 21948
+#> 10       asv remove_sequences_example    100 12710
+#> 11 phylotype F3D0_exclusive_sequences      2     2
+#> 12 phylotype      remove_bins_example     10 23530
+#> 13 phylotype remove_sequences_example      1     1
+#> 
+#> Number of unique seqs: 1373 
+#> Total number of seqs: 79196 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 275 
+#> Total number of otu bin classifications: 275 
+#> Total number of asvs: 1373 
+#> Total number of asv bin classifications: 1373 
+#> Total number of phylotypes: 50 
+#> Total number of phylotype bin classifications: 50 
+#> Total number of sequence classifications: 1373 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 miseq
 #> modified_miseq:
 #> 
@@ -483,6 +657,52 @@ xdev_remove_samples(
   miseq,
   samples = c("F3D142"), reason = "remove_samples_example"
 )
+#> modified_miseq:
+#> 
+#>             starts ends nbases ambigs polymers numns  numseqs
+#> Minimum:         1  375    249      0        3     0     1.00
+#> 2.5%-tile:       1  375    252      0        3     0  1936.30
+#> 25%-tile:        1  375    252      0        4     0 19354.00
+#> Median:          1  375    252      0        4     0 38707.00
+#> 75%-tile:        1  375    253      0        4     0 58060.00
+#> 97.5%-tile:      1  375    253      0        6     0 75477.70
+#> Maximum:         1  375    256      0        6     0 77412.00
+#> Mean:            1  375    252      0        4     0     0.00
+#> scrap_summary:
+#>         type               trash_code unique total
+#> 1   sequence F3D0_exclusive_sequences    101   109
+#> 2   sequence      remove_bins_example    851 21948
+#> 3   sequence   remove_samples_example     38    42
+#> 4   sequence remove_sequences_example    100 12710
+#> 5        otu F3D0_exclusive_sequences     14    14
+#> 6        otu       merge_bins_example     99  6674
+#> 7        otu      remove_bins_example    134 15766
+#> 8        otu   remove_samples_example      9    15
+#> 9        otu remove_sequences_example      9   157
+#> 10       asv F3D0_exclusive_sequences    101   109
+#> 11       asv      remove_bins_example    851 21948
+#> 12       asv   remove_samples_example     38    42
+#> 13       asv remove_sequences_example    100 12710
+#> 14 phylotype F3D0_exclusive_sequences      2     2
+#> 15 phylotype      remove_bins_example     10 23530
+#> 16 phylotype   remove_samples_example      1     1
+#> 17 phylotype remove_sequences_example      1     1
+#> 
+#> Number of unique seqs: 1335 
+#> Total number of seqs: 77412 
+#> 
+#> Total number of samples: 18 
+#> Total number of treatments: 2 
+#> Total number of otus: 266 
+#> Total number of otu bin classifications: 266 
+#> Total number of asvs: 1335 
+#> Total number of asv bin classifications: 1335 
+#> Total number of phylotypes: 49 
+#> Total number of phylotype bin classifications: 49 
+#> Total number of sequence classifications: 1335 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 miseq
 #> modified_miseq:
 #> 
@@ -551,6 +771,56 @@ xdev_remove_lineages(
   contaminants = c(bad_tax),
   reason = "remove_contaminants_example"
 )
+#> modified_miseq:
+#> 
+#>             starts ends nbases ambigs polymers numns  numseqs
+#> Minimum:         1  375    249      0        3     0     1.00
+#> 2.5%-tile:       1  375    252      0        3     0  1893.25
+#> 25%-tile:        1  375    252      0        4     0 18923.50
+#> Median:          1  375    252      0        4     0 37846.00
+#> 75%-tile:        1  375    253      0        4     0 56768.50
+#> 97.5%-tile:      1  375    253      0        6     0 73798.75
+#> Maximum:         1  375    256      0        6     0 75690.00
+#> Mean:            1  375    252      0        4     0     0.00
+#> scrap_summary:
+#>         type                  trash_code unique total
+#> 1   sequence    F3D0_exclusive_sequences    101   109
+#> 2   sequence         remove_bins_example    851 21948
+#> 3   sequence remove_contaminants_example    114  1722
+#> 4   sequence      remove_samples_example     38    42
+#> 5   sequence    remove_sequences_example    100 12710
+#> 6        otu    F3D0_exclusive_sequences     14    14
+#> 7        otu          merge_bins_example     99  6674
+#> 8        otu         remove_bins_example    134 15766
+#> 9        otu remove_contaminants_example     37  4428
+#> 10       otu      remove_samples_example      9    15
+#> 11       otu    remove_sequences_example      9   157
+#> 12       asv    F3D0_exclusive_sequences    101   109
+#> 13       asv         remove_bins_example    851 21948
+#> 14       asv remove_contaminants_example    114  1752
+#> 15       asv      remove_samples_example     38    42
+#> 16       asv    remove_sequences_example    100 12710
+#> 17 phylotype    F3D0_exclusive_sequences      2     2
+#> 18 phylotype         remove_bins_example     10 23530
+#> 19 phylotype remove_contaminants_example      1  1773
+#> 20 phylotype      remove_samples_example      1     1
+#> 21 phylotype    remove_sequences_example      1     1
+#> 
+#> Number of unique seqs: 1221 
+#> Total number of seqs: 75690 
+#> 
+#> Total number of samples: 18 
+#> Total number of treatments: 2 
+#> Total number of otus: 229 
+#> Total number of otu bin classifications: 229 
+#> Total number of asvs: 1221 
+#> Total number of asv bin classifications: 1221 
+#> Total number of phylotypes: 48 
+#> Total number of phylotype bin classifications: 48 
+#> Total number of sequence classifications: 1221 
+#> Total number of resource references: 2 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 miseq
 #> modified_miseq:
 #> 

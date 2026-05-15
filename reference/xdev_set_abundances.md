@@ -34,7 +34,8 @@ xdev_set_abundances(data, sequence_names, abundances, reason = "update")
 
 ## Value
 
-No return value, called for side effects.
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -53,7 +54,14 @@ xdev_assign_sequence_abundance(data = data,
                                              abundance = abundances,
                                              sample = samples))
 #> Assigned 4 sequence abundances.
-#> [1] 4
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 4 
+#> Total number of seqs: 1319 
+#> 
+#> Total number of samples: 3 
+#> 
 
 seqs_to_update <- c("seq4")
 new_abunds <- list(c(20, 10, 4))
@@ -61,4 +69,12 @@ new_abunds <- list(c(20, 10, 4))
 xdev_set_abundances(data = data,
                     sequence_names = seqs_to_update,
                     abundances = new_abunds)
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 4 
+#> Total number of seqs: 1349 
+#> 
+#> Total number of samples: 3 
+#> 
 ```

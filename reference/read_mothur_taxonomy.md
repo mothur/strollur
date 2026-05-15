@@ -39,5 +39,10 @@ data <- new_dataset()
 # assign sequence classifications
 assign(data = data, table = classification_data, type = "sequence_taxonomy")
 #> Assigned 2425 sequence taxonomies.
-#> [1] 2425
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of sequence classifications: 2425 
+#> 
 ```

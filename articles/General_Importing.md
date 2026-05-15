@@ -55,7 +55,20 @@ add(
   type = "sequence"
 )
 #> Added 2425 sequences.
-#> [1] 2425
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425
 data
 #> my_data:
 #> 
@@ -83,6 +96,10 @@ remove all data from our data set.
 ``` r
 
 clear(data)
+#> my_data:
+#> 
+#> 
+#> Total number of seqs: 0
 
 documentation_url <- "https://mothur.org/wiki/silva_reference_files/"
 method_url <- "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"
@@ -105,7 +122,22 @@ add(
 )
 #> Added 2425 sequences.
 #> Added 1 resource references.
-#> [1] 2425
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 1
 data
 #> my_data:
 #> 
@@ -193,7 +225,23 @@ add(
   table_names = list(sequence_name = "Name")
 )
 #> Added a contigs_report.
-#> [1] 1
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 1 
+#> Total number of custom reports: 1
 data
 #> my_data:
 #> 
@@ -240,7 +288,24 @@ add(
   type = "metadata"
 )
 #> Added metadata.
-#> [1] 1
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 1 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 ```
 
 #### Adding Resource References
@@ -260,7 +325,24 @@ add(
   type = "resource_reference"
 )
 #> Added 2 resource references.
-#> [1] 2
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 3 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 ```
 
 ### assign
@@ -295,7 +377,26 @@ str(abundance_table)
 
 assign(data, table = abundance_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
-#> [1] 2425
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of resource references: 3 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 
 data
 #> my_data:
@@ -346,7 +447,27 @@ str(bin_table)
 
 assign(data, table = bin_table, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of resource references: 3 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 
 data
 #> my_data:
@@ -407,7 +528,29 @@ assign(
   type = "sequence_taxonomy"
 )
 #> Assigned 2425 sequence taxonomies.
-#> [1] 2425
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of sequence classifications: 2425 
+#> Total number of resource references: 3 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 ```
 
 Note, when you assign taxonomy to sequences that are assigned to bins,
@@ -439,7 +582,29 @@ assign(
   bin_type = "otu"
 )
 #> Assigned 531 otu bin taxonomies.
-#> [1] 531
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of sequence classifications: 2425 
+#> Total number of resource references: 3 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 ```
 
 #### Assigning Bin Representatives
@@ -467,7 +632,29 @@ assign(
   type = "bin_representative"
 )
 #> Assigned 531 otu bin representative sequences.
-#> [1] 531
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of sequence classifications: 2425 
+#> Total number of resource references: 3 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 ```
 
 #### Assigning Treatments
@@ -494,7 +681,29 @@ assign(
   type = "treatment"
 )
 #> Assigned 19 samples to treatments.
-#> [1] 19
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of sequence classifications: 2425 
+#> Total number of resource references: 3 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata
 ```
 
 ## Sample Trees and Sequence Trees

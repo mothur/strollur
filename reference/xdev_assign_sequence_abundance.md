@@ -55,7 +55,8 @@ xdev_assign_sequence_abundance(
 
 ## Value
 
-double containing the number of sequences assigned
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -66,5 +67,13 @@ sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 
 xdev_assign_sequence_abundance(data = data, table = sequence_abundance)
 #> Assigned 2425 sequence abundances.
-#> [1] 2425
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of treatments: 2 
+#> 
 ```

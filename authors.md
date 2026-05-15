@@ -12,12 +12,12 @@
 Source:
 [`DESCRIPTION`](https://github.com/mothur/strollur/blob/main/DESCRIPTION)
 
-Westcott S (2026). *strollur: Store and Transfer Data Used with Amplicon
-Sequence Analysis*. R package version 1.0.0,
+Westcott S (2026). *strollur: Store and Transfer Data Associated with
+Amplicon Sequence Analysis*. R package version 1.0.0,
 <https://github.com/mothur/strollur>.
 
     @Manual{,
-      title = {strollur: Store and Transfer Data Used with Amplicon Sequence Analysis},
+      title = {strollur: Store and Transfer Data Associated with Amplicon Sequence Analysis},
       author = {Sarah Westcott},
       year = {2026},
       note = {R package version 1.0.0},

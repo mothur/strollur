@@ -67,7 +67,8 @@ xdev_assign_bins(
 
 ## Value
 
-double containing the number of bins assigned
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -80,7 +81,14 @@ double containing the number of bins assigned
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> miseq_sop:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of otus: 531 
+#> 
 
   # To add abundance only bin assignments:
 
@@ -89,7 +97,14 @@ double containing the number of bins assigned
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> miseq_sop:
+#> 
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of otus: 531 
+#> 
 
   # To add abundance bin assignments parsed by sample:
 
@@ -98,5 +113,13 @@ double containing the number of bins assigned
 
   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> miseq_sop:
+#> 
+#> 
+#> Number of unique seqs: 531 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of otus: 531 
+#> 
 ```

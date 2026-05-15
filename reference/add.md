@@ -115,7 +115,8 @@ add(
 
 ## Value
 
-double - The number of items added
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -130,7 +131,22 @@ fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
 # Add FASTA sequence data
 add(data = data, table = fasta_data, type = "sequence")
 #> Added 2425 sequences.
-#> [1] 2425
+#> example_dataset:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> 
 
 # To add FASTA data with a resource reference
 
@@ -138,11 +154,14 @@ add(data = data, table = fasta_data, type = "sequence")
 data <- new_dataset(dataset_name = "example_dataset")
 
 # Create a resource reference for the FASTA data silva_resource <-
-silva_resource <- new_reference( vendor = "SILVA", name =
-"silva.bacteria.fasta", version = "1.38.1", usage = "alignment of sequences",
-note = "reference trimmed to V4 region", method_url =
-"https://mothur.org/blog/2024/SILVA-v138_2-reference-files/",
-documentation_url = "https://mothur.org/wiki/silva_reference_files/" )
+silva_resource <- new_reference(
+  vendor = "SILVA", name =
+    "silva.bacteria.fasta", version = "1.38.1",
+  usage = "alignment of sequences",
+  note = "reference trimmed to V4 region", method_url =
+    "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/",
+  documentation_url = "https://mothur.org/wiki/silva_reference_files/"
+)
 
 # Add FASTA data with a resource reference
 
@@ -154,7 +173,23 @@ add(
 )
 #> Added 2425 sequences.
 #> Added 1 resource references.
-#> [1] 2425
+#> example_dataset:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 1 
+#> 
 
 # Add contigs assembly report with a 'sequence_name' column named 'Name'
 
@@ -166,7 +201,24 @@ add(
   report_type = "contigs_report", list(sequence_name = "Name")
 )
 #> Added a contigs_report.
-#> [1] 1
+#> example_dataset:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 1 
+#> Total number of custom reports: 1 
+#> 
 
 # To add metadata related to your study
 
@@ -174,5 +226,23 @@ metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 add(data, table = metadata, type = "metadata")
 #> Added metadata.
-#> [1] 1
+#> example_dataset:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of resource references: 1 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata 
+#> 
 ```

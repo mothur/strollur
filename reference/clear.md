@@ -18,7 +18,8 @@ clear(data)
 
 ## Value
 
-No return value, called for side effects.
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -38,4 +39,10 @@ data <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 clear(data)
+#> miseq_sop:
+#> 
+#> 
+#> Total number of seqs: 0 
+#> 
+#> 
 ```

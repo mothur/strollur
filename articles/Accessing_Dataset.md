@@ -387,17 +387,17 @@ sequence_abundance <- abundance(
   by_sample = FALSE
 )
 head(sequence_abundance, n = 10)
-#>                                  sequence_names abundances
-#> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783          1
-#> 2   M00967_43_000000000-A3JHG_1_1113_12711_3318          1
-#> 3   M00967_43_000000000-A3JHG_1_2108_14707_9807          1
-#> 4   M00967_43_000000000-A3JHG_1_1110_4126_16552          1
-#> 5   M00967_43_000000000-A3JHG_1_2102_8408_13436          1
-#> 6  M00967_43_000000000-A3JHG_1_1107_22580_21773          1
-#> 7  M00967_43_000000000-A3JHG_1_1108_14299_17220        191
-#> 8   M00967_43_000000000-A3JHG_1_1114_8059_18290          1
-#> 9    M00967_43_000000000-A3JHG_1_2112_9811_9982          1
-#> 10  M00967_43_000000000-A3JHG_1_2103_25452_6018          1
+#>                                   sequence_name abundance
+#> 1  M00967_43_000000000-A3JHG_1_2101_16474_12783         1
+#> 2   M00967_43_000000000-A3JHG_1_1113_12711_3318         1
+#> 3   M00967_43_000000000-A3JHG_1_2108_14707_9807         1
+#> 4   M00967_43_000000000-A3JHG_1_1110_4126_16552         1
+#> 5   M00967_43_000000000-A3JHG_1_2102_8408_13436         1
+#> 6  M00967_43_000000000-A3JHG_1_1107_22580_21773         1
+#> 7  M00967_43_000000000-A3JHG_1_1108_14299_17220       191
+#> 8   M00967_43_000000000-A3JHG_1_1114_8059_18290         1
+#> 9    M00967_43_000000000-A3JHG_1_2112_9811_9982         1
+#> 10  M00967_43_000000000-A3JHG_1_2103_25452_6018         1
 ```
 
 To the abundance for each sequence parsed by sample, set by_sample =
@@ -790,8 +790,8 @@ report(
 #> 1 @article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy}, journal = {Applied and Environmental Microbiology}, volume = {73}, number = {16}, pages = {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL = {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint = {https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}
 #> 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NA
 #>   creation_date
-#> 1    2026-05-13
-#> 2    2026-05-13
+#> 1    2026-05-15
+#> 2    2026-05-15
 ```
 
 Lastly, if sequences or bins have been removed over the course of your

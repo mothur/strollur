@@ -88,7 +88,8 @@ xdev_add_references(
 
 ## Value
 
-double containing the number of references added
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -99,5 +100,11 @@ reference_table <- readr::read_csv(strollur_example("references.csv"),
                              col_names = TRUE, show_col_types = FALSE)
 xdev_add_references(data, reference_table)
 #> Added 2 resource references.
-#> [1] 2
+#> just for fun:
+#> 
+#> 
+#> Total number of seqs: 0 
+#> 
+#> Total number of resource references: 2 
+#> 
 ```

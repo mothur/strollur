@@ -112,7 +112,20 @@ sequences to your data set using the
 
 add(my_data, table = fasta_data, type = "sequence")
 #> Added 2425 sequences.
-#> [1] 2425
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns numseqs
+#> Minimum:         1  375    249      0        3     0    1.00
+#> 2.5%-tile:       1  375    252      0        4     0   61.62
+#> 25%-tile:        1  375    252      0        4     0  607.25
+#> Median:          1  375    253      0        4     0 1213.50
+#> 75%-tile:        1  375    253      0        5     0 1819.75
+#> 97.5%-tile:      1  375    254      0        6     0 2365.38
+#> Maximum:         1  375    256      0        6     0 2425.00
+#> Mean:            1  375    252      0        4     0    0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425
 my_data
 #> my_data:
 #> 
@@ -151,7 +164,22 @@ function:
 
 assign(my_data, table = sample_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
-#> [1] 2425
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19
 my_data
 #> my_data:
 #> 
@@ -191,7 +219,23 @@ set as follows:
 
 assign(my_data, table = classification_data, type = "sequence_taxonomy")
 #> Assigned 2425 sequence taxonomies.
-#> [1] 2425
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of sequence classifications: 2425
 ```
 
 To assign sequences to bins, you can read a [mothur list
@@ -214,17 +258,77 @@ follows:
 
 assign(my_data, table = otu_data, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of sequence classifications: 2425
 assign(my_data, table = asv_data, type = "bin", bin_type = "asv")
 #> Assigned 2425 asv bins.
-#> [1] 2425
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of sequence classifications: 2425
 assign(
   my_data,
   table = phylotype_data,
   type = "bin", bin_type = "phylotype"
 )
 #> Assigned 63 phylotype bins.
-#> [1] 63
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2425
 my_data
 #> my_data:
 #> 
@@ -275,7 +379,29 @@ follows:
 
 assign(my_data, table = otu_taxonomy_data, type = "bin_taxonomy")
 #> Assigned 531 otu bin taxonomies.
-#> [1] 531
+#> my_data:
+#> 
+#>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375    249      0        3     0      1.00
+#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 25%-tile:        1  375    252      0        4     0  28491.75
+#> Median:          1  375    252      0        4     0  56982.50
+#> 75%-tile:        1  375    253      0        5     0  85473.25
+#> 97.5%-tile:      1  375    253      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0      0.00
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 113963 
+#> 
+#> Total number of samples: 19 
+#> Total number of otus: 531 
+#> Total number of otu bin classifications: 531 
+#> Total number of asvs: 2425 
+#> Total number of asv bin classifications: 2425 
+#> Total number of phylotypes: 63 
+#> Total number of phylotype bin classifications: 63 
+#> Total number of sequence classifications: 2425
 ```
 
 ## Writing mothur formatted file types

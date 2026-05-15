@@ -38,7 +38,8 @@ xdev_set_abundance(
 
 ## Value
 
-No return value, called for side effects.
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -52,13 +53,19 @@ data <- new_dataset(dataset_name = "my_dataset")
 xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_name = names,
                                            abundance = abunds))
 #> Assigned 4 sequence abundances.
-#> [1] 4
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 4 
+#> Total number of seqs: 1369 
+#> 
+#> 
 abundance(data = data, type = "sequence")
-#>   sequence_names abundances
-#> 1           seq1       1250
-#> 2           seq2         65
-#> 3           seq3         50
-#> 4           seq4          4
+#>   sequence_name abundance
+#> 1          seq1      1250
+#> 2          seq2        65
+#> 3          seq3        50
+#> 4          seq4         4
 
 seqs_to_update <- c("seq1", "seq3")
 new_abunds <- c(1000, 100)
@@ -66,11 +73,21 @@ new_abunds <- c(1000, 100)
 xdev_set_abundance(data = data,
                    sequence_names = seqs_to_update,
                    sequence_abundances = new_abunds)
+#> my_dataset:
+#> 
+#> scrap_summary:
+#>       type trash_code unique total
+#> 1 sequence     update      0   200
+#> 
+#> Number of unique seqs: 4 
+#> Total number of seqs: 1169 
+#> 
+#> 
 
 abundance(data = data, type = "sequence")
-#>   sequence_names abundances
-#> 1           seq1       1000
-#> 2           seq2         65
-#> 3           seq3        100
-#> 4           seq4          4
+#>   sequence_name abundance
+#> 1          seq1      1000
+#> 2          seq2        65
+#> 3          seq3       100
+#> 4          seq4         4
 ```

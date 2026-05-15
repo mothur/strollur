@@ -82,7 +82,7 @@ Default = "merged"</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>No return value, called for side effects.</p>
+    <p>an updated <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</p>
     </div>
 
     <div class="section level2">
@@ -111,13 +111,31 @@ Default = "merged"</p></dd>
 <span class="r-in"><span>                          sample <span class="op">=</span> <span class="va">samples</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>       type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 10 sequence abundances.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> my_data:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 100 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of samples: 6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For the sake of example let's merge the first 3 sequences.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">seqs_to_merge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seq1"</span>, <span class="st">"seq2"</span>, <span class="st">"seq3"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">xdev_merge_sequences</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, sequence_names <span class="op">=</span> <span class="va">seqs_to_merge</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> my_data:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> scrap_summary:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       type trash_code unique total</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 sequence     merged      2    20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 100 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of samples: 6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If you look at the scrap report, you will see the second two sequence</span></span></span>
 <span class="r-in"><span><span class="co"># names, listed with the trash code set to "merged".</span></span></span>

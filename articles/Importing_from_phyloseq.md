@@ -50,13 +50,13 @@ count(rdata_object, type = "sample")
 head(names(rdata_object, type = "sequence"))
 #> [1] "549322" "522457" "951"    "244423" "586076" "246140"
 head(abundance(rdata_object, type = "sequence"))
-#>   sequence_names abundances
-#> 1         549322        259
-#> 2         522457          8
-#> 3            951          1
-#> 4         244423         51
-#> 5         586076          3
-#> 6         246140          4
+#>   sequence_name abundance
+#> 1        549322       259
+#> 2        522457         8
+#> 3           951         1
+#> 4        244423        51
+#> 5        586076         3
+#> 6        246140         4
 ```
 
 Furthermore, we can output strollur objects as phyloseq objects using

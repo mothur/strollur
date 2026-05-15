@@ -44,7 +44,8 @@ xdev_add_report(
 
 ## Value
 
-No return value, called for side effects.
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -57,6 +58,14 @@ contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
 xdev_add_report(data, contigs_report, "contigs_report", "Name")
 #> Added a contigs_report.
+#> just for fun:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of custom reports: 1 
+#> 
 
 # To add metadata related to your study
 
@@ -64,4 +73,13 @@ metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 xdev_add_report(data, metadata, "metadata")
 #> Added metadata.
+#> just for fun:
+#> 
+#> 
+#> Number of unique seqs: 2425 
+#> Total number of seqs: 2425 
+#> 
+#> Total number of custom reports: 1 
+#> Your dataset includes metadata 
+#> 
 ```

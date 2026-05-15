@@ -32,7 +32,8 @@ xdev_remove_bins(data, bin_names, trash_tags, bin_type = "otu")
 
 ## Value
 
-No return value, called for side effects.
+an updated
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Examples
 
@@ -48,7 +49,14 @@ No return value, called for side effects.
                                       abundance = abundances),
                    bin_type = "otu")
 #> Assigned 3 otu bins.
-#> [1] 3
+#> my_dataset:
+#> 
+#> 
+#> Number of unique seqs: 3 
+#> Total number of seqs: 715 
+#> 
+#> Total number of otus: 3 
+#> 
 
   count(data = data, type = "bin", bin_type = "otu")
 #> [1] 3
@@ -59,6 +67,18 @@ No return value, called for side effects.
   xdev_remove_bins(data = data,
                    bin_names = bins_to_remove,
                    trash_tags = trash_tag)
+#> my_dataset:
+#> 
+#> scrap_summary:
+#>       type trash_code unique total
+#> 1 sequence    bad_bin      1   110
+#> 2      otu    bad_bin      1   110
+#> 
+#> Number of unique seqs: 2 
+#> Total number of seqs: 605 
+#> 
+#> Total number of otus: 2 
+#> 
 
   count(data = data, type = "bin", bin_type = "otu")
 #> [1] 2
