@@ -229,5 +229,5 @@ add <- function(data, table,
     )
     cli::cli_abort(message)
   }
-  data
+  invisible(data)
 }
