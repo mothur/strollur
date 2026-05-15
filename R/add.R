@@ -106,7 +106,7 @@
 #' silva_resource <- new_reference(
 #'   vendor = "SILVA", name =
 #'     "silva.bacteria.fasta", version = "1.38.1",
-#'      usage = "alignment of sequences",
+#'   usage = "alignment of sequences",
 #'   note = "reference trimmed to V4 region", method_url =
 #'     "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/",
 #'   documentation_url = "https://mothur.org/wiki/silva_reference_files/"
@@ -137,7 +137,8 @@
 #'
 #' add(data, table = metadata, type = "metadata")
 #'
-#' @return double - The number of items added
+#' @return an updated
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 add <- function(data, table,
                 type = "sequence",
@@ -181,9 +182,8 @@ add <- function(data, table,
 
   table_names <- modifyList(default_tn, table_names)
 
-  num_added <- 0
   if (type == "sequence") {
-    num_added <- xdev_add_sequences(
+    xdev_add_sequences(
       data = data, table = table,
       sequence_name = table_names[["sequence_name"]],
       sequence = table_names[["sequence"]],
@@ -192,8 +192,6 @@ add <- function(data, table,
       verbose = verbose
     )
   } else if (type == "report") {
-    num_added <- 1
-
     if (!is.null(report_type)) {
       xdev_add_report(
         data = data, table = table,
@@ -205,14 +203,13 @@ add <- function(data, table,
       cli::cli_abort("'report_type' is required when adding a report.")
     }
   } else if (type == "metadata") {
-    num_added <- 1
     xdev_add_report(
       data = data, table = table,
       type = type,
       verbose = verbose
     )
   } else if (type == "resource_reference") {
-    num_added <- xdev_add_references(
+    xdev_add_references(
       data = data, table = table,
       name = table_names[["reference_name"]],
       vendor = table_names[["reference_vendor"]],
@@ -232,5 +229,5 @@ add <- function(data, table,
     )
     cli::cli_abort(message)
   }
-  num_added
+  data
 }

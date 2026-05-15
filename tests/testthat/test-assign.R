@@ -1,5 +1,19 @@
 # tests assign function
 
+test_that("test assign - piping", {
+  data <- new_dataset()
+
+  table <- data.frame(
+    sequence_name = c("seq1", "seq2", "seq3"),
+    abundance = c(40, 50, 10)
+  )
+
+  abunds <- assign(data, table, type = sequence_abundance) |> abundance()
+
+  expect_equal(abunds$sequence_name, c("seq1", "seq2", "seq3"))
+  expect_equal(abunds$abundance, c(40, 50, 10))
+})
+
 test_that("test assign - errors", {
   data <- new_dataset()
 

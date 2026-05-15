@@ -62,7 +62,7 @@
 #'   parameter = "kmer_size = 8, num_bootstraps = 100, min_confidence = 80",
 #'   documentation_url = "https://mothur.org/phylotypr/", method_url =
 #'     "doi:10.1128/mra.01144-24",
-#'      citation = "@article{doi:10.1128/AEM.00062-07,
+#'   citation = "@article{doi:10.1128/AEM.00062-07,
 #' author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R.
 #' Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA
 #' Sequences into the New Bacterial Taxonomy}, journal = {Applied and

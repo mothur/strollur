@@ -1349,7 +1349,7 @@ strollur <- R6Class("strollur",
       }
 
       exclude <- c("sequence_scrap", "bin_scrap")
-      report_names <- names(data = self, type = "report")
+      report_names <- xdev_names(data = self, type = "report")
       report_names <- report_names[!report_names %in% exclude]
 
       if (length(report_names) != 0) {

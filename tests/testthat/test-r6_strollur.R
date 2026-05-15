@@ -29,7 +29,8 @@ test_that("dataset - intialize from read_mothur / print", {
   reference <- readr::read_csv(strollur_example("references.csv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  xdev_add_references(dataset_t, reference)
+  copy_dataset_t <- xdev_add_references(dataset_t, reference)
+  expect_true(dataset_t$is_equal(copy_dataset_t))
 
   actual <- dataset_t$report(type = "metadata")
   expect_equal(nrow(actual), 19)

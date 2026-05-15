@@ -431,7 +431,6 @@ vector<string> BinTable::getIds(const AbundTable& count,
     return results;
 }
 /******************************************************************************/
-// 3 column dataframe - bin_id, abundance, sample
 Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>& seqNames,
                                                  const vector<string>& seqs) const {
 
@@ -456,6 +455,12 @@ Rcpp::DataFrame BinTable::getRepresentativeSequences(const vector<string>& seqNa
         }
 
         const string tag = label + "_names";
+
+        if (allBlank(seqs)) {
+            seqDNA.clear();
+            seqDNA.assign(seqids.size(), "NA");
+        }
+
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
             Rcpp::Named(tag.c_str()) = ids,
             Rcpp::_["representative_name"] = seqids,

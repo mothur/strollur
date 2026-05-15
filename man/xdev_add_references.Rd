@@ -65,7 +65,7 @@ name is 'documentation_url'.}
 Default = TRUE.}
 }
 \value{
-double containing the number of references added
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Add resource references to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

@@ -170,6 +170,316 @@ test_that("xint_copy_pointer", {
   expect_equal(xdev_count(copy_data), 2425)
 })
 
+test_that("dataset - functions with piping", {
+  data <- new_dataset("my_dataset")
+
+  # xdev_add_report
+  align_report <- readRDS(strollur_example("test_alignment_data.rds"))
+
+  report <- xdev_add_report(data,
+    table = align_report,
+    type = "align_report",
+    sequence_name = "QueryName"
+  ) |>
+    report("align_report")
+
+  expect_equal(align_report$QueryName, report$QueryName)
+
+  data$clear()
+
+  # xdev_add_sequences
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("ATTGC", "ATTGC", "ATTGC", "ATTGC")
+  comments <- c("ddd", "ftf", "efr", "ssd")
+
+  fasta_data <- data.frame(
+    sequence_name = names,
+    sequence = seqs, comment = comments
+  )
+
+
+  fasta <- xdev_add_sequences(data, fasta_data) |>
+    report("fasta")
+
+  expect_equal(fasta, fasta_data)
+
+  clear(data)
+
+  # xdev_assign_bins
+  bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
+
+  bin <- xdev_assign_bins(data, bin_table) |>
+    report("sequence_bin_assignment")
+
+  expect_equal(bin$otu_id, bin_table$bin_name)
+  expect_equal(sort(bin$seq_id), sort(bin_table$sequence_name))
+
+  clear(data)
+
+  # xdev_assign_bin_representative_sequences
+  table <- data.frame(
+    bin_name = c("bin1", "bin2"),
+    sequence_name = c("seq1", "seq2")
+  )
+
+  xdev_assign_bins(data, table)
+
+  bin_rep <- xdev_assign_bin_representative_sequences(
+    data, table
+  ) |> report("bin_representative")
+
+  expect_equal(bin_rep$otu_names, table$bin_name)
+  expect_equal(bin_rep$sequence_name, table$representative_name)
+
+  # xdev_assign_bin_taxonomy
+  data <- new_dataset("test")
+
+  otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
+
+  xdev_assign_bins(data, table = otu_data)
+
+  expect_equal(data$count("bin"), 531)
+  expect_equal(data$count("sample"), 19)
+
+  otu_data <- read_mothur_cons_taxonomy(
+    strollur_example("final.cons.taxonomy")
+  )
+
+  bin_report <- xdev_assign_bin_taxonomy(data, table = otu_data) |>
+    report("bin_taxonomy")
+  expect_equal(nrow(bin_report), 3186)
+
+  # merge all bins into OTU1
+  merge_bin_abunds <- xdev_merge_bins(
+    data, unique(otu_data$bin_name),
+    "test"
+  ) |>
+    abundance(type = "bin", by_sample = TRUE)
+
+  expect_equal(merge_bin_abunds$bin_name, rep("Otu001", 19))
+  expect_equal(merge_bin_abunds$abundance, c(
+    6191, 4652, 4656, 2423, 2403,
+    3449, 5532, 3831, 12430, 9465,
+    10014, 4126, 15686, 5199, 3469,
+    6394, 4055, 4253, 5735
+  ))
+
+  clear(data)
+
+  # xdev_assign_sequence_abundance
+  ids <- c(
+    "seq1", "seq1", "seq1",
+    "seq2", "seq2",
+    "seq3",
+    "seq4"
+  )
+  groups <- c(
+    "sample2", "sample3", "sample4",
+    "sample3", "sample4",
+    "sample3",
+    "sample4"
+  )
+  abundances <- c(
+    250, 400, 500,
+    40, 50,
+    25,
+    4
+  )
+
+  seq_abunds <- xdev_assign_sequence_abundance(data, data.frame(
+    sequence_name = ids,
+    abundance = abundances,
+    sample = groups
+  )) |> abundance(type = "sequence", by_sample = TRUE)
+
+  expect_equal(seq_abunds$sequence_name, ids)
+  expect_equal(seq_abunds$abundance, abundances)
+  expect_equal(seq_abunds$sample, groups)
+
+  # xdev_merge_sequences
+  merge_seq_abunds <- xdev_merge_sequences(data, c("seq1", "seq3"), "test") |>
+    abundance(type = "sequence", by_sample = TRUE)
+
+  expect_equal(merge_seq_abunds$sequence_name, c(
+    "seq1", "seq1", "seq1",
+    "seq2", "seq2", "seq4"
+  ))
+  expect_equal(merge_seq_abunds$abundance, c(250, 425, 500, 40, 50, 4))
+  expect_equal(merge_seq_abunds$sample, c(
+    "sample2", "sample3", "sample4",
+    "sample3", "sample4", "sample4"
+  ))
+
+  # xdev_assign_sequence_taxonomy
+  clear(data)
+
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  taxonomies <- c(
+    "Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;",
+    "Bacteria;Proteobacteria;Betaproteobacteria;Neisseriales;",
+    "Bacteria;Firmicutes;Bacilli;Lactobacillales;",
+    "Bacteria;Proteobacteria;Gammaproteobacteria;Pasteurellales;"
+  )
+
+  seq_taxes <- xdev_assign_sequence_taxonomy(data, data.frame(
+    sequence_name = names,
+    taxonomy = taxonomies
+  )) |> report("sequence_taxonomy")
+
+  expect_equal(seq_taxes$sequence_name[1:4], rep("seq1", 4))
+  expect_equal(seq_taxes$taxonomy[1], "Bacteria")
+  expect_equal(seq_taxes$taxonomy[2], "Bacteroidetes")
+  expect_equal(seq_taxes$taxonomy[3], "Bacteroidia")
+  expect_equal(seq_taxes$taxonomy[4], "Bacteroidales")
+
+  # xdev_assign_sequence_taxonomy_tidy
+  names <- c(
+    "seq1", "seq1", "seq1",
+    "seq2", "seq2", "seq2",
+    "seq3", "seq3", "seq3",
+    "seq4", "seq4", "seq4"
+  )
+  taxonomies <- c(
+    "Bacteria", "Bacteroidetes", "Bacteroidia",
+    "Bacteria", "Proteobacteria", "Betaproteobacteria",
+    "Bacteria", "Firmicutes", "Bacilli",
+    "Bacteria", "Firmicutes", "Bacilli"
+  )
+  levels <- c(1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3)
+  confidences <- c(100, 95, 90, 100, 89, 85, 100, 99, 90, 100, 87, 85)
+
+  clear(data)
+
+  table <- data.frame(
+    sequence_name = names,
+    level = levels,
+    taxonomy = taxonomies,
+    confidence = confidences
+  )
+
+  seq_taxes <- xdev_assign_sequence_taxonomy_tidy(
+    data = data,
+    table = table
+  ) |> report("sequence_taxonomy")
+
+  expect_equal(seq_taxes$sequence_name, names)
+  expect_equal(seq_taxes$taxonomy, taxonomies)
+  expect_equal(seq_taxes$level, levels)
+  expect_equal(seq_taxes$confidence, confidences)
+
+  # xdev_assign_treatments
+  clear(data)
+
+  otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
+  xdev_assign_bins(data, table = otu_data)
+
+  design_table <- readr::read_tsv(
+    strollur_example(
+      "mouse.time.design"
+    ),
+    show_col_types = FALSE
+  )
+
+  sample_treatment <- xdev_assign_treatments(
+    data = data,
+    table = design_table
+  ) |>
+    report("sample_assignment")
+
+  expect_equal(sample_treatment$sample, design_table$sample)
+  expect_equal(sample_treatment$treatment, design_table$treatment)
+
+  # xdev_remove_bins
+  clear(data)
+
+  otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
+
+  xdev_assign_bins(data, table = otu_data)
+
+  otu_data <- read_mothur_cons_taxonomy(
+    strollur_example("final.cons.taxonomy")
+  )
+
+  xdev_assign_bin_taxonomy(data, table = otu_data)
+
+  expect_equal(data$count("bin"), 531)
+  expect_equal(data$count("sample"), 19)
+
+  data2 <- xdev_remove_bins(data, c("Otu001"), c("remove_bin_test"))
+
+  expect_equal(data2$count("bin"), 530)
+  expect_equal(data2$count("sample"), 19)
+
+  # xdev_remove_lineages
+  bin_tax <- xdev_remove_lineages(
+    data, c("Bacteria;Bacteroidetes"),
+    "remove_contaminant_test"
+  ) |> report("bin_taxonomy")
+
+  expect_equal(data2$count("bin"), 408)
+  expect_false(any(bin_tax$taxonomy == "Bacteroidetes"))
+
+  # xdev_remove_samples
+  old_sample_abunds <- abundance(data, "sample", by_sample = TRUE)
+  old_sample_abunds <- old_sample_abunds[-1, ]
+  sample_abunds <- xdev_remove_samples(
+    data,
+    c("F3D0"),
+    "remove_sample_test"
+  ) |>
+    abundance("sample", by_sample = TRUE)
+
+  expect_equal(sample_abunds$sample, old_sample_abunds$sample)
+  expect_equal(sample_abunds$abundance, old_sample_abunds$abundance)
+
+  # xdev_remove_sequences
+  clear(data)
+
+  xdev_assign_sequence_abundance(data, data.frame(
+    sequence_name = ids,
+    abundance = abundances,
+    sample = groups
+  ))
+
+  seq_names <- xdev_remove_sequences(
+    data,
+    c("seq1"),
+    "remove_sequence_test"
+  ) |> xdev_names()
+  expect_equal(seq_names, c("seq2", "seq3", "seq4"))
+
+  # xdev_set_sequences
+  fasta <- xdev_set_sequences(data, seq_names, c("ATGC", "ATGC", "ATGC")) |>
+    report("fasta")
+
+  expect_equal(fasta$sequence, c("ATGC", "ATGC", "ATGC"))
+
+  # xdev_set_abundances - removes seq4
+  seq_abunds <- xdev_set_abundances(data, seq_names, list(
+    c(40, 50),
+    c(25), c(0)
+  )) |>
+    abundance(by_sample = TRUE)
+  expect_equal(seq_abunds$abundance, c(40, 50, 25))
+  expect_equal(data$count(distinct = TRUE), 2)
+
+  # xdev_set_abundance
+  clear(data)
+
+  # defaults abundance to 1
+  add(data, data.frame(sequence_name = c("seq1", "seq2", "seq3")))
+  expect_equal(data$count(distinct = TRUE), 3)
+
+  # xdev_set_abundances - removes seq3
+  seq_abunds <- xdev_set_abundance(
+    data, c("seq1", "seq2", "seq3"),
+    c(40, 50, 0)
+  ) |>
+    abundance()
+  expect_equal(seq_abunds$abundance, c(40, 50))
+  expect_equal(data$count(distinct = TRUE), 2)
+})
+
 test_that("xdev_assign_bin_taxonomy", {
   data <- new_dataset()
 

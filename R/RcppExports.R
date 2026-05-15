@@ -12,10 +12,10 @@
 #' data <- miseq_sop_example()
 #' clear(data)
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 clear <- function(data) {
-    invisible(.Call(`_strollur_clear`, data))
+    .Call(`_strollur_clear`, data)
 }
 
 #' @title export_dataset
@@ -204,7 +204,7 @@ xdev_abundance <- function(data, type = "sequence", bin_type = "otu", by_sample 
 #'                              col_names = TRUE, show_col_types = FALSE)
 #' xdev_add_references(data, reference_table)
 #'
-#' @return double containing the number of references added
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_add_references <- function(data, table, name = "name", vendor = "vendor", version = "version", usage = "usage", note = "note", method_url = "method_url", documentation_url = "documentation_url", parameter = "parameter", citation = "citation", verbose = TRUE) {
     .Call(`_strollur_xdev_add_references`, data, table, name, vendor, version, usage, note, method_url, documentation_url, parameter, citation, verbose)
@@ -245,10 +245,10 @@ xdev_add_references <- function(data, table, name = "name", vendor = "vendor", v
 #'
 #' xdev_add_report(data, metadata, "metadata")
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_add_report <- function(data, table, type = "metadata", sequence_name = "sequence_name", verbose = TRUE) {
-    invisible(.Call(`_strollur_xdev_add_report`, data, table, type, sequence_name, verbose))
+    .Call(`_strollur_xdev_add_report`, data, table, type, sequence_name, verbose)
 }
 
 #' @title xdev_add_sequences
@@ -295,7 +295,7 @@ xdev_add_report <- function(data, table, type = "metadata", sequence_name = "seq
 #'
 #' # You can also add references using the 'add_references' function.
 #'
-#' @return double containing the number of sequences added
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_add_sequences <- function(data, table, reference = NULL, sequence_name = "sequence_name", sequence = "sequence", comment = "comment", verbose = TRUE) {
     .Call(`_strollur_xdev_add_sequences`, data, table, reference, sequence_name, sequence, comment, verbose)
@@ -350,7 +350,7 @@ xdev_add_sequences <- function(data, table, reference = NULL, sequence_name = "s
 #'
 #'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #'
-#' @return double containing the number of bins assigned
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_name", abundance = "abundance", sample = "sample", sequence_name = "sequence_name", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_bins`, data, table, bin_type, reference, bin_name, abundance, sample, sequence_name, verbose)
@@ -388,7 +388,7 @@ xdev_assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bi
 #'                                       table = bin_reps,
 #'                                       bin_type = "otu")
 #'
-#' @return double containing the number of representative sequences assigned
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_assign_bin_representative_sequences <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_name", sequence_name = "sequence_name", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_bin_representative_sequences`, data, table, bin_type, reference, bin_name, sequence_name, verbose)
@@ -430,7 +430,7 @@ xdev_assign_bin_representative_sequences <- function(data, table, bin_type = "ot
 #' xdev_assign_bin_taxonomy(data = data, table = otu_data,
 #'                          bin_type = "otu")
 #'
-#' @return double containing the number of bins assigned
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_name", taxonomy = "taxonomy", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_bin_taxonomy`, data, table, bin_type, reference, bin_name, taxonomy, verbose)
@@ -476,7 +476,7 @@ xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = 
 #'
 #' xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
 #'
-#' @return double containing the number of sequence assigned
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequence_name = "sequence_name", taxonomy = "taxonomy", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_sequence_taxonomy`, data, table, reference, sequence_name, taxonomy, verbose)
@@ -525,7 +525,7 @@ xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequenc
 #'
 #' xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications, reference)
 #'
-#' @return double containing the number of sequence taxonomies assigned
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_assign_sequence_taxonomy_tidy <- function(data, table, reference = NULL, sequence_name = "sequence_name", level = "level", taxonomy = "taxonomy", confidence = "confidence", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_sequence_taxonomy_tidy`, data, table, reference, sequence_name, level, taxonomy, confidence, verbose)
@@ -560,7 +560,7 @@ xdev_assign_sequence_taxonomy_tidy <- function(data, table, reference = NULL, se
 #'
 #' xdev_assign_sequence_abundance(data = data, table = sequence_abundance)
 #'
-#' @return double containing the number of sequences assigned
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_assign_sequence_abundance <- function(data, table, sequence_name = "sequence_name", abundance = "abundance", sample = "sample", treatment = "treatment", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_sequence_abundance`, data, table, sequence_name, abundance, sample, treatment, verbose)
@@ -593,7 +593,7 @@ xdev_assign_sequence_abundance <- function(data, table, sequence_name = "sequenc
 #'
 #' xdev_assign_treatments(data, sample_assignments)
 #'
-#' @return double containing the number of samples assigned to treatments
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_assign_treatments <- function(data, table, sample = "sample", treatment = "treatment", verbose = TRUE) {
     .Call(`_strollur_xdev_assign_treatments`, data, table, sample, treatment, verbose)
@@ -822,10 +822,10 @@ xdev_has_sequence_taxonomy <- function(data) {
 #'
 #'  report(data = data, type = "bin_scrap")
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu") {
-    invisible(.Call(`_strollur_xdev_merge_bins`, data, bin_names, reason, bin_type))
+    .Call(`_strollur_xdev_merge_bins`, data, bin_names, reason, bin_type)
 }
 
 #' @title xdev_merge_sequences
@@ -882,10 +882,10 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu"
 #'
 #' count(data = data, type = "sequence")
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
-    invisible(.Call(`_strollur_xdev_merge_sequences`, data, sequence_names, reason))
+    .Call(`_strollur_xdev_merge_sequences`, data, sequence_names, reason)
 }
 
 #' @title xdev_names
@@ -989,10 +989,10 @@ xdev_names <- function(data, type = "sequence", bin_type = "otu", samples = NULL
 #'
 #'   count(data = data, type = "bin", bin_type = "otu")
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_remove_bins <- function(data, bin_names, trash_tags, bin_type = "otu") {
-    invisible(.Call(`_strollur_xdev_remove_bins`, data, bin_names, trash_tags, bin_type))
+    .Call(`_strollur_xdev_remove_bins`, data, bin_names, trash_tags, bin_type)
 }
 
 #' @title xdev_remove_lineages
@@ -1020,10 +1020,10 @@ xdev_remove_bins <- function(data, bin_names, trash_tags, bin_type = "otu") {
 #'
 #' xdev_remove_lineages(data = data, contaminants = contaminants)
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_remove_lineages <- function(data, contaminants, reason = "contaminant") {
-    invisible(.Call(`_strollur_xdev_remove_lineages`, data, contaminants, reason))
+    .Call(`_strollur_xdev_remove_lineages`, data, contaminants, reason)
 }
 
 #' @title xdev_remove_samples
@@ -1051,10 +1051,10 @@ xdev_remove_lineages <- function(data, contaminants, reason = "contaminant") {
 #'
 #' count(data = data, type = "sample")
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_remove_samples <- function(data, samples, reason = "remove_samples") {
-    invisible(.Call(`_strollur_xdev_remove_samples`, data, samples, reason))
+    .Call(`_strollur_xdev_remove_samples`, data, samples, reason)
 }
 
 #' @title xdev_remove_sequences
@@ -1096,10 +1096,10 @@ xdev_remove_samples <- function(data, samples, reason = "remove_samples") {
 #'
 #' count(data = data, type = "sequence")
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
-    invisible(.Call(`_strollur_xdev_remove_sequences`, data, sequence_names, trash_tags))
+    .Call(`_strollur_xdev_remove_sequences`, data, sequence_names, trash_tags)
 }
 
 #' @title xdev_report
@@ -1250,10 +1250,10 @@ xdev_report <- function(data, type = "sequence", bin_type = "otu") {
 #'
 #' abundance(data = data, type = "sequence")
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason = "update") {
-    invisible(.Call(`_strollur_xdev_set_abundance`, data, sequence_names, sequence_abundances, reason))
+    .Call(`_strollur_xdev_set_abundance`, data, sequence_names, sequence_abundances, reason)
 }
 
 #' @title xdev_set_abundances
@@ -1291,10 +1291,10 @@ xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason
 #'                     sequence_names = seqs_to_update,
 #'                     abundances = new_abunds)
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_set_abundances <- function(data, sequence_names, abundances, reason = "update") {
-    invisible(.Call(`_strollur_xdev_set_abundances`, data, sequence_names, abundances, reason))
+    .Call(`_strollur_xdev_set_abundances`, data, sequence_names, abundances, reason)
 }
 
 #' @title xdev_set_sequences
@@ -1322,10 +1322,10 @@ xdev_set_abundances <- function(data, sequence_names, abundances, reason = "upda
 #'                    sequence_names = c("seq1", "seq2","seq3", "seq4"),
 #'                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 #'
-#' @return No return value, called for side effects.
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 xdev_set_sequences <- function(data, sequence_names, sequences, comments = as.character( c())) {
-    invisible(.Call(`_strollur_xdev_set_sequences`, data, sequence_names, sequences, comments))
+    .Call(`_strollur_xdev_set_sequences`, data, sequence_names, sequences, comments)
 }
 
 #' @title xdev_set_dataset_name

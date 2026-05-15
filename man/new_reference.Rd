@@ -69,7 +69,7 @@ to aid in reproducibility.
 silva_resource <- new_reference(
   vendor = "SILVA", name =
     "silva.bacteria.fasta", version = "1.38.1",
-     usage = "alignment of sequences",
+  usage = "alignment of sequences",
   note = "alignment reference trimmed to V4 region", documentation_url =
     "https://mothur.org/wiki/silva_reference_files/", method_url =
     "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"
@@ -82,7 +82,8 @@ Michigan", name = "R phylotypr package", version = "0.1.1", usage =
   note = "classification using Bayesian method",
   parameter = "kmer_size = 8, num_bootstraps = 100, min_confidence = 80",
   documentation_url = "https://mothur.org/phylotypr/", method_url =
-  "doi:10.1128/mra.01144-24", citation = "@article{doi:10.1128/AEM.00062-07,
+    "doi:10.1128/mra.01144-24",
+  citation = "@article{doi:10.1128/AEM.00062-07,
 author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R.
 Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA
 Sequences into the New Bacterial Taxonomy}, journal = {Applied and

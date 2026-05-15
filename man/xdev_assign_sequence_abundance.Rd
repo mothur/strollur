@@ -36,7 +36,7 @@ that contains the sequence treatments. Default column name is 'treatment'.}
 Default = TRUE.}
 }
 \value{
-double containing the number of sequences assigned
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign sequence abundance and optionally assign sample and treatment data to

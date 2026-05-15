@@ -17,7 +17,7 @@ in the first sequence name in the vector.}
 Default = "merged"}
 }
 \value{
-No return value, called for side effects.
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Designed with package integration in mind, the merge sequences function
