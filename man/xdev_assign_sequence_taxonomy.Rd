@@ -30,7 +30,7 @@ contains the sequence taxonomies. Default column name is 'taxonomy'.}
 Default = TRUE.}
 }
 \value{
-double containing the number of sequence assigned
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

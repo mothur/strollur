@@ -305,7 +305,7 @@ double Dataset::addSequences(const vector<string>& n,
         references.push_back(reference);
     }
 
-    return static_cast<double>(names.size());
+    return static_cast<double>(n.size());
 }
 /******************************************************************************/
 double Dataset::assignBins(const vector<string>& binIds,
@@ -1104,8 +1104,8 @@ Rcpp::DataFrame Dataset::getSequenceAbundances(const bool bySample) const{
         vector<float> abunds = count.getTotalAbundances(getIncludedNamesIndexes());
 
         Rcpp::DataFrame df = Rcpp::DataFrame::create(
-            Rcpp::Named("sequence_names") = select(names, tableSeqs),
-            Rcpp::_["abundances"] = abunds);
+            Rcpp::Named("sequence_name") = select(names, tableSeqs),
+            Rcpp::_["abundance"] = abunds);
 
         return df;
     }

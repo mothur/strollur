@@ -10,7 +10,7 @@ clear(data)
 \item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 }
 \value{
-No return value, called for side effects.
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

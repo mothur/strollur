@@ -34,7 +34,7 @@ contains the bin names. Default column name is 'sequence_name'.}
 Default = TRUE.}
 }
 \value{
-double containing the number of representative sequences assigned
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign representative sequences to bins.

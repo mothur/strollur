@@ -28,7 +28,7 @@ does not require a sequence_name column. Default column name is 'sequence_names'
 Default = TRUE.}
 }
 \value{
-No return value, called for side effects.
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

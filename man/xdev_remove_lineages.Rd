@@ -16,7 +16,7 @@ like to remove}
 Default = "contaminant".}
 }
 \value{
-No return value, called for side effects.
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Designed with package integration in mind, the remove lineages function

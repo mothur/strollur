@@ -69,7 +69,8 @@ column in 'table' that contains the bin names. Default column name is
 Default = TRUE.}
 }
 \value{
-double - The number of items assigned
+an updated
+  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign sequence abundances, sequence classifications, bins, bin

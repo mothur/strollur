@@ -44,7 +44,7 @@ Note: You must provide either abundance or sequence_name in the table.}
 Default = TRUE.}
 }
 \value{
-double containing the number of bins assigned
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

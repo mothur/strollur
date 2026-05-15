@@ -37,7 +37,7 @@ contains the sequence nucleotide strings. Default column name is
 Default = TRUE.}
 }
 \value{
-double containing the number of sequences added
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

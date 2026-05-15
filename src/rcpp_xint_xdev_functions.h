@@ -122,10 +122,10 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
 //'                              col_names = TRUE, show_col_types = FALSE)
 //' xdev_add_references(data, reference_table)
 //'
-//' @return double containing the number of references added
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-double xdev_add_references(const Rcpp::Environment& data,
+Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
                        const Rcpp::DataFrame& table,
                        const string& name = "name",
                        const string& vendor = "vendor",
@@ -173,10 +173,10 @@ double xdev_add_references(const Rcpp::Environment& data,
 //'
 //' xdev_add_report(data, metadata, "metadata")
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_add_report(const Rcpp::Environment& data,
+Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
                  Rcpp::DataFrame table,
                  const string& type = "metadata",
                  const string& sequence_name = "sequence_name",
@@ -226,10 +226,10 @@ void xdev_add_report(const Rcpp::Environment& data,
 //'
 //' # You can also add references using the 'add_references' function.
 //'
-//' @return double containing the number of sequences added
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-double xdev_add_sequences(const Rcpp::Environment& data,
+Rcpp::Environment xdev_add_sequences(const Rcpp::Environment& data,
                       const Rcpp::DataFrame& table,
                       Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
                       const string& sequence_name = "sequence_name",
@@ -286,10 +286,10 @@ double xdev_add_sequences(const Rcpp::Environment& data,
 //'
 //'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 //'
-//' @return double containing the number of bins assigned
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-double xdev_assign_bins(const Rcpp::Environment& data,
+Rcpp::Environment xdev_assign_bins(const Rcpp::Environment& data,
                     const Rcpp::DataFrame& table,
                     const string& bin_type = "otu",
                     Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
@@ -331,10 +331,10 @@ double xdev_assign_bins(const Rcpp::Environment& data,
 //'                                       table = bin_reps,
 //'                                       bin_type = "otu")
 //'
-//' @return double containing the number of representative sequences assigned
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-double xdev_assign_bin_representative_sequences(const Rcpp::Environment& data,
+Rcpp::Environment xdev_assign_bin_representative_sequences(const Rcpp::Environment& data,
                                             const Rcpp::DataFrame& table,
                                             const string& bin_type = "otu",
                                             Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
@@ -378,10 +378,10 @@ double xdev_assign_bin_representative_sequences(const Rcpp::Environment& data,
 //' xdev_assign_bin_taxonomy(data = data, table = otu_data,
 //'                          bin_type = "otu")
 //'
-//' @return double containing the number of bins assigned
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
+Rcpp::Environment xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
                             const Rcpp::DataFrame& table,
                             const string& bin_type = "otu",
                             Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
@@ -429,10 +429,10 @@ double xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
 //'
 //' xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
 //'
-//' @return double containing the number of sequence assigned
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
+Rcpp::Environment xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
                                  const Rcpp::DataFrame& table,
                                  Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
                                  const string& sequence_name = "sequence_name",
@@ -482,10 +482,10 @@ double xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
 //'
 //' xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications, reference)
 //'
-//' @return double containing the number of sequence taxonomies assigned
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
+Rcpp::Environment xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
                                      const Rcpp::DataFrame& table,
                                      Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
                                      const string& sequence_name = "sequence_name",
@@ -523,10 +523,10 @@ double xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data,
 //'
 //' xdev_assign_sequence_abundance(data = data, table = sequence_abundance)
 //'
-//' @return double containing the number of sequences assigned
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-double xdev_assign_sequence_abundance(const Rcpp::Environment& data,
+Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
                                   const Rcpp::DataFrame& table,
                                   const string& sequence_name = "sequence_name",
                                   const string& abundance = "abundance",
@@ -561,10 +561,10 @@ double xdev_assign_sequence_abundance(const Rcpp::Environment& data,
 //'
 //' xdev_assign_treatments(data, sample_assignments)
 //'
-//' @return double containing the number of samples assigned to treatments
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-double xdev_assign_treatments(const Rcpp::Environment& data,
+Rcpp::Environment xdev_assign_treatments(const Rcpp::Environment& data,
                           const Rcpp::DataFrame& table,
                           const string& sample = "sample",
                           const string& treatment = "treatment",
@@ -800,10 +800,10 @@ bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data);
 //'
 //'  report(data = data, type = "bin_scrap")
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
+Rcpp::Environment xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
                      const string& reason = "merged", const string& bin_type = "otu");
 /******************************************************************************/
 //' @title xdev_merge_sequences
@@ -860,10 +860,10 @@ void xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_na
 //'
 //' count(data = data, type = "sequence")
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_merge_sequences(const Rcpp::Environment& data,
+Rcpp::Environment xdev_merge_sequences(const Rcpp::Environment& data,
                           const vector<string>& sequence_names,
                           const string& reason = "merged");
 /******************************************************************************/
@@ -973,10 +973,10 @@ vector<string> xdev_names(const Rcpp::Environment& data,
 //'
 //'   count(data = data, type = "bin", bin_type = "otu")
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_remove_bins(const Rcpp::Environment& data,
+Rcpp::Environment xdev_remove_bins(const Rcpp::Environment& data,
                       const vector<string>& bin_names,
                       const vector<string>& trash_tags,
                       const string& bin_type = "otu");
@@ -1006,10 +1006,10 @@ void xdev_remove_bins(const Rcpp::Environment& data,
 //'
 //' xdev_remove_lineages(data = data, contaminants = contaminants)
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_remove_lineages(const Rcpp::Environment& data,
+Rcpp::Environment xdev_remove_lineages(const Rcpp::Environment& data,
                           const vector<string>& contaminants,
                           const string& reason = "contaminant");
 
@@ -1038,10 +1038,10 @@ void xdev_remove_lineages(const Rcpp::Environment& data,
 //'
 //' count(data = data, type = "sample")
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_remove_samples(const Rcpp::Environment& data,
+Rcpp::Environment xdev_remove_samples(const Rcpp::Environment& data,
                          const vector<string>& samples,
                          const string& reason = "remove_samples");
 
@@ -1084,10 +1084,10 @@ void xdev_remove_samples(const Rcpp::Environment& data,
 //'
 //' count(data = data, type = "sequence")
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_remove_sequences(const Rcpp::Environment& data,
+Rcpp::Environment xdev_remove_sequences(const Rcpp::Environment& data,
                            const vector<string>& sequence_names,
                            const vector<string>& trash_tags) ;
 
@@ -1241,10 +1241,10 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data,
 //'
 //' abundance(data = data, type = "sequence")
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_set_abundance(const Rcpp::Environment& data,
+Rcpp::Environment xdev_set_abundance(const Rcpp::Environment& data,
                         const vector<string>& sequence_names,
                         const vector<float>& sequence_abundances,
                         const string& reason = "update");
@@ -1284,10 +1284,10 @@ void xdev_set_abundance(const Rcpp::Environment& data,
 //'                     sequence_names = seqs_to_update,
 //'                     abundances = new_abunds)
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_set_abundances(const Rcpp::Environment& data,
+Rcpp::Environment xdev_set_abundances(const Rcpp::Environment& data,
                          const vector<string>& sequence_names,
                          const vector<vector<float>>& abundances,
                          const string& reason = "update");
@@ -1317,10 +1317,10 @@ void xdev_set_abundances(const Rcpp::Environment& data,
 //'                    sequence_names = c("seq1", "seq2","seq3", "seq4"),
 //'                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void xdev_set_sequences(const Rcpp::Environment& data,
+Rcpp::Environment xdev_set_sequences(const Rcpp::Environment& data,
                         const vector<string>& sequence_names,
                         const vector<string>& sequences,
                         const Rcpp::CharacterVector& comments = Rcpp::CharacterVector::create());

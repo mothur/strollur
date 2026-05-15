@@ -18,16 +18,18 @@
 //' data <- miseq_sop_example()
 //' clear(data)
 //'
-//' @return No return value, called for side effects.
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-void clear(Rcpp::Environment data) {
+Rcpp::Environment clear(Rcpp::Environment& data) {
     Rcpp::XPtr<Dataset> d = data["data"];
     d.get()->clear();
 
     data["raw"] = R_NilValue;
     data["sequence_tree"] = R_NilValue;
     data["sample_tree"] = R_NilValue;
+
+    return data;
 }
 /******************************************************************************/
 //' @title export_dataset

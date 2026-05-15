@@ -27,7 +27,7 @@ that contains the treatments. Default column name is 'treatment'.}
 messages. Default = TRUE.}
 }
 \value{
-double containing the number of samples assigned to treatments
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign samples to treatments in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

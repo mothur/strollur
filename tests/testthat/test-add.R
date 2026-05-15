@@ -1,5 +1,16 @@
 # tests add function
 
+test_that("test add - piping", {
+  data <- new_dataset()
+
+  table <- data.frame(sequence_name = c("seq1", "seq2", "seq3"))
+
+  abunds <- add(data, table) |> abundance()
+
+  expect_equal(abunds$sequence_name, c("seq1", "seq2", "seq3"))
+  expect_equal(abunds$abundance, rep(1, 3))
+})
+
 test_that("test add - errors", {
   data <- new_dataset()
 

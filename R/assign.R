@@ -136,7 +136,8 @@
 #'
 #' assign(data, table = sample_assignments, type = "treatment")
 #'
-#' @return double - The number of items assigned
+#' @return an updated
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 assign <- function(data, table,
                    type = "bin",
@@ -231,5 +232,5 @@ assign <- function(data, table,
     )
     cli::cli_abort(message)
   }
-  num
+  data
 }
