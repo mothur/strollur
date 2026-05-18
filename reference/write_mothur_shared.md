@@ -43,7 +43,7 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_shared(miseq, tempfile())
-#> [1] "/tmp/Rtmpf8qWqV/file1a734182f83e.otu.shared"      
-#> [2] "/tmp/Rtmpf8qWqV/file1a734182f83e.asv.shared"      
-#> [3] "/tmp/Rtmpf8qWqV/file1a734182f83e.phylotype.shared"
+#> [1] "/tmp/RtmpDlxp67/file1aaf731eb728.otu.shared"      
+#> [2] "/tmp/RtmpDlxp67/file1aaf731eb728.asv.shared"      
+#> [3] "/tmp/RtmpDlxp67/file1aaf731eb728.phylotype.shared"
 ```
