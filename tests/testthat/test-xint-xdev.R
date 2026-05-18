@@ -1,5 +1,17 @@
 # adds coverage for internal (xint) and developer (xdev) Rcpp functions
 
+test_that("adding duplicate sequences or bins", {
+    data <- new_dataset()
+
+    fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+    xdev_add_sequences(data = data, table = fasta_data)
+
+    # duplicate sequences
+    expect_error(xdev_add_sequences(data = data,
+                                    table = fasta_data))
+
+})
+
 test_that("xdev_abundance", {
   data <- new_dataset()
 

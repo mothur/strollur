@@ -274,12 +274,21 @@ double Dataset::addSequences(const vector<string>& n,
         s.resize(n.size(), "");
     }
 
+    // for sanity check to flag duplicate names
+    set<string> existingNames = toSet(names);
+
     // add to seqIndex
     int numSeqs = static_cast<int>(names.size());
     vector<int> countNames;
-    for (const auto& i : n) {
+    for (const auto& seqName : n) {
+        // duplicate name
+        if (existingNames.count(seqName) != 0) {
+            string message = "The dataset already contains a sequence or bin named '";
+            message +=  seqName + "', sequence and bin names must be unique.";
+            throw Rcpp::exception(message.c_str());
+        }
         countNames.push_back(numSeqs);
-        seqIndex[i] = numSeqs;
+        seqIndex[seqName] = numSeqs;
         numSeqs++;
     }
 
