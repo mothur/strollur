@@ -2,10 +2,10 @@
 
 ## Overview
 
-The *strollur* package stores data associated with your microbial DNA
-analysis. This tutorial will familiarize you with some of the functions
-available in the *strollur* package. If you haven’t reviewed the
-“Getting Started” tuturial, we recommend you start there.
+The *strollur* package stores data associated with your Amplicon
+Sequence Analysis. This tutorial will familiarize you with some of the
+functions available in the *strollur* package. If you haven’t reviewed
+the “Getting Started” tuturial, we recommend you start there.
 
 ## Loading the example dataset
 
@@ -68,7 +68,7 @@ miseq
 ## Accessing Your Data
 
 The *strollur* package includes several functions to access your
-microbial data.
+sequence data.
 
 [`names()`](https://mothur.org/strollur/reference/names.md) - The names
 function is an extension of base R’s names function. It allows you to
@@ -790,8 +790,8 @@ report(
 #> 1 @article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy}, journal = {Applied and Environmental Microbiology}, volume = {73}, number = {16}, pages = {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL = {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint = {https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}
 #> 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NA
 #>   creation_date
-#> 1    2026-05-15
-#> 2    2026-05-15
+#> 1    2026-05-18
+#> 2    2026-05-18
 ```
 
 Lastly, if sequences or bins have been removed over the course of your

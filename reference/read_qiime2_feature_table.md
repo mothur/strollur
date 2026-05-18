@@ -2341,15 +2341,6 @@ data <- new_dataset("my_data")
 
 assign(data = data, table = artifact$data, type = "bin")
 #> Assigned 759 otu bins.
-#> my_data:
-#> 
-#> 
-#> Number of unique seqs: 759 
-#> Total number of seqs: 157298 
-#> 
-#> Total number of samples: 34 
-#> Total number of otus: 759 
-#> 
 
 data
 #> my_data:

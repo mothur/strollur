@@ -115,35 +115,6 @@ dgc_data <- read_mothur_list(list = strollur_example("final.dgc.list.gz"))
 
 assign(miseq_from_rds, table = dgc_data, bin_type = "dgc")
 #> Assigned 361 dgc bins.
-#> miseq_sop:
-#> 
-#>             starts ends nbases ambigs polymers numns   numseqs
-#> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.08
-#> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    252      0        4     0  56982.50
-#> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    253      0        6     0 111114.93
-#> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0      0.00
-#> 
-#> Number of unique seqs: 2425 
-#> Total number of seqs: 113963 
-#> 
-#> Total number of samples: 19 
-#> Total number of treatments: 2 
-#> Total number of otus: 531 
-#> Total number of otu bin classifications: 531 
-#> Total number of asvs: 2425 
-#> Total number of asv bin classifications: 2425 
-#> Total number of phylotypes: 63 
-#> Total number of phylotype bin classifications: 63 
-#> Total number of dgcs: 361 
-#> Total number of dgc bin classifications: 361 
-#> Total number of sequence classifications: 2425 
-#> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
 miseq_from_rds
 #> miseq_sop:
 #> 
@@ -279,7 +250,7 @@ str(table)
 #>   ..$ documentation_url: chr [1:2] "https://mothur.org/phylotypr/" "https://mothur.org/wiki/silva_reference_files/"
 #>   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"
 #>   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"
-#>   ..$ creation_date    : chr [1:2] "2026-05-15" "2026-05-15"
+#>   ..$ creation_date    : chr [1:2] "2026-05-18" "2026-05-18"
 #>  $ metadata                         :'data.frame':   19 obs. of  2 variables:
 #>   ..$ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...
 #>   ..$ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...
@@ -392,35 +363,6 @@ miseq_deep_copy, and mise_shallow_copy.
 
 assign(miseq_shallow_copy, table = dgc_data, bin_type = "dgc")
 #> Assigned 361 dgc bins.
-#> miseq_sop:
-#> 
-#>             starts ends nbases ambigs polymers numns   numseqs
-#> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.08
-#> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    252      0        4     0  56982.50
-#> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    253      0        6     0 111114.93
-#> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0      0.00
-#> 
-#> Number of unique seqs: 2425 
-#> Total number of seqs: 113963 
-#> 
-#> Total number of samples: 19 
-#> Total number of treatments: 2 
-#> Total number of otus: 531 
-#> Total number of otu bin classifications: 531 
-#> Total number of asvs: 2425 
-#> Total number of asv bin classifications: 2425 
-#> Total number of phylotypes: 63 
-#> Total number of phylotype bin classifications: 63 
-#> Total number of dgcs: 361 
-#> Total number of dgc bin classifications: 361 
-#> Total number of sequence classifications: 2425 
-#> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
 
 miseq
 #> miseq_sop:

@@ -59,14 +59,6 @@ assign(data = data,
                           sample = samples),
        type = "sequence_abundance")
 #> Assigned 10 sequence abundances.
-#> my_data:
-#> 
-#> 
-#> Number of unique seqs: 10 
-#> Total number of seqs: 100 
-#> 
-#> Total number of samples: 6 
-#> 
 
 # For the sake of example let's merge the first 3 sequences.
 

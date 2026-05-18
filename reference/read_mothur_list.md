@@ -38,10 +38,4 @@ data <- new_dataset()
 # assign sequences to 'otu' bins
 assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-#> 
-#> Number of unique seqs: 2425 
-#> Total number of seqs: 2425 
-#> 
-#> Total number of otus: 531 
-#> 
 ```

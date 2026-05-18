@@ -1,4 +1,4 @@
-# The \`strollur\` object stores the data associated with your microbial analysis.
+# The \`strollur\` object stores the data associated with your amplicon sequence analysis.
 
 'strollur' is an R6 class that stores nucleotide sequences, abundance,
 sample and treatment assignments, taxonomic classifications, asv / otu
@@ -1243,15 +1243,6 @@ data$add(
  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
  assign(data = data, table = df, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-#> my_dataset:
-#> 
-#> 
-#> Number of unique seqs: 531 
-#> Total number of seqs: 113963 
-#> 
-#> Total number of samples: 19 
-#> Total number of otus: 531 
-#> 
 
  tree <- ape::read.tree(strollur_example(
  "final.opti_mcc.jclass.ave.tre"))

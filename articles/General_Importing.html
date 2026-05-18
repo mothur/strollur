@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="General Importing">
 </head>
@@ -46,6 +46,7 @@
     <li><a class="dropdown-item" href="../articles/Importing_from_mothur.html">Importing from mothur</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_phyloseq.html">Importing from phyloseq</a></li>
     <li><a class="dropdown-item" href="../articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
+    <li><a class="dropdown-item" href="../articles/Process_Data_Across_Tools.html">Example Analysis Across Software Tools</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -99,7 +100,7 @@ functions available in the strollur package. If you haven’t reviewed the
 <h2 id="importing-data">Importing Data<a class="anchor" aria-label="anchor" href="#importing-data"></a>
 </h2>
 <p>The <em>strollur</em> package includes two functions to allow you to
-add microbial data.</p>
+add sequence data.</p>
 <p><code><a href="../reference/add.html">add()</a></code> - The add function allows you to add sequences,
 reports, metadata, and resource references to your data set.</p>
 <p><code><a href="../reference/assign.html">assign()</a></code> - The assign function allows assign sequence
@@ -131,20 +132,6 @@ a data.frame.</p>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
-<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 2425</span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -193,22 +180,6 @@ from our data set.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; Added 1 resource references.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
-<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 2425 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of resource references: 1</span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -289,23 +260,6 @@ contigs_report the <em>sequence_name</em> column is called
 <span>  table_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sequence_name <span class="op">=</span> <span class="st">"Name"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added a contigs_report.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
-<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 2425 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of resource references: 1 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1</span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -349,25 +303,7 @@ setting the type = “metadata”.</p>
 <span>  table <span class="op">=</span> <span class="va">metadata</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"metadata"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Added metadata.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
-<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 2425 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of resource references: 1 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Added metadata.</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="adding-resource-references">Adding Resource References<a class="anchor" aria-label="anchor" href="#adding-resource-references"></a>
@@ -384,25 +320,10 @@ the type = “resource_reference”.</p>
 <span>  table <span class="op">=</span> <span class="va">reference</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"resource_reference"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Added 2 resource references.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
-<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
+<span><span class="co">#&gt; The dataset already contains a resource_reference named 'silva.bacteria.fasta', overwriting existing reference.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 2425 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Added 1 resource references.</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -436,26 +357,6 @@ sample data using the assign function with the type =
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 19 </span></span>
-<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
 <span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
@@ -475,7 +376,7 @@ sample data using the assign function with the type =
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of samples: 19 </span></span>
 <span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
+<span><span class="co">#&gt; Total number of resource references: 2 </span></span>
 <span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
 <span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
 </div>
@@ -503,27 +404,6 @@ Taxonomic Unit</a> clusters and set the bin_type = “otu”.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 19 </span></span>
-<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of otus: 531 </span></span>
-<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
 <span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
@@ -544,13 +424,13 @@ Taxonomic Unit</a> clusters and set the bin_type = “otu”.</p>
 <span><span class="co">#&gt; Total number of samples: 19 </span></span>
 <span><span class="co">#&gt; Total number of treatments: 2 </span></span>
 <span><span class="co">#&gt; Total number of otus: 531 </span></span>
-<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
+<span><span class="co">#&gt; Total number of resource references: 2 </span></span>
 <span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
 <span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
 <p>You can see from the summary, we now have 531 otus in our
 dataset.</p>
 <p>Note, if you are importing data from packages that preprocess the
-microbial data into features, you can assign the feature table
+Amplicon Sequence data into features, you can assign the feature table
 abundances as sequence abundances and then assign the features to <a href="https://en.wikipedia.org/wiki/Amplicon_sequence_variant" class="external-link">Amplicon
 Sequence Variant</a> clusters or <em>asv</em> bins.</p>
 </div>
@@ -578,30 +458,7 @@ taxonomy to our sequences.</p>
 <span>  table <span class="op">=</span> <span class="va">sequence_classification_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 19 </span></span>
-<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of otus: 531 </span></span>
-<span><span class="co">#&gt; Total number of otu bin classifications: 531 </span></span>
-<span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
-<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span></code></pre></div>
 <p>Note, when you assign taxonomy to sequences that are assigned to
 bins, strollur will automatically assign the bin taxonomies to be the
 consensus taxonomy of the sequences in the bins. You can also set bin
@@ -628,30 +485,7 @@ taxonomies independently by setting the type = “bin_taxonomy”.</p>
 <span>  type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 19 </span></span>
-<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of otus: 531 </span></span>
-<span><span class="co">#&gt; Total number of otu bin classifications: 531 </span></span>
-<span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
-<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="assigning-bin-representatives">Assigning Bin Representatives<a class="anchor" aria-label="anchor" href="#assigning-bin-representatives"></a>
@@ -677,30 +511,7 @@ bins in your clusters. Let’s assign bin representatives to our
 <span>  table <span class="op">=</span> <span class="va">bin_reps</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_representative"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 19 </span></span>
-<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of otus: 531 </span></span>
-<span><span class="co">#&gt; Total number of otu bin classifications: 531 </span></span>
-<span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
-<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="assigning-treatments">Assigning Treatments<a class="anchor" aria-label="anchor" href="#assigning-treatments"></a>
@@ -725,30 +536,7 @@ you can also assign samples to treatments by setting type =
 <span>  table <span class="op">=</span> <span class="va">sample_assignments</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"treatment"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
-<span><span class="co">#&gt; my_data:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 19 </span></span>
-<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of otus: 531 </span></span>
-<span><span class="co">#&gt; Total number of otu bin classifications: 531 </span></span>
-<span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
-<span><span class="co">#&gt; Total number of resource references: 3 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span></code></pre></div>
 </div>
 </div>
 </div>

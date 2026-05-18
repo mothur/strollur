@@ -42,8 +42,8 @@ Adding and using data
   [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 - [`strollur`](https://mothur.org/strollur/reference/strollur.md) : The
-  \`strollur\` object stores the data associated with your microbial
-  analysis.
+  \`strollur\` object stores the data associated with your amplicon
+  sequence analysis.
 
 - [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
   : strollur: Store and Transfer Data Associated with Amplicon Sequence

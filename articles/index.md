@@ -16,4 +16,6 @@
   phyloseq](https://mothur.org/strollur/articles/Importing_from_phyloseq.md):
 - [Importing from
   qiime2](https://mothur.org/strollur/articles/Importing_from_qiime2.md):
+- [Example Analysis Across Software
+  Tools](https://mothur.org/strollur/articles/Process_Data_Across_Tools.md):
 - [Getting Started](https://mothur.org/strollur/articles/strollur.md):

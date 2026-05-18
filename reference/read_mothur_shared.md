@@ -34,11 +34,4 @@ data <- new_dataset()
 # assign abundance only 'otu' bins parsed by sample
 assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-#> 
-#> Number of unique seqs: 531 
-#> Total number of seqs: 113963 
-#> 
-#> Total number of samples: 19 
-#> Total number of otus: 531 
-#> 
 ```

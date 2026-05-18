@@ -55,12 +55,6 @@ data <- new_dataset()
 # assign sequence abundances parsed by sample
 assign(data, table = sample_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
-#> 
-#> Number of unique seqs: 2425 
-#> Total number of seqs: 113963 
-#> 
-#> Total number of samples: 19 
-#> 
 
 # print summary of data
 data
