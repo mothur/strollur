@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The *strollur* package stores data associated with your microbial DNA analysis. This tutorial will familiarize you with some of the functions available in the *strollur* package. If you haven't reviewed the "Getting Started" tuturial, we recommend you start there. 
+The *strollur* package stores data associated with your Amplicon Sequence Analysis. This tutorial will familiarize you with some of the functions available in the *strollur* package. If you haven't reviewed the "Getting Started" tuturial, we recommend you start there. 
 
 ## Loading the example dataset
 
@@ -35,7 +35,7 @@ miseq
 
 ## Accessing Your Data
 
-The *strollur* package includes several functions to access your microbial data.
+The *strollur* package includes several functions to access your sequence data.
 
 `names()` - The names function is an extension of base R's names function. It allows you to get the name of your dataset or the names of the sequences, bins, samples, treatments and reports in your dataset.
 

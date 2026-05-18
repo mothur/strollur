@@ -2,8 +2,8 @@
 % Please edit documentation in R/r6_strollur.R
 \name{strollur}
 \alias{strollur}
-\title{The `strollur` object stores the data associated with your microbial
-  analysis.}
+\title{The `strollur` object stores the data associated with your amplicon
+  sequence analysis.}
 \description{
 'strollur' is an R6 class that stores nucleotide sequences,
 abundance, sample and treatment assignments, taxonomic classifications,

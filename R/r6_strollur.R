@@ -1,5 +1,5 @@
-#' @title The `strollur` object stores the data associated with your microbial
-#'   analysis.
+#' @title The `strollur` object stores the data associated with your amplicon
+#'   sequence analysis.
 #' @name strollur
 #' @rdname strollur
 #' @description 'strollur' is an R6 class that stores nucleotide sequences,

@@ -37,6 +37,8 @@ Suggests:
     testthat (>= 3.0.0),
     xml2,
     phyloseq,
+    ggplot2,
+    phylotypr,
     rhdf5,
     h5lite
 Config/testthat/edition: 3
