@@ -19,16 +19,19 @@ knitr::opts_chunk$set(
 One of the challenges of Amplicon Sequence Data Analysis is transferring data between software tools. The `strollur` package is designed to make that process seamless. This tutorial will demonstrate a workflow using mothur to preprocess and bin the data, `strollur` to store and transfer the data, `phylotypr` to classify the data, `phyloseq` to calculate the alpha and beta diversities and `ggplot2` to create visuals. 
 
 ```{r setup}
-if (!requireNamespace("ggplot2", quietly = TRUE) || 
-    !requireNamespace("phylotypr", quietly = TRUE) || 
-    !requireNamespace("phyloseq", quietly = TRUE)) {
-  message("Suggested packages 'ggplot2', 'phyloseq' or 'phylotypr' are not installed.")
+if (!requireNamespace("ggplot2", quietly = TRUE) ||
+      !requireNamespace("phylotypr", quietly = TRUE) ||
+      !requireNamespace("phyloseq", quietly = TRUE)) {
+  message(paste(
+    "Suggested packages 'ggplot2', 'phyloseq' or 'phylotypr'",
+    "are not installed."
+  ))
   knitr::opts_chunk$set(eval = FALSE)
-}else {
-    library(strollur)
-    library(phylotypr)
-    library(phyloseq)
-    library(ggplot2)
+} else {
+  library(strollur)
+  library(phylotypr)
+  library(phyloseq)
+  library(ggplot2)
 }
 ```
 
@@ -89,7 +92,11 @@ pcoa_ord <- ordinate(ps_rel, method = "PCoA", distance = "bray")
 ### Plot the Shannon Alpha Diversity as a boxplot:
 
 ```{r}
-ggplot2::ggplot(shannon_plot_data, aes(x = treatment, y = Shannon, fill = treatment)) +
+ggplot2::ggplot(shannon_plot_data, aes(
+  x = treatment,
+  y = Shannon,
+  fill = treatment
+)) +
   geom_boxplot(alpha = 0.7, outlier.shape = NA) +
   geom_jitter(width = 0.2, size = 2, alpha = 0.5) +
   scale_fill_brewer(palette = "Set2") +
@@ -118,10 +125,14 @@ ggplot2::ggplot(pcoa_df, aes(x = Axis.1, y = Axis.2, color = treatment)) +
   scale_color_brewer(palette = "Set1") +
   labs(
     title = "PCoA Ordination",
-    x = paste0("Axis 1 [",
-               round(pcoa_ord$values$Relative_eig[1] * 100, 1), "%]"),
-    y = paste0("Axis 2 [",
-               round(pcoa_ord$values$Relative_eig[2] * 100, 1), "%]"),
+    x = paste0(
+      "Axis 1 [",
+      round(pcoa_ord$values$Relative_eig[1] * 100, 1), "%]"
+    ),
+    y = paste0(
+      "Axis 2 [",
+      round(pcoa_ord$values$Relative_eig[2] * 100, 1), "%]"
+    ),
     color = "Experimental Group"
   ) +
   theme_bw() +
