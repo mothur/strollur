@@ -44,12 +44,12 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/Accessing_Dataset.html">Accessing Data</a></li>
     <li><a class="dropdown-item" href="articles/Data_Transfers.html">Data Transfers</a></li>
+    <li><a class="dropdown-item" href="articles/Example_Analysis_Across_Software_Tools.html">Example Analysis Across Software Tools</a></li>
     <li><a class="dropdown-item" href="articles/Functions_for_Package_Developers.html">Functions for package developers</a></li>
     <li><a class="dropdown-item" href="articles/General_Importing.html">General Importing</a></li>
     <li><a class="dropdown-item" href="articles/Importing_from_mothur.html">Importing from mothur</a></li>
     <li><a class="dropdown-item" href="articles/Importing_from_phyloseq.html">Importing from phyloseq</a></li>
     <li><a class="dropdown-item" href="articles/Importing_from_qiime2.html">Importing from qiime2</a></li>
-    <li><a class="dropdown-item" href="articles/Process_Data_Across_Tools.html">Example Analysis Across Software Tools</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -115,8 +115,7 @@
 </h3>
 <p>You can install the development version of strollur from <a href="https://github.com/mothur/strollur" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mothur/strollur"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"mothur/strollur"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -133,81 +132,12 @@
 <span></span>
 <span><span class="fu"><a href="reference/add.html">add</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
-<span><span class="co">#&gt; example:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0    1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   61.62</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  607.25</span></span>
-<span><span class="co">#&gt; Median:          1  375    253      0        4     0 1213.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0 1819.75</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 2365.38</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 2425.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0    0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 2425</span></span>
 <span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
-<span><span class="co">#&gt; example:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 19 </span></span>
-<span><span class="co">#&gt; Total number of treatments: 2</span></span>
 <span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
-<span><span class="co">#&gt; example:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 19 </span></span>
-<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of otus: 531</span></span>
 <span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">classification_data</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
-<span><span class="co">#&gt; example:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
-<span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        3     0   2850.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    252      0        4     0  56982.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85473.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    253      0        6     0 111114.93</span></span>
-<span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0      0.00</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 113963 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 19 </span></span>
-<span><span class="co">#&gt; Total number of treatments: 2 </span></span>
-<span><span class="co">#&gt; Total number of otus: 531 </span></span>
-<span><span class="co">#&gt; Total number of otu bin classifications: 531 </span></span>
-<span><span class="co">#&gt; Total number of sequence classifications: 2425</span></span>
 <span></span>
 <span><span class="va">data</span></span>
 <span><span class="co">#&gt; example:</span></span>

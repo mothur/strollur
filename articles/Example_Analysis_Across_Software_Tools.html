@@ -151,7 +151,7 @@ files.</p>
 <span><span class="co">#&gt; Added metadata.</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="classify-using-phylotypr">Classify using <code>phylotypr</code><a class="anchor" aria-label="anchor" href="#classify-using-phylotypr"></a>
+<h2 id="classify-using-phylotypr">Classify using phylotypr<a class="anchor" aria-label="anchor" href="#classify-using-phylotypr"></a>
 </h2>
 <p><a href="https://mothur.org/phylotypr/" class="external-link"><code>phylotypr</code></a>
 provides an R-based implementation of a <a href="https://pubmed.ncbi.nlm.nih.gov/17586664/" class="external-link">naive Bayesian
@@ -163,7 +163,7 @@ also includes built in reference databases for your use.</p>
 <span><span class="fu">classify_sequences</span><span class="op">(</span><span class="va">strollur_data</span>, <span class="va">database_reference</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="diversity-analysis-using-phyloseq">Diversity Analysis using <code>phyloseq</code><a class="anchor" aria-label="anchor" href="#diversity-analysis-using-phyloseq"></a>
+<h2 id="diversity-analysis-using-phyloseq">Diversity Analysis using phyloseq<a class="anchor" aria-label="anchor" href="#diversity-analysis-using-phyloseq"></a>
 </h2>
 <p>We can use strollur’s write functions to create <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link">phyloseq
 object</a> from the strollur object and calculate the Shannon Index and
@@ -190,7 +190,7 @@ Principal Coordinates Analysis (PCoA) values using phyloseq.</p>
 <span><span class="va">pcoa_ord</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ordinate.html" class="external-link">ordinate</a></span><span class="op">(</span><span class="va">ps_rel</span>, method <span class="op">=</span> <span class="st">"PCoA"</span>, distance <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="create-publication-ready-plots-using-ggplot2">Create publication-ready plots using <code>ggplot2</code><a class="anchor" aria-label="anchor" href="#create-publication-ready-plots-using-ggplot2"></a>
+<h2 id="create-publication-ready-plots-grouped-by-treatment">Create publication-ready plots grouped by treatment<a class="anchor" aria-label="anchor" href="#create-publication-ready-plots-grouped-by-treatment"></a>
 </h2>
 <div class="section level3">
 <h3 id="plot-the-shannon-alpha-diversity-as-a-boxplot">Plot the Shannon Alpha Diversity as a boxplot:<a class="anchor" aria-label="anchor" href="#plot-the-shannon-alpha-diversity-as-a-boxplot"></a>
@@ -206,7 +206,7 @@ Principal Coordinates Analysis (PCoA) values using phyloseq.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Alpha Diversity"</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">"Treatment"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Experimental Group"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"Shannon Diversity Score"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -238,7 +238,7 @@ Principal Coordinates Analysis (PCoA) values using phyloseq.</p>
 <span>      <span class="st">"Axis 2 ["</span>,</span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">pcoa_ord</span><span class="op">$</span><span class="va">values</span><span class="op">$</span><span class="va">Relative_eig</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"%]"</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"Treatment"</span></span>
+<span>    color <span class="op">=</span> <span class="st">"Experimental Group"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>

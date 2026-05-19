@@ -67,7 +67,7 @@ add(strollur_data, table = metadata, type = "metadata")
 #> Added metadata.
 ```
 
-## Classify using `phylotypr`
+## Classify using phylotypr
 
 [`phylotypr`](https://mothur.org/phylotypr/) provides an R-based
 implementation of a [naive Bayesian
@@ -82,7 +82,7 @@ database_reference <- build_kmer_database(trainset9_pds)
 classify_sequences(strollur_data, database_reference)
 ```
 
-## Diversity Analysis using `phyloseq`
+## Diversity Analysis using phyloseq
 
 We can use strollur’s write functions to create [phyloseq
 object](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html)
@@ -112,7 +112,7 @@ ps_rel <- transform_sample_counts(
 pcoa_ord <- ordinate(ps_rel, method = "PCoA", distance = "bray")
 ```
 
-## Create publication-ready plots using `ggplot2`
+## Create publication-ready plots grouped by treatment
 
 ### Plot the Shannon Alpha Diversity as a boxplot:
 
@@ -128,7 +128,7 @@ ggplot2::ggplot(shannon_plot_data, aes(
   scale_fill_brewer(palette = "Set2") +
   labs(
     title = "Alpha Diversity",
-    x = "Treatment",
+    x = "Experimental Group",
     y = "Shannon Diversity Score"
   ) +
   theme_bw() +
@@ -162,7 +162,7 @@ ggplot2::ggplot(pcoa_df, aes(x = Axis.1, y = Axis.2, color = treatment)) +
       "Axis 2 [",
       round(pcoa_ord$values$Relative_eig[2] * 100, 1), "%]"
     ),
-    color = "Treatment"
+    color = "Experimental Group"
   ) +
   theme_bw() +
   theme(

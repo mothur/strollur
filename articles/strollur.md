@@ -24,8 +24,7 @@ You can install the development version of *strollur* from
 
 ``` r
 
-# install.packages("devtools")
-devtools::install_github("mothur/strollur")
+pak::pak("mothur/strollur")
 ```
 
 ## Importing, Accessing and Transfering Data

@@ -100,7 +100,7 @@ function:
 
 ``` r
 
-fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
+fasta_data <- strollur::read_fasta(fasta = strollur_example("final.fasta.gz"))
 ```
 
 fasta_data is a data.frame containing sequence names, sequence
