@@ -65,7 +65,7 @@ my_data <- new_dataset(dataset_name = "my_data")
 To add [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data to your data set you can use the `read_fasta()` function:
 
 ```{r}
-fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
+fasta_data <- strollur::read_fasta(fasta = strollur_example("final.fasta.gz"))
 ```
 
 fasta_data is a data.frame containing sequence names, sequence nucleotide strings, and comments if provided. You can add the FASTA sequences to your data set using the `add()` function:

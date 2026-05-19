@@ -51,8 +51,7 @@ install.packages("strollur")
 You can install the development version of strollur from [GitHub](https://github.com/mothur/strollur) with:
 
 ```{r, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("mothur/strollur")
+pak::pak("mothur/strollur")
 ```
 
 ## Usage

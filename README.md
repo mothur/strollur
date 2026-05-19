@@ -57,8 +57,7 @@ You can install the development version of strollur from
 [GitHub](https://github.com/mothur/strollur) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("mothur/strollur")
+pak::pak("mothur/strollur")
 ```
 
 ## Usage
@@ -79,81 +78,12 @@ data <- new_dataset(dataset_name = "example")
 
 add(data, table = fasta_data, type = "sequence")
 #> Added 2425 sequences.
-#> example:
-#> 
-#>             starts ends nbases ambigs polymers numns numseqs
-#> Minimum:         1  375    249      0        3     0    1.00
-#> 2.5%-tile:       1  375    252      0        4     0   61.62
-#> 25%-tile:        1  375    252      0        4     0  607.25
-#> Median:          1  375    253      0        4     0 1213.50
-#> 75%-tile:        1  375    253      0        5     0 1819.75
-#> 97.5%-tile:      1  375    254      0        6     0 2365.38
-#> Maximum:         1  375    256      0        6     0 2425.00
-#> Mean:            1  375    252      0        4     0    0.00
-#> 
-#> Number of unique seqs: 2425 
-#> Total number of seqs: 2425
 assign(data, table = abundance_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
-#> example:
-#> 
-#>             starts ends nbases ambigs polymers numns   numseqs
-#> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.08
-#> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    252      0        4     0  56982.50
-#> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    253      0        6     0 111114.93
-#> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0      0.00
-#> 
-#> Number of unique seqs: 2425 
-#> Total number of seqs: 113963 
-#> 
-#> Total number of samples: 19 
-#> Total number of treatments: 2
 assign(data, table = bin_table, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-#> example:
-#> 
-#>             starts ends nbases ambigs polymers numns   numseqs
-#> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.08
-#> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    252      0        4     0  56982.50
-#> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    253      0        6     0 111114.93
-#> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0      0.00
-#> 
-#> Number of unique seqs: 2425 
-#> Total number of seqs: 113963 
-#> 
-#> Total number of samples: 19 
-#> Total number of treatments: 2 
-#> Total number of otus: 531
 assign(data, table = classification_data, type = "sequence_taxonomy")
 #> Assigned 2425 sequence taxonomies.
-#> example:
-#> 
-#>             starts ends nbases ambigs polymers numns   numseqs
-#> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.08
-#> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    252      0        4     0  56982.50
-#> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    253      0        6     0 111114.93
-#> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0      0.00
-#> 
-#> Number of unique seqs: 2425 
-#> Total number of seqs: 113963 
-#> 
-#> Total number of samples: 19 
-#> Total number of treatments: 2 
-#> Total number of otus: 531 
-#> Total number of otu bin classifications: 531 
-#> Total number of sequence classifications: 2425
 
 data
 #> example:

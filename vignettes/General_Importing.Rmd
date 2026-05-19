@@ -41,7 +41,7 @@ The add function allows you to add sequences, reports, metadata, and resource re
 First, let's add some [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data. strollur has a function for reading FASTA files named `read_fasta()`. We will use it to read the sequence data into a data.frame.
 
 ```{r}
-fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
 str(fasta_data)
 
 add(
