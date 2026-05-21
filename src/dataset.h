@@ -46,6 +46,33 @@ static bool inline isEqual(const float& t, const float value) {
     return (isZero(t-value));
 }
 /**********************************************************************/
+struct orderAlpha {
+    string name;
+    unsigned index;
+
+    orderAlpha() { index = 0; name = ""; }
+    orderAlpha(std::string n, unsigned i) : name(n), index(i) {}
+    ~orderAlpha() {}
+};
+
+static inline bool compareAlpha(orderAlpha left, orderAlpha right){
+    // sort alphabetically
+    if (std::strcmp(left.name.c_str(), right.name.c_str()) < 0) {
+        return true;
+    }
+    return false;
+}
+/**********************************************************************/
+template<typename T>
+void applyOrder(T& x, const std::vector<unsigned>& order) {
+    if (x.empty()) { return; }
+    T copy = x;
+
+    for (auto i = 0; i < x.size(); i++) {
+        x[i] = copy[order[i]];
+    }
+}
+/**********************************************************************/
 struct pieceOfWork {
     double start;
     double end;

@@ -18,6 +18,17 @@ void xint_assigned_message(double num, string tag) {
     RcppThread::Rcout << message << endl;
 }
 /******************************************************************************/
+void xint_updated_message(double num, string tag) {
+    string message = "Updated ";
+    if (num != -1) {
+        message += toString(num) + " " + tag + ".";
+    } else {
+        message += tag + ".";
+    }
+
+    RcppThread::Rcout << message << endl;
+}
+/******************************************************************************/
 void fillReference(Reference& ref, Rcpp::List ref_list) {
     ref.name = Rcpp::as<string>(ref_list["name"]);
     ref.vendor = Rcpp::as<string>(ref_list["vendor"]);
@@ -225,7 +236,11 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
     double numAdded = d.get()->addReferences(refs);
 
     if (verbose) {
-        xint_added_message(numAdded, "resource references");
+        if (numAdded == 0) {
+            xint_updated_message(-1, "resource references");
+        }else {
+            xint_added_message(numAdded, "resource references");
+        }
     }
 
     return data;
@@ -268,10 +283,8 @@ Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
             // if we don't have any sequences yet, add them
             if (d.get()->getTotal() == 0) {
                 vector<string> sequences, comments;
-                Reference ref;
-
                 d.get()->addSequences(sequenceNames,
-                      sequences, comments, ref);
+                      sequences, comments);
             }else {
                 // we have sequences already, make sure there is a report row for
                 // each sequence in dataset
@@ -332,20 +345,30 @@ Rcpp::Environment xdev_add_sequences(const Rcpp::Environment& data,
 
     Rcpp::XPtr<Dataset> d = data["data"];
 
+    const double numAdded = d.get()->addSequences(sequence_names,
+                                  sequences, comments);
+
+    if (verbose) {
+        xint_added_message(numAdded);
+    }
+
     Reference ref;
     if (reference.isNotNull()) {
 
         Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
         fillReference(ref, ref_list);
-    }
 
-    const double numAdded = d.get()->addSequences(sequence_names,
-                            sequences, comments, ref);
+        vector<Reference> refs;
+        refs.push_back(ref);
 
-    if (verbose) {
-        xint_added_message(numAdded);
-        if (reference.isNotNull()) {
-            xint_added_message(1, "resource references");
+        double numAdded = d.get()->addReferences(refs);
+
+        if (verbose) {
+            if (numAdded == 0) {
+                xint_updated_message(1, "resource references");
+            }else {
+                xint_added_message(1, "resource references");
+            }
         }
     }
 
@@ -420,10 +443,14 @@ Rcpp::Environment xdev_assign_bins(const Rcpp::Environment& data,
         vector<Reference> refs;
         refs.push_back(ref);
 
-        d.get()->addReferences(refs);
+        double numAdded = d.get()->addReferences(refs);
 
         if (verbose) {
-            xint_added_message(1, "resource references");
+            if (numAdded == 0) {
+                xint_updated_message(1, "resource references");
+            }else {
+                xint_added_message(1, "resource references");
+            }
         }
     }
 
@@ -810,6 +837,12 @@ double xdev_count(const Rcpp::Environment& data,
     }
 
     return 0;
+}
+/******************************************************************************/
+Rcpp::List xdev_export_dataset(const Rcpp::Environment& data) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->exportDataset();
 }
 /******************************************************************************/
 vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& data,

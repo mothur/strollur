@@ -56,6 +56,25 @@ sort_dataframe <- function(data, order, named_col) {
   unlist(words)
 }
 # =========================================================================== #
+#' @title .import_compatible
+#' @description Check internal strollur object versions for compatibility
+#' @param table_version, string containing the version of the table to be
+#'   imported
+#' @returns A logical
+#' @keywords internal
+#' @noRd
+.import_compatible <- function(table_version) {
+  current_version <- new_dataset()$get_version()
+
+  # as we update versions of strollur we will add them to this function
+  if (table_version == current_version) {
+    return(TRUE)
+  } else if (table_version == "0.0.0") {
+    return(TRUE)
+  }
+  FALSE
+}
+# =========================================================================== #
 #' @title require_namespace
 #' @description a wrapper for `requireNamespace`. Allowing us to more
 #' easily create mock test for this functionality.

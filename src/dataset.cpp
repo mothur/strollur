@@ -11,6 +11,7 @@ Dataset::Dataset() {
     isAligned = false;
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
+    sortNeeded = true;
     hasList = false;
     numUnique = 0;
     uniqueBad = 0;
@@ -23,6 +24,7 @@ processors(processors) {
     isAligned = false;
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
+    sortNeeded = true;
     hasList = false;
     numUnique = 0;
     uniqueBad = 0;
@@ -55,12 +57,14 @@ Dataset::Dataset(const Dataset& dataset) {
 
     taxonomies = dataset.taxonomies;
     references = dataset.references;
+    refIndex = dataset.refIndex;
     seqIndex = dataset.seqIndex;
     tableSeqs = dataset.tableSeqs;
 
     badAccnos = dataset.badAccnos;
     uniqueBad = dataset.uniqueBad;
     hasList = dataset.hasList;
+    sortNeeded = dataset.sortNeeded;
 
     count.clone(dataset.count);
 
@@ -82,6 +86,7 @@ void Dataset::loadFromSerialized(Rcpp::RawVector serializedDataset) {
         cereal::BinaryInputArchive iarchive(ss);
         iarchive(*this);
     }
+    sortNeeded = true;
 }
 /******************************************************************************/
 Dataset::~Dataset() {}
@@ -90,6 +95,7 @@ void Dataset::clear() {
         isAligned = false;
         hasSequenceData = false;
         hasSequenceTaxonomy = false;
+        sortNeeded = true;
         hasList = false;
         numUnique = 0;
         uniqueBad = 0;
@@ -227,8 +233,28 @@ Rcpp::List Dataset::exportDataset(){
 }
 /******************************************************************************/
 double Dataset::addReferences(const vector<Reference>& refs) {
-    references.insert(references.end(), refs.begin(), refs.end());
-    return static_cast<double>(refs.size());
+    // check for existing reference of same name.
+    // If exists, message and update, otherwise add
+    int numAdded = 0;
+    for (Reference ref : refs) {
+
+        auto index = refIndex.find(ref.name);
+        if (index != refIndex.end()) {
+            string message = "The dataset already contains a resource_reference ";
+            message += "named '" + ref.name + "', overwriting existing reference.";
+            RcppThread::Rcout << endl << message << endl << endl;
+
+            references[index->second] = ref;
+        }else {
+            refIndex[ref.name] = references.size();
+            references.push_back(ref);
+            numAdded++;
+        }
+    }
+
+    sortNeeded = true;
+
+    return static_cast<double>(numAdded);
 }
 /******************************************************************************/
 void Dataset::addReport(Rcpp::DataFrame& report, const string& type) {
@@ -240,6 +266,7 @@ void Dataset::addReport(Rcpp::DataFrame& report, const string& type) {
     }else{
         it->second.addReport(report);
     }
+    sortNeeded = true;
 }
 /******************************************************************************/
 void Dataset::addMetadata(const Rcpp::DataFrame& data){
@@ -248,20 +275,30 @@ void Dataset::addMetadata(const Rcpp::DataFrame& data){
 /******************************************************************************/
 double Dataset::addSequences(const vector<string>& n,
                              vector<string> s,
-                             vector<string> c,
-                             const Reference& reference) {
+                             vector<string> c) {
+
+    sortNeeded = true;
 
     // must provide the same number of names and seqs
     if (s.empty()) {
         s.resize(n.size(), "");
     }
 
+    // for sanity check to flag duplicate names
+    set<string> existingNames = toSet(names);
+
     // add to seqIndex
     int numSeqs = static_cast<int>(names.size());
     vector<int> countNames;
-    for (const auto& i : n) {
+    for (const auto& seqName : n) {
+        // duplicate name
+        if (existingNames.count(seqName) != 0) {
+            string message = "The dataset already contains a sequence or bin named '";
+            message +=  seqName + "', sequence and bin names must be unique.";
+            throw Rcpp::exception(message.c_str());
+        }
         countNames.push_back(numSeqs);
-        seqIndex[i] = numSeqs;
+        seqIndex[seqName] = numSeqs;
         numSeqs++;
     }
 
@@ -301,10 +338,6 @@ double Dataset::addSequences(const vector<string>& n,
 
     hasSequenceData = true;
 
-    if (!reference.name.empty()) {
-        references.push_back(reference);
-    }
-
     return static_cast<double>(n.size());
 }
 /******************************************************************************/
@@ -313,7 +346,7 @@ double Dataset::assignBins(const vector<string>& binIds,
                             vector<string> samples,
                             vector<string> seqIds, const string& type) {
 
-
+    sortNeeded = true;
     double numBinsAdded = 0;
     int binTableIndex = getBinTableIndex(type);
 
@@ -389,6 +422,7 @@ double Dataset::assignBinRepresentativeSequences(const vector<string>& binNames,
         RcppThread::Rcout << endl << message << endl;
     }
 
+    sortNeeded = true;
     return repAssigned;
 }
 /******************************************************************************/
@@ -401,12 +435,13 @@ double Dataset::assignBinTaxonomy(const vector<string>& binIds,
     if (hasBinTable(type)) {
         numBinTaxonomiesAdded = binTables[getBinTableIndex(type)].assignTaxonomy(binIds, taxs);
     }
-
+    sortNeeded = true;
     return numBinTaxonomiesAdded;
 }
 /******************************************************************************/
 double Dataset::assignTreatments(const vector<string>& samples,
                                  const vector<string>& treatments) {
+    sortNeeded = true;
     return count.assignTreatments(samples, treatments);
 }
 /******************************************************************************/
@@ -416,7 +451,7 @@ double Dataset::assignSequenceAbundance(const vector<string>& ids,
                                         const vector<float>& abunds,
                                         const vector<string>& samples,
                                         const vector<string>& treatments) {
-
+    sortNeeded = true;
     double numSeqsAssigned = 0;
 
     const vector<string> uniqueNames = unique(ids);
@@ -458,6 +493,7 @@ double Dataset::assignSequenceTaxonomyTidy(const vector<string>& sequence_names,
                                             const vector<string>& taxes,
                                             const vector<float>& confidences) {
     double numSeqsTaxonomyAssigned = 0;
+    sortNeeded = true;
 
     if (!hasSequenceData) {
         addSequences(unique(sequence_names));
@@ -527,7 +563,7 @@ double Dataset::assignSequenceTaxonomyTidy(const vector<string>& sequence_names,
 /******************************************************************************/
 double Dataset::assignSequenceTaxonomy(const vector<string>& n,
                                        const vector<string>& t){
-
+    sortNeeded = true;
     double numSeqsTaxonomyAssigned = 0;
 
     if (!hasSequenceData) {
@@ -1733,6 +1769,78 @@ void Dataset::setSequences(const vector<string>& n, const vector<string>& s,
 }
 /******************************************************************************/
 const Rcpp::RawVector Dataset::serializeDataset() {
+    // before we serialize, we must sort.
+    // Without sorting, bins and sequences added in different orders will
+    // create serialized raw data vectors that could contain the same data and
+    // yet is_equal will see them as different.
+
+    if (sortNeeded) {
+        vector<orderAlpha> sortedVector((names).size());
+
+        for (auto i = 0; i < (names).size(); i++) {
+            sortedVector[i].index = i;
+            sortedVector[i].name = names[i];
+        }
+
+        sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
+
+        // names, seqIndex
+        std::vector<unsigned> order((names).size(), 0);
+        for (auto i = 0; i < (sortedVector).size(); i++) {
+            order[i] = sortedVector[i].index;
+            names[i] = sortedVector[i].name;
+            seqIndex[sortedVector[i].name] = i;
+        }
+
+        // apply ordered to tableSeqs, seqs, comments, trashCodes,
+        // starts, ends, lengths, ambigs, polymers, numns,
+        applyOrder(tableSeqs, order);
+        applyOrder(seqs, order);
+        applyOrder(comments, order);
+        applyOrder(trashCodes, order);
+        applyOrder(starts, order);
+        applyOrder(ends, order);
+        applyOrder(lengths, order);
+        applyOrder(ambigs, order);
+        applyOrder(polymers, order);
+        applyOrder(numns, order);
+
+        // taxonomies
+        if (hasSequenceTaxonomy) {
+            applyOrder(taxonomies, order);
+        }
+        count.sortAlpha(order);
+
+        // sorts by binName
+        for (int i = 0; i < binTables.size(); i++) {
+            binTables[i].sortAlpha(order);
+        }
+
+        // sort references alphabetically
+        if (references.size() != 0) {
+            sortedVector.clear();
+
+            sortedVector.resize(references.size());
+            for (auto i = 0; i < (references).size(); i++) {
+                sortedVector[i].index = i;
+                sortedVector[i].name = references[i].name;
+            }
+
+            sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
+
+            // references, refIndex
+            std::vector<unsigned> order((references).size(), 0);
+            for (auto i = 0; i < (sortedVector).size(); i++) {
+                references[i] = sortedVector[i].name;
+                refIndex[sortedVector[i].name] = i;
+            }
+        }
+        sortNeeded = false;
+    }
+
+    // Note: reports is sorted as its a map, metadata does not require sorting
+    // Note: count, binTables will address this issue in their serialization functions
+
     std::stringstream ss; // Use stringstream for in-memory serialization
     {
         cereal::BinaryOutputArchive oarchive(ss);

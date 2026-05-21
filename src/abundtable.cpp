@@ -15,6 +15,7 @@ AbundTable::~AbundTable() {}
 void AbundTable::clear() {
     hasSampleData = false;
     hasTreatments = false;
+
     total = 0;
     numSamples = 0;
     numTreatments = 0;
@@ -73,6 +74,7 @@ double AbundTable::add(const vector<int>& names) {
 
     const auto nameSize = static_cast<double>(names.size());
     total += nameSize;
+
     return nameSize;
 }
 /******************************************************************************/
@@ -709,36 +711,10 @@ float AbundTable::setAbundance(int name, float abund) {
     return 0;
 }
 /******************************************************************************/
-// void AbundTable::setAbundances(const map<int, map<string, float>>& binAbunds) {
-//
-//     // just abunds no parse by sample
-//     if (hasSampleData) {
-//         for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
-//
-//             vector<float> abunds(numSamples, 0);
-//             for (auto itSample = it->second.begin();
-//                  itSample != it->second.end(); itSample++) {
-//
-//                  // valid sample
-//                  auto itIndex = sampleIndex.find(itSample->first);
-//
-//                 if (itIndex != sampleIndex.end()) {
-//                     int index = itIndex->second;
-//
-//                     abunds[index] = itSample->second;
-//                 }
-//             }
-//
-//             setAbundance(it->first, abunds);
-//         }
-//     }else{
-//         for (auto it = binAbunds.begin(); it != binAbunds.end(); it ++) {
-//             setAbundance(it->first, it->second.begin()->second);
-//         }
-//     }
-//
-//     updateTotals();
-// }
+// sort counts based on order provided
+void AbundTable::sortAlpha(vector<unsigned>& seqOrder) {
+    applyOrder(counts, seqOrder);
+}
 /******************************************************************************/
 void AbundTable::updateTotals() {
 

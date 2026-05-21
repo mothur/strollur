@@ -1,5 +1,18 @@
 # adds coverage for internal (xint) and developer (xdev) Rcpp functions
 
+test_that("adding duplicate sequences or bins", {
+  data <- new_dataset()
+
+  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+  xdev_add_sequences(data = data, table = fasta_data)
+
+  # duplicate sequences
+  expect_error(xdev_add_sequences(
+    data = data,
+    table = fasta_data
+  ))
+})
+
 test_that("xdev_abundance", {
   data <- new_dataset()
 
@@ -12,6 +25,33 @@ test_that("xdev_abundance", {
 
   x <- 10
   expect_error(xdev_abundance(x), "data must be a strollur object.")
+})
+
+test_that("xdev - test adding / overwriting references", {
+  data <- new_dataset()
+
+  reference <- readr::read_csv(strollur_example("references.csv"),
+    col_names = TRUE, show_col_types = FALSE
+  )
+
+  report <- xdev_add_references(data, reference) |>
+    report("resource_reference")
+  expect_equal(data$count("resource_reference"), 2)
+  expect_equal(report[2, "note"], "alignment reference trimmed to V4 region")
+
+  # modify reference "silva.bacteria.fasta"
+  reference <- reference[-1, ]
+  reference[1, "note"] <- "changed for testing"
+  message <- capture_output(xdev_add_references(data, reference))
+  expect_true(grepl(
+    "resource_reference named 'silva.bacteria.fasta'",
+    message
+  ))
+
+  modified_report <- report(data, "resource_reference")
+
+  expect_equal(data$count("resource_reference"), 2)
+  expect_equal(modified_report[2, "note"], "changed for testing")
 })
 
 test_that("xdev - not a strollur object tests", {
@@ -196,7 +236,6 @@ test_that("dataset - functions with piping", {
     sequence_name = names,
     sequence = seqs, comment = comments
   )
-
 
   fasta <- xdev_add_sequences(data, fasta_data) |>
     report("fasta")
@@ -643,7 +682,7 @@ test_that("xdev_assign_bins, assign with reference", {
 
   ref_report <- report(data, type = "resource_reference")
 
-  expect_equal(nrow(ref_report), 2)
+  expect_equal(nrow(ref_report), 1)
 })
 
 test_that("xdev_set_abundances", {

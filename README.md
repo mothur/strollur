@@ -17,8 +17,8 @@ status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.o
 
 ## Overview
 
-The **`strollur`** package stores the data associated with your amplicon
-sequence analysis. This includes nucleotide sequences, abundance, sample
+The **`strollur`** package stores the data associated with your Amplicon
+Sequence Analysis. This includes nucleotide sequences, abundance, sample
 and treatment assignments, taxonomic classifications, sequence bin
 assignments, metadata, trees and various reports. It is designed to
 facilitate data analysis across multiple R packages with utility
@@ -57,8 +57,7 @@ You can install the development version of strollur from
 [GitHub](https://github.com/mothur/strollur) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("mothur/strollur")
+pak::pak("mothur/strollur")
 ```
 
 ## Usage
@@ -79,16 +78,12 @@ data <- new_dataset(dataset_name = "example")
 
 add(data, table = fasta_data, type = "sequence")
 #> Added 2425 sequences.
-#> [1] 2425
 assign(data, table = abundance_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
-#> [1] 2425
 assign(data, table = bin_table, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-#> [1] 531
 assign(data, table = classification_data, type = "sequence_taxonomy")
 #> Assigned 2425 sequence taxonomies.
-#> [1] 2425
 
 data
 #> example:

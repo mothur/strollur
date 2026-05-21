@@ -1,5 +1,5 @@
-#' @title The `strollur` object stores the data associated with your microbial
-#'   analysis.
+#' @title The `strollur` object stores the data associated with your amplicon
+#'   sequence analysis.
 #' @name strollur
 #' @rdname strollur
 #' @description 'strollur' is an R6 class that stores nucleotide sequences,
@@ -1024,6 +1024,23 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
+    #' Get the version of the
+    #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+    #' object.
+    #'
+    #' @examples
+    #'
+    #' miseq <- miseq_sop_example()
+    #'
+    #' data$get_version()
+    #'
+    #' @returns a logical
+    #' @export
+    get_version = function(data) {
+      private$version
+    },
+
+    #' @description
     #' Determine if two
     #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
     #'  objects are equal.
@@ -1331,7 +1348,7 @@ strollur <- R6Class("strollur",
   ),
   private = list(
     processors = 1,
-    version = "1.0.0",
+    version = "0.1.0",
     finalize = function() {},
 
 

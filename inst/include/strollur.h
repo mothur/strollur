@@ -158,6 +158,12 @@ struct sampleAbunds {
         }
     }
 
+    void updateIndexes(map<int, int>& indexMap) {
+        for (int i = 0; i < sampleIndex.size(); i++) {
+            sampleIndex[i] = indexMap[sampleIndex[i]];
+        }
+    }
+
     // This method lets Cereal know how to serialize.
     template<class Archive>
     void serialize(Archive & archive) {
@@ -252,6 +258,8 @@ public:
     bool hasSamples(const vector<string>& samples, const int name = -1) const;
     // does the table have sample information
     bool hasSamplesData() const { return hasSampleData; }
+
+    void sortAlpha(vector<unsigned>&);
 
 private:
 
@@ -411,6 +419,8 @@ public:
     vector<int> remove(const string& binId, const string& reason);
     void removeSeq(const int seqId, const string& reason);
 
+    void sortAlpha(vector<unsigned>&);
+
 private:
 
     // maps bin name to index
@@ -439,6 +449,7 @@ private:
     // 10 bins that represented 230 sequences.
     map<string, vector<double> > badAccnos;
     double uniqueBad;
+
 
     void classify(const vector<string>& taxs,
                   const AbundTable& count);
@@ -512,8 +523,7 @@ public:
     // add seqs
     double addSequences(const vector<string>& n,
                         vector<string> s = nullVector,
-                        vector<string> c = nullVector,
-                        const Reference& reference = nullReference);
+                        vector<string> c = nullVector);
     double addReferences(const vector<Reference>& refs);
     void addReport(Rcpp::DataFrame& report, const string& type);
     void addMetadata(const Rcpp::DataFrame& metadata);
@@ -649,6 +659,7 @@ private:
     // sequence taxonomy assignments
     vector<string> taxonomies;
     vector<Reference> references;
+    map<string, int> refIndex;
 
     // boolean indicating if sequences is "good"
     vector<bool> tableSeqs;
@@ -661,7 +672,7 @@ private:
     // sequences that represented 230 total sequences.
     map<string, vector<double> > badAccnos;
     double uniqueBad;
-    bool hasList;
+    bool hasList, sortNeeded;
 
     // count table data
     AbundTable count;
@@ -699,7 +710,7 @@ private:
            starts, ends, lengths, ambigs, polymers,
            numns, names, seqs, comments, trashCodes,
            seqIndex, badAccnos, uniqueBad, hasList, count,
-           binTables, reports, metadata);
+           binTables, reports, metadata, refIndex, sortNeeded);
     }
 };
 

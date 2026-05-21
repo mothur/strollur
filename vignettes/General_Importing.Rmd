@@ -27,7 +27,7 @@ data <- new_dataset(dataset_name = "my_data")
 
 ## Importing Data
 
-The *strollur* package includes two functions to allow you to add microbial data.
+The *strollur* package includes two functions to allow you to add sequence data.
 
 `add()` - The add function allows you to add sequences, reports, metadata, and resource references to your data set.
 
@@ -41,7 +41,7 @@ The add function allows you to add sequences, reports, metadata, and resource re
 First, let's add some [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data. strollur has a function for reading FASTA files named `read_fasta()`. We will use it to read the sequence data into a data.frame.
 
 ```{r}
-fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
 str(fasta_data)
 
 add(
@@ -186,7 +186,7 @@ data
 
 You can see from the summary, we now have 531 otus in our dataset. 
 
-Note, if you are importing data from packages that preprocess the microbial data into features, you can assign the feature table abundances as sequence abundances and then assign the features to [Amplicon Sequence Variant](https://en.wikipedia.org/wiki/Amplicon_sequence_variant) clusters or *asv* bins. 
+Note, if you are importing data from packages that preprocess the Amplicon Sequence data into features, you can assign the feature table abundances as sequence abundances and then assign the features to [Amplicon Sequence Variant](https://en.wikipedia.org/wiki/Amplicon_sequence_variant) clusters or *asv* bins. 
 
 #### Assigning Taxonomic Classifications
 

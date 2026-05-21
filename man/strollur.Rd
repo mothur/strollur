@@ -2,11 +2,8 @@
 % Please edit documentation in R/r6_strollur.R
 \name{strollur}
 \alias{strollur}
-\title{The `strollur` object stores the data associated with your microbial
-  analysis.}
-\value{
-a logical
-}
+\title{The `strollur` object stores the data associated with your amplicon
+  sequence analysis.}
 \description{
 'strollur' is an R6 class that stores nucleotide sequences,
 abundance, sample and treatment assignments, taxonomic classifications,
@@ -335,7 +332,17 @@ data$get_bin_types()
 
 
 ## ------------------------------------------------
-## Method `strollur$is_equal`
+## Method `strollur$get_version()`
+## ------------------------------------------------
+
+
+miseq <- miseq_sop_example()
+
+data$get_version()
+
+
+## ------------------------------------------------
+## Method `strollur$is_equal()`
 ## ------------------------------------------------
 
 
@@ -485,25 +492,26 @@ the class.}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-strollur-new}{\code{strollur$new()}}
-\item \href{#method-strollur-print}{\code{strollur$print()}}
-\item \href{#method-strollur-abundance}{\code{strollur$abundance()}}
-\item \href{#method-strollur-add}{\code{strollur$add()}}
-\item \href{#method-strollur-add_sample_tree}{\code{strollur$add_sample_tree()}}
-\item \href{#method-strollur-add_sequence_tree}{\code{strollur$add_sequence_tree()}}
-\item \href{#method-strollur-assign}{\code{strollur$assign()}}
-\item \href{#method-strollur-clear}{\code{strollur$clear()}}
-\item \href{#method-strollur-count}{\code{strollur$count()}}
-\item \href{#method-strollur-get_bin_types}{\code{strollur$get_bin_types()}}
-\item \href{#method-strollur-get_sample_tree}{\code{strollur$get_sample_tree()}}
-\item \href{#method-strollur-get_sequence_tree}{\code{strollur$get_sequence_tree()}}
-\item \href{#method-strollur-is_equal}{\code{strollur$is_equal()}}
-\item \href{#method-strollur-names}{\code{strollur$names()}}
-\item \href{#method-strollur-report}{\code{strollur$report()}}
-\item \href{#method-strollur-summary}{\code{strollur$summary()}}
-\item \href{#method-strollur-clone}{\code{strollur$clone()}}
-}
+  \itemize{
+    \item \href{#method-strollur-initialize}{\code{strollur$new()}}
+    \item \href{#method-strollur-print}{\code{strollur$print()}}
+    \item \href{#method-strollur-abundance}{\code{strollur$abundance()}}
+    \item \href{#method-strollur-add}{\code{strollur$add()}}
+    \item \href{#method-strollur-add_sample_tree}{\code{strollur$add_sample_tree()}}
+    \item \href{#method-strollur-add_sequence_tree}{\code{strollur$add_sequence_tree()}}
+    \item \href{#method-strollur-assign}{\code{strollur$assign()}}
+    \item \href{#method-strollur-clear}{\code{strollur$clear()}}
+    \item \href{#method-strollur-count}{\code{strollur$count()}}
+    \item \href{#method-strollur-get_bin_types}{\code{strollur$get_bin_types()}}
+    \item \href{#method-strollur-get_sample_tree}{\code{strollur$get_sample_tree()}}
+    \item \href{#method-strollur-get_sequence_tree}{\code{strollur$get_sequence_tree()}}
+    \item \href{#method-strollur-get_version}{\code{strollur$get_version()}}
+    \item \href{#method-strollur-is_equal}{\code{strollur$is_equal()}}
+    \item \href{#method-strollur-names}{\code{strollur$names()}}
+    \item \href{#method-strollur-report}{\code{strollur$report()}}
+    \item \href{#method-strollur-summary}{\code{strollur$summary()}}
+    \item \href{#method-strollur-clone}{\code{strollur$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-strollur-new"></a>}}
@@ -1237,6 +1245,31 @@ ape::tree
 }
 
 }
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-strollur-get_version"></a>}}
+\if{latex}{\out{\hypertarget{method-strollur-get_version}{}}}
+\subsection{\code{strollur$get_version()}}{
+  Get the version of the
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{strollur$get_version(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a logical
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{miseq <- miseq_sop_example()
+
+data$get_version()
+}
+    \if{html}{\out{</div>}}
+  }
+}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-strollur-is_equal"></a>}}
 \if{latex}{\out{\hypertarget{method-strollur-is_equal}{}}}

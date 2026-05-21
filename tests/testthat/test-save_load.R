@@ -1,5 +1,31 @@
 # tests save of dataset object
 
+test_that("load - versions", {
+  # set version to 0.0.0 - forced compatible
+  miseq <- miseq_sop_example()
+
+  miseq[[".__enclos_env__"]]$private$version <- "0.0.0"
+
+  file_name <- paste0(
+    normalizePath(test_path()), .Platform$file.sep,
+    "test.rds"
+  )
+
+  save_dataset(miseq, file_name)
+
+  message <- capture_messages(load_dataset(file_name))
+  remove_file(file_name)
+
+  expect_true(grepl("Converting and importing", message))
+
+  # set for 1.0.0 - not compatible
+  miseq[[".__enclos_env__"]]$private$version <- "1.0.0"
+
+  save_dataset(miseq, file_name)
+
+  expect_error(load_dataset(file_name))
+})
+
 test_that("clone - deep copy of dataset object", {
   temp <- read_mothur(
     fasta = strollur_example("final.fasta.gz"),
