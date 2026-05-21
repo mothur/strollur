@@ -1236,44 +1236,6 @@ Rcpp::DataFrame Dataset::getSequenceReport() const {
     return df;
 }
 /******************************************************************************/
-const Rcpp::DataFrame Dataset::getSummary(const string& type, const string& reportType) {
-
-    Rcpp::DataFrame result = Rcpp::DataFrame::create();
-
-    if (type == "sequence") {
-        if (hasSeqs()) {
-            Summary* summary = new Summary(processors);
-
-            vector<vector<int> > report;
-
-            report.push_back(select(starts, tableSeqs));
-            report.push_back(select(ends, tableSeqs));
-            report.push_back(select(lengths, tableSeqs));
-            report.push_back(select(ambigs, tableSeqs));
-            report.push_back(select(polymers, tableSeqs));
-            report.push_back(select(numns, tableSeqs));
-
-            result = summary->summarizeFasta(
-                report, count.getTotalAbundances(getIncludedNamesIndexes()));
-
-            delete summary;
-        }
-    }else if (type == "report") {
-        const auto it = reports.find(reportType);
-
-        // do we have this report type
-        if (it != reports.end()) {
-            Rcpp::DataFrame df = getSequenceAbundances();
-            result = it->second.summarizeReport(
-                    toSet(getSequenceNames()), processors, Rcpp::as<vector<float>>(df[1]));
-        }
-    }else if (type == "scrap") {
-        result = getScrapSummary();
-    }
-
-    return result;
-}
-/******************************************************************************/
 Rcpp::DataFrame Dataset::getSequenceTaxonomyReport() {
     if (hasSequenceTaxonomy){
         return (fillTaxReport("sequence"));

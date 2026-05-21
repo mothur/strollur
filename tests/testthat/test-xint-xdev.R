@@ -169,12 +169,12 @@ test_that("xdev - not a strollur object tests", {
     "data must be a strollur object."
   )
   expect_error(
-    xdev_summarize(x),
+    summary(x),
     "data must be a strollur object."
   )
 
   expect_error(
-    xdev_summarize(data, report_type = "bad"),
+    summary(data, report_type = "bad"),
     "bad is not a valid report_type option."
   )
   message <- paste0(
@@ -182,7 +182,7 @@ test_that("xdev - not a strollur object tests", {
     "'sequence', 'report' and 'scrap'."
   )
   expect_error(
-    xdev_summarize(data, type = "bad"),
+    summary(data, type = "bad"),
     message
   )
   expect_error(
