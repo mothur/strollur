@@ -332,6 +332,16 @@ data$get_bin_types()
 
 
 ## ------------------------------------------------
+## Method `strollur$get_version()`
+## ------------------------------------------------
+
+
+miseq <- miseq_sop_example()
+
+data$get_version()
+
+
+## ------------------------------------------------
 ## Method `strollur$is_equal()`
 ## ------------------------------------------------
 
@@ -495,6 +505,7 @@ the class.}
     \item \href{#method-strollur-get_bin_types}{\code{strollur$get_bin_types()}}
     \item \href{#method-strollur-get_sample_tree}{\code{strollur$get_sample_tree()}}
     \item \href{#method-strollur-get_sequence_tree}{\code{strollur$get_sequence_tree()}}
+    \item \href{#method-strollur-get_version}{\code{strollur$get_version()}}
     \item \href{#method-strollur-is_equal}{\code{strollur$is_equal()}}
     \item \href{#method-strollur-names}{\code{strollur$names()}}
     \item \href{#method-strollur-report}{\code{strollur$report()}}
@@ -1193,6 +1204,31 @@ data$get_bin_types()
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
  data$get_sequence_tree()
+}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-strollur-get_version"></a>}}
+\if{latex}{\out{\hypertarget{method-strollur-get_version}{}}}
+\subsection{\code{strollur$get_version()}}{
+  Get the version of the
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{strollur$get_version(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a logical
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{miseq <- miseq_sop_example()
+
+data$get_version()
 }
     \if{html}{\out{</div>}}
   }

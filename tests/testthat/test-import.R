@@ -1,5 +1,25 @@
 # tests import of dataset object
 
+test_that("import - versions", {
+  # set version to 0.0.0 - forced compatible
+  miseq <- miseq_sop_example()
+
+  miseq[[".__enclos_env__"]]$private$version <- "0.0.0"
+
+  table <- export_dataset(miseq)
+
+  message <- capture_messages(import_dataset(table))
+
+  expect_true(grepl("Converting and importing", message))
+
+  # set for 1.0.0 - not compatible
+  miseq[[".__enclos_env__"]]$private$version <- "1.0.0"
+
+  table <- export_dataset(miseq)
+
+  expect_error(import_dataset(table))
+})
+
 test_that("import - miseq_sop_example", {
   # full dataset
   miseq <- miseq_sop_example()
@@ -11,6 +31,7 @@ test_that("import - miseq_sop_example", {
 
   dataset_t <- import_dataset(exported_miseq)
 
+  expect_true(miseq$is_equal(dataset_t))
   expect_equal(names(dataset_t, "dataset"), names(miseq, "dataset"))
   expect_equal(count(dataset_t, distinct = TRUE), count(miseq, distinct = TRUE))
   expect_equal(count(dataset_t), count(miseq))

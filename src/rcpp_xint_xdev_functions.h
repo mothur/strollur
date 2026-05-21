@@ -656,6 +656,24 @@ double xdev_count(const Rcpp::Environment& data,
             Rcpp::Nullable<Rcpp::List> samples = R_NilValue,
             bool distinct = false);
 /******************************************************************************/
+//' @title xdev_export_dataset
+//' @description
+//' Export all data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+//'
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//'
+//' @examples
+//'
+//' dataset <- new_dataset("my_dataset", 2)
+//' xdev_export_dataset(dataset)
+//'
+//' @return Rcpp::List, containing the data in the 'Dataset' c++ class
+//' @keywords internal
+//' @noRd
+//[[Rcpp::export]]
+/******************************************************************************/
+Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
+/******************************************************************************/
 //' @title xdev_get_abundances_by_sample
 //' @description
 //' Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample

@@ -23,17 +23,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// export_dataset
-Rcpp::List export_dataset(Rcpp::Environment data);
-RcppExport SEXP _strollur_export_dataset(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(export_dataset(data));
-    return rcpp_result_gen;
-END_RCPP
-}
 // get_bin_types
 vector<string> get_bin_types(Rcpp::Environment data);
 RcppExport SEXP _strollur_get_bin_types(SEXP dataSEXP) {
@@ -278,6 +267,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type samples(samplesSEXP);
     Rcpp::traits::input_parameter< bool >::type distinct(distinctSEXP);
     rcpp_result_gen = Rcpp::wrap(xdev_count(data, type, bin_type, samples, distinct));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_export_dataset
+/******************************************************************************/ Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
+RcppExport SEXP _strollur_xdev_export_dataset(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_export_dataset(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -575,7 +575,6 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_strollur_clear", (DL_FUNC) &_strollur_clear, 1},
-    {"_strollur_export_dataset", (DL_FUNC) &_strollur_export_dataset, 1},
     {"_strollur_get_bin_types", (DL_FUNC) &_strollur_get_bin_types, 1},
     {"_strollur_has_sample", (DL_FUNC) &_strollur_has_sample, 2},
     {"_strollur_has_sequence_strings", (DL_FUNC) &_strollur_has_sequence_strings, 1},
@@ -592,6 +591,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_assign_sequence_abundance", (DL_FUNC) &_strollur_xdev_assign_sequence_abundance, 7},
     {"_strollur_xdev_assign_treatments", (DL_FUNC) &_strollur_xdev_assign_treatments, 5},
     {"_strollur_xdev_count", (DL_FUNC) &_strollur_xdev_count, 5},
+    {"_strollur_xdev_export_dataset", (DL_FUNC) &_strollur_xdev_export_dataset, 1},
     {"_strollur_xdev_get_abundances_by_sample", (DL_FUNC) &_strollur_xdev_get_abundances_by_sample, 2},
     {"_strollur_xdev_get_list_vector", (DL_FUNC) &_strollur_xdev_get_list_vector, 2},
     {"_strollur_xdev_get_by_sample", (DL_FUNC) &_strollur_xdev_get_by_sample, 4},

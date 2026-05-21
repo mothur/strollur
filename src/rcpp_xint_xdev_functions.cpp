@@ -839,6 +839,12 @@ double xdev_count(const Rcpp::Environment& data,
     return 0;
 }
 /******************************************************************************/
+Rcpp::List xdev_export_dataset(const Rcpp::Environment& data) {
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->exportDataset();
+}
+/******************************************************************************/
 vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& data,
                                                      const Rcpp::CharacterVector& samples) {
     if (!data.inherits("strollur")) {

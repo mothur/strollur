@@ -21,16 +21,26 @@
 #' @export
 import_dataset <- function(table) {
   table_version <- attributes(table)$strollur_version
+  current_version <- new_dataset()$get_version()
 
   # check attributes for valid version
-  if (utils::packageVersion("strollur") != table_version) {
-    message <- paste0(
-      "[ERROR]: Unable to create 'strollur' object. ",
-      "The table was created with strollur version ",
-      table_version, " and you are running strollur version ",
-      utils::packageVersion("strollur"), "."
-    )
-    cli::cli_abort(message)
+  if (current_version != table_version) {
+    if (.import_compatible(table_version)) {
+      message <- paste0(
+        "The table was created with strollur version ", table_version,
+        ", which is compatible with the current strollur version: ",
+        current_version, ". Converting and importing."
+      )
+      cli::cli_alert(message)
+    } else {
+      message <- paste0(
+        "Unable to create 'strollur' object. ",
+        "The table was created with strollur version ", table_version,
+        ", which is not compatible with the current strollur version: ",
+        current_version, "."
+      )
+      cli::cli_abort(message)
+    }
   }
 
   data <- new_dataset(attributes(table)$dataset_name)
@@ -228,15 +238,12 @@ import_dataset <- function(table) {
 
   # add metadata
   if ("metadata" %in% names) {
-    add(data = data, table = table$metadata, type = "metadata")
+    xdev_add_report(data = data, table = table$metadata, type = "metadata")
   }
 
   # add references
   if ("resource_reference" %in% names) {
-    add(
-      data = data, table = table$resource_reference,
-      type = "resource_reference"
-    )
+    xdev_add_references(data = data, table = table$resource_reference)
   }
 
   # list all report names
