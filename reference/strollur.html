@@ -13,7 +13,7 @@ analysis across multiple R packages."><meta property="og:image" content="https:/
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,6 +109,7 @@ the class.</p></dd>
 <li><p><a href="#method-strollur-get_bin_types"><code>strollur$get_bin_types()</code></a></p></li>
 <li><p><a href="#method-strollur-get_sample_tree"><code>strollur$get_sample_tree()</code></a></p></li>
 <li><p><a href="#method-strollur-get_sequence_tree"><code>strollur$get_sequence_tree()</code></a></p></li>
+<li><p><a href="#method-strollur-get_version"><code>strollur$get_version()</code></a></p></li>
 <li><p><a href="#method-strollur-is_equal"><code>strollur$is_equal()</code></a></p></li>
 <li><p><a href="#method-strollur-names"><code>strollur$names()</code></a></p></li>
 <li><p><a href="#method-strollur-report"><code>strollur$report()</code></a></p></li>
@@ -752,12 +753,31 @@ Default = FALSE.</p></dd>
 
 </div>
 
+<p></p><hr><a id="method-strollur-get_version"></a><div class="section">
+<h3 id="strollur-get-version-"><code>strollur$get_version()</code><a class="anchor" aria-label="anchor" href="#strollur-get-version-"></a></h3>
+<p>Get the version of the
+<a href="https://mothur.org/strollur/reference/strollur.html">strollur</a>
+object.</p><div class="section">
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">get_version</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<p>a logical</p>
+</div><p></p><div class="section">
+<h4 id="examples-12">Examples<a class="anchor" aria-label="anchor" href="#examples-12"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data</span><span class="op">$</span><span class="fu">get_version</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-strollur-is_equal"></a><div class="section">
 <h3 id="strollur-is-equal-"><code>strollur$is_equal()</code><a class="anchor" aria-label="anchor" href="#strollur-is-equal-"></a></h3>
 <p>Determine if two
 <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a>
  objects are equal.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">is_equal</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
@@ -769,10 +789,10 @@ object</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>a logical</p>
 </div><p></p><div class="section">
-<h4 id="examples-12">Examples<a class="anchor" aria-label="anchor" href="#examples-12"></a></h4>
+<h4 id="examples-13">Examples<a class="anchor" aria-label="anchor" href="#examples-13"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dataset.html">copy_dataset</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span></span>
@@ -785,7 +805,7 @@ object</p></dd>
 <p></p><hr><a id="method-strollur-names"></a><div class="section">
 <h3 id="strollur-names-"><code>strollur$names()</code><a class="anchor" aria-label="anchor" href="#strollur-names-"></a></h3>
 <p>Get the names of a given type of data</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">names</span><span class="op">(</span></span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
@@ -820,10 +840,10 @@ ALSO contain data from other samples. Default = FALSE.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>vector of strings, containing the names requested</p>
 </div><p></p><div class="section">
-<h4 id="examples-13">Examples<a class="anchor" aria-label="anchor" href="#examples-13"></a></h4>
+<h4 id="examples-14">Examples<a class="anchor" aria-label="anchor" href="#examples-14"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the name of the dataset</span></span>
@@ -862,7 +882,7 @@ ALSO contain data from other samples. Default = FALSE.</p></dd>
 <p></p><hr><a id="method-strollur-report"></a><div class="section">
 <h3 id="strollur-report-"><code>strollur$report()</code><a class="anchor" aria-label="anchor" href="#strollur-report-"></a></h3>
 <p>Get a data.frame containing the given report</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">report</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
@@ -882,10 +902,10 @@ bin_taxonomy report for. Default = "otu".</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
 <p>data.frame</p>
 </div><p></p><div class="section">
-<h4 id="examples-14">Examples<a class="anchor" aria-label="anchor" href="#examples-14"></a></h4>
+<h4 id="examples-15">Examples<a class="anchor" aria-label="anchor" href="#examples-15"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the FASTA data</span></span>
@@ -944,7 +964,7 @@ bin_taxonomy report for. Default = "otu".</p></dd>
 <p></p><hr><a id="method-strollur-summary"></a><div class="section">
 <h3 id="strollur-summary-"><code>strollur$summary()</code><a class="anchor" aria-label="anchor" href="#strollur-summary-"></a></h3>
 <p>Summarize the sequences data, custom reports, and scrapped data</p><div class="section">
-<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"sequence"</span>, report_type <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
@@ -966,11 +986,11 @@ messages. Default = TRUE.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
+<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
 <p>data.frame
 Get summary of the sequence reports</p>
 </div><p></p><div class="section">
-<h4 id="examples-15">Examples<a class="anchor" aria-label="anchor" href="#examples-15"></a></h4>
+<h4 id="examples-16">Examples<a class="anchor" aria-label="anchor" href="#examples-16"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To get the summary of your FASTA data</span></span>
@@ -992,7 +1012,7 @@ Get summary of the sequence reports</p>
 <p></p><hr><a id="method-strollur-clone"></a><div class="section">
 <h3 id="strollur-clone-"><code>strollur$clone()</code><a class="anchor" aria-label="anchor" href="#strollur-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">strollur</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
@@ -1539,6 +1559,29 @@ Get summary of the sequence reports</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   M00967_43_000000000-A3JHG_1_1114_15727_25995, M00967_43_000000000-A3JHG_1_2109_19976_22044, M00967_43_000000000-A3JHG_1_1102_9244_9305, M00967_43_000000000-A3JHG_1_2101_14159_9619, M00967_43_000000000-A3JHG_1_1111_12315_7486, M00967_43_000000000-A3JHG_1_1107_12586_26826, ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Rooted; includes branch length(s).</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `strollur$get_version()`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="fu">get_version</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0.1.0"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>

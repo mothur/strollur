@@ -58,6 +58,8 @@ Sarah Westcott, <swestcot@umich.edu>
 
 - [`strollur$get_sequence_tree()`](#method-strollur-get_sequence_tree)
 
+- [`strollur$get_version()`](#method-strollur-get_version)
+
 - [`strollur$is_equal()`](#method-strollur-is_equal)
 
 - [`strollur$names()`](#method-strollur-names)
@@ -765,6 +767,27 @@ ape::tree
      tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
      data$add_sequence_tree(tree)
      data$get_sequence_tree()
+
+------------------------------------------------------------------------
+
+### `strollur$get_version()`
+
+Get the version of the
+[strollur](https://mothur.org/strollur/reference/strollur.html) object.
+
+#### Usage
+
+    strollur$get_version(data)
+
+#### Returns
+
+a logical
+
+#### Examples
+
+    miseq <- miseq_sop_example()
+
+    data$get_version()
 
 ------------------------------------------------------------------------
 
@@ -1560,6 +1583,29 @@ data$get_bin_types()
 #>   M00967_43_000000000-A3JHG_1_1114_15727_25995, M00967_43_000000000-A3JHG_1_2109_19976_22044, M00967_43_000000000-A3JHG_1_1102_9244_9305, M00967_43_000000000-A3JHG_1_2101_14159_9619, M00967_43_000000000-A3JHG_1_1111_12315_7486, M00967_43_000000000-A3JHG_1_1107_12586_26826, ...
 #> 
 #> Rooted; includes branch length(s).
+
+
+## ------------------------------------------------
+## Method `strollur$get_version()`
+## ------------------------------------------------
+
+
+miseq <- miseq_sop_example()
+#> Added 2425 sequences.
+#> Assigned 2425 sequence abundances.
+#> Assigned 2425 sequence taxonomies.
+#> Assigned 531 otu bins.
+#> Assigned 2425 asv bins.
+#> Assigned 63 phylotype bins.
+#> Assigned 19 samples to treatments.
+#> Assigned 531 otu bin taxonomies.
+#> Assigned 531 otu bin representative sequences.
+#> Added metadata.
+#> Added 2 resource references.
+#> Added a contigs_report.
+
+data$get_version()
+#> [1] "0.1.0"
 
 
 ## ------------------------------------------------

@@ -28,7 +28,7 @@ dataset <- new_dataset("my_dataset", 2)
 export_dataset(dataset)
 #> named list()
 #> attr(,"strollur_version")
-#> [1] "1.0.0"
+#> [1] "0.1.0"
 #> attr(,"dataset_name")
 #> [1] "my_dataset"
 ```
