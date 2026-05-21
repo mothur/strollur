@@ -120,7 +120,7 @@ generate_report <- function(dataset, report_type) {
   desired_tags <- c("Minimum:", "2.5%-tile:", "25%-tile:", "Median:",
                     "75%-tile:", "97.5%-tile:", "Maximum:", "Mean:")
 
-  xdev_report(dataset, report_type) |>
+  result <- xdev_report(dataset, report_type) |>
     reframe(stat = desired_tags,
       across(
         where(is.numeric),
@@ -129,4 +129,5 @@ generate_report <- function(dataset, report_type) {
         .names = "{.col}"
       )
     )
+  result[, -1]
 }
