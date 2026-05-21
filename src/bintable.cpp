@@ -906,4 +906,68 @@ vector<int> BinTable::remove(const int index, const string& reason){
     return seqsToRemoveFromOtherBinTables;
 }
 /******************************************************************************/
+void BinTable::sortAlpha(vector<unsigned>& seqOrder) {
+
+    // sort binNames alphabetically
+    vector<orderAlpha> sortedVector((binNames).size());
+
+    for (auto i = 0; i < (binNames).size(); i++) {
+        sortedVector[i].index = i;
+        sortedVector[i].name = binNames[i];
+    }
+
+    sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
+
+    // binNames, binIndex
+    std::vector<unsigned> order((binNames).size(), 0);
+    for (auto i = 0; i < (sortedVector).size(); i++) {
+        order[i] = sortedVector[i].index;
+        binNames[i] = sortedVector[i].name;
+        binIndex[sortedVector[i].name] = i;
+    }
+
+    // applyOrder to related items
+    applyOrder(tableBins, order);
+    applyOrder(originalBinAbunds, order);
+    applyOrder(trashCodes, order);
+    applyOrder(taxonomies, order);
+    applyOrder(binList, order);
+    applyOrder(repSequences, order);
+
+    // update sequence indexes - binList, repSequences, seqBins
+    // create oldSeqIndex -> newSeqIndex
+    vector<int> oldSeqIndex2New(seqOrder.size(), 0);
+    for (int i = 0; i < seqOrder.size(); i++) {
+        oldSeqIndex2New[seqOrder[i]] = i;
+    }
+
+    // repSequences[0] is binNames[0]'s representative sequence.
+    // This loop updates the sequence index to reflect the changes made in dataset.cpp
+    for (int i = 0; i < repSequences.size(); i++) {
+        repSequences[i] = oldSeqIndex2New[repSequences[i]];
+    }
+
+    // binList[0] contains the sequences assigned to binNames[0].
+    // This loop updates the sequence indexes to reflect the changes made in dataset.cpp
+    for (int i = 0; i < binList.size(); i++) {
+        set<int> newSeqIndexes;
+        for (auto it = binList[i].begin(); it != binList[i].end(); it++) {
+            newSeqIndexes.insert(oldSeqIndex2New[*it]);
+        }
+        binList[i] = newSeqIndexes;
+    }
+
+    vector<int> oldBinIndex2New(order.size(), 0);
+    for (int i = 0; i < order.size(); i++) {
+        oldBinIndex2New[order[i]] = i;
+    }
+
+    // update seqIndexes and binIndexes
+    map<int, int> updatedSeqBins;
+    for (auto it = seqBins.begin(); it != seqBins.end(); it++) {
+        updatedSeqBins[oldSeqIndex2New[it->first]] = oldBinIndex2New[it->second];
+    }
+    seqBins = updatedSeqBins;
+}
+/******************************************************************************/
 

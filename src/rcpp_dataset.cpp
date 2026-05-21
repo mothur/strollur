@@ -32,49 +32,6 @@ Rcpp::Environment clear(Rcpp::Environment& data) {
     return data;
 }
 /******************************************************************************/
-//' @title export_dataset
-//' @description
-//' Export all data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
-//'
-//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//'
-//' @examples
-//'
-//' dataset <- new_dataset("my_dataset", 2)
-//' export_dataset(dataset)
-//'
-//' @return Rcpp::List, containing the data in the 'Dataset
-//' @export
-//[[Rcpp::export]]
-Rcpp::List export_dataset(Rcpp::Environment data) {
-
-    Rcpp::XPtr<Dataset> d = data["data"];
-    Rcpp::List results = d.get()->exportDataset();
-    vector<string> resultNames = results.names();
-
-    Rcpp::Function get = data["get_sequence_tree"];
-    Rcpp::List sequence_tree = get();
-
-    if (sequence_tree.size() != 0) {
-        results.push_back(sequence_tree);
-        resultNames.push_back("sequence_tree");
-    }
-
-    get = data["get_sample_tree"];
-    Rcpp::List sample_tree = get();
-
-    if (sample_tree.size() != 0) {
-        results.push_back(sample_tree);
-        resultNames.push_back("sample_tree");
-    }
-
-    results.attr("names") = resultNames;
-    results.attr("strollur_version") = "1.0.0";
-    results.attr("dataset_name") = d.get()->datasetName;
-
-    return results;
-}
-/******************************************************************************/
 //' @title get_bin_types
 //' @description
 //' Get bin table types of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

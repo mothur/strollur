@@ -18,23 +18,6 @@ clear <- function(data) {
     .Call(`_strollur_clear`, data)
 }
 
-#' @title export_dataset
-#' @description
-#' Export all data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
-#'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @examples
-#'
-#' dataset <- new_dataset("my_dataset", 2)
-#' export_dataset(dataset)
-#'
-#' @return Rcpp::List, containing the data in the 'Dataset
-#' @export
-export_dataset <- function(data) {
-    .Call(`_strollur_export_dataset`, data)
-}
-
 #' @title get_bin_types
 #' @description
 #' Get bin table types of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -680,6 +663,24 @@ xdev_assign_treatments <- function(data, table, sample = "sample", treatment = "
 #' @export
 xdev_count <- function(data, type = "sequence", bin_type = "otu", samples = NULL, distinct = FALSE) {
     .Call(`_strollur_xdev_count`, data, type, bin_type, samples, distinct)
+}
+
+#' @title xdev_export_dataset
+#' @description
+#' Export all data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+#'
+#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'
+#' @examples
+#'
+#' dataset <- new_dataset("my_dataset", 2)
+#' xdev_export_dataset(dataset)
+#'
+#' @return Rcpp::List, containing the data in the 'Dataset' c++ class
+#' @keywords internal
+#' @noRd
+xdev_export_dataset <- function(data) {
+    .Call(`_strollur_xdev_export_dataset`, data)
 }
 
 #' @title xdev_get_abundances_by_sample
