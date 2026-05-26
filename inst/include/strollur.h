@@ -608,9 +608,6 @@ public:
     vector<vector<string> > getSequencesBySample(vector<string> samples,
                                                        bool degap = false) const;
 
-    const Rcpp::DataFrame getSummary(const string& type = "sequence",
-                                     const string& reportType = "");
-
     double getTotal(const vector<string>& samples = nullVector) const;
     Rcpp::DataFrame getTotals(const string& type = "sample") const;
     vector<string> getTreatments() const;

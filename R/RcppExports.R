@@ -1365,44 +1365,25 @@ xdev_set_num_processors <- function(data, processors) {
     invisible(.Call(`_strollur_xdev_set_num_processors`, data, processors))
 }
 
-#' @title xdev_summarize
+#' @title xdev_get_scrap_summary
 #' @description
-#' Summarize the sequences data, custom reports, and scrapped data in a
-#' \link{strollur} object
+#' Summarize the scrapped data in a \link{strollur} object
 #'
 #' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param type, string containing the type of data you want the number of.
-#' Options include: "sequence", "report" and "scrap". Default = "sequence".
-#'
-#' @param report_type, string containing the report type you would summarized.
-#' For example, the miseq_sop_example includes contigs assembly data and can be
-#' accessed with report_type = "contigs_report". Default = NULL.
 #'
 #' @examples
 #'
 #'  data <- miseq_sop_example()
 #'
-#'  # summarize FASTA data
-#'  xdev_summarize(data = data, type = "sequence")
+#'  # summarize scrap summary
+#'  xdev_get_scrap_summary(data = data)
 #'
-#'  # summarize contigs_report
-#'  xdev_summarize(data = data, type = "report",
-#'                  report_type = "contigs_report")
-#'
-#'  # remove sample 'F3D0'
-#'  xdev_remove_samples(data = data, samples = c("F3D0"))
-#'
-#'  # summarize FASTA data after removal of sample F3D0
-#'  xdev_summarize(data = data, type = "sequence")
-#'
-#'  # summarize scrapped data
-#'  xdev_summarize(data = data, type = "scrap")
 #'
 #' @return data.frame()
-#' @export
-xdev_summarize <- function(data, type = "sequence", report_type = NULL) {
-    .Call(`_strollur_xdev_summarize`, data, type, report_type)
+#' @keywords internal
+#' @noRd
+xdev_get_scrap_summary <- function(data) {
+    .Call(`_strollur_xdev_get_scrap_summary`, data)
 }
 
 #' @title xint_copy_pointer

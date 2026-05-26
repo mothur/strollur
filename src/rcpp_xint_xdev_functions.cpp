@@ -1201,42 +1201,13 @@ void xdev_set_num_processors(const Rcpp::Environment& data, const int processors
      d.get()->processors = processors;
 }
 /******************************************************************************/
-Rcpp::DataFrame xdev_summarize(const Rcpp::Environment& data, const string& type,
-                               Rcpp::Nullable<Rcpp::CharacterVector> report_type) {
-
+Rcpp::DataFrame xdev_get_scrap_summary(const Rcpp::Environment& data) {
     if (!data.inherits("strollur")) {
-        string message = "data must be a strollur object.";
+        const string message = "data must be a strollur object.";
         throw Rcpp::exception(message.c_str());
     }
     const Rcpp::XPtr<Dataset> d = data["data"];
-
-
-    string rType = "";
-    if (report_type.isNotNull()) {
-        rType = Rcpp::as<string>(report_type);
-
-        // make sure its a valid report type
-        const vector<string> reportOptions = d.get()->getReportTypes();
-        if (!vectorContains(reportOptions, rType)) {
-            string message = rType + " is not a valid report_type option. ";
-            if (!reportOptions.empty()) {
-                message += "Options include: " + toString(reportOptions, ',') + ".";
-            }
-            RcppThread::Rcerr << endl << message << endl;
-            throw Rcpp::exception(message.c_str());
-        }
-    }
-
-    const vector<string> typeOptions = {"sequence", "report", "scrap"};
-    if (!vectorContains(typeOptions, type)) {
-        string message = type + " is not a valid type option. Options include:";
-        message += " 'sequence', 'report' and 'scrap'.";
-        RcppThread::Rcerr << endl << message << endl;
-        throw Rcpp::exception(message.c_str());
-    }
-
-
-    return d.get()->getSummary(type, rType);
+    return d.get()->getScrapSummary();
 }
 /******************************************************************************/
 Rcpp::XPtr<Dataset> xint_copy_pointer(const Rcpp::Environment& data) {
