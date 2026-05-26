@@ -57,6 +57,7 @@ xdev_assign_sequence_abundance(data, sequence_abundance)
 #> Assigned 2425 sequence abundances.
 #> my_dataset:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -71,6 +72,7 @@ xdev_assign_treatments(data, sample_assignments)
 #> Assigned 19 samples to treatments.
 #> my_dataset:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 

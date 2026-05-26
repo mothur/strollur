@@ -27,6 +27,7 @@ rdata_object <- read_phyloseq(phylo_object)
 #> Assigned 19216 sequence taxonomies.
 #> Added metadata.
 rdata_object
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 19216 
 #> Total number of seqs: 28216678 

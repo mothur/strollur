@@ -102,6 +102,7 @@ xdev_add_references(data, reference_table)
 #> Added 2 resource references.
 #> just for fun:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Total number of seqs: 0 
 #> 

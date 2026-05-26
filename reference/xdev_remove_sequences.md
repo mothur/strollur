@@ -63,15 +63,49 @@ xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
                       trash_tags = trash_codes)
 #> miseq_sop:
 #> 
+#>             starts ends   nbases ambigs polymers numns numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0       1
+#> 2.5%-tile:       1  375 252.0000      0 4.000000     0    2850
+#> 25%-tile:        1  375 252.0000      0 4.000000     0   28491
+#> Median:          1  375 253.0000      0 4.000000     0   56981
+#> 75%-tile:        1  375 253.0000      0 5.000000     0   85471
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0  111112
+#> Maximum:         1  375 256.0000      0 6.000000     0  113961
+#> Mean:            1  375 252.7403      0 4.496284     0   56981
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000      0.000000    248.0000   0.000000      0
+#> 2 252.0000       246.0000      1.000000    250.0000   0.000000      0
+#> 3 252.0000       249.0000      2.000000    251.0000   0.000000      0
+#> 4 253.0000       249.0000      2.000000    251.0000   1.000000      0
+#> 5 253.0000       250.0000      2.000000    251.0000   5.000000      0
+#> 6 254.0000       251.0000      4.000000    253.0000  26.000000      0
+#> 7 270.0000       255.0000     22.000000    256.0000 120.000000      0
+#> 8 252.7572       249.1499      2.005367    251.1552   5.161024      0
+#>   Expected_Errors
+#> 1      1.00000000
+#> 2      1.00000000
+#> 3      1.00000000
+#> 4      1.00000000
+#> 5      1.00000000
+#> 6      1.00000000
+#> 7      4.00000000
+#> 8      0.07381921
+#>       type trash_code unique total
+#> 1 sequence    example      1     1
+#> 2 sequence   removing      1     1
+#> 3 sequence  sequences      1     1
+#> 4      asv    example      1     1
+#> 5      asv   removing      1     1
+#> 6      asv  sequences      1     1
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.00
+#> 2.5%-tile:       1  375    252      0        4     0   2850.00
 #> 25%-tile:        1  375    252      0        4     0  28491.00
-#> Median:          1  375    252      0        4     0  56981.00
+#> Median:          1  375    253      0        4     0  56981.00
 #> 75%-tile:        1  375    253      0        5     0  85471.00
-#> 97.5%-tile:      1  375    253      0        6     0 111112.00
-#> Maximum:         1  375    256      0        6     0 113960.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0 111112.00
+#> Maximum:         1  375    256      0        6     0 113961.00
+#> Mean:            1  375    252      0        4     0  56981.00
 #> scrap_summary:
 #>       type trash_code unique total
 #> 1 sequence    example      1     1

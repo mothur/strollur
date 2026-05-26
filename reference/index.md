@@ -282,6 +282,3 @@ these functions
 
 - [`xdev_set_sequences()`](https://mothur.org/strollur/reference/xdev_set_sequences.md)
   : xdev_set_sequences
-
-- [`xdev_summarize()`](https://mothur.org/strollur/reference/xdev_summarize.md)
-  : xdev_summarize

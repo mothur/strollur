@@ -41,6 +41,7 @@ data <- miseq_sop_example()
 clear(data)
 #> miseq_sop:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Total number of seqs: 0 
 #> 

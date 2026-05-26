@@ -2345,6 +2345,7 @@ assign(data = data, table = artifact$data, type = "bin")
 data
 #> my_data:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 759 
 #> Total number of seqs: 157298 

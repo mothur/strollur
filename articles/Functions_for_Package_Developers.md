@@ -52,15 +52,43 @@ miseq <- miseq_sop_example()
 miseq
 #> miseq_sop:
 #> 
+#>             starts ends   nbases ambigs polymers numns    numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0      1.000
+#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2850.075
+#> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750
+#> Median:          1  375 253.0000      0 4.000000     0  56982.500
+#> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 111114.925
+#> Maximum:         1  375 256.0000      0 6.000000     0 113964.000
+#> Mean:            1  375 252.7406      0 4.496082     0  56982.500
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000      0.000000    248.0000   0.000000      0
+#> 2 252.0000       246.0000      1.000000    250.0000   0.000000      0
+#> 3 252.0000       249.0000      2.000000    251.0000   0.000000      0
+#> 4 253.0000       249.0000      2.000000    251.0000   1.000000      0
+#> 5 253.0000       250.0000      2.000000    251.0000   5.000000      0
+#> 6 254.0000       251.0000      4.000000    253.0000  26.000000      0
+#> 7 270.0000       255.0000     22.000000    256.0000 120.000000      0
+#> 8 252.7575       249.1501      2.005361    251.1555   5.162474      0
+#>   Expected_Errors
+#> 1      1.00000000
+#> 2      1.00000000
+#> 3      1.00000000
+#> 4      1.00000000
+#> 5      1.00000000
+#> 6      1.00000000
+#> 7      4.00000000
+#> 8      0.07385095
+#> data frame with 0 columns and 0 rows
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 2.5%-tile:       1  375    252      0        4     0   2850.08
 #> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    252      0        4     0  56982.50
+#> Median:          1  375    253      0        4     0  56982.50
 #> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    253      0        6     0 111114.93
-#> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113964.00
+#> Mean:            1  375    252      0        4     0  56982.50
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -130,15 +158,43 @@ xdev_set_sequences(
 )
 #> modified_miseq:
 #> 
+#>             starts    ends   nbases    ambigs polymers     numns    numseqs
+#> Minimum:         1   4.000   4.0000 0.0000000  3.00000 0.0000000      1.000
+#> 2.5%-tile:       1   4.000   4.0000 0.0000000  4.00000 0.0000000   2850.075
+#> 25%-tile:        1 375.000 252.0000 0.0000000  4.00000 0.0000000  28491.750
+#> Median:          1 375.000 253.0000 0.0000000  4.00000 0.0000000  56982.500
+#> 75%-tile:        1 375.000 253.0000 0.0000000  5.00000 0.0000000  85473.250
+#> 97.5%-tile:      1 375.000 254.0000 4.0000000  6.00000 4.0000000 111114.925
+#> Maximum:         1 375.000 256.0000 4.0000000  6.00000 4.0000000 113964.000
+#> Mean:            1 359.548 242.3748 0.1665979  4.47299 0.1665979  56982.500
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000      0.000000    248.0000   0.000000      0
+#> 2 252.0000       246.0000      1.000000    250.0000   0.000000      0
+#> 3 252.0000       249.0000      2.000000    251.0000   0.000000      0
+#> 4 253.0000       249.0000      2.000000    251.0000   1.000000      0
+#> 5 253.0000       250.0000      2.000000    251.0000   5.000000      0
+#> 6 254.0000       251.0000      4.000000    253.0000  26.000000      0
+#> 7 270.0000       255.0000     22.000000    256.0000 120.000000      0
+#> 8 252.7575       249.1501      2.005361    251.1555   5.162474      0
+#>   Expected_Errors
+#> 1      1.00000000
+#> 2      1.00000000
+#> 3      1.00000000
+#> 4      1.00000000
+#> 5      1.00000000
+#> 6      1.00000000
+#> 7      4.00000000
+#> 8      0.07385095
+#> data frame with 0 columns and 0 rows
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1    4      4      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 2.5%-tile:       1    4      4      0        4     0   2850.08
 #> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    252      0        4     0  56982.50
+#> Median:          1  375    253      0        4     0  56982.50
 #> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    253      0        6     0 111114.93
-#> Maximum:         1  375    256      4        6     4 113963.00
-#> Mean:            1  374    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      4        6     4 111114.93
+#> Maximum:         1  375    256      4        6     4 113964.00
+#> Mean:            1  359    242      0        4     0  56982.50
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -218,15 +274,47 @@ xdev_set_abundances(
 )
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0      1.00
+#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2847.35
+#> 25%-tile:        1  375 252.0000      0 4.000000     0  28464.50
+#> Median:          1  375 253.0000      0 4.000000     0  56928.00
+#> 75%-tile:        1  375 253.0000      0 5.000000     0  85391.50
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 111008.65
+#> Maximum:         1  375 256.0000      0 6.000000     0 113855.00
+#> Mean:            1  375 252.7345      0 4.493546     0  56928.00
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000       0.00000    248.0000   0.000000      0
+#> 2 252.0000       247.0000       1.00000    250.0000   0.000000      0
+#> 3 252.0000       249.0000       2.00000    251.0000   0.000000      0
+#> 4 253.0000       249.0000       2.00000    251.0000   1.000000      0
+#> 5 253.0000       250.0000       2.00000    251.0000   5.000000      0
+#> 6 254.0000       251.0000       4.00000    253.0000  26.000000      0
+#> 7 270.0000       255.0000      22.00000    256.0000 120.000000      0
+#> 8 252.7522       249.1583       2.00043    251.1588   5.145009      0
+#>   Expected_Errors
+#> 1      1.00000000
+#> 2      1.00000000
+#> 3      1.00000000
+#> 4      1.00000000
+#> 5      1.00000000
+#> 6      1.00000000
+#> 7      4.00000000
+#> 8      0.07364181
+#>        type               trash_code unique total
+#> 1  sequence F3D0_exclusive_sequences    101   109
+#> 2       otu F3D0_exclusive_sequences     14    14
+#> 3       asv F3D0_exclusive_sequences    101   109
+#> 4 phylotype F3D0_exclusive_sequences      2     2
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2847.35
+#> 2.5%-tile:       1  375    252      0        4     0   2847.35
 #> 25%-tile:        1  375    252      0        4     0  28464.50
-#> Median:          1  375    252      0        4     0  56928.00
+#> Median:          1  375    253      0        4     0  56928.00
 #> 75%-tile:        1  375    253      0        5     0  85391.50
-#> 97.5%-tile:      1  375    253      0        6     0 111008.65
-#> Maximum:         1  375    256      0        6     0 113854.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0 111008.65
+#> Maximum:         1  375    256      0        6     0 113855.00
+#> Mean:            1  375    252      0        4     0  56928.00
 #> scrap_summary:
 #>        type               trash_code unique total
 #> 1  sequence F3D0_exclusive_sequences    101   109
@@ -252,15 +340,47 @@ xdev_set_abundances(
 miseq
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0      1.00
+#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2847.35
+#> 25%-tile:        1  375 252.0000      0 4.000000     0  28464.50
+#> Median:          1  375 253.0000      0 4.000000     0  56928.00
+#> 75%-tile:        1  375 253.0000      0 5.000000     0  85391.50
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 111008.65
+#> Maximum:         1  375 256.0000      0 6.000000     0 113855.00
+#> Mean:            1  375 252.7345      0 4.493546     0  56928.00
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000       0.00000    248.0000   0.000000      0
+#> 2 252.0000       247.0000       1.00000    250.0000   0.000000      0
+#> 3 252.0000       249.0000       2.00000    251.0000   0.000000      0
+#> 4 253.0000       249.0000       2.00000    251.0000   1.000000      0
+#> 5 253.0000       250.0000       2.00000    251.0000   5.000000      0
+#> 6 254.0000       251.0000       4.00000    253.0000  26.000000      0
+#> 7 270.0000       255.0000      22.00000    256.0000 120.000000      0
+#> 8 252.7522       249.1583       2.00043    251.1588   5.145009      0
+#>   Expected_Errors
+#> 1      1.00000000
+#> 2      1.00000000
+#> 3      1.00000000
+#> 4      1.00000000
+#> 5      1.00000000
+#> 6      1.00000000
+#> 7      4.00000000
+#> 8      0.07364181
+#>        type               trash_code unique total
+#> 1  sequence F3D0_exclusive_sequences    101   109
+#> 2       otu F3D0_exclusive_sequences     14    14
+#> 3       asv F3D0_exclusive_sequences    101   109
+#> 4 phylotype F3D0_exclusive_sequences      2     2
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2847.35
+#> 2.5%-tile:       1  375    252      0        4     0   2847.35
 #> 25%-tile:        1  375    252      0        4     0  28464.50
-#> Median:          1  375    252      0        4     0  56928.00
+#> Median:          1  375    253      0        4     0  56928.00
 #> 75%-tile:        1  375    253      0        5     0  85391.50
-#> 97.5%-tile:      1  375    253      0        6     0 111008.65
-#> Maximum:         1  375    256      0        6     0 113854.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0 111008.65
+#> Maximum:         1  375    256      0        6     0 113855.00
+#> Mean:            1  375    252      0        4     0  56928.00
 #> scrap_summary:
 #>        type               trash_code unique total
 #> 1  sequence F3D0_exclusive_sequences    101   109
@@ -342,15 +462,48 @@ xdev_merge_bins(
 )
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0      1.00
+#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2847.35
+#> 25%-tile:        1  375 252.0000      0 4.000000     0  28464.50
+#> Median:          1  375 253.0000      0 4.000000     0  56928.00
+#> 75%-tile:        1  375 253.0000      0 5.000000     0  85391.50
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 111008.65
+#> Maximum:         1  375 256.0000      0 6.000000     0 113855.00
+#> Mean:            1  375 252.7345      0 4.493546     0  56928.00
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000       0.00000    248.0000   0.000000      0
+#> 2 252.0000       247.0000       1.00000    250.0000   0.000000      0
+#> 3 252.0000       249.0000       2.00000    251.0000   0.000000      0
+#> 4 253.0000       249.0000       2.00000    251.0000   1.000000      0
+#> 5 253.0000       250.0000       2.00000    251.0000   5.000000      0
+#> 6 254.0000       251.0000       4.00000    253.0000  26.000000      0
+#> 7 270.0000       255.0000      22.00000    256.0000 120.000000      0
+#> 8 252.7522       249.1583       2.00043    251.1588   5.145009      0
+#>   Expected_Errors
+#> 1      1.00000000
+#> 2      1.00000000
+#> 3      1.00000000
+#> 4      1.00000000
+#> 5      1.00000000
+#> 6      1.00000000
+#> 7      4.00000000
+#> 8      0.07364181
+#>        type               trash_code unique total
+#> 1  sequence F3D0_exclusive_sequences    101   109
+#> 2       otu F3D0_exclusive_sequences     14    14
+#> 3       otu       merge_bins_example     99  6674
+#> 4       asv F3D0_exclusive_sequences    101   109
+#> 5 phylotype F3D0_exclusive_sequences      2     2
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2847.35
+#> 2.5%-tile:       1  375    252      0        4     0   2847.35
 #> 25%-tile:        1  375    252      0        4     0  28464.50
-#> Median:          1  375    252      0        4     0  56928.00
+#> Median:          1  375    253      0        4     0  56928.00
 #> 75%-tile:        1  375    253      0        5     0  85391.50
-#> 97.5%-tile:      1  375    253      0        6     0 111008.65
-#> Maximum:         1  375    256      0        6     0 113854.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0 111008.65
+#> Maximum:         1  375    256      0        6     0 113855.00
+#> Mean:            1  375    252      0        4     0  56928.00
 #> scrap_summary:
 #>        type               trash_code unique total
 #> 1  sequence F3D0_exclusive_sequences    101   109
@@ -377,15 +530,48 @@ xdev_merge_bins(
 miseq
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns   numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0      1.00
+#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2847.35
+#> 25%-tile:        1  375 252.0000      0 4.000000     0  28464.50
+#> Median:          1  375 253.0000      0 4.000000     0  56928.00
+#> 75%-tile:        1  375 253.0000      0 5.000000     0  85391.50
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 111008.65
+#> Maximum:         1  375 256.0000      0 6.000000     0 113855.00
+#> Mean:            1  375 252.7345      0 4.493546     0  56928.00
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000       0.00000    248.0000   0.000000      0
+#> 2 252.0000       247.0000       1.00000    250.0000   0.000000      0
+#> 3 252.0000       249.0000       2.00000    251.0000   0.000000      0
+#> 4 253.0000       249.0000       2.00000    251.0000   1.000000      0
+#> 5 253.0000       250.0000       2.00000    251.0000   5.000000      0
+#> 6 254.0000       251.0000       4.00000    253.0000  26.000000      0
+#> 7 270.0000       255.0000      22.00000    256.0000 120.000000      0
+#> 8 252.7522       249.1583       2.00043    251.1588   5.145009      0
+#>   Expected_Errors
+#> 1      1.00000000
+#> 2      1.00000000
+#> 3      1.00000000
+#> 4      1.00000000
+#> 5      1.00000000
+#> 6      1.00000000
+#> 7      4.00000000
+#> 8      0.07364181
+#>        type               trash_code unique total
+#> 1  sequence F3D0_exclusive_sequences    101   109
+#> 2       otu F3D0_exclusive_sequences     14    14
+#> 3       otu       merge_bins_example     99  6674
+#> 4       asv F3D0_exclusive_sequences    101   109
+#> 5 phylotype F3D0_exclusive_sequences      2     2
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2847.35
+#> 2.5%-tile:       1  375    252      0        4     0   2847.35
 #> 25%-tile:        1  375    252      0        4     0  28464.50
-#> Median:          1  375    252      0        4     0  56928.00
+#> Median:          1  375    253      0        4     0  56928.00
 #> 75%-tile:        1  375    253      0        5     0  85391.50
-#> 97.5%-tile:      1  375    253      0        6     0 111008.65
-#> Maximum:         1  375    256      0        6     0 113854.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0 111008.65
+#> Maximum:         1  375    256      0        6     0 113855.00
+#> Mean:            1  375    252      0        4     0  56928.00
 #> scrap_summary:
 #>        type               trash_code unique total
 #> 1  sequence F3D0_exclusive_sequences    101   109
@@ -448,15 +634,52 @@ xdev_remove_sequences(
 )
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns  numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0      1.0
+#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2529.6
+#> 25%-tile:        1  375 252.0000      0 4.000000     0  25287.0
+#> Median:          1  375 253.0000      0 4.000000     0  50573.0
+#> 75%-tile:        1  375 253.0000      0 5.000000     0  75859.0
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0  98616.4
+#> Maximum:         1  375 256.0000      0 6.000000     0 101145.0
+#> Mean:            1  375 252.7311      0 4.492806     0  50573.0
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000      0.000000     248.000   0.000000      0
+#> 2 252.0000       247.0000      1.000000     250.000   0.000000      0
+#> 3 252.0000       249.0000      2.000000     251.000   0.000000      0
+#> 4 253.0000       249.0000      2.000000     251.000   1.000000      0
+#> 5 253.0000       250.0000      2.000000     251.000   5.000000      0
+#> 6 254.0000       251.0000      4.000000     253.000  26.000000      0
+#> 7 270.0000       255.0000     22.000000     256.000 120.000000      0
+#> 8 252.7496       249.1637      1.997302     251.161   5.202788      0
+#>   Expected_Errors
+#> 1      1.00000000
+#> 2      1.00000000
+#> 3      1.00000000
+#> 4      1.00000000
+#> 5      1.00000000
+#> 6      1.00000000
+#> 7      4.00000000
+#> 8      0.07460634
+#>        type               trash_code unique total
+#> 1  sequence F3D0_exclusive_sequences    101   109
+#> 2  sequence remove_sequences_example    100 12710
+#> 3       otu F3D0_exclusive_sequences     14    14
+#> 4       otu       merge_bins_example     99  6674
+#> 5       otu remove_sequences_example      9   157
+#> 6       asv F3D0_exclusive_sequences    101   109
+#> 7       asv remove_sequences_example    100 12710
+#> 8 phylotype F3D0_exclusive_sequences      2     2
+#> 9 phylotype remove_sequences_example      1     1
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2529.60
+#> 2.5%-tile:       1  375    252      0        4     0   2529.60
 #> 25%-tile:        1  375    252      0        4     0  25287.00
-#> Median:          1  375    252      0        4     0  50573.00
+#> Median:          1  375    253      0        4     0  50573.00
 #> 75%-tile:        1  375    253      0        5     0  75859.00
-#> 97.5%-tile:      1  375    253      0        6     0  98616.40
-#> Maximum:         1  375    256      0        6     0 101144.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0  98616.40
+#> Maximum:         1  375    256      0        6     0 101145.00
+#> Mean:            1  375    252      0        4     0  50573.00
 #> scrap_summary:
 #>        type               trash_code unique total
 #> 1  sequence F3D0_exclusive_sequences    101   109
@@ -487,15 +710,52 @@ xdev_remove_sequences(
 miseq
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns  numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0      1.0
+#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2529.6
+#> 25%-tile:        1  375 252.0000      0 4.000000     0  25287.0
+#> Median:          1  375 253.0000      0 4.000000     0  50573.0
+#> 75%-tile:        1  375 253.0000      0 5.000000     0  75859.0
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0  98616.4
+#> Maximum:         1  375 256.0000      0 6.000000     0 101145.0
+#> Mean:            1  375 252.7311      0 4.492806     0  50573.0
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000      0.000000     248.000   0.000000      0
+#> 2 252.0000       247.0000      1.000000     250.000   0.000000      0
+#> 3 252.0000       249.0000      2.000000     251.000   0.000000      0
+#> 4 253.0000       249.0000      2.000000     251.000   1.000000      0
+#> 5 253.0000       250.0000      2.000000     251.000   5.000000      0
+#> 6 254.0000       251.0000      4.000000     253.000  26.000000      0
+#> 7 270.0000       255.0000     22.000000     256.000 120.000000      0
+#> 8 252.7496       249.1637      1.997302     251.161   5.202788      0
+#>   Expected_Errors
+#> 1      1.00000000
+#> 2      1.00000000
+#> 3      1.00000000
+#> 4      1.00000000
+#> 5      1.00000000
+#> 6      1.00000000
+#> 7      4.00000000
+#> 8      0.07460634
+#>        type               trash_code unique total
+#> 1  sequence F3D0_exclusive_sequences    101   109
+#> 2  sequence remove_sequences_example    100 12710
+#> 3       otu F3D0_exclusive_sequences     14    14
+#> 4       otu       merge_bins_example     99  6674
+#> 5       otu remove_sequences_example      9   157
+#> 6       asv F3D0_exclusive_sequences    101   109
+#> 7       asv remove_sequences_example    100 12710
+#> 8 phylotype F3D0_exclusive_sequences      2     2
+#> 9 phylotype remove_sequences_example      1     1
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2529.60
+#> 2.5%-tile:       1  375    252      0        4     0   2529.60
 #> 25%-tile:        1  375    252      0        4     0  25287.00
-#> Median:          1  375    252      0        4     0  50573.00
+#> Median:          1  375    253      0        4     0  50573.00
 #> 75%-tile:        1  375    253      0        5     0  75859.00
-#> 97.5%-tile:      1  375    253      0        6     0  98616.40
-#> Maximum:         1  375    256      0        6     0 101144.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0  98616.40
+#> Maximum:         1  375    256      0        6     0 101145.00
+#> Mean:            1  375    252      0        4     0  50573.00
 #> scrap_summary:
 #>        type               trash_code unique total
 #> 1  sequence F3D0_exclusive_sequences    101   109
@@ -552,15 +812,56 @@ xdev_remove_bins(
 )
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0     1.0
+#> 2.5%-tile:       1  375 251.0000      0 4.000000     0  1980.9
+#> 25%-tile:        1  375 252.0000      0 4.000000     0 19800.0
+#> Median:          1  375 253.0000      0 4.000000     0 39599.0
+#> 75%-tile:        1  375 253.0000      0 5.000000     0 59398.0
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 77217.1
+#> Maximum:         1  375 256.0000      0 6.000000     0 79197.0
+#> Mean:            1  375 252.5543      0 4.337946     0 39599.0
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000      0.000000    248.0000   0.000000      0
+#> 2 252.0000       248.0000      1.000000    251.0000   0.000000      0
+#> 3 252.0000       249.0000      1.000000    251.0000   0.000000      0
+#> 4 253.0000       249.0000      2.000000    251.0000   2.000000      0
+#> 5 253.0000       250.0000      2.000000    251.0000  12.000000      0
+#> 6 254.0000       251.0000      3.000000    253.0000  28.000000      0
+#> 7 270.0000       255.0000     22.000000    256.0000 120.000000      0
+#> 8 252.5841       249.3336      1.895849    251.2294   7.219228      0
+#>   Expected_Errors
+#> 1        1.000000
+#> 2        1.000000
+#> 3        1.000000
+#> 4        1.000000
+#> 5        1.000000
+#> 6        1.000000
+#> 7        4.000000
+#> 8        0.104387
+#>         type               trash_code unique total
+#> 1   sequence F3D0_exclusive_sequences    101   109
+#> 2   sequence      remove_bins_example    851 21948
+#> 3   sequence remove_sequences_example    100 12710
+#> 4        otu F3D0_exclusive_sequences     14    14
+#> 5        otu       merge_bins_example     99  6674
+#> 6        otu      remove_bins_example    134 15766
+#> 7        otu remove_sequences_example      9   157
+#> 8        asv F3D0_exclusive_sequences    101   109
+#> 9        asv      remove_bins_example    851 21948
+#> 10       asv remove_sequences_example    100 12710
+#> 11 phylotype F3D0_exclusive_sequences      2     2
+#> 12 phylotype      remove_bins_example     10 23530
+#> 13 phylotype remove_sequences_example      1     1
 #>             starts ends nbases ambigs polymers numns  numseqs
 #> Minimum:         1  375    249      0        3     0     1.00
-#> 2.5%-tile:       1  375    252      0        3     0  1980.90
+#> 2.5%-tile:       1  375    251      0        4     0  1980.90
 #> 25%-tile:        1  375    252      0        4     0 19800.00
-#> Median:          1  375    252      0        4     0 39599.00
-#> 75%-tile:        1  375    253      0        4     0 59398.00
-#> 97.5%-tile:      1  375    253      0        6     0 77217.10
-#> Maximum:         1  375    256      0        6     0 79196.00
-#> Mean:            1  375    252      0        4     0     0.00
+#> Median:          1  375    253      0        4     0 39599.00
+#> 75%-tile:        1  375    253      0        5     0 59398.00
+#> 97.5%-tile:      1  375    254      0        6     0 77217.10
+#> Maximum:         1  375    256      0        6     0 79197.00
+#> Mean:            1  375    252      0        4     0 39599.00
 #> scrap_summary:
 #>         type               trash_code unique total
 #> 1   sequence F3D0_exclusive_sequences    101   109
@@ -595,15 +896,56 @@ xdev_remove_bins(
 miseq
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0     1.0
+#> 2.5%-tile:       1  375 251.0000      0 4.000000     0  1980.9
+#> 25%-tile:        1  375 252.0000      0 4.000000     0 19800.0
+#> Median:          1  375 253.0000      0 4.000000     0 39599.0
+#> 75%-tile:        1  375 253.0000      0 5.000000     0 59398.0
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 77217.1
+#> Maximum:         1  375 256.0000      0 6.000000     0 79197.0
+#> Mean:            1  375 252.5543      0 4.337946     0 39599.0
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000      0.000000    248.0000   0.000000      0
+#> 2 252.0000       248.0000      1.000000    251.0000   0.000000      0
+#> 3 252.0000       249.0000      1.000000    251.0000   0.000000      0
+#> 4 253.0000       249.0000      2.000000    251.0000   2.000000      0
+#> 5 253.0000       250.0000      2.000000    251.0000  12.000000      0
+#> 6 254.0000       251.0000      3.000000    253.0000  28.000000      0
+#> 7 270.0000       255.0000     22.000000    256.0000 120.000000      0
+#> 8 252.5841       249.3336      1.895849    251.2294   7.219228      0
+#>   Expected_Errors
+#> 1        1.000000
+#> 2        1.000000
+#> 3        1.000000
+#> 4        1.000000
+#> 5        1.000000
+#> 6        1.000000
+#> 7        4.000000
+#> 8        0.104387
+#>         type               trash_code unique total
+#> 1   sequence F3D0_exclusive_sequences    101   109
+#> 2   sequence      remove_bins_example    851 21948
+#> 3   sequence remove_sequences_example    100 12710
+#> 4        otu F3D0_exclusive_sequences     14    14
+#> 5        otu       merge_bins_example     99  6674
+#> 6        otu      remove_bins_example    134 15766
+#> 7        otu remove_sequences_example      9   157
+#> 8        asv F3D0_exclusive_sequences    101   109
+#> 9        asv      remove_bins_example    851 21948
+#> 10       asv remove_sequences_example    100 12710
+#> 11 phylotype F3D0_exclusive_sequences      2     2
+#> 12 phylotype      remove_bins_example     10 23530
+#> 13 phylotype remove_sequences_example      1     1
 #>             starts ends nbases ambigs polymers numns  numseqs
 #> Minimum:         1  375    249      0        3     0     1.00
-#> 2.5%-tile:       1  375    252      0        3     0  1980.90
+#> 2.5%-tile:       1  375    251      0        4     0  1980.90
 #> 25%-tile:        1  375    252      0        4     0 19800.00
-#> Median:          1  375    252      0        4     0 39599.00
-#> 75%-tile:        1  375    253      0        4     0 59398.00
-#> 97.5%-tile:      1  375    253      0        6     0 77217.10
-#> Maximum:         1  375    256      0        6     0 79196.00
-#> Mean:            1  375    252      0        4     0     0.00
+#> Median:          1  375    253      0        4     0 39599.00
+#> 75%-tile:        1  375    253      0        5     0 59398.00
+#> 97.5%-tile:      1  375    254      0        6     0 77217.10
+#> Maximum:         1  375    256      0        6     0 79197.00
+#> Mean:            1  375    252      0        4     0 39599.00
 #> scrap_summary:
 #>         type               trash_code unique total
 #> 1   sequence F3D0_exclusive_sequences    101   109
@@ -659,15 +1001,60 @@ xdev_remove_samples(
 )
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0     1.0
+#> 2.5%-tile:       1  375 251.0000      0 4.000000     0  1936.3
+#> 25%-tile:        1  375 252.0000      0 4.000000     0 19354.0
+#> Median:          1  375 253.0000      0 4.000000     0 38707.0
+#> 75%-tile:        1  375 253.0000      0 5.000000     0 58060.0
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 75477.7
+#> Maximum:         1  375 256.0000      0 6.000000     0 77413.0
+#> Mean:            1  375 252.5513      0 4.334831     0 38707.0
+#>    Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.000       232.0000      0.000000    248.0000   0.000000      0
+#> 2 252.000       248.0000      1.000000    251.0000   0.000000      0
+#> 3 252.000       249.0000      1.000000    251.0000   0.000000      0
+#> 4 253.000       249.0000      2.000000    251.0000   2.000000      0
+#> 5 253.000       250.0000      2.000000    251.0000  12.000000      0
+#> 6 254.000       251.0000      4.000000    253.0000  28.000000      0
+#> 7 270.000       255.0000     22.000000    256.0000 120.000000      0
+#> 8 252.582       249.3363      1.895131    251.2315   7.276404      0
+#>   Expected_Errors
+#> 1       1.0000000
+#> 2       1.0000000
+#> 3       1.0000000
+#> 4       1.0000000
+#> 5       1.0000000
+#> 6       1.0000000
+#> 7       4.0000000
+#> 8       0.1053143
+#>         type               trash_code unique total
+#> 1   sequence F3D0_exclusive_sequences    101   109
+#> 2   sequence      remove_bins_example    851 21948
+#> 3   sequence   remove_samples_example     38    42
+#> 4   sequence remove_sequences_example    100 12710
+#> 5        otu F3D0_exclusive_sequences     14    14
+#> 6        otu       merge_bins_example     99  6674
+#> 7        otu      remove_bins_example    134 15766
+#> 8        otu   remove_samples_example      9    15
+#> 9        otu remove_sequences_example      9   157
+#> 10       asv F3D0_exclusive_sequences    101   109
+#> 11       asv      remove_bins_example    851 21948
+#> 12       asv   remove_samples_example     38    42
+#> 13       asv remove_sequences_example    100 12710
+#> 14 phylotype F3D0_exclusive_sequences      2     2
+#> 15 phylotype      remove_bins_example     10 23530
+#> 16 phylotype   remove_samples_example      1     1
+#> 17 phylotype remove_sequences_example      1     1
 #>             starts ends nbases ambigs polymers numns  numseqs
 #> Minimum:         1  375    249      0        3     0     1.00
-#> 2.5%-tile:       1  375    252      0        3     0  1936.30
+#> 2.5%-tile:       1  375    251      0        4     0  1936.30
 #> 25%-tile:        1  375    252      0        4     0 19354.00
-#> Median:          1  375    252      0        4     0 38707.00
-#> 75%-tile:        1  375    253      0        4     0 58060.00
-#> 97.5%-tile:      1  375    253      0        6     0 75477.70
-#> Maximum:         1  375    256      0        6     0 77412.00
-#> Mean:            1  375    252      0        4     0     0.00
+#> Median:          1  375    253      0        4     0 38707.00
+#> 75%-tile:        1  375    253      0        5     0 58060.00
+#> 97.5%-tile:      1  375    254      0        6     0 75477.70
+#> Maximum:         1  375    256      0        6     0 77413.00
+#> Mean:            1  375    252      0        4     0 38707.00
 #> scrap_summary:
 #>         type               trash_code unique total
 #> 1   sequence F3D0_exclusive_sequences    101   109
@@ -706,15 +1093,60 @@ xdev_remove_samples(
 miseq
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0     1.0
+#> 2.5%-tile:       1  375 251.0000      0 4.000000     0  1936.3
+#> 25%-tile:        1  375 252.0000      0 4.000000     0 19354.0
+#> Median:          1  375 253.0000      0 4.000000     0 38707.0
+#> 75%-tile:        1  375 253.0000      0 5.000000     0 58060.0
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 75477.7
+#> Maximum:         1  375 256.0000      0 6.000000     0 77413.0
+#> Mean:            1  375 252.5513      0 4.334831     0 38707.0
+#>    Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.000       232.0000      0.000000    248.0000   0.000000      0
+#> 2 252.000       248.0000      1.000000    251.0000   0.000000      0
+#> 3 252.000       249.0000      1.000000    251.0000   0.000000      0
+#> 4 253.000       249.0000      2.000000    251.0000   2.000000      0
+#> 5 253.000       250.0000      2.000000    251.0000  12.000000      0
+#> 6 254.000       251.0000      4.000000    253.0000  28.000000      0
+#> 7 270.000       255.0000     22.000000    256.0000 120.000000      0
+#> 8 252.582       249.3363      1.895131    251.2315   7.276404      0
+#>   Expected_Errors
+#> 1       1.0000000
+#> 2       1.0000000
+#> 3       1.0000000
+#> 4       1.0000000
+#> 5       1.0000000
+#> 6       1.0000000
+#> 7       4.0000000
+#> 8       0.1053143
+#>         type               trash_code unique total
+#> 1   sequence F3D0_exclusive_sequences    101   109
+#> 2   sequence      remove_bins_example    851 21948
+#> 3   sequence   remove_samples_example     38    42
+#> 4   sequence remove_sequences_example    100 12710
+#> 5        otu F3D0_exclusive_sequences     14    14
+#> 6        otu       merge_bins_example     99  6674
+#> 7        otu      remove_bins_example    134 15766
+#> 8        otu   remove_samples_example      9    15
+#> 9        otu remove_sequences_example      9   157
+#> 10       asv F3D0_exclusive_sequences    101   109
+#> 11       asv      remove_bins_example    851 21948
+#> 12       asv   remove_samples_example     38    42
+#> 13       asv remove_sequences_example    100 12710
+#> 14 phylotype F3D0_exclusive_sequences      2     2
+#> 15 phylotype      remove_bins_example     10 23530
+#> 16 phylotype   remove_samples_example      1     1
+#> 17 phylotype remove_sequences_example      1     1
 #>             starts ends nbases ambigs polymers numns  numseqs
 #> Minimum:         1  375    249      0        3     0     1.00
-#> 2.5%-tile:       1  375    252      0        3     0  1936.30
+#> 2.5%-tile:       1  375    251      0        4     0  1936.30
 #> 25%-tile:        1  375    252      0        4     0 19354.00
-#> Median:          1  375    252      0        4     0 38707.00
-#> 75%-tile:        1  375    253      0        4     0 58060.00
-#> 97.5%-tile:      1  375    253      0        6     0 75477.70
-#> Maximum:         1  375    256      0        6     0 77412.00
-#> Mean:            1  375    252      0        4     0     0.00
+#> Median:          1  375    253      0        4     0 38707.00
+#> 75%-tile:        1  375    253      0        5     0 58060.00
+#> 97.5%-tile:      1  375    254      0        6     0 75477.70
+#> Maximum:         1  375    256      0        6     0 77413.00
+#> Mean:            1  375    252      0        4     0 38707.00
 #> scrap_summary:
 #>         type               trash_code unique total
 #> 1   sequence F3D0_exclusive_sequences    101   109
@@ -773,15 +1205,64 @@ xdev_remove_lineages(
 )
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns  numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0     1.00
+#> 2.5%-tile:       1  375 251.0000      0 4.000000     0  1893.25
+#> 25%-tile:        1  375 252.0000      0 4.000000     0 18923.50
+#> Median:          1  375 252.0000      0 4.000000     0 37846.00
+#> 75%-tile:        1  375 253.0000      0 5.000000     0 56768.50
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 73798.75
+#> Maximum:         1  375 256.0000      0 6.000000     0 75691.00
+#> Mean:            1  375 252.5152      0 4.306306     0 37846.00
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000      0.000000    248.0000    0.00000      0
+#> 2 251.0000       248.0000      1.000000    251.0000    0.00000      0
+#> 3 252.0000       249.0000      1.000000    251.0000    1.00000      0
+#> 4 252.0000       249.0000      2.000000    251.0000    3.00000      0
+#> 5 253.0000       250.0000      2.000000    251.0000   14.00000      0
+#> 6 254.0000       251.0000      3.000000    253.0000   29.00000      0
+#> 7 270.0000       255.0000     22.000000    256.0000  120.00000      0
+#> 8 252.5487       249.3759      1.875512    251.2514    7.86896      0
+#>   Expected_Errors
+#> 1       1.0000000
+#> 2       1.0000000
+#> 3       1.0000000
+#> 4       1.0000000
+#> 5       1.0000000
+#> 6       1.0000000
+#> 7       4.0000000
+#> 8       0.1138091
+#>         type                  trash_code unique total
+#> 1   sequence    F3D0_exclusive_sequences    101   109
+#> 2   sequence         remove_bins_example    851 21948
+#> 3   sequence remove_contaminants_example    114  1722
+#> 4   sequence      remove_samples_example     38    42
+#> 5   sequence    remove_sequences_example    100 12710
+#> 6        otu    F3D0_exclusive_sequences     14    14
+#> 7        otu          merge_bins_example     99  6674
+#> 8        otu         remove_bins_example    134 15766
+#> 9        otu remove_contaminants_example     37  4428
+#> 10       otu      remove_samples_example      9    15
+#> 11       otu    remove_sequences_example      9   157
+#> 12       asv    F3D0_exclusive_sequences    101   109
+#> 13       asv         remove_bins_example    851 21948
+#> 14       asv remove_contaminants_example    114  1752
+#> 15       asv      remove_samples_example     38    42
+#> 16       asv    remove_sequences_example    100 12710
+#> 17 phylotype    F3D0_exclusive_sequences      2     2
+#> 18 phylotype         remove_bins_example     10 23530
+#> 19 phylotype remove_contaminants_example      1  1773
+#> 20 phylotype      remove_samples_example      1     1
+#> 21 phylotype    remove_sequences_example      1     1
 #>             starts ends nbases ambigs polymers numns  numseqs
 #> Minimum:         1  375    249      0        3     0     1.00
-#> 2.5%-tile:       1  375    252      0        3     0  1893.25
+#> 2.5%-tile:       1  375    251      0        4     0  1893.25
 #> 25%-tile:        1  375    252      0        4     0 18923.50
 #> Median:          1  375    252      0        4     0 37846.00
-#> 75%-tile:        1  375    253      0        4     0 56768.50
-#> 97.5%-tile:      1  375    253      0        6     0 73798.75
-#> Maximum:         1  375    256      0        6     0 75690.00
-#> Mean:            1  375    252      0        4     0     0.00
+#> 75%-tile:        1  375    253      0        5     0 56768.50
+#> 97.5%-tile:      1  375    254      0        6     0 73798.75
+#> Maximum:         1  375    256      0        6     0 75691.00
+#> Mean:            1  375    252      0        4     0 37846.00
 #> scrap_summary:
 #>         type                  trash_code unique total
 #> 1   sequence    F3D0_exclusive_sequences    101   109
@@ -824,15 +1305,64 @@ xdev_remove_lineages(
 miseq
 #> modified_miseq:
 #> 
+#>             starts ends   nbases ambigs polymers numns  numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0     1.00
+#> 2.5%-tile:       1  375 251.0000      0 4.000000     0  1893.25
+#> 25%-tile:        1  375 252.0000      0 4.000000     0 18923.50
+#> Median:          1  375 252.0000      0 4.000000     0 37846.00
+#> 75%-tile:        1  375 253.0000      0 5.000000     0 56768.50
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 73798.75
+#> Maximum:         1  375 256.0000      0 6.000000     0 75691.00
+#> Mean:            1  375 252.5152      0 4.306306     0 37846.00
+#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
+#> 1 250.0000       232.0000      0.000000    248.0000    0.00000      0
+#> 2 251.0000       248.0000      1.000000    251.0000    0.00000      0
+#> 3 252.0000       249.0000      1.000000    251.0000    1.00000      0
+#> 4 252.0000       249.0000      2.000000    251.0000    3.00000      0
+#> 5 253.0000       250.0000      2.000000    251.0000   14.00000      0
+#> 6 254.0000       251.0000      3.000000    253.0000   29.00000      0
+#> 7 270.0000       255.0000     22.000000    256.0000  120.00000      0
+#> 8 252.5487       249.3759      1.875512    251.2514    7.86896      0
+#>   Expected_Errors
+#> 1       1.0000000
+#> 2       1.0000000
+#> 3       1.0000000
+#> 4       1.0000000
+#> 5       1.0000000
+#> 6       1.0000000
+#> 7       4.0000000
+#> 8       0.1138091
+#>         type                  trash_code unique total
+#> 1   sequence    F3D0_exclusive_sequences    101   109
+#> 2   sequence         remove_bins_example    851 21948
+#> 3   sequence remove_contaminants_example    114  1722
+#> 4   sequence      remove_samples_example     38    42
+#> 5   sequence    remove_sequences_example    100 12710
+#> 6        otu    F3D0_exclusive_sequences     14    14
+#> 7        otu          merge_bins_example     99  6674
+#> 8        otu         remove_bins_example    134 15766
+#> 9        otu remove_contaminants_example     37  4428
+#> 10       otu      remove_samples_example      9    15
+#> 11       otu    remove_sequences_example      9   157
+#> 12       asv    F3D0_exclusive_sequences    101   109
+#> 13       asv         remove_bins_example    851 21948
+#> 14       asv remove_contaminants_example    114  1752
+#> 15       asv      remove_samples_example     38    42
+#> 16       asv    remove_sequences_example    100 12710
+#> 17 phylotype    F3D0_exclusive_sequences      2     2
+#> 18 phylotype         remove_bins_example     10 23530
+#> 19 phylotype remove_contaminants_example      1  1773
+#> 20 phylotype      remove_samples_example      1     1
+#> 21 phylotype    remove_sequences_example      1     1
 #>             starts ends nbases ambigs polymers numns  numseqs
 #> Minimum:         1  375    249      0        3     0     1.00
-#> 2.5%-tile:       1  375    252      0        3     0  1893.25
+#> 2.5%-tile:       1  375    251      0        4     0  1893.25
 #> 25%-tile:        1  375    252      0        4     0 18923.50
 #> Median:          1  375    252      0        4     0 37846.00
-#> 75%-tile:        1  375    253      0        4     0 56768.50
-#> 97.5%-tile:      1  375    253      0        6     0 73798.75
-#> Maximum:         1  375    256      0        6     0 75690.00
-#> Mean:            1  375    252      0        4     0     0.00
+#> 75%-tile:        1  375    253      0        5     0 56768.50
+#> 97.5%-tile:      1  375    254      0        6     0 73798.75
+#> Maximum:         1  375    256      0        6     0 75691.00
+#> Mean:            1  375    252      0        4     0 37846.00
 #> scrap_summary:
 #>         type                  trash_code unique total
 #> 1   sequence    F3D0_exclusive_sequences    101   109

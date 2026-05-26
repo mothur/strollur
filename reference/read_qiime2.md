@@ -72,14 +72,24 @@ data
 #> qiime2_moving_pictures:
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
+#> Minimum:         1  120    120      0 3.000000     0      1.00
+#> 2.5%-tile:       1  120    120      0 3.000000     0   3933.45
+#> 25%-tile:        1  120    120      0 4.000000     0  39325.50
+#> Median:          1  120    120      0 4.000000     0  78650.00
+#> 75%-tile:        1  120    120      0 5.000000     0 117974.50
+#> 97.5%-tile:      1  120    120      0 6.000000     0 153366.55
+#> Maximum:         1  120    120      0 8.000000     0 157299.00
+#> Mean:            1  120    120      0 4.156785     0  78650.00
+#> data frame with 0 columns and 0 rows
+#>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  120    120      0        3     0      1.00
 #> 2.5%-tile:       1  120    120      0        3     0   3933.45
 #> 25%-tile:        1  120    120      0        4     0  39325.50
 #> Median:          1  120    120      0        4     0  78650.00
-#> 75%-tile:        1  120    120      0        4     0 117974.50
+#> 75%-tile:        1  120    120      0        5     0 117974.50
 #> 97.5%-tile:      1  120    120      0        6     0 153366.55
-#> Maximum:         1  120    120      0        8     0 157298.00
-#> Mean:            1  120    120      0        4     0      0.00
+#> Maximum:         1  120    120      0        8     0 157299.00
+#> Mean:            1  120    120      0        4     0  78650.00
 #> 
 #> Number of unique seqs: 759 
 #> Total number of seqs: 157298 

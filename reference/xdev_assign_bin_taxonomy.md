@@ -72,6 +72,7 @@ xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
 #> my_dataset:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 531 
 #> Total number of seqs: 113963 
@@ -85,6 +86,7 @@ xdev_assign_bin_taxonomy(data = data, table = otu_data,
 #> Assigned 531 otu bin taxonomies.
 #> my_dataset:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 531 
 #> Total number of seqs: 113963 

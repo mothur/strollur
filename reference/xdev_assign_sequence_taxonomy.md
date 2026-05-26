@@ -66,6 +66,7 @@ xdev_assign_sequence_taxonomy(data, sequence_classifications)
 #> Assigned 2425 sequence taxonomies.
 #> my_dataset:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 2425 
@@ -86,6 +87,7 @@ xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
 #> Added 1 resource references.
 #> my_dataset:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 2425 

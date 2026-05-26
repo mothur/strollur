@@ -52,15 +52,25 @@ contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
 xdev_remove_lineages(data = data, contaminants = contaminants)
 #> miseq_sop:
 #> 
+#>             starts ends   nbases ambigs polymers numns    numseqs
+#> Minimum:         1  375 249.0000      0 3.000000     0      1.000
+#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2850.075
+#> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750
+#> Median:          1  375 253.0000      0 4.000000     0  56982.500
+#> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250
+#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 111114.925
+#> Maximum:         1  375 256.0000      0 6.000000     0 113964.000
+#> Mean:            1  375 252.7406      0 4.496082     0  56982.500
+#> data frame with 0 columns and 0 rows
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 2.5%-tile:       1  375    252      0        4     0   2850.08
 #> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    252      0        4     0  56982.50
+#> Median:          1  375    253      0        4     0  56982.50
 #> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    253      0        6     0 111114.93
-#> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113964.00
+#> Mean:            1  375    252      0        4     0  56982.50
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 

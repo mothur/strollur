@@ -51,6 +51,7 @@ an updated
 #> Assigned 3 otu bins.
 #> my_dataset:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 3 
 #> Total number of seqs: 715 
@@ -69,6 +70,9 @@ an updated
                    trash_tags = trash_tag)
 #> my_dataset:
 #> 
+#>       type trash_code unique total
+#> 1 sequence    bad_bin      1   110
+#> 2      otu    bad_bin      1   110
 #> scrap_summary:
 #>       type trash_code unique total
 #> 1 sequence    bad_bin      1   110

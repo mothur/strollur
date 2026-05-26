@@ -67,6 +67,8 @@ seqs_to_merge <- c("seq1", "seq2", "seq3")
 xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 #> my_data:
 #> 
+#>       type trash_code unique total
+#> 1 sequence     merged      2    20
 #> scrap_summary:
 #>       type trash_code unique total
 #> 1 sequence     merged      2    20

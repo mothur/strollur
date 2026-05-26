@@ -28,6 +28,9 @@ Authors:
 
 - Sarah Westcott <swestcot@umich.edu>
 
+- Gregory Johnson <grejoh@umich.edu>
+  ([ORCID](https://orcid.org/0009-0008-3890-0297))
+
 Other contributors:
 
 - Pat Schloss <pschloss@umich.edu>

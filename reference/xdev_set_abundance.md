@@ -55,6 +55,7 @@ xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_name = n
 #> Assigned 4 sequence abundances.
 #> my_dataset:
 #> 
+#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 4 
 #> Total number of seqs: 1369 
@@ -75,6 +76,8 @@ xdev_set_abundance(data = data,
                    sequence_abundances = new_abunds)
 #> my_dataset:
 #> 
+#>       type trash_code unique total
+#> 1 sequence     update      0   200
 #> scrap_summary:
 #>       type trash_code unique total
 #> 1 sequence     update      0   200
