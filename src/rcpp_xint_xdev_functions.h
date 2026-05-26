@@ -1377,49 +1377,26 @@ void xdev_set_dataset_name(const Rcpp::Environment& data, const string& dataset_
 //[[Rcpp::export]]
 void xdev_set_num_processors(const Rcpp::Environment& data, int processors);
 
-/******************************************************************************/
-//' @title xdev_summarize
+// ***************** internal ******************
+//' @title xdev_get_scrap_summary
 //' @description
-//' Summarize the sequences data, custom reports, and scrapped data in a
-//' \link{strollur} object
+//' Summarize the scrapped data in a \link{strollur} object
 //'
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//'
-//' @param type, string containing the type of data you want the number of.
-//' Options include: "sequence", "report" and "scrap". Default = "sequence".
-//'
-//' @param report_type, string containing the report type you would summarized.
-//' For example, the miseq_sop_example includes contigs assembly data and can be
-//' accessed with report_type = "contigs_report". Default = NULL.
 //'
 //' @examples
 //'
 //'  data <- miseq_sop_example()
 //'
-//'  # summarize FASTA data
-//'  xdev_summarize(data = data, type = "sequence")
+//'  # summarize scrap summary
+//'  xdev_get_scrap_summary(data = data)
 //'
-//'  # summarize contigs_report
-//'  xdev_summarize(data = data, type = "report",
-//'                  report_type = "contigs_report")
-//'
-//'  # remove sample 'F3D0'
-//'  xdev_remove_samples(data = data, samples = c("F3D0"))
-//'
-//'  # summarize FASTA data after removal of sample F3D0
-//'  xdev_summarize(data = data, type = "sequence")
-//'
-//'  # summarize scrapped data
-//'  xdev_summarize(data = data, type = "scrap")
 //'
 //' @return data.frame()
-//' @export
+//' @keywords internal
+//' @noRd
 //[[Rcpp::export]]
-Rcpp::DataFrame xdev_summarize(const Rcpp::Environment& data,
-                               const string& type = "sequence",
-                               Rcpp::Nullable<Rcpp::CharacterVector> report_type = R_NilValue);
-
-// ***************** internal ******************
+Rcpp::DataFrame xdev_get_scrap_summary(const Rcpp::Environment& data);
 
 //' @title xint_copy_pointer
 //' @name xint_copy_pointer

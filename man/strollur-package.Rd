@@ -24,6 +24,7 @@ Useful links:
 Authors:
 \itemize{
   \item Sarah Westcott \email{swestcot@umich.edu}
+  \item Gregory Johnson \email{grejoh@umich.edu} (\href{https://orcid.org/0009-0008-3890-0297}{ORCID})
 }
 
 Other contributors:
