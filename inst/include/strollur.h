@@ -82,6 +82,73 @@ struct Reference {
         creation_date = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
     }
 
+    bool operator==(const Reference& ref) const {
+        if (name != ref.name) {
+             return false;
+        }else if (vendor != ref.vendor) {
+            return false;
+        }else if (version != ref.version) {
+            return false;
+        }else if (method_url != ref.method_url) {
+            return false;
+        }else if (documentation_url != ref.documentation_url) {
+            return false;
+        }else if (usage != ref.usage) {
+            return false;
+        }else if (note != ref.note) {
+            return false;
+        }else if (citation != ref.citation) {
+            return false;
+        }else if (parameter != ref.parameter) {
+            return false;
+        }
+        return true;
+    }
+
+    // convert "" -> "NA"
+    void checks() {
+        if (name == "") {
+            string message = "All resource references must have a name, please correct.";
+            throw Rcpp::exception(message.c_str());
+        }
+        if (vendor == "") {
+            vendor = "NA";
+        }
+        if (version == "") {
+            version = "NA";
+        }
+        if (method_url == "") {
+            method_url = "NA";
+        }
+        if (documentation_url == "") {
+            documentation_url = "NA";
+        }
+        if (usage == "") {
+            usage = "NA";
+        }
+        if (note == "") {
+            note = "NA";
+        }
+        if (citation == "") {
+            citation = "NA";
+        }
+        if (parameter == "") {
+            parameter = "NA";
+        }
+    }
+
+    void print(std::ostream& out) {
+        out << "name: " << name << std::endl;
+        out << "vendor: " << vendor << std::endl;
+        out << "version: " << version << std::endl;
+        out << "method_url: " << method_url << std::endl;
+        out << "documentation_url: " << documentation_url << std::endl;
+        out << "usage: " << usage << std::endl;
+        out << "note: " << note << std::endl;
+        out << "citation: " << citation << std::endl;
+        out << "parameter: " << parameter << std::endl;
+    }
+
     // This method lets Cereal know how to serialize.
     template<class Archive>
     void serialize(Archive & archive) {
@@ -158,6 +225,22 @@ struct sampleAbunds {
         }
     }
 
+    bool operator==(const sampleAbunds& sabunds) const {
+        if (sampleIndex != sabunds.sampleIndex) {
+            return false;
+        }
+        if (abunds.size() != sabunds.abunds.size()) {
+            return false;
+        }
+
+        float epsilon = 1e-5f;
+        return std::equal(abunds.begin(), abunds.end(),
+                          sabunds.abunds.begin(),
+                          [epsilon](float a, float b) {
+                              return std::fabs(a - b) < epsilon;
+                          });
+    }
+
     void updateIndexes(map<int, int>& indexMap) {
         for (int i = 0; i < sampleIndex.size(); i++) {
             sampleIndex[i] = indexMap[sampleIndex[i]];
@@ -187,6 +270,8 @@ public:
 
     AbundTable();
     ~AbundTable();
+
+    bool operator==(const AbundTable&) const;
 
     void clear();
     void clone(const AbundTable& abundTable);
@@ -317,15 +402,15 @@ public:
     Report();
     ~Report() {}
 
+    bool operator==(const Report&) const;
+
     void addReport(const Rcpp::DataFrame& report);
     void clear();
     Rcpp::DataFrame getReport(const set<string>& datasetNames);
 
-    Rcpp::DataFrame summarizeReport(set<string> datasetNames,
-                                    int proc, vector<float> counts);
-
     bool hasReport;
 
+    void sortAlpha();
 private:
 
     map<int, string> columnNames;
@@ -363,6 +448,8 @@ public:
     BinTable();
     BinTable(const BinTable& binTable);
     ~BinTable();
+
+    bool operator==(const BinTable&) const;
 
     string label;
     bool hasBinTaxonomy, hasBinReps, runClassify;
@@ -508,12 +595,12 @@ class Dataset {
 public:
 
     Dataset();
-    Dataset(string name, const int processors);
+    Dataset(string name);
     Dataset(const Dataset& dataset);
     ~Dataset();
 
     string datasetName;
-    int processors, alignmentLength; // -1 if unaligned
+    int alignmentLength; // -1 if unaligned
     bool isAligned, hasSequenceData, hasSequenceTaxonomy;
     double numUnique;
 
@@ -618,6 +705,8 @@ public:
     bool hasListAssignments() const { return hasList; }
     bool hasSeqs() const;
 
+    bool isEqual(Dataset& dataset);
+
     void mergeBins(const vector<string>& binIDS, const string& reason = "merged",
                    const string& type = "otu");
     void mergeSequences(const vector<string>&, const string& reason = "merged");
@@ -698,14 +787,14 @@ private:
                         bool removeFromBin = true);
     const Rcpp::DataFrame fillTaxReport(const string& mode);
     int getBinTableIndex(const string& type) const;
-
+    void sortDataset();
 
     friend class cereal::access; // Grants Cereal access
 
     // 28
     template<class Archive>
     void serialize(Archive& ar) {
-        ar(datasetName, processors, alignmentLength, isAligned, hasSequenceData,
+        ar(datasetName, alignmentLength, isAligned, hasSequenceData,
            hasSequenceTaxonomy, numUnique, taxonomies, references, tableSeqs,
            starts, ends, lengths, ambigs, polymers,
            numns, names, seqs, comments, trashCodes,

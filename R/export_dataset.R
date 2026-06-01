@@ -8,7 +8,7 @@
 #'
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 2)
+#' dataset <- new_dataset("my_dataset")
 #' export_dataset(dataset)
 #'
 #' @return Rcpp::List, containing the data in the 'Dataset

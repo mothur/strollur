@@ -67,7 +67,7 @@ write_mothur_shared <- function(data, file_root = NULL) {
         # add label column before samples
         # To fix build warnings, we have to make bindings for:
         # label, num_bins, samples
-        label <- num_bin <- sample <- NULL
+        label <- num_bins <- sample <- NULL
 
         df <- df |>
           mutate(label = rep(1, num_samples)) |>

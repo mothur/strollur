@@ -28,7 +28,6 @@ copy_dataset <- function(data) {
     xdev_names(data,
       type = "dataset"
     ),
-    parallelly::availableCores(),
     data
   )
 }

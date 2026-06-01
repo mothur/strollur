@@ -39,6 +39,7 @@ void fillReference(Reference& ref, Rcpp::List ref_list) {
     ref.documentation_url = Rcpp::as<string>(ref_list["documentation_url"]);
     ref.parameter = Rcpp::as<string>(ref_list["parameter"]);
     ref.citation = Rcpp::as<string>(ref_list["citation"]);
+    ref.checks();
 }
 /******************************************************************************/
 SEXP xint_fill_required_parameters(const Rcpp::DataFrame& df,
@@ -228,6 +229,7 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
         if (hasCitations) {
             ref.citation = reference_citations[i];
         }
+        ref.checks();
         refs.push_back(ref);
     }
 
@@ -1191,17 +1193,7 @@ void xdev_set_dataset_name(const Rcpp::Environment& data, const string& dataset_
      d.get()->datasetName = dataset_name;
 }
 /******************************************************************************/
-void xdev_set_num_processors(const Rcpp::Environment& data, const int processors = 1) {
-    if (!data.inherits("strollur")) {
-        string message = "data must be a strollur object.";
-        throw Rcpp::exception(message.c_str());
-    }
-    const Rcpp::XPtr<Dataset> d = data["data"];
-
-     d.get()->processors = processors;
-}
-/******************************************************************************/
-Rcpp::DataFrame xdev_get_scrap_summary(const Rcpp::Environment& data) {
+Rcpp::DataFrame xint_get_scrap_summary(const Rcpp::Environment& data) {
     if (!data.inherits("strollur")) {
         const string message = "data must be a strollur object.";
         throw Rcpp::exception(message.c_str());
@@ -1221,9 +1213,25 @@ Rcpp::XPtr<Dataset> xint_copy_pointer(const Rcpp::Environment& data) {
      return Rcpp::XPtr<Dataset>(copy);
 }
 /******************************************************************************/
-Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name = "", const int processors = 1) {
-     Dataset* d = new Dataset(dataset_name, processors);
+Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name = "") {
+     Dataset* d = new Dataset(dataset_name);
      return Rcpp::XPtr<Dataset>(d);
+}
+/******************************************************************************/
+bool xint_is_equal(Rcpp::Environment data, Rcpp::Environment data2) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+    if (!data2.inherits("strollur")) {
+        string message = "data2 must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+    Rcpp::XPtr<Dataset> d2 = data2["data"];
+
+    return d.get()->isEqual(*d2.get());
 }
 /******************************************************************************/
 void xint_deserialize_dobject(Rcpp::Environment data) {

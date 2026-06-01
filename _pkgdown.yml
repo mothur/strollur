@@ -45,7 +45,6 @@ reference:
   desc: "Want to create and modify strollur objects from your package? Check out these functions"
   contents:
   - strollur_example
-  - get_available_processors
   - has_sequence_strings
   - remove_file
   - sort_dataframe

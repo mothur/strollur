@@ -162,7 +162,7 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
 //'
 //' # To add a custom report including your contigs assembly data
 //'
-//' data <- new_dataset("just for fun", 2)
+//' data <- new_dataset("just for fun")
 //' contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 //'
 //' xdev_add_report(data, contigs_report, "contigs_report", "Name")
@@ -415,7 +415,7 @@ Rcpp::Environment xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
 //' sequence_classifications <- read_mothur_taxonomy(strollur_example(
 //'                         "final.taxonomy.gz"))
 //'
-//' data <- new_dataset("my_dataset", 2)
+//' data <- new_dataset("my_dataset")
 //'
 //' xdev_assign_sequence_taxonomy(data, sequence_classifications)
 //'
@@ -664,7 +664,7 @@ double xdev_count(const Rcpp::Environment& data,
 //'
 //' @examples
 //'
-//' dataset <- new_dataset("my_dataset", 2)
+//' dataset <- new_dataset("my_dataset")
 //' xdev_export_dataset(dataset)
 //'
 //' @return Rcpp::List, containing the data in the 'Dataset' c++ class
@@ -1360,25 +1360,8 @@ Rcpp::Environment xdev_set_sequences(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 void xdev_set_dataset_name(const Rcpp::Environment& data, const string& dataset_name);
 
-//' @title xdev_set_num_processors
-//' @description
-//' Designed with package integration in mind, set the number of processors used
-//'  to summarize a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//'
-//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//' @param processors, a integer containing the desired number of processors
-//' @examples
-//'
-//' data <- new_dataset(dataset_name = "my_dataset")
-//' xdev_set_num_processors(data = data, processors = 1)
-//'
-//' @return No return value, called for side effects.
-//' @export
-//[[Rcpp::export]]
-void xdev_set_num_processors(const Rcpp::Environment& data, int processors);
-
 // ***************** internal ******************
-//' @title xdev_get_scrap_summary
+//' @title xint_get_scrap_summary
 //' @description
 //' Summarize the scrapped data in a \link{strollur} object
 //'
@@ -1389,14 +1372,14 @@ void xdev_set_num_processors(const Rcpp::Environment& data, int processors);
 //'  data <- miseq_sop_example()
 //'
 //'  # summarize scrap summary
-//'  xdev_get_scrap_summary(data = data)
+//'  xint_get_scrap_summary(data = data)
 //'
 //'
 //' @return data.frame()
 //' @keywords internal
 //' @noRd
 //[[Rcpp::export]]
-Rcpp::DataFrame xdev_get_scrap_summary(const Rcpp::Environment& data);
+Rcpp::DataFrame xint_get_scrap_summary(const Rcpp::Environment& data);
 
 //' @title xint_copy_pointer
 //' @name xint_copy_pointer
@@ -1425,12 +1408,24 @@ Rcpp::XPtr<Dataset> xint_copy_pointer(const Rcpp::Environment& data);
 //' @description
 //' For internal use only, create an instance of the C++ 'Dataset' class.
 //' @param dataset_name, string containing dataset name
-//' @param processors, number of processors to use
 //' @return pointer to an instance of the C++ 'Dataset' class.
 //' @keywords internal
 //' @noRd
 //[[Rcpp::export]]
-Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name, int processors);
+Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name);
+
+//' @title xint_is_equal
+//' @name xint_is_equal
+//' @description
+//' For internal use only, compares 2 instances of the C++ 'Dataset' class.
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @param data2, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @return boolean
+//' @keywords internal
+//' @noRd
+//[[Rcpp::export]]
+bool xint_is_equal(Rcpp::Environment data,
+                                  Rcpp::Environment data2);
 
 //' @title xint_deserialize_dobject
 //' @name xint_deserialize_dobject

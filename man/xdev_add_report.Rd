@@ -37,7 +37,7 @@ Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{str
 
 # To add a custom report including your contigs assembly data
 
-data <- new_dataset("just for fun", 2)
+data <- new_dataset("just for fun")
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
 xdev_add_report(data, contigs_report, "contigs_report", "Name")

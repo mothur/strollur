@@ -1,6 +1,5 @@
 #include "../inst/include/strollur.h"
 #include "dataset.h"
-#include "summary.h"
 
 /******************************************************************************/
 Report::Report() {
@@ -136,36 +135,35 @@ Rcpp::DataFrame Report::getReport(const set<string>& datasetNames) {
     return data;
 }
 /******************************************************************************/
-Rcpp::DataFrame Report::summarizeReport(set<string> datasetNames,
-                                        int processors, vector<float> counts) {
+bool Report::operator==(const Report& report) const {
 
-    Rcpp::DataFrame results = Rcpp::DataFrame::create();
-
-    pruneReport(datasetNames);
-
-    if (hasReport) {
-        // create Summary object
-        Summary* summary = new Summary(processors);
-
-        Rcpp::DataFrame report = Rcpp::DataFrame::create();
-        vector<string> reportNames;
-
-        for (auto it = intColumns.begin(); it != intColumns.end(); it++) {
-            report.push_back(it->second);
-            reportNames.push_back(columnNames.at(it->first));
-        }
-
-        for (auto it = numColumns.begin(); it != numColumns.end(); it++) {
-            report.push_back(it->second);
-            reportNames.push_back(columnNames.at(it->first));
-        }
-
-        results = summary->summarize(report, counts, reportNames);
-
-        delete summary;
+    if (columnNames != report.columnNames) {
+        return false;
+    }else if (sequence_name != report.sequence_name) {
+        return false;
+    }else if (sequence_name_col != report.sequence_name_col) {
+        return false;
+    }else if (numRows != report.numRows) {
+        return false;
+    }else if (hasStr != report.hasStr) {
+        return false;
+    }else if (hasInt != report.hasInt) {
+        return false;
+    }else if (hasNum != report.hasNum) {
+        return false;
+    }else if (hasLog != report.hasLog) {
+        return false;
+    }else if (hasColumnNames != report.hasColumnNames) {
+        return false;
+    }else if (strColumns != report.strColumns) {
+        return false;
+    }else if (intColumns != report.intColumns) {
+        return false;
+    }else if (logColumns != report.logColumns) {
+        return false;
     }
 
-    return results;
+    return isMap2FloatingPointVectorEqual(numColumns, report.numColumns);
 }
 /******************************************************************************/
 void Report::pruneReport(set<string> datasetNames) {
@@ -227,6 +225,58 @@ void Report::pruneReport(set<string> datasetNames) {
         if (hasLog) {
             for (auto it = logColumns.begin(); it != logColumns.end(); it++) {
                 it->second = select(it->second, filter);
+            }
+        }
+    }
+}
+
+/******************************************************************************/
+void Report::sortAlpha() {
+
+    if (sequence_name_col != -1) {
+
+        // sort table by sequence name column
+        vector<string> seqNames = strColumns[sequence_name_col];
+        vector<orderAlpha> sortedVector(seqNames.size());
+
+        for (auto i = 0; i < (seqNames).size(); i++) {
+            sortedVector[i].index = i;
+            sortedVector[i].name = seqNames[i];
+        }
+
+        sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
+
+        // names, seqIndex
+        std::vector<unsigned> order(seqNames.size(), 0);
+        for (auto i = 0; i < (sortedVector).size(); i++) {
+            order[i] = sortedVector[i].index;
+            seqNames[i] = sortedVector[i].name;
+        }
+        strColumns[sequence_name_col] = seqNames;
+
+        if (hasStr) {
+            for (auto it = strColumns.begin(); it != strColumns.end(); it++) {
+                if (it->first != sequence_name_col) {
+                    applyOrder(it->second, order);
+                }
+            }
+        }
+
+        if (hasInt) {
+            for (auto it = intColumns.begin(); it != intColumns.end(); it++) {
+                applyOrder(it->second, order);
+            }
+        }
+
+        if (hasNum) {
+            for (auto it = numColumns.begin(); it != numColumns.end(); it++) {
+                applyOrder(it->second, order);
+            }
+        }
+
+        if (hasLog) {
+            for (auto it = logColumns.begin(); it != logColumns.end(); it++) {
+                applyOrder(it->second, order);
             }
         }
     }

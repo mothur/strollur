@@ -1,7 +1,6 @@
 
 #include "../inst/include/strollur.h"
 #include "seqreport.h"
-#include "summary.h"
 #include "dataset.h"
 #include "utils.h"
 
@@ -16,11 +15,9 @@ Dataset::Dataset() {
     numUnique = 0;
     uniqueBad = 0;
     alignmentLength = 0;
-    processors = 1;
 }
 /******************************************************************************/
-Dataset::Dataset(string name, const int processors) : datasetName(std::move(name)),
-processors(processors) {
+Dataset::Dataset(string name) : datasetName(std::move(name)) {
     isAligned = false;
     hasSequenceData = false;
     hasSequenceTaxonomy = false;
@@ -40,7 +37,6 @@ Dataset::Dataset(const Dataset& dataset) {
     hasSequenceData = dataset.hasSequenceData;
     hasSequenceTaxonomy = dataset.hasSequenceTaxonomy;
     numUnique = dataset.numUnique;
-    processors = dataset.processors;
 
     // private
     names = dataset.names;
@@ -92,6 +88,7 @@ void Dataset::loadFromSerialized(Rcpp::RawVector serializedDataset) {
 Dataset::~Dataset() {}
 /******************************************************************************/
 void Dataset::clear() {
+        datasetName = "";
         isAligned = false;
         hasSequenceData = false;
         hasSequenceTaxonomy = false;
@@ -120,6 +117,7 @@ void Dataset::clear() {
 
         // maps sequence name to index in vectors
         seqIndex.clear();
+        refIndex.clear();
         tableSeqs.clear();
 
         badAccnos.clear();
@@ -131,6 +129,8 @@ void Dataset::clear() {
 }
 /******************************************************************************/
 Rcpp::List Dataset::exportDataset(){
+
+    sortDataset();
 
     Rcpp::List results = Rcpp::List::create();
     vector<string> resultsLabels;
@@ -1004,7 +1004,6 @@ Rcpp::DataFrame Dataset::getReferences() const {
         refNotes[i]   = references[i].note.empty()   ? "NA" : references[i].note;
         refParameters[i]  = references[i].parameter.empty() ? "NA" : references[i].parameter;
         refCitations[i]   = references[i].citation.empty() ? "NA" : references[i].citation;
-
         // Handle Date conversion
         struct tm* dt = std::localtime(&references[i].creation_date);
         char buffer[16];
@@ -1346,6 +1345,128 @@ bool Dataset::hasSeqs() const {
     if (allIdentical(seqs, id)) {
         if (id.empty()) { return false; }
     }
+    return true;
+}
+/******************************************************************************/
+bool Dataset::isEqual(Dataset& dataset) {
+
+    // sort datasets so we are not considering the order of the data
+    sortDataset();
+    dataset.sortDataset();
+
+    if (datasetName != dataset.datasetName) {
+        string message = "The strollur objects have different dataset names.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (hasSequenceData != dataset.hasSequenceData) {
+        string message = "The strollur objects have different sequence data statuses.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (hasSequenceTaxonomy != dataset.hasSequenceTaxonomy) {
+        string message = "The strollur objects have different classification statuses.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (!isDoubleEqual(numUnique, dataset.numUnique)) {
+        string message = "The strollur objects have different number of unique sequences.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (names != dataset.names) {
+        string message = "The strollur objects include different sequence names.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (seqs != dataset.seqs) {
+        string message = "The strollur objects include different sequence strings.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (comments != dataset.comments) {
+        string message = "The strollur objects include different sequence comments.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (taxonomies != dataset.taxonomies) {
+        string message = "The strollur objects include different sequence taxonomies.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (alignmentLength != dataset.alignmentLength) {
+        string message = "The strollur objects have different alignment lengths.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (isAligned != dataset.isAligned) {
+        string message = "The strollur objects have different alignment statuses.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (starts != dataset.starts) {
+        string message = "The strollur objects include different sequence start values.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (ends != dataset.ends) {
+        string message = "The strollur objects include different sequence end values.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (lengths != dataset.lengths) {
+        string message = "The strollur objects include different sequence lengths.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (ambigs != dataset.ambigs) {
+        string message = "The strollur objects include different sequence ambiguity values.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (polymers != dataset.polymers) {
+        string message = "The strollur objects include different sequence longest homopolymer values.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (numns != dataset.numns) {
+        string message = "The strollur objects include different sequence numn values.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (tableSeqs != dataset.tableSeqs) {
+        string message = "The strollur objects include different sequences.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (seqIndex != dataset.seqIndex) {
+        return false;
+    }else if (hasList != dataset.hasList) {
+        string message = "The strollur objects include different sequence bin assignment statuses.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (references != dataset.references) {
+        string message = "The strollur objects include different resource_references.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (count != dataset.count) {
+        string message = "The strollur objects include different sequence abundance data.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (binTables != dataset.binTables) {
+        string message = "The strollur objects include different bin data.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (reports != dataset.reports) {
+        string message = "The strollur objects include different report data.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (metadata != dataset.metadata) {
+        string message = "The strollur objects include different metadata.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (trashCodes != dataset.trashCodes) {
+        string message = "The strollur objects include different sequence trash codes.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (!isDoubleEqual(uniqueBad, dataset.uniqueBad)) {
+        string message = "The strollur objects include different number of sequences removed.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (!isMap2FloatingPointVectorEqual(badAccnos,
+                                              dataset.badAccnos)) {
+        string message = "The strollur objects include different scrap reports.";
+        RcppThread::Rcout << endl << message << endl << endl;
+        return false;
+    }else if (sortNeeded != dataset.sortNeeded) {
+        return false;
+    }else if (refIndex != dataset.refIndex) {
+        return false;
+    }
+
     return true;
 }
 /******************************************************************************/
@@ -1768,78 +1889,88 @@ void Dataset::setSequences(const vector<string>& n, const vector<string>& s,
     getAlignedLength();
 }
 /******************************************************************************/
+void Dataset::sortDataset() {
+    if (sortNeeded) {
+    vector<orderAlpha> sortedVector((names).size());
+
+    for (auto i = 0; i < (names).size(); i++) {
+        sortedVector[i].index = i;
+        sortedVector[i].name = names[i];
+    }
+
+    sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
+
+    // names, seqIndex
+    std::vector<unsigned> order((names).size(), 0);
+    for (auto i = 0; i < (sortedVector).size(); i++) {
+        order[i] = sortedVector[i].index;
+        names[i] = sortedVector[i].name;
+        seqIndex[sortedVector[i].name] = i;
+    }
+
+    // apply ordered to tableSeqs, seqs, comments, trashCodes,
+    // starts, ends, lengths, ambigs, polymers, numns,
+    applyOrder(tableSeqs, order);
+    applyOrder(seqs, order);
+    applyOrder(comments, order);
+    applyOrder(trashCodes, order);
+    applyOrder(starts, order);
+    applyOrder(ends, order);
+    applyOrder(lengths, order);
+    applyOrder(ambigs, order);
+    applyOrder(polymers, order);
+    applyOrder(numns, order);
+
+    // taxonomies
+    if (hasSequenceTaxonomy) {
+        applyOrder(taxonomies, order);
+    }
+    count.sortAlpha(order);
+
+    // sorts by binName
+    for (int i = 0; i < binTables.size(); i++) {
+        binTables[i].sortAlpha(order);
+    }
+
+    // sort references alphabetically
+    if (references.size() != 0) {
+        sortedVector.clear();
+
+        sortedVector.resize(references.size());
+        for (auto i = 0; i < (references).size(); i++) {
+            sortedVector[i].index = i;
+            sortedVector[i].name = references[i].name;
+        }
+
+        sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
+
+        // references, refIndex
+        std::vector<unsigned> order((references).size(), 0);
+        for (auto i = 0; i < (sortedVector).size(); i++) {
+            order[i] = sortedVector[i].index;
+            refIndex[sortedVector[i].name] = i;
+        }
+        applyOrder(references, order);
+    }
+
+    // sort reports by sequence name column
+    metadata.sortAlpha();
+    for (auto it = reports.begin(); it != reports.end(); it++) {
+        it->second.sortAlpha();
+    }
+    sortNeeded = false;
+    }
+}
+/******************************************************************************/
 const Rcpp::RawVector Dataset::serializeDataset() {
     // before we serialize, we must sort.
     // Without sorting, bins and sequences added in different orders will
     // create serialized raw data vectors that could contain the same data and
     // yet is_equal will see them as different.
 
-    if (sortNeeded) {
-        vector<orderAlpha> sortedVector((names).size());
-
-        for (auto i = 0; i < (names).size(); i++) {
-            sortedVector[i].index = i;
-            sortedVector[i].name = names[i];
-        }
-
-        sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
-
-        // names, seqIndex
-        std::vector<unsigned> order((names).size(), 0);
-        for (auto i = 0; i < (sortedVector).size(); i++) {
-            order[i] = sortedVector[i].index;
-            names[i] = sortedVector[i].name;
-            seqIndex[sortedVector[i].name] = i;
-        }
-
-        // apply ordered to tableSeqs, seqs, comments, trashCodes,
-        // starts, ends, lengths, ambigs, polymers, numns,
-        applyOrder(tableSeqs, order);
-        applyOrder(seqs, order);
-        applyOrder(comments, order);
-        applyOrder(trashCodes, order);
-        applyOrder(starts, order);
-        applyOrder(ends, order);
-        applyOrder(lengths, order);
-        applyOrder(ambigs, order);
-        applyOrder(polymers, order);
-        applyOrder(numns, order);
-
-        // taxonomies
-        if (hasSequenceTaxonomy) {
-            applyOrder(taxonomies, order);
-        }
-        count.sortAlpha(order);
-
-        // sorts by binName
-        for (int i = 0; i < binTables.size(); i++) {
-            binTables[i].sortAlpha(order);
-        }
-
-        // sort references alphabetically
-        if (references.size() != 0) {
-            sortedVector.clear();
-
-            sortedVector.resize(references.size());
-            for (auto i = 0; i < (references).size(); i++) {
-                sortedVector[i].index = i;
-                sortedVector[i].name = references[i].name;
-            }
-
-            sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
-
-            // references, refIndex
-            std::vector<unsigned> order((references).size(), 0);
-            for (auto i = 0; i < (sortedVector).size(); i++) {
-                references[i] = sortedVector[i].name;
-                refIndex[sortedVector[i].name] = i;
-            }
-        }
-        sortNeeded = false;
-    }
+    sortDataset();
 
     // Note: reports is sorted as its a map, metadata does not require sorting
-    // Note: count, binTables will address this issue in their serialization functions
 
     std::stringstream ss; // Use stringstream for in-memory serialization
     {

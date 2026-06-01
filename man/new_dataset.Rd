@@ -4,14 +4,11 @@
 \alias{new_dataset}
 \title{new_dataset}
 \usage{
-new_dataset(dataset_name = "", processors = NULL)
+new_dataset(dataset_name = "")
 }
 \arguments{
 \item{dataset_name}{string, a string containing the dataset name.
 Default = ""}
-
-\item{processors}{integer, number of cores to use during summary functions.
-Default = all available}
 }
 \value{
 a
@@ -25,15 +22,9 @@ Create a new
 
 data <- new_dataset()
 
-# to create a new dataset named "soil" and allow for all available
-# processors during summary functions, run the following:
+# to create a new dataset named "soil", run the following:
 
 data <- new_dataset(dataset_name = "soil")
-
-# to create a new dataset named "soil" and allow for 2
-# processors during summary functions, run the following:
-
-data <- new_dataset(dataset_name = "soil", processors = 2)
 
 }
 \seealso{

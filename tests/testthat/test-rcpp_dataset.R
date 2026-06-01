@@ -1,7 +1,7 @@
 # test "rcpp_dataset"
 
 test_that("rcpp_dataset - new_dataset, copy_dataset", {
-  data <- new_dataset("miseq_sop", 2)
+  data <- new_dataset("miseq_sop")
   expect_equal(names(data, "dataset"), "miseq_sop")
   expect_equal(count(data, "sequence"), 0)
 
@@ -16,7 +16,7 @@ test_that("rcpp_dataset - new_dataset, copy_dataset", {
 })
 
 test_that("rcpp_dataset - add_sequences", {
-  data <- new_dataset("miseq_sop", 2)
+  data <- new_dataset("miseq_sop")
 
   sequences <- read_fasta(strollur_example("final.fasta.gz"))
   sequences$comments <- rep("my comments", length(sequences$sequence_name))
@@ -70,7 +70,7 @@ test_that("rcpp_dataset - add_sequences", {
 })
 
 test_that("rcpp_dataset - assign_bins", {
-  data <- new_dataset("miseq_sop", 2)
+  data <- new_dataset("miseq_sop")
 
   # bin labels and seq names (list)
   seq_ids <- c("seq1", "seq2", "seq4", "seq3", "seq6", "seq5")
@@ -222,7 +222,7 @@ test_that("rcpp_dataset - assign_bins", {
 })
 
 test_that("rcpp_dataset - assign_sequence_abundance", {
-  data <- new_dataset("miseq_sop", 2)
+  data <- new_dataset("miseq_sop")
 
   # assign sequence abundances then bins
   names <- c(
@@ -296,7 +296,7 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
 })
 
 test_that("rcpp_dataset - assign_sequence_taxonomy", {
-  data <- new_dataset("miseq_sop", 2)
+  data <- new_dataset("miseq_sop")
 
   # assign sequence abundances then bins
   names <- c("seq1", "seq2", "seq3", "seq4")
@@ -345,7 +345,7 @@ test_that("rcpp_dataset - assign_treatments", {
   abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
   treatments <- c("early", "early", "late")
 
-  data <- new_dataset("my_dataset", 2)
+  data <- new_dataset("my_dataset")
 
   # no samples in dataset
   expect_error(xdev_assign_treatments(data, data.frame(
@@ -388,7 +388,7 @@ test_that("rcpp_dataset - assign_treatments", {
 })
 
 test_that("rcpp_dataset - get_names / sequences_by_sample", {
-  data <- new_dataset("miseq_sop", 2)
+  data <- new_dataset("miseq_sop")
 
   # assign sequence abundances then bins
   names <- c(
@@ -441,7 +441,7 @@ test_that("rcpp_dataset - get_names / sequences_by_sample", {
 })
 
 test_that("rcpp_dataset - xdev_merge_bins / xdev_merge_seqs", {
-  data <- new_dataset("miseq_sop", 2)
+  data <- new_dataset("miseq_sop")
 
   # assign sequence abundances then bins
   names <- c(
@@ -510,7 +510,7 @@ test_that("rcpp_dataset - xdev_merge_bins / xdev_merge_seqs", {
 })
 
 test_that("rcpp_dataset - misc ", {
-  data <- new_dataset("miseq_sop", 2)
+  data <- new_dataset("miseq_sop")
 
   # no bin data
   expect_equal(report(data, "bin_taxonomy"), data.frame())

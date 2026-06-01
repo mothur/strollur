@@ -520,19 +520,13 @@ the class.}
   Create a new strollur dataset
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{strollur$new(
-  name = "",
-  processors = parallelly::availableCores(),
-  dataset = NULL
-)}
+    \preformatted{strollur$new(name = "", dataset = NULL)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{name}}{String, name of dataset (optional)}
-      \item{\code{processors}}{Integer, number of cores to use.
-Default = all available}
       \item{\code{dataset}}{a `strollur` object.}
     }
     \if{html}{\out{</div>}}
@@ -1218,7 +1212,7 @@ data$get_bin_types()
 object.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{strollur$get_version(data)}
+    \preformatted{strollur$get_version()}
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
