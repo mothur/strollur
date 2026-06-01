@@ -33,7 +33,7 @@ Imports:
     rbiom (>= 3.1.0),
     stats,
     utils
-LinkingTo: Rcpp, RcppThread, cli, Rcereal
+LinkingTo: Rcpp, cli, Rcereal
 Depends: R (>= 4.5.0)
 Suggests: 
     knitr,

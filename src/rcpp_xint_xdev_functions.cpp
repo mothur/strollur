@@ -10,12 +10,12 @@ void xint_added_message(double num, string tag) {
         message += tag + ".";
     }
 
-    RcppThread::Rcout << message << endl;
+    Rcpp::Rcout << message << endl;
 }
 /******************************************************************************/
 void xint_assigned_message(double num, string tag) {
     string message = "Assigned " + toString(num) + tag;
-    RcppThread::Rcout << message << endl;
+    Rcpp::Rcout << message << endl;
 }
 /******************************************************************************/
 void xint_updated_message(double num, string tag) {
@@ -26,7 +26,7 @@ void xint_updated_message(double num, string tag) {
         message += tag + ".";
     }
 
-    RcppThread::Rcout << message << endl;
+    Rcpp::Rcout << message << endl;
 }
 /******************************************************************************/
 void fillReference(Reference& ref, Rcpp::List ref_list) {
@@ -114,7 +114,7 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
     else {
         string message = type + " is not a valid type for the abundance function";
         message += ". Types include: 'bin', 'sequence', sample' and 'treatment'.";
-        RcppThread::Rcout << endl << message << endl;
+        Rcpp::Rcout << endl << message << endl;
     }
 
     // empty
@@ -302,7 +302,7 @@ Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
                 }else {
                     string message = "Your report does not contain an entry for ";
                     message += "every sequence in your dataset, ignoring report. ",
-                        RcppThread::Rcout << endl << message << endl;
+                        Rcpp::Rcout << endl << message << endl;
                     return data;
                 }
             }
@@ -412,7 +412,6 @@ Rcpp::Environment xdev_assign_bins(const Rcpp::Environment& data,
     if ((abundances.empty()) && (sequence_names.empty())) {
         string message = "You must provide either abundances or ";
         message += "sequence_names to assign bins.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -424,7 +423,6 @@ Rcpp::Environment xdev_assign_bins(const Rcpp::Environment& data,
         string message = "[ERROR]: You cannot assign abundance and sample data";
         message += " to bins that have sequence assignments. This could cause ";
         message += "inconsistencies.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }else{
         numBinsAssigned = d.get()->assignBins(bin_names, abundances, samples,
@@ -526,7 +524,6 @@ Rcpp::Environment xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
         string message = "[ERROR]: No bin data for type " + bin_type + ", please ";
         message += " assign bins using the 'assign' function then try ";
         message += "again.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -594,7 +591,6 @@ Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
     if (sequence_names.size() != abundances.size()) {
         string message = "[ERROR]: The names and abundances must be the same";
         message += " length.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -611,7 +607,6 @@ Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
         if (!identical(unique_names, dataset_names)) {
             string message = "[ERROR]: You must provide assignments for all";
             message += " sequences in your dataset.";
-            RcppThread::Rcerr << endl << message << endl;
             throw Rcpp::exception(message.c_str());
         }
     }
@@ -753,7 +748,6 @@ Rcpp::Environment xdev_assign_treatments(const Rcpp::Environment& data,
     if (d.get()->getNumSamples() == 0) {
         string message = "[ERROR]: You cannot assign treatments, your dataset";
         message += " does not include sample data.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -761,7 +755,6 @@ Rcpp::Environment xdev_assign_treatments(const Rcpp::Environment& data,
     if (!identical(d.get()->getSamples(), unique(samples))) {
         string message = "You must provide treatment assignments for";
         message += " all samples in your dataset.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -824,7 +817,7 @@ double xdev_count(const Rcpp::Environment& data,
             }else {
                 string message = "Your dataset does not include all the ";
                 message += "samples requested, ignoring.";
-                RcppThread::Rcout << endl << message << endl;
+                Rcpp::Rcout << endl << message << endl;
             }
         }else {
             return d.get()->getNumBins(bin_type);
@@ -987,7 +980,7 @@ vector<string> xdev_names(const Rcpp::Environment& data,
             }else {
                 string message = "Your dataset does not include all the ";
                 message += "samples requested, ignoring.";
-                RcppThread::Rcout << endl << message << endl;
+                Rcpp::Rcout << endl << message << endl;
             }
         }else {
             return d.get()->getBinIds(bin_type,
@@ -1139,7 +1132,6 @@ Rcpp::Environment xdev_set_abundance(const Rcpp::Environment& data,
          string message = "[ERROR]: You cannot set the total sequence abundance";
          message += " for sequences whose abundances are parsed by sample. ";
          message += "Try 'set_abundances' instead of 'set_abundance'.";
-         RcppThread::Rcerr << endl << message << endl;
          throw Rcpp::exception(message.c_str());
      }
      return data;
@@ -1163,7 +1155,6 @@ Rcpp::Environment xdev_set_abundances(const Rcpp::Environment& data,
          string message = "[ERROR]: You cannot set parsed sequence abundances ";
          message += "when your dataset does not include sample data. ";
          message += "Try 'set_abundance' instead of 'set_abundances'.";
-         RcppThread::Rcerr << endl << message << endl;
          throw Rcpp::exception(message.c_str());
      }
      return data;

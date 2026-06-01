@@ -9,13 +9,11 @@
 
 // Rcpp
 #include <Rcpp.h>
-#include <RcppThread.h>
 #include <cli/progress.h>
 
 #include <ctime>
 
 // [[Rcpp::plugins(cpp11)]]
-// [[Rcpp::depends(RcppThread)]]
 
 using namespace std;
 

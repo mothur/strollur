@@ -222,7 +222,7 @@ double AbundTable::assignTreatments(const vector<string>& samples,
            }else {
                string message = "[WARNING]: The dataset does not contain sample, '";
                message += samples[i] + "'. Ignoring '" + samples[i] + "'.";
-               RcppThread::Rcout << endl << message << endl;
+               Rcpp::Rcout << endl << message << endl;
            }
        }
 

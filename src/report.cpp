@@ -176,7 +176,7 @@ void Report::pruneReport(set<string> datasetNames) {
         // after adding a report
         string message = "Your dataset contains more sequences than your report";
         message += ", removing report.";
-        RcppThread::Rcout << endl << message << endl;
+        Rcpp::Rcout << endl << message << endl;
         clear();
     }else {
 
@@ -200,7 +200,7 @@ void Report::pruneReport(set<string> datasetNames) {
             // after adding a report
             string message = "Your dataset contains more sequences than your report";
             message += ", removing report.";
-            RcppThread::Rcout << endl << message << endl;
+            Rcpp::Rcout << endl << message << endl;
             clear();
             return;
         }

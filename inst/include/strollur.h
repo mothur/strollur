@@ -15,7 +15,6 @@
 
 // Rcpp
 #include <Rcpp.h>
-#include <RcppThread.h>
 #include <cli/progress.h>
 
 // serialization
@@ -26,8 +25,6 @@
 #include <cereal/types/map.hpp>   // Include for std::map serialization
 #include <cereal/types/list.hpp>
 
-//[[Rcpp::plugins(cpp11)]]
-//[[Rcpp::depends(RcppThread)]]
 //[[Rcpp::depends(Rcereal)]]
 
 using namespace std;
@@ -103,6 +100,9 @@ struct Reference {
             return false;
         }
         return true;
+    }
+    bool operator!=(const Reference& ref) const {
+        return !(*this == ref);
     }
 
     // convert "" -> "NA"
@@ -241,6 +241,10 @@ struct sampleAbunds {
                           });
     }
 
+    bool operator!=(const sampleAbunds& sabunds) const {
+        return !(*this == sabunds);
+    }
+
     void updateIndexes(map<int, int>& indexMap) {
         for (int i = 0; i < sampleIndex.size(); i++) {
             sampleIndex[i] = indexMap[sampleIndex[i]];
@@ -272,6 +276,9 @@ public:
     ~AbundTable();
 
     bool operator==(const AbundTable&) const;
+    bool operator!=(const AbundTable& abunds) const {
+        return !(*this == abunds);
+    }
 
     void clear();
     void clone(const AbundTable& abundTable);
@@ -403,6 +410,9 @@ public:
     ~Report() {}
 
     bool operator==(const Report&) const;
+    bool operator!=(const Report& report) const {
+        return !(*this == report);
+    }
 
     void addReport(const Rcpp::DataFrame& report);
     void clear();
@@ -450,6 +460,9 @@ public:
     ~BinTable();
 
     bool operator==(const BinTable&) const;
+    bool operator!=(const BinTable& table) const {
+        return !(*this == table);
+    }
 
     string label;
     bool hasBinTaxonomy, hasBinReps, runClassify;
