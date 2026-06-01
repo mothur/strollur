@@ -83,7 +83,6 @@ an updated
 #> Assigned 531 otu bins.
 #> miseq_sop:
 #> 
-#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 2425 
@@ -100,7 +99,6 @@ an updated
 #> Assigned 531 otu bins.
 #> miseq_sop:
 #> 
-#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 531 
 #> Total number of seqs: 2425 
@@ -117,7 +115,6 @@ an updated
 #> Assigned 531 otu bins.
 #> miseq_sop:
 #> 
-#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 531 
 #> Total number of seqs: 113963 

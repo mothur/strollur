@@ -39,9 +39,6 @@ data <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 clear(data)
-#> miseq_sop:
-#> 
-#> data frame with 0 columns and 0 rows
 #> 
 #> Total number of seqs: 0 
 #> 

@@ -53,7 +53,6 @@ xdev_add_sequences(data = data,
 #> Added 4 sequences.
 #> my_dataset:
 #> 
-#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 4 
 #> Total number of seqs: 4 
@@ -65,16 +64,6 @@ xdev_set_sequences(data = data,
                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 #> my_dataset:
 #> 
-#>             starts ends nbases ambigs polymers numns numseqs
-#> Minimum:         1    5      5      0    1.000     0     1.0
-#> 2.5%-tile:       1    5      5      0    1.000     0     1.1
-#> 25%-tile:        1    5      5      0    1.000     0     2.0
-#> Median:          1    5      5      0    1.500     0     3.0
-#> 75%-tile:        1    5      5      0    2.250     0     4.0
-#> 97.5%-tile:      1    5      5      0    2.925     0     4.9
-#> Maximum:         1    5      5      0    3.000     0     5.0
-#> Mean:            1    5      5      0    1.750     0     3.0
-#> data frame with 0 columns and 0 rows
 #>             starts ends nbases ambigs polymers numns numseqs
 #> Minimum:         1    5      5      0        1     0    1.00
 #> 2.5%-tile:       1    5      5      0        1     0    1.10

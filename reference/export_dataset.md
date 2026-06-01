@@ -24,7 +24,7 @@ Rcpp::List, containing the data in the 'Dataset
 
 ``` r
 
-dataset <- new_dataset("my_dataset", 2)
+dataset <- new_dataset("my_dataset")
 export_dataset(dataset)
 #> named list()
 #> attr(,"strollur_version")

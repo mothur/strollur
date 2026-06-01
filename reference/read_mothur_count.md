@@ -58,7 +58,6 @@ assign(data, table = sample_table, type = "sequence_abundance")
 
 # print summary of data
 data
-#> data frame with 0 columns and 0 rows
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 

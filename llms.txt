@@ -296,9 +296,6 @@ these functions
 - [`strollur_example()`](https://mothur.org/strollur/reference/strollur_example.md)
   : strollur_example
 
-- [`get_available_processors()`](https://mothur.org/strollur/reference/get_available_processors.md)
-  : Get available processors
-
 - [`has_sequence_strings()`](https://mothur.org/strollur/reference/has_sequence_strings.md)
   : has_sequence_strings
 
@@ -394,9 +391,6 @@ these functions
 
 - [`xdev_set_dataset_name()`](https://mothur.org/strollur/reference/xdev_set_dataset_name.md)
   : xdev_set_dataset_name
-
-- [`xdev_set_num_processors()`](https://mothur.org/strollur/reference/xdev_set_num_processors.md)
-  : xdev_set_num_processors
 
 - [`xdev_set_sequences()`](https://mothur.org/strollur/reference/xdev_set_sequences.md)
   : xdev_set_sequences

@@ -3,6 +3,7 @@
 ## Authors
 
 - **Sarah Westcott**. Author, maintainer.
+  [](https://orcid.org/0009-0001-1529-8247)
 
 - **Gregory Johnson**. Author. [](https://orcid.org/0009-0008-3890-0297)
 

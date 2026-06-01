@@ -6,7 +6,7 @@ Create a new
 ## Usage
 
 ``` r
-new_dataset(dataset_name = "", processors = NULL)
+new_dataset(dataset_name = "")
 ```
 
 ## Arguments
@@ -14,11 +14,6 @@ new_dataset(dataset_name = "", processors = NULL)
 - dataset_name:
 
   string, a string containing the dataset name. Default = ""
-
-- processors:
-
-  integer, number of cores to use during summary functions. Default =
-  all available
 
 ## Value
 
@@ -35,13 +30,7 @@ The 'new' method in the
 
 data <- new_dataset()
 
-# to create a new dataset named "soil" and allow for all available
-# processors during summary functions, run the following:
+# to create a new dataset named "soil", run the following:
 
 data <- new_dataset(dataset_name = "soil")
-
-# to create a new dataset named "soil" and allow for 2
-# processors during summary functions, run the following:
-
-data <- new_dataset(dataset_name = "soil", processors = 2)
 ```

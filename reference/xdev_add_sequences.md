@@ -67,16 +67,6 @@ an updated
 #> Added 2425 sequences.
 #> miseq_sop:
 #> 
-#>             starts ends   nbases ambigs polymers numns  numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0    1.000
-#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  607.250
-#> Median:          1  375 253.0000      0 4.000000     0 1213.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750
-#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375
-#> Maximum:         1  375 256.0000      0 6.000000     0 2426.000
-#> Mean:            1  375 252.7406      0 4.496082     0 1213.500
-#> data frame with 0 columns and 0 rows
 #>             starts ends nbases ambigs polymers numns numseqs
 #> Minimum:         1  375    249      0        3     0    1.00
 #> 2.5%-tile:       1  375    252      0        4     0   61.62
@@ -106,16 +96,6 @@ an updated
 #> Added 1 resource references.
 #> miseq_sop:
 #> 
-#>             starts ends   nbases ambigs polymers numns  numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0    1.000
-#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   61.625
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  607.250
-#> Median:          1  375 253.0000      0 4.000000     0 1213.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0 1819.750
-#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 2365.375
-#> Maximum:         1  375 256.0000      0 6.000000     0 2426.000
-#> Mean:            1  375 252.7406      0 4.496082     0 1213.500
-#> data frame with 0 columns and 0 rows
 #>             starts ends nbases ambigs polymers numns numseqs
 #> Minimum:         1  375    249      0        3     0    1.00
 #> 2.5%-tile:       1  375    252      0        4     0   61.62

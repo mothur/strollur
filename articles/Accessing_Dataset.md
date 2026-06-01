@@ -38,34 +38,6 @@ To print a summary of the miseq dataset, run the following:
 miseq
 #> miseq_sop:
 #> 
-#>             starts ends   nbases ambigs polymers numns    numseqs
-#> Minimum:         1  375 249.0000      0 3.000000     0      1.000
-#> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2850.075
-#> 25%-tile:        1  375 252.0000      0 4.000000     0  28491.750
-#> Median:          1  375 253.0000      0 4.000000     0  56982.500
-#> 75%-tile:        1  375 253.0000      0 5.000000     0  85473.250
-#> 97.5%-tile:      1  375 254.0000      0 6.000000     0 111114.925
-#> Maximum:         1  375 256.0000      0 6.000000     0 113964.000
-#> Mean:            1  375 252.7406      0 4.496082     0  56982.500
-#>     Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
-#> 1 250.0000       232.0000      0.000000    248.0000   0.000000      0
-#> 2 252.0000       246.0000      1.000000    250.0000   0.000000      0
-#> 3 252.0000       249.0000      2.000000    251.0000   0.000000      0
-#> 4 253.0000       249.0000      2.000000    251.0000   1.000000      0
-#> 5 253.0000       250.0000      2.000000    251.0000   5.000000      0
-#> 6 254.0000       251.0000      4.000000    253.0000  26.000000      0
-#> 7 270.0000       255.0000     22.000000    256.0000 120.000000      0
-#> 8 252.7575       249.1501      2.005361    251.1555   5.162474      0
-#>   Expected_Errors
-#> 1      1.00000000
-#> 2      1.00000000
-#> 3      1.00000000
-#> 4      1.00000000
-#> 5      1.00000000
-#> 6      1.00000000
-#> 7      4.00000000
-#> 8      0.07385095
-#> data frame with 0 columns and 0 rows
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
 #> 2.5%-tile:       1  375    252      0        4     0   2850.08
@@ -818,8 +790,8 @@ report(
 #> 1 @article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy}, journal = {Applied and Environmental Microbiology}, volume = {73}, number = {16}, pages = {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL = {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint = {https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}
 #> 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NA
 #>   creation_date
-#> 1    2026-05-26
-#> 2    2026-05-26
+#> 1    2026-06-01
+#> 2    2026-06-01
 ```
 
 Lastly, if sequences or bins have been removed over the course of your
