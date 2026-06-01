@@ -2,6 +2,7 @@
 #define RCPP_strollur_H_GEN_
 
 #include <ctime>
+#include <chrono>
 
 // io libraries
 #include <string.h>
