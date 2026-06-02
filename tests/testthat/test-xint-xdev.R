@@ -485,9 +485,9 @@ test_that("dataset - functions with piping", {
 
   # unequal # of seqs to remove does not match number of trash_tags
   expect_error(xdev_remove_sequences(
-      data,
-      c("seq2"),
-      c("remove_sequence_test", "remove_sequence_test")
+    data,
+    c("seq2"),
+    c("remove_sequence_test", "remove_sequence_test")
   ))
 
   # xdev_set_sequences
@@ -496,12 +496,16 @@ test_that("dataset - functions with piping", {
 
   expect_equal(fasta$sequence, c("ATGC", "ATGC", "ATGC"))
 
-  expect_error(xdev_set_sequences(data,
-                                  seq_names, c("ATGC", "ATGC")))
-  expect_error(xdev_set_sequences(data,
-                                  seq_names,
-                                  c("ATGC", "ATGC", "ATGC"),
-                                  c("not same length")))
+  expect_error(xdev_set_sequences(
+    data,
+    seq_names, c("ATGC", "ATGC")
+  ))
+  expect_error(xdev_set_sequences(
+    data,
+    seq_names,
+    c("ATGC", "ATGC", "ATGC"),
+    c("not same length")
+  ))
 
   # xdev_set_abundances - removes seq4
   seq_abunds <- xdev_set_abundances(data, seq_names, list(

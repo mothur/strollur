@@ -273,9 +273,9 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
   expect_true(grepl("non_existant_sequence", message))
   expect_error(xdev_set_abundance(data, c("seq1"), c(0)))
   expect_error(xdev_set_abundances(
-      data,
-      c("seq1"),
-      list(c(0, 0, 0),c(1,1,1))
+    data,
+    c("seq1"),
+    list(c(0, 0, 0), c(1, 1, 1))
   ))
 
   clear(data)
