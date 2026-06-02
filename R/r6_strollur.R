@@ -71,7 +71,7 @@ strollur <- R6Class("strollur",
     #' @description
     #' Print summary of `strollur` object
     #' @examples
-    #' miseq <- miseq_sop_example()
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
     #' miseq
     #'
     #' @return No return value, called for side effects.
@@ -205,19 +205,19 @@ strollur <- R6Class("strollur",
     #' @description
     #' Get the abundance data for sequences, bins, samples, and treatments.
     #'
-    #' @param type, string containing the type of data you want the number of.
+    #' @param type string containing the type of data you want the number of.
     #'   Options include: "sequence", "bin", "sample" and "treatment".
     #'   Default = "sequence".
     #'
-    #' @param bin_type, string containing the bin type you would like the
+    #' @param bin_type string containing the bin type you would like the
     #'   abundance data for. Default = "otu".
     #'
-    #' @param by_sample, Boolean. When by_sample is TRUE, the abundance data
+    #' @param by_sample Boolean. When by_sample is TRUE, the abundance data
     #'   will be parsed by sample. Default = FALSE.
     #'
     #' @examples
     #'
-    #' miseq <- miseq_sop_example()
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To the total abundance for each sequence
     #' miseq$abundance(type = "sequence") |> head(n = 5)
@@ -244,6 +244,7 @@ strollur <- R6Class("strollur",
     #'
     #' # To the total abundance for each treatment
     #' miseq$abundance(type = "treatment")
+    #'
     #' @return data.frame
     abundance = function(type = "sequence",
                          bin_type = "otu",
@@ -254,15 +255,15 @@ strollur <- R6Class("strollur",
     #' @description
     #' Add sequences, reports, metadata or resource references
     #'
-    #' @param table, a data.frame containing the data you wish to add.
+    #' @param table a data.frame containing the data you wish to add.
     #'
-    #' @param type, a string containing the type of data. Options include:
+    #' @param type a string containing the type of data. Options include:
     #' 'sequence', 'resource_reference' 'metadata' and 'report'.
     #'
-    #' @param report_type, a string containing the type of report you are
+    #' @param report_type a string containing the type of report you are
     #' adding. Options include: 'metadata' and custom reports.
     #'
-    #' @param table_names, named list used to indicate the names of the columns
+    #' @param table_names named list used to indicate the names of the columns
     #'  in the table. By default:
     #'
     #' table_names <- list(sequence_name = "sequence_name",
@@ -326,10 +327,10 @@ strollur <- R6Class("strollur",
     #' the column in 'table' that contains the reference citations. Default
     #' column name is 'citation'.
     #'
-    #' @param reference, a list created by the function [new_reference].
+    #' @param reference a list created by the function [new_reference].
     #'   Optional.
     #'
-    #' @param verbose, boolean indicating whether or not you want progress
+    #' @param verbose boolean indicating whether or not you want progress
     #'   messages. Default = TRUE.
     #'
     #' @examples
@@ -351,30 +352,6 @@ strollur <- R6Class("strollur",
     #' metadata <- readRDS(strollur_example("miseq_metadata.rds"))
     #'
     #' data$add(table = metadata, type = "metadata")
-    #'
-    #' # To add FASTA data with a resource reference
-    #'
-    #' # Create a new empty strollur object named 'example_dataset'
-    #' data <- new_dataset(dataset_name = "example_dataset")
-    #'
-    #' # Create a resource reference for the FASTA data
-    #' resource_url <- "https://mothur.org/wiki/silva_reference_files/"
-    #' resource_reference <-
-    #'   new_reference(
-    #'     name = "silva.bacteria.fasta",
-    #'     version = "1.38.1",
-    #'     usage = "alignment by mothur2 v1.0",
-    #'     note = "default options",
-    #'     documentation_url = resource_url
-    #'   )
-    #'
-    #' # Add FASTA data with a resource reference
-    #'
-    #' data$add(
-    #'   table = fasta_data,
-    #'   type = "sequence",
-    #'   reference = resource_reference
-    #' )
     #'
     #' @return Updated `strollur` object - invisible(self)
     add = function(table,
@@ -611,17 +588,17 @@ strollur <- R6Class("strollur",
     #' Assign sequence abundances, sequence classifications, bins, bin
     #' representative sequences, bin classifications or treatments.
     #'
-    #' @param table, a data.frame containing the data you wish to assign
+    #' @param table a data.frame containing the data you wish to assign
     #'
-    #' @param type, a string containing the type of data. Options include:
+    #' @param type a string containing the type of data. Options include:
     #' 'sequence_abundance', 'sequence_taxonomy', 'bin',
     #'  'bin_representative', 'bin_taxonomy' and 'treatment'.
     #'  Default = "bin".
     #'
-    #' @param bin_type, string containing the bin type you would like the number
+    #' @param bin_type string containing the bin type you would like the number
     #'   of bins for. Default = "otu".
     #'
-    #' @param table_names, named list used to indicate the names of the columns
+    #' @param table_names named list used to indicate the names of the columns
     #'   in the table. By default:
     #'
     #'   table_names <- list(sequence_name = "sequence_name", abundance =
@@ -651,9 +628,9 @@ strollur <- R6Class("strollur",
     #'   column in 'table' that contains the bin names. Default column name is
     #'   'bin_name'.
     #'
-    #' @param reference, a list created by the function [new_reference].
+    #' @param reference a list created by the function [new_reference].
     #'   Optional.
-    #' @param verbose, boolean indicating whether or not you want progress
+    #' @param verbose boolean indicating whether or not you want progress
     #'   messages. Default = TRUE.
     #'
     #' @examples
@@ -838,7 +815,7 @@ strollur <- R6Class("strollur",
     #' @description
     #' Clear data from datasest
     #' @examples
-    #' miseq <- miseq_sop_example()
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
     #' miseq
     #' miseq$clear()
     #' miseq
@@ -852,18 +829,18 @@ strollur <- R6Class("strollur",
     #' @description
     #' Find the number of sequences, samples, treatments or bins of a given type
     #'
-    #' @param type, string containing the type of data you want the number of.
+    #' @param type string containing the type of data you want the number of.
     #' Options include: "sequence", "sample", "treatment", "bin", and
     #'  "resource_reference". Default = "sequence".
     #'
-    #' @param bin_type, string containing the bin type you would like the number
+    #' @param bin_type string containing the bin type you would like the number
     #'   of bins for. Default = "otu".
     #'
-    #' @param samples, vector of strings. samples is only used when 'type' =
+    #' @param samples vector of strings. samples is only used when 'type' =
     #'   "sequence" or 'type' = "bin" . samples should contain the names of
     #'   the samples you want the count for. Default = NULL.
     #'
-    #' @param distinct, Boolean. distinct is used when 'type' = "sequence" or
+    #' @param distinct Boolean. distinct is used when 'type' = "sequence" or
     #'   'type' = "bin". When 'type' = "sequence" and distinct is TRUE the
     #'   number of unique sequences is returned. When 'type' = "sequence" and
     #'   distinct is FALSE the total number of sequences is returned. This can
@@ -878,7 +855,7 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' miseq <- miseq_sop_example()
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To get the total number of sequences
     #' miseq$count(type = "sequence")
@@ -1023,7 +1000,7 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' miseq <- miseq_sop_example()
+    #' data <- new_dataset("test")
     #'
     #' data$get_version()
     #'
@@ -1043,7 +1020,7 @@ strollur <- R6Class("strollur",
     #'   object
     #' @examples
     #'
-    #' miseq <- miseq_sop_example()
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' data <- copy_dataset(miseq)
     #'
@@ -1140,18 +1117,18 @@ strollur <- R6Class("strollur",
     #' @description
     #' Get the names of a given type of data
     #'
-    #' @param type, string containing the type of data you would like. Options
+    #' @param type string containing the type of data you would like. Options
     #'   include: "dataset", "sequence", "bin", "sample", "treatment",
     #'   "report". Default = "sequence".
     #'
-    #' @param bin_type, string containing the bin type you would like the names
+    #' @param bin_type string containing the bin type you would like the names
     #'   for. Default = "otu".
     #'
-    #' @param samples, vector of strings. samples is only used when 'type' =
+    #' @param samples vector of strings. samples is only used when 'type' =
     #'   "sequence" or 'type' = "bin" . samples should contain the names of
     #'   the samples you want names for. Default = NULL.
     #'
-    #' @param distinct, Boolean. distinct is used when 'type' = "sequence" or
+    #' @param distinct Boolean. distinct is used when 'type' = "sequence" or
     #'   'type' = "bin" and the samples parameter is used. The distinct
     #'   parameter allows you to get the names that present given set of
     #'   samples. When distinct is TRUE, the names function will return the
@@ -1161,7 +1138,7 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' miseq <- miseq_sop_example()
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To get the name of the dataset
     #' miseq$names(type = "dataset")
@@ -1204,7 +1181,7 @@ strollur <- R6Class("strollur",
     #' @description
     #' Get a data.frame containing the given report
     #'
-    #' @param type, string containing the type of report you would like. Options
+    #' @param type string containing the type of report you would like. Options
     #' include: "fasta", "sequence", "sequence_bin_assignment",
     #' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
     #'  "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
@@ -1212,12 +1189,12 @@ strollur <- R6Class("strollur",
     #' contigs_assembly or chimeras, you can get those as well.
     #'  Default = "sequence".
     #'
-    #' @param bin_type, string containing the bin type you would like a
+    #' @param bin_type string containing the bin type you would like a
     #'   bin_taxonomy report for. Default = "otu".
     #'
     #' @examples
     #'
-    #' miseq <- miseq_sop_example()
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To get the FASTA data
     #'
@@ -1277,21 +1254,21 @@ strollur <- R6Class("strollur",
     #' @description
     #' Summarize the sequences data, custom reports, and scrapped data
     #'
-    #' @param type, string containing the type of data you want the number of.
+    #' @param type string containing the type of data you want the number of.
     #' Options include: "sequence", "report" and "scrap".
     #'  Default = "sequence".
     #'
-    #' @param report_type, string containing the report type you would
+    #' @param report_type string containing the report type you would
     #'  summarized. For example, the miseq_sop_example includes contigs assembly
     #'  data and can be accessed with report_type = "contigs_report".
     #'  Default = NULL.
     #'
-    #' @param verbose, boolean indicating whether or not you want progress
+    #' @param verbose boolean indicating whether or not you want progress
     #'  messages. Default = TRUE.
     #'
     #' @examples
     #'
-    #' miseq <- miseq_sop_example()
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To get the summary of your FASTA data
     #' miseq$summary(type = "sequence")
