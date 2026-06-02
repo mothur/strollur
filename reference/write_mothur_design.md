@@ -42,5 +42,5 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_design(miseq, tempfile())
-#> [1] "/tmp/RtmpdKQi72/file1c0f15e1b3a1"
+#> [1] "/tmp/RtmpVKbUtf/file1b9830271f10"
 ```
