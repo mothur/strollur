@@ -944,7 +944,7 @@ vector<int> BinTable::remove(const int index, const string& reason){
 void BinTable::sortAlpha(vector<unsigned>& seqOrder) {
 
     // sort binNames alphabetically
-    const auto binSize = static_cast<unsigned>(binList.size());
+    const auto binSize = static_cast<unsigned>(binNames.size());
     vector<orderAlpha> sortedVector(binSize);
 
     for (unsigned i = 0; i < binSize; i++) {
@@ -979,8 +979,11 @@ void BinTable::sortAlpha(vector<unsigned>& seqOrder) {
 
     // repSequences[0] is binNames[0]'s representative sequence.
     // This loop updates the sequence index to reflect the changes made in dataset.cpp
-    for (int & repSequence : repSequences) {
-        repSequence = oldSeqIndex2New[repSequence];
+    if (!repSequences.empty()) {
+        vector<int> newRepSeqs = repSequences;
+        for (int i = 0; i < static_cast<int>(repSequences.size()); i++) {
+            repSequences[i] = oldSeqIndex2New[newRepSeqs[i]];
+        }
     }
     // binList[0] contains the sequences assigned to binNames[0].
     // This loop updates the sequence indexes to reflect the changes made in dataset.cpp
