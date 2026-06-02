@@ -15,8 +15,13 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+if (!requireNamespace("phyloseq", quietly = TRUE)) {
+  message("Suggested package: 'phyloseq' is not installed")
+  knitr::opts_chunk$set(eval = FALSE)
+} else {
+  library(phyloseq)
+}
 library(strollur)
-library(phyloseq)
 ```
 
 `strollur` includes functionality for the reading and writing of phyloseq objects. To convert a phyloseq object to a strollur object, you need to run the `read_phyloseq()` function. 
