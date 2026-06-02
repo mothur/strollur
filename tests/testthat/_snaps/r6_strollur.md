@@ -7,13 +7,13 @@
       
                   starts ends nbases ambigs polymers numns  numseqs
       Minimum:         1  375    249      0        3     0     1.00
-      2.5%-tile:       1  375    252      0        4     0  2436.70
-      25%-tile:        1  375    252      0        4     0 24358.00
-      Median:          1  375    253      0        4     0 48715.00
-      75%-tile:        1  375    253      0        5     0 73072.00
-      97.5%-tile:      1  375    254      0        6     0 94993.30
-      Maximum:         1  375    256      0        6     0 97429.00
-      Mean:            1  375    252      0        4     0 48715.00
+      2.5%-tile:       1  375    252      0        4     0  2435.70
+      25%-tile:        1  375    252      0        4     0 24357.00
+      Median:          1  375    253      0        4     0 48714.00
+      75%-tile:        1  375    253      0        5     0 73071.00
+      97.5%-tile:      1  375    254      0        6     0 94992.30
+      Maximum:         1  375    256      0        6     0 97428.00
+      Mean:            1  375    252      0        4     0 48714.14
       
       scrap_summary:
               type     trash_code unique total
@@ -49,13 +49,13 @@
       
                   starts ends nbases ambigs polymers numns  numseqs
       Minimum:         1  375    249      0        3     0     1.00
-      2.5%-tile:       1  375    252      0        4     0  2436.70
-      25%-tile:        1  375    252      0        4     0 24358.00
-      Median:          1  375    253      0        4     0 48715.00
-      75%-tile:        1  375    253      0        5     0 73072.00
-      97.5%-tile:      1  375    254      0        6     0 94993.30
-      Maximum:         1  375    256      0        6     0 97429.00
-      Mean:            1  375    252      0        4     0 48715.00
+      2.5%-tile:       1  375    252      0        4     0  2435.70
+      25%-tile:        1  375    252      0        4     0 24357.00
+      Median:          1  375    253      0        4     0 48714.00
+      75%-tile:        1  375    253      0        5     0 73071.00
+      97.5%-tile:      1  375    254      0        6     0 94992.30
+      Maximum:         1  375    256      0        6     0 97428.00
+      Mean:            1  375    252      0        4     0 48714.14
       
       scrap_summary:
               type     trash_code unique total
