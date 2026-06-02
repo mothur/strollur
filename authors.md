@@ -13,16 +13,15 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/mothur/strollur/blob/main/DESCRIPTION)
+[`inst/CITATION`](https://github.com/mothur/strollur/blob/main/inst/CITATION)
 
-Westcott S, Johnson G (2026). *strollur: Store and Transfer Data
-Associated with Amplicon Sequence Analysis*. R package version 0.1.0,
-<https://github.com/mothur/strollur>.
+Sarah Westcott (2026). strollur: Store and Transfer Amplicon Sequence
+Data. R package version 0.1.0.
 
     @Manual{,
-      title = {strollur: Store and Transfer Data Associated with Amplicon Sequence Analysis},
-      author = {Sarah Westcott and Gregory Johnson},
+      title = {strollur: Store and Transfer Amplicon Sequence Data},
+      author = {Sarah Westcott},
       year = {2026},
       note = {R package version 0.1.0},
-      url = {https://github.com/mothur/strollur},
+      url = {https://mothur.org/strollur},
     }
