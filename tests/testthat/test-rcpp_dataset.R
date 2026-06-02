@@ -272,6 +272,11 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
 
   expect_true(grepl("non_existant_sequence", message))
   expect_error(xdev_set_abundance(data, c("seq1"), c(0)))
+  expect_error(xdev_set_abundances(
+      data,
+      c("seq1"),
+      list(c(0, 0, 0),c(1,1,1))
+  ))
 
   clear(data)
 
@@ -286,6 +291,7 @@ test_that("rcpp_dataset - assign_sequence_abundance", {
   expect_equal(abundance(data, type = "sequence")[[2]], c(100, 50))
 
   expect_error(xdev_set_abundances(data, c("seq1"), list(c(0))))
+  expect_error(xdev_set_abundance(data, c("seq1"), c(0, 0)))
 
   message <- capture_output(xdev_set_abundance(
     data,
@@ -484,6 +490,9 @@ test_that("rcpp_dataset - xdev_merge_bins / xdev_merge_seqs", {
   expect_equal(count(data, "sequence", distinct = TRUE), 3)
   expect_equal(count(data, "bin"), 2)
   expect_equal(count(data, "sample"), 3)
+
+  # merge sequences in different bins
+  expect_error(xdev_merge_sequences(data, c("seq3", "seq4")))
 
   xdev_merge_bins(data, c("bin1", "bin2"))
 

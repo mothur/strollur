@@ -42,7 +42,20 @@ test_that("test report - type = fasta", {
   expect_equal(fasta$sequence, seqs)
   expect_equal(fasta$comment, comments)
 
+  xdev_remove_sequences(data, sequence_names = c("seq1"),
+                        trash_tags = c("scrap_report_test"))
+
+  sequence_scrap_report <- report(data, "sequence_scrap")
+
+  expect_equal(ncol(sequence_scrap_report), 2)
+  expect_equal(names(sequence_scrap_report), c("sequence_name", "trash_code"))
+  expect_equal(sequence_scrap_report$sequence_name, c("seq1"))
+  expect_equal(sequence_scrap_report$trash_code, c("scrap_report_test"))
+
   data <- new_dataset()
+
+  sequence_scrap_report <- report(data, "sequence_scrap")
+  expect_equal(sequence_scrap_report, data.frame())
 
   add(data, table = data.frame(
     sequence_name = names,
