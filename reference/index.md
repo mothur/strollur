@@ -46,8 +46,7 @@ Adding and using data
   sequence analysis.
 
 - [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
-  : strollur: Store and Transfer Data Associated with Amplicon Sequence
-  Analysis
+  : strollur: Store and Transfer Amplicon Sequence Data
 
 ## Importing Data
 

@@ -47,6 +47,7 @@ data <- read_mothur(
 #> Assigned 531 otu bins.
 #> Assigned 19 samples to treatments.
 
-save_dataset(data, "miseq_sop.rds")
-#> [1] "miseq_sop.rds"
+file_name <- file.path(tempdir(), "miseq_sop.rds")
+save_dataset(data, file = file_name)
+#> [1] "/tmp/Rtmpt6sfpT/miseq_sop.rds"
 ```

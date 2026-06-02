@@ -113,17 +113,22 @@ and temporary directories will be removed. Default = TRUE.</p></dd>
 <span class="r-in"><span>  <span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"rooted-tree.qza"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">read_qiime2</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  qza <span class="op">=</span> <span class="va">qza_files</span>,</span></span>
-<span class="r-in"><span>  metadata <span class="op">=</span> <span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"sample_metadata.tsv"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  dataset_name <span class="op">=</span> <span class="st">"qiime2_moving_pictures"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"h5lite"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">read_qiime2</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    qza <span class="op">=</span> <span class="va">qza_files</span>,</span></span>
+<span class="r-in"><span>    metadata <span class="op">=</span> <span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"sample_metadata.tsv"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    dataset_name <span class="op">=</span> <span class="st">"qiime2_moving_pictures"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="kw">else</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"To use this functionality you have to install the"</span>,</span></span>
+<span class="r-in"><span>                  <span class="st">"h5lite package."</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added 759 sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 759 sequence abundances.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 759 asv bins.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 759 asv bin taxonomies.</span>
-<span class="r-in"><span><span class="va">data</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> qiime2_moving_pictures:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends nbases ambigs polymers numns   numseqs</span>

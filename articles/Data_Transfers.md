@@ -68,10 +68,11 @@ Let’s use the miseq data object to learn how to do that.
 
 ``` r
 
-save_dataset(miseq, file = "miseq_sop.rds")
-#> [1] "miseq_sop.rds"
+file_name <- file.path(tempdir(), "miseq_sop.rds")
+save_dataset(miseq, file = file_name)
+#> [1] "/tmp/Rtmpz2MUWE/miseq_sop.rds"
 
-miseq_from_rds <- load_dataset(file = "miseq_sop.rds")
+miseq_from_rds <- load_dataset(file = file_name)
 miseq_from_rds
 #> miseq_sop:
 #> 
@@ -100,7 +101,7 @@ miseq_from_rds
 #> Total number of resource references: 2 
 #> Total number of custom reports: 1 
 #> Your dataset includes metadata
-unlink("miseq_sop.rds")
+unlink(file_name)
 ```
 
 We can see that the summaries of miseq and miseq_from_rds are identical.

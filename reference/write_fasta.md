@@ -47,5 +47,5 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_fasta(miseq, tempfile())
-#> [1] "/tmp/Rtmpmvt41K/file1bc64162c55e"
+#> [1] "/tmp/Rtmpt6sfpT/file1b835c227aee"
 ```

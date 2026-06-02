@@ -58,17 +58,22 @@ qza_files <- c(
   strollur_example("rooted-tree.qza")
 )
 
-data <- read_qiime2(
-  qza = qza_files,
-  metadata = strollur_example("sample_metadata.tsv"),
-  dataset_name = "qiime2_moving_pictures"
-)
+if (requireNamespace("h5lite", quietly = TRUE)) {
+  data <- read_qiime2(
+    qza = qza_files,
+    metadata = strollur_example("sample_metadata.tsv"),
+    dataset_name = "qiime2_moving_pictures"
+  )
+  data
+}else {
+    message(paste("To use this functionality you have to install the",
+                  "h5lite package."))
+}
 #> Added metadata.
 #> Added 759 sequences.
 #> Assigned 759 sequence abundances.
 #> Assigned 759 asv bins.
 #> Assigned 759 asv bin taxonomies.
-data
 #> qiime2_moving_pictures:
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs

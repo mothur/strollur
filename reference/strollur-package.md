@@ -1,4 +1,4 @@
-# strollur: Store and Transfer Data Associated with Amplicon Sequence Analysis
+# strollur: Store and Transfer Amplicon Sequence Data
 
 Stores the data associated with your amplicon sequence analysis. This
 includes nucleotide sequences, abundance, sample and treatment

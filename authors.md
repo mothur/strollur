@@ -23,5 +23,5 @@ Data. R package version 0.1.0.
       author = {Sarah Westcott},
       year = {2026},
       note = {R package version 0.1.0},
-      url = {https://mothur.org/strollur},
+      url = {https://mothur.org/strollur/},
     }

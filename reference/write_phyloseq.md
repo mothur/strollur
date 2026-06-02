@@ -36,5 +36,10 @@ miseq <- miseq_sop_example()
 #> Added metadata.
 #> Added 2 resource references.
 #> Added a contigs_report.
-phylo_obj <- write_phyloseq(miseq)
+if (requireNamespace("phyloseq", quietly = TRUE)) {
+    phylo_obj <- write_phyloseq(miseq)
+}else {
+    message(paste("To use this functionality you have to install the",
+                  "phyloseq package."))
+}
 ```
