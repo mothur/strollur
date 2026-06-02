@@ -22,23 +22,6 @@ vector<int> SeqReport::getReport(string seq) {
     return results;
 }
 /******************************************************************************/
-vector<vector<int>> SeqReport::getReport(vector<string>& seqs) {
-    vector<vector<int>> results(6, vector<int>(seqs.size()));
-
-    for (size_t i = 0; i < seqs.size(); i++) {
-
-        vector<int> thisSeqsResults = getReport(seqs[i]);
-        results[0][i] = thisSeqsResults[0];
-        results[1][i] = thisSeqsResults[1];
-        results[2][i] = thisSeqsResults[2];
-        results[3][i] = thisSeqsResults[3];
-        results[4][i] = thisSeqsResults[4];
-        results[5][i] = thisSeqsResults[5];
-    }
-
-    return results;
-}
-/******************************************************************************/
 // assumes starts, ends, numbases, ambigs, polymers and numns
 // are all the same size
 void SeqReport::addReports(vector<string>& seqs, vector<int>& starts,
@@ -137,16 +120,6 @@ int SeqReport::getLongestHomopolymer(const string& seq) const {
     }
 
     return longHomoPolymer;
-}
-/******************************************************************************/
-int SeqReport::getNumbases(const string& seq) const {
-    int numBases = 0;
-    for(size_t i = 0; i < seq.length(); i++) {
-        if(!isgap(seq[i])){
-            numBases++;
-        }
-    }
-    return numBases;
 }
 /******************************************************************************/
 int SeqReport::getNumns(const string& seq) const {

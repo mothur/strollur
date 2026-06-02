@@ -5,18 +5,6 @@
 #include "utils.h"
 
 /******************************************************************************/
-Dataset::Dataset() {
-    datasetName = "";
-    isAligned = false;
-    hasSequenceData = false;
-    hasSequenceTaxonomy = false;
-    sortNeeded = true;
-    hasList = false;
-    numUnique = 0;
-    uniqueBad = 0;
-    alignmentLength = 0;
-}
-/******************************************************************************/
 Dataset::Dataset(string name) : datasetName(std::move(name)) {
     isAligned = false;
     hasSequenceData = false;
@@ -1065,7 +1053,7 @@ const Rcpp::DataFrame Dataset::getScrapReport(string mode) {
             }
 
             Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                Rcpp::Named("id") = badNames,
+                Rcpp::Named("sequence_name") = badNames,
                 Rcpp::_["trash_code"] = badCodes);
             return df;
         }
@@ -1222,7 +1210,7 @@ vector<vector<string>> Dataset::getSequencesBySample(vector<string> samples,
 Rcpp::DataFrame Dataset::getSequenceReport() const {
 
     Rcpp::DataFrame df = Rcpp::DataFrame::create(
-        Rcpp::Named("id") = select(names, tableSeqs),
+        Rcpp::Named("sequence_name") = select(names, tableSeqs),
         Rcpp::_["start"] = select(starts, tableSeqs),
         Rcpp::_["end"] = select(ends, tableSeqs),
         Rcpp::_["length"] = select(lengths, tableSeqs),

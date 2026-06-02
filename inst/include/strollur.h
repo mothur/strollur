@@ -608,7 +608,6 @@ class Dataset {
 
 public:
 
-    Dataset();
     Dataset(string name);
     Dataset(const Dataset& dataset);
     ~Dataset();

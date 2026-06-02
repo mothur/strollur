@@ -27,10 +27,6 @@ public:
     // start, end, numbase, ambig, polymer, numn
     vector<int> getReport(string seq);
 
-    // results[0] - starts, results[1] - ends, results[2] - numbases,
-    // results[3] - ambigs, results[4] - polymers, results[5] - numns
-    vector<vector<int>> getReport(vector<string>& seq);
-
     void addReports(vector<string>& seqs, vector<int>& starts, vector<int>& ends,
                    vector<int>& numbases, vector<int>& ambigs,
                    vector<int>& polymers, vector<int>& numns);
@@ -39,7 +35,6 @@ public:
     int getEnd(const string& seq) const;
     int getNumAmbigs(const string& seq) const;
     int getLongestHomopolymer(const string& seq) const;
-    int getNumbases(const string& seq) const;
     int getNumns(const string& seq) const;
 
 private:

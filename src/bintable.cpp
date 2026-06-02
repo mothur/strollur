@@ -747,7 +747,7 @@ Rcpp::DataFrame BinTable::getScrapReport() {
     }
 
     Rcpp::DataFrame df = Rcpp::DataFrame::create(
-        Rcpp::Named("id") = badNames,
+        Rcpp::Named("bin_name") = badNames,
         Rcpp::_["trash_code"] = badCodes);
     return df;
 
