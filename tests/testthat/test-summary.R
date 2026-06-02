@@ -9,7 +9,7 @@ test_that("summary tests", {
   miseq <- miseq_sop_example()
 
   # To get the summary of your FASTA data
-  df <- summary(data = miseq, type = "sequence", verbose = FALSE)
+   df <- summary(data = miseq, type = "sequence", verbose = FALSE)
   headers <- c(
     "starts", "ends", "nbases", "ambigs",
     "polymers", "numns", "numseqs"
