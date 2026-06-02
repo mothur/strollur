@@ -1812,16 +1812,16 @@ const Rcpp::RawVector Dataset::serializeDataset() {
         count.sortAlpha(order);
 
         // sorts by binName
-        for (int i = 0; i < binTables.size(); i++) {
-            binTables[i].sortAlpha(order);
+        for (auto & binTable : binTables) {
+            binTable.sortAlpha(order);
         }
 
         // sort references alphabetically
-        if (references.size() != 0) {
+        if (!references.empty()) {
             sortedVector.clear();
 
             sortedVector.resize(references.size());
-            for (auto i = 0; i < (references).size(); i++) {
+            for (unsigned i = 0; i < static_cast<unsigned>(references.size()); i++) {
                 sortedVector[i].index = i;
                 sortedVector[i].name = references[i].name;
             }
@@ -1829,8 +1829,7 @@ const Rcpp::RawVector Dataset::serializeDataset() {
             sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
 
             // references, refIndex
-            std::vector<unsigned> order((references).size(), 0);
-            for (auto i = 0; i < (sortedVector).size(); i++) {
+            for (int i = 0; i < static_cast<int>(sortedVector.size()); i++) {
                 references[i] = sortedVector[i].name;
                 refIndex[sortedVector[i].name] = i;
             }
