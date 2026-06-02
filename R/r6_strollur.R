@@ -11,7 +11,6 @@
 #'
 #' @importFrom R6 R6Class
 #' @importFrom methods new
-#' @importFrom parallelly availableCores
 #' @importFrom waldo compare
 #' @import cli
 #' @export
@@ -36,8 +35,6 @@ strollur <- R6Class("strollur",
     #' @description
     #' Create a new strollur dataset
     #' @param name String, name of dataset (optional)
-    #' @param processors Integer, number of cores to use.
-    #'  Default = all available
     #' @param dataset a `strollur` object.
     #' @examples
     #'
@@ -47,12 +44,10 @@ strollur <- R6Class("strollur",
     #'
     #' @return A new `strollur` object.
     initialize = function(name = "",
-                          processors = parallelly::availableCores(),
                           dataset = NULL) {
       if (is.null(dataset)) {
-        self$data <- xint_new_pointer(dataset_name = name, processors)
+        self$data <- xint_new_pointer(dataset_name = name)
         self$sequence_tree <- NULL
-        private$processors <- processors
         self$sample_tree <- NULL
       } else {
         if (!inherits(dataset, "strollur")) {
@@ -61,13 +56,11 @@ strollur <- R6Class("strollur",
 
         # copy of dataset backend
         self$data <- xint_copy_pointer(dataset)
-        xdev_set_num_processors(self, processors)
         # assign new name
         if (name != "") {
           xdev_set_dataset_name(self, name)
         }
 
-        private$processors <- processors
         self$sequence_tree <- dataset$get_sequence_tree()
         self$sample_tree <- dataset$get_sample_tree()
       }
@@ -107,7 +100,7 @@ strollur <- R6Class("strollur",
       }
 
       if ("scrap_summary" %in% results_names) {
-        cat("scrap_summary:\n")
+        cat("\nscrap_summary:\n")
         print(results[["scrap_summary"]])
       }
 
@@ -1036,7 +1029,7 @@ strollur <- R6Class("strollur",
     #'
     #' @returns a logical
     #' @export
-    get_version = function(data) {
+    get_version = function() {
       private$version
     },
 
@@ -1063,13 +1056,9 @@ strollur <- R6Class("strollur",
         stop("data must be a strollur object.")
       }
 
-      # compare private members - version, processors
+      # compare private members - version
       if (!identical(self$.private$version, data$.private$version)) {
         cli_alert("The strollur objects versions are not equivalent.")
-        return(FALSE)
-      }
-      if (!identical(self$.private$processors, data$.private$processors)) {
-        cli_alert("The strollur objects processors are not equivalent.")
         return(FALSE)
       }
 
@@ -1140,27 +1129,8 @@ strollur <- R6Class("strollur",
       }
 
       # compare data
-      preserve_self_raw <- self$raw
-      preserve_data_raw <- data$raw
-
-      # serialize c++ back end for efficient comparison - sets raw
-      sraw <- xint_serialize_dobject(self)
-      draw <- xint_serialize_dobject(data)
-
-      # compare and reset old raw value
-      if (!identical(sraw, draw)) {
-        self$raw <- preserve_self_raw
-        data$raw <- preserve_data_raw
-
-        message <- paste(
-          "The strollur objects public field 'data' are not",
-          " equivalent."
-        )
-        cli_alert(message)
+      if (!xint_is_equal(self, data)) {
         return(FALSE)
-      } else {
-        self$raw <- preserve_self_raw
-        data$raw <- preserve_data_raw
       }
 
       TRUE
@@ -1339,7 +1309,11 @@ strollur <- R6Class("strollur",
     #' @return data.frame
     summary = function(type = "sequence",
                        report_type = NULL, verbose = TRUE) {
-      dataset_summary <- summary(self, type, report_type)
+      dataset_summary <- do.call(summary, list(
+        data = self,
+        type = type,
+        report_type = report_type
+      ))
       if (verbose) {
         print(dataset_summary)
       }
@@ -1347,7 +1321,6 @@ strollur <- R6Class("strollur",
     }
   ),
   private = list(
-    processors = 1,
     version = "0.1.0",
     finalize = function() {},
 
@@ -1361,38 +1334,16 @@ strollur <- R6Class("strollur",
         # if you have summary results to print
         results[["sequence_summary"]] <- summary(
           data = self,
-          type = "sequence"
+          type = "sequence", verbose = FALSE
         )
-      }
-
-      exclude <- c("sequence_scrap", "bin_scrap")
-      report_names <- xdev_names(data = self, type = "report")
-      report_names <- report_names[!report_names %in% exclude]
-
-      if (length(report_names) != 0) {
-        for (name in report_names) {
-          results[[name]] <- summary(
-            data = self,
-            type = "report",
-            report_type = name
-          )
-        }
       }
 
       df <- summary(
         data = self,
-        type = "scrap"
+        type = "scrap", verbose = FALSE
       )
       if (nrow(df) != 0) {
         results[["scrap_summary"]] <- df
-      }
-
-      if (count(self, type = "sample") != 0) {
-        results[["sample_summary"]] <- abundance(self, type = "sample")
-
-        if (count(self, "treatment") != 0) {
-          results[["treatment_summary"]] <- abundance(self, type = "treatment")
-        }
       }
 
       results

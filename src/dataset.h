@@ -9,13 +9,11 @@
 
 // Rcpp
 #include <Rcpp.h>
-#include <RcppThread.h>
 #include <cli/progress.h>
 
 #include <ctime>
 
 // [[Rcpp::plugins(cpp11)]]
-// [[Rcpp::depends(RcppThread)]]
 
 using namespace std;
 
@@ -45,6 +43,10 @@ static bool inline isZero(const float& t) {
 static bool inline isEqual(const float& t, const float value) {
     return (isZero(t-value));
 }
+
+static bool inline isDoubleEqual(const double& t, const double value) {
+    return (isZero(t-value));
+}
 /**********************************************************************/
 struct orderAlpha {
     string name;
@@ -71,6 +73,46 @@ void applyOrder(T& x, const std::vector<unsigned>& order) {
     for (size_t i = 0; i < x.size(); i++) {
         x[i] = copy[order[i]];
     }
+}
+/**********************************************************************/
+template<typename T>
+bool isFloatingPointVectorEqual(const std::vector<T>& v1,
+             const std::vector<T>& v2,
+             float epsilon = 1e-5f) {
+
+    if (v1.size() != v2.size()) {
+        return false;
+    }
+
+    return std::equal(v1.begin(), v1.end(), v2.begin(),
+                      [epsilon](float a, float b) {
+                          return std::fabs(a - b) < epsilon;
+                      });
+}
+/**********************************************************************/
+template<typename T>
+bool isMap2FloatingPointVectorEqual(const std::map<T, std::vector<double>>& map1,
+                                    const std::map<T, std::vector<double>>& map2) {
+
+    if (map1.size() != map2.size()) {
+        return false;
+    }
+
+    auto it1 = map1.begin();
+    auto it2 = map2.begin();
+
+    for (; it1 != map1.end(); ++it1, ++it2) {
+
+        if (it1->first != it2->first) {
+            return false;
+        }
+
+        if (!isFloatingPointVectorEqual(it1->second, it2->second)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 /**********************************************************************/
 struct pieceOfWork {

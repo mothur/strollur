@@ -217,7 +217,7 @@ xdev_add_references <- function(data, table, name = "name", vendor = "vendor", v
 #'
 #' # To add a custom report including your contigs assembly data
 #'
-#' data <- new_dataset("just for fun", 2)
+#' data <- new_dataset("just for fun")
 #' contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 #'
 #' xdev_add_report(data, contigs_report, "contigs_report", "Name")
@@ -445,7 +445,7 @@ xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = 
 #' sequence_classifications <- read_mothur_taxonomy(strollur_example(
 #'                         "final.taxonomy.gz"))
 #'
-#' data <- new_dataset("my_dataset", 2)
+#' data <- new_dataset("my_dataset")
 #'
 #' xdev_assign_sequence_taxonomy(data, sequence_classifications)
 #'
@@ -673,7 +673,7 @@ xdev_count <- function(data, type = "sequence", bin_type = "otu", samples = NULL
 #'
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset", 2)
+#' dataset <- new_dataset("my_dataset")
 #' xdev_export_dataset(dataset)
 #'
 #' @return Rcpp::List, containing the data in the 'Dataset' c++ class
@@ -1347,25 +1347,7 @@ xdev_set_dataset_name <- function(data, dataset_name) {
     invisible(.Call(`_strollur_xdev_set_dataset_name`, data, dataset_name))
 }
 
-#' @title xdev_set_num_processors
-#' @description
-#' Designed with package integration in mind, set the number of processors used
-#'  to summarize a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @param processors, a integer containing the desired number of processors
-#' @examples
-#'
-#' data <- new_dataset(dataset_name = "my_dataset")
-#' xdev_set_num_processors(data = data, processors = 1)
-#'
-#' @return No return value, called for side effects.
-#' @export
-xdev_set_num_processors <- function(data, processors) {
-    invisible(.Call(`_strollur_xdev_set_num_processors`, data, processors))
-}
-
-#' @title xdev_get_scrap_summary
+#' @title xint_get_scrap_summary
 #' @description
 #' Summarize the scrapped data in a \link{strollur} object
 #'
@@ -1376,14 +1358,14 @@ xdev_set_num_processors <- function(data, processors) {
 #'  data <- miseq_sop_example()
 #'
 #'  # summarize scrap summary
-#'  xdev_get_scrap_summary(data = data)
+#'  xint_get_scrap_summary(data = data)
 #'
 #'
 #' @return data.frame()
 #' @keywords internal
 #' @noRd
-xdev_get_scrap_summary <- function(data) {
-    .Call(`_strollur_xdev_get_scrap_summary`, data)
+xint_get_scrap_summary <- function(data) {
+    .Call(`_strollur_xint_get_scrap_summary`, data)
 }
 
 #' @title xint_copy_pointer
@@ -1414,12 +1396,24 @@ xint_copy_pointer <- function(data) {
 #' @description
 #' For internal use only, create an instance of the C++ 'Dataset' class.
 #' @param dataset_name, string containing dataset name
-#' @param processors, number of processors to use
 #' @return pointer to an instance of the C++ 'Dataset' class.
 #' @keywords internal
 #' @noRd
-xint_new_pointer <- function(dataset_name, processors) {
-    .Call(`_strollur_xint_new_pointer`, dataset_name, processors)
+xint_new_pointer <- function(dataset_name) {
+    .Call(`_strollur_xint_new_pointer`, dataset_name)
+}
+
+#' @title xint_is_equal
+#' @name xint_is_equal
+#' @description
+#' For internal use only, compares 2 instances of the C++ 'Dataset' class.
+#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data2, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @return boolean
+#' @keywords internal
+#' @noRd
+xint_is_equal <- function(data, data2) {
+    .Call(`_strollur_xint_is_equal`, data, data2)
 }
 
 #' @title xint_deserialize_dobject

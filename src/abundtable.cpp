@@ -222,7 +222,7 @@ double AbundTable::assignTreatments(const vector<string>& samples,
            }else {
                string message = "[WARNING]: The dataset does not contain sample, '";
                message += samples[i] + "'. Ignoring '" + samples[i] + "'.";
-               RcppThread::Rcout << endl << message << endl;
+               Rcpp::Rcout << endl << message << endl;
            }
        }
 
@@ -589,6 +589,41 @@ bool AbundTable::hasSamples(const vector<string>& samples, const int name) const
     return std::all_of(samples.cbegin(), samples.cend(), [this, name](const string& sample) {
         return hasSample(sample, name);
     });
+}
+/******************************************************************************/
+bool AbundTable::operator==(const AbundTable& abunds) const {
+
+    if (numSamples != abunds.numSamples) {
+        return false;
+    }else if (numTreatments != abunds.numTreatments) {
+        return false;
+    }else if (hasSampleData != abunds.hasSampleData) {
+        return false;
+    }else if (hasTreatments != abunds.hasTreatments) {
+        return false;
+    }else if (!isDoubleEqual(total, abunds.total)) {
+        return false;
+    }else if (sampleIndex != abunds.sampleIndex) {
+        return false;
+    }else if (sampleNames != abunds.sampleNames) {
+        return false;
+    }else if (!isFloatingPointVectorEqual(sampleTotals, abunds.sampleTotals)) {
+        return false;
+    }else if (!isFloatingPointVectorEqual(treatmentTotals, abunds.treatmentTotals)) {
+        return false;
+    }else if (tableSamples != abunds.tableSamples) {
+        return false;
+    }else if (treatmentIndex != abunds.treatmentIndex) {
+        return false;
+    }else if (tableTreatments != abunds.tableTreatments) {
+        return false;
+    }else if (sampleTreatment != abunds.sampleTreatment) {
+        return false;
+    }else if (counts != abunds.counts) {
+        return false;
+    }
+
+    return true;
 }
 /******************************************************************************/
 // adds sequences counts of idsToMerge[1-n] into idsToMerge[0]

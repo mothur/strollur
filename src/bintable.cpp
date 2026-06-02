@@ -753,6 +753,42 @@ Rcpp::DataFrame BinTable::getScrapReport() {
 
 }
 /******************************************************************************/
+bool BinTable::operator==(const BinTable& binTable) const {
+
+    if (label != binTable.label) {
+        return false;
+    }else if (hasBinTaxonomy != binTable.hasBinTaxonomy) {
+        return false;
+    }else if (hasBinReps != binTable.hasBinReps) {
+        return false;
+    }else if (runClassify != binTable.runClassify) {
+        return false;
+    }else if (binIndex != binTable.binIndex) {
+        return false;
+    }else if (tableBins != binTable.tableBins) {
+        return false;
+    }else if (binNames != binTable.binNames) {
+        return false;
+    }else if (trashCodes != binTable.trashCodes) {
+        return false;
+    }else if (taxonomies != binTable.taxonomies) {
+        return false;
+    }else if (repSequences != binTable.repSequences) {
+        return false;
+    }else if (binList != binTable.binList) {
+        return false;
+    }else if (seqBins != binTable.seqBins) {
+        return false;
+    }else if (uniqueBad != binTable.uniqueBad) {
+        return false;
+    }else if (!isFloatingPointVectorEqual(originalBinAbunds,
+                                         binTable.originalBinAbunds)) {
+        return false;
+    }
+
+    return isMap2FloatingPointVectorEqual(badAccnos, binTable.badAccnos);
+}
+/******************************************************************************/
 // type, trashCode, binCount, abundanceCount
 Rcpp::DataFrame BinTable::getScrapSummary() const {
 
@@ -865,7 +901,7 @@ vector<int> BinTable::remove(const string& binID, const string& reason){
     if (it == binIndex.end()) {
         string message = "[WARNING]: " + binID + " is not in ";
         message += "your dataset, ignoring.";
-        RcppThread::Rcout << endl << message << endl;
+        Rcpp::Rcout << endl << message << endl;
         return nullIntVector;
     }
 
@@ -946,7 +982,6 @@ void BinTable::sortAlpha(vector<unsigned>& seqOrder) {
     for (int & repSequence : repSequences) {
         repSequence = oldSeqIndex2New[repSequence];
     }
-
     // binList[0] contains the sequences assigned to binNames[0].
     // This loop updates the sequence indexes to reflect the changes made in dataset.cpp
     for (auto& bin : binList) {

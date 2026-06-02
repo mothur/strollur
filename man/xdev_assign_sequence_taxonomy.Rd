@@ -43,7 +43,7 @@ Note, if you assign sequence taxonomies and assign bins, strollur will find
 sequence_classifications <- read_mothur_taxonomy(strollur_example(
                         "final.taxonomy.gz"))
 
-data <- new_dataset("my_dataset", 2)
+data <- new_dataset("my_dataset")
 
 xdev_assign_sequence_taxonomy(data, sequence_classifications)
 

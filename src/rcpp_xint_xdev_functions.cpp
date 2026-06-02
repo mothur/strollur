@@ -10,12 +10,12 @@ void xint_added_message(double num, string tag) {
         message += tag + ".";
     }
 
-    RcppThread::Rcout << message << endl;
+    Rcpp::Rcout << message << endl;
 }
 /******************************************************************************/
 void xint_assigned_message(double num, string tag) {
     string message = "Assigned " + toString(num) + tag;
-    RcppThread::Rcout << message << endl;
+    Rcpp::Rcout << message << endl;
 }
 /******************************************************************************/
 void xint_updated_message(double num, string tag) {
@@ -26,7 +26,7 @@ void xint_updated_message(double num, string tag) {
         message += tag + ".";
     }
 
-    RcppThread::Rcout << message << endl;
+    Rcpp::Rcout << message << endl;
 }
 /******************************************************************************/
 void fillReference(Reference& ref, Rcpp::List ref_list) {
@@ -39,6 +39,7 @@ void fillReference(Reference& ref, Rcpp::List ref_list) {
     ref.documentation_url = Rcpp::as<string>(ref_list["documentation_url"]);
     ref.parameter = Rcpp::as<string>(ref_list["parameter"]);
     ref.citation = Rcpp::as<string>(ref_list["citation"]);
+    ref.checks();
 }
 /******************************************************************************/
 SEXP xint_fill_required_parameters(const Rcpp::DataFrame& df,
@@ -113,7 +114,7 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
     else {
         string message = type + " is not a valid type for the abundance function";
         message += ". Types include: 'bin', 'sequence', sample' and 'treatment'.";
-        RcppThread::Rcout << endl << message << endl;
+        Rcpp::Rcout << endl << message << endl;
     }
 
     // empty
@@ -228,6 +229,7 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
         if (hasCitations) {
             ref.citation = reference_citations[i];
         }
+        ref.checks();
         refs.push_back(ref);
     }
 
@@ -300,7 +302,7 @@ Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
                 }else {
                     string message = "Your report does not contain an entry for ";
                     message += "every sequence in your dataset, ignoring report. ",
-                        RcppThread::Rcout << endl << message << endl;
+                        Rcpp::Rcout << endl << message << endl;
                     return data;
                 }
             }
@@ -410,7 +412,6 @@ Rcpp::Environment xdev_assign_bins(const Rcpp::Environment& data,
     if ((abundances.empty()) && (sequence_names.empty())) {
         string message = "You must provide either abundances or ";
         message += "sequence_names to assign bins.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -422,7 +423,6 @@ Rcpp::Environment xdev_assign_bins(const Rcpp::Environment& data,
         string message = "[ERROR]: You cannot assign abundance and sample data";
         message += " to bins that have sequence assignments. This could cause ";
         message += "inconsistencies.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }else{
         numBinsAssigned = d.get()->assignBins(bin_names, abundances, samples,
@@ -524,7 +524,6 @@ Rcpp::Environment xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
         string message = "[ERROR]: No bin data for type " + bin_type + ", please ";
         message += " assign bins using the 'assign' function then try ";
         message += "again.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -592,7 +591,6 @@ Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
     if (sequence_names.size() != abundances.size()) {
         string message = "[ERROR]: The names and abundances must be the same";
         message += " length.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -609,7 +607,6 @@ Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
         if (!identical(unique_names, dataset_names)) {
             string message = "[ERROR]: You must provide assignments for all";
             message += " sequences in your dataset.";
-            RcppThread::Rcerr << endl << message << endl;
             throw Rcpp::exception(message.c_str());
         }
     }
@@ -751,7 +748,6 @@ Rcpp::Environment xdev_assign_treatments(const Rcpp::Environment& data,
     if (d.get()->getNumSamples() == 0) {
         string message = "[ERROR]: You cannot assign treatments, your dataset";
         message += " does not include sample data.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -759,7 +755,6 @@ Rcpp::Environment xdev_assign_treatments(const Rcpp::Environment& data,
     if (!identical(d.get()->getSamples(), unique(samples))) {
         string message = "You must provide treatment assignments for";
         message += " all samples in your dataset.";
-        RcppThread::Rcerr << endl << message << endl;
         throw Rcpp::exception(message.c_str());
     }
 
@@ -822,7 +817,7 @@ double xdev_count(const Rcpp::Environment& data,
             }else {
                 string message = "Your dataset does not include all the ";
                 message += "samples requested, ignoring.";
-                RcppThread::Rcout << endl << message << endl;
+                Rcpp::Rcout << endl << message << endl;
             }
         }else {
             return d.get()->getNumBins(bin_type);
@@ -985,7 +980,7 @@ vector<string> xdev_names(const Rcpp::Environment& data,
             }else {
                 string message = "Your dataset does not include all the ";
                 message += "samples requested, ignoring.";
-                RcppThread::Rcout << endl << message << endl;
+                Rcpp::Rcout << endl << message << endl;
             }
         }else {
             return d.get()->getBinIds(bin_type,
@@ -1137,7 +1132,6 @@ Rcpp::Environment xdev_set_abundance(const Rcpp::Environment& data,
          string message = "[ERROR]: You cannot set the total sequence abundance";
          message += " for sequences whose abundances are parsed by sample. ";
          message += "Try 'set_abundances' instead of 'set_abundance'.";
-         RcppThread::Rcerr << endl << message << endl;
          throw Rcpp::exception(message.c_str());
      }
      return data;
@@ -1161,7 +1155,6 @@ Rcpp::Environment xdev_set_abundances(const Rcpp::Environment& data,
          string message = "[ERROR]: You cannot set parsed sequence abundances ";
          message += "when your dataset does not include sample data. ";
          message += "Try 'set_abundance' instead of 'set_abundances'.";
-         RcppThread::Rcerr << endl << message << endl;
          throw Rcpp::exception(message.c_str());
      }
      return data;
@@ -1191,17 +1184,7 @@ void xdev_set_dataset_name(const Rcpp::Environment& data, const string& dataset_
      d.get()->datasetName = dataset_name;
 }
 /******************************************************************************/
-void xdev_set_num_processors(const Rcpp::Environment& data, const int processors = 1) {
-    if (!data.inherits("strollur")) {
-        string message = "data must be a strollur object.";
-        throw Rcpp::exception(message.c_str());
-    }
-    const Rcpp::XPtr<Dataset> d = data["data"];
-
-     d.get()->processors = processors;
-}
-/******************************************************************************/
-Rcpp::DataFrame xdev_get_scrap_summary(const Rcpp::Environment& data) {
+Rcpp::DataFrame xint_get_scrap_summary(const Rcpp::Environment& data) {
     if (!data.inherits("strollur")) {
         const string message = "data must be a strollur object.";
         throw Rcpp::exception(message.c_str());
@@ -1221,9 +1204,25 @@ Rcpp::XPtr<Dataset> xint_copy_pointer(const Rcpp::Environment& data) {
      return Rcpp::XPtr<Dataset>(copy);
 }
 /******************************************************************************/
-Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name = "", const int processors = 1) {
-     Dataset* d = new Dataset(dataset_name, processors);
+Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name = "") {
+     Dataset* d = new Dataset(dataset_name);
      return Rcpp::XPtr<Dataset>(d);
+}
+/******************************************************************************/
+bool xint_is_equal(Rcpp::Environment data, Rcpp::Environment data2) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+    if (!data2.inherits("strollur")) {
+        string message = "data2 must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+    Rcpp::XPtr<Dataset> d2 = data2["data"];
+
+    return d.get()->isEqual(*d2.get());
 }
 /******************************************************************************/
 void xint_deserialize_dobject(Rcpp::Environment data) {

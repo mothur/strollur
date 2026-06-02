@@ -23,9 +23,6 @@ public:
                    const vector< vector<string> > &searchTaxons,
                    const vector< vector<int> > &searchConfidenceThresholds);
 
-    // paralell processing helper
-    vector<pieceOfWork> divideWork(double numItems, int& numProcessors);
-
     // numeric helpers
     bool isPositiveNumeric(const string& s);
 

@@ -165,10 +165,6 @@ test_that("xdev - not a strollur object tests", {
     "data must be a strollur object."
   )
   expect_error(
-    xdev_set_num_processors(x, 9),
-    "data must be a strollur object."
-  )
-  expect_error(
     summary(x),
     "data must be a strollur object."
   )

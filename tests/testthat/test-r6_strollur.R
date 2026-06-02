@@ -1,7 +1,7 @@
 # test "dataset"
 
 test_that("dataset - intialize from read_mothur / print", {
-  expect_error(strollur$new("test", 2, "not a strollur object"),
+  expect_error(strollur$new("test", "not a strollur object"),
     regexp = "dataset must be a strollur object."
   )
   dataset_t <- read_mothur(
@@ -202,8 +202,7 @@ test_that("dataset - intialize from dataset object", {
   )
 
   dataset_t <- strollur$new(
-    name = "clone_of_miseq", dataset = temp,
-    processors = 4
+    name = "clone_of_miseq", dataset = temp
   )
 
   expect_equal(names(dataset_t, "dataset"), "clone_of_miseq")

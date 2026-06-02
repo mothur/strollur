@@ -2,7 +2,6 @@
 // Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #include "../inst/include/strollur.h"
-#include <RcppThread.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -504,25 +503,14 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// xdev_set_num_processors
-void xdev_set_num_processors(const Rcpp::Environment& data, int processors);
-RcppExport SEXP _strollur_xdev_set_num_processors(SEXP dataSEXP, SEXP processorsSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
-    xdev_set_num_processors(data, processors);
-    return R_NilValue;
-END_RCPP
-}
-// xdev_get_scrap_summary
-Rcpp::DataFrame xdev_get_scrap_summary(const Rcpp::Environment& data);
-RcppExport SEXP _strollur_xdev_get_scrap_summary(SEXP dataSEXP) {
+// xint_get_scrap_summary
+Rcpp::DataFrame xint_get_scrap_summary(const Rcpp::Environment& data);
+RcppExport SEXP _strollur_xint_get_scrap_summary(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(xdev_get_scrap_summary(data));
+    rcpp_result_gen = Rcpp::wrap(xint_get_scrap_summary(data));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -538,14 +526,25 @@ BEGIN_RCPP
 END_RCPP
 }
 // xint_new_pointer
-Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name, int processors);
-RcppExport SEXP _strollur_xint_new_pointer(SEXP dataset_nameSEXP, SEXP processorsSEXP) {
+Rcpp::XPtr<Dataset> xint_new_pointer(const string& dataset_name);
+RcppExport SEXP _strollur_xint_new_pointer(SEXP dataset_nameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const string& >::type dataset_name(dataset_nameSEXP);
-    Rcpp::traits::input_parameter< int >::type processors(processorsSEXP);
-    rcpp_result_gen = Rcpp::wrap(xint_new_pointer(dataset_name, processors));
+    rcpp_result_gen = Rcpp::wrap(xint_new_pointer(dataset_name));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xint_is_equal
+bool xint_is_equal(Rcpp::Environment data, Rcpp::Environment data2);
+RcppExport SEXP _strollur_xint_is_equal(SEXP dataSEXP, SEXP data2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type data2(data2SEXP);
+    rcpp_result_gen = Rcpp::wrap(xint_is_equal(data, data2));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -607,10 +606,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_set_abundances", (DL_FUNC) &_strollur_xdev_set_abundances, 4},
     {"_strollur_xdev_set_sequences", (DL_FUNC) &_strollur_xdev_set_sequences, 4},
     {"_strollur_xdev_set_dataset_name", (DL_FUNC) &_strollur_xdev_set_dataset_name, 2},
-    {"_strollur_xdev_set_num_processors", (DL_FUNC) &_strollur_xdev_set_num_processors, 2},
-    {"_strollur_xdev_get_scrap_summary", (DL_FUNC) &_strollur_xdev_get_scrap_summary, 1},
+    {"_strollur_xint_get_scrap_summary", (DL_FUNC) &_strollur_xint_get_scrap_summary, 1},
     {"_strollur_xint_copy_pointer", (DL_FUNC) &_strollur_xint_copy_pointer, 1},
-    {"_strollur_xint_new_pointer", (DL_FUNC) &_strollur_xint_new_pointer, 2},
+    {"_strollur_xint_new_pointer", (DL_FUNC) &_strollur_xint_new_pointer, 1},
+    {"_strollur_xint_is_equal", (DL_FUNC) &_strollur_xint_is_equal, 2},
     {"_strollur_xint_deserialize_dobject", (DL_FUNC) &_strollur_xint_deserialize_dobject, 1},
     {"_strollur_xint_serialize_dobject", (DL_FUNC) &_strollur_xint_serialize_dobject, 1},
     {NULL, NULL, 0}
