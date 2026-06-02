@@ -1,5 +1,5 @@
 # Changelog
 
-## strollur 1.0.0
+## strollur 0.1.0
 
 - Initial CRAN submission.
