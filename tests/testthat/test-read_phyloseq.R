@@ -1,4 +1,5 @@
 test_that("test read_phyloseq", {
+  skip_if_not_installed("phyloseq")
   list_file <- strollur_example("esophagus.fn.list")
   groups_file <- strollur_example("esophagus.good.groups")
   tree_file <- strollur_example("esophagus.tree")
