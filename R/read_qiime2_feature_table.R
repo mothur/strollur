@@ -35,7 +35,7 @@ read_qiime2_feature_table <- function(qza, dir_path = NULL,
 
   if (!require_namespace("h5lite")) {
     stop(paste("The h5lite R package is required to read HDF5 formatted",
-                "BIOM files. To install h5lite, run: pak::pak('h5lite')."))
+               "BIOM files. To install h5lite, run: pak::pak('h5lite')."))
   }
 
   # if no dir_path given, set to current working directory
