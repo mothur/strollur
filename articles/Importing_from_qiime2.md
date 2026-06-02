@@ -20,38 +20,40 @@ data <- read_qiime2(
   metadata = strollur_example("sample_metadata.tsv"),
   dataset_name = "qiime_moving_pictures"
 )
-#> Added metadata.
-#> Added 759 sequences.
-#> Assigned 759 sequence abundances.
-#> Assigned 759 asv bins.
-#> Assigned 759 asv bin taxonomies.
 ```
+
+    ## Added metadata.
+    ## Added 759 sequences.
+    ## Assigned 759 sequence abundances.
+    ## Assigned 759 asv bins.
+    ## Assigned 759 asv bin taxonomies.
 
 To view a summary of data:
 
 ``` r
 
 data
-#> qiime_moving_pictures:
-#> 
-#>             starts ends nbases ambigs polymers numns   numseqs
-#> Minimum:         1  120    120      0        3     0      1.00
-#> 2.5%-tile:       1  120    120      0        3     0   3932.45
-#> 25%-tile:        1  120    120      0        4     0  39324.50
-#> Median:          1  120    120      0        4     0  78649.00
-#> 75%-tile:        1  120    120      0        5     0 117973.50
-#> 97.5%-tile:      1  120    120      0        6     0 153365.55
-#> Maximum:         1  120    120      0        8     0 157298.00
-#> Mean:            1  120    120      0        4     0  78649.14
-#> 
-#> Number of unique seqs: 759 
-#> Total number of seqs: 157298 
-#> 
-#> Total number of samples: 34 
-#> Total number of asvs: 759 
-#> Total number of asv bin classifications: 759 
-#> Your dataset includes metadata
 ```
+
+    ## qiime_moving_pictures:
+    ## 
+    ##             starts ends nbases ambigs polymers numns   numseqs
+    ## Minimum:         1  120    120      0        3     0      1.00
+    ## 2.5%-tile:       1  120    120      0        3     0   3932.45
+    ## 25%-tile:        1  120    120      0        4     0  39324.50
+    ## Median:          1  120    120      0        4     0  78649.00
+    ## 75%-tile:        1  120    120      0        5     0 117973.50
+    ## 97.5%-tile:      1  120    120      0        6     0 153365.55
+    ## Maximum:         1  120    120      0        8     0 157298.00
+    ## Mean:            1  120    120      0        4     0  78649.14
+    ## 
+    ## Number of unique seqs: 759 
+    ## Total number of seqs: 157298 
+    ## 
+    ## Total number of samples: 34 
+    ## Total number of asvs: 759 
+    ## Total number of asv bin classifications: 759 
+    ## Your dataset includes metadata
 
 ## Reading Individual Files
 
@@ -110,8 +112,9 @@ add(
   table = fasta_data,
   type = "sequence"
 )
-#> Added 759 sequences.
 ```
+
+    ## Added 759 sequences.
 
 You can remove the fasta_artifact using the unlink function:
 
@@ -139,7 +142,11 @@ assign(
   type = "sequence_abundance",
   table_names = list(sequence_name = "bin_name")
 )
-#> Assigned 759 sequence abundances.
+```
+
+    ## Assigned 759 sequence abundances.
+
+``` r
 
 assign(
   my_data,
@@ -148,27 +155,32 @@ assign(
   bin_type = "asv",
   table_names = list(sequence_name = "bin_name")
 )
-#> Assigned 759 asv bins.
+```
+
+    ## Assigned 759 asv bins.
+
+``` r
 
 my_data
-#> my_data:
-#> 
-#>             starts ends nbases ambigs polymers numns   numseqs
-#> Minimum:         1  120    120      0        3     0      1.00
-#> 2.5%-tile:       1  120    120      0        3     0   3932.45
-#> 25%-tile:        1  120    120      0        4     0  39324.50
-#> Median:          1  120    120      0        4     0  78649.00
-#> 75%-tile:        1  120    120      0        5     0 117973.50
-#> 97.5%-tile:      1  120    120      0        6     0 153365.55
-#> Maximum:         1  120    120      0        8     0 157298.00
-#> Mean:            1  120    120      0        4     0  78649.14
-#> 
-#> Number of unique seqs: 759 
-#> Total number of seqs: 157298 
-#> 
-#> Total number of samples: 34 
-#> Total number of asvs: 759
 ```
+
+    ## my_data:
+    ## 
+    ##             starts ends nbases ambigs polymers numns   numseqs
+    ## Minimum:         1  120    120      0        3     0      1.00
+    ## 2.5%-tile:       1  120    120      0        3     0   3932.45
+    ## 25%-tile:        1  120    120      0        4     0  39324.50
+    ## Median:          1  120    120      0        4     0  78649.00
+    ## 75%-tile:        1  120    120      0        5     0 117973.50
+    ## 97.5%-tile:      1  120    120      0        6     0 153365.55
+    ## Maximum:         1  120    120      0        8     0 157298.00
+    ## Mean:            1  120    120      0        4     0  78649.14
+    ## 
+    ## Number of unique seqs: 759 
+    ## Total number of seqs: 157298 
+    ## 
+    ## Total number of samples: 34 
+    ## Total number of asvs: 759
 
 Now that we have added the abundance data and assigned the sequences to
 bins, let’s take a look at the taxonomic classifications provided in the
@@ -186,8 +198,9 @@ assign(
   type = "sequence_taxonomy",
   table_names = list(sequence_name = "bin_name")
 )
-#> Assigned 759 sequence taxonomies.
 ```
+
+    ## Assigned 759 sequence taxonomies.
 
 Now, lets add a tree that shows the relationships between the sequences
 (features).
@@ -244,8 +257,9 @@ To add the metadata to the my_data dataset, run the following:
 ``` r
 
 add(my_data, table = metadata, type = "metadata")
-#> Added metadata.
 ```
+
+    ## Added metadata.
 
 To view a summary of your imported dataset, ‘my_data’, run the
 following:
@@ -253,24 +267,25 @@ following:
 ``` r
 
 my_data
-#> my_data:
-#> 
-#>             starts ends nbases ambigs polymers numns   numseqs
-#> Minimum:         1  120    120      0        3     0      1.00
-#> 2.5%-tile:       1  120    120      0        3     0   3932.45
-#> 25%-tile:        1  120    120      0        4     0  39324.50
-#> Median:          1  120    120      0        4     0  78649.00
-#> 75%-tile:        1  120    120      0        5     0 117973.50
-#> 97.5%-tile:      1  120    120      0        6     0 153365.55
-#> Maximum:         1  120    120      0        8     0 157298.00
-#> Mean:            1  120    120      0        4     0  78649.14
-#> 
-#> Number of unique seqs: 759 
-#> Total number of seqs: 157298 
-#> 
-#> Total number of samples: 34 
-#> Total number of asvs: 759 
-#> Total number of asv bin classifications: 759 
-#> Total number of sequence classifications: 759 
-#> Your dataset includes metadata
 ```
+
+    ## my_data:
+    ## 
+    ##             starts ends nbases ambigs polymers numns   numseqs
+    ## Minimum:         1  120    120      0        3     0      1.00
+    ## 2.5%-tile:       1  120    120      0        3     0   3932.45
+    ## 25%-tile:        1  120    120      0        4     0  39324.50
+    ## Median:          1  120    120      0        4     0  78649.00
+    ## 75%-tile:        1  120    120      0        5     0 117973.50
+    ## 97.5%-tile:      1  120    120      0        6     0 153365.55
+    ## Maximum:         1  120    120      0        8     0 157298.00
+    ## Mean:            1  120    120      0        4     0  78649.14
+    ## 
+    ## Number of unique seqs: 759 
+    ## Total number of seqs: 157298 
+    ## 
+    ## Total number of samples: 34 
+    ## Total number of asvs: 759 
+    ## Total number of asv bin classifications: 759 
+    ## Total number of sequence classifications: 759 
+    ## Your dataset includes metadata

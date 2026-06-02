@@ -2,13 +2,18 @@
 
 ``` r
 
+if (!requireNamespace("phyloseq", quietly = TRUE)) {
+  message("Suggested package: 'phyloseq' is not installed")
+  knitr::opts_chunk$set(eval = FALSE)
+} else {
+  library(phyloseq)
+}
 library(strollur)
 #> 
 #> Attaching package: 'strollur'
 #> The following objects are masked from 'package:base':
 #> 
 #>     assign, names, summary
-library(phyloseq)
 ```
 
 `strollur` includes functionality for the reading and writing of
