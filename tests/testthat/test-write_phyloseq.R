@@ -1,4 +1,5 @@
 test_that("write phyloseq creates phyloseq object", {
+  skip_if_not_installed("phyloseq")
   list_file <- strollur_example("final.asv.list.gz")
   shared_file <- strollur_example("final.opti_mcc.shared")
   constaxonomy_file <- strollur_example("final.cons.taxonomy")
@@ -24,9 +25,11 @@ test_that("write phyloseq creates phyloseq object", {
   dat <- readRDS(strollur_example("GlobalPatterns.RDS"))
   phyloseq_object <- read_phyloseq(dat)
   recreated_phylo_object <- write_phyloseq(phyloseq_object)
-  expect_true(all(phyloseq::tax_table(dat) ==
-                    phyloseq::tax_table(recreated_phylo_object),
-                  na.rm = TRUE))
+  expect_true(all(
+    phyloseq::tax_table(dat) ==
+      phyloseq::tax_table(recreated_phylo_object),
+    na.rm = TRUE
+  ))
   expect_true(all(phyloseq::otu_table(dat) ==
                     phyloseq::otu_table(recreated_phylo_object)))
   expect_true(all(phyloseq::sample_data(dat) ==
@@ -48,6 +51,7 @@ test_that("write phyloseq creates phyloseq object", {
 
 
 test_that("write phyloseq fails if not given a strollur object", {
+  skip_if_not_installed("phyloseq")
   miseq <- c()
   expect_error(
     write_phyloseq(miseq),
@@ -57,6 +61,7 @@ test_that("write phyloseq fails if not given a strollur object", {
 
 
 test_that("write phyloseq will fail if the dataset is empty", {
+  skip_if_not_installed("phyloseq")
   empty_dataset <- strollur$new("")
   expect_error(write_phyloseq(empty_dataset))
 })

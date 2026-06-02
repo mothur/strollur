@@ -1,6 +1,7 @@
 # test read_qiime2_feature_table
 
 test_that("test read_qiime2_feature_table - errors", {
+  skip_if_not_installed("h5lite")
   expect_error(read_qiime2_feature_table("non_existant_filename"))
   expect_error(read_qiime2_feature_table(
     strollur_example("taxonomy.qza"),
@@ -10,6 +11,7 @@ test_that("test read_qiime2_feature_table - errors", {
 })
 
 test_that("test read_qiime2_feature_table", {
+  skip_if_not_installed("h5lite")
   bin_data <- read_qiime2_feature_table(strollur_example("table.qza"))
 
   expect_equal(nrow(bin_data$data), 2290)

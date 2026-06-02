@@ -10,26 +10,34 @@
 #'
 #' @examples
 #'
-#' artifact <- read_qiime2_feature_table(strollur_example(
-#'   "table.qza"
-#' ))
+#' if (requireNamespace("h5lite", quietly = TRUE)) {
+#'   artifact <- read_qiime2_feature_table(strollur_example( "table.qza" ))
 #'
-#' # access the bin assignment table
+#'   # access the bin assignment table
 #'
-#' artifact$data
+#'   artifact$data
 #'
-#' # to create a `strollur` object with your data
+#'   # to create a `strollur` object with your data
 #'
-#' data <- new_dataset("my_data")
+#'   data <- new_dataset("my_data")
 #'
-#' assign(data = data, table = artifact$data, type = "bin")
-#'
-#' data
+#'   assign(data = data, table = artifact$data, type = "bin")
+#'   data
+#' }else {
+#'     message(paste("To use this functionality you have to install the",
+#'                   "h5lite package."))
+#' }
 #'
 #' @return A list containing artifact
 #' @export
 read_qiime2_feature_table <- function(qza, dir_path = NULL,
                                       remove_unpacked_artifacts = TRUE) {
+
+  if (!require_namespace("h5lite")) {
+    stop(paste("The h5lite R package is required to read HDF5 formatted",
+               "BIOM files. To install h5lite, run: pak::pak('h5lite')."))
+  }
+
   # if no dir_path given, set to current working directory
   if (is.null(dir_path)) {
     dir_path <- getwd()

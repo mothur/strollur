@@ -1,4 +1,5 @@
 test_that("test read_phyloseq", {
+  skip_if_not_installed("phyloseq")
   list_file <- strollur_example("esophagus.fn.list")
   groups_file <- strollur_example("esophagus.good.groups")
   tree_file <- strollur_example("esophagus.tree")
@@ -40,6 +41,7 @@ test_that("test read_phyloseq", {
 })
 
 test_that("read phyloseq fails if not given an phyloseq object", {
+  skip_if_not_installed("phyloseq")
   empty <- c()
   expect_error(
     read_phyloseq(empty),

@@ -18,7 +18,8 @@
 #'   dataset_name = "miseq_sop"
 #' )
 #'
-#' save_dataset(data, "miseq_sop.rds")
+#' file_name <- file.path(tempdir(), "miseq_sop.rds")
+#' save_dataset(data, file = file_name)
 #'
 #' @seealso [load_dataset()]
 #'

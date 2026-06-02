@@ -18,8 +18,14 @@
 #' @return a strollur object.
 #' @examples
 #' miseq <- miseq_sop_example()
-#' phylo_obj <- write_phyloseq(miseq)
-#' miseq_re_read <- read_phyloseq(phylo_obj)
+#'
+#' if (requireNamespace("phyloseq", quietly = TRUE)) {
+#'     phylo_obj <- write_phyloseq(miseq)
+#'     miseq_re_read <- read_phyloseq(phylo_obj)
+#' }else {
+#'     message(paste("To use this functionality you have to install the",
+#'                   "phyloseq package."))
+#' }
 #' @export
 read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
                           dataset_name = "") {

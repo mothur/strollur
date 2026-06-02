@@ -29,6 +29,12 @@ and converts it into a strollur object.
 }
 \examples{
 miseq <- miseq_sop_example()
-phylo_obj <- write_phyloseq(miseq)
-miseq_re_read <- read_phyloseq(phylo_obj)
+
+if (requireNamespace("phyloseq", quietly = TRUE)) {
+    phylo_obj <- write_phyloseq(miseq)
+    miseq_re_read <- read_phyloseq(phylo_obj)
+}else {
+    message(paste("To use this functionality you have to install the",
+                  "phyloseq package."))
+}
 }

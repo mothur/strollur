@@ -47,11 +47,16 @@ qza_files <- c(
   strollur_example("rooted-tree.qza")
 )
 
-data <- read_qiime2(
-  qza = qza_files,
-  metadata = strollur_example("sample_metadata.tsv"),
-  dataset_name = "qiime2_moving_pictures"
-)
-data
+if (requireNamespace("h5lite", quietly = TRUE)) {
+  data <- read_qiime2(
+    qza = qza_files,
+    metadata = strollur_example("sample_metadata.tsv"),
+    dataset_name = "qiime2_moving_pictures"
+  )
+  data
+}else {
+    message(paste("To use this functionality you have to install the",
+                  "h5lite package."))
+}
 
 }
