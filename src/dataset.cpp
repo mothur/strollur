@@ -1882,10 +1882,11 @@ void Dataset::setSequences(const vector<string>& n, const vector<string>& s,
 }
 /******************************************************************************/
 void Dataset::sortDataset() {
-    if (sortNeeded) {
-    vector<orderAlpha> sortedVector((names).size());
+    if (!sortNeeded) return;
+    const unsigned namesSize = names.size();
+    vector<orderAlpha> sortedVector(namesSize);
 
-    for (auto i = 0; i < (names).size(); i++) {
+    for (unsigned i = 0; i < namesSize; i++) {
         sortedVector[i].index = i;
         sortedVector[i].name = names[i];
     }
@@ -1893,8 +1894,8 @@ void Dataset::sortDataset() {
     sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
 
     // names, seqIndex
-    std::vector<unsigned> order((names).size(), 0);
-    for (auto i = 0; i < (sortedVector).size(); i++) {
+    std::vector<unsigned> order(namesSize, 0);
+    for (int i = 0; i < static_cast<int>(sortedVector.size()); i++) {
         order[i] = sortedVector[i].index;
         names[i] = sortedVector[i].name;
         seqIndex[sortedVector[i].name] = i;
@@ -1920,16 +1921,16 @@ void Dataset::sortDataset() {
     count.sortAlpha(order);
 
     // sorts by binName
-    for (int i = 0; i < binTables.size(); i++) {
-        binTables[i].sortAlpha(order);
+    for (auto & binTable : binTables) {
+        binTable.sortAlpha(order);
     }
 
     // sort references alphabetically
-    if (references.size() != 0) {
+    if (!references.empty()) {
         sortedVector.clear();
-
-        sortedVector.resize(references.size());
-        for (auto i = 0; i < (references).size(); i++) {
+        const unsigned referenceSize = references.size();
+        sortedVector.resize(referenceSize);
+        for (unsigned i = 0; i < referenceSize; i++) {
             sortedVector[i].index = i;
             sortedVector[i].name = references[i].name;
         }
@@ -1937,8 +1938,8 @@ void Dataset::sortDataset() {
         sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
 
         // references, refIndex
-        std::vector<unsigned> order((references).size(), 0);
-        for (auto i = 0; i < (sortedVector).size(); i++) {
+        std::vector<unsigned> order(referenceSize, 0);
+        for (int i = 0; i < static_cast<int>(sortedVector.size()); i++) {
             order[i] = sortedVector[i].index;
             refIndex[sortedVector[i].name] = i;
         }
@@ -1947,11 +1948,10 @@ void Dataset::sortDataset() {
 
     // sort reports by sequence name column
     metadata.sortAlpha();
-    for (auto it = reports.begin(); it != reports.end(); it++) {
-        it->second.sortAlpha();
+    for (auto & report : reports) {
+        report.second.sortAlpha();
     }
     sortNeeded = false;
-    }
 }
 /******************************************************************************/
 const Rcpp::RawVector Dataset::serializeDataset() {

@@ -237,9 +237,10 @@ void Report::sortAlpha() {
 
         // sort table by sequence name column
         vector<string> seqNames = strColumns[sequence_name_col];
-        vector<orderAlpha> sortedVector(seqNames.size());
+        const auto seqNameSize = static_cast<unsigned>(seqNames.size());
+        vector<orderAlpha> sortedVector(seqNameSize);
 
-        for (auto i = 0; i < (seqNames).size(); i++) {
+        for (unsigned i = 0; i < seqNameSize; i++) {
             sortedVector[i].index = i;
             sortedVector[i].name = seqNames[i];
         }
@@ -247,8 +248,8 @@ void Report::sortAlpha() {
         sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
 
         // names, seqIndex
-        std::vector<unsigned> order(seqNames.size(), 0);
-        for (auto i = 0; i < (sortedVector).size(); i++) {
+        std::vector<unsigned> order(seqNameSize, 0);
+        for (size_t i = 0; i < sortedVector.size(); i++) {
             order[i] = sortedVector[i].index;
             seqNames[i] = sortedVector[i].name;
         }
