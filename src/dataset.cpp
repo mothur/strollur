@@ -1775,9 +1775,10 @@ const Rcpp::RawVector Dataset::serializeDataset() {
     // yet is_equal will see them as different.
 
     if (sortNeeded) {
-        vector<orderAlpha> sortedVector((names).size());
+        const auto nameSize = static_cast<unsigned>(names.size());
+        vector<orderAlpha> sortedVector(nameSize);
 
-        for (auto i = 0; i < (names).size(); i++) {
+        for (unsigned i = 0; i < nameSize; i++) {
             sortedVector[i].index = i;
             sortedVector[i].name = names[i];
         }
@@ -1785,8 +1786,8 @@ const Rcpp::RawVector Dataset::serializeDataset() {
         sort(sortedVector.begin(), sortedVector.end(), compareAlpha);
 
         // names, seqIndex
-        std::vector<unsigned> order((names).size(), 0);
-        for (auto i = 0; i < (sortedVector).size(); i++) {
+        std::vector<unsigned> order(nameSize, 0);
+        for (int i = 0; i < static_cast<int>(sortedVector.size()); i++) {
             order[i] = sortedVector[i].index;
             names[i] = sortedVector[i].name;
             seqIndex[sortedVector[i].name] = i;

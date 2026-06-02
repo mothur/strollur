@@ -159,8 +159,8 @@ struct sampleAbunds {
     }
 
     void updateIndexes(map<int, int>& indexMap) {
-        for (int i = 0; i < sampleIndex.size(); i++) {
-            sampleIndex[i] = indexMap[sampleIndex[i]];
+        for (int & currentIndex : sampleIndex) {
+            currentIndex = indexMap[currentIndex];
         }
     }
 

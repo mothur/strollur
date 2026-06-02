@@ -937,7 +937,7 @@ void BinTable::sortAlpha(vector<unsigned>& seqOrder) {
     // update sequence indexes - binList, repSequences, seqBins
     // create oldSeqIndex -> newSeqIndex
     std::vector<int> oldSeqIndex2New(seqOrder.size(), 0);
-    for (int i = 0; i < seqOrder.size(); i++) {
+    for (int i = 0; i < static_cast<int>(seqOrder.size()); i++) {
         oldSeqIndex2New[seqOrder[i]] = i;
     }
 
