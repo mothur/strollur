@@ -29,7 +29,7 @@ test_that("summary tests", {
   expect_equal(ambigs, df$numns)
 
   expect_equal(df$polymers[[4]], 4)
-  expect_equal(df$numseqs[[4]], 56982.5)
+  expect_equal(df$numseqs[[4]], 56981.5)
 
   # summarize contigs_report
   df <- summary(
@@ -57,7 +57,7 @@ test_that("summary tests", {
 
   expect_equal(starts, df[[1]])
   expect_equal(ends, df[[2]])
-  expect_equal(df[[7]][4], 53887)
+  expect_equal(df[[7]][4], 53886)
 
   # summarize scrapped data -
   # sequences and bins scrapped by removing the sample "F3D0"

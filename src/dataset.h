@@ -70,7 +70,7 @@ void applyOrder(T& x, const std::vector<unsigned>& order) {
     if (x.empty()) { return; }
     T copy = x;
 
-    for (auto i = 0; i < x.size(); i++) {
+    for (size_t i = 0; i < x.size(); i++) {
         x[i] = copy[order[i]];
     }
 }
