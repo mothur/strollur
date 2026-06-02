@@ -65,13 +65,13 @@ xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2850.00
-#> 25%-tile:        1  375    252      0        4     0  28491.00
-#> Median:          1  375    253      0        4     0  56981.00
-#> 75%-tile:        1  375    253      0        5     0  85471.00
-#> 97.5%-tile:      1  375    254      0        6     0 111112.00
-#> Maximum:         1  375    256      0        6     0 113961.00
-#> Mean:            1  375    252      0        4     0  56981.00
+#> 2.5%-tile:       1  375    252      0        4     0   2849.00
+#> 25%-tile:        1  375    252      0        4     0  28490.00
+#> Median:          1  375    253      0        4     0  56980.00
+#> 75%-tile:        1  375    253      0        5     0  85470.00
+#> 97.5%-tile:      1  375    254      0        6     0 111111.00
+#> Maximum:         1  375    256      0        6     0 113960.00
+#> Mean:            1  375    252      0        4     0  56980.14
 #> 
 #> scrap_summary:
 #>       type trash_code unique total

@@ -66,13 +66,13 @@ xdev_set_sequences(data = data,
 #> 
 #>             starts ends nbases ambigs polymers numns numseqs
 #> Minimum:         1    5      5      0        1     0    1.00
-#> 2.5%-tile:       1    5      5      0        1     0    1.10
-#> 25%-tile:        1    5      5      0        1     0    2.00
-#> Median:          1    5      5      0        1     0    3.00
-#> 75%-tile:        1    5      5      0        2     0    4.00
-#> 97.5%-tile:      1    5      5      0        2     0    4.90
-#> Maximum:         1    5      5      0        3     0    5.00
-#> Mean:            1    5      5      0        1     0    3.00
+#> 2.5%-tile:       1    5      5      0        1     0    0.10
+#> 25%-tile:        1    5      5      0        1     0    1.00
+#> Median:          1    5      5      0        1     0    2.00
+#> 75%-tile:        1    5      5      0        2     0    3.00
+#> 97.5%-tile:      1    5      5      0        2     0    3.90
+#> Maximum:         1    5      5      0        3     0    4.00
+#> Mean:            1    5      5      0        1     0    2.14
 #> 
 #> Number of unique seqs: 4 
 #> Total number of seqs: 4 

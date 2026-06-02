@@ -58,13 +58,13 @@ xdev_remove_samples(data, c("F3D0", "F3D1"))
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2579.00
-#> 25%-tile:        1  375    252      0        4     0  25781.00
-#> Median:          1  375    253      0        4     0  51561.00
-#> 75%-tile:        1  375    253      0        5     0  77341.00
-#> 97.5%-tile:      1  375    254      0        6     0 100543.00
-#> Maximum:         1  375    256      0        6     0 103121.00
-#> Mean:            1  375    252      0        4     0  51561.00
+#> 2.5%-tile:       1  375    252      0        4     0   2578.00
+#> 25%-tile:        1  375    252      0        4     0  25780.00
+#> Median:          1  375    253      0        4     0  51560.00
+#> 75%-tile:        1  375    253      0        5     0  77340.00
+#> 97.5%-tile:      1  375    254      0        6     0 100542.00
+#> Maximum:         1  375    256      0        6     0 103120.00
+#> Mean:            1  375    252      0        4     0  51560.14
 #> 
 #> scrap_summary:
 #>        type     trash_code unique total

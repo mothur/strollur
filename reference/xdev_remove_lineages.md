@@ -54,13 +54,13 @@ xdev_remove_lineages(data = data, contaminants = contaminants)
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2850.08
-#> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    253      0        4     0  56982.50
-#> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    254      0        6     0 111114.93
-#> Maximum:         1  375    256      0        6     0 113964.00
-#> Mean:            1  375    252      0        4     0  56982.50
+#> 2.5%-tile:       1  375    252      0        4     0   2849.08
+#> 25%-tile:        1  375    252      0        4     0  28490.75
+#> Median:          1  375    253      0        4     0  56981.50
+#> 75%-tile:        1  375    253      0        5     0  85472.25
+#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> Maximum:         1  375    256      0        6     0 113963.00
+#> Mean:            1  375    252      0        4     0  56981.64
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
