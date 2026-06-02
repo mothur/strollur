@@ -11,8 +11,7 @@
 [![Codecov test
 coverage](https://codecov.io/gh/mothur/strollur/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mothur/strollur?branch=main)
 [![pkgdown](https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.org/package=strollur)
+<!-- [![CRAN status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.org/package=strollur) -->
 <!-- badges: end -->
 
 ## Overview
@@ -90,13 +89,13 @@ data
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        3     0   2850.08
+#> 2.5%-tile:       1  375    252      0        4     0   2850.08
 #> 25%-tile:        1  375    252      0        4     0  28491.75
-#> Median:          1  375    252      0        4     0  56982.50
+#> Median:          1  375    253      0        4     0  56982.50
 #> 75%-tile:        1  375    253      0        5     0  85473.25
-#> 97.5%-tile:      1  375    253      0        6     0 111114.93
-#> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0      0.00
+#> 97.5%-tile:      1  375    254      0        6     0 111114.93
+#> Maximum:         1  375    256      0        6     0 113964.00
+#> Mean:            1  375    252      0        4     0  56982.50
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
