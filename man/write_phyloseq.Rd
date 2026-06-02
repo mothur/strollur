@@ -19,5 +19,11 @@ return it as a "phyloseq" object.
 }
 \examples{
 miseq <- miseq_sop_example()
-phylo_obj <- write_phyloseq(miseq)
+if (requireNamespace("phyloseq", quietly = TRUE)) {
+    phylo_obj <- write_phyloseq(miseq)
+}else {
+    message(paste("To use this functionality you have to install the",
+                  "phyloseq package."))
+}
+
 }

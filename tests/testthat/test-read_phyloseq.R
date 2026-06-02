@@ -41,6 +41,7 @@ test_that("test read_phyloseq", {
 })
 
 test_that("read phyloseq fails if not given an phyloseq object", {
+  skip_if_not_installed("phyloseq")
   empty <- c()
   expect_error(
     read_phyloseq(empty),

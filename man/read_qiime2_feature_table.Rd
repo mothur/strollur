@@ -27,20 +27,22 @@ Read a \href{https://qiime2.org}{qiime2} qza containing bin data
 }
 \examples{
 
-artifact <- read_qiime2_feature_table(strollur_example(
-  "table.qza"
-))
+if (requireNamespace("h5lite", quietly = TRUE)) {
+  artifact <- read_qiime2_feature_table(strollur_example( "table.qza" ))
 
-# access the bin assignment table
+  # access the bin assignment table
 
-artifact$data
+  artifact$data
 
-# to create a `strollur` object with your data
+  # to create a `strollur` object with your data
 
-data <- new_dataset("my_data")
+  data <- new_dataset("my_data")
 
-assign(data = data, table = artifact$data, type = "bin")
-
-data
+  assign(data = data, table = artifact$data, type = "bin")
+  data
+}else {
+    message(paste("To use this functionality you have to install the",
+                  "h5lite package."))
+}
 
 }

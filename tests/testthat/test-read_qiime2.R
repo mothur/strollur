@@ -1,6 +1,7 @@
 # test read_qiime2_taxonomy
 
 test_that("test read_qiime2 - errors", {
+  skip_if_not_installed("h5lite")
   expect_error(read_qiime2("non_existant_filename"))
   expect_error(read_qiime2(
     strollur_example("table.qza"),
@@ -10,6 +11,7 @@ test_that("test read_qiime2 - errors", {
 })
 
 test_that("test read_qiime2", {
+  skip_if_not_installed("h5lite")
   qza_files <- c(
     strollur_example("rep_seqs.qza"),
     strollur_example("table.qza"),
