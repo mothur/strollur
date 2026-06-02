@@ -30,11 +30,12 @@ The strollur package has a function to save a dataset object as an *.rds* file, 
 
 
 ```{r}
-save_dataset(miseq, file = "miseq_sop.rds")
+file_name <- file.path(tempdir(), "miseq_sop.rds")
+save_dataset(miseq, file = file_name)
 
-miseq_from_rds <- load_dataset(file = "miseq_sop.rds")
+miseq_from_rds <- load_dataset(file = file_name)
 miseq_from_rds
-unlink("miseq_sop.rds")
+unlink(file_name)
 ```
 
 We can see that the summaries of miseq and miseq_from_rds are identical. Let's modify miseq_from_rds to verify they are not referring to the same object. We will add clusters created by [mothur](https://mothur.org) using [vsearch's](https://github.com/torognes/vsearch) distance-based greedy clustering (dgc) algorithm. 
