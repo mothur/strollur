@@ -103,7 +103,7 @@ xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
 # trash codes set to "example", "removing", "sequences".
 
 report(data = data, type = "sequence_scrap")
-#>                                             id trash_code
+#>                                  sequence_name trash_code
 #> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783    example
 #> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318   removing
 #> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807  sequences

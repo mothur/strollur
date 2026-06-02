@@ -74,7 +74,7 @@ report(data = miseq, type = "fasta") |> head(n = 5)
 # To get a report about the FASTA data
 
 report(data = miseq, type = "sequence") |> head(n = 5)
-#>                                             id start end length ambig
+#>                                  sequence_name start end length ambig
 #> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783     1 375    253     0
 #> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318     1 375    253     0
 #> 3  M00967_43_000000000-A3JHG_1_2108_14707_9807     1 375    253     0

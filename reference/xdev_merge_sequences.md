@@ -82,9 +82,9 @@ xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 # names, listed with the trash code set to "merged".
 
 report(data = data, type = "sequence_scrap")
-#>     id trash_code
-#> 1 seq2     merged
-#> 2 seq3     merged
+#>   sequence_name trash_code
+#> 1          seq2     merged
+#> 2          seq3     merged
 
 # You can see from the get_num_sequences function that the merged sequence's
 # abundances are added to the first sequence.

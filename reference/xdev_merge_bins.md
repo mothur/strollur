@@ -96,6 +96,6 @@ an updated
  # set to "merged".
 
  report(data = data, type = "bin_scrap")
-#>       id trash_code
-#> 1 Otu006     merged
+#>   bin_name trash_code
+#> 1   Otu006     merged
 ```
