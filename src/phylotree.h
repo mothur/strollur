@@ -9,7 +9,7 @@ struct TaxNode {
 	//vector<string> accessions;	//names of seqs in this branch of tree
 	map<string, int> children;  //childs name to index in tree
 
-	int parent, childNumber, level, total;
+	int parent, level, total;
 	string name;
 
 	TaxNode(string n) : name(n) {
