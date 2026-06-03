@@ -99,10 +99,10 @@ generate_sequence_report <- function(dataset) {
   )
 
   report_summary <- report |>
-      dplyr::reframe(
+    dplyr::reframe(
       stat = desired_tags,
       dplyr::across(
-          dplyr::where(is.numeric),
+        dplyr::where(is.numeric),
         ~ c(
           quantile(.x, probs = desired_quantiles, na.rm = TRUE),
           mean(.x, na.rm = TRUE)
@@ -135,10 +135,10 @@ generate_report <- function(dataset, report_type) {
   )
 
   result <- xdev_report(dataset, report_type) |>
-      dplyr::reframe(
+    dplyr::reframe(
       stat = desired_tags,
       dplyr::across(
-          dplyr::where(is.numeric),
+        dplyr::where(is.numeric),
         ~ c(
           ceiling(quantile(.x, probs = desired_quantiles, na.rm = TRUE)),
           mean(.x, na.rm = TRUE)
