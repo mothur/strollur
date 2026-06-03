@@ -35,9 +35,11 @@
 #'     dataset_name = "qiime2_moving_pictures"
 #'   )
 #'   data
-#' }else {
-#'     message(paste("To use this functionality you have to install the",
-#'                   "h5lite package."))
+#' } else {
+#'   message(paste(
+#'     "To use this functionality you have to install the",
+#'     "h5lite package."
+#'   ))
 #' }
 #'
 #' @return A `strollur` object
@@ -46,8 +48,10 @@ read_qiime2 <- function(qza, metadata = NULL,
                         dataset_name = "", dir_path = NULL,
                         remove_unpacked_artifacts = TRUE) {
   if (!require_namespace("h5lite")) {
-    stop(paste("The h5lite R package is required to read HDF5 formatted",
-               "BIOM files. To install h5lite, run: pak::pak('h5lite')."))
+    stop(paste(
+      "The h5lite R package is required to read HDF5 formatted",
+      "BIOM files. To install h5lite, run: pak::pak('h5lite')."
+    ))
   }
 
   # if no dir_path given, set to current working directory
