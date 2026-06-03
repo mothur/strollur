@@ -43,7 +43,7 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_cons_taxonomy(miseq, tempfile())
-#> [1] "/tmp/RtmpRtKwqy/file1bbd72e936e.otu.cons.taxonomy"      
-#> [2] "/tmp/RtmpRtKwqy/file1bbd72e936e.asv.cons.taxonomy"      
-#> [3] "/tmp/RtmpRtKwqy/file1bbd72e936e.phylotype.cons.taxonomy"
+#> [1] "/tmp/RtmpI7O2IU/file1bbb455e4a3b.otu.cons.taxonomy"      
+#> [2] "/tmp/RtmpI7O2IU/file1bbb455e4a3b.asv.cons.taxonomy"      
+#> [3] "/tmp/RtmpI7O2IU/file1bbb455e4a3b.phylotype.cons.taxonomy"
 ```
