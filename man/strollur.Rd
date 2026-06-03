@@ -26,7 +26,7 @@ data <- new_dataset("soil")
 ## Method `strollur$print()`
 ## ------------------------------------------------
 
-miseq <- miseq_sop_example()
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 miseq
 
 
@@ -35,7 +35,7 @@ miseq
 ## ------------------------------------------------
 
 
-miseq <- miseq_sop_example()
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To the total abundance for each sequence
 miseq$abundance(type = "sequence") |> head(n = 5)
@@ -63,6 +63,7 @@ miseq$abundance(type = "sample") |> head(n = 5)
 # To the total abundance for each treatment
 miseq$abundance(type = "treatment")
 
+
 ## ------------------------------------------------
 ## Method `strollur$add()`
 ## ------------------------------------------------
@@ -85,30 +86,6 @@ data$add(
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 data$add(table = metadata, type = "metadata")
-
-# To add FASTA data with a resource reference
-
-# Create a new empty strollur object named 'example_dataset'
-data <- new_dataset(dataset_name = "example_dataset")
-
-# Create a resource reference for the FASTA data
-resource_url <- "https://mothur.org/wiki/silva_reference_files/"
-resource_reference <-
-  new_reference(
-    name = "silva.bacteria.fasta",
-    version = "1.38.1",
-    usage = "alignment by mothur2 v1.0",
-    note = "default options",
-    documentation_url = resource_url
-  )
-
-# Add FASTA data with a resource reference
-
-data$add(
-  table = fasta_data,
-  type = "sequence",
-  reference = resource_reference
-)
 
 
 ## ------------------------------------------------
@@ -230,7 +207,7 @@ data$assign(table = sample_assignments, type = "treatment")
 ## Method `strollur$clear()`
 ## ------------------------------------------------
 
-miseq <- miseq_sop_example()
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 miseq
 miseq$clear()
 miseq
@@ -240,7 +217,7 @@ miseq
 ## ------------------------------------------------
 
 
-miseq <- miseq_sop_example()
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To get the total number of sequences
 miseq$count(type = "sequence")
@@ -336,7 +313,7 @@ data$get_bin_types()
 ## ------------------------------------------------
 
 
-miseq <- miseq_sop_example()
+data <- new_dataset("test")
 
 data$get_version()
 
@@ -346,7 +323,7 @@ data$get_version()
 ## ------------------------------------------------
 
 
-miseq <- miseq_sop_example()
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 data <- copy_dataset(miseq)
 
@@ -358,7 +335,7 @@ miseq$is_equal(data)
 ## ------------------------------------------------
 
 
-miseq <- miseq_sop_example()
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To get the name of the dataset
 miseq$names(type = "dataset")
@@ -396,7 +373,7 @@ miseq$names(type = "report")
 ## ------------------------------------------------
 
 
-miseq <- miseq_sop_example()
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To get the FASTA data
 
@@ -454,7 +431,7 @@ miseq$report(type = "contigs_report") |> head(n = 5)
 ## ------------------------------------------------
 
 
-miseq <- miseq_sop_example()
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To get the summary of your FASTA data
 miseq$summary(type = "sequence")
@@ -559,7 +536,7 @@ data <- new_dataset("soil")
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
-    \preformatted{miseq <- miseq_sop_example()
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 miseq
 }
     \if{html}{\out{</div>}}
@@ -579,12 +556,12 @@ miseq
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{type, }}{string containing the type of data you want the number of.
+      \item{\code{type}}{string containing the type of data you want the number of.
 Options include: "sequence", "bin", "sample" and "treatment".
 Default = "sequence".}
-      \item{\code{bin_type, }}{string containing the bin type you would like the
+      \item{\code{bin_type}}{string containing the bin type you would like the
 abundance data for. Default = "otu".}
-      \item{\code{by_sample, }}{Boolean. When by_sample is TRUE, the abundance data
+      \item{\code{by_sample}}{Boolean. When by_sample is TRUE, the abundance data
 will be parsed by sample. Default = FALSE.}
     }
     \if{html}{\out{</div>}}
@@ -594,7 +571,7 @@ will be parsed by sample. Default = FALSE.}
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
-    \preformatted{miseq <- miseq_sop_example()
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To the total abundance for each sequence
 miseq$abundance(type = "sequence") |> head(n = 5)
@@ -650,12 +627,12 @@ miseq$abundance(type = "treatment")
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{table, }}{a data.frame containing the data you wish to add.}
-      \item{\code{type, }}{a string containing the type of data. Options include:
+      \item{\code{table}}{a data.frame containing the data you wish to add.}
+      \item{\code{type}}{a string containing the type of data. Options include:
 'sequence', 'resource_reference' 'metadata' and 'report'.}
-      \item{\code{report_type, }}{a string containing the type of report you are
+      \item{\code{report_type}}{a string containing the type of report you are
 adding. Options include: 'metadata' and custom reports.}
-      \item{\code{table_names, }}{named list used to indicate the names of the columns
+      \item{\code{table_names}}{named list used to indicate the names of the columns
  in the table. By default:
 
 table_names <- list(sequence_name = "sequence_name",
@@ -718,9 +695,9 @@ column name is 'parameter'.
 In table_names, 'reference_citation' is a string containing the name of
 the column in 'table' that contains the reference citations. Default
 column name is 'citation'.}
-      \item{\code{reference, }}{a list created by the function [new_reference].
+      \item{\code{reference}}{a list created by the function [new_reference].
 Optional.}
-      \item{\code{verbose, }}{boolean indicating whether or not you want progress
+      \item{\code{verbose}}{boolean indicating whether or not you want progress
 messages. Default = TRUE.}
     }
     \if{html}{\out{</div>}}
@@ -747,30 +724,6 @@ data$add(
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 data$add(table = metadata, type = "metadata")
-
-# To add FASTA data with a resource reference
-
-# Create a new empty strollur object named 'example_dataset'
-data <- new_dataset(dataset_name = "example_dataset")
-
-# Create a resource reference for the FASTA data
-resource_url <- "https://mothur.org/wiki/silva_reference_files/"
-resource_reference <-
-  new_reference(
-    name = "silva.bacteria.fasta",
-    version = "1.38.1",
-    usage = "alignment by mothur2 v1.0",
-    note = "default options",
-    documentation_url = resource_url
-  )
-
-# Add FASTA data with a resource reference
-
-data$add(
-  table = fasta_data,
-  type = "sequence",
-  reference = resource_reference
-)
 }
     \if{html}{\out{</div>}}
   }
@@ -864,14 +817,14 @@ representative sequences, bin classifications or treatments.
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{table, }}{a data.frame containing the data you wish to assign}
-      \item{\code{type, }}{a string containing the type of data. Options include:
+      \item{\code{table}}{a data.frame containing the data you wish to assign}
+      \item{\code{type}}{a string containing the type of data. Options include:
 'sequence_abundance', 'sequence_taxonomy', 'bin',
  'bin_representative', 'bin_taxonomy' and 'treatment'.
  Default = "bin".}
-      \item{\code{bin_type, }}{string containing the bin type you would like the number
+      \item{\code{bin_type}}{string containing the bin type you would like the number
 of bins for. Default = "otu".}
-      \item{\code{table_names, }}{named list used to indicate the names of the columns
+      \item{\code{table_names}}{named list used to indicate the names of the columns
   in the table. By default:
 
   table_names <- list(sequence_name = "sequence_name", abundance =
@@ -900,9 +853,9 @@ of bins for. Default = "otu".}
   In table_names, 'bin_name' is a string containing the name of the
   column in 'table' that contains the bin names. Default column name is
   'bin_name'.}
-      \item{\code{reference, }}{a list created by the function [new_reference].
+      \item{\code{reference}}{a list created by the function [new_reference].
 Optional.}
-      \item{\code{verbose, }}{boolean indicating whether or not you want progress
+      \item{\code{verbose}}{boolean indicating whether or not you want progress
 messages. Default = TRUE.}
     }
     \if{html}{\out{</div>}}
@@ -1015,7 +968,7 @@ data$assign(table = sample_assignments, type = "treatment")
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
-    \preformatted{miseq <- miseq_sop_example()
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 miseq
 miseq$clear()
 miseq
@@ -1042,15 +995,15 @@ miseq
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{type, }}{string containing the type of data you want the number of.
+      \item{\code{type}}{string containing the type of data you want the number of.
 Options include: "sequence", "sample", "treatment", "bin", and
  "resource_reference". Default = "sequence".}
-      \item{\code{bin_type, }}{string containing the bin type you would like the number
+      \item{\code{bin_type}}{string containing the bin type you would like the number
 of bins for. Default = "otu".}
-      \item{\code{samples, }}{vector of strings. samples is only used when 'type' =
+      \item{\code{samples}}{vector of strings. samples is only used when 'type' =
 "sequence" or 'type' = "bin" . samples should contain the names of
 the samples you want the count for. Default = NULL.}
-      \item{\code{distinct, }}{Boolean. distinct is used when 'type' = "sequence" or
+      \item{\code{distinct}}{Boolean. distinct is used when 'type' = "sequence" or
 'type' = "bin". When 'type' = "sequence" and distinct is TRUE the
 number of unique sequences is returned. When 'type' = "sequence" and
 distinct is FALSE the total number of sequences is returned. This can
@@ -1070,7 +1023,7 @@ Default = FALSE.}
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
-    \preformatted{miseq <- miseq_sop_example()
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To get the total number of sequences
 miseq$count(type = "sequence")
@@ -1220,7 +1173,7 @@ object.
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
-    \preformatted{miseq <- miseq_sop_example()
+    \preformatted{data <- new_dataset("test")
 
 data$get_version()
 }
@@ -1254,7 +1207,7 @@ object}
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
-    \preformatted{miseq <- miseq_sop_example()
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 data <- copy_dataset(miseq)
 
@@ -1282,15 +1235,15 @@ miseq$is_equal(data)
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{type, }}{string containing the type of data you would like. Options
+      \item{\code{type}}{string containing the type of data you would like. Options
 include: "dataset", "sequence", "bin", "sample", "treatment",
 "report". Default = "sequence".}
-      \item{\code{bin_type, }}{string containing the bin type you would like the names
+      \item{\code{bin_type}}{string containing the bin type you would like the names
 for. Default = "otu".}
-      \item{\code{samples, }}{vector of strings. samples is only used when 'type' =
+      \item{\code{samples}}{vector of strings. samples is only used when 'type' =
 "sequence" or 'type' = "bin" . samples should contain the names of
 the samples you want names for. Default = NULL.}
-      \item{\code{distinct, }}{Boolean. distinct is used when 'type' = "sequence" or
+      \item{\code{distinct}}{Boolean. distinct is used when 'type' = "sequence" or
 'type' = "bin" and the samples parameter is used. The distinct
 parameter allows you to get the names that present given set of
 samples. When distinct is TRUE, the names function will return the
@@ -1305,7 +1258,7 @@ ALSO contain data from other samples. Default = FALSE.}
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
-    \preformatted{miseq <- miseq_sop_example()
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To get the name of the dataset
 miseq$names(type = "dataset")
@@ -1354,14 +1307,14 @@ miseq$names(type = "report")
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{type, }}{string containing the type of report you would like. Options
+      \item{\code{type}}{string containing the type of report you would like. Options
 include: "fasta", "sequence", "sequence_bin_assignment",
 "sequence_taxonomy", "bin_taxonomy", "bin_representative",
  "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
  Default = "sequence".}
-      \item{\code{bin_type, }}{string containing the bin type you would like a
+      \item{\code{bin_type}}{string containing the bin type you would like a
 bin_taxonomy report for. Default = "otu".}
     }
     \if{html}{\out{</div>}}
@@ -1371,7 +1324,7 @@ bin_taxonomy report for. Default = "otu".}
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
-    \preformatted{miseq <- miseq_sop_example()
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To get the FASTA data
 
@@ -1440,14 +1393,14 @@ miseq$report(type = "contigs_report") |> head(n = 5)
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{type, }}{string containing the type of data you want the number of.
+      \item{\code{type}}{string containing the type of data you want the number of.
 Options include: "sequence", "report" and "scrap".
  Default = "sequence".}
-      \item{\code{report_type, }}{string containing the report type you would
+      \item{\code{report_type}}{string containing the report type you would
 summarized. For example, the miseq_sop_example includes contigs assembly
 data and can be accessed with report_type = "contigs_report".
 Default = NULL.}
-      \item{\code{verbose, }}{boolean indicating whether or not you want progress
+      \item{\code{verbose}}{boolean indicating whether or not you want progress
 messages. Default = TRUE.}
     }
     \if{html}{\out{</div>}}
@@ -1458,7 +1411,7 @@ Get summary of the sequence reports
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
-    \preformatted{miseq <- miseq_sop_example()
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
 
 # To get the summary of your FASTA data
 miseq$summary(type = "sequence")
