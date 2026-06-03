@@ -88,8 +88,8 @@
 <p>The <em>strollur</em> package stores the data associated with your
 Amplicon Sequence Analysis. This tutorial will explain how to save,
 load, copy, export, and import your <code>strollur</code> object. If you
-haven’t reviewed the <a href="Getting-Started.html">Getting Started</a>
-tuturial, we recommend you start there.</p>
+haven’t reviewed the <a href="http://mothur.org/strollur/articles/strollur.html" class="external-link">Getting
+Started</a> tuturial, we recommend you start there.</p>
 <p>Let’s use the <code><a href="../reference/miseq_sop_example.html">miseq_sop_example()</a></code> function to create a
 strollur object from the <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">Miseq SOP Example</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -145,7 +145,7 @@ how to do that.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"miseq_sop.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/save_dataset.html">save_dataset</a></span><span class="op">(</span><span class="va">miseq</span>, file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmp2DhF4T/miseq_sop.rds"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpUTds9Y/miseq_sop.rds"</span></span>
 <span></span>
 <span><span class="va">miseq_from_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_dataset.html">load_dataset</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
 <span><span class="va">miseq_from_rds</span></span>

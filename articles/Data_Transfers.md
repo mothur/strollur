@@ -3,8 +3,7 @@
 The *strollur* package stores the data associated with your Amplicon
 Sequence Analysis. This tutorial will explain how to save, load, copy,
 export, and import your `strollur` object. If you haven’t reviewed the
-[Getting
-Started](https://mothur.org/strollur/articles/Getting-Started.md)
+[Getting Started](http://mothur.org/strollur/articles/strollur.md)
 tuturial, we recommend you start there.
 
 Let’s use the
@@ -70,7 +69,7 @@ Let’s use the miseq data object to learn how to do that.
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 save_dataset(miseq, file = file_name)
-#> [1] "/tmp/Rtmp2DhF4T/miseq_sop.rds"
+#> [1] "/tmp/RtmpUTds9Y/miseq_sop.rds"
 
 miseq_from_rds <- load_dataset(file = file_name)
 miseq_from_rds
