@@ -14,7 +14,6 @@
 #' @return A data.frame containing metadata
 #' @export
 read_qiime2_metadata <- function(metadata) {
-
   if (!file.exists(metadata)) {
     .abort_nonexistant_file(metadata)
   }
