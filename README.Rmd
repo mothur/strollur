@@ -79,7 +79,7 @@ data
 If you encounter an issue, please file an issue on  [GitHub](https://github.com/mothur/strollur/issues). Please include a minimal 
 reproducible example with your issue.
 
-## Contributing
+## Contributing 
 
 Is there a feature you'd like to see included, please let us know! Pull requests
 are welcome on [GitHub](https://github.com/mothur/strollur/pulls). 
