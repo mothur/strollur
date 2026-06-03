@@ -7,7 +7,8 @@
     * checking whether package ‘strollur’ can be installed ... [57s/57s] WARNING
       - Found the following significant warnings:
       - phylotree.h:8:8: warning: ‘<unnamed>.TaxNode::childNumber’ is used uninitialized [-Wuninitialized]
-      
+* Updates strollur version from 0.1.0 to 0.1.1.
+
 ## Test environments
 * local OS package environment: macOS Tahoe, R 4.6.0
 * GitHub Actions: 
