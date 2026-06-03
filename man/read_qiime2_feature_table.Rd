@@ -28,7 +28,7 @@ Read a \href{https://qiime2.org}{qiime2} qza containing bin data
 \examples{
 
 if (requireNamespace("h5lite", quietly = TRUE)) {
-  artifact <- read_qiime2_feature_table(strollur_example( "table.qza" ))
+  artifact <- read_qiime2_feature_table(strollur_example("table.qza"))
 
   # access the bin assignment table
 
@@ -40,9 +40,11 @@ if (requireNamespace("h5lite", quietly = TRUE)) {
 
   assign(data = data, table = artifact$data, type = "bin")
   data
-}else {
-    message(paste("To use this functionality you have to install the",
-                  "h5lite package."))
+} else {
+  message(paste(
+    "To use this functionality you have to install the",
+    "h5lite package."
+  ))
 }
 
 }

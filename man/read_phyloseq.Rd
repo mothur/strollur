@@ -31,10 +31,12 @@ and converts it into a strollur object.
 miseq <- miseq_sop_example()
 
 if (requireNamespace("phyloseq", quietly = TRUE)) {
-    phylo_obj <- write_phyloseq(miseq)
-    miseq_re_read <- read_phyloseq(phylo_obj)
-}else {
-    message(paste("To use this functionality you have to install the",
-                  "phyloseq package."))
+  phylo_obj <- write_phyloseq(miseq)
+  miseq_re_read <- read_phyloseq(phylo_obj)
+} else {
+  message(paste(
+    "To use this functionality you have to install the",
+    "phyloseq package."
+  ))
 }
 }

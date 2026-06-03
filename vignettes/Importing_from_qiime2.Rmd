@@ -12,7 +12,7 @@ if (!requireNamespace("h5lite", quietly = TRUE)) {
   message("Suggested package: 'h5lite' is not installed")
   knitr::opts_chunk$set(eval = FALSE)
 } else {
-  library(phyloseq)
+  library(h5lite)
 }
 library(strollur)
 ```

@@ -54,9 +54,11 @@ if (requireNamespace("h5lite", quietly = TRUE)) {
     dataset_name = "qiime2_moving_pictures"
   )
   data
-}else {
-    message(paste("To use this functionality you have to install the",
-                  "h5lite package."))
+} else {
+  message(paste(
+    "To use this functionality you have to install the",
+    "h5lite package."
+  ))
 }
 
 }
