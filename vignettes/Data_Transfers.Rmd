@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The *strollur* package stores the data associated with your Amplicon Sequence Analysis. This tutorial will explain how to save, load, copy, export, and import your `strollur` object. If you haven't reviewed the [Getting Started](Getting-Started.html) tuturial, we recommend you start there. 
+The *strollur* package stores the data associated with your Amplicon Sequence Analysis. This tutorial will explain how to save, load, copy, export, and import your `strollur` object. If you haven't reviewed the [Getting Started](http://mothur.org/strollur/articles/strollur.html) tuturial, we recommend you start there. 
 
 Let's use the `miseq_sop_example()` function to create a strollur object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
 
