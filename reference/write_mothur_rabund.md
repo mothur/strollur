@@ -43,7 +43,7 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_rabund(miseq, tempfile())
-#> [1] "/tmp/RtmpQaaSxa/file1b5e3ca67fe2.otu.rabund"      
-#> [2] "/tmp/RtmpQaaSxa/file1b5e3ca67fe2.asv.rabund"      
-#> [3] "/tmp/RtmpQaaSxa/file1b5e3ca67fe2.phylotype.rabund"
+#> [1] "/tmp/RtmpstIKkC/file1b9415a3c474.otu.rabund"      
+#> [2] "/tmp/RtmpstIKkC/file1b9415a3c474.asv.rabund"      
+#> [3] "/tmp/RtmpstIKkC/file1b9415a3c474.phylotype.rabund"
 ```
