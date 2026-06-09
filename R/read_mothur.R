@@ -10,6 +10,15 @@
 #'
 #' To generate the various input files you can follow Pat's
 #' \href{https://mothur.org/wiki/miseq_sop/}{Miseq example analysis}.
+#'
+#' @references
+#'  Schloss,P.D., Westcott,S.L., Ryabin,T., Hall,J.R., Hartmann,M.,
+#'  Hollister,E.B., Lesniewski,R.A., Oakley,B.B., Parks,D.H., Robinson,C.J.,
+#'  Sahl,J.W., Stres,B., Thallinger,G.G., Van Horn,D.J. and Weber,C.F. (2009),
+#'  Introducing mothur: Open-source, platform-independent, community-supported
+#'  software for describing and comparing microbial communities. Applied and
+#'  Environmental Microbiology 75:7537-7541. <doi:10.1128/AEM.01541-09>
+#'
 #' @param dataset_name A string containing a name for your dataset.
 #' @param fasta filename, a FASTA formatted file containing sequence strings.
 #' \href{https://mothur.org/wiki/fasta_file/}{fasta file}

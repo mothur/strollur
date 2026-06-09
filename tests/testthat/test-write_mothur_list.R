@@ -15,11 +15,10 @@ test_that("write_mothur_list", {
   file_root <- get_full_name("test-miseq")
 
   outputs <- c(
-    "test-miseq.otu.list",
-    "test-miseq.asv.list",
-    "test-miseq.phylotype.list"
+    get_full_name("test-miseq.otu.list"),
+    get_full_name("test-miseq.asv.list"),
+    get_full_name("test-miseq.phylotype.list")
   )
-  outputs <- paste0(normalizePath(test_path()), .Platform$file.sep, outputs)
 
   expect_equal(write_mothur_list(miseq, file_root), outputs)
 

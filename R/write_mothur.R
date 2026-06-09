@@ -4,6 +4,14 @@
 #' \href{https://mothur.org/wiki/tags/#file_types}{file types} for use with
 #' mothur.
 #'
+#' @references
+#'  Schloss,P.D., Westcott,S.L., Ryabin,T., Hall,J.R., Hartmann,M.,
+#'  Hollister,E.B., Lesniewski,R.A., Oakley,B.B., Parks,D.H., Robinson,C.J.,
+#'  Sahl,J.W., Stres,B., Thallinger,G.G., Van Horn,D.J. and Weber,C.F. (2009),
+#'  Introducing mothur: Open-source, platform-independent, community-supported
+#'  software for describing and comparing microbial communities. Applied and
+#'  Environmental Microbiology 75:7537-7541. <doi:10.1128/AEM.01541-09>
+#'
 #' @param data A `strollur` object
 #' @param dir_path a string containing the name of directory where the files
 #' should be written. Default = current working directory.
@@ -17,7 +25,7 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' files <- write_mothur(miseq, tempdir())
+#' files <- write_mothur(miseq, tempdir(), compress = FALSE)
 #'
 #' @return a vector of file names
 #' @export

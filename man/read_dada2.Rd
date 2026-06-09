@@ -33,3 +33,9 @@ dim(seqtab)
 data <- read_dada2(sequence_table = seqtab, dataset_name = "dada2 example")
 
 }
+\references{
+Callahan,B.J., McMurdie,P.J., Rosen,M.J., Han,A.W., Johnson,A.J.A.
+ and Holmes,S.P. (2016), DADA2: High-resolution sample inference from
+ Illumina amplicon data. Nature Methods 13:581-583.
+ <doi:10.1038/nmeth.3869>
+}

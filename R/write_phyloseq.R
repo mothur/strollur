@@ -2,6 +2,10 @@
 #' @description
 #' The `write_phyloseq()` function will take any strollur object and
 #' return it as a "phyloseq" object.
+#' @references
+#'  McMurdie,P.J. and Holmes,S. (2013), phyloseq: An R Package for
+#'  Reproducible Interactive Analysis and Graphics of Microbiome Census Data.
+#'  PLoS ONE 8:e61217. <doi:10.1371/journal.pone.0061217>
 #' @param data the strollur object you created using one of the many
 #' read functions in this package.
 #' @return returns a "phyloseq" object.

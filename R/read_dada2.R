@@ -12,6 +12,12 @@
 #' To generate the dada2 sequence table from your own files you can follow
 #' \href{https://benjjneb.github.io/dada2/tutorial.html}{this dada2 tutorial}.
 #'
+#' @references
+#'  Callahan,B.J., McMurdie,P.J., Rosen,M.J., Han,A.W., Johnson,A.J.A.
+#'  and Holmes,S.P. (2016), DADA2: High-resolution sample inference from
+#'  Illumina amplicon data. Nature Methods 13:581-583.
+#'  <doi:10.1038/nmeth.3869>
+#'
 #' @param sequence_table A dada2 sequence table
 #' @param dataset_name A string containing a name for your dataset.
 #' @examples

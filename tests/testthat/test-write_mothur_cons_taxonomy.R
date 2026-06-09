@@ -15,11 +15,10 @@ test_that("write_mothur_cons_taxonomy", {
   file_root <- get_full_name("test-miseq")
 
   outputs <- c(
-    "test-miseq.otu.cons.taxonomy",
-    "test-miseq.asv.cons.taxonomy",
-    "test-miseq.phylotype.cons.taxonomy"
+    get_full_name("test-miseq.otu.cons.taxonomy"),
+    get_full_name("test-miseq.asv.cons.taxonomy"),
+    get_full_name("test-miseq.phylotype.cons.taxonomy")
   )
-  outputs <- paste0(normalizePath(test_path()), .Platform$file.sep, outputs)
 
   expect_equal(outputs, write_mothur_cons_taxonomy(miseq, file_root))
 

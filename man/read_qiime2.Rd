@@ -62,3 +62,9 @@ if (requireNamespace("h5lite", quietly = TRUE)) {
 }
 
 }
+\references{
+Bolyen,E., Rideout,J.R., Dillon,M.R. et al. (2019),
+ Reproducible, interactive, scalable and extensible microbiome data
+ science using QIIME 2. Bioinformatics 37:852-857.
+ <doi:10.1038/s41587-019-0209-9>
+}

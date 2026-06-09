@@ -15,11 +15,10 @@ test_that("write_mothur_rabund", {
   file_root <- get_full_name("test-miseq")
 
   outputs <- c(
-    "test-miseq.otu.rabund",
-    "test-miseq.asv.rabund",
-    "test-miseq.phylotype.rabund"
+    get_full_name("test-miseq.otu.rabund"),
+    get_full_name("test-miseq.asv.rabund"),
+    get_full_name("test-miseq.phylotype.rabund")
   )
-  outputs <- paste0(normalizePath(test_path()), .Platform$file.sep, outputs)
 
   expect_equal(write_mothur_rabund(miseq, file_root), outputs)
 

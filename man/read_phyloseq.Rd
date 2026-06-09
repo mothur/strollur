@@ -40,3 +40,8 @@ if (requireNamespace("phyloseq", quietly = TRUE)) {
   ))
 }
 }
+\references{
+McMurdie,P.J. and Holmes,S. (2013), phyloseq: An R Package for
+ Reproducible Interactive Analysis and Graphics of Microbiome Census Data.
+ PLoS ONE 8:e61217. <doi:10.1371/journal.pone.0061217>
+}

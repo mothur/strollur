@@ -9,6 +9,12 @@
 #' the phyloseq package
 #' (https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html)
 #' and converts it into a strollur object.
+#'
+#' @references
+#'  McMurdie,P.J. and Holmes,S. (2013), phyloseq: An R Package for
+#'  Reproducible Interactive Analysis and Graphics of Microbiome Census Data.
+#'  PLoS ONE 8:e61217. <doi:10.1371/journal.pone.0061217>
+#'
 #' @param phyloseq_object the phyloseq object that is returned when using
 #' any read function in the phyloseq package. It has to be of type "phyloseq"
 #' @param treatment_column_name the column name inside your phyloseq object

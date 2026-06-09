@@ -12,6 +12,6 @@ create_dummy_file <- function(filename, lines = c("test")) {
 # =========================================================================== #
 # only used in testing
 get_full_name <- function(filename) {
-    file.path(tempdir(), filename)
+  file.path(tempdir(), filename)
 }
 # =========================================================================== #

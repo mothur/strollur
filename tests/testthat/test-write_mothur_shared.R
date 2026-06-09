@@ -15,11 +15,10 @@ test_that("write_mothur_shared", {
   file_root <- get_full_name("test-miseq")
 
   outputs <- c(
-    "test-miseq.otu.shared",
-    "test-miseq.asv.shared",
-    "test-miseq.phylotype.shared"
+    get_full_name("test-miseq.otu.shared"),
+    get_full_name("test-miseq.asv.shared"),
+    get_full_name("test-miseq.phylotype.shared")
   )
-  outputs <- paste0(normalizePath(test_path()), .Platform$file.sep, outputs)
 
   expect_equal(write_mothur_shared(miseq, file_root), outputs)
 
