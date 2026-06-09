@@ -469,11 +469,12 @@ miseq_sample_tree <- miseq$get_sample_tree()
 
 #| fig.alt: >
 #|   Plot of Miseq_SOP's sample relationship tree
-par(bg = "white")
+old_par <- par(bg = "white")
 ape::plot.phylo(miseq_sample_tree,
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"
 )
+on.exit(par(old_par))
 ```    
 
 Thanks for following along. Next, find out how to import your own data using the links below:
