@@ -12,10 +12,6 @@ create_dummy_file <- function(filename, lines = c("test")) {
 # =========================================================================== #
 # only used in testing
 get_full_name <- function(filename) {
-  paste0(
-    normalizePath(testthat::test_path()),
-    .Platform$file.sep,
-    filename
-  )
+    file.path(tempdir(), filename)
 }
 # =========================================================================== #

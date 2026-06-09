@@ -6,11 +6,7 @@ test_that("load - versions", {
 
   miseq[[".__enclos_env__"]]$private$version <- "0.0.0"
 
-  file_name <- paste0(
-    normalizePath(test_path()), .Platform$file.sep,
-    "test.rds"
-  )
-
+  file_name <- file.path(tempdir(), "test.rds")
   save_dataset(miseq, file_name)
 
   message <- capture_messages(load_dataset(file_name))
@@ -38,11 +34,7 @@ test_that("clone - deep copy of dataset object", {
     dataset_name = "miseq_sop"
   )
 
-  file_name <- paste0(
-    normalizePath(test_path()), .Platform$file.sep,
-    "test.rds"
-  )
-
+  file_name <- file.path(tempdir(), "test.rds")
   save_dataset(temp, file_name)
   dataset <- load_dataset(file_name)
   remove_file(file_name)
@@ -85,6 +77,7 @@ test_that("clone - deep copy of dataset object", {
     abundance(temp, "treatment")
   )
 
+  file_name <- file.path(tempdir(), "test.rds")
   expect_error(load_dataset("non_existant_file.rds"))
-  expect_error(save_dataset(data.frame(), "test.rds"))
+  expect_error(save_dataset(data.frame(), file_name))
 })

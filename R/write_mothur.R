@@ -17,7 +17,7 @@
 #' @examples
 #'
 #' miseq <- miseq_sop_example()
-#' files <- write_mothur(miseq, tempfile())
+#' files <- write_mothur(miseq, tempdir())
 #'
 #' @return a vector of file names
 #' @export
