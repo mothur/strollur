@@ -2,9 +2,14 @@
 bibentry(
   bibtype = "Manual",
   title = "strollur: Store and Transfer Amplicon Sequence Data",
-  author = person("Sarah", "Westcott", , "swestcot@umich.edu",
-                    role = c("aut", "cre"),
-                    comment = c(ORCID = "0009-0001-1529-8247")),
+  author = c(
+    person("Sarah", "Westcott", role = c("aut", "cre"),
+        email = "swestcot@umich.edu",
+        comment = c(ORCID = "0009-0001-1529-8247")),
+    person("Gregory", "Johnson", , "grejoh@umich.edu", role = c("aut"),
+        comment = c(ORCID = "0009-0008-3890-0297")),
+    person("Pat", "Schloss", , "pschloss@umich.edu",
+        role = c("cph"), comment = c(ORCID = "0000-0002-6935-4275")))
   year = "2026",
   note = "R package version 0.1.1",
   url = "https://mothur.org/strollur/",
