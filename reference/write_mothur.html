@@ -11,7 +11,7 @@ mothur."><meta property="og:image" content="https://mothur.org/strollur/logo.png
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,6 +93,15 @@ Options are 'sequence_data', 'bin_data', 'metadata',
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>a vector of file names</p>
     </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Schloss,P.D., Westcott,S.L., Ryabin,T., Hall,J.R., Hartmann,M.,
+ Hollister,E.B., Lesniewski,R.A., Oakley,B.B., Parks,D.H., Robinson,C.J.,
+ Sahl,J.W., Stres,B., Thallinger,G.G., Van Horn,D.J. and Weber,C.F. (2009),
+ Introducing mothur: Open-source, platform-independent, community-supported
+ software for describing and comparing microbial communities. Applied and
+ Environmental Microbiology 75:7537-7541. &lt;doi:10.1128/AEM.01541-09&gt;</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -110,7 +119,7 @@ Options are 'sequence_data', 'bin_data', 'metadata',
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added 2 resource references.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
-<span class="r-in"><span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu">write_mothur</span><span class="op">(</span><span class="va">miseq</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu">write_mothur</span><span class="op">(</span><span class="va">miseq</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, compress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

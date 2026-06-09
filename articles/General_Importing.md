@@ -498,7 +498,7 @@ data$add_sequence_tree(sequence_tree)
 
 #| fig.alt: >
 #|   Plot of Miseq_SOP's sample relationship tree
-par(bg = "white")
+old_par <- par(bg = "white")
 ape::plot.phylo(data$get_sample_tree(),
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"
@@ -506,6 +506,11 @@ ape::plot.phylo(data$get_sample_tree(),
 ```
 
 ![](General_Importing_files/figure-html/unnamed-chunk-15-1.png)
+
+``` r
+
+on.exit(par(old_par))
+```
 
 Thanks for following along. To learn more about the functions used to
 access the data in your data set, take a look at the [Accessing

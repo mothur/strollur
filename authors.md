@@ -20,8 +20,8 @@ Data. R package version 0.1.0.
 
     @Manual{,
       title = {strollur: Store and Transfer Amplicon Sequence Data},
-      author = {Sarah Westcott},
+      author = {Sarah Westcott and Gregory Johnson and Pat Schloss},
       year = {2026},
-      note = {R package version 0.1.1},
+      note = {R package version 0.1.2},
       url = {https://mothur.org/strollur/},
     }

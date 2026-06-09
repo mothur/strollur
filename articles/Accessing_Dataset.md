@@ -790,8 +790,8 @@ report(
 #> 1 @article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy}, journal = {Applied and Environmental Microbiology}, volume = {73}, number = {16}, pages = {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL = {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint = {https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}
 #> 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NA
 #>   creation_date
-#> 1    2026-06-03
-#> 2    2026-06-03
+#> 1    2026-06-09
+#> 2    2026-06-09
 ```
 
 Lastly, if sequences or bins have been removed over the course of your
@@ -901,7 +901,7 @@ miseq_sample_tree <- miseq$get_sample_tree()
 
 #| fig.alt: >
 #|   Plot of Miseq_SOP's sample relationship tree
-par(bg = "white")
+old_par <- par(bg = "white")
 ape::plot.phylo(miseq_sample_tree,
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"
@@ -909,6 +909,11 @@ ape::plot.phylo(miseq_sample_tree,
 ```
 
 ![](Accessing_Dataset_files/figure-html/unnamed-chunk-44-1.png)
+
+``` r
+
+on.exit(par(old_par))
+```
 
 Thanks for following along. Next, find out how to import your own data
 using the links below:
