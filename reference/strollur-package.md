@@ -19,8 +19,8 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Sarah Westcott <swestcot@umich.edu>
-([ORCID](https://orcid.org/0009-0001-1529-8247))
+**Maintainer**: Pat Schloss <pschloss@umich.edu>
+([ORCID](https://orcid.org/0000-0002-6935-4275)) \[copyright holder\]
 
 Authors:
 
@@ -29,8 +29,3 @@ Authors:
 
 - Gregory Johnson <grejoh@umich.edu>
   ([ORCID](https://orcid.org/0009-0008-3890-0297))
-
-Other contributors:
-
-- Pat Schloss <pschloss@umich.edu>
-  ([ORCID](https://orcid.org/0000-0002-6935-4275)) \[copyright holder\]

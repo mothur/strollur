@@ -2,12 +2,11 @@
 
 ## Authors
 
-- **Sarah Westcott**. Author, maintainer.
-  [](https://orcid.org/0009-0001-1529-8247)
+- **Sarah Westcott**. Author. [](https://orcid.org/0009-0001-1529-8247)
 
 - **Gregory Johnson**. Author. [](https://orcid.org/0009-0008-3890-0297)
 
-- **Pat Schloss**. Copyright holder.
+- **Pat Schloss**. Copyright holder, maintainer.
   [](https://orcid.org/0000-0002-6935-4275)
 
 ## Citation
