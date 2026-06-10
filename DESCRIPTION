@@ -4,13 +4,13 @@ Title: Store and Transfer Amplicon Sequence Data
 Version: 0.1.2
 Date: 2026-06-09
 Authors@R: c(
-    person("Sarah", "Westcott", role = c("aut", "cre"),
+    person("Sarah", "Westcott", role = c("aut"),
         email = "swestcot@umich.edu",
         comment = c(ORCID = "0009-0001-1529-8247")),
     person("Gregory", "Johnson", , "grejoh@umich.edu", role = c("aut"),
         comment = c(ORCID = "0009-0008-3890-0297")),
     person("Pat", "Schloss", , "pschloss@umich.edu",
-        role = c("cph"), comment = c(ORCID = "0000-0002-6935-4275")))
+        role = c("cph", "cre"), comment = c(ORCID = "0000-0002-6935-4275")))
 Maintainer: Pat Schloss <pschloss@umich.edu>
 Description: Stores the data associated with your amplicon sequence analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from 'mothur', 'qiime2', 'dada2', and 'phyloseq'.
 URL: https://github.com/mothur/strollur, https://mothur.org/strollur/

@@ -7,6 +7,7 @@
 - Restores par() values in Accessing_Data and General_Importing vignettes.
   - Please always make sure to reset to user's options(), working directory or par() after you changed it in examples and vignettes and demos.
 - Updates strollur version from 0.1.1 to 0.1.2.
+- Updates maintainer to Pat Schloss [pschloss\@umich.edu](mailto:pschloss@umich.edu){.email}
 
 ## Resubmission - 0.1.1
 
