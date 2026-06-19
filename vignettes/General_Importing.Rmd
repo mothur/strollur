@@ -272,7 +272,7 @@ ape::plot.phylo(data$get_sample_tree(),
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"
 )
-on.exit(par(old_par))
+par(old_par)
 ```
 
 Thanks for following along. To learn more about the functions used to access the data in your data set, take a look at the [Accessing Data](https://mothur.org/strollur/articles/Accessing_Dataset.html) tutorial.

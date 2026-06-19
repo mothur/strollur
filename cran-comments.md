@@ -1,5 +1,10 @@
 ## Resubmission - 0.1.2
 
+- Updates Accessing_Data and General_Importing vignettes replacing on.exit(par(...)) with par(...).
+  - Please always make sure to reset to user's options(), working directory or par() after you changed it in examples and vignettes and demos.
+
+## Resubmission - 0.1.2
+
 - Removes references from description in the DESCRIPTION file and adds references in the read / write functions for the software packages.
   - Please write references in the description of the DESCRIPTION file in the form authors (year) \<doi:...\> authors (year, ISBN:...) or if those are not available: authors (year) \<https:...\> with no space after 'doi:', 'https:' and angle brackets for auto-linking.
 - Modifies get_full_name() function in helper.R for test outputs. Previously wrote to the testthat::test_path(), now writes to tempdir(). Also, updates other tests to write to tempdir(), instead of test_path().

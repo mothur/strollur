@@ -474,7 +474,7 @@ ape::plot.phylo(miseq_sample_tree,
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"
 )
-on.exit(par(old_par))
+par(old_par)
 ```    
 
 Thanks for following along. Next, find out how to import your own data using the links below:
