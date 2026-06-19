@@ -790,8 +790,8 @@ report(
 #> 1 @article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy}, journal = {Applied and Environmental Microbiology}, volume = {73}, number = {16}, pages = {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL = {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint = {https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}
 #> 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NA
 #>   creation_date
-#> 1    2026-06-10
-#> 2    2026-06-10
+#> 1    2026-06-19
+#> 2    2026-06-19
 ```
 
 Lastly, if sequences or bins have been removed over the course of your
@@ -912,7 +912,7 @@ ape::plot.phylo(miseq_sample_tree,
 
 ``` r
 
-on.exit(par(old_par))
+par(old_par)
 ```
 
 Thanks for following along. Next, find out how to import your own data

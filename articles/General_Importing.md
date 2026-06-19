@@ -509,7 +509,7 @@ ape::plot.phylo(data$get_sample_tree(),
 
 ``` r
 
-on.exit(par(old_par))
+par(old_par)
 ```
 
 Thanks for following along. To learn more about the functions used to

@@ -145,7 +145,7 @@ how to do that.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"miseq_sop.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/save_dataset.html">save_dataset</a></span><span class="op">(</span><span class="va">miseq</span>, file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpPOtGPF/miseq_sop.rds"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp2u2WSv/miseq_sop.rds"</span></span>
 <span></span>
 <span><span class="va">miseq_from_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_dataset.html">load_dataset</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
 <span><span class="va">miseq_from_rds</span></span>
@@ -317,7 +317,7 @@ and look at the table created.</p>
 <span><span class="co">#&gt;   ..$ documentation_url: chr [1:2] "https://mothur.org/phylotypr/" "https://mothur.org/wiki/silva_reference_files/"</span></span>
 <span><span class="co">#&gt;   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"</span></span>
 <span><span class="co">#&gt;   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"</span></span>
-<span><span class="co">#&gt;   ..$ creation_date    : chr [1:2] "2026-06-10" "2026-06-10"</span></span>
+<span><span class="co">#&gt;   ..$ creation_date    : chr [1:2] "2026-06-19" "2026-06-19"</span></span>
 <span><span class="co">#&gt;  $ metadata                         :'data.frame':   19 obs. of  2 variables:</span></span>
 <span><span class="co">#&gt;   ..$ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...</span></span>
 <span><span class="co">#&gt;   ..$ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...</span></span>

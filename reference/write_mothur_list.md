@@ -42,7 +42,7 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_mothur_list(miseq, tempfile())
-#> [1] "/tmp/Rtmp4jzBwk/file1c9d100aa657.otu.list"      
-#> [2] "/tmp/Rtmp4jzBwk/file1c9d100aa657.asv.list"      
-#> [3] "/tmp/Rtmp4jzBwk/file1c9d100aa657.phylotype.list"
+#> [1] "/tmp/RtmpXIASf9/file1abe52a598a9.otu.list"      
+#> [2] "/tmp/RtmpXIASf9/file1abe52a598a9.asv.list"      
+#> [3] "/tmp/RtmpXIASf9/file1abe52a598a9.phylotype.list"
 ```
