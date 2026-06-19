@@ -14,7 +14,7 @@ report(data, type = "sequence", bin_type = "otu")
 \item{type, }{string containing the type of report you would like. Options
 include: "fasta", "sequence", "sequence_bin_assignment",
 "sequence_taxonomy", "bin_taxonomy", "bin_representative",
- "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
+ "sample_assignment", "resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
  Default = "sequence".}
@@ -28,7 +28,7 @@ data.frame
 \description{
 Get a data.frame containing the report. Reports include FASTA format,
 sequences reports, sequence_bin_assignments, sequence_taxonomy, bin_taxonomy,
-bin_representatives, sample_assignments, metadata, references,
+bin_representatives, sample_assignments, references, custom reports,
 sequence_scrap, and bin_scrap in a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 }

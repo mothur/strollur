@@ -42,8 +42,7 @@
       Total number of phylotype bin classifications: 57 
       Total number of sequence classifications: 2086 
       Total number of resource references: 2 
-      Total number of custom reports: 1 
-      Your dataset includes metadata 
+      Total number of custom reports: 2 
       
       miseq_sop:
       
@@ -84,8 +83,7 @@
       Total number of phylotype bin classifications: 57 
       Total number of sequence classifications: 2086 
       Total number of resource references: 2 
-      Total number of custom reports: 1 
-      Your dataset includes metadata 
+      Total number of custom reports: 2 
       
       v No differences
 

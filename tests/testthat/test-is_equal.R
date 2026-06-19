@@ -482,7 +482,7 @@ test_that("test strollur objects with different c++ back end ", {
   # The strollur objects include different metadata.
   message <- capture_output(is_equal(data, data2))
 
-  expect_true(grepl("different metadata", message))
+  expect_true(grepl("different report data", message))
   expect_false(is_equal(data, data2))
 
   clear(data2)

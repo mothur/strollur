@@ -1,22 +1,18 @@
-#' @title Add sequences, reports, metadata or resource references to a
+#' @title Add sequences, reports or resource references to a
 #'   \link{strollur} object
 #' @name add
 #' @rdname add
 #' @description
-#' Add sequences, reports, metadata or resource references to a
+#' Add sequences, reports or resource references to a
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param data, a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param table, a data.frame containing the data you wish to add.
-#'
 #' @param type, a string containing the type of data. Options include:
-#' 'sequence', 'resource_reference' 'metadata' and 'report'.
-#'
+#' 'sequence', 'resource_reference' and 'report'.
 #' @param report_type, a string containing the type of report you are adding.
-#' Options include: 'metadata' and custom reports.
-#'
 #' @param table_names, named list used to indicate the names of the columns in
 #' the table. By default:
 #'
@@ -82,7 +78,6 @@
 #' is 'citation'.
 #'
 #' @param reference, a list created by the function [new_reference]. Optional.
-#'
 #' @param verbose, boolean indicating whether or not you want progress messages.
 #' Default = TRUE.
 #'
@@ -135,7 +130,7 @@
 #'
 #' metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 #'
-#' add(data, table = metadata, type = "metadata")
+#' add(data, table = metadata, type = "report", report_type = "metadata")
 #'
 #' @return an updated
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -193,21 +188,24 @@ add <- function(data, table,
     )
   } else if (type == "report") {
     if (!is.null(report_type)) {
-      xdev_add_report(
-        data = data, table = table,
-        type = report_type,
-        sequence_name = table_names[["sequence_name"]],
-        verbose
-      )
+      # check for sequence name column in table
+      if (table_names[["sequence_name"]] %in% base::names(table)) {
+        xdev_add_report(
+          data = data, table = table,
+          type = report_type,
+          sequence_name = table_names[["sequence_name"]],
+          verbose
+        )
+      } else {
+        xdev_add_report(
+          data = data, table = table,
+          type = report_type,
+          verbose
+        )
+      }
     } else {
       cli::cli_abort("'report_type' is required when adding a report.")
     }
-  } else if (type == "metadata") {
-    xdev_add_report(
-      data = data, table = table,
-      type = type,
-      verbose = verbose
-    )
   } else if (type == "resource_reference") {
     xdev_add_references(
       data = data, table = table,

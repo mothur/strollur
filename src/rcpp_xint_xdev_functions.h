@@ -147,14 +147,10 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
 //' @param table, a data.frame containing your report.
-//'
-//' @param type, a string containing the type of report. Options include:
-//' "metadata" and custom report tags. Default = "metadata".
-//'
-//' @param sequence_name, a string containing the name of the column in 'table'
-//' that contains the sequence names. This is used for custom reports, metadata
-//' does not require a sequence_name column. Default column name is 'sequence_names'.
-//'
+//' @param type, a string containing the type of report. Default = "report".
+//' @param sequence_name, a string. If your report relates to the sequence data,
+//'   `sequence_name` should contain the name of the column in 'table' that
+//'   contains the sequence names. Default = 'none'.
 //' @param verbose, a boolean whether or not you want progress messages.
 //' Default = TRUE.
 //'
@@ -178,8 +174,8 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
                  Rcpp::DataFrame table,
-                 const string& type = "metadata",
-                 const string& sequence_name = "sequence_name",
+                 const string& type = "report",
+                 const string& sequence_name = "none",
                  bool verbose = true);
 /******************************************************************************/
 //' @title xdev_add_sequences

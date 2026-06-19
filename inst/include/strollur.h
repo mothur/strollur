@@ -418,6 +418,7 @@ public:
     void addReport(const Rcpp::DataFrame& report);
     void clear();
     Rcpp::DataFrame getReport(const set<string>& datasetNames);
+    bool hasSequenceNameColumn() { return (sequence_name != ""); }
 
     bool hasReport;
 
@@ -626,7 +627,6 @@ public:
                         vector<string> c = nullVector);
     double addReferences(const vector<Reference>& refs);
     void addReport(Rcpp::DataFrame& report, const string& type);
-    void addMetadata(const Rcpp::DataFrame& metadata);
 
     // names, abundances, samples(optional), treatments(optional)
     double assignSequenceAbundance(const vector<string>& names,
@@ -682,7 +682,6 @@ public:
     int getNumTreatments() const;
     int getNumResourceReferences() const;
 
-    Rcpp::DataFrame getMetadata();
     Rcpp::DataFrame getReferences() const;
     Rcpp::DataFrame getReports(const string& type);
     vector<string> getReportTypes();
@@ -786,7 +785,6 @@ private:
 
     // sequence reports
     map<string, Report> reports;
-    Report metadata;
 
     // if unaligned, returns -1
     string degapSeq(const string& sequence) const;
@@ -812,7 +810,7 @@ private:
            starts, ends, lengths, ambigs, polymers,
            numns, names, seqs, comments, trashCodes,
            seqIndex, badAccnos, uniqueBad, hasList, count,
-           binTables, reports, metadata, refIndex, sortNeeded);
+           binTables, reports, refIndex, sortNeeded);
     }
 };
 

@@ -29,7 +29,7 @@ test_that("names - samples & treatments & reports", {
 
   expect_equal(names(miseq, type = "treatment"), treatments)
 
-  reports <- c("contigs_report")
+  reports <- c("contigs_report", "metadata")
 
   expect_equal(names(miseq, type = "report"), reports)
 })

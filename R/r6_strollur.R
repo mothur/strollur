@@ -196,9 +196,6 @@ strollur <- R6Class("strollur",
           length(custom_report_names)
         ), "\n")
       }
-      if (nrow(xdev_report(self, type = "metadata")) != 0) {
-        cat(paste0("Your dataset includes metadata"), "\n")
-      }
       cat("\n")
     },
 
@@ -253,16 +250,13 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
-    #' Add sequences, reports, metadata or resource references
+    #' Add sequences, reports or resource references
     #'
     #' @param table a data.frame containing the data you wish to add.
-    #'
     #' @param type a string containing the type of data. Options include:
-    #' 'sequence', 'resource_reference' 'metadata' and 'report'.
-    #'
+    #' 'sequence', 'resource_reference' and 'report'.
     #' @param report_type a string containing the type of report you are
     #' adding. Options include: 'metadata' and custom reports.
-    #'
     #' @param table_names named list used to indicate the names of the columns
     #'  in the table. By default:
     #'
@@ -351,7 +345,7 @@ strollur <- R6Class("strollur",
     #'
     #' metadata <- readRDS(strollur_example("miseq_metadata.rds"))
     #'
-    #' data$add(table = metadata, type = "metadata")
+    #' data$add(table = metadata, type = "report", report_type = "metadata")
     #'
     #' @return Updated `strollur` object - invisible(self)
     add = function(table,
@@ -398,7 +392,7 @@ strollur <- R6Class("strollur",
 
       num_added <- 0
       if (type == "sequence") {
-        num_added <- xdev_add_sequences(
+        xdev_add_sequences(
           data = self, table = table,
           sequence_name = table_names[["sequence_name"]],
           sequence = table_names[["sequence"]],
@@ -407,27 +401,33 @@ strollur <- R6Class("strollur",
           verbose = verbose
         )
       } else if (type == "report") {
-        num_added <- 1
-
         if (!is.null(report_type)) {
-          xdev_add_report(
-            data = self, table = table,
-            type = report_type,
-            sequence_name = table_names[["sequence_name"]],
-            verbose
-          )
+            # check for sequence name column in table
+            if (table_names[["sequence_name"]] %in% base::names(table)) {
+                xdev_add_report(
+                    data = self, table = table,
+                    type = report_type,
+                    sequence_name = table_names[["sequence_name"]],
+                    verbose = verbose
+                )
+            } else {
+                xdev_add_report(
+                    data = self, table = table,
+                    type = report_type,
+                    verbose = verbose
+                )
+            }
         } else {
           cli::cli_abort("'report_type' is required when adding a report.")
         }
       } else if (type == "metadata") {
-        num_added <- 1
         xdev_add_report(
           data = self, table = table,
           type = type,
           verbose = verbose
         )
       } else if (type == "resource_reference") {
-        num_added <- xdev_add_references(
+        xdev_add_references(
           data = self, table = table,
           name = table_names[["reference_name"]],
           vendor = table_names[["reference_vendor"]],
@@ -1184,7 +1184,7 @@ strollur <- R6Class("strollur",
     #' @param type string containing the type of report you would like. Options
     #' include: "fasta", "sequence", "sequence_bin_assignment",
     #' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
-    #'  "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
+    #'  "sample_assignment", "resource_reference", "sequence_scrap",
     #' "bin_scrap". If you have added custom reports for alignment,
     #' contigs_assembly or chimeras, you can get those as well.
     #'  Default = "sequence".
