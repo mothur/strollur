@@ -160,9 +160,11 @@ read_qiime2 <- function(qza, metadata = NULL,
 
   # read metadata
   if (!is.null(metadata)) {
-    xdev_add_report(data = data,
-                    table = read_qiime2_metadata(metadata),
-                    type = "metadata")
+    xdev_add_report(
+      data = data,
+      table = read_qiime2_metadata(metadata),
+      type = "metadata"
+    )
   }
 
   # add data_found to dataset in order that does not cause errors

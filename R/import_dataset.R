@@ -243,13 +243,13 @@ import_dataset <- function(table) {
 
   # list all report names
   table_names <- c(
-      "sequence_data", "sequence_report",
-      "sequence_abundance_table", "otu_bin_data",
-      "otu_sequence_bin_assignment", "otu_bin_representative_sequence",
-      "asv_bin_data",
-      "asv_sequence_bin_assignment", "phylotype_bin_data",
-      "phylotype_sequence_bin_assignment", "resource_reference",
-      "sequence_tree", "sample_tree"
+    "sequence_data", "sequence_report",
+    "sequence_abundance_table", "otu_bin_data",
+    "otu_sequence_bin_assignment", "otu_bin_representative_sequence",
+    "asv_bin_data",
+    "asv_sequence_bin_assignment", "phylotype_bin_data",
+    "phylotype_sequence_bin_assignment", "resource_reference",
+    "sequence_tree", "sample_tree"
   )
   report_names <- names[!names %in% table_names]
 
@@ -257,7 +257,7 @@ import_dataset <- function(table) {
     for (name in report_names) {
       name_col <- attr(table[[name]], "sequence_name")
       if (is.null(name_col)) {
-          name_col <- "none"
+        name_col <- "none"
       }
       xdev_add_report(
         data = data, table = table[[name]],

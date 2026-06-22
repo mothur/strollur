@@ -402,21 +402,21 @@ strollur <- R6Class("strollur",
         )
       } else if (type == "report") {
         if (!is.null(report_type)) {
-            # check for sequence name column in table
-            if (table_names[["sequence_name"]] %in% base::names(table)) {
-                xdev_add_report(
-                    data = self, table = table,
-                    type = report_type,
-                    sequence_name = table_names[["sequence_name"]],
-                    verbose = verbose
-                )
-            } else {
-                xdev_add_report(
-                    data = self, table = table,
-                    type = report_type,
-                    verbose = verbose
-                )
-            }
+          # check for sequence name column in table
+          if (table_names[["sequence_name"]] %in% base::names(table)) {
+            xdev_add_report(
+              data = self, table = table,
+              type = report_type,
+              sequence_name = table_names[["sequence_name"]],
+              verbose = verbose
+            )
+          } else {
+            xdev_add_report(
+              data = self, table = table,
+              type = report_type,
+              verbose = verbose
+            )
+          }
         } else {
           cli::cli_abort("'report_type' is required when adding a report.")
         }
