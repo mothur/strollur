@@ -6,13 +6,13 @@
 #' \href{https://mothur.org/wiki/oligos_file/}{oligos file}
 #' @examples
 #'
-#' paired_read <- read_mothur_oligos(strollur_example("paired_read.oligos"))
+#' oligos <- read_mothur_oligos(strollur_example("paired_read.oligos"))
 #'
 #' # Create a new dataset and add your oligos data
 #'
 #' data <- new_dataset() |>
 #'   add(
-#'     table = paired_read,
+#'     table = oligos,
 #'     type = "report",
 #'     report_type = "paired_oligos"
 #'   )

@@ -200,7 +200,7 @@ add <- function(data, table,
         xdev_add_report(
           data = data, table = table,
           type = report_type,
-          verbose
+          verbose = verbose
         )
       }
     } else {
