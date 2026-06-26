@@ -69,7 +69,7 @@ Let’s use the miseq data object to learn how to do that.
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 save_dataset(miseq, file = file_name)
-#> [1] "/tmp/Rtmp2u2WSv/miseq_sop.rds"
+#> [1] "/tmp/RtmpGjPesz/miseq_sop.rds"
 
 miseq_from_rds <- load_dataset(file = file_name)
 miseq_from_rds
@@ -250,7 +250,7 @@ str(table)
 #>   ..$ documentation_url: chr [1:2] "https://mothur.org/phylotypr/" "https://mothur.org/wiki/silva_reference_files/"
 #>   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"
 #>   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"
-#>   ..$ creation_date    : chr [1:2] "2026-06-19" "2026-06-19"
+#>   ..$ creation_date    : chr [1:2] "2026-06-26" "2026-06-26"
 #>  $ metadata                         :'data.frame':   19 obs. of  2 variables:
 #>   ..$ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...
 #>   ..$ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...
