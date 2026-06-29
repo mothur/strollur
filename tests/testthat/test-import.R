@@ -1,6 +1,21 @@
 # tests import of dataset object
 
-test_that("import - versions", {
+test_that("import - version 0.1.1", {
+    miseq <- miseq_sop_example()
+
+    table <- export_dataset(miseq)
+    data <- import_dataset(table)
+
+    expect_equal(count(data), 113963)
+
+    # 0.1.0 is compatible with 0.1.1
+    table <- readRDS(strollur_example("miseq_sop_table.010.rds"))
+    data2 <- import_dataset(table)
+
+    expect_true(is_equal(data, data2))
+})
+
+test_that("import - version 0.1.0", {
   # set version to 0.0.0 - forced compatible
   miseq <- miseq_sop_example()
 

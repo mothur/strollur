@@ -31,7 +31,7 @@ load_dataset <- function(file) {
 
   # check attributes for valid version
   if (current_version != dataset_version) {
-    if (.import_compatible(dataset_version)) {
+    if (.load_compatible(dataset_version)) {
       message <- paste0(
         "The table was created with strollur version ", dataset_version,
         ", which is compatible with the current strollur version: ",
