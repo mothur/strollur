@@ -41,9 +41,9 @@ miseq <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 data <- import_dataset(export_dataset(miseq))
 #> Added 2425 sequences.
 #> Assigned 2425 sequence taxonomies.
@@ -55,9 +55,9 @@ data <- import_dataset(export_dataset(miseq))
 #> Assigned 2425 asv bin taxonomies.
 #> Assigned 63 phylotype bins.
 #> Assigned 63 phylotype bin taxonomies.
-#> Added metadata.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
+#> Added a metadata report.
 data
 #> miseq_sop:
 #> 
@@ -84,7 +84,6 @@ data
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 2 
 #> 
 ```

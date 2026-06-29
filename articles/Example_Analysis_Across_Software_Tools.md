@@ -63,8 +63,8 @@ strollur_data <- read_mothur(
 #> Assigned 19 samples to treatments.
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
-add(strollur_data, table = metadata, type = "metadata")
-#> Added metadata.
+add(strollur_data, table = metadata, type = "report", report_type = "metadata")
+#> Added a metadata report.
 ```
 
 ## Classify using phylotypr

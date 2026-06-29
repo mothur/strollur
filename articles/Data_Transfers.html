@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,9 +103,9 @@ strollur object from the <a href="https://mothur.org/wiki/miseq_sop/" class="ext
 <span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
-<span><span class="co">#&gt; Added metadata.</span></span>
+<span><span class="co">#&gt; Added a metadata report.</span></span>
 <span><span class="co">#&gt; Added 2 resource references.</span></span>
-<span><span class="co">#&gt; Added a contigs_report.</span></span>
+<span><span class="co">#&gt; Added a contigs_report report.</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -132,8 +132,7 @@ strollur object from the <a href="https://mothur.org/wiki/miseq_sop/" class="ext
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 63 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="saving-and-loading">Saving and Loading<a class="anchor" aria-label="anchor" href="#saving-and-loading"></a>
 </h2>
@@ -145,7 +144,7 @@ how to do that.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"miseq_sop.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/save_dataset.html">save_dataset</a></span><span class="op">(</span><span class="va">miseq</span>, file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmp96HCIc/miseq_sop.rds"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp2qslEO/miseq_sop.rds"</span></span>
 <span></span>
 <span><span class="va">miseq_from_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_dataset.html">load_dataset</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
 <span><span class="va">miseq_from_rds</span></span>
@@ -174,8 +173,7 @@ how to do that.</p>
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 63 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span></span></code></pre></div>
 <p>We can see that the summaries of miseq and miseq_from_rds are
 identical. Let’s modify miseq_from_rds to verify they are not referring
@@ -214,8 +212,7 @@ greedy clustering (dgc) algorithm.</p>
 <span><span class="co">#&gt; Total number of dgc bin classifications: 361 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -242,8 +239,7 @@ greedy clustering (dgc) algorithm.</p>
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 63 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>We can see from the summary that 361 ‘dgc’ bins were added to
 miseq_from_rds and not to miseq.</p>
 </div>
@@ -318,9 +314,6 @@ and look at the table created.</p>
 <span><span class="co">#&gt;   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"</span></span>
 <span><span class="co">#&gt;   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"</span></span>
 <span><span class="co">#&gt;   ..$ creation_date    : chr [1:2] "2026-06-29" "2026-06-29"</span></span>
-<span><span class="co">#&gt;  $ metadata                         :'data.frame':   19 obs. of  2 variables:</span></span>
-<span><span class="co">#&gt;   ..$ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...</span></span>
-<span><span class="co">#&gt;   ..$ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...</span></span>
 <span><span class="co">#&gt;  $ contigs_report                   :'data.frame':   2425 obs. of  8 variables:</span></span>
 <span><span class="co">#&gt;   ..$ Name           : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_10133_8460" "M00967_43_000000000-A3JHG_1_1101_10331_23332" "M00967_43_000000000-A3JHG_1_1101_10382_22128" "M00967_43_000000000-A3JHG_1_1101_11035_15765" ...</span></span>
 <span><span class="co">#&gt;   ..$ Length         : num [1:2425] 253 253 253 252 253 252 253 253 252 252 ...</span></span>
@@ -331,6 +324,9 @@ and look at the table created.</p>
 <span><span class="co">#&gt;   ..$ Num_Ns         : num [1:2425] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
 <span><span class="co">#&gt;   ..$ Expected_Errors: num [1:2425] 0.00207 0.00231 0.01135 0.08721 0.00674 ...</span></span>
 <span><span class="co">#&gt;   ..- attr(*, "sequence_name")= chr "Name"</span></span>
+<span><span class="co">#&gt;  $ metadata                         :'data.frame':   19 obs. of  2 variables:</span></span>
+<span><span class="co">#&gt;   ..$ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...</span></span>
+<span><span class="co">#&gt;   ..$ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...</span></span>
 <span><span class="co">#&gt;  $ sequence_tree                    :List of 4</span></span>
 <span><span class="co">#&gt;   ..$ edge       : int [1:4848, 1:2] 2426 2427 2427 2426 2428 2429 2429 2428 2430 2431 ...</span></span>
 <span><span class="co">#&gt;   ..$ edge.length: num [1:4848] NaN 0.00395 0.00395 0 0.00198 ...</span></span>
@@ -346,7 +342,7 @@ and look at the table created.</p>
 <span><span class="co">#&gt;   ..$ root.edge  : num 0.221</span></span>
 <span><span class="co">#&gt;   ..- attr(*, "class")= chr "phylo"</span></span>
 <span><span class="co">#&gt;   ..- attr(*, "order")= chr "cladewise"</span></span>
-<span><span class="co">#&gt;  - attr(*, "strollur_version")= chr "0.1.0"</span></span>
+<span><span class="co">#&gt;  - attr(*, "strollur_version")= chr "0.1.1"</span></span>
 <span><span class="co">#&gt;  - attr(*, "dataset_name")= chr "miseq_sop"</span></span></code></pre></div>
 <p>Similarly to <code><a href="../reference/load_dataset.html">load_dataset()</a></code>, you can use the
 <code><a href="../reference/import_dataset.html">import_dataset()</a></code> function to create a new dataset object
@@ -363,9 +359,9 @@ from the exported table.</p>
 <span><span class="co">#&gt; Assigned 2425 asv bin taxonomies.</span></span>
 <span><span class="co">#&gt; Assigned 63 phylotype bins.</span></span>
 <span><span class="co">#&gt; Assigned 63 phylotype bin taxonomies.</span></span>
-<span><span class="co">#&gt; Added metadata.</span></span>
 <span><span class="co">#&gt; Added 2 resource references.</span></span>
-<span><span class="co">#&gt; Added a contigs_report.</span></span>
+<span><span class="co">#&gt; Added a contigs_report report.</span></span>
+<span><span class="co">#&gt; Added a metadata report.</span></span>
 <span><span class="va">miseq_import</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -392,8 +388,7 @@ from the exported table.</p>
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 63 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>Again, we can see that the summary of miseq_import is identical to
 the summary of miseq.</p>
 </div>
@@ -444,8 +439,7 @@ miseq_deep_copy, and mise_shallow_copy.</p>
 <span><span class="co">#&gt; Total number of dgc bin classifications: 361 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span></span>
 <span><span class="va">miseq_shallow_copy</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
@@ -475,8 +469,7 @@ miseq_deep_copy, and mise_shallow_copy.</p>
 <span><span class="co">#&gt; Total number of dgc bin classifications: 361 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span></span>
 <span><span class="va">miseq_deep_copy</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
@@ -504,8 +497,7 @@ miseq_deep_copy, and mise_shallow_copy.</p>
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 63 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>You can see from the summaries that the dgc_data was added to both
 miseq and miseq_shallow_copy because they actually reference the same
 object, but miseq_deep_copy was not modified.</p>

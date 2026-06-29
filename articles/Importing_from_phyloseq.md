@@ -30,7 +30,7 @@ rdata_object <- read_phyloseq(phylo_object)
 #> Added 19216 sequences.
 #> Assigned 19216 sequence abundances.
 #> Assigned 19216 sequence taxonomies.
-#> Added metadata.
+#> Added a metadata report.
 rdata_object
 #> 
 #> Number of unique seqs: 19216 
@@ -38,7 +38,7 @@ rdata_object
 #> 
 #> Total number of samples: 26 
 #> Total number of sequence classifications: 19216 
-#> Your dataset includes metadata
+#> Total number of custom reports: 1
 ```
 
 Now that are phyloseq object is converted into a strollur object, we can
@@ -91,9 +91,9 @@ miseq <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 miseq_phyloseq <- write_phyloseq(miseq)
 miseq_phyloseq
 #> phyloseq-class experiment-level object

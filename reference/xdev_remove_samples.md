@@ -44,9 +44,9 @@ data <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 
 count(data = data, type = "sample")
 #> [1] 19
@@ -86,8 +86,7 @@ xdev_remove_samples(data, c("F3D0", "F3D1"))
 #> Total number of phylotype bin classifications: 59 
 #> Total number of sequence classifications: 2221 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 2 
 #> 
 
 count(data = data, type = "sample")

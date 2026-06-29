@@ -2,8 +2,8 @@
 
 Get a data.frame containing the report. Reports include FASTA format,
 sequences reports, sequence_bin_assignments, sequence_taxonomy,
-bin_taxonomy, bin_representatives, sample_assignments, metadata,
-references, sequence_scrap, and bin_scrap in a
+bin_taxonomy, bin_representatives, sample_assignments, references,
+custom reports, sequence_scrap, and bin_scrap in a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object.
 
 ## Usage
@@ -23,7 +23,7 @@ report(data, type = "sequence", bin_type = "otu")
 
   string containing the type of report you would like. Options include:
   "fasta", "sequence", "sequence_bin_assignment", "sequence_taxonomy",
-  "bin_taxonomy", "bin_representative", "sample_assignment", "metadata",
+  "bin_taxonomy", "bin_representative", "sample_assignment",
   "resource_reference", "sequence_scrap", "bin_scrap". If you have added
   custom reports for alignment, contigs_assembly or chimeras, you can
   get those as well. Default = "sequence".
@@ -51,9 +51,9 @@ miseq <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 
 # To get the FASTA data
 

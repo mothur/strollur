@@ -39,11 +39,11 @@ miseq <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 write_mothur_cons_taxonomy(miseq, tempfile())
-#> [1] "/tmp/Rtmp5w3hdx/file1aaf78fb085e.otu.cons.taxonomy"      
-#> [2] "/tmp/Rtmp5w3hdx/file1aaf78fb085e.asv.cons.taxonomy"      
-#> [3] "/tmp/Rtmp5w3hdx/file1aaf78fb085e.phylotype.cons.taxonomy"
+#> [1] "/tmp/RtmpExuj4q/file1a7566c1a39.otu.cons.taxonomy"      
+#> [2] "/tmp/RtmpExuj4q/file1a7566c1a39.asv.cons.taxonomy"      
+#> [3] "/tmp/RtmpExuj4q/file1a7566c1a39.phylotype.cons.taxonomy"
 ```

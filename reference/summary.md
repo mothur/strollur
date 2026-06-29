@@ -50,9 +50,9 @@ miseq <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 
 # To get the summary of your FASTA data
 summary(data = miseq, type = "sequence")
@@ -148,8 +148,7 @@ xdev_remove_samples(data = miseq, samples = c("F3D0"))
 #> Total number of phylotype bin classifications: 61 
 #> Total number of sequence classifications: 2324 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 2 
 #> 
 
 # summarize FASTA data after removal of sample F3D0

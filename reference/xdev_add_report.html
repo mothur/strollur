@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,8 +59,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">xdev_add_report</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">table</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"metadata"</span>,</span>
-<span>  sequence_name <span class="op">=</span> <span class="st">"sequence_name"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"report"</span>,</span>
+<span>  sequence_name <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -78,14 +78,13 @@
 
 
 <dt id="arg-type-">type, <a class="anchor" aria-label="anchor" href="#arg-type-"></a></dt>
-<dd><p>a string containing the type of report. Options include:
-"metadata" and custom report tags. Default = "metadata".</p></dd>
+<dd><p>a string containing the type of report. Default = "report".</p></dd>
 
 
 <dt id="arg-sequence-name-">sequence_name, <a class="anchor" aria-label="anchor" href="#arg-sequence-name-"></a></dt>
-<dd><p>a string containing the name of the column in 'table'
-that contains the sequence names. This is used for custom reports, metadata
-does not require a sequence_name column. Default column name is 'sequence_names'.</p></dd>
+<dd><p>a string. If your report relates to the sequence data,
+`sequence_name` should contain the name of the column in 'table' that
+contains the sequence names. Default = 'none'.</p></dd>
 
 
 <dt id="arg-verbose-">verbose, <a class="anchor" aria-label="anchor" href="#arg-verbose-"></a></dt>
@@ -107,7 +106,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_contigs_report.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">xdev_add_report</span><span class="op">(</span><span class="va">data</span>, <span class="va">contigs_report</span>, <span class="st">"contigs_report"</span>, <span class="st">"Name"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report report.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> just for fun:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -122,15 +121,14 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_metadata.rds"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">xdev_add_report</span><span class="op">(</span><span class="va">data</span>, <span class="va">metadata</span>, <span class="st">"metadata"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Added metadata.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Added a metadata report.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> just for fun:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of unique seqs: 2425 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of seqs: 2425 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of custom reports: 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Your dataset includes metadata </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total number of custom reports: 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

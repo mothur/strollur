@@ -23,9 +23,9 @@ miseq <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 miseq
 #> miseq_sop:
 #> 
@@ -52,8 +52,7 @@ miseq
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 ## Saving and Loading
@@ -69,7 +68,7 @@ Let’s use the miseq data object to learn how to do that.
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 save_dataset(miseq, file = file_name)
-#> [1] "/tmp/Rtmp96HCIc/miseq_sop.rds"
+#> [1] "/tmp/Rtmp2qslEO/miseq_sop.rds"
 
 miseq_from_rds <- load_dataset(file = file_name)
 miseq_from_rds
@@ -98,8 +97,7 @@ miseq_from_rds
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 unlink(file_name)
 ```
 
@@ -143,8 +141,7 @@ miseq_from_rds
 #> Total number of dgc bin classifications: 361 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 miseq
 #> miseq_sop:
 #> 
@@ -171,8 +168,7 @@ miseq
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 We can see from the summary that 361 ‘dgc’ bins were added to
@@ -251,9 +247,6 @@ str(table)
 #>   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"
 #>   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"
 #>   ..$ creation_date    : chr [1:2] "2026-06-29" "2026-06-29"
-#>  $ metadata                         :'data.frame':   19 obs. of  2 variables:
-#>   ..$ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...
-#>   ..$ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...
 #>  $ contigs_report                   :'data.frame':   2425 obs. of  8 variables:
 #>   ..$ Name           : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_10133_8460" "M00967_43_000000000-A3JHG_1_1101_10331_23332" "M00967_43_000000000-A3JHG_1_1101_10382_22128" "M00967_43_000000000-A3JHG_1_1101_11035_15765" ...
 #>   ..$ Length         : num [1:2425] 253 253 253 252 253 252 253 253 252 252 ...
@@ -264,6 +257,9 @@ str(table)
 #>   ..$ Num_Ns         : num [1:2425] 0 0 0 0 0 0 0 0 0 0 ...
 #>   ..$ Expected_Errors: num [1:2425] 0.00207 0.00231 0.01135 0.08721 0.00674 ...
 #>   ..- attr(*, "sequence_name")= chr "Name"
+#>  $ metadata                         :'data.frame':   19 obs. of  2 variables:
+#>   ..$ sample        : chr [1:19] "F3D0" "F3D1" "F3D141" "F3D142" ...
+#>   ..$ days_post_wean: num [1:19] 0 1 141 142 143 144 145 146 147 148 ...
 #>  $ sequence_tree                    :List of 4
 #>   ..$ edge       : int [1:4848, 1:2] 2426 2427 2427 2426 2428 2429 2429 2428 2430 2431 ...
 #>   ..$ edge.length: num [1:4848] NaN 0.00395 0.00395 0 0.00198 ...
@@ -279,7 +275,7 @@ str(table)
 #>   ..$ root.edge  : num 0.221
 #>   ..- attr(*, "class")= chr "phylo"
 #>   ..- attr(*, "order")= chr "cladewise"
-#>  - attr(*, "strollur_version")= chr "0.1.0"
+#>  - attr(*, "strollur_version")= chr "0.1.1"
 #>  - attr(*, "dataset_name")= chr "miseq_sop"
 ```
 
@@ -302,9 +298,9 @@ miseq_import <- import_dataset(table = table)
 #> Assigned 2425 asv bin taxonomies.
 #> Assigned 63 phylotype bins.
 #> Assigned 63 phylotype bin taxonomies.
-#> Added metadata.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
+#> Added a metadata report.
 miseq_import
 #> miseq_sop:
 #> 
@@ -331,8 +327,7 @@ miseq_import
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 Again, we can see that the summary of miseq_import is identical to the
@@ -392,8 +387,7 @@ miseq
 #> Total number of dgc bin classifications: 361 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 
 miseq_shallow_copy
 #> miseq_sop:
@@ -423,8 +417,7 @@ miseq_shallow_copy
 #> Total number of dgc bin classifications: 361 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 
 miseq_deep_copy
 #> miseq_sop:
@@ -452,8 +445,7 @@ miseq_deep_copy
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 You can see from the summaries that the dgc_data was added to both miseq

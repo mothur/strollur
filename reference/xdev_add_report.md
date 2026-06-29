@@ -9,8 +9,8 @@ Add a report to a
 xdev_add_report(
   data,
   table,
-  type = "metadata",
-  sequence_name = "sequence_name",
+  type = "report",
+  sequence_name = "none",
   verbose = TRUE
 )
 ```
@@ -28,15 +28,13 @@ xdev_add_report(
 
 - type, :
 
-  a string containing the type of report. Options include: "metadata"
-  and custom report tags. Default = "metadata".
+  a string containing the type of report. Default = "report".
 
 - sequence_name, :
 
-  a string containing the name of the column in 'table' that contains
-  the sequence names. This is used for custom reports, metadata does not
-  require a sequence_name column. Default column name is
-  'sequence_names'.
+  a string. If your report relates to the sequence data,
+  \`sequence_name\` should contain the name of the column in 'table'
+  that contains the sequence names. Default = 'none'.
 
 - verbose, :
 
@@ -57,7 +55,7 @@ data <- new_dataset("just for fun")
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
 xdev_add_report(data, contigs_report, "contigs_report", "Name")
-#> Added a contigs_report.
+#> Added a contigs_report report.
 #> just for fun:
 #> 
 #> 
@@ -72,14 +70,13 @@ xdev_add_report(data, contigs_report, "contigs_report", "Name")
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 xdev_add_report(data, metadata, "metadata")
-#> Added metadata.
+#> Added a metadata report.
 #> just for fun:
 #> 
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 2425 
 #> 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 2 
 #> 
 ```

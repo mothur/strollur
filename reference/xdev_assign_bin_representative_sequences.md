@@ -68,9 +68,9 @@ an updated
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 
   bin_reps <- readRDS(strollur_example(
          "miseq_representative_sequences.rds"))
@@ -104,7 +104,6 @@ an updated
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 2 
 #> 
 ```

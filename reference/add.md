@@ -1,6 +1,6 @@
-# Add sequences, reports, metadata or resource references to a [strollur](https://mothur.org/strollur/reference/strollur.md) object
+# Add sequences, reports or resource references to a [strollur](https://mothur.org/strollur/reference/strollur.md) object
 
-Add sequences, reports, metadata or resource references to a
+Add sequences, reports or resource references to a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Usage
@@ -35,12 +35,11 @@ add(
 - type, :
 
   a string containing the type of data. Options include: 'sequence',
-  'resource_reference' 'metadata' and 'report'.
+  'resource_reference' and 'report'.
 
 - report_type, :
 
-  a string containing the type of report you are adding. Options
-  include: 'metadata' and custom reports.
+  a string containing the type of report you are adding.
 
 - table_names, :
 
@@ -167,12 +166,12 @@ add(
   table = contigs_report, type = "report",
   report_type = "contigs_report", list(sequence_name = "Name")
 )
-#> Added a contigs_report.
+#> Added a contigs_report report.
 
 # To add metadata related to your study
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-add(data, table = metadata, type = "metadata")
-#> Added metadata.
+add(data, table = metadata, type = "report", report_type = "metadata")
+#> Added a metadata report.
 ```

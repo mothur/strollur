@@ -55,7 +55,6 @@ data
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 2 
 #> 
 ```

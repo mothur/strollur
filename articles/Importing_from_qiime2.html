@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@ create a dataset from the outputs of the qiime2, run the following:</p>
 <span>  metadata <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"sample_metadata.tsv"</span><span class="op">)</span>,</span>
 <span>  dataset_name <span class="op">=</span> <span class="st">"qiime_moving_pictures"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Added metadata.</span></span>
+<pre><code><span><span class="co">## Added a metadata report.</span></span>
 <span><span class="co">## Added 759 sequences.</span></span>
 <span><span class="co">## Assigned 759 sequence abundances.</span></span>
 <span><span class="co">## Assigned 759 asv bins.</span></span>
@@ -127,7 +127,7 @@ create a dataset from the outputs of the qiime2, run the following:</p>
 <span><span class="co">## Total number of samples: 34 </span></span>
 <span><span class="co">## Total number of asvs: 759 </span></span>
 <span><span class="co">## Total number of asv bin classifications: 759 </span></span>
-<span><span class="co">## Your dataset includes metadata</span></span></code></pre>
+<span><span class="co">## Total number of custom reports: 1</span></span></code></pre>
 <div class="section level2">
 <h2 id="reading-individual-files">Reading Individual Files<a class="anchor" aria-label="anchor" href="#reading-individual-files"></a>
 </h2>
@@ -267,8 +267,8 @@ function.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>To add the metadata to the my_data dataset, run the following:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Added metadata.</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"report"</span>, report_type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Added a metadata report.</span></span></code></pre>
 <p>To view a summary of your imported dataset, ‘my_data’, run the
 following:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
@@ -292,7 +292,7 @@ following:</p>
 <span><span class="co">## Total number of asvs: 759 </span></span>
 <span><span class="co">## Total number of asv bin classifications: 759 </span></span>
 <span><span class="co">## Total number of sequence classifications: 759 </span></span>
-<span><span class="co">## Your dataset includes metadata</span></span></code></pre>
+<span><span class="co">## Total number of custom reports: 1</span></span></code></pre>
 </div>
   </main>
 </div>

@@ -5,8 +5,7 @@
 Adding and using data
 
 - [`add()`](https://mothur.org/strollur/reference/add.md) : Add
-  sequences, reports, metadata or resource references to a strollur
-  object
+  sequences, reports or resource references to a strollur object
 
 - [`assign()`](https://mothur.org/strollur/reference/assign.md) :
 
@@ -78,6 +77,9 @@ DADA2
 
 - [`read_mothur_list()`](https://mothur.org/strollur/reference/read_mothur_list.md)
   : read_mothur_list
+
+- [`read_mothur_oligos()`](https://mothur.org/strollur/reference/read_mothur_oligos.md)
+  : read_mothur_oligos
 
 - [`read_mothur_rabund()`](https://mothur.org/strollur/reference/read_mothur_rabund.md)
   : read_mothur_rabund

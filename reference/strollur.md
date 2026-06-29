@@ -185,7 +185,7 @@ data.frame
 
 ### `strollur$add()`
 
-Add sequences, reports, metadata or resource references
+Add sequences, reports or resource references
 
 #### Usage
 
@@ -211,12 +211,11 @@ Add sequences, reports, metadata or resource references
 - `type`:
 
   a string containing the type of data. Options include: 'sequence',
-  'resource_reference' 'metadata' and 'report'.
+  'resource_reference' and 'report'.
 
 - `report_type`:
 
-  a string containing the type of report you are adding. Options
-  include: 'metadata' and custom reports.
+  a string containing the type of report you are adding.
 
 - `table_names`:
 
@@ -312,7 +311,7 @@ Updated \`strollur\` object - invisible(self)
 
     metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-    data$add(table = metadata, type = "metadata")
+    data$add(table = metadata, type = "report", report_type = "metadata")
 
 ------------------------------------------------------------------------
 
@@ -886,7 +885,7 @@ Get a data.frame containing the given report
 
   string containing the type of report you would like. Options include:
   "fasta", "sequence", "sequence_bin_assignment", "sequence_taxonomy",
-  "bin_taxonomy", "bin_representative", "sample_assignment", "metadata",
+  "bin_taxonomy", "bin_representative", "sample_assignment",
   "resource_reference", "sequence_scrap", "bin_scrap". If you have added
   custom reports for alignment, contigs_assembly or chimeras, you can
   get those as well. Default = "sequence".
@@ -1064,8 +1063,7 @@ miseq
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 2 
 #> 
 
 
@@ -1165,14 +1163,14 @@ data$add(
   table = contigs_report, type = "report",
   report_type = "contigs_report", list(sequence_name = "Name")
 )
-#> Added a contigs_report.
+#> Added a contigs_report report.
 
 # To add metadata related to your study
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-data$add(table = metadata, type = "metadata")
-#> Added metadata.
+data$add(table = metadata, type = "report", report_type = "metadata")
+#> Added a metadata report.
 
 
 ## ------------------------------------------------
@@ -1332,8 +1330,7 @@ miseq
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 2 
 #> 
 miseq$clear()
 miseq
@@ -1425,9 +1422,9 @@ data <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 data$get_bin_types()
 #> [1] "otu"       "asv"       "phylotype"
 
@@ -1486,7 +1483,7 @@ data$get_bin_types()
 data <- new_dataset("test")
 
 data$get_version()
-#> [1] "0.1.0"
+#> [1] "0.1.1"
 
 
 ## ------------------------------------------------
@@ -4472,7 +4469,7 @@ miseq$names(type = "bin", samples = c("F3D0"), distinct = FALSE)
 
 # To get the names of the reports
 miseq$names(type = "report")
-#> [1] "contigs_report"
+#> [1] "contigs_report" "metadata"      
 
 
 ## ------------------------------------------------
@@ -4735,8 +4732,7 @@ xdev_remove_samples(data = miseq, samples = c("F3D0"))
 #> Total number of phylotype bin classifications: 61 
 #> Total number of sequence classifications: 2324 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 2 
 #> 
 
 # summarize scrapped data -

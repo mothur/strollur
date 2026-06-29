@@ -35,9 +35,9 @@ boolean
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
  xdev_has_sequence_taxonomy(data)
 #> [1] TRUE
 ```

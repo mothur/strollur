@@ -190,7 +190,7 @@ add(
   report_type = "contigs_report",
   table_names = list(sequence_name = "Name")
 )
-#> Added a contigs_report.
+#> Added a contigs_report report.
 data
 #>             starts ends nbases ambigs polymers numns numseqs
 #> Minimum:         1  375    249      0        3     0    1.00
@@ -212,8 +212,8 @@ data
 #### Adding Metadata
 
 Now that we have added our custom contigs assembly report, let’s learn
-how to add metadata. We can add metadata to our data set by setting the
-type = “metadata”.
+how to add reports not tied to sequence names. We can add metadata to
+our data set by setting the type = “report”, report_type = “metadata”.
 
 ``` r
 
@@ -232,9 +232,10 @@ str(metadata)
 add(
   data,
   table = metadata,
-  type = "metadata"
+  type = "report",
+  report_type = "metadata"
 )
-#> Added metadata.
+#> Added a metadata report.
 ```
 
 #### Adding Resource References
@@ -309,8 +310,7 @@ data
 #> Total number of samples: 19 
 #> Total number of treatments: 2 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 #### Assigning Bins
@@ -358,8 +358,7 @@ data
 #> Total number of treatments: 2 
 #> Total number of otus: 531 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 You can see from the summary, we now have 531 otus in our dataset.

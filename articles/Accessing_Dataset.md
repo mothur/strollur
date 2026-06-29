@@ -26,9 +26,9 @@ miseq <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 ```
 
 To print a summary of the miseq dataset, run the following:
@@ -61,8 +61,7 @@ miseq
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 ## Accessing Your Data
@@ -239,7 +238,7 @@ To get the names of the custom reports
 ``` r
 
 names(miseq, type = "report")
-#> [1] "contigs_report"
+#> [1] "contigs_report" "metadata"
 ```
 
 ### count
@@ -721,7 +720,7 @@ reports, first let’s find the names.
 ``` r
 
 names(miseq, type = "report")
-#> [1] "contigs_report"
+#> [1] "contigs_report" "metadata"
 ```
 
 To access the custom contigs assembly report, set type =
@@ -825,7 +824,7 @@ names.
 ``` r
 
 names(miseq, type = "report")
-#> [1] "contigs_report"
+#> [1] "contigs_report" "metadata"
 ```
 
 You can see we have a custom report so let get the summary by setting

@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,9 +127,9 @@ take a close look at functions you will need to do so using the
 <span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
-<span><span class="co">#&gt; Added metadata.</span></span>
+<span><span class="co">#&gt; Added a metadata report.</span></span>
 <span><span class="co">#&gt; Added 2 resource references.</span></span>
-<span><span class="co">#&gt; Added a contigs_report.</span></span>
+<span><span class="co">#&gt; Added a contigs_report report.</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -156,8 +156,7 @@ take a close look at functions you will need to do so using the
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 63 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="setting-the-dataset-name">Setting the dataset name<a class="anchor" aria-label="anchor" href="#setting-the-dataset-name"></a>
 </h4>
@@ -224,8 +223,7 @@ sample ‘F3D0’ for closer inspection.</p>
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 63 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2425 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span></span>
 <span><span class="va">f3d0_sequences</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/xdev_get_by_sample.html">xdev_get_by_sample</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
@@ -314,8 +312,7 @@ inputs for <code><a href="../reference/xdev_set_abundances.html">xdev_set_abunda
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 61 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2324 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; modified_miseq:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -349,8 +346,7 @@ inputs for <code><a href="../reference/xdev_set_abundances.html">xdev_set_abunda
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 61 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2324 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>You can see that not all of the sequences in ‘F3D0’ are removed. That
 is because the majority of sequences in the data set are present in
 multiple samples. mothur2 uses xdev_set_abundances when running the
@@ -433,8 +429,7 @@ this example we will randomly select 100 ‘otu’ bins to merge.</p>
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 61 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2324 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; modified_miseq:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -469,8 +464,7 @@ this example we will randomly select 100 ‘otu’ bins to merge.</p>
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 61 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2324 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>You can see that the sample totals, total sequence and unique
 sequences remain the same but the number of otu bins is reduced by
 99.</p>
@@ -539,8 +533,7 @@ overlap, sequence length and ambiguous bases, so let’s randomly select
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 60 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2224 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; modified_miseq:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -579,8 +572,7 @@ overlap, sequence length and ambiguous bases, so let’s randomly select
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 60 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 2224 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>Note, sequences can also be removed by setting their abundance to
 0.</p>
 </div>
@@ -646,8 +638,7 @@ effects the bins in the ‘otu’ and ‘asv’ clusters.</p>
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 50 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 1373 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; modified_miseq:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -690,8 +681,7 @@ effects the bins in the ‘otu’ and ‘asv’ clusters.</p>
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 50 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 1373 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>Looking closer at the scrap summary we can see that removing 10
 phylotype bins, removed 851 unique sequences that represented 21948
 reads. After the removal of the 851 unique sequences the ‘otu’ cluster
@@ -755,8 +745,7 @@ mock community removed so for the sake of example we will remove sample
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 49 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 1335 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; modified_miseq:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -803,8 +792,7 @@ mock community removed so for the sake of example we will remove sample
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 49 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 1335 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>Lastly, we can remove contaminants from the data set using the
 <code><a href="../reference/xdev_remove_lineages.html">xdev_remove_lineages()</a></code> function. The miseq example has
 already had the contaminants removed after classification and before bin
@@ -871,8 +859,7 @@ assigned to
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 48 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 1221 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span><span class="va">miseq</span></span>
 <span><span class="co">#&gt; modified_miseq:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -923,8 +910,7 @@ assigned to
 <span><span class="co">#&gt; Total number of phylotype bin classifications: 48 </span></span>
 <span><span class="co">#&gt; Total number of sequence classifications: 1221 </span></span>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1 </span></span>
-<span><span class="co">#&gt; Your dataset includes metadata</span></span></code></pre></div>
+<span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>Thanks for following along. To explore more <em>xdev_</em> functions
 you can look at the rcpp_xint_xdev_functions.h and
 rcpp_xint_xdev_functions.cpp files located in the src folder of the

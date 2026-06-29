@@ -22,7 +22,7 @@ data <- read_qiime2(
 )
 ```
 
-    ## Added metadata.
+    ## Added a metadata report.
     ## Added 759 sequences.
     ## Assigned 759 sequence abundances.
     ## Assigned 759 asv bins.
@@ -53,7 +53,7 @@ data
     ## Total number of samples: 34 
     ## Total number of asvs: 759 
     ## Total number of asv bin classifications: 759 
-    ## Your dataset includes metadata
+    ## Total number of custom reports: 1
 
 ## Reading Individual Files
 
@@ -256,10 +256,10 @@ To add the metadata to the my_data dataset, run the following:
 
 ``` r
 
-add(my_data, table = metadata, type = "metadata")
+add(my_data, table = metadata, type = "report", report_type = "metadata")
 ```
 
-    ## Added metadata.
+    ## Added a metadata report.
 
 To view a summary of your imported dataset, ‘my_data’, run the
 following:
@@ -288,4 +288,4 @@ my_data
     ## Total number of asvs: 759 
     ## Total number of asv bin classifications: 759 
     ## Total number of sequence classifications: 759 
-    ## Your dataset includes metadata
+    ## Total number of custom reports: 1

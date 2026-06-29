@@ -46,9 +46,9 @@ miseq <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 miseq
 #> miseq_sop:
 #> 
@@ -75,8 +75,7 @@ miseq
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 #### Setting the dataset name
@@ -153,8 +152,7 @@ xdev_set_sequences(
 #> Total number of phylotype bin classifications: 63 
 #> Total number of sequence classifications: 2425 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 
 f3d0_sequences <- xdev_get_by_sample(
   miseq,
@@ -248,8 +246,7 @@ xdev_set_abundances(
 #> Total number of phylotype bin classifications: 61 
 #> Total number of sequence classifications: 2324 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 miseq
 #> modified_miseq:
 #> 
@@ -283,8 +280,7 @@ miseq
 #> Total number of phylotype bin classifications: 61 
 #> Total number of sequence classifications: 2324 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 You can see that not all of the sequences in ‘F3D0’ are removed. That is
@@ -375,8 +371,7 @@ xdev_merge_bins(
 #> Total number of phylotype bin classifications: 61 
 #> Total number of sequence classifications: 2324 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 miseq
 #> modified_miseq:
 #> 
@@ -411,8 +406,7 @@ miseq
 #> Total number of phylotype bin classifications: 61 
 #> Total number of sequence classifications: 2324 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 You can see that the sample totals, total sequence and unique sequences
@@ -487,8 +481,7 @@ xdev_remove_sequences(
 #> Total number of phylotype bin classifications: 60 
 #> Total number of sequence classifications: 2224 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 miseq
 #> modified_miseq:
 #> 
@@ -527,8 +520,7 @@ miseq
 #> Total number of phylotype bin classifications: 60 
 #> Total number of sequence classifications: 2224 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 Note, sequences can also be removed by setting their abundance to 0.
@@ -597,8 +589,7 @@ xdev_remove_bins(
 #> Total number of phylotype bin classifications: 50 
 #> Total number of sequence classifications: 1373 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 miseq
 #> modified_miseq:
 #> 
@@ -641,8 +632,7 @@ miseq
 #> Total number of phylotype bin classifications: 50 
 #> Total number of sequence classifications: 1373 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 Looking closer at the scrap summary we can see that removing 10
@@ -710,8 +700,7 @@ xdev_remove_samples(
 #> Total number of phylotype bin classifications: 49 
 #> Total number of sequence classifications: 1335 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 miseq
 #> modified_miseq:
 #> 
@@ -758,8 +747,7 @@ miseq
 #> Total number of phylotype bin classifications: 49 
 #> Total number of sequence classifications: 1335 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 Lastly, we can remove contaminants from the data set using the
@@ -830,8 +818,7 @@ xdev_remove_lineages(
 #> Total number of phylotype bin classifications: 48 
 #> Total number of sequence classifications: 1221 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 miseq
 #> modified_miseq:
 #> 
@@ -882,8 +869,7 @@ miseq
 #> Total number of phylotype bin classifications: 48 
 #> Total number of sequence classifications: 1221 
 #> Total number of resource references: 2 
-#> Total number of custom reports: 1 
-#> Your dataset includes metadata
+#> Total number of custom reports: 2
 ```
 
 Thanks for following along. To explore more *xdev\_* functions you can

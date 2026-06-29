@@ -67,9 +67,9 @@ miseq <- miseq_sop_example()
 #> Assigned 19 samples to treatments.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
-#> Added metadata.
+#> Added a metadata report.
 #> Added 2 resource references.
-#> Added a contigs_report.
+#> Added a contigs_report report.
 
 # To get the name of the dataset
 xdev_names(data = miseq, type = "dataset")
@@ -3034,5 +3034,5 @@ xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = FALSE)
 
 # To get the names of the reports in the dataset
 xdev_names(data = miseq, type = "report")
-#> [1] "contigs_report"
+#> [1] "contigs_report" "metadata"      
 ```

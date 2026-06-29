@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -147,8 +147,8 @@ files.</p>
 <span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
 <span></span>
 <span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_metadata.rds"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">strollur_data</span>, table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Added metadata.</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">strollur_data</span>, table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"report"</span>, report_type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Added a metadata report.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="classify-using-phylotypr">Classify using phylotypr<a class="anchor" aria-label="anchor" href="#classify-using-phylotypr"></a>

@@ -77,7 +77,7 @@ if (requireNamespace("h5lite", quietly = TRUE)) {
     "h5lite package."
   ))
 }
-#> Added metadata.
+#> Added a metadata report.
 #> Added 759 sequences.
 #> Assigned 759 sequence abundances.
 #> Assigned 759 asv bins.
@@ -100,6 +100,6 @@ if (requireNamespace("h5lite", quietly = TRUE)) {
 #> Total number of samples: 34 
 #> Total number of asvs: 759 
 #> Total number of asv bin classifications: 759 
-#> Your dataset includes metadata 
+#> Total number of custom reports: 1 
 #> 
 ```
