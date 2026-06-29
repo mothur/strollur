@@ -41,5 +41,5 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report.
 write_taxonomy(miseq, tempfile())
-#> [1] "/tmp/RtmpPgOuDL/file1aaf72fda80"
+#> [1] "/tmp/Rtmp5w3hdx/file1aaf4234bbfb"
 ```
