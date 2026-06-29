@@ -49,5 +49,5 @@ data <- read_mothur(
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 save_dataset(data, file = file_name)
-#> [1] "/tmp/Rtmpr6XDbf/miseq_sop.rds"
+#> [1] "/tmp/RtmpctGIav/miseq_sop.rds"
 ```
