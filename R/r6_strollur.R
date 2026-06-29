@@ -256,7 +256,7 @@ strollur <- R6Class("strollur",
     #' @param type a string containing the type of data. Options include:
     #' 'sequence', 'resource_reference' and 'report'.
     #' @param report_type a string containing the type of report you are
-    #' adding. Options include: 'metadata' and custom reports.
+    #' adding.
     #' @param table_names named list used to indicate the names of the columns
     #'  in the table. By default:
     #'
@@ -420,12 +420,6 @@ strollur <- R6Class("strollur",
         } else {
           cli::cli_abort("'report_type' is required when adding a report.")
         }
-      } else if (type == "metadata") {
-        xdev_add_report(
-          data = self, table = table,
-          type = type,
-          verbose = verbose
-        )
       } else if (type == "resource_reference") {
         xdev_add_references(
           data = self, table = table,

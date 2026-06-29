@@ -1114,9 +1114,9 @@ Rcpp::Environment xdev_remove_sequences(const Rcpp::Environment& data,
 //' @param type, string containing the type of report you would like. Options
 //' include: "fasta", "sequence", "sequence_bin_assignment",
 //' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
-//'  "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
+//'  "sample_assignment", "resource_reference", "sequence_scrap",
 //' "bin_scrap". If you have added custom reports for alignment,
-//' contigs_assembly or chimeras, you can get those as well.
+//' contigs_assembly, chimeras or metadata, you can get those as well.
 //'  Default = "sequence".
 //'
 //' @param bin_type, string containing the bin type you would like a bin_taxonomy

@@ -631,7 +631,7 @@ miseq$abundance(type = "treatment")
       \item{\code{type}}{a string containing the type of data. Options include:
 'sequence', 'resource_reference' and 'report'.}
       \item{\code{report_type}}{a string containing the type of report you are
-adding. Options include: 'metadata' and custom reports.}
+adding.}
       \item{\code{table_names}}{named list used to indicate the names of the columns
  in the table. By default:
 
