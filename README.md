@@ -11,7 +11,10 @@
 [![Codecov test
 coverage](https://codecov.io/gh/mothur/strollur/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mothur/strollur?branch=main)
 [![pkgdown](https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml)
-<!-- [![CRAN status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.org/package=strollur) -->
+[![CRAN
+status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.org/package=strollur)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/strollur)](https://CRAN.R-project.org/package=strollur)
 <!-- badges: end -->
 
 ## Overview

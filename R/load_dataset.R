@@ -43,7 +43,9 @@ load_dataset <- function(file) {
         "Unable to create 'strollur' object. ",
         "The table was created with strollur version ", dataset_version,
         ", which is not compatible with the current strollur version: ",
-        current_version, "."
+        current_version, ". To fix this use `export_dataset()` to export a ",
+        "data.frame version of your strollur object, and import_dataset() to ",
+        "create an updated strollur object."
       )
       cli::cli_abort(message)
     }

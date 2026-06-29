@@ -899,7 +899,7 @@ vector<int> BinTable::remove(const string& binID, const string& reason){
 
     // bin is not in dataset
     if (it == binIndex.end()) {
-        string message = "[WARNING]: " + binID + " is not in ";
+        string message = binID + " is not in ";
         message += "your dataset, ignoring.";
         Rcpp::Rcout << endl << message << endl;
         return nullIntVector;

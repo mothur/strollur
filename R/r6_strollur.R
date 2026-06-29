@@ -474,7 +474,7 @@ strollur <- R6Class("strollur",
 
       # if no samples, add sequences in tree to dataset
       if (count(self, type = "sample") == 0) {
-        message <- paste0("[Warning]: Your dataset does not contain sample ",
+        message <- paste0("Your dataset does not contain sample ",
           "data, ignoring sample tree.",
           collapse = ""
         )
@@ -496,7 +496,7 @@ strollur <- R6Class("strollur",
 
           # if tree is "missing" names, then ignore tree
           if (length(missing_samples) != 0) {
-            message <- paste("[WARNING]: Your tree does not",
+            message <- paste("Your tree does not",
               "contain a node for every sample in",
               "your dataset, ignoring tree.",
               "Missing tree nodes for:",
@@ -559,7 +559,7 @@ strollur <- R6Class("strollur",
 
           # if tree is "missing" names, then ignore tree
           if (length(missing_seqs) != 0) {
-            message <- paste("[WARNING]: Your tree does not",
+            message <- paste("Your tree does not",
               "contain a node for every sequence in",
               "your dataset, ignoring tree.",
               "Missing tree nodes for:",
@@ -1298,7 +1298,7 @@ strollur <- R6Class("strollur",
     }
   ),
   private = list(
-    version = "0.1.0",
+    version = "0.1.1",
     finalize = function() {},
 
 
