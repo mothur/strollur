@@ -510,7 +510,7 @@ test_that("dataset - functions with piping", {
   # xdev_set_abundances - removes seq4
   seq_abunds <- xdev_set_abundances(data, seq_names, list(
     c(40, 50),
-    c(25), c(0)
+    c(25, 0), c(0, 0)
   )) |>
     abundance(by_sample = TRUE)
   expect_equal(seq_abunds$abundance, c(40, 50, 25))

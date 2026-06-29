@@ -523,7 +523,7 @@ double Dataset::assignSequenceTaxonomyTidy(const vector<string>& sequence_names,
                 assembledTax = taxes[i] + "(" + toString(confidences[i]) + ");";
             }
             else{
-                string message = "[WARNING]: " + sequence_names[i] + " is not in your dataset,";
+                string message = sequence_names[i] + " is not in your dataset,";
                 message += " ignoring.";
                 Rcpp::Rcout << endl << message << endl;
                 index = -1;
@@ -574,7 +574,7 @@ double Dataset::assignSequenceTaxonomy(const vector<string>& n,
             // update taxonomy
             taxonomies[index] = t[i];
         }else{
-            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            string message = n[i] + " is not in your dataset,";
             message += " ignoring.";
             Rcpp::Rcout << endl << message << endl;
         }
@@ -1703,7 +1703,7 @@ void Dataset::removeSequences(const vector<string>& namesToRemove,
 
             removeSequence(index, trashTags[i], true, true);
         }else{
-            string message = "[WARNING]: " + namesToRemove[i] + " is not in ";
+            string message = namesToRemove[i] + " is not in ";
             message += "your dataset, ignoring.";
             Rcpp::Rcout << endl << message << endl;
         }
@@ -1737,7 +1737,7 @@ void Dataset::setAbundance(const vector<string>& n, const vector<float>& abunds,
             }
 
         }else{
-            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            string message = n[i] + " is not in your dataset,";
             message += " ignoring.";
             Rcpp::Rcout << endl << message << endl;
         }
@@ -1787,7 +1787,7 @@ void Dataset::setAbundances(const vector<string>& n,
             }
 
         }else{
-            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            string message = n[i] + " is not in your dataset,";
             message += " ignoring.";
             Rcpp::Rcout << endl << message << endl;
         }
@@ -1859,7 +1859,7 @@ void Dataset::setSequences(const vector<string>& n, const vector<string>& s,
             }
 
         }else{
-            string message = "[WARNING]: " + n[i] + " is not in your dataset,";
+            string message = n[i] + " is not in your dataset,";
             message += " ignoring.";
             Rcpp::Rcout << endl << message << endl;
         }
