@@ -121,7 +121,7 @@ data
 
 #### Adding Metadata
 
-Now that we have added our custom contigs assembly report, let's learn how to add metadata. We can add metadata to our data set by setting the type = "metadata".
+Now that we have added our custom contigs assembly report, let's learn how to add reports not tied to sequence names. We can add metadata to our data set by setting the type = "report", report_type = "metadata".
 
 ```{r}
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
@@ -130,7 +130,8 @@ str(metadata)
 add(
   data,
   table = metadata,
-  type = "metadata"
+  type = "report",
+  report_type = "metadata"
 )
 ```
 

@@ -1,3 +1,26 @@
+## Test environments
+
+- local OS package environment: macOS Tahoe, R 4.6.0
+- GitHub Actions:
+  - R CMD check of Ubuntu-latest (R-release, R-devel), Windows-latest, macOS-latest.
+  - Test Coverage
+  - Linting
+  - Pkgdown build and deployment
+  - Dependency only build and check
+
+## R CMD check results
+
+0 errors ✔ \| 0 warnings ✔ \| 0 notes ✔
+
+## Notes for Reviewer
+
+- All automated checks on GitHub Actions pass cleanly. 
+- Version 0.1.3 corrects a `clang-ASAN` and `gcc-ASAN` issue detected in version 0.1.2.
+
+## Version 0.1.3
+
+Initial release of v0.1.3
+
 ## Resubmission - 0.1.2
 
 - Updates Accessing_Data and General_Importing vignettes replacing on.exit(par(...)) with par(...).
@@ -26,20 +49,3 @@
     - phylotree.h:8:8: warning: ‘<unnamed>.TaxNode::childNumber’ is used uninitialized [-Wuninitialized]
 - Updates strollur version from 0.1.0 to 0.1.1.
 
-## Test environments
-
-- local OS package environment: macOS Tahoe, R 4.6.0
-- GitHub Actions:
-  - R CMD check of Ubuntu-latest (R-release, R-devel), Windows-latest, macOS-latest.
-  - Test Coverage
-  - Linting
-  - Pkgdown build and deployment
-  - Dependency only build and check
-
-## R CMD check results
-
-0 errors ✔ \| 0 warnings ✔ \| 0 notes ✔
-
-## Notes for Reviewer
-
-This is a new package. All automated checks on GitHub Actions pass cleanly.

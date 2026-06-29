@@ -85,7 +85,7 @@ data$add(
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-data$add(table = metadata, type = "metadata")
+data$add(table = metadata, type = "report", report_type = "metadata")
 
 
 ## ------------------------------------------------
@@ -607,7 +607,7 @@ miseq$abundance(type = "treatment")
 \if{html}{\out{<a id="method-strollur-add"></a>}}
 \if{latex}{\out{\hypertarget{method-strollur-add}{}}}
 \subsection{\code{strollur$add()}}{
-  Add sequences, reports, metadata or resource references
+  Add sequences, reports or resource references
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{strollur$add(
@@ -629,9 +629,9 @@ miseq$abundance(type = "treatment")
     \describe{
       \item{\code{table}}{a data.frame containing the data you wish to add.}
       \item{\code{type}}{a string containing the type of data. Options include:
-'sequence', 'resource_reference' 'metadata' and 'report'.}
+'sequence', 'resource_reference' and 'report'.}
       \item{\code{report_type}}{a string containing the type of report you are
-adding. Options include: 'metadata' and custom reports.}
+adding.}
       \item{\code{table_names}}{named list used to indicate the names of the columns
  in the table. By default:
 
@@ -723,7 +723,7 @@ data$add(
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-data$add(table = metadata, type = "metadata")
+data$add(table = metadata, type = "report", report_type = "metadata")
 }
     \if{html}{\out{</div>}}
   }
@@ -1310,7 +1310,7 @@ miseq$names(type = "report")
       \item{\code{type}}{string containing the type of report you would like. Options
 include: "fasta", "sequence", "sequence_bin_assignment",
 "sequence_taxonomy", "bin_taxonomy", "bin_representative",
- "sample_assignment", "metadata", "resource_reference", "sequence_scrap",
+ "sample_assignment", "resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
  Default = "sequence".}

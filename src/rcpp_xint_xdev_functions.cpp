@@ -261,14 +261,7 @@ Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
 
     Rcpp::XPtr<Dataset> d = data["data"];
 
-    if (type == "metadata") {
-        d.get()->addMetadata(table);
-        if (verbose) {
-            xint_added_message(-1, type);
-        }
-    }
-    else{
-
+    if (sequence_name != "none") {
         vector<string> dfNames = Rcpp::as<vector<string>>(table.attr("names"));
 
         // do we have a sequence_names column
@@ -312,11 +305,14 @@ Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
 
             // add report to dataset
             d.get()->addReport(table, type);
-
-            if (verbose) {
-                xint_added_message(-1, "a " + type);
-            }
         }
+    }else {
+        //add generic non sequence report
+        d.get()->addReport(table, type);
+    }
+
+    if (verbose) {
+        xint_added_message(-1, "a " + type + " report");
     }
 
     return data;
@@ -1096,10 +1092,6 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
     // bin_scrap report
     else if (type == "bin_scrap") {
         return d.get()->getScrapReport(bin_type);
-    }
-    // metadata
-    else if (type == "metadata") {
-        return d.get()->getMetadata();
     }
     // references
     else if (type == "resource_reference") {

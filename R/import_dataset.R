@@ -236,23 +236,29 @@ import_dataset <- function(table) {
     }
   }
 
-  # add metadata
-  if ("metadata" %in% names) {
-    xdev_add_report(data = data, table = table$metadata, type = "metadata")
-  }
-
   # add references
   if ("resource_reference" %in% names) {
     xdev_add_references(data = data, table = table$resource_reference)
   }
 
   # list all report names
-  report_names <- names[grepl("_report", names)]
-  report_names <- report_names[!report_names %in% "sequence_report"]
+  table_names <- c(
+    "sequence_data", "sequence_report",
+    "sequence_abundance_table", "otu_bin_data",
+    "otu_sequence_bin_assignment", "otu_bin_representative_sequence",
+    "asv_bin_data",
+    "asv_sequence_bin_assignment", "phylotype_bin_data",
+    "phylotype_sequence_bin_assignment", "resource_reference",
+    "sequence_tree", "sample_tree"
+  )
+  report_names <- names[!names %in% table_names]
 
   if (length(report_names) != 0) {
     for (name in report_names) {
       name_col <- attr(table[[name]], "sequence_name")
+      if (is.null(name_col)) {
+        name_col <- "none"
+      }
       xdev_add_report(
         data = data, table = table[[name]],
         type = name, sequence_name = name_col

@@ -1,8 +1,8 @@
 Package: strollur
 Type: Package
 Title: Store and Transfer Amplicon Sequence Data
-Version: 0.1.2
-Date: 2026-06-09
+Version: 0.1.3
+Date: 2026-06-29
 Authors@R: c(
     person("Sarah", "Westcott", role = c("aut"),
         email = "swestcot@umich.edu",

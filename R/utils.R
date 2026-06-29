@@ -69,6 +69,30 @@ sort_dataframe <- function(data, order, named_col) {
   # as we update versions of strollur we will add them to this function
   if (table_version == current_version) {
     return(TRUE)
+  } else if ((table_version == "0.1.0") && (current_version == "0.1.1")) {
+    # main difference in these two version is metadata.
+    # metadata is a generalized report in version 0.1.1 that allows for no
+    # sequence name column in the report
+    return(TRUE)
+  } else if (table_version == "0.0.0") {
+    return(TRUE)
+  }
+  FALSE
+}
+# =========================================================================== #
+#' @title .load_compatible
+#' @description Check internal strollur object versions for compatibility
+#' @param table_version, string containing the version of the table to be
+#'   imported
+#' @returns A logical
+#' @keywords internal
+#' @noRd
+.load_compatible <- function(table_version) {
+  current_version <- new_dataset()$get_version()
+
+  # as we update versions of strollur we will add them to this function
+  if (table_version == current_version) {
+    return(TRUE)
   } else if (table_version == "0.0.0") {
     return(TRUE)
   }

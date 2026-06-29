@@ -7,8 +7,8 @@
 xdev_add_report(
   data,
   table,
-  type = "metadata",
-  sequence_name = "sequence_name",
+  type = "report",
+  sequence_name = "none",
   verbose = TRUE
 )
 }
@@ -17,12 +17,11 @@ xdev_add_report(
 
 \item{table, }{a data.frame containing your report.}
 
-\item{type, }{a string containing the type of report. Options include:
-"metadata" and custom report tags. Default = "metadata".}
+\item{type, }{a string containing the type of report. Default = "report".}
 
-\item{sequence_name, }{a string containing the name of the column in 'table'
-that contains the sequence names. This is used for custom reports, metadata
-does not require a sequence_name column. Default column name is 'sequence_names'.}
+\item{sequence_name, }{a string. If your report relates to the sequence data,
+`sequence_name` should contain the name of the column in 'table' that
+contains the sequence names. Default = 'none'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}

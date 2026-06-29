@@ -2,7 +2,7 @@
 % Please edit documentation in R/add.R
 \name{add}
 \alias{add}
-\title{Add sequences, reports, metadata or resource references to a
+\title{Add sequences, reports or resource references to a
   \link{strollur} object}
 \usage{
 add(
@@ -26,10 +26,9 @@ add(
 \item{table, }{a data.frame containing the data you wish to add.}
 
 \item{type, }{a string containing the type of data. Options include:
-'sequence', 'resource_reference' 'metadata' and 'report'.}
+'sequence', 'resource_reference' and 'report'.}
 
-\item{report_type, }{a string containing the type of report you are adding.
-Options include: 'metadata' and custom reports.}
+\item{report_type, }{a string containing the type of report you are adding.}
 
 \item{table_names, }{named list used to indicate the names of the columns in
 the table. By default:
@@ -104,7 +103,7 @@ an updated
   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
-Add sequences, reports, metadata or resource references to a
+Add sequences, reports or resource references to a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
@@ -156,6 +155,6 @@ add(
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-add(data, table = metadata, type = "metadata")
+add(data, table = metadata, type = "report", report_type = "metadata")
 
 }

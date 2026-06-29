@@ -1,6 +1,24 @@
 # tests save of dataset object
 
-test_that("load - versions", {
+test_that("load - version 0.1.1", {
+  # current version
+  miseq <- miseq_sop_example()
+
+  file_name <- file.path(tempdir(), "test.rds")
+  save_dataset(miseq, file_name)
+
+  data <- load_dataset(file_name)
+  remove_file(file_name)
+
+  expect_equal(count(data), 113963)
+
+  # 0.1.1 not compatible, dataset c++ class members changed.
+  # metadata is no longer a member of dataset, causes a serialization issue
+  # import is possible with table form
+  expect_error(load_dataset(strollur_example("miseq_sop.010.rds")))
+})
+
+test_that("load - version 0.1.0", {
   # set version to 0.0.0 - forced compatible
   miseq <- miseq_sop_example()
 

@@ -131,19 +131,6 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
     }
   }
 
-  if (!ht || ("metadata" %in% tags)) {
-    metadata <- xdev_report(data, type = "metadata")
-
-    if (nrow(metadata) != 0) {
-      filename <- file.path(
-        dir_path,
-        paste0(dataset_name, ".metadata", collapse = "")
-      )
-      readr::write_tsv(metadata, filename)
-      outputs <- c(outputs, filename)
-    }
-  }
-
   if (!ht || ("report" %in% tags)) {
     report_types <- xdev_names(data, type = "report")
 

@@ -1075,7 +1075,7 @@ test_that("dataset - add_metadata, get_metadata", {
     col_names = TRUE, show_col_types = FALSE
   )
 
-  dataset_t$add(metadata, "metadata")
+  dataset_t$add(metadata, type = "report", report_type = "metadata")
   metadata <- report(dataset_t, "metadata")
 
   expect_equal(names(metadata), c(
@@ -1587,8 +1587,8 @@ test_that("dataset - export,", {
     "otu_sequence_bin_assignment", "otu_bin_representative_sequence",
     "asv_bin_data",
     "asv_sequence_bin_assignment", "phylotype_bin_data",
-    "phylotype_sequence_bin_assignment", "resource_reference", "metadata",
-    "contigs_report", "sequence_tree", "sample_tree"
+    "phylotype_sequence_bin_assignment", "resource_reference",
+    "contigs_report", "metadata", "sequence_tree", "sample_tree"
   )
 
   sequence_data_names <- c(

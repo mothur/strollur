@@ -96,7 +96,7 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
     if (!is.null(treatment_column_name)) {
       df <- df[, which(colnames(df) != treatment_column_name)]
     }
-    add(
+    xdev_add_report(
       data = rdaset_object,
       table = df,
       type = "metadata"

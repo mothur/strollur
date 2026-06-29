@@ -32,7 +32,7 @@ test_that("write_mothur - miseq", {
 
   xdev_add_report(
     data,
-    readr::read_tsv(outputs[14],
+    readr::read_tsv(outputs[15],
       col_names = TRUE,
       show_col_types = FALSE
     ),
