@@ -68,7 +68,7 @@ Let’s use the miseq data object to learn how to do that.
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 save_dataset(miseq, file = file_name)
-#> [1] "/tmp/RtmpJLfRmg/miseq_sop.rds"
+#> [1] "/tmp/RtmpScUc92/miseq_sop.rds"
 
 miseq_from_rds <- load_dataset(file = file_name)
 miseq_from_rds

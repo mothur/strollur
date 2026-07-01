@@ -1,5 +1,14 @@
 # strollur
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.org/package=strollur)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/strollur)](https://CRAN.R-project.org/package=strollur)
+
+[![](https://img.shields.io/badge/ORCID-Patrick%20Schloss-A6CE39.svg)](https://orcid.org/0000-0002-6935-4275)
+[![](https://img.shields.io/badge/ORCID-Sarah%20Westcott-A6CE39.svg)](https://orcid.org/0009-0001-1529-8247)
+[![](https://img.shields.io/badge/ORCID-Gregory%20Johnson-A6CE39.svg)](https://orcid.org/0009-0008-3890-0297)
+
 ## Overview
 
 The **`strollur`** package stores the data associated with your Amplicon

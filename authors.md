@@ -12,7 +12,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/mothur/strollur/blob/v0.1.3/inst/CITATION)
+[`inst/CITATION`](https://github.com/mothur/strollur/blob/main/inst/CITATION)
 
 Sarah Westcott (2026). strollur: Store and Transfer Amplicon Sequence
 Data. R package version 0.1.0.
