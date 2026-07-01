@@ -79,7 +79,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Data Transfers</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/mothur/strollur/blob/main/vignettes/Data_Transfers.Rmd" class="external-link"><code>vignettes/Data_Transfers.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mothur/strollur/blob/v0.1.3/vignettes/Data_Transfers.Rmd" class="external-link"><code>vignettes/Data_Transfers.Rmd</code></a></small>
       <div class="d-none name"><code>Data_Transfers.Rmd</code></div>
     </div>
 
@@ -144,7 +144,7 @@ how to do that.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"miseq_sop.rds"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/save_dataset.html">save_dataset</a></span><span class="op">(</span><span class="va">miseq</span>, file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpSykNV8/miseq_sop.rds"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpJLfRmg/miseq_sop.rds"</span></span>
 <span></span>
 <span><span class="va">miseq_from_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_dataset.html">load_dataset</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
 <span><span class="va">miseq_from_rds</span></span>
