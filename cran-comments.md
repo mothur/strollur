@@ -21,7 +21,7 @@
 - Version 0.1.3 corrects a `clang-ASAN` and `gcc-ASAN` issue detected in `strollur` version 0.1.2.
     - The clang-asan build notes a duplicate symbol (`__itt_detach_ptr__3_0`) present simultaneously in `libtbbmalloc.so.2` and `libtbb.so.2`. This is a known issue tracked under RcppParallel (Issue #152). This is outside the scope of the strollur package codebase, and all package-specific memory leaks and heap overflows have been resolved.
 
-## Version 0.1.3
+## Version - 0.1.3
 
 Initial release of v0.1.3
 
