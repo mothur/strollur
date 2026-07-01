@@ -68,7 +68,7 @@ Let’s use the miseq data object to learn how to do that.
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 save_dataset(miseq, file = file_name)
-#> [1] "/tmp/RtmpYYyhXo/miseq_sop.rds"
+#> [1] "/tmp/RtmpSykNV8/miseq_sop.rds"
 
 miseq_from_rds <- load_dataset(file = file_name)
 miseq_from_rds
@@ -246,7 +246,7 @@ str(table)
 #>   ..$ documentation_url: chr [1:2] "https://mothur.org/phylotypr/" "https://mothur.org/wiki/silva_reference_files/"
 #>   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"
 #>   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"
-#>   ..$ creation_date    : chr [1:2] "2026-06-29" "2026-06-29"
+#>   ..$ creation_date    : chr [1:2] "2026-07-01" "2026-07-01"
 #>  $ contigs_report                   :'data.frame':   2425 obs. of  8 variables:
 #>   ..$ Name           : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_10133_8460" "M00967_43_000000000-A3JHG_1_1101_10331_23332" "M00967_43_000000000-A3JHG_1_1101_10382_22128" "M00967_43_000000000-A3JHG_1_1101_11035_15765" ...
 #>   ..$ Length         : num [1:2425] 253 253 253 252 253 252 253 253 252 252 ...

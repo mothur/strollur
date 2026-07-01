@@ -42,5 +42,5 @@ miseq <- miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 write_mothur_count(miseq, tempfile())
-#> [1] "/tmp/RtmpF2NwuS/file1ad830ea37cb"
+#> [1] "/tmp/Rtmpgf4NB1/file1afd11b4a48c"
 ```
