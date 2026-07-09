@@ -140,7 +140,7 @@ generate_report <- function(dataset, report_type) {
       dplyr::across(
         dplyr::where(is.numeric),
         ~ c(
-          ceiling(quantile(.x, probs = desired_quantiles, na.rm = TRUE)),
+          quantile(.x, probs = desired_quantiles, na.rm = TRUE),
           mean(.x, na.rm = TRUE)
         ),
         .names = "{.col}"
