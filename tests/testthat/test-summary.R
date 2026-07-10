@@ -68,6 +68,29 @@ test_that("summary tests", {
   expect_equal(df[[2]], rep("remove_samples", 4))
   expect_equal(df[[3]], c(101, 14, 101, 2))
   expect_equal(df[[4]], c(109, 14, 109, 2))
+
+  # Test summary with one sequence
+  data <- new_dataset(dataset_name = "example_dataset")
+  name1 <- ">seq1 my very cool comment"
+  seq1 <- paste("TACGTAGGTGGCAAGCGTTATCCGGAATTATTGGGCGTAAAGAGCGCGCAGGTGGTTAATT",
+    "AAGTCTGATGTGAAAGCCCACGGCTTAACCGTGGAGGGTCATTGGAAACTGGTTGACTTGA",
+    "GTGCAGAAGAGGGAAGTGGAATTCCATGTGTAGCGGTGAAATGCGTAGAGATATGGAGGAA",
+    "CACCAGTGGCGAAGGCGGCTTCCTGGTCTGCAACTGACACTGAGGCGCGAAAGCGTGGGGA",
+    "GCAAACAGG",
+    sep = "", collaspe = ""
+  )
+
+  create_dummy_file(
+    "file_with_comments.fasta",
+    c(name1, seq1)
+  )
+  # read fasta file with comments
+  fasta_data <- read_fasta("file_with_comments.fasta")
+  remove_file("file_with_comments.fasta")
+  add(data = data, table = fasta_data, type = "sequence")
+
+  result <- summary(data)
+  expect_true(all(result$numseqs == 1))
 })
 
 test_that("add, assign, abundance error tests", {
