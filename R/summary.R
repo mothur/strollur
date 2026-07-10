@@ -115,12 +115,8 @@ generate_sequence_report <- function(dataset) {
   report_summary$abundance.abundance <- NULL
 
   total_seqs <- count(dataset, "sequence")
-  num_seqs <- rep(1, length(desired_tags))
-  if(total_seqs != 1) {
-    num_seqs <- total_seqs * desired_quantiles
-    num_seqs[[1]] <- 1 # minimum seqs should be 1
-    num_seqs <- c(num_seqs, mean(num_seqs))
-  }
+  num_seqs <- quantile(1:total_seqs, probs = desired_quantiles)
+  num_seqs <- c(num_seqs, mean(num_seqs))
   report_summary <- cbind(report_summary, num_seqs)
   rownames(report_summary) <- report_summary$stat
   colnames(report_summary) <- c(
@@ -128,7 +124,7 @@ generate_sequence_report <- function(dataset) {
     "polymers", "numns", "numseqs"
   )
   report_summary[, -1]
-  }
+}
 
 generate_report <- function(dataset, report_type) {
   desired_quantiles <- c(0, 0.025, 0.25, 0.5, 0.75, 0.975, 1)
