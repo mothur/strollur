@@ -1293,7 +1293,7 @@ test_that("dataset - get_sequence_summary,", {
     report_type = "contigs_report"
   )
 
-  expect_equal(summary$MisMatches, c(0, 0, 0, 1, 2, 7, 7, 2))
+  expect_equal(summary$MisMatches, c(0, 0, 0, 1, 2, 6.50, 7, 2))
   expect_equal(summary$Overlap_End, rep(251, 8))
   expect_equal(summary$Length[1], 252)
   expect_equal(summary$Length[7], 253)
@@ -1308,8 +1308,8 @@ test_that("dataset - get_sequence_summary,", {
     253, 253, 253, 252.6
   ))
   expect_equal(summary$GapsInQuery, rep(0, 8))
-  expect_equal(summary$SearchScore[1], 58.00)
-  expect_equal(summary$SearchScore[7], 83.00)
+  expect_equal(summary$SearchScore[1], 57.55)
+  expect_equal(summary$SearchScore[7], 82.44)
 })
 
 test_that("dataset - add_sequence_tree / get_sequence_tree,", {

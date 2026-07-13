@@ -115,8 +115,7 @@ generate_sequence_report <- function(dataset) {
   report_summary$abundance.abundance <- NULL
 
   total_seqs <- count(dataset, "sequence")
-  num_seqs <- total_seqs * desired_quantiles
-  num_seqs[[1]] <- 1 # minimum seqs should be 1
+  num_seqs <- quantile(1:total_seqs, probs = desired_quantiles)
   num_seqs <- c(num_seqs, mean(num_seqs))
   report_summary <- cbind(report_summary, num_seqs)
   rownames(report_summary) <- report_summary$stat
@@ -140,7 +139,7 @@ generate_report <- function(dataset, report_type) {
       dplyr::across(
         dplyr::where(is.numeric),
         ~ c(
-          ceiling(quantile(.x, probs = desired_quantiles, na.rm = TRUE)),
+          quantile(.x, probs = desired_quantiles, na.rm = TRUE),
           mean(.x, na.rm = TRUE)
         ),
         .names = "{.col}"
