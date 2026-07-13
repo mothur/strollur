@@ -31,13 +31,13 @@ miseq
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -68,7 +68,7 @@ Let’s use the miseq data object to learn how to do that.
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 save_dataset(miseq, file = file_name)
-#> [1] "/tmp/RtmpScUc92/miseq_sop.rds"
+#> [1] "/tmp/RtmpjWdWfm/miseq_sop.rds"
 
 miseq_from_rds <- load_dataset(file = file_name)
 miseq_from_rds
@@ -76,13 +76,13 @@ miseq_from_rds
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -118,13 +118,13 @@ miseq_from_rds
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -147,13 +147,13 @@ miseq
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -246,7 +246,7 @@ str(table)
 #>   ..$ documentation_url: chr [1:2] "https://mothur.org/phylotypr/" "https://mothur.org/wiki/silva_reference_files/"
 #>   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"
 #>   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"
-#>   ..$ creation_date    : chr [1:2] "2026-07-01" "2026-07-01"
+#>   ..$ creation_date    : chr [1:2] "2026-07-13" "2026-07-13"
 #>  $ contigs_report                   :'data.frame':   2425 obs. of  8 variables:
 #>   ..$ Name           : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_10133_8460" "M00967_43_000000000-A3JHG_1_1101_10331_23332" "M00967_43_000000000-A3JHG_1_1101_10382_22128" "M00967_43_000000000-A3JHG_1_1101_11035_15765" ...
 #>   ..$ Length         : num [1:2425] 253 253 253 252 253 252 253 253 252 252 ...
@@ -306,13 +306,13 @@ miseq_import
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -364,13 +364,13 @@ miseq
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -394,13 +394,13 @@ miseq_shallow_copy
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -424,13 +424,13 @@ miseq_deep_copy
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 

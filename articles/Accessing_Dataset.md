@@ -40,13 +40,13 @@ miseq
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 
@@ -789,8 +789,8 @@ report(
 #> 1 @article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy}, journal = {Applied and Environmental Microbiology}, volume = {73}, number = {16}, pages = {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL = {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint = {https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}
 #> 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NA
 #>   creation_date
-#> 1    2026-07-01
-#> 2    2026-07-01
+#> 1    2026-07-13
+#> 2    2026-07-13
 ```
 
 Lastly, if sequences or bins have been removed over the course of your
@@ -847,14 +847,14 @@ summary(
 #> Maximum:    270.0000       255.0000     22.000000    256.0000 120.000000      0
 #> Mean:       252.7575       249.1501      2.005361    251.1555   5.162474      0
 #>             Expected_Errors
-#> Minimum:         1.00000000
-#> 2.5%-tile:       1.00000000
-#> 25%-tile:        1.00000000
-#> Median:          1.00000000
-#> 75%-tile:        1.00000000
-#> 97.5%-tile:      1.00000000
-#> Maximum:         4.00000000
-#> Mean:            0.07385095
+#> Minimum:       0.0000452496
+#> 2.5%-tile:     0.0010211820
+#> 25%-tile:      0.0022619900
+#> Median:        0.0092259500
+#> 75%-tile:      0.0558268000
+#> 97.5%-tile:    0.4933484000
+#> Maximum:       3.0126200000
+#> Mean:          0.0738509482
 #>               Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
 #> Minimum:    250.0000       232.0000      0.000000    248.0000   0.000000      0
 #> 2.5%-tile:  252.0000       246.0000      1.000000    250.0000   0.000000      0
@@ -865,14 +865,14 @@ summary(
 #> Maximum:    270.0000       255.0000     22.000000    256.0000 120.000000      0
 #> Mean:       252.7575       249.1501      2.005361    251.1555   5.162474      0
 #>             Expected_Errors
-#> Minimum:         1.00000000
-#> 2.5%-tile:       1.00000000
-#> 25%-tile:        1.00000000
-#> Median:          1.00000000
-#> 75%-tile:        1.00000000
-#> 97.5%-tile:      1.00000000
-#> Maximum:         4.00000000
-#> Mean:            0.07385095
+#> Minimum:       0.0000452496
+#> 2.5%-tile:     0.0010211820
+#> 25%-tile:      0.0022619900
+#> Median:        0.0092259500
+#> 75%-tile:      0.0558268000
+#> 97.5%-tile:    0.4933484000
+#> Maximum:       3.0126200000
+#> Mean:          0.0738509482
 ```
 
 Lastly, if sequences or bins have been removed over the course of your

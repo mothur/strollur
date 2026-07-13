@@ -2,6 +2,8 @@
 
 ## strollur 0.1.3
 
+CRAN release: 2026-07-02
+
 - Adds
   [`read_mothur_oligos()`](https://mothur.org/strollur/reference/read_mothur_oligos.md)
   function for the import of oligo data from
