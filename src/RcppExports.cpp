@@ -331,6 +331,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// xdev_get_sequence_indexes_by_sample
+vector<vector<int> > xdev_get_sequence_indexes_by_sample(const Rcpp::Environment& data, const Rcpp::CharacterVector& samples);
+RcppExport SEXP _strollur_xdev_get_sequence_indexes_by_sample(SEXP dataSEXP, SEXP samplesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::CharacterVector& >::type samples(samplesSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_get_sequence_indexes_by_sample(data, samples));
+    return rcpp_result_gen;
+END_RCPP
+}
 // xdev_has_sequence_taxonomy
 bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data);
 RcppExport SEXP _strollur_xdev_has_sequence_taxonomy(SEXP dataSEXP) {
@@ -593,6 +605,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_get_list_vector", (DL_FUNC) &_strollur_xdev_get_list_vector, 2},
     {"_strollur_xdev_get_by_sample", (DL_FUNC) &_strollur_xdev_get_by_sample, 4},
     {"_strollur_xdev_get_sequences", (DL_FUNC) &_strollur_xdev_get_sequences, 3},
+    {"_strollur_xdev_get_sequence_indexes_by_sample", (DL_FUNC) &_strollur_xdev_get_sequence_indexes_by_sample, 2},
     {"_strollur_xdev_has_sequence_taxonomy", (DL_FUNC) &_strollur_xdev_has_sequence_taxonomy, 1},
     {"_strollur_xdev_merge_bins", (DL_FUNC) &_strollur_xdev_merge_bins, 4},
     {"_strollur_xdev_merge_sequences", (DL_FUNC) &_strollur_xdev_merge_sequences, 3},

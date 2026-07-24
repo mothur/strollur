@@ -241,12 +241,15 @@ double Dataset::addReferences(const vector<Reference>& refs) {
 void Dataset::addReport(Rcpp::DataFrame& report, const string& type) {
     const auto it = reports.find(type);
 
+    //Rcpp::CharacterVector pristine_names = report.attr("names");
+
     if (it == reports.end()) {
         // this is a new report
         reports[type].addReport(report);
     }else{
         it->second.addReport(report);
     }
+
     sortNeeded = true;
 }
 /******************************************************************************/
@@ -274,6 +277,7 @@ double Dataset::addSequences(const vector<string>& n,
             message +=  seqName + "', sequence and bin names must be unique.";
             throw Rcpp::exception(message.c_str());
         }
+        existingNames.insert(seqName);
         countNames.push_back(numSeqs);
         seqIndex[seqName] = numSeqs;
         numSeqs++;
@@ -794,6 +798,48 @@ vector<string> Dataset::getListVector(const string& type) const{
     return nullVector;
 }
 /******************************************************************************/
+vector<int> Dataset:: getSequenceIndexes(const vector<string>& samples,
+                                          const bool distinct) const {
+    vector<int> included;
+    auto index = 1; // return R index
+
+    // get all "good" names in dataset
+    if (samples.empty())  {
+
+        for (size_t i = 0; i < tableSeqs.size(); i++) {
+            if (tableSeqs[i]) {
+                included.push_back(index);
+                index++;
+            }
+        }
+        // get all "good" names in specific set of samples
+    }else {
+
+        // all seqs
+        for (int i = 0; i < static_cast<int>(tableSeqs.size()); i++) {
+            // if "good" seq
+            if (tableSeqs[i]) {
+
+                if (!distinct) {
+                    // include all the requested samples, but may have
+                    // additional samples present
+                    if (count.hasSamples(samples, i)) {
+                        included.push_back(index);
+                    }
+                }else {
+                    // sequences must have ONLY the samples requested
+                    if (identical(count.getSamples(i), samples)) {
+                        included.push_back(index);
+                    }
+                }
+                index++;
+            }
+        }
+    }
+
+    return included;
+}
+/******************************************************************************/
 vector<string> Dataset:: getSequenceNames(const vector<string>& samples,
                                                const bool distinct) const {
     vector<string> included;
@@ -830,6 +876,24 @@ vector<string> Dataset:: getSequenceNames(const vector<string>& samples,
     }
 
     return included;
+}
+/******************************************************************************/
+vector<vector<int> > Dataset::getIndexesBySample(const vector<string>& samples) const {
+    vector<vector<int> > result;
+
+    vector<string> temp = samples;
+    // return all samples if none specified
+    if (samples.empty()) {
+        temp = getSamples();
+    }
+
+    for (const auto & sample : temp) {
+        vector<string> s;
+        s.push_back(sample);
+        result.push_back(getSequenceIndexes(s));
+    }
+
+    return result;
 }
 /******************************************************************************/
 vector<vector<string> > Dataset::getSequenceNamesBySample(vector<string> samples) const {

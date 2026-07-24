@@ -859,6 +859,17 @@ vector<string> xdev_get_list_vector(const Rcpp::Environment& data,
     return d.get()->getListVector(type);
 }
 /******************************************************************************/
+vector<vector<int> > xdev_get_sequence_indexes_by_sample(const Rcpp::Environment& data,
+                                           const Rcpp::CharacterVector& samples) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->getIndexesBySample(Rcpp::as<vector<string>>(samples));
+}
+/******************************************************************************/
 vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
                                            const string& type,
                                            const Rcpp::CharacterVector& samples,
@@ -1099,7 +1110,35 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
     }
     else {
         // custom reports like alignreport, contigs report and chimera reports
-        return d.get()->getReports(type);
+        Rcpp::DataFrame report = d.get()->getReports(type);
+
+        if (report.size() > 0 && report.hasAttribute("names")) {
+            Rcpp::CharacterVector current_names = report.attr("names");
+            Rcpp::CharacterVector clean_names(current_names.size());
+
+            for (int i = 0; i < current_names.size(); ++i) {
+                std::string name_str = Rcpp::as<std::string>(current_names[i]);
+
+                // If the name starts with X followed by digits and a dot (e.g., X2.error_seq)
+                // then the names have been mangled due to multiple reports of the same type
+                if (name_str.rfind("X", 0) == 0 && name_str.find(".") != std::string::npos) {
+                    size_t dot_pos = name_str.find(".");
+
+                    bool is_mangled = true;
+                    for (size_t j = 1; j < dot_pos; ++j) {
+                        if (!isdigit(name_str[j])) { is_mangled = false; break; }
+                    }
+
+                    if (is_mangled && dot_pos < name_str.length() - 1) {
+                        name_str = name_str.substr(dot_pos + 1);
+                    }
+                }
+                clean_names[i] = name_str;
+            }
+            report.attr("names") = clean_names;
+        }
+
+        return report;
     }
 
     // empty report

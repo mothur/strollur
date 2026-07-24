@@ -620,6 +620,57 @@ test_that("xdev_get_by_sample", {
   expect_equal(actual, list(expected))
 })
 
+test_that("xdev_get_sequence_indexes_by_sample", {
+  x <- 10
+  expect_error(
+    xdev_get_sequence_indexes_by_sample(x),
+    "data must be a strollur object."
+  )
+
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("..AT-TG-C..", ".AT---TGC", "A-TTGC.", "..ATTGC..")
+
+  samples <- c("sample1", "sample2", "sample1", "sample2")
+  abunds <- c(10, 10, 10, 10)
+
+  data <- new_dataset()
+
+  xdev_add_sequences(
+    data,
+    data.frame(
+      sequence_name = names,
+      sequence = seqs
+    )
+  )
+
+  # add samples
+  xdev_assign_sequence_abundance(data, data.frame(
+    sequence_name = names,
+    sample = samples,
+    abundance = abunds
+  ))
+
+  expected <- list(c(1, 3), c(2, 4))
+  actual <- xdev_get_sequence_indexes_by_sample(data)
+  expect_equal(actual, expected)
+
+  names <- xdev_names(data)
+  seqs <- xdev_get_sequences(data)
+
+  expect_equal(names[expected[[1]][1]], "seq1")
+  expect_equal(names[expected[[1]][2]], "seq3")
+  expect_equal(names[expected[[2]][1]], "seq2")
+  expect_equal(names[expected[[2]][2]], "seq4")
+
+  # just sample2
+  expected <- list(c(2, 4))
+  actual <- xdev_get_sequence_indexes_by_sample(data, samples = c("sample2"))
+  expect_equal(actual, expected)
+
+  expect_equal(names[expected[[1]][1]], "seq2")
+  expect_equal(names[expected[[1]][2]], "seq4")
+})
+
 test_that("xdev_get_abundances_by_sample - getSequenceAbundanceBySample", {
   data <- new_dataset()
 

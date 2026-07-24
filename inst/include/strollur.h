@@ -659,6 +659,7 @@ public:
 
 
     vector<vector<float> > getSequenceAbundanceBySample(const vector<string>& samples = nullVector) const;
+    vector<vector<int> > getIndexesBySample(const vector<string>& samples = nullVector) const;
 
     // names of bins
     vector<string> getBinIds(const string& type = "otu",
@@ -700,6 +701,8 @@ public:
                                            bool bySample = false) const;
     vector<string> getSequenceNames(const vector<string>& sample = nullVector,
                                           bool distinct = false) const;
+    vector<int> getSequenceIndexes(const vector<string>& sample = nullVector,
+                                    bool distinct = false) const;
     vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector) const;
 
 

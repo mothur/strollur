@@ -772,6 +772,42 @@ xdev_get_sequences <- function(data, sample = "", degap = FALSE) {
     .Call(`_strollur_xdev_get_sequences`, data, sample, degap)
 }
 
+#' @title xdev_get_sequence_indexes_by_sample
+#' @description
+#'
+#' As a developer you may want to process data by sample. To save space you can
+#' request the indexes parsed by sample, and then get a single copy of the sequences
+#' and sequence names.
+#'
+#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'
+#' @param type, string containing the type of data you want the totals of.
+#' Options include: "sequence_name", "sequence". Default = "sequence_name".
+#'
+#' @param samples a vector of strings containing the names of the samples you
+#' would like sequence names for. By default all samples are included.
+#'
+#' @examples
+#'
+#' data <- miseq_sop_example()
+#'
+#' sequences <- xdev_get_sequences(data)
+#' names <- xdev_names(data)
+#'
+#' # To get the indexes of the names and sequences by sample
+#' indexes <- xdev_get_sequence_indexes_by_sample(data)
+#'
+#' # First sequence in first sample
+#' names[indexes[[1]][1]]
+#' sequences[indexes[[1]][1]]
+#'
+#' @return 2D vector of strings indexes for use with xdev_get_sequences and xdev_get_names.
+#' requested parsed by sample. (Indexes start at 1)
+#' @export
+xdev_get_sequence_indexes_by_sample <- function(data, samples = as.character( c())) {
+    .Call(`_strollur_xdev_get_sequence_indexes_by_sample`, data, samples)
+}
+
 #' @title xdev_has_sequence_taxonomy
 #' @description
 #' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
