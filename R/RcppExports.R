@@ -461,6 +461,51 @@ xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequenc
     .Call(`_strollur_xdev_assign_sequence_taxonomy`, data, table, reference, sequence_name, taxonomy, verbose)
 }
 
+#' @title xdev_assign_bin_taxonomy_tidy
+#' @description
+#' Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing bin taxonomy assignments
+#' @param bin_type a string indicating the type of bin assignments. Default "otu".
+#' @param reference a list created by the function [new_reference]. Optional.
+#'
+#' @param bin_name a string containing the name of the column in 'table'
+#' that contains the bin names. Default column name is 'bin_name'.
+#' @param level a string containing the name of the column in 'table' that
+#' contains the taxonomy levels. Default column name is 'level'.
+#' @param taxonomy a string containing the name of the column in 'table' that
+#' contains the bin taxonomies. Default column name is 'taxonomy'.
+#' @param confidence a string containing the name of the column in 'table'
+#' that contains the taxonomies confidence. Default column name is 'confidence'.
+#' @param verbose a logical whether or not you want progress messages.
+#' Default = TRUE.
+#'
+#' @examples
+#'
+#' bin_classifications <- readRDS(strollur_example("miseq_tidy_bin_taxonomy.rds"))
+#' str(bin_classifications)
+#'
+#' data <- read_mothur(otu_shared = strollur_example("final.opti_mcc.shared"))
+#'
+#' xdev_assign_bin_taxonomy_tidy(data, bin_classifications)
+#'
+#' # With the reference parameter you can add information about the reference
+#' # you used to classify your bins. You can also add references using the
+#' # 'add_references' function.
+#'
+#' reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+#'               "classification_otu by mothur2 v1.0.0 using default options", "",
+#' "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
+#'
+#' xdev_assign_bin_taxonomy_tidy(data, bin_classifications, reference)
+#'
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @export
+xdev_assign_bin_taxonomy_tidy <- function(data, table, bin_type = "otu", reference = NULL, bin_name = "bin_name", level = "level", taxonomy = "taxonomy", confidence = "confidence", verbose = TRUE) {
+    .Call(`_strollur_xdev_assign_bin_taxonomy_tidy`, data, table, bin_type, reference, bin_name, level, taxonomy, confidence, verbose)
+}
+
 #' @title xdev_assign_sequence_taxonomy_tidy
 #' @description
 #' Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

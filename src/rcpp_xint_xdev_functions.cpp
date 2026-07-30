@@ -557,6 +557,71 @@ Rcpp::Environment xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
     return data;
 }
 /******************************************************************************/
+Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data,
+                                           const Rcpp::DataFrame& table,
+                                           const string& bin_type,
+                                           Rcpp::Nullable<Rcpp::List> reference,
+                                           const string& bin_name,
+                                           const string& level,
+                                           const string& taxonomy,
+                                           const string& confidence,
+                                           bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    if (d.get()->getNumBins(bin_type) == 0) {
+        string message = "No bin data for type " + bin_type + ", please ";
+        message += " assign bins using the 'assign' function then try ";
+        message += "again.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    vector<string> bin_names, taxonomies;
+    vector<float> confidences;
+    vector<int> levels;
+
+    bin_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                       bin_name));
+    taxonomies = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                        taxonomy));
+    levels = Rcpp::as<vector<int>>(xint_fill_required_parameters(table,
+                                                                 level));
+    confidences = Rcpp::as<vector<float>>(xint_fill_required_parameters(table,
+                                                                        confidence));
+
+    double numAssigned = d.get()->assignBinTaxonomyTidy(bin_names, levels,
+                               taxonomies, confidences, bin_type);
+
+    if (verbose) {
+        string tag = " " + bin_type +" bin taxonomies.";
+        xint_assigned_message(numAssigned, tag);
+    }
+
+
+    if (reference.isNotNull()) {
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
+    }
+
+    return data;
+}
+/******************************************************************************/
 Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
                                       const Rcpp::DataFrame& table,
                                       const string& sequence_name,

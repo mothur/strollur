@@ -1432,6 +1432,14 @@ test_that("Tests assignSequenceTaxonomy, assignBinTaxonomy, removeLineages", {
     "Betaproteobacteria"
   ))
 
+  # change a taxon and use tidy format
+  bin_taxonomy_report[[3]][3] <- "changed"
+  bin_taxonomy_report[["confidence"]] <- c(100, 100, 90, 100, 90, 85)
+
+  xdev_assign_bin_taxonomy_tidy(data, table = bin_taxonomy_report)
+  bin_taxonomy_report <- report(data, "bin_taxonomy")
+  expect_equal(bin_taxonomy_report[[3]][3], "changed")
+
   contaminants <- c("Proteobacteria")
   xdev_remove_lineages(data, contaminants, "contaminant")
 

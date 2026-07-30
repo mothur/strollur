@@ -406,6 +406,47 @@ double Dataset::assignBinRepresentativeSequences(const vector<string>& binNames,
     return repAssigned;
 }
 /******************************************************************************/
+double Dataset::assignBinTaxonomyTidy(const vector<string>& bin_names,
+                                      const vector<int>& levels,
+                                      const vector<string>& taxons,
+                                      const vector<float>& confidences,
+                                      const string& type) {
+
+    double numBinTaxonomiesAdded = 0;
+
+    if (hasBinTable(type)) {
+
+        // allocate space
+        auto numBins = binTables[getBinTableIndex(type)].getNumBins(count);
+        vector<string> bin_taxonomies(numBins);
+
+        string assembledTax = "";
+        auto index = 0;
+        for (size_t i = 0; i < levels.size(); i++) {
+
+            // start of new sequences taxonomies, ignore first one
+            if ((levels[i] == 1) && (i != 0)) {
+                // update last sequences full taxonomy
+                bin_taxonomies[index] = assembledTax;
+                assembledTax = "";
+                index++;
+
+                assembledTax = taxons[i] + "(" + toString(confidences[i]) + ");";
+            }else{
+                assembledTax += taxons[i] + "(" + toString(confidences[i]) + ");";
+            }
+        }
+
+        // update last bins full taxonomy
+        bin_taxonomies[index] = assembledTax;
+
+        numBinTaxonomiesAdded = binTables[getBinTableIndex(type)].assignTaxonomy(unique(bin_names), bin_taxonomies);
+        sortNeeded = true;
+    }
+
+    return numBinTaxonomiesAdded;
+}
+/******************************************************************************/
 double Dataset::assignBinTaxonomy(const vector<string>& binIds,
                                   const vector<string>& taxs,
                                   const string& type) {
@@ -414,8 +455,9 @@ double Dataset::assignBinTaxonomy(const vector<string>& binIds,
 
     if (hasBinTable(type)) {
         numBinTaxonomiesAdded = binTables[getBinTableIndex(type)].assignTaxonomy(binIds, taxs);
+        sortNeeded = true;
     }
-    sortNeeded = true;
+
     return numBinTaxonomiesAdded;
 }
 /******************************************************************************/

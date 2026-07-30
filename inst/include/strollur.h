@@ -654,6 +654,12 @@ public:
                              const vector<string>& taxonomies,
                              const string& type = "otu");
 
+    double assignBinTaxonomyTidy(const vector<string>& bin_names,
+                                 const vector<int>& levels,
+                                 const vector<string>& taxonomies,
+                                 const vector<float>& confidences,
+                                 const string& type = "otu");
+
     double assignTreatments(const vector<string>& samples,
                             const vector<string>& treatments);
 

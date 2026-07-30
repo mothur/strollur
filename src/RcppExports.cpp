@@ -204,6 +204,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// xdev_assign_bin_taxonomy_tidy
+Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data, const Rcpp::DataFrame& table, const string& bin_type, Rcpp::Nullable<Rcpp::List> reference, const string& bin_name, const string& level, const string& taxonomy, const string& confidence, const bool verbose);
+RcppExport SEXP _strollur_xdev_assign_bin_taxonomy_tidy(SEXP dataSEXP, SEXP tableSEXP, SEXP bin_typeSEXP, SEXP referenceSEXP, SEXP bin_nameSEXP, SEXP levelSEXP, SEXP taxonomySEXP, SEXP confidenceSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DataFrame& >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< const string& >::type bin_type(bin_typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< const string& >::type bin_name(bin_nameSEXP);
+    Rcpp::traits::input_parameter< const string& >::type level(levelSEXP);
+    Rcpp::traits::input_parameter< const string& >::type taxonomy(taxonomySEXP);
+    Rcpp::traits::input_parameter< const string& >::type confidence(confidenceSEXP);
+    Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_assign_bin_taxonomy_tidy(data, table, bin_type, reference, bin_name, level, taxonomy, confidence, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
 // xdev_assign_sequence_taxonomy_tidy
 Rcpp::Environment xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& data, const Rcpp::DataFrame& table, Rcpp::Nullable<Rcpp::List> reference, const string& sequence_name, const string& level, const string& taxonomy, const string& confidence, const bool verbose);
 RcppExport SEXP _strollur_xdev_assign_sequence_taxonomy_tidy(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP sequence_nameSEXP, SEXP levelSEXP, SEXP taxonomySEXP, SEXP confidenceSEXP, SEXP verboseSEXP) {
@@ -608,6 +627,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_assign_bin_representative_sequences", (DL_FUNC) &_strollur_xdev_assign_bin_representative_sequences, 7},
     {"_strollur_xdev_assign_bin_taxonomy", (DL_FUNC) &_strollur_xdev_assign_bin_taxonomy, 7},
     {"_strollur_xdev_assign_sequence_taxonomy", (DL_FUNC) &_strollur_xdev_assign_sequence_taxonomy, 6},
+    {"_strollur_xdev_assign_bin_taxonomy_tidy", (DL_FUNC) &_strollur_xdev_assign_bin_taxonomy_tidy, 9},
     {"_strollur_xdev_assign_sequence_taxonomy_tidy", (DL_FUNC) &_strollur_xdev_assign_sequence_taxonomy_tidy, 8},
     {"_strollur_xdev_assign_sequence_abundance", (DL_FUNC) &_strollur_xdev_assign_sequence_abundance, 7},
     {"_strollur_xdev_assign_treatments", (DL_FUNC) &_strollur_xdev_assign_treatments, 5},
