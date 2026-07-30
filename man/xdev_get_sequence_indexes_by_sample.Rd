@@ -11,13 +11,10 @@ xdev_get_sequence_indexes_by_sample(data, samples = as.character(c()))
 
 \item{samples}{a vector of strings containing the names of the samples you
 would like sequence names for. By default all samples are included.}
-
-\item{type, }{string containing the type of data you want the totals of.
-Options include: "sequence_name", "sequence". Default = "sequence_name".}
 }
 \value{
 2D vector of strings indexes for use with xdev_get_sequences and xdev_get_names.
-requested parsed by sample.
+requested parsed by sample. (Indexes start at 1)
 }
 \description{
 As a developer you may want to process data by sample. To save space you can

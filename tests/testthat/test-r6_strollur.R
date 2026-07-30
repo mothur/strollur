@@ -15,6 +15,11 @@ test_that("dataset - intialize from read_mothur / print", {
     dataset_name = "miseq_sop"
   )
 
+  expect_true(dataset_t$has_sequence_taxonomy())
+  expect_true(dataset_t$has_bin_taxonomy("otu"))
+  expect_true(dataset_t$has_bin_taxonomy("asv"))
+  expect_true(dataset_t$has_bin_taxonomy("phylotype"))
+
   # add references, custom report and metadata
   contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
   xdev_add_report(

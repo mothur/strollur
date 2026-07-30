@@ -1,6 +1,22 @@
 # tests save of dataset object
 
 test_that("load - version 0.1.1", {
+  # 0.1.1 not compatible, dataset c++ class members changed.
+  # metadata is no longer a member of dataset, causes a serialization issue
+  # import is possible with table form
+  expect_error(load_dataset(strollur_example("miseq_sop.010.rds")))
+
+  # 0.1.1 is convertable to version 0.1.2
+  # dataset c++ class members unchanged.
+  # main difference in these two version is the addition of
+  # has_sequence_taxonomy and has_bin_taxonomy functions to r6 object
+  data <- load_dataset(strollur_example("miseq_sop.011.rds"))
+
+  expect_equal(data$get_version(), "0.1.2")
+  expect_equal(count(data), 113963)
+})
+
+test_that("load ", {
   # current version
   miseq <- miseq_sop_example()
 
@@ -11,11 +27,6 @@ test_that("load - version 0.1.1", {
   remove_file(file_name)
 
   expect_equal(count(data), 113963)
-
-  # 0.1.1 not compatible, dataset c++ class members changed.
-  # metadata is no longer a member of dataset, causes a serialization issue
-  # import is possible with table form
-  expect_error(load_dataset(strollur_example("miseq_sop.010.rds")))
 })
 
 test_that("load - version 0.1.0", {

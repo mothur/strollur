@@ -919,6 +919,18 @@ bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data) {
     return d.get()->hasSequenceTaxonomy;
 }
 /******************************************************************************/
+bool xdev_has_bin_taxonomy(const Rcpp::Environment& data,
+                           const string& type) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->hasBinTaxonomy(type);
+}
+/******************************************************************************/
 Rcpp::Environment xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
                      const string& reason, const string& bin_type) {
 

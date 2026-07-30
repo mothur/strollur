@@ -780,10 +780,6 @@ xdev_get_sequences <- function(data, sample = "", degap = FALSE) {
 #' and sequence names.
 #'
 #' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param type, string containing the type of data you want the totals of.
-#' Options include: "sequence_name", "sequence". Default = "sequence_name".
-#'
 #' @param samples a vector of strings containing the names of the samples you
 #' would like sequence names for. By default all samples are included.
 #'
@@ -806,6 +802,24 @@ xdev_get_sequences <- function(data, sample = "", degap = FALSE) {
 #' @export
 xdev_get_sequence_indexes_by_sample <- function(data, samples = as.character( c())) {
     .Call(`_strollur_xdev_get_sequence_indexes_by_sample`, data, samples)
+}
+
+#' @title xdev_has_bin_taxonomy
+#' @description
+#' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
+#'
+#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param type a string indicating the type of bin assignments. Default "otu".
+#'
+#' @examples
+#'
+#'  data <- miseq_sop_example()
+#'  xdev_has_bin_taxonomy(data)
+#'
+#' @return boolean
+#' @export
+xdev_has_bin_taxonomy <- function(data, type = "otu") {
+    .Call(`_strollur_xdev_has_bin_taxonomy`, data, type)
 }
 
 #' @title xdev_has_sequence_taxonomy

@@ -319,6 +319,26 @@ data$get_version()
 
 
 ## ------------------------------------------------
+## Method `strollur$has_bin_taxonomy()`
+## ------------------------------------------------
+
+
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+
+miseq$has_bin_taxonomy(bin_type = "otu")
+
+
+## ------------------------------------------------
+## Method `strollur$has_sequence_taxonomy()`
+## ------------------------------------------------
+
+
+miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+
+miseq$has_sequence_taxonomy()
+
+
+## ------------------------------------------------
 ## Method `strollur$is_equal()`
 ## ------------------------------------------------
 
@@ -483,6 +503,8 @@ the class.}
     \item \href{#method-strollur-get_sample_tree}{\code{strollur$get_sample_tree()}}
     \item \href{#method-strollur-get_sequence_tree}{\code{strollur$get_sequence_tree()}}
     \item \href{#method-strollur-get_version}{\code{strollur$get_version()}}
+    \item \href{#method-strollur-has_bin_taxonomy}{\code{strollur$has_bin_taxonomy()}}
+    \item \href{#method-strollur-has_sequence_taxonomy}{\code{strollur$has_sequence_taxonomy()}}
     \item \href{#method-strollur-is_equal}{\code{strollur$is_equal()}}
     \item \href{#method-strollur-names}{\code{strollur$names()}}
     \item \href{#method-strollur-report}{\code{strollur$report()}}
@@ -1176,6 +1198,60 @@ object.
     \preformatted{data <- new_dataset("test")
 
 data$get_version()
+}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-strollur-has_bin_taxonomy"></a>}}
+\if{latex}{\out{\hypertarget{method-strollur-has_bin_taxonomy}{}}}
+\subsection{\code{strollur$has_bin_taxonomy()}}{
+  Determine if your dataset contains bin classifications
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{strollur$has_bin_taxonomy(bin_type = "otu")}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{bin_type}}{string containing the bin type you would like to check
+for classifaction data. Default = "otu".}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a logical
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+
+miseq$has_bin_taxonomy(bin_type = "otu")
+}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-strollur-has_sequence_taxonomy"></a>}}
+\if{latex}{\out{\hypertarget{method-strollur-has_sequence_taxonomy}{}}}
+\subsection{\code{strollur$has_sequence_taxonomy()}}{
+  Determine if your dataset contains sequence classifications
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{strollur$has_sequence_taxonomy()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a logical
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+
+miseq$has_sequence_taxonomy()
 }
     \if{html}{\out{</div>}}
   }

@@ -38,6 +38,11 @@ load_dataset <- function(file) {
         current_version, ". Converting and importing."
       )
       cli::cli_alert(message)
+    } else if (.import_compatible(dataset_version, deserialize = TRUE)) {
+      xint_deserialize_dobject(dataset)
+      table <- export_dataset(dataset)
+      dataset <- import_dataset(table)
+      return(dataset)
     } else {
       message <- paste0(
         "Unable to create 'strollur' object. ",

@@ -58,12 +58,13 @@ sort_dataframe <- function(data, order, named_col) {
 # =========================================================================== #
 #' @title .import_compatible
 #' @description Check internal strollur object versions for compatibility
-#' @param table_version, string containing the version of the table to be
+#' @param table_version string containing the version of the table to be
 #'   imported
+#' @param deserialize logical, if true we need to deserialize else just table
 #' @returns A logical
 #' @keywords internal
 #' @noRd
-.import_compatible <- function(table_version) {
+.import_compatible <- function(table_version, deserialize = FALSE) {
   current_version <- new_dataset()$get_version()
 
   # as we update versions of strollur we will add them to this function
@@ -73,6 +74,15 @@ sort_dataframe <- function(data, order, named_col) {
     # main difference in these two version is metadata.
     # metadata is a generalized report in version 0.1.1 that allows for no
     # sequence name column in the report
+    return(TRUE)
+  } else if ((table_version == "0.1.1") && (current_version == "0.1.2")) {
+    # main difference in these 0.1.1 and 0.1.2 version is the addition of
+    # has_sequence_taxonomy and has_bin_taxonomy functions to r6 object
+    return(TRUE)
+  } else if ((table_version == "0.1.0") &&
+               (current_version == "0.1.2") && !deserialize) {
+    # if deserialize is needed, these are not compatible because 0.1.0
+    # has different dataset.cpp members. The table is convertable.
     return(TRUE)
   } else if (table_version == "0.0.0") {
     return(TRUE)

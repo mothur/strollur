@@ -1350,6 +1350,13 @@ bool Dataset::hasBinTable(const string& type) const {
     });
 }
 /******************************************************************************/
+bool Dataset::hasBinTaxonomy(const string& bin_type) const {
+    if (hasBinTable(bin_type) && hasSequenceTaxonomy) {
+        return true;
+    }
+    return false;
+}
+/******************************************************************************/
 int Dataset::getBinTableIndex(const string& type) const {
     for (int i = 0; i < static_cast<int>(binTables.size()); i++) {
         if (binTables[i].label == type) {

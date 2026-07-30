@@ -1005,6 +1005,39 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
+    #' Determine if your dataset contains bin classifications
+    #'
+    #' @param bin_type string containing the bin type you would like to check
+    #'   for classifaction data. Default = "otu".
+    #'
+    #' @examples
+    #'
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #'
+    #' miseq$has_bin_taxonomy(bin_type = "otu")
+    #'
+    #' @returns a logical
+    #' @export
+    has_bin_taxonomy = function(bin_type = "otu") {
+      xdev_has_bin_taxonomy(self, bin_type)
+    },
+
+    #' @description
+    #' Determine if your dataset contains sequence classifications
+    #'
+    #' @examples
+    #'
+    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #'
+    #' miseq$has_sequence_taxonomy()
+    #'
+    #' @returns a logical
+    #' @export
+    has_sequence_taxonomy = function() {
+      xdev_has_sequence_taxonomy(self)
+    },
+
+    #' @description
     #' Determine if two
     #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
     #'  objects are equal.
@@ -1292,7 +1325,7 @@ strollur <- R6Class("strollur",
     }
   ),
   private = list(
-    version = "0.1.1",
+    version = "0.1.2",
     finalize = function() {},
 
 

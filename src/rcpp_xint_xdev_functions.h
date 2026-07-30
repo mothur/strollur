@@ -775,10 +775,6 @@ vector<string> xdev_get_sequences(const Rcpp::Environment& data,
 //' and sequence names.
 //'
 //' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-//'
-//' @param type, string containing the type of data you want the totals of.
-//' Options include: "sequence_name", "sequence". Default = "sequence_name".
-//'
 //' @param samples a vector of strings containing the names of the samples you
 //' would like sequence names for. By default all samples are included.
 //'
@@ -802,6 +798,24 @@ vector<string> xdev_get_sequences(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 vector<vector<int> > xdev_get_sequence_indexes_by_sample(const Rcpp::Environment& data,
                                                          const Rcpp::CharacterVector& samples= Rcpp::CharacterVector::create());
+/******************************************************************************/
+//' @title xdev_has_bin_taxonomy
+//' @description
+//' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
+//'
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @param type a string indicating the type of bin assignments. Default "otu".
+//'
+//' @examples
+//'
+//'  data <- miseq_sop_example()
+//'  xdev_has_bin_taxonomy(data)
+//'
+//' @return boolean
+//' @export
+//[[Rcpp::export]]
+bool xdev_has_bin_taxonomy(const Rcpp::Environment& data,
+                           const string& type = "otu");
 /******************************************************************************/
 //' @title xdev_has_sequence_taxonomy
 //' @description

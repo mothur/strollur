@@ -719,6 +719,7 @@ public:
     bool hasSamples(const vector<string>& samples = nullVector) const;
     bool hasListAssignments() const { return hasList; }
     bool hasSeqs() const;
+    bool hasBinTaxonomy(const string& bin_type = "otu") const;
 
     bool isEqual(Dataset& dataset);
 

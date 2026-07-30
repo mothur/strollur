@@ -8,7 +8,7 @@ test_that("import - version 0.1.1", {
 
   expect_equal(count(data), 113963)
 
-  # 0.1.0 is compatible with 0.1.1
+  # 0.1.0 is compatible with 0.1.1 and 0.1.2
   table <- readRDS(strollur_example("miseq_sop_table.010.rds"))
   data2 <- import_dataset(table)
 
