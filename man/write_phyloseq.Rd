@@ -14,7 +14,7 @@ read functions in this package.}
 returns a "phyloseq" object.
 }
 \description{
-The `write_phyloseq()` function will take any strollur object and
+The \code{write_phyloseq()} function will take any strollur object and
 return it as a "phyloseq" object.
 }
 \examples{
@@ -31,6 +31,6 @@ if (requireNamespace("phyloseq", quietly = TRUE)) {
 }
 \references{
 McMurdie,P.J. and Holmes,S. (2013), phyloseq: An R Package for
- Reproducible Interactive Analysis and Graphics of Microbiome Census Data.
- PLoS ONE 8:e61217. <doi:10.1371/journal.pone.0061217>
+Reproducible Interactive Analysis and Graphics of Microbiome Census Data.
+PLoS ONE 8:e61217. \url{doi:10.1371/journal.pone.0061217}
 }

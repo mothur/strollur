@@ -13,7 +13,7 @@ strollur_example(file = NULL)
 string, Full path to example files
 }
 \description{
-strollur comes bundled with some example files in its `inst/extdata`
+strollur comes bundled with some example files in its \code{inst/extdata}
 directory. This function make them easy to access them.
 }
 \details{

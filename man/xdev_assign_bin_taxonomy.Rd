@@ -21,7 +21,7 @@ xdev_assign_bin_taxonomy(
 
 \item{bin_type}{a string indicating the type of bin assignments. Default "otu".}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference, }{a list created by the function \link{new_reference}. Optional.}
 
 \item{bin_name, }{a string containing the name of the column in 'table' that
 contains the bin names. Default column name is 'bin_name'.}
@@ -39,7 +39,7 @@ an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} 
 Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 
 Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
- the concensus taxonomy for each bin for you.
+the concensus taxonomy for each bin for you.
 }
 \examples{
 

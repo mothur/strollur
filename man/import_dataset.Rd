@@ -13,14 +13,14 @@ object. You can create the table using 'export(data)'.}
 }
 \value{
 a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 The import_dataset function will create a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-  from the exported table of a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-  object.
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from the exported table of a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object.
 }
 \examples{
 
@@ -30,5 +30,5 @@ data
 
 }
 \seealso{
-[export_dataset()]
+\code{\link[=export_dataset]{export_dataset()}}
 }

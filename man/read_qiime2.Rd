@@ -3,8 +3,8 @@
 \name{read_qiime2}
 \alias{read_qiime2}
 \title{Create a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-  from a qiime2 outputs}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from a qiime2 outputs}
 \usage{
 read_qiime2(
   qza,
@@ -28,11 +28,11 @@ files should be unpacked. Default = current working directory.}
 and temporary directories will be removed. Default = TRUE.}
 }
 \value{
-A `strollur` object
+A \code{strollur} object
 }
 \description{
 The read_qiime2 function reads various types of .qza files created by
-\href{https://qiime2.org}{qiime2}, and creates a `strollur` object.
+\href{https://qiime2.org}{qiime2}, and creates a \code{strollur} object.
 }
 \examples{
 
@@ -64,7 +64,7 @@ if (requireNamespace("h5lite", quietly = TRUE)) {
 }
 \references{
 Bolyen,E., Rideout,J.R., Dillon,M.R. et al. (2019),
- Reproducible, interactive, scalable and extensible microbiome data
- science using QIIME 2. Bioinformatics 37:852-857.
- <doi:10.1038/s41587-019-0209-9>
+Reproducible, interactive, scalable and extensible microbiome data
+science using QIIME 2. Bioinformatics 37:852-857.
+\url{doi:10.1038/s41587-019-0209-9}
 }

@@ -13,7 +13,7 @@ save_dataset(data, file)
 \item{file}{a string containing the file name.}
 }
 \value{
-A file containing the `strollur` object
+A file containing the \code{strollur} object
 }
 \description{
 The save_dataset function will save the
@@ -36,5 +36,5 @@ save_dataset(data, file = file_name)
 
 }
 \seealso{
-[load_dataset()]
+\code{\link[=load_dataset]{load_dataset()}}
 }

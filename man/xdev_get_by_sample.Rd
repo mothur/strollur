@@ -20,11 +20,11 @@ Options include: "sequence_name", "sequence". Default = "sequence_name".}
 \item{samples}{a vector of strings containing the names of the samples you
 would like sequence names for. By default all samples are included.}
 
-\item{degap}{a logical. Default = FALSE. When degap = `TRUE`, all gap
+\item{degap}{a logical. Default = FALSE. When degap = \code{TRUE}, all gap
 characters will be removed from the sequences.}
 }
 \value{
-2D vector of strings ([num_seqs][num_samples]) containing data
+2D vector of strings num_seqs x num_samples containing data
 requested parsed by sample.
 }
 \description{

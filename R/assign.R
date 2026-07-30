@@ -3,25 +3,26 @@
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @name assign
 #' @rdname assign
+#'
 #' @description
 #' Assign sequence abundances, sequence classifications, bins, bin
 #' representative sequences, bin classifications or treatments to a
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a
+#' @param data a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param table, a data.frame containing the data you wish to assign
+#' @param table a data.frame containing the data you wish to assign
 #'
-#' @param type, a string containing the type of data. Options include:
+#' @param type a string containing the type of data. Options include:
 #' 'sequence_abundance', 'sequence_taxonomy', 'bin',
 #'  'bin_representative', 'bin_taxonomy' and 'treatment'.
 #'  Default = "bin".
 #'
-#' @param bin_type, string containing the bin type you would like the number of
+#' @param bin_type string containing the bin type you would like the number of
 #' bins for. Default = "otu".
 #'
-#' @param table_names, named list used to indicate the names of the columns in
+#' @param table_names named list used to indicate the names of the columns in
 #' the table. By default:
 #'
 #' table_names <- list(sequence_name = "sequence_name",
@@ -29,33 +30,45 @@
 #'                     sample = "sample",
 #'                     treatment = "treatment",
 #'                     taxonomy = "taxonomy",
+#'                     level = "level",
+#'                     confidence = "confidence",
 #'                     bin_name = "bin_name")
 #'
-#' In table_names, 'sequence_name' is a string containing the name of the column
+#' In table_names, `sequence_name` is a string containing the name of the column
 #' in 'table' that contains the sequence names. Default column name is
 #' 'sequence_name'.
 #'
-#' In table_names, 'abundance' is a string containing the name of the column in
+#' In table_names, `abundance` is a string containing the name of the column in
 #' 'table' that contains the abundances. Default column name is 'abundance'.
 #'
-#' In table_names, 'sample' is a string containing the name of the column in
+#' In table_names, `sample` is a string containing the name of the column in
 #' 'table' that contains the samples. Default column name is 'sample'.
 #'
-#' In table_names, 'treatment' is a string containing the name of the
+#' In table_names, `treatment` is a string containing the name of the
 #' column in 'table' that contains the treatment names. Default column name is
 #'  'treatment'.
 #'
-#' In table_names, 'taxonomy' is a string containing the name of the
+#' In table_names, `taxonomy` is a string containing the name of the
 #' column in 'table' that contains the classifications. Default column name
 #' is 'taxonomy'.
 #'
-#' In table_names, 'bin_name' is a string containing the name of the
+#' In table_names, `level` is a string containing the name of the column
+#' in the data.frame that contains the classifications. Default column name is
+#' `level`.
+#'
+#' In table_names, `confidence` is a string containing the name of the column in
+#' the data.frame that contains the classifications confidence scores. Default
+#' column name is `confidence`.
+#'
+#' In table_names, `bin_name` is a string containing the name of the
 #' column in 'table' that contains the bin names. Default column name is
 #' 'bin_name'.
 #'
-#' @param reference, a list created by the function [new_reference]. Optional.
-#' @param verbose, boolean indicating whether or not you want progress messages.
+#' @param reference a list created by the function [new_reference]. Optional.
+#' @param verbose boolean indicating whether or not you want progress messages.
 #' Default = TRUE.
+#'
+#' @seealso [taxonomy_table_format]
 #'
 #' @examples
 #'
@@ -148,6 +161,8 @@ assign <- function(data, table,
                      sample = "sample",
                      treatment = "treatment",
                      taxonomy = "taxonomy",
+                     level = "level",
+                     confidence = "confidence",
                      bin_name = "bin_name"
                    ),
                    reference = NULL,
@@ -162,6 +177,8 @@ assign <- function(data, table,
     sample = "sample",
     treatment = "treatment",
     taxonomy = "taxonomy",
+    level = "level",
+    confidence = "confidence",
     bin_name = "bin_name"
   )
 
@@ -184,14 +201,28 @@ assign <- function(data, table,
       verbose = verbose
     )
   } else if (type == "bin_taxonomy") {
-    num <- xdev_assign_bin_taxonomy(
-      data = data, table = table,
-      bin_type = bin_type,
-      reference = reference,
-      bin_name = table_names[["bin_name"]],
-      taxonomy = table_names[["taxonomy"]],
-      verbose = verbose
-    )
+    # is this a tidy table?
+    if (table_names[["level"]] %in% names(table)) {
+      num <- xdev_assign_bin_taxonomy_tidy(
+        data = data, table = table,
+        bin_type = bin_type,
+        reference = reference,
+        bin_name = table_names[["bin_name"]],
+        level = table_names[["level"]],
+        taxonomy = table_names[["taxonomy"]],
+        confidence = table_names[["confidence"]],
+        verbose = verbose
+      )
+    } else {
+      num <- xdev_assign_bin_taxonomy(
+        data = data, table = table,
+        bin_type = bin_type,
+        reference = reference,
+        bin_name = table_names[["bin_name"]],
+        taxonomy = table_names[["taxonomy"]],
+        verbose = verbose
+      )
+    }
   } else if (type == "bin_representative") {
     num <- xdev_assign_bin_representative_sequences(
       data = data, table = table,
@@ -202,13 +233,26 @@ assign <- function(data, table,
       verbose = verbose
     )
   } else if (type == "sequence_taxonomy") {
-    num <- xdev_assign_sequence_taxonomy(
-      data = data, table = table,
-      reference = reference,
-      sequence_name = table_names[["sequence_name"]],
-      taxonomy = table_names[["taxonomy"]],
-      verbose = verbose
-    )
+    # is this a tidy table?
+    if (table_names[["level"]] %in% names(table)) {
+      num <- xdev_assign_sequence_taxonomy_tidy(
+        data = data, table = table,
+        reference = reference,
+        sequence_name = table_names[["sequence_name"]],
+        level = table_names[["level"]],
+        taxonomy = table_names[["taxonomy"]],
+        confidence = table_names[["confidence"]],
+        verbose = verbose
+      )
+    } else {
+      num <- xdev_assign_sequence_taxonomy(
+        data = data, table = table,
+        reference = reference,
+        sequence_name = table_names[["sequence_name"]],
+        taxonomy = table_names[["taxonomy"]],
+        verbose = verbose
+      )
+    }
   } else if (type == "treatment") {
     num <- xdev_assign_treatments(
       data = data, table = table,

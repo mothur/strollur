@@ -3,8 +3,8 @@
 \name{read_phyloseq}
 \alias{read_phyloseq}
 \title{Create a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-  from a phyloseq object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from a phyloseq object}
 \usage{
 read_phyloseq(phyloseq_object, treatment_column_name = NULL, dataset_name = "")
 }
@@ -22,7 +22,7 @@ be a character. Defaults to NULL.}
 a strollur object.
 }
 \description{
-The `read_phyloseq()` function reads phyloseq objects created from
+The \code{read_phyloseq()} function reads phyloseq objects created from
 the phyloseq package
 (https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html)
 and converts it into a strollur object.
@@ -42,6 +42,6 @@ if (requireNamespace("phyloseq", quietly = TRUE)) {
 }
 \references{
 McMurdie,P.J. and Holmes,S. (2013), phyloseq: An R Package for
- Reproducible Interactive Analysis and Graphics of Microbiome Census Data.
- PLoS ONE 8:e61217. <doi:10.1371/journal.pone.0061217>
+Reproducible Interactive Analysis and Graphics of Microbiome Census Data.
+PLoS ONE 8:e61217. \url{doi:10.1371/journal.pone.0061217}
 }

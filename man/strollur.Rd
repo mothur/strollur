@@ -2,8 +2,8 @@
 % Please edit documentation in R/r6_strollur.R
 \name{strollur}
 \alias{strollur}
-\title{The `strollur` object stores the data associated with your amplicon
-  sequence analysis.}
+\title{The \code{strollur} object stores the data associated with your amplicon
+sequence analysis.}
 \description{
 'strollur' is an R6 class that stores nucleotide sequences,
 abundance, sample and treatment assignments, taxonomic classifications,
@@ -467,13 +467,16 @@ xdev_remove_samples(data = miseq, samples = c("F3D0"))
 miseq$summary(type = "scrap")
 
 }
+\seealso{
+\link{taxonomy_table_format}
+}
 \author{
 Sarah Westcott, \email{swestcot@umich.edu}
 }
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
-    \item{\code{data}}{Rcpp::XPtr<Dataset> pointer to 'Dataset' c++ class. This
+    \item{\code{data}}{Rcpp::XPtr\if{html}{\out{<Dataset>}} pointer to 'Dataset' c++ class. This
 allows package developers an easy access point to the underlying C++ code
 with additional functionality.}
 
@@ -526,12 +529,12 @@ the class.}
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{name}}{String, name of dataset (optional)}
-      \item{\code{dataset}}{a `strollur` object.}
+      \item{\code{dataset}}{a \code{strollur} object.}
     }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    A new `strollur` object.
+    A new \code{strollur} object.
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
@@ -547,7 +550,7 @@ data <- new_dataset("soil")
 \if{html}{\out{<a id="method-strollur-print"></a>}}
 \if{latex}{\out{\hypertarget{method-strollur-print}{}}}
 \subsection{\code{strollur$print()}}{
-  Print summary of `strollur` object
+  Print summary of \code{strollur} object
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{strollur$print()}
@@ -655,20 +658,20 @@ miseq$abundance(type = "treatment")
       \item{\code{report_type}}{a string containing the type of report you are
 adding.}
       \item{\code{table_names}}{named list used to indicate the names of the columns
- in the table. By default:
+in the table. By default:
 
 table_names <- list(sequence_name = "sequence_name",
-                    comment = "comment",
-                    sequence = "sequence",
-                    reference_name = "name",
-                    reference_vendor = "vendor",
-                    reference_version = "version",
-                    reference_usage = "usage",
-                    reference_note = "note",
-                    reference_documentation_url = "documentation_url",
-                    reference_method_url = "method_url",
-                    reference_parameter = "parameter",
-                    reference_citation = "citation")
+comment = "comment",
+sequence = "sequence",
+reference_name = "name",
+reference_vendor = "vendor",
+reference_version = "version",
+reference_usage = "usage",
+reference_note = "note",
+reference_documentation_url = "documentation_url",
+reference_method_url = "method_url",
+reference_parameter = "parameter",
+reference_citation = "citation")
 
 In table_names, 'sequence_name' is a string containing the name of the
 column in 'table' that contains the sequence names. It is used when you
@@ -717,7 +720,7 @@ column name is 'parameter'.
 In table_names, 'reference_citation' is a string containing the name of
 the column in 'table' that contains the reference citations. Default
 column name is 'citation'.}
-      \item{\code{reference}}{a list created by the function [new_reference].
+      \item{\code{reference}}{a list created by the function \link{new_reference}.
 Optional.}
       \item{\code{verbose}}{boolean indicating whether or not you want progress
 messages. Default = TRUE.}
@@ -725,7 +728,7 @@ messages. Default = TRUE.}
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    Updated `strollur` object - invisible(self)
+    Updated \code{strollur} object - invisible(self)
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
@@ -769,7 +772,7 @@ data$add(table = metadata, type = "report", report_type = "metadata")
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    Updated `strollur` object
+    Updated \code{strollur} object
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
@@ -805,7 +808,7 @@ data$add(table = metadata, type = "report", report_type = "metadata")
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    Updated `strollur` object
+    Updated \code{strollur} object
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
@@ -830,7 +833,8 @@ representative sequences, bin classifications or treatments.
   type = "bin",
   bin_type = "otu",
   table_names = list(sequence_name = "sequence_name", abundance = "abundance", sample =
-    "sample", treatment = "treatment", taxonomy = "taxonomy", bin_name = "bin_name"),
+    "sample", treatment = "treatment", taxonomy = "taxonomy", level = "level", confidence
+    = "confidence", bin_name = "bin_name"),
   reference = NULL,
   verbose = TRUE
 )}
@@ -842,40 +846,48 @@ representative sequences, bin classifications or treatments.
       \item{\code{table}}{a data.frame containing the data you wish to assign}
       \item{\code{type}}{a string containing the type of data. Options include:
 'sequence_abundance', 'sequence_taxonomy', 'bin',
- 'bin_representative', 'bin_taxonomy' and 'treatment'.
- Default = "bin".}
+'bin_representative', 'bin_taxonomy' and 'treatment'.
+Default = "bin".}
       \item{\code{bin_type}}{string containing the bin type you would like the number
 of bins for. Default = "otu".}
       \item{\code{table_names}}{named list used to indicate the names of the columns
-  in the table. By default:
+in the table. By default:
 
-  table_names <- list(sequence_name = "sequence_name", abundance =
-  "abundance", sample = "sample", treatment = "treatment", taxonomy =
-  "taxonomy", bin_name = "bin_name")
+table_names <- list(sequence_name = "sequence_name", abundance =
+"abundance", sample = "sample", treatment = "treatment", taxonomy =
+"taxonomy", bin_name = "bin_name")
 
-  In table_names, 'sequence_name' is a string containing the name of the
-  column in 'table' that contains the sequence names. Default column name
-  is 'sequence_name'.
+In table_names, 'sequence_name' is a string containing the name of the
+column in 'table' that contains the sequence names. Default column name
+is 'sequence_name'.
 
-  In table_names, 'abundance' is a string containing the name of the
-  column in 'table' that contains the abundances. Default column name is
-  'abundance'.
+In table_names, 'abundance' is a string containing the name of the
+column in 'table' that contains the abundances. Default column name is
+'abundance'.
 
-  In table_names, 'sample' is a string containing the name of the column
-  in 'table' that contains the samples. Default column name is 'sample'.
+In table_names, 'sample' is a string containing the name of the column
+in 'table' that contains the samples. Default column name is 'sample'.
 
-  In table_names, 'treatment' is a string containing the name of the
-  column in 'table' that contains the treatment names. Default column
-  name is 'treatment'.
+In table_names, 'treatment' is a string containing the name of the
+column in 'table' that contains the treatment names. Default column
+name is 'treatment'.
 
-  In table_names, 'taxonomy' is a string containing the name of the
-  column in 'table' that contains the classifications. Default column
-  name is 'taxonomy'.
+In table_names, 'taxonomy' is a string containing the name of the
+column in 'table' that contains the classifications. Default column
+name is 'taxonomy'.
 
-  In table_names, 'bin_name' is a string containing the name of the
-  column in 'table' that contains the bin names. Default column name is
-  'bin_name'.}
-      \item{\code{reference}}{a list created by the function [new_reference].
+In table_names, 'level' is a string containing the name of the column in
+the data.frame that contains the classifications. Default column name is
+'level'.
+
+In table_names, 'confidence' is a string containing the name of the
+column in the data.frame that contains the classifications confidence
+scores. Default column name is 'confidence'.
+
+In table_names, 'bin_name' is a string containing the name of the
+column in 'table' that contains the bin names. Default column name is
+'bin_name'.}
+      \item{\code{reference}}{a list created by the function \link{new_reference}.
 Optional.}
       \item{\code{verbose}}{boolean indicating whether or not you want progress
 messages. Default = TRUE.}
@@ -883,7 +895,7 @@ messages. Default = TRUE.}
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    Updated `strollur` object
+    Updated \code{strollur} object
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
@@ -986,7 +998,7 @@ data$assign(table = sample_assignments, type = "treatment")
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    Updated `strollur` object
+    Updated \code{strollur} object
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
@@ -1019,7 +1031,7 @@ miseq
     \describe{
       \item{\code{type}}{string containing the type of data you want the number of.
 Options include: "sequence", "sample", "treatment", "bin", and
- "resource_reference". Default = "sequence".}
+"resource_reference". Default = "sequence".}
       \item{\code{bin_type}}{string containing the bin type you would like the number
 of bins for. Default = "otu".}
       \item{\code{samples}}{vector of strings. samples is only used when 'type' =
@@ -1263,7 +1275,7 @@ miseq$has_sequence_taxonomy()
 \subsection{\code{strollur$is_equal()}}{
   Determine if two
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
- objects are equal.
+objects are equal.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{strollur$is_equal(data)}
@@ -1386,10 +1398,10 @@ miseq$names(type = "report")
       \item{\code{type}}{string containing the type of report you would like. Options
 include: "fasta", "sequence", "sequence_bin_assignment",
 "sequence_taxonomy", "bin_taxonomy", "bin_representative",
- "sample_assignment", "resource_reference", "sequence_scrap",
+"sample_assignment", "resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
- Default = "sequence".}
+Default = "sequence".}
       \item{\code{bin_type}}{string containing the bin type you would like a
 bin_taxonomy report for. Default = "otu".}
     }
@@ -1471,7 +1483,7 @@ miseq$report(type = "contigs_report") |> head(n = 5)
     \describe{
       \item{\code{type}}{string containing the type of data you want the number of.
 Options include: "sequence", "report" and "scrap".
- Default = "sequence".}
+Default = "sequence".}
       \item{\code{report_type}}{string containing the report type you would
 summarized. For example, the miseq_sop_example includes contigs assembly
 data and can be accessed with report_type = "contigs_report".

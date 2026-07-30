@@ -20,7 +20,7 @@ xdev_add_sequences(
 \item{table, }{a data.frame containing names, sequences(optional) and
 comments(optional).}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference, }{a list created by the function \link{new_reference}. Optional.}
 
 \item{sequence_name, }{a string containing the name of the column in 'table'
 that contains the sequence names. Default column name is 'sequence_name'.}

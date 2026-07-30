@@ -7,11 +7,19 @@
 sort_dataframe(data, order, named_col)
 }
 \arguments{
-\item{data, }{the data.frame to be sorted}
+\item{data}{the data.frame to be sorted}
 
-\item{order, }{vector containing the order desired}
+\item{order}{vector containing the order desired}
 
-\item{named_col, }{name of column in data.frame to match order
+\item{named_col}{name of column in data.frame to match order}
+}
+\value{
+sorted data.frame
+}
+\description{
+Sort dataframe
+}
+\examples{
 
 # sort results alphabetically
 
@@ -23,11 +31,6 @@ fasta <- report(miseq, type = fasta)
 
 sorted_fasta <- sort_dataframe(fasta,
                                order = sort(sequence_names),
-                               named_col = "sequence_names")}
-}
-\value{
-sorted data.frame
-}
-\description{
-Sort dataframe
+                               named_col = "sequence_names")
+
 }

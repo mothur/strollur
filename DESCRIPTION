@@ -15,8 +15,8 @@ Maintainer: Pat Schloss <pschloss@umich.edu>
 Description: Stores the data associated with your amplicon sequence analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, asv, otu and phylotype clusters, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to read / write from 'mothur', 'qiime2', 'dada2', and 'phyloseq'.
 URL: https://github.com/mothur/strollur, https://mothur.org/strollur/
 BugReports: https://github.com/mothur/strollur/issues
+Roxygen: list(markdown = TRUE)
 License: GPL (>= 3)
-biocViews:
 Imports: 
     Rcpp,
     cli,
@@ -50,4 +50,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 VignetteBuilder: knitr
 Config/roxygen2/version: 8.0.0
-RoxygenNote: 8.0.0
+

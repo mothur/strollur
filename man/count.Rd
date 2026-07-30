@@ -3,8 +3,8 @@
 \name{count}
 \alias{count}
 \title{Find the number of sequences, samples, treatments or bins of a given
-  type in a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+type in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
 count(
   data,
@@ -20,7 +20,7 @@ count(
 
 \item{type, }{string containing the type of data you want the number of.
 Options include: "sequence", "sample", "treatment", "bin", and
- "resource_reference". Default = "sequence".}
+"resource_reference". Default = "sequence".}
 
 \item{bin_type, }{string containing the bin type you would like the number of
 bins for. Default = "otu".}

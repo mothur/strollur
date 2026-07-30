@@ -3,8 +3,8 @@
 \name{names}
 \alias{names}
 \title{Get the names of various data
-  in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-  object}
+in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object}
 \usage{
 names(
   data,
@@ -42,8 +42,8 @@ vector of strings, containing the names requested
 }
 \description{
 Get the names of names sequences, bins, samples, treatments, and
-  reports data in a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+reports data in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

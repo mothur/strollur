@@ -788,7 +788,7 @@ xdev_get_list_vector <- function(data, type = "otu") {
 #' # To get the sequence nucleotide strings parsed by sample
 #' parsed_sequences <- xdev_get_by_sample(data, "sequence")
 #'
-#' @return 2D vector of strings ([num_seqs][num_samples]) containing data
+#' @return 2D vector of strings num_seqs x num_samples containing data
 #' requested parsed by sample.
 #' @export
 xdev_get_by_sample <- function(data, type = "sequence_name", samples = as.character( c()), degap = FALSE) {
@@ -1357,7 +1357,7 @@ xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason
 #' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param sequence_names, a vector of strings containing sequence names
-#' @param abundances, 2D vector ([num_seqs][num_samples]) containing
+#' @param abundances, 2D vector num_seqs x num_samples containing
 #' the abundances of each sequence parsed by sample.
 #' @param reason, a string containing the trash tag to be applied to any
 #' sequences set to 0 abundance. Default = "update".

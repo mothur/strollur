@@ -455,7 +455,24 @@ test_that("dataset - assign bins and bin_taxonomy", {
 
   data$assign(table = otu_data, type = "bin_taxonomy")
 
-  expect_equal(nrow(data$report(type = "bin_taxonomy")), 3186)
+  bin_tax_tidy <- data$report(type = "bin_taxonomy")
+
+  expect_equal(nrow(bin_tax_tidy), 3186)
+  expect_equal(bin_tax_tidy[["taxonomy"]][1], "Bacteria")
+
+  bin_tax_tidy[["taxonomy"]][1] <- "changed"
+  data$assign(table = bin_tax_tidy, type = "bin_taxonomy")
+
+  bin_tax_tidy <- data$report(type = "bin_taxonomy")
+
+  expect_equal(bin_tax_tidy[["taxonomy"]][1], "changed")
+
+  bin_tax_tidy[["taxonomy"]][1] <- "changed_again"
+  assign(data, table = bin_tax_tidy, type = "bin_taxonomy")
+
+  bin_tax_tidy <- data$report(type = "bin_taxonomy")
+
+  expect_equal(bin_tax_tidy[["taxonomy"]][1], "changed_again")
 })
 
 test_that("dataset - assign_sequence_abundance, remove_sequences", {
@@ -1562,7 +1579,23 @@ test_that("dataset - assign_sequence_taxonomy", {
 
   report <- report(dataset_t, "sequence_taxonomy")
 
-  expect_equal(nrow(report(dataset_t, "sequence_taxonomy")), 14550)
+  expect_equal(nrow(report), 14550)
+  expect_equal(report[["taxonomy"]][1], "Bacteria")
+
+  # tidy format
+  report[["taxonomy"]][1] <- "changed"
+  dataset_t$assign(table = report, type = "sequence_taxonomy")
+  report <- report(dataset_t, "sequence_taxonomy")
+
+  expect_equal(nrow(report), 14550)
+  expect_equal(report[["taxonomy"]][1], "changed")
+
+  report[["taxonomy"]][1] <- "changed_again"
+  assign(dataset_t, table = report, type = "sequence_taxonomy")
+  report <- report(dataset_t, "sequence_taxonomy")
+
+  expect_equal(nrow(report), 14550)
+  expect_equal(report[["taxonomy"]][1], "changed_again")
 
   dataset_t <- read_mothur(
     fasta = strollur_example("final.fasta.gz"),

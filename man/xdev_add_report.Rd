@@ -20,7 +20,7 @@ xdev_add_report(
 \item{type, }{a string containing the type of report. Default = "report".}
 
 \item{sequence_name, }{a string. If your report relates to the sequence data,
-`sequence_name` should contain the name of the column in 'table' that
+\code{sequence_name} should contain the name of the column in 'table' that
 contains the sequence names. Default = 'none'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.

@@ -10,9 +10,10 @@ remove_file <- function(filename) {
 # =========================================================================== #
 #' @title sort_dataframe
 #' @description Sort dataframe
-#' @param data, the data.frame to be sorted
-#' @param order, vector containing the order desired
-#' @param named_col, name of column in data.frame to match order
+#' @param data the data.frame to be sorted
+#' @param order vector containing the order desired
+#' @param named_col name of column in data.frame to match order
+#' @examples
 #'
 #' # sort results alphabetically
 #'
@@ -23,8 +24,9 @@ remove_file <- function(filename) {
 #' fasta <- report(miseq, type = fasta)
 #'
 #' sorted_fasta <- sort_dataframe(fasta,
-#'                                order = sort(sequence_names),
-#'                                named_col = "sequence_names")
+#'   order = sort(sequence_names),
+#'   named_col = "sequence_names"
+#' )
 #'
 #' @return sorted data.frame
 #' @export

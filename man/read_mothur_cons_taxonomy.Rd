@@ -9,7 +9,7 @@ read_mothur_cons_taxonomy(taxonomy)
 \arguments{
 \item{taxonomy}{file name, a mothur
 \href{https://mothur.org/wiki/constaxonomy_file/}{consensus taxonomy file}.
- The cons_taxonomy file is created by
+The cons_taxonomy file is created by
 \href{https://mothur.org/wiki/classify.otu/}{classify.otu}.}
 }
 \value{

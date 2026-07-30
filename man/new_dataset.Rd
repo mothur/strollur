@@ -12,7 +12,7 @@ Default = ""}
 }
 \value{
 a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Create a new
@@ -29,5 +29,5 @@ data <- new_dataset(dataset_name = "soil")
 }
 \seealso{
 The 'new' method in the
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
 }

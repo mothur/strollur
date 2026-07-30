@@ -3,8 +3,8 @@
 \name{abundance}
 \alias{abundance}
 \title{Get the abundance data for sequences, bins, samples, and treatments in
-  a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-  object}
+a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object}
 \usage{
 abundance(data, type = "sequence", bin_type = "otu", by_sample = FALSE)
 }
@@ -27,8 +27,8 @@ data.frame
 }
 \description{
 Get the abundance data for sequences, bins, samples, and
-  treatments in a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+treatments in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

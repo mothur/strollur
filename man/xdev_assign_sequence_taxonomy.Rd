@@ -18,7 +18,7 @@ xdev_assign_sequence_taxonomy(
 
 \item{table, }{a data.frame containing sequence taxonomy assignments}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference, }{a list created by the function \link{new_reference}. Optional.}
 
 \item{sequence_name, }{a string containing the name of the column in 'table'
 that contains the sequence names. Default column name is 'sequence_name'.}
@@ -36,7 +36,7 @@ an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} 
 Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 
 Note, if you assign sequence taxonomies and assign bins, strollur will find
- the consensus taxonomy for each bin for you.
+the consensus taxonomy for each bin for you.
 }
 \examples{
 

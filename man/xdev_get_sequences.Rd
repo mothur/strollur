@@ -12,7 +12,7 @@ xdev_get_sequences(data, sample = "", degap = FALSE)
 \item{sample, }{a string containing the name of the sample you
 would like sequence names for. For all samples in dataset, sample = "".}
 
-\item{degap, }{a logical. Default = FALSE. When degap = `TRUE`, all gap
+\item{degap, }{a logical. Default = FALSE. When degap = \code{TRUE}, all gap
 characters ('-', '.') will be removed from the sequences.}
 }
 \value{

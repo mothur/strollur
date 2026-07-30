@@ -3,8 +3,8 @@
 \name{read_dada2}
 \alias{read_dada2}
 \title{Create a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-  from dada2 outputs}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from dada2 outputs}
 \usage{
 read_dada2(sequence_table, dataset_name = "")
 }
@@ -14,10 +14,10 @@ read_dada2(sequence_table, dataset_name = "")
 \item{dataset_name}{A string containing a name for your dataset.}
 }
 \value{
-A `strollur` object
+A \code{strollur} object
 }
 \description{
-This function reads a dada2 sequence table and creates a `strollur`
+This function reads a dada2 sequence table and creates a \code{strollur}
 object. The dada2 sequence table is a 2D matrix containing the abundance
 counts by sample for each ASV. The sample names are stored as row names and
 the sequence nucleotide strings are stored as column names.
@@ -35,7 +35,7 @@ data <- read_dada2(sequence_table = seqtab, dataset_name = "dada2 example")
 }
 \references{
 Callahan,B.J., McMurdie,P.J., Rosen,M.J., Han,A.W., Johnson,A.J.A.
- and Holmes,S.P. (2016), DADA2: High-resolution sample inference from
- Illumina amplicon data. Nature Methods 13:581-583.
- <doi:10.1038/nmeth.3869>
+and Holmes,S.P. (2016), DADA2: High-resolution sample inference from
+Illumina amplicon data. Nature Methods 13:581-583.
+\url{doi:10.1038/nmeth.3869}
 }

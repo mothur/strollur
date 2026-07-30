@@ -3,7 +3,7 @@
 \name{add}
 \alias{add}
 \title{Add sequences, reports or resource references to a
-  \link{strollur} object}
+\link{strollur} object}
 \usage{
 add(
   data,
@@ -34,17 +34,17 @@ add(
 the table. By default:
 
 table_names <- list(sequence_name = "sequence_name",
-                    comment = "comment",
-                    sequence = "sequence",
-                    reference_name = "name",
-                    reference_vendor = "vendor",
-                    reference_version = "version",
-                    reference_usage = "usage",
-                    reference_note = "note",
-                    reference_documentation_url = "documentation_url",
-                    reference_method_url = "method_url",
-                    reference_parameter = "parameter",
-                    reference_citation = "citation")
+comment = "comment",
+sequence = "sequence",
+reference_name = "name",
+reference_vendor = "vendor",
+reference_version = "version",
+reference_usage = "usage",
+reference_note = "note",
+reference_documentation_url = "documentation_url",
+reference_method_url = "method_url",
+reference_parameter = "parameter",
+reference_citation = "citation")
 
 In table_names, 'sequence_name' is a string containing the name of the column
 in 'table' that contains the sequence names. It is used when you are adding
@@ -75,7 +75,7 @@ column in 'table' that contains the reference usages. Default column name is
 
 In table_names, 'reference_note' is a string containing the name of the
 column in 'table' that contains the reference notes. Default column name is
- 'note'.
+'note'.
 
 In table_names, 'reference_method_url' is a string containing the name of the
 column in 'table' that contains the reference method urls. Default column
@@ -93,14 +93,14 @@ In table_names, 'reference_citation' is a string containing the name of the
 column in 'table' that contains the reference citations. Default column name
 is 'citation'.}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference, }{a list created by the function \link{new_reference}. Optional.}
 
 \item{verbose, }{boolean indicating whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
 an updated
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Add sequences, reports or resource references to a

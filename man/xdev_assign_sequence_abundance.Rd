@@ -40,7 +40,7 @@ an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} 
 }
 \description{
 Assign sequence abundance and optionally assign sample and treatment data to
- a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 

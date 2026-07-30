@@ -23,14 +23,14 @@ xdev_assign_bins(
 
 \item{bin_type}{a string indicating the type of bin assignments. Default "otu".}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference, }{a list created by the function \link{new_reference}. Optional.}
 
 \item{bin_name, }{a string containing the name of the column in 'table' that
 contains the bin names. Default column name is 'bin_name'.}
 
 \item{abundance, }{a string containing the name of the column in 'table'
 that contains the bin abundances. Default column name is 'abundance'. Note:
- You must provide either abundance or sequence_name in the table.}
+You must provide either abundance or sequence_name in the table.}
 
 \item{sample, }{a string containing the name of the column in 'table' that
 contains the sample names for datasets where the abundances are broken down

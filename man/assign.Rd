@@ -12,65 +12,76 @@ assign(
   type = "bin",
   bin_type = "otu",
   table_names = list(sequence_name = "sequence_name", abundance = "abundance", sample =
-    "sample", treatment = "treatment", taxonomy = "taxonomy", bin_name = "bin_name"),
+    "sample", treatment = "treatment", taxonomy = "taxonomy", level = "level", confidence
+    = "confidence", bin_name = "bin_name"),
   reference = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{data, }{a
+\item{data}{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing the data you wish to assign}
+\item{table}{a data.frame containing the data you wish to assign}
 
-\item{type, }{a string containing the type of data. Options include:
+\item{type}{a string containing the type of data. Options include:
 'sequence_abundance', 'sequence_taxonomy', 'bin',
- 'bin_representative', 'bin_taxonomy' and 'treatment'.
- Default = "bin".}
+'bin_representative', 'bin_taxonomy' and 'treatment'.
+Default = "bin".}
 
-\item{bin_type, }{string containing the bin type you would like the number of
+\item{bin_type}{string containing the bin type you would like the number of
 bins for. Default = "otu".}
 
-\item{table_names, }{named list used to indicate the names of the columns in
+\item{table_names}{named list used to indicate the names of the columns in
 the table. By default:
 
 table_names <- list(sequence_name = "sequence_name",
-                    abundance = "abundance",
-                    sample = "sample",
-                    treatment = "treatment",
-                    taxonomy = "taxonomy",
-                    bin_name = "bin_name")
+abundance = "abundance",
+sample = "sample",
+treatment = "treatment",
+taxonomy = "taxonomy",
+level = "level",
+confidence = "confidence",
+bin_name = "bin_name")
 
-In table_names, 'sequence_name' is a string containing the name of the column
+In table_names, \code{sequence_name} is a string containing the name of the column
 in 'table' that contains the sequence names. Default column name is
 'sequence_name'.
 
-In table_names, 'abundance' is a string containing the name of the column in
+In table_names, \code{abundance} is a string containing the name of the column in
 'table' that contains the abundances. Default column name is 'abundance'.
 
-In table_names, 'sample' is a string containing the name of the column in
+In table_names, \code{sample} is a string containing the name of the column in
 'table' that contains the samples. Default column name is 'sample'.
 
-In table_names, 'treatment' is a string containing the name of the
+In table_names, \code{treatment} is a string containing the name of the
 column in 'table' that contains the treatment names. Default column name is
- 'treatment'.
+'treatment'.
 
-In table_names, 'taxonomy' is a string containing the name of the
+In table_names, \code{taxonomy} is a string containing the name of the
 column in 'table' that contains the classifications. Default column name
 is 'taxonomy'.
 
-In table_names, 'bin_name' is a string containing the name of the
+In table_names, \code{level} is a string containing the name of the column
+in the data.frame that contains the classifications. Default column name is
+\code{level}.
+
+In table_names, \code{confidence} is a string containing the name of the column in
+the data.frame that contains the classifications confidence scores. Default
+column name is \code{confidence}.
+
+In table_names, \code{bin_name} is a string containing the name of the
 column in 'table' that contains the bin names. Default column name is
 'bin_name'.}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
-\item{verbose, }{boolean indicating whether or not you want progress messages.
+\item{verbose}{boolean indicating whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
 an updated
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign sequence abundances, sequence classifications, bins, bin
@@ -156,4 +167,7 @@ sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
 assign(data, table = sample_assignments, type = "treatment")
 
+}
+\seealso{
+\link{taxonomy_table_format}
 }

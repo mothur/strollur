@@ -618,6 +618,14 @@ strollur <- R6Class("strollur",
     #'   column in 'table' that contains the classifications. Default column
     #'   name is 'taxonomy'.
     #'
+    #' In table_names, 'level' is a string containing the name of the column in
+    #' the data.frame that contains the classifications. Default column name is
+    #' 'level'.
+    #'
+    #' In table_names, 'confidence' is a string containing the name of the
+    #' column in the data.frame that contains the classifications confidence
+    #' scores. Default column name is 'confidence'.
+    #'
     #'   In table_names, 'bin_name' is a string containing the name of the
     #'   column in 'table' that contains the bin names. Default column name is
     #'   'bin_name'.
@@ -626,6 +634,8 @@ strollur <- R6Class("strollur",
     #'   Optional.
     #' @param verbose boolean indicating whether or not you want progress
     #'   messages. Default = TRUE.
+    #'
+    #' @seealso [taxonomy_table_format]
     #'
     #' @examples
     #'
@@ -723,6 +733,8 @@ strollur <- R6Class("strollur",
                         sample = "sample",
                         treatment = "treatment",
                         taxonomy = "taxonomy",
+                        level = "level",
+                        confidence = "confidence",
                         bin_name = "bin_name"
                       ),
                       reference = NULL,
@@ -733,6 +745,8 @@ strollur <- R6Class("strollur",
         sample = "sample",
         treatment = "treatment",
         taxonomy = "taxonomy",
+        level = "level",
+        confidence = "confidence",
         bin_name = "bin_name"
       )
 
@@ -755,14 +769,28 @@ strollur <- R6Class("strollur",
           verbose = verbose
         )
       } else if (type == "bin_taxonomy") {
-        num <- xdev_assign_bin_taxonomy(
-          data = self, table = table,
-          bin_type = bin_type,
-          reference = reference,
-          bin_name = table_names[["bin_name"]],
-          taxonomy = table_names[["taxonomy"]],
-          verbose = verbose
-        )
+        # is this a tidy table?
+        if (table_names[["level"]] %in% names(table)) {
+          num <- xdev_assign_bin_taxonomy_tidy(
+            data = self, table = table,
+            bin_type = bin_type,
+            reference = reference,
+            bin_name = table_names[["bin_name"]],
+            level = table_names[["level"]],
+            taxonomy = table_names[["taxonomy"]],
+            confidence = table_names[["confidence"]],
+            verbose = verbose
+          )
+        } else {
+          num <- xdev_assign_bin_taxonomy(
+            data = self, table = table,
+            bin_type = bin_type,
+            reference = reference,
+            bin_name = table_names[["bin_name"]],
+            taxonomy = table_names[["taxonomy"]],
+            verbose = verbose
+          )
+        }
       } else if (type == "bin_representative") {
         num <- xdev_assign_bin_representative_sequences(
           data = self, table = table,
@@ -773,13 +801,26 @@ strollur <- R6Class("strollur",
           verbose = verbose
         )
       } else if (type == "sequence_taxonomy") {
-        num <- xdev_assign_sequence_taxonomy(
-          data = self, table = table,
-          reference = reference,
-          sequence_name = table_names[["sequence_name"]],
-          taxonomy = table_names[["taxonomy"]],
-          verbose = verbose
-        )
+        # is this a tidy table?
+        if (table_names[["level"]] %in% names(table)) {
+          num <- xdev_assign_sequence_taxonomy_tidy(
+            data = self, table = table,
+            reference = reference,
+            sequence_name = table_names[["sequence_name"]],
+            level = table_names[["level"]],
+            taxonomy = table_names[["taxonomy"]],
+            confidence = table_names[["confidence"]],
+            verbose = verbose
+          )
+        } else {
+          num <- xdev_assign_sequence_taxonomy(
+            data = self, table = table,
+            reference = reference,
+            sequence_name = table_names[["sequence_name"]],
+            taxonomy = table_names[["taxonomy"]],
+            verbose = verbose
+          )
+        }
       } else if (type == "treatment") {
         num <- xdev_assign_treatments(
           data = self, table = table,

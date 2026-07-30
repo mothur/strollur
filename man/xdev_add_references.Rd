@@ -39,15 +39,15 @@ that contains the reference names. Default column name is 'name'.}
 
 \item{usage, }{a string containing the name of the column in
 'table' that contains the reference usages. Default column name is
- 'usage'.}
+'usage'.}
 
 \item{note, }{a string containing the name of the column in
 'table' that contains the reference notes. Default column name is
- 'note'.}
+'note'.}
 
 \item{method_url, }{a string containing the name of the column in
 'table' that contains the reference methods. Default column name is
- 'method_url'.}
+'method_url'.}
 
 \item{documentation_url, }{a string containing the name of the column in
 'table' that contains the reference documentation urls. Default column
@@ -55,11 +55,11 @@ name is 'documentation_url'.}
 
 \item{parameter, }{a string containing the name of the column in
 'table' that contains the reference parameters. Default column name is
- 'parameter'.}
+'parameter'.}
 
 \item{citation, }{a string containing the name of the column in
 'table' that contains the reference citations. Default column name is
- 'citation'.}
+'citation'.}
 
 \item{verbose, }{a boolean whether or not you want progress messages.
 Default = TRUE.}
