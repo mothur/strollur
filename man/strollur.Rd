@@ -114,6 +114,15 @@ data$add(table = metadata, type = "report", report_type = "metadata")
 
 
 ## ------------------------------------------------
+## Method `strollur$alignment_length()`
+## ------------------------------------------------
+
+
+data <- miseq_sop_example()
+data$alignment_length()
+
+
+## ------------------------------------------------
 ## Method `strollur$assign()`
 ## ------------------------------------------------
 
@@ -499,6 +508,7 @@ the class.}
     \item \href{#method-strollur-add}{\code{strollur$add()}}
     \item \href{#method-strollur-add_sample_tree}{\code{strollur$add_sample_tree()}}
     \item \href{#method-strollur-add_sequence_tree}{\code{strollur$add_sequence_tree()}}
+    \item \href{#method-strollur-alignment_length}{\code{strollur$alignment_length()}}
     \item \href{#method-strollur-assign}{\code{strollur$assign()}}
     \item \href{#method-strollur-clear}{\code{strollur$clear()}}
     \item \href{#method-strollur-count}{\code{strollur$count()}}
@@ -815,6 +825,29 @@ data$add(table = metadata, type = "report", report_type = "metadata")
     \preformatted{ data <- new_dataset("my_dataset")
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
  data$add_sequence_tree(tree)
+}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-strollur-alignment_length"></a>}}
+\if{latex}{\out{\hypertarget{method-strollur-alignment_length}{}}}
+\subsection{\code{strollur$alignment_length()}}{
+  Get length of alignment
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{strollur$alignment_length()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Integer containing the length of the aligned sequences or -1 if
+unaligned.
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{data <- miseq_sop_example()
+data$alignment_length()
 }
     \if{html}{\out{</div>}}
   }

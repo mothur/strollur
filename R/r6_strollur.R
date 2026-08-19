@@ -579,6 +579,19 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
+    #' Get length of alignment
+    #' @examples
+    #'
+    #' data <- miseq_sop_example()
+    #' data$alignment_length()
+    #'
+    #' @return Integer containing the length of the aligned sequences or -1 if
+    #'   unaligned.
+    alignment_length = function() {
+      xdev_get_alignment_length(self)
+    },
+
+    #' @description
     #' Assign sequence abundances, sequence classifications, bins, bin
     #' representative sequences, bin classifications or treatments.
     #'

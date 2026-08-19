@@ -311,6 +311,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// xdev_get_alignment_length
+int xdev_get_alignment_length(const Rcpp::Environment& data);
+RcppExport SEXP _strollur_xdev_get_alignment_length(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_get_alignment_length(data));
+    return rcpp_result_gen;
+END_RCPP
+}
 // xdev_get_list_vector
 vector<string> xdev_get_list_vector(const Rcpp::Environment& data, const string& type);
 RcppExport SEXP _strollur_xdev_get_list_vector(SEXP dataSEXP, SEXP typeSEXP) {
@@ -634,6 +645,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_count", (DL_FUNC) &_strollur_xdev_count, 5},
     {"_strollur_xdev_export_dataset", (DL_FUNC) &_strollur_xdev_export_dataset, 1},
     {"_strollur_xdev_get_abundances_by_sample", (DL_FUNC) &_strollur_xdev_get_abundances_by_sample, 2},
+    {"_strollur_xdev_get_alignment_length", (DL_FUNC) &_strollur_xdev_get_alignment_length, 1},
     {"_strollur_xdev_get_list_vector", (DL_FUNC) &_strollur_xdev_get_list_vector, 2},
     {"_strollur_xdev_get_by_sample", (DL_FUNC) &_strollur_xdev_get_by_sample, 4},
     {"_strollur_xdev_get_sequences", (DL_FUNC) &_strollur_xdev_get_sequences, 3},

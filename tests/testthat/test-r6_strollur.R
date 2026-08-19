@@ -1750,3 +1750,24 @@ test_that("dataset - assign_bin_representative_sequences", {
   )
   expect_equal(report(dataset_t, "sample_assignment"), data.frame())
 })
+
+test_that("dataset - alignment_length", {
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
+  data <- new_dataset()
+
+  xdev_add_sequences(
+    data,
+    data.frame(sequence_name = names, sequence = seqs)
+  )
+  expect_equal(data$alignment_length(), 5)
+
+  names <- c("seq5", "seq6")
+  seqs <- c("..ACTGC..", "ATTCC_")
+
+  xdev_add_sequences(
+    data,
+    data.frame(sequence_name = names, sequence = seqs)
+  )
+  expect_equal(data$alignment_length(), -1)
+})

@@ -911,7 +911,17 @@ vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& da
 
     return d.get()->getSequenceAbundanceBySample(Rcpp::as<vector<string>>(samples));
 }
+/******************************************************************************/
+int xdev_get_alignment_length(const Rcpp::Environment& data) {
 
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->getAlignedLength();
+}
 /******************************************************************************/
 vector<string> xdev_get_list_vector(const Rcpp::Environment& data,
                                     const string& type) {

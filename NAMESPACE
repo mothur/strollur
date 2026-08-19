@@ -64,6 +64,7 @@ export(xdev_assign_sequence_taxonomy_tidy)
 export(xdev_assign_treatments)
 export(xdev_count)
 export(xdev_get_abundances_by_sample)
+export(xdev_get_alignment_length)
 export(xdev_get_by_sample)
 export(xdev_get_list_vector)
 export(xdev_get_sequence_indexes_by_sample)
@@ -85,33 +86,45 @@ export(xdev_set_sequences)
 import(cli)
 importFrom(R.utils,decompressFile)
 importFrom(R6,R6Class)
-importFrom(Rcpp,evalCpp)
-importFrom(Rcpp,sourceCpp)
-importFrom(ape,as.DNAbin)
-importFrom(ape,dist.dna)
-importFrom(ape,drop.tip)
-importFrom(ape,nj)
-importFrom(ape,read.tree)
-importFrom(dplyr,across)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,reframe)
-importFrom(dplyr,relocate)
-importFrom(dplyr,summarise)
-importFrom(dplyr,where)
+importFrom(Rcpp,
+  evalCpp,
+  sourceCpp
+)
+importFrom(ape,
+  as.DNAbin,
+  dist.dna,
+  drop.tip,
+  nj,
+  read.tree
+)
+importFrom(dplyr,
+  across,
+  filter,
+  group_by,
+  left_join,
+  mutate,
+  reframe,
+  relocate,
+  summarise,
+  where
+)
 importFrom(methods,new)
 importFrom(microseq,readFasta)
 importFrom(rbiom,read_biom)
-importFrom(readr,read_csv)
-importFrom(readr,read_tsv)
-importFrom(stats,na.omit)
-importFrom(stats,reshape)
+importFrom(readr,
+  read_csv,
+  read_tsv
+)
+importFrom(stats,
+  na.omit,
+  reshape
+)
 importFrom(tidyr,pivot_wider)
-importFrom(utils,modifyList)
-importFrom(utils,read.table)
-importFrom(utils,unzip)
+importFrom(utils,
+  modifyList,
+  read.table,
+  unzip
+)
 importFrom(waldo,compare)
 importFrom(yaml,read_yaml)
 useDynLib(strollur, .registration = TRUE)

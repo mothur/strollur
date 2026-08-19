@@ -25,7 +25,7 @@ remove_file <- function(filename) {
 #'
 #' sorted_fasta <- sort_dataframe(fasta,
 #'   order = sort(sequence_names),
-#'   named_col = "sequence_names"
+#'   named_col = "sequence_name"
 #' )
 #'
 #' @return sorted data.frame

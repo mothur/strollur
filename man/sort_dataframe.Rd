@@ -30,7 +30,8 @@ sequence_names <- names(miseq)
 fasta <- report(miseq, type = fasta)
 
 sorted_fasta <- sort_dataframe(fasta,
-                               order = sort(sequence_names),
-                               named_col = "sequence_names")
+  order = sort(sequence_names),
+  named_col = "sequence_name"
+)
 
 }

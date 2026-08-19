@@ -743,6 +743,23 @@ Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
 vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& data,
                                             const Rcpp::CharacterVector& samples = Rcpp::CharacterVector::create());
 /******************************************************************************/
+//' @title xdev_get_alignment_length
+//' @description
+//' Get the alignment length of sequences in your
+//' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
+//'
+//' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//'
+//' @examples
+//'
+//'  data <- miseq_sop_example()
+//'  xdev_get_alignment_length(data)
+//'
+//' @return Integer containing the length of the alignment or -1 if unaligned.
+//' @export
+//[[Rcpp::export]]
+int xdev_get_alignment_length(const Rcpp::Environment& data);
+/******************************************************************************/
 //' @title xdev_get_list_vector
 //' @description
 //' Get vector of strings containing the sequences bin data

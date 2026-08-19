@@ -667,6 +667,8 @@ public:
     vector<vector<float> > getSequenceAbundanceBySample(const vector<string>& samples = nullVector) const;
     vector<vector<int> > getIndexesBySample(const vector<string>& samples = nullVector) const;
 
+    int getAlignedLength();
+
     // names of bins
     vector<string> getBinIds(const string& type = "otu",
                                    const vector<string>& samples = nullVector,
@@ -798,7 +800,6 @@ private:
 
     // if unaligned, returns -1
     string degapSeq(const string& sequence) const;
-    int getAlignedLength();
     vector<int> getIncludedNamesIndexes() const;
     vector<int> getIndexes(const vector<string>&) const;
     bool hasBinTable(const string& type) const;
