@@ -279,36 +279,6 @@ data$get_bin_types()
 
 
 ## ------------------------------------------------
-## Method `strollur$get_sample_tree()`
-## ------------------------------------------------
-
-
- tree <- ape::read.tree(strollur_example(
-  "final.opti_mcc.jclass.ave.tre"))
-
- df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
-
- data <- new_dataset("my_dataset")
-
- # assign abundance 'otu' bins
- data$assign(table = df, type = "bin", bin_type = "otu")
-
- data$add(tree, type = "sample_tree")
- data$get_sample_tree()
-
-
-## ------------------------------------------------
-## Method `strollur$get_sequence_tree()`
-## ------------------------------------------------
-
-
- data <- new_dataset("my_dataset")
- tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
- data$add(tree, type = "sequence_tree")
- data$get_sequence_tree()
-
-
-## ------------------------------------------------
 ## Method `strollur$get_version()`
 ## ------------------------------------------------
 
@@ -445,6 +415,14 @@ references <- miseq$report(type = "resource_reference")
 
 miseq$report(type = "contigs_report") |> head(n = 5)
 
+# To get the tree that relates your sequences:
+
+sequence_tree <- miseq$report(type = "sequence_tree")
+
+# To get the tree that relates your sequences:
+
+sample_tree <- miseq$report(type = "sample_tree")
+
 
 ## ------------------------------------------------
 ## Method `strollur$summary()`
@@ -502,8 +480,6 @@ the class.}
     \item \href{#method-strollur-clear}{\code{strollur$clear()}}
     \item \href{#method-strollur-count}{\code{strollur$count()}}
     \item \href{#method-strollur-get_bin_types}{\code{strollur$get_bin_types()}}
-    \item \href{#method-strollur-get_sample_tree}{\code{strollur$get_sample_tree()}}
-    \item \href{#method-strollur-get_sequence_tree}{\code{strollur$get_sequence_tree()}}
     \item \href{#method-strollur-get_version}{\code{strollur$get_version()}}
     \item \href{#method-strollur-has_bin_taxonomy}{\code{strollur$has_bin_taxonomy()}}
     \item \href{#method-strollur-has_sequence_taxonomy}{\code{strollur$has_sequence_taxonomy()}}
@@ -1108,62 +1084,6 @@ data$get_bin_types()
 }
 
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-strollur-get_sample_tree"></a>}}
-\if{latex}{\out{\hypertarget{method-strollur-get_sample_tree}{}}}
-\subsection{\code{strollur$get_sample_tree()}}{
-  Get phylo tree relating the samples in your dataset.
-  \subsection{Usage}{
-    \if{html}{\out{<div class="r">}}
-    \preformatted{strollur$get_sample_tree()}
-    \if{html}{\out{</div>}}
-  }
-  \subsection{Returns}{
-    ape::tree
-  }
-  \subsection{Examples}{
-    \if{html}{\out{<div class="r example copy">}}
-    \preformatted{ tree <- ape::read.tree(strollur_example(
-  "final.opti_mcc.jclass.ave.tre"))
-
- df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
-
- data <- new_dataset("my_dataset")
-
- # assign abundance 'otu' bins
- data$assign(table = df, type = "bin", bin_type = "otu")
-
- data$add(tree, type = "sample_tree")
- data$get_sample_tree()
-}
-    \if{html}{\out{</div>}}
-  }
-}
-
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-strollur-get_sequence_tree"></a>}}
-\if{latex}{\out{\hypertarget{method-strollur-get_sequence_tree}{}}}
-\subsection{\code{strollur$get_sequence_tree()}}{
-  Get phylo tree relating the sequences in your strollur object.
-  \subsection{Usage}{
-    \if{html}{\out{<div class="r">}}
-    \preformatted{strollur$get_sequence_tree()}
-    \if{html}{\out{</div>}}
-  }
-  \subsection{Returns}{
-    ape::tree
-  }
-  \subsection{Examples}{
-    \if{html}{\out{<div class="r example copy">}}
-    \preformatted{ data <- new_dataset("my_dataset")
- tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
- data$add(tree, type = "sequence_tree")
- data$get_sequence_tree()
-}
-    \if{html}{\out{</div>}}
-  }
-}
-
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-strollur-get_version"></a>}}
 \if{latex}{\out{\hypertarget{method-strollur-get_version}{}}}
 \subsection{\code{strollur$get_version()}}{
@@ -1359,7 +1279,8 @@ miseq$names(type = "report")
 \if{html}{\out{<a id="method-strollur-report"></a>}}
 \if{latex}{\out{\hypertarget{method-strollur-report}{}}}
 \subsection{\code{strollur$report()}}{
-  Get a data.frame containing the given report
+  Get a data.frame containing the given report, or the phylo tree
+requested.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{strollur$report(type = "sequence", bin_type = "otu")}
@@ -1370,18 +1291,18 @@ miseq$names(type = "report")
     \describe{
       \item{\code{type}}{string containing the type of report you would like. Options
 include: "fasta", "sequence", "sequence_bin_assignment",
-"sequence_taxonomy", "bin_taxonomy", "bin_representative",
-"sample_assignment", "resource_reference", "sequence_scrap",
-"bin_scrap". If you have added custom reports for alignment,
-contigs_assembly or chimeras, you can get those as well.
-Default = "sequence".}
+"sequence_taxonomy", "sequence_tree", "bin_taxonomy",
+"bin_representative", "sample_assignment", "sample_tree",
+"resource_reference", "sequence_scrap", "bin_scrap". If you have added
+custom reports for alignment, contigs_assembly or chimeras, you can get
+those as well. Default = "sequence".}
       \item{\code{bin_type}}{string containing the bin type you would like a
 bin_taxonomy report for. Default = "otu".}
     }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    data.frame
+    data.frame or tree
   }
   \subsection{Examples}{
     \if{html}{\out{<div class="r example copy">}}
@@ -1436,6 +1357,14 @@ references <- miseq$report(type = "resource_reference")
 # To get our custom report containing the contigs assembly data:
 
 miseq$report(type = "contigs_report") |> head(n = 5)
+
+# To get the tree that relates your sequences:
+
+sequence_tree <- miseq$report(type = "sequence_tree")
+
+# To get the tree that relates your sequences:
+
+sample_tree <- miseq$report(type = "sample_tree")
 }
     \if{html}{\out{</div>}}
   }

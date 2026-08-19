@@ -269,7 +269,7 @@ data$add(sequence_tree, type = "sequence_tree")
 #| fig.alt: >
 #|   Plot of Miseq_SOP's sample relationship tree
 old_par <- par(bg = "white")
-ape::plot.phylo(data$get_sample_tree(),
+ape::plot.phylo(data$report(type = "sample_tree"),
   no.margin = TRUE,
   cex = 0.5, edge.color = "maroon", tip.color = "navy"
 )

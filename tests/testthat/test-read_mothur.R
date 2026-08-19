@@ -135,12 +135,12 @@ test_that("test read taxonomy files", {
   expect_equal(count(dataset, type = "bin", bin_type = "asv"), 2425)
   expect_equal(count(dataset, type = "bin", bin_type = "phylotype"), 63)
 
-  tree <- dataset$get_sample_tree()
+  tree <- dataset$report(type = "sample_tree")
 
   expect_equal(sort(names(dataset, "sample")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
 
-  tree <- dataset$get_sequence_tree()
+  tree <- dataset$report(type = "sequence_tree")
 
   expect_equal(sort(names(dataset, "sequence")), sort(tree$tip.label))
 })

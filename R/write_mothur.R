@@ -163,7 +163,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("sample_tree" %in% tags)) {
-    sample_tree <- data$get_sample_tree()
+    sample_tree <- data$report(type = "sample_tree")
 
     if (!is.null(sample_tree)) {
       filename <- file.path(
@@ -178,7 +178,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("sequence_tree" %in% tags)) {
-    sequence_tree <- data$get_sequence_tree()
+    sequence_tree <- data$report(type = "sequence_tree")
 
     if (!is.null(sequence_tree)) {
       filename <- file.path(

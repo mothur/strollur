@@ -1334,7 +1334,7 @@ test_that("dataset - get_sequence_summary,", {
   expect_equal(summary$SearchScore[7], 83.00)
 })
 
-test_that("dataset - add_sequence_tree / get_sequence_tree,", {
+test_that("dataset - add sequence_tree / report sequence_tree,", {
   # create tree from sequences
 
   names <- c("seq1", "seq2", "seq3", "seq4")
@@ -1347,7 +1347,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
     dataset_t,
     data.frame(sequence_name = names, sequence = seqs)
   )
-  expect_equal(dataset_t$get_sequence_tree(), NULL)
+  expect_equal(dataset_t$report(type = "sequence_tree"), NULL)
 
   # add full tree
   dataset_t <- new_dataset()
@@ -1359,7 +1359,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   # should alert that the tree is missing reads, and not save it
   dataset_t$add(table = nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
 
-  tree <- dataset_t$get_sequence_tree()
+  tree <- dataset_t$report(type = "sequence_tree")
 
   expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
@@ -1372,7 +1372,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   # remove seq and make sure tree is pruned as well
   xdev_remove_sequences(dataset_t, c("seq1"), c("bad"))
 
-  tree <- dataset_t$get_sequence_tree()
+  tree <- dataset_t$report(type = "sequence_tree")
 
   expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(4, 4, 4))
@@ -1390,14 +1390,14 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   dataset_t <- new_dataset()
   xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
   dataset_t$add(nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
-  expect_equal(dataset_t$get_sequence_tree(), NULL)
+  expect_equal(dataset_t$report(type = "sequence_tree"), NULL)
 
   # add tree from file
   dataset_t <- new_dataset()
   dataset_t$add(read.tree(
     strollur_example("final.phylip.tre.gz")
   ), type = "sequence_tree")
-  tree <- dataset_t$get_sequence_tree()
+  tree <- dataset_t$report(type = "sequence_tree")
 
   expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(2426, 2427, 2427, 2426, 2428))
@@ -1419,7 +1419,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   names(l) <- names
   dataset_t$add(nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
 
-  tree <- dataset_t$get_sequence_tree()
+  tree <- dataset_t$report(type = "sequence_tree")
 
   expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
@@ -1430,9 +1430,9 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   )
 })
 
-test_that("dataset - add sample_tree / get_sample_tree,", {
+test_that("dataset - add sample_tree / report sample_tree,", {
   dataset_t <- new_dataset()
-  expect_null(dataset_t$get_sample_tree())
+  expect_null(dataset_t$report(type = "sample_tree"))
 
   sample_tree <- ape::read.tree(
     strollur_example("final.opti_mcc.jclass.ave.tre")
@@ -1440,7 +1440,7 @@ test_that("dataset - add sample_tree / get_sample_tree,", {
 
   # should report no samples and not save
   dataset_t$add(sample_tree, type = "sample_tree")
-  expect_null(dataset_t$get_sample_tree())
+  expect_null(dataset_t$report(type = "sample_tree"))
 
   dataset_t <- read_mothur(
     fasta = strollur_example("final.fasta.gz"),
@@ -1457,25 +1457,25 @@ test_that("dataset - add sample_tree / get_sample_tree,", {
 
   # should report missing samples since this is a sequence tree and not save
   dataset_t$add(sequence_tree, type = "sample_tree")
-  expect_null(dataset_t$get_sample_tree())
+  expect_null(dataset_t$report(type = "sample_tree"))
 
   dataset_t$add(sample_tree, type = "sample_tree")
 
-  tree <- dataset_t$get_sample_tree()
+  tree <- dataset_t$report(type = "sample_tree")
 
   expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
 
   xdev_remove_samples(dataset_t, c("F3D1", "F3D141"))
 
-  tree <- dataset_t$get_sample_tree()
+  tree <- dataset_t$report(type = "sample_tree")
 
   expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
 
   # add tree with all groups, prune tree on add
   dataset_t$add(sample_tree, type = "sample_tree")
 
-  tree <- dataset_t$get_sample_tree()
+  tree <- dataset_t$report(type = "sample_tree")
 
   # confirm pruning
   expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))

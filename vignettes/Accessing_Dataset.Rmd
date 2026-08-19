@@ -464,8 +464,8 @@ summary(miseq, type = "scrap")
 strollur allows you to include trees relating the sequences and samples within your dataset. You can access and plot them using the following functions.
 
 ```{r}
-miseq_sequence_tree <- miseq$get_sequence_tree()
-miseq_sample_tree <- miseq$get_sample_tree()
+miseq_sequence_tree <- report(miseq, type = "sequence_tree")
+miseq_sample_tree <- report(miseq, type = "sample_tree")
 
 #| fig.alt: >
 #|   Plot of Miseq_SOP's sample relationship tree

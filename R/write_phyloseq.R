@@ -76,9 +76,9 @@ write_phyloseq <- function(data) {
     phyloseq_parameter_list[[2]] <- phyloseq::tax_table(taxas)
   }
 
-  if (!is.null(data$get_sequence_tree())) {
+  if (!is.null(data$report(type = "sequence_tree"))) {
     phyloseq_parameter_list[[3]] <-
-      phyloseq::phy_tree(data$get_sequence_tree())
+      phyloseq::phy_tree(data$report(type = "sequence_tree"))
   }
 
 

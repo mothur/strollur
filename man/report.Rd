@@ -8,28 +8,29 @@
 report(data, type = "sequence", bin_type = "otu")
 }
 \arguments{
-\item{data, }{a
+\item{data}{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{type, }{string containing the type of report you would like. Options
+\item{type}{string containing the type of report you would like. Options
 include: "fasta", "sequence", "sequence_bin_assignment",
-"sequence_taxonomy", "bin_taxonomy", "bin_representative",
-"sample_assignment", "resource_reference", "sequence_scrap",
+"sequence_taxonomy", "sequence_tree", bin_taxonomy", "bin_representative",
+"sample_assignment", "sample_tree", resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
 Default = "sequence".}
 
-\item{bin_type, }{string containing the bin type you would like a bin_taxonomy
+\item{bin_type}{string containing the bin type you would like a bin_taxonomy
 report for. Default = "otu".}
 }
 \value{
 data.frame
 }
 \description{
-Get a data.frame containing the report. Reports include FASTA format,
-sequences reports, sequence_bin_assignments, sequence_taxonomy, bin_taxonomy,
-bin_representatives, sample_assignments, references, custom reports,
-sequence_scrap, and bin_scrap in a
+Get a data.frame containing the report or the phylo tree
+requested. Reports include FASTA format, sequences reports,
+sequence_bin_assignments, sequence_taxonomy, sequence_tree, bin_taxonomy,
+bin_representatives, sample_assignments, sample_tree, references, custom
+reports, sequence_scrap, and bin_scrap in a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 }
 \examples{
@@ -87,5 +88,13 @@ references <- report(data = miseq, type = "resource_reference")
 # To get our custom report containing the contigs assembly data:
 
 report(data = miseq, type = "contigs_report") |> head(n = 10)
+
+# To get the tree that relates your sequences:
+
+sequence_tree <- report(data = miseq, type = "sequence_tree")
+
+# To get the tree that relates your samples:
+
+sample_tree <- report(data = miseq, type = "sample_tree")
 
 }

@@ -61,8 +61,8 @@ strollur <- R6Class("strollur",
           xdev_set_dataset_name(self, name)
         }
 
-        self$sequence_tree <- dataset$get_sequence_tree()
-        self$sample_tree <- dataset$get_sample_tree()
+        self$sequence_tree <- dataset$report(type = "sequence_tree")
+        self$sample_tree <- dataset$report(type = "sample_tree")
       }
 
       invisible(self)
@@ -965,72 +965,6 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
-    #' Get phylo tree relating the samples in your dataset.
-    #' @examples
-    #'
-    #'  tree <- ape::read.tree(strollur_example(
-    #'   "final.opti_mcc.jclass.ave.tre"))
-    #'
-    #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
-    #'
-    #'  data <- new_dataset("my_dataset")
-    #'
-    #'  # assign abundance 'otu' bins
-    #'  data$assign(table = df, type = "bin", bin_type = "otu")
-    #'
-    #'  data$add(tree, type = "sample_tree")
-    #'  data$get_sample_tree()
-    #'
-    #' @return ape::tree
-    get_sample_tree = function() {
-      if (!is.null(self$sample_tree)) {
-        # prune tree if needed
-        # samples in tree and not in dataset
-        extra_samples <- setdiff(
-          self$sample_tree$tip.label,
-          names(self, type = "sample")
-        )
-
-        if (length(extra_samples) != 0) {
-          # if tree contains "extra" samples, prune the tree
-          self$sample_tree <- drop.tip(self$sample_tree,
-            tip = extra_samples
-          )
-        }
-      }
-      self$sample_tree
-    },
-
-    #' @description
-    #' Get phylo tree relating the sequences in your strollur object.
-    #' @examples
-    #'
-    #'  data <- new_dataset("my_dataset")
-    #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
-    #'  data$add(tree, type = "sequence_tree")
-    #'  data$get_sequence_tree()
-    #'
-    #' @return ape::tree
-    get_sequence_tree = function() {
-      if (!is.null(self$sequence_tree)) {
-        # prune tree if needed
-        # seqs in tree and not in dataset
-        extra_seqs <- setdiff(
-          self$sequence_tree$tip.label,
-          names(self, type = "sequence")
-        )
-
-        if (length(extra_seqs) != 0) {
-          # if tree contains "extra" names, prune the tree
-          self$sequence_tree <- drop.tip(self$sequence_tree,
-            tip = extra_seqs
-          )
-        }
-      }
-      self$sequence_tree
-    },
-
-    #' @description
     #' Get the version of the
     #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
     #' object.
@@ -1123,8 +1057,8 @@ strollur <- R6Class("strollur",
       # compare ape sequence tree, sample_tree
       # We use ape::all.equal.phylo because tree objects
       # can be topologically identical but have different memory layouts.
-      seq_tree_self <- self$get_sequence_tree()
-      seq_tree_data <- data$get_sequence_tree()
+      seq_tree_self <- self$report(type = "sequence_tree")
+      seq_tree_data <- data$report(type = "sequence_tree")
       if (is.null(seq_tree_self) && is.null(seq_tree_data)) {
         # null trees
       } else if (is.null(seq_tree_self) || is.null(seq_tree_data)) {
@@ -1149,8 +1083,8 @@ strollur <- R6Class("strollur",
         }
       }
 
-      sample_tree_self <- self$get_sample_tree()
-      sample_tree_data <- data$get_sample_tree()
+      sample_tree_self <- self$report(type = "sample_tree")
+      sample_tree_data <- data$report(type = "sample_tree")
       if (is.null(sample_tree_self) && is.null(sample_tree_data)) {
         # null trees
       } else if (is.null(sample_tree_self) || is.null(sample_tree_data)) {
@@ -1249,15 +1183,16 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
-    #' Get a data.frame containing the given report
+    #' Get a data.frame containing the given report, or the phylo tree
+    #' requested.
     #'
     #' @param type string containing the type of report you would like. Options
-    #' include: "fasta", "sequence", "sequence_bin_assignment",
-    #' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
-    #'  "sample_assignment", "resource_reference", "sequence_scrap",
-    #' "bin_scrap". If you have added custom reports for alignment,
-    #' contigs_assembly or chimeras, you can get those as well.
-    #'  Default = "sequence".
+    #'   include: "fasta", "sequence", "sequence_bin_assignment",
+    #'   "sequence_taxonomy", "sequence_tree", "bin_taxonomy",
+    #'   "bin_representative", "sample_assignment", "sample_tree",
+    #'   "resource_reference", "sequence_scrap", "bin_scrap". If you have added
+    #'   custom reports for alignment, contigs_assembly or chimeras, you can get
+    #'   those as well. Default = "sequence".
     #'
     #' @param bin_type string containing the bin type you would like a
     #'   bin_taxonomy report for. Default = "otu".
@@ -1316,8 +1251,51 @@ strollur <- R6Class("strollur",
     #'
     #' miseq$report(type = "contigs_report") |> head(n = 5)
     #'
-    #' @return data.frame
+    #' # To get the tree that relates your sequences:
+    #'
+    #' sequence_tree <- miseq$report(type = "sequence_tree")
+    #'
+    #' # To get the tree that relates your sequences:
+    #'
+    #' sample_tree <- miseq$report(type = "sample_tree")
+    #'
+    #' @return data.frame or tree
     report = function(type = "sequence", bin_type = "otu") {
+      if (type == "sequence_tree") {
+        if (!is.null(self$sequence_tree)) {
+          # prune tree if needed
+          # seqs in tree and not in dataset
+          extra_seqs <- setdiff(
+            self$sequence_tree$tip.label,
+            names(self, type = "sequence")
+          )
+
+          if (length(extra_seqs) != 0) {
+            # if tree contains "extra" names, prune the tree
+            self$sequence_tree <- drop.tip(self$sequence_tree,
+              tip = extra_seqs
+            )
+          }
+        }
+        return(self$sequence_tree)
+      } else if (type == "sample_tree") {
+        if (!is.null(self$sample_tree)) {
+          # prune tree if needed
+          # samples in tree and not in dataset
+          extra_samples <- setdiff(
+            self$sample_tree$tip.label,
+            names(self, type = "sample")
+          )
+
+          if (length(extra_samples) != 0) {
+            # if tree contains "extra" samples, prune the tree
+            self$sample_tree <- drop.tip(self$sample_tree,
+              tip = extra_samples
+            )
+          }
+        }
+        return(self$sample_tree)
+      }
       xdev_report(self, type, bin_type)
     },
 

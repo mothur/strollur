@@ -70,3 +70,44 @@ test_that("test report - type = fasta", {
   expect_equal(fasta$sequence_name, names)
   expect_equal(fasta$sequence, seqs)
 })
+
+test_that("test report - type = sequence_tree and sample_tree", {
+  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
+
+  data <- new_dataset()
+  add(data, table = tree, type = "sequence_tree")
+
+  tree <- report(data, type = "sequence_tree")
+
+  expect_equal(sort(names(data, "sequence")), sort(tree$tip.label))
+  expect_equal(tree$edge[1:5, 1], c(2426, 2427, 2427, 2426, 2428))
+  expect_equal(tree$edge[1:5, 2], c(2427, 1, 2, 2428, 2429))
+  expect_equal(
+    round(tree$edge.length[1:5], digits = 3),
+    c(NaN, 0.004, 0.004, 0.000, 0.002)
+  )
+
+  dataset_t <- read_mothur(
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    dataset_name = "miseq_sop"
+  )
+
+  sample_tree <- ape::read.tree(
+    strollur_example("final.opti_mcc.jclass.ave.tre")
+  )
+
+  add(dataset_t, table = sample_tree, type = "sample_tree")
+
+  tree <- report(dataset_t, type = "sample_tree")
+
+  expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
+  expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
+
+  xdev_remove_samples(dataset_t, c("F3D1", "F3D141"))
+
+  tree <- report(dataset_t, type = "sample_tree")
+
+  expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
+})
