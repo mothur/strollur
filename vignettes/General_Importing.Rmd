@@ -264,7 +264,7 @@ sample_tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
 sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 
 data$add_sample_tree(sample_tree)
-data$add_sequence_tree(sequence_tree)
+data$add(sequence_tree, type = "sequence_tree")
 
 #| fig.alt: >
 #|   Plot of Miseq_SOP's sample relationship tree

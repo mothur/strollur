@@ -99,11 +99,11 @@ test_that("test strollur objects with different sequence_tree / sample_tree", {
 
   data <- new_dataset()
   seq_tree <- ape::read.tree(sequence_tree)
-  data$add_sequence_tree(seq_tree)
+  data$add(seq_tree, type = "sequence_tree")
 
   data2 <- new_dataset()
   samp_tree <- ape::read.tree(sample_tree)
-  data2$add_sequence_tree(samp_tree)
+  data2$add(samp_tree, type = "sequence_tree")
 
   # mismatched sequence trees
   actual_message <- evaluate_promise(is_equal(data, data2))$messages

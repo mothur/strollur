@@ -268,7 +268,7 @@ import_dataset <- function(table) {
 
   # add sequence_tree
   if ("sequence_tree" %in% names) {
-    data$add_sequence_tree(table$sequence_tree)
+    data$add(table = table$sequence_tree, type = "sequence_tree")
   }
 
   # add sample_tree

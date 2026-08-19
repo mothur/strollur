@@ -50,3 +50,26 @@ test_that("test add - errors", {
     "alignment reference trimmed to V4 region"
   )
 })
+
+test_that("test add - sequence_tree", {
+    names <- c("seq1", "seq2", "seq3", "seq4")
+    seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
+
+    dataset_t <- new_dataset()
+    xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
+
+    l <- lapply(strsplit(seqs, split = ""), "[")
+    names(l) <- names
+
+    add(dataset_t, table = nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
+
+    tree <- dataset_t$get_sequence_tree()
+
+    expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
+    expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
+    expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
+    expect_equal(
+        round(tree$edge.length, digits = 2),
+        c(0.26, 0.33, 0.07, 0.33, 0.26)
+    )
+})

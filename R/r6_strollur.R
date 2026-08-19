@@ -252,9 +252,10 @@ strollur <- R6Class("strollur",
     #' @description
     #' Add sequences, reports or resource references
     #'
-    #' @param table a data.frame containing the data you wish to add.
+    #' @param table a data.frame or tree containing the data you wish to add.
     #' @param type a string containing the type of data. Options include:
-    #' 'sequence', 'resource_reference' and 'report'.
+    #'   'sequence', 'sample_tree', 'sequence_tree', 'resource_reference' and
+    #'   'report'.
     #' @param report_type a string containing the type of report you are
     #' adding.
     #' @param table_names named list used to indicate the names of the columns
@@ -347,6 +348,12 @@ strollur <- R6Class("strollur",
     #'
     #' data$add(table = metadata, type = "report", report_type = "metadata")
     #'
+    #' # To add a tree relating to your sequences
+    #'
+    #' tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
+    #'
+    #' data$add(table = tree, type = "sequence_tree")
+    #'
     #' @return Updated `strollur` object - invisible(self)
     add = function(table,
                    type = "sequence",
@@ -434,6 +441,58 @@ strollur <- R6Class("strollur",
           citation = table_names[["reference_citation"]],
           verbose = verbose
         )
+      } else if (type == "sequence_tree") {
+          if (!inherits(table, "phylo")) {
+              .abort_incorrect_type("phylo", table)
+          }
+
+          # if no seqs yet, add sequences in tree to dataset
+          if (count(self, type = "sequence") == 0) {
+              xdev_add_sequences(data = self,
+                                 table = data.frame(sequence_name =
+                                                        table$tip.label))
+
+              # save tree
+              self$sequence_tree <- table
+          } else {
+              # make sure the tree includes all "good" sequences
+              if (identical(
+                  sort(table$tip.label),
+                  sort(names(self, type = "sequence"))
+              )) {
+                  # save tree
+                  self$sequence_tree <- table
+              } else {
+                  # seqs in dataset and not in tree
+                  missing_seqs <- setdiff(
+                      names(self, type = "sequence"),
+                      table$tip.label
+                  )
+
+                  # if tree is "missing" names, then ignore tree
+                  if (length(missing_seqs) != 0) {
+                      message <- paste("Your tree does not",
+                                       "contain a node for every sequence in",
+                                       "your dataset, ignoring tree.",
+                                       "Missing tree nodes for:",
+                                       paste(missing_seqs, collapse = ", "),
+                                       ".",
+                                       collapse = ""
+                      )
+                      cli_alert(message)
+                  } else {
+                      # seqs in tree and not in dataset
+                      extra_seqs <- setdiff(
+                          table$tip.label,
+                          names(self, type = "sequence")
+                      )
+
+                      # if tree contains "extra" names, prune the tree
+                      self$sequence_tree <- drop.tip(table, tip = extra_seqs)
+                  }
+              }
+          }
+
       } else {
         message <- paste0(
           type, " is not a valid 'type' for the strollur$add()",
@@ -508,69 +567,6 @@ strollur <- R6Class("strollur",
 
             # if tree contains "extra" names, prune the tree
             self$sample_tree <- drop.tip(tree, tip = extra_samples)
-          }
-        }
-      }
-
-      invisible(self)
-    },
-
-    #' @description
-    #' Add phylo tree relating the sequences in your dataset
-    #' @param tree a phylo tree object created by ape::read.tree.
-    #' @examples
-    #'
-    #'  data <- new_dataset("my_dataset")
-    #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
-    #'  data$add_sequence_tree(tree)
-    #'
-    #' @return Updated `strollur` object
-    add_sequence_tree = function(tree) {
-      if (!inherits(tree, "phylo")) {
-        .abort_incorrect_type("phylo", tree)
-      }
-
-      # if no seqs yet, add sequences in tree to dataset
-      if (count(self, type = "sequence") == 0) {
-        xdev_add_sequences(self, data.frame(sequence_name = tree$tip.label))
-
-        # save tree
-        self$sequence_tree <- tree
-      } else {
-        # make sure the tree includes all "good" sequences
-        if (identical(
-          sort(tree$tip.label),
-          sort(names(self, type = "sequence"))
-        )) {
-          # save tree
-          self$sequence_tree <- tree
-        } else {
-          # seqs in dataset and not in tree
-          missing_seqs <- setdiff(
-            names(self, type = "sequence"),
-            tree$tip.label
-          )
-
-          # if tree is "missing" names, then ignore tree
-          if (length(missing_seqs) != 0) {
-            message <- paste("Your tree does not",
-              "contain a node for every sequence in",
-              "your dataset, ignoring tree.",
-              "Missing tree nodes for:",
-              paste(missing_seqs, collapse = ", "),
-              ".",
-              collapse = ""
-            )
-            cli_alert(message)
-          } else {
-            # seqs in tree and not in dataset
-            extra_seqs <- setdiff(
-              tree$tip.label,
-              names(self, type = "sequence")
-            )
-
-            # if tree contains "extra" names, prune the tree
-            self$sequence_tree <- drop.tip(tree, tip = extra_seqs)
           }
         }
       }
@@ -1381,7 +1377,6 @@ strollur <- R6Class("strollur",
   private = list(
     version = "0.1.2",
     finalize = function() {},
-
 
     #' Get summary of the sequence reports
     get_summary = function() {

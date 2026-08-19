@@ -105,7 +105,8 @@ read_phyloseq <- function(phyloseq_object, treatment_column_name = NULL,
 
   # phy tree
   if (!is.null(phyloseq_object@phy_tree)) {
-    rdaset_object$add_sequence_tree(phyloseq::phy_tree(phyloseq_object))
+    rdaset_object$add(table = phyloseq::phy_tree(phyloseq_object),
+                      type = "sequence_tree")
   }
 
   # Treatments

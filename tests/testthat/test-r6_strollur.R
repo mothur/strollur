@@ -1341,7 +1341,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
   dataset_t <- new_dataset()
 
-  expect_error(dataset_t$add_sequence_tree(tree = c("bad_type")))
+  expect_error(dataset_t$add(table = c("bad_type"), type = "sequence_tree"))
 
   xdev_add_sequences(
     dataset_t,
@@ -1357,7 +1357,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   names(l) <- names
 
   # should alert that the tree is missing reads, and not save it
-  dataset_t$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
+  dataset_t$add(table = nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
 
   tree <- dataset_t$get_sequence_tree()
 
@@ -1389,14 +1389,14 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   # should alert that the tree is missing reads, and not save it
   dataset_t <- new_dataset()
   xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
-  dataset_t$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
+  dataset_t$add(nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
   expect_equal(dataset_t$get_sequence_tree(), NULL)
 
   # add tree from file
   dataset_t <- new_dataset()
-  dataset_t$add_sequence_tree(read.tree(
+  dataset_t$add(read.tree(
     strollur_example("final.phylip.tre.gz")
-  ))
+  ), type = "sequence_tree")
   tree <- dataset_t$get_sequence_tree()
 
   expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
@@ -1417,7 +1417,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   # add tree with extra sequences, forcing prune
   l <- lapply(strsplit(seqs, split = ""), "[")
   names(l) <- names
-  dataset_t$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
+  dataset_t$add(nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
 
   tree <- dataset_t$get_sequence_tree()
 

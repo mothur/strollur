@@ -208,7 +208,8 @@ read_qiime2 <- function(qza, metadata = NULL,
 
     # add sequence tree
     if ("sequence_tree" %in% data_names) {
-      data$add_sequence_tree(data_found[["sequence_tree"]])
+      data$add(table = data_found[["sequence_tree"]],
+               type = "sequence_tree")
     }
   }
 

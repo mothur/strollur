@@ -9,9 +9,10 @@
 #' @param data, a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param table, a data.frame containing the data you wish to add.
+#' @param table, a data.frame or tree containing the data you wish to add.
 #' @param type, a string containing the type of data. Options include:
-#' 'sequence', 'resource_reference' and 'report'.
+#'   'sequence', 'sample_tree', 'sequence_tree', 'resource_reference' and
+#'   'report'.
 #' @param report_type, a string containing the type of report you are adding.
 #' @param table_names, named list used to indicate the names of the columns in
 #' the table. By default:
@@ -132,6 +133,12 @@
 #'
 #' add(data, table = metadata, type = "report", report_type = "metadata")
 #'
+#' # To add a tree relating to your sequences
+#'
+#' tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
+#'
+#' add(data, table = tree, type = "sequence_tree")
+#'
 #' @return an updated
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -220,6 +227,55 @@ add <- function(data, table,
       citation = table_names[["reference_citation"]],
       verbose = verbose
     )
+  } else if (type == "sequence_tree") {
+      if (!inherits(table, "phylo")) {
+          .abort_incorrect_type("phylo", table)
+      }
+
+      # if no seqs yet, add sequences in tree to dataset
+      if (count(data, type = "sequence") == 0) {
+          xdev_add_sequences(data, data.frame(sequence_name = table$tip.label))
+
+          # save tree
+          data$sequence_tree <- table
+      } else {
+          # make sure the tree includes all "good" sequences
+          if (identical(
+              sort(table$tip.label),
+              sort(names(data, type = "sequence"))
+          )) {
+              # save tree
+              data$sequence_tree <- table
+          } else {
+              # seqs in dataset and not in tree
+              missing_seqs <- setdiff(
+                  names(data, type = "sequence"),
+                  table$tip.label
+              )
+
+              # if tree is "missing" names, then ignore tree
+              if (length(missing_seqs) != 0) {
+                  message <- paste("Your tree does not",
+                                   "contain a node for every sequence in",
+                                   "your dataset, ignoring tree.",
+                                   "Missing tree nodes for:",
+                                   paste(missing_seqs, collapse = ", "),
+                                   ".",
+                                   collapse = ""
+                  )
+                  cli_alert(message)
+              } else {
+                  # seqs in tree and not in dataset
+                  extra_seqs <- setdiff(
+                      table$tip.label,
+                      names(data, type = "sequence")
+                  )
+
+                  # if tree contains "extra" names, prune the tree
+                  data$sequence_tree <- drop.tip(table, tip = extra_seqs)
+              }
+          }
+      }
   } else {
     message <- paste0(
       type, " is not a valid 'type' for the add()",

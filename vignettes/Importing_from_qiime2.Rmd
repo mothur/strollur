@@ -144,7 +144,7 @@ sequence_tree <- ape::read.tree(tree_file)
 You can add the tree to your dataset as follows:
 
 ```{r}
-my_data$add_sequence_tree(tree = sequence_tree)
+my_data$add(table = sequence_tree, type = "sequence_tree")
 ```
 
 You can remove the tree_artifact using the following:
