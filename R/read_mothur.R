@@ -206,7 +206,7 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
   if (!is.null(sample_tree)) {
     tree <- ape::read.tree(sample_tree)
-    data$add_sample_tree(tree)
+    data$add(tree, type = "sample_tree")
   }
 
   if (!is.null(sequence_tree)) {

@@ -23,10 +23,11 @@ add(
 \item{data, }{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing the data you wish to add.}
+\item{table, }{a data.frame or tree containing the data you wish to add.}
 
 \item{type, }{a string containing the type of data. Options include:
-'sequence', 'resource_reference' and 'report'.}
+'sequence', 'sample_tree', 'sequence_tree', 'resource_reference' and
+'report'.}
 
 \item{report_type, }{a string containing the type of report you are adding.}
 
@@ -156,5 +157,20 @@ add(
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 add(data, table = metadata, type = "report", report_type = "metadata")
+
+# To add a tree relating to your sequences
+
+tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
+
+add(data, table = tree, type = "sequence_tree")
+
+# To add a tree relating to your samples
+data <- new_dataset(dataset_name = "example_dataset")
+
+df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
+
+assign(data, table = df, type = "bin", bin_type = "otu")
+add(data, table = tree, type = "sample_tree")
 
 }

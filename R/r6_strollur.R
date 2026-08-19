@@ -354,6 +354,16 @@ strollur <- R6Class("strollur",
     #'
     #' data$add(table = tree, type = "sequence_tree")
     #'
+    #' # To add a tree relating to your samples
+    #' data <- new_dataset(dataset_name = "example_dataset")
+    #'
+    #' df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+    #' data$assign(table = df, type = "bin", bin_type = "otu")
+    #'
+    #' tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
+    #'
+    #' data$add(table = tree, type = "sample_tree")
+    #'
     #' @return Updated `strollur` object - invisible(self)
     add = function(table,
                    type = "sequence",
@@ -442,133 +452,116 @@ strollur <- R6Class("strollur",
           verbose = verbose
         )
       } else if (type == "sequence_tree") {
-          if (!inherits(table, "phylo")) {
-              .abort_incorrect_type("phylo", table)
-          }
+        if (!inherits(table, "phylo")) {
+          .abort_incorrect_type("phylo", table)
+        }
 
-          # if no seqs yet, add sequences in tree to dataset
-          if (count(self, type = "sequence") == 0) {
-              xdev_add_sequences(data = self,
-                                 table = data.frame(sequence_name =
-                                                        table$tip.label))
+        # if no seqs yet, add sequences in tree to dataset
+        if (count(self, type = "sequence") == 0) {
+          xdev_add_sequences(
+            data = self,
+            table = data.frame(
+              sequence_name =
+                table$tip.label
+            )
+          )
 
-              # save tree
-              self$sequence_tree <- table
+          # save tree
+          self$sequence_tree <- table
+        } else {
+          # make sure the tree includes all "good" sequences
+          if (identical(
+            sort(table$tip.label),
+            sort(names(self, type = "sequence"))
+          )) {
+            # save tree
+            self$sequence_tree <- table
           } else {
-              # make sure the tree includes all "good" sequences
-              if (identical(
-                  sort(table$tip.label),
-                  sort(names(self, type = "sequence"))
-              )) {
-                  # save tree
-                  self$sequence_tree <- table
-              } else {
-                  # seqs in dataset and not in tree
-                  missing_seqs <- setdiff(
-                      names(self, type = "sequence"),
-                      table$tip.label
-                  )
+            # seqs in dataset and not in tree
+            missing_seqs <- setdiff(
+              names(self, type = "sequence"),
+              table$tip.label
+            )
 
-                  # if tree is "missing" names, then ignore tree
-                  if (length(missing_seqs) != 0) {
-                      message <- paste("Your tree does not",
-                                       "contain a node for every sequence in",
-                                       "your dataset, ignoring tree.",
-                                       "Missing tree nodes for:",
-                                       paste(missing_seqs, collapse = ", "),
-                                       ".",
-                                       collapse = ""
-                      )
-                      cli_alert(message)
-                  } else {
-                      # seqs in tree and not in dataset
-                      extra_seqs <- setdiff(
-                          table$tip.label,
-                          names(self, type = "sequence")
-                      )
+            # if tree is "missing" names, then ignore tree
+            if (length(missing_seqs) != 0) {
+              message <- paste("Your tree does not",
+                "contain a node for every sequence in",
+                "your dataset, ignoring tree.",
+                "Missing tree nodes for:",
+                paste(missing_seqs, collapse = ", "),
+                ".",
+                collapse = ""
+              )
+              cli_alert(message)
+            } else {
+              # seqs in tree and not in dataset
+              extra_seqs <- setdiff(
+                table$tip.label,
+                names(self, type = "sequence")
+              )
 
-                      # if tree contains "extra" names, prune the tree
-                      self$sequence_tree <- drop.tip(table, tip = extra_seqs)
-                  }
-              }
+              # if tree contains "extra" names, prune the tree
+              self$sequence_tree <- drop.tip(table, tip = extra_seqs)
+            }
           }
+        }
+      } else if (type == "sample_tree") {
+        if (!inherits(table, "phylo")) {
+          .abort_incorrect_type("phylo", table)
+        }
 
+        # if no samples, add sequences in tree to dataset
+        if (count(self, type = "sample") == 0) {
+          message <- paste0("Your dataset does not contain sample ",
+            "data, ignoring sample tree.",
+            collapse = ""
+          )
+          cli::cli_alert(message)
+        } else {
+          # make sure the tree includes all "good" samples
+          if (identical(
+            sort(table$tip.label),
+            sort(names(self, type = "sample"))
+          )) {
+            # save tree
+            self$sample_tree <- table
+          } else {
+            # samples in dataset and not in tree
+            missing_samples <- setdiff(
+              names(self, type = "sample"),
+              table$tip.label
+            )
+
+            # if tree is "missing" names, then ignore tree
+            if (length(missing_samples) != 0) {
+              message <- paste("Your tree does not",
+                "contain a node for every sample in",
+                "your dataset, ignoring tree.",
+                "Missing tree nodes for:",
+                paste(missing_samples, collapse = ", "),
+                ".",
+                collapse = ""
+              )
+              cli_alert(message)
+            } else {
+              # samples in tree and not in dataset
+              extra_samples <- setdiff(
+                table$tip.label,
+                names(self, type = "sample")
+              )
+
+              # if tree contains "extra" names, prune the tree
+              self$sample_tree <- drop.tip(table, tip = extra_samples)
+            }
+          }
+        }
       } else {
         message <- paste0(
           type, " is not a valid 'type' for the strollur$add()",
           " function."
         )
         cli::cli_abort(message)
-      }
-
-      invisible(self)
-    },
-
-    #' @description
-    #' Add phylo tree relating the samples in your dataset
-    #'
-    #' @param tree a phylo tree object created by ape::read.tree.
-    #' @examples
-    #'
-    #'  data <- new_dataset("my_dataset")
-    #'
-    #'  df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
-    #'  assign(data = data, table = df, type = "bin", bin_type = "otu")
-    #'
-    #'  tree <- ape::read.tree(strollur_example(
-    #'  "final.opti_mcc.jclass.ave.tre"))
-    #'
-    #'  data$add_sample_tree(tree)
-    #' @return Updated `strollur` object
-    add_sample_tree = function(tree) {
-      if (!inherits(tree, "phylo")) {
-        .abort_incorrect_type("phylo", tree)
-      }
-
-      # if no samples, add sequences in tree to dataset
-      if (count(self, type = "sample") == 0) {
-        message <- paste0("Your dataset does not contain sample ",
-          "data, ignoring sample tree.",
-          collapse = ""
-        )
-        cli::cli_alert(message)
-      } else {
-        # make sure the tree includes all "good" samples
-        if (identical(
-          sort(tree$tip.label),
-          sort(names(self, type = "sample"))
-        )) {
-          # save tree
-          self$sample_tree <- tree
-        } else {
-          # samples in dataset and not in tree
-          missing_samples <- setdiff(
-            names(self, type = "sample"),
-            tree$tip.label
-          )
-
-          # if tree is "missing" names, then ignore tree
-          if (length(missing_samples) != 0) {
-            message <- paste("Your tree does not",
-              "contain a node for every sample in",
-              "your dataset, ignoring tree.",
-              "Missing tree nodes for:",
-              paste(missing_samples, collapse = ", "),
-              ".",
-              collapse = ""
-            )
-            cli_alert(message)
-          } else {
-            # samples in tree and not in dataset
-            extra_samples <- setdiff(
-              tree$tip.label,
-              names(self, type = "sample")
-            )
-
-            # if tree contains "extra" names, prune the tree
-            self$sample_tree <- drop.tip(tree, tip = extra_samples)
-          }
-        }
       }
 
       invisible(self)
@@ -985,7 +978,7 @@ strollur <- R6Class("strollur",
     #'  # assign abundance 'otu' bins
     #'  data$assign(table = df, type = "bin", bin_type = "otu")
     #'
-    #'  data$add_sample_tree(tree)
+    #'  data$add(tree, type = "sample_tree")
     #'  data$get_sample_tree()
     #'
     #' @return ape::tree
@@ -1014,7 +1007,7 @@ strollur <- R6Class("strollur",
     #'
     #'  data <- new_dataset("my_dataset")
     #'  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
-    #'  data$add_sequence_tree(tree)
+    #'  data$add(tree, type = "sequence_tree")
     #'  data$get_sequence_tree()
     #'
     #' @return ape::tree

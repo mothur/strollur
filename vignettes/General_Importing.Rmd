@@ -263,7 +263,7 @@ Lastly, strollur allows you to add tree that relate your samples or sequences. L
 sample_tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
 sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 
-data$add_sample_tree(sample_tree)
+data$add(sample_tree, type = "sample_tree")
 data$add(sequence_tree, type = "sequence_tree")
 
 #| fig.alt: >

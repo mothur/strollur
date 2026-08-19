@@ -87,30 +87,21 @@ metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 data$add(table = metadata, type = "report", report_type = "metadata")
 
+# To add a tree relating to your sequences
 
-## ------------------------------------------------
-## Method `strollur$add_sample_tree()`
-## ------------------------------------------------
+tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 
+data$add(table = tree, type = "sequence_tree")
 
- data <- new_dataset("my_dataset")
+# To add a tree relating to your samples
+data <- new_dataset(dataset_name = "example_dataset")
 
- df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
- assign(data = data, table = df, type = "bin", bin_type = "otu")
+df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+data$assign(table = df, type = "bin", bin_type = "otu")
 
- tree <- ape::read.tree(strollur_example(
- "final.opti_mcc.jclass.ave.tre"))
+tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
 
- data$add_sample_tree(tree)
-
-## ------------------------------------------------
-## Method `strollur$add_sequence_tree()`
-## ------------------------------------------------
-
-
- data <- new_dataset("my_dataset")
- tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
- data$add_sequence_tree(tree)
+data$add(table = tree, type = "sample_tree")
 
 
 ## ------------------------------------------------
@@ -302,7 +293,7 @@ data$get_bin_types()
  # assign abundance 'otu' bins
  data$assign(table = df, type = "bin", bin_type = "otu")
 
- data$add_sample_tree(tree)
+ data$add(tree, type = "sample_tree")
  data$get_sample_tree()
 
 
@@ -313,7 +304,7 @@ data$get_bin_types()
 
  data <- new_dataset("my_dataset")
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
- data$add_sequence_tree(tree)
+ data$add(tree, type = "sequence_tree")
  data$get_sequence_tree()
 
 
@@ -506,8 +497,6 @@ the class.}
     \item \href{#method-strollur-print}{\code{strollur$print()}}
     \item \href{#method-strollur-abundance}{\code{strollur$abundance()}}
     \item \href{#method-strollur-add}{\code{strollur$add()}}
-    \item \href{#method-strollur-add_sample_tree}{\code{strollur$add_sample_tree()}}
-    \item \href{#method-strollur-add_sequence_tree}{\code{strollur$add_sequence_tree()}}
     \item \href{#method-strollur-alignment_length}{\code{strollur$alignment_length()}}
     \item \href{#method-strollur-assign}{\code{strollur$assign()}}
     \item \href{#method-strollur-clear}{\code{strollur$clear()}}
@@ -662,9 +651,10 @@ miseq$abundance(type = "treatment")
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{table}}{a data.frame containing the data you wish to add.}
+      \item{\code{table}}{a data.frame or tree containing the data you wish to add.}
       \item{\code{type}}{a string containing the type of data. Options include:
-'sequence', 'resource_reference' and 'report'.}
+'sequence', 'sample_tree', 'sequence_tree', 'resource_reference' and
+'report'.}
       \item{\code{report_type}}{a string containing the type of report you are
 adding.}
       \item{\code{table_names}}{named list used to indicate the names of the columns
@@ -759,72 +749,22 @@ data$add(
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
 data$add(table = metadata, type = "report", report_type = "metadata")
-}
-    \if{html}{\out{</div>}}
-  }
-}
 
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-strollur-add_sample_tree"></a>}}
-\if{latex}{\out{\hypertarget{method-strollur-add_sample_tree}{}}}
-\subsection{\code{strollur$add_sample_tree()}}{
-  Add phylo tree relating the samples in your dataset
-  \subsection{Usage}{
-    \if{html}{\out{<div class="r">}}
-    \preformatted{strollur$add_sample_tree(tree)}
-    \if{html}{\out{</div>}}
-  }
-  \subsection{Arguments}{
-    \if{html}{\out{<div class="arguments">}}
-    \describe{
-      \item{\code{tree}}{a phylo tree object created by ape::read.tree.}
-    }
-    \if{html}{\out{</div>}}
-  }
-  \subsection{Returns}{
-    Updated \code{strollur} object
-  }
-  \subsection{Examples}{
-    \if{html}{\out{<div class="r example copy">}}
-    \preformatted{ data <- new_dataset("my_dataset")
+# To add a tree relating to your sequences
 
- df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
- assign(data = data, table = df, type = "bin", bin_type = "otu")
+tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 
- tree <- ape::read.tree(strollur_example(
- "final.opti_mcc.jclass.ave.tre"))
+data$add(table = tree, type = "sequence_tree")
 
- data$add_sample_tree(tree)
-}
-    \if{html}{\out{</div>}}
-  }
-}
+# To add a tree relating to your samples
+data <- new_dataset(dataset_name = "example_dataset")
 
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-strollur-add_sequence_tree"></a>}}
-\if{latex}{\out{\hypertarget{method-strollur-add_sequence_tree}{}}}
-\subsection{\code{strollur$add_sequence_tree()}}{
-  Add phylo tree relating the sequences in your dataset
-  \subsection{Usage}{
-    \if{html}{\out{<div class="r">}}
-    \preformatted{strollur$add_sequence_tree(tree)}
-    \if{html}{\out{</div>}}
-  }
-  \subsection{Arguments}{
-    \if{html}{\out{<div class="arguments">}}
-    \describe{
-      \item{\code{tree}}{a phylo tree object created by ape::read.tree.}
-    }
-    \if{html}{\out{</div>}}
-  }
-  \subsection{Returns}{
-    Updated \code{strollur} object
-  }
-  \subsection{Examples}{
-    \if{html}{\out{<div class="r example copy">}}
-    \preformatted{ data <- new_dataset("my_dataset")
- tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
- data$add_sequence_tree(tree)
+df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+data$assign(table = df, type = "bin", bin_type = "otu")
+
+tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
+
+data$add(table = tree, type = "sample_tree")
 }
     \if{html}{\out{</div>}}
   }
@@ -1192,7 +1132,7 @@ data$get_bin_types()
  # assign abundance 'otu' bins
  data$assign(table = df, type = "bin", bin_type = "otu")
 
- data$add_sample_tree(tree)
+ data$add(tree, type = "sample_tree")
  data$get_sample_tree()
 }
     \if{html}{\out{</div>}}
@@ -1216,7 +1156,7 @@ data$get_bin_types()
     \if{html}{\out{<div class="r example copy">}}
     \preformatted{ data <- new_dataset("my_dataset")
  tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
- data$add_sequence_tree(tree)
+ data$add(tree, type = "sequence_tree")
  data$get_sequence_tree()
 }
     \if{html}{\out{</div>}}

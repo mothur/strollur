@@ -273,7 +273,7 @@ import_dataset <- function(table) {
 
   # add sample_tree
   if ("sample_tree" %in% names) {
-    data$add_sample_tree(table$sample_tree)
+    data$add(table$sample_tree, type = "sample_tree")
   }
 
   data

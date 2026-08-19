@@ -498,7 +498,8 @@ xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequenc
 #'               "classification_otu by mothur2 v1.0.0 using default options", "",
 #' "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
 #'
-#' xdev_assign_bin_taxonomy_tidy(data, bin_classifications, reference)
+#' xdev_assign_bin_taxonomy_tidy(data, bin_classifications,
+#'                                  reference = reference)
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export

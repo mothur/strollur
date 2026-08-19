@@ -1430,7 +1430,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   )
 })
 
-test_that("dataset - add_sample_tree / get_sample_tree,", {
+test_that("dataset - add sample_tree / get_sample_tree,", {
   dataset_t <- new_dataset()
   expect_null(dataset_t$get_sample_tree())
 
@@ -1439,7 +1439,7 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
   )
 
   # should report no samples and not save
-  dataset_t$add_sample_tree(sample_tree)
+  dataset_t$add(sample_tree, type = "sample_tree")
   expect_null(dataset_t$get_sample_tree())
 
   dataset_t <- read_mothur(
@@ -1451,15 +1451,15 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
     dataset_name = "miseq_sop"
   )
 
-  expect_error(dataset_t$add_sample_tree(tree = c("bad_type")))
+  expect_error(dataset_t$add(table = c("bad_type"), type = "sample_tree"))
 
   sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 
   # should report missing samples since this is a sequence tree and not save
-  dataset_t$add_sample_tree(sequence_tree)
+  dataset_t$add(sequence_tree, type = "sample_tree")
   expect_null(dataset_t$get_sample_tree())
 
-  dataset_t$add_sample_tree(sample_tree)
+  dataset_t$add(sample_tree, type = "sample_tree")
 
   tree <- dataset_t$get_sample_tree()
 
@@ -1473,7 +1473,7 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
   expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
 
   # add tree with all groups, prune tree on add
-  dataset_t$add_sample_tree(sample_tree)
+  dataset_t$add(sample_tree, type = "sample_tree")
 
   tree <- dataset_t$get_sample_tree()
 

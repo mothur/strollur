@@ -125,8 +125,8 @@ test_that("test strollur objects with different sequence_tree / sample_tree", {
   xdev_assign_bins(data = data, table = df, bin_type = "otu")
   xdev_assign_bins(data = data2, table = df, bin_type = "otu")
 
-  data$add_sample_tree(samp_tree)
-  data2$add_sample_tree(samp_tree)
+  data$add(samp_tree, type = "sample_tree")
+  data2$add(samp_tree, type = "sample_tree")
 
   # remove sample from data to force tree diff
   xdev_remove_samples(data, c("F3D0"))
