@@ -1751,10 +1751,15 @@ test_that("dataset - assign_bin_representative_sequences", {
   expect_equal(report(dataset_t, "sample_assignment"), data.frame())
 })
 
-test_that("dataset - alignment_length", {
+test_that("dataset - alignment_length, rename", {
+  data <- new_dataset("old_name")
+  expect_equal(names(data, type = "dataset"), "old_name")
+
+  data$rename("new_name")
+  expect_equal(names(data, type = "dataset"), "new_name")
+
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
-  data <- new_dataset()
 
   xdev_add_sequences(
     data,

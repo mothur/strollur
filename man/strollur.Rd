@@ -359,6 +359,18 @@ miseq$names(type = "report")
 
 
 ## ------------------------------------------------
+## Method `strollur$rename()`
+## ------------------------------------------------
+
+
+data <- new_dataset("old_name")
+data
+
+data$rename("new_name")
+data
+
+
+## ------------------------------------------------
 ## Method `strollur$report()`
 ## ------------------------------------------------
 
@@ -485,6 +497,7 @@ the class.}
     \item \href{#method-strollur-has_sequence_taxonomy}{\code{strollur$has_sequence_taxonomy()}}
     \item \href{#method-strollur-is_equal}{\code{strollur$is_equal()}}
     \item \href{#method-strollur-names}{\code{strollur$names()}}
+    \item \href{#method-strollur-rename}{\code{strollur$rename()}}
     \item \href{#method-strollur-report}{\code{strollur$report()}}
     \item \href{#method-strollur-summary}{\code{strollur$summary()}}
     \item \href{#method-strollur-clone}{\code{strollur$clone()}}
@@ -1270,6 +1283,38 @@ miseq$names(type = "bin", samples = c("F3D0"), distinct = FALSE)
 
 # To get the names of the reports
 miseq$names(type = "report")
+}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-strollur-rename"></a>}}
+\if{latex}{\out{\hypertarget{method-strollur-rename}{}}}
+\subsection{\code{strollur$rename()}}{
+  Rename your strollur object.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{strollur$rename(name)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{name}}{string containing the new name for your dataset}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Updated \code{strollur} object
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{data <- new_dataset("old_name")
+data
+
+data$rename("new_name")
+data
 }
     \if{html}{\out{</div>}}
   }

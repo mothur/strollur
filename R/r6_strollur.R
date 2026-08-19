@@ -576,6 +576,7 @@ strollur <- R6Class("strollur",
     #'
     #' @return Integer containing the length of the aligned sequences or -1 if
     #'   unaligned.
+    #' @export
     alignment_length = function() {
       xdev_get_alignment_length(self)
     },
@@ -1180,6 +1181,24 @@ strollur <- R6Class("strollur",
                      samples = NULL,
                      distinct = FALSE) {
       xdev_names(self, type, bin_type, samples, distinct)
+    },
+
+    #' @description
+    #' Rename your strollur object.
+    #'
+    #' @param name string containing the new name for your dataset
+    #' @examples
+    #'
+    #' data <- new_dataset("old_name")
+    #' data
+    #'
+    #' data$rename("new_name")
+    #' data
+    #'
+    #' @returns Updated `strollur` object
+    #' @export
+    rename = function(name) {
+      xdev_set_dataset_name(self, name)
     },
 
     #' @description
