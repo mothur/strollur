@@ -15,36 +15,36 @@ knitr::opts_chunk$set(
 )
 ```
 
-The strollur package stores data associated with your Amplicon Sequence analysis. This tutorial will familiarize you some of with the functions available in the strollur package. If you haven’t reviewed the “Getting Started” tutorial, we recommend you start there.
+The `strollur` package stores data associated with your Amplicon Sequence analysis. This tutorial will familiarize you some of with the functions available in the `strollur` package. If you haven’t reviewed the “Getting Started” tutorial, we recommend you start there.
 
 ## Creating a new dataset
 
 First let's create an empty data set named my_data.
 
 ```{r}
-data <- new_dataset(dataset_name = "my_data")
+data <- strollur::new_dataset(dataset_name = "my_data")
 ```
 
 ## Importing Data
 
 The *strollur* package includes two functions to allow you to add sequence data.
 
-`add()` - The add function allows you to add sequences, reports, metadata, and resource references to your data set.
+`strollur::add()` - The add function allows you to add sequences, reports, metadata, and resource references to your data set.
 
-`assign()` - The assign function allows assign sequence abundances, sequence classifications, bins, bin representative sequences, bin classifications, samples and treatments to your data set.
+`strollur::assign()` - The assign function allows assign sequence abundances, sequence classifications, bins, bin representative sequences, bin classifications, samples and treatments to your data set.
 
-### add
-The add function allows you to add sequences, reports, metadata, and resource references to your data set.
+### strollur::add
+The `strollur::add()` function allows you to add sequences, reports, metadata, trees and resource references to your data set.
 
 #### Adding FASTA sequences
 
-First, let's add some [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data. strollur has a function for reading FASTA files named `read_fasta()`. We will use it to read the sequence data into a data.frame.
+First, let's add some [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data. `strollur` has a function for reading FASTA files named `strollur::read_fasta()`. We will use it to read the sequence data into a data.frame.
 
 ```{r}
 fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
 str(fasta_data)
 
-add(
+strollur::add(
   data,
   table = fasta_data,
   type = "sequence"
@@ -52,15 +52,15 @@ add(
 data
 ```
 
-If you want to include a resource reference about your fasta data you can use the `new_reference` function and the reference parameter. strollur does not allow you to add sequences with the same name, so let's use the `clear()` function to remove all data from our data set.
+If you want to include a resource reference about your fasta data you can use the `strollur::new_reference` function and the reference parameter. strollur does not allow you to add sequences with the same name, so let's use the `strollur::clear()` function to remove all data from our data set.
 
 ```{r}
-clear(data)
+strollur::clear(data)
 
 documentation_url <- "https://mothur.org/wiki/silva_reference_files/"
 method_url <- "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"
 
-silva_resource <- new_reference(
+silva_resource <- strollur::new_reference(
   vendor = "SILVA",
   name = "silva.bacteria.fasta",
   version = "1.38.1",
@@ -70,7 +70,7 @@ silva_resource <- new_reference(
   method_url = method_url
 )
 
-add(
+strollur::add(
   data,
   table = fasta_data,
   type = "sequence",
@@ -81,14 +81,14 @@ data
 
 #### Adding Custom Reports
 
-You may want to add custom reports to your data set such as an contigs assembly report, chimera report or alignment report. You can do so by setting type = "report". You must also provide a report_type. 
+You may want to add custom reports to your data set such as an contigs assembly report, chimera report or alignment report. You can do so by setting `type = report`. You must also provide a report_type. 
 
 This is also a good time to explain what the table_names parameter does for you. strollur expects the columns in custom reports to have specific names. If your table's names differ from what strollur is expecting, you will see an error like that below.
 
 ```{r, eval=FALSE} 
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
-add(
+strollur::add(
   data,
   table = contigs_report,
   type = "report",
@@ -96,9 +96,9 @@ add(
 )
 
 # Error: The report must include a column containing sequence names.
-# sequence_names is not a named column in your report.
+# sequence_name is not a named column in your report.
 
-# Called from: xdev_add_report(data, table = table, type = report_type,
+# Called from: strollur::xdev_add_report(data, table = table, type = report_type,
 #    sequence_name = table_names[["sequence_name"]], verbose)
 ```
 
@@ -108,7 +108,7 @@ You can use the table_names parameter to tell strollur what the specific column 
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 str(contigs_report)
 
-add(
+strollur::add(
   data,
   table = contigs_report,
   type = "report",
@@ -118,16 +118,17 @@ add(
 data
 ```
 
+Note, when a report is tied to sequence names the report will be filtered to remove any sequences removed from the dataset.
 
 #### Adding Metadata
 
-Now that we have added our custom contigs assembly report, let's learn how to add reports not tied to sequence names. We can add metadata to our data set by setting the type = "report", report_type = "metadata".
+Now that we have added our custom contigs assembly report, let's learn how to add reports not tied to sequence names. We can add metadata to our data set by setting the `type = report` and `report_type = metadata`.
 
 ```{r}
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 str(metadata)
 
-add(
+strollur::add(
   data,
   table = metadata,
   type = "report",
@@ -135,55 +136,72 @@ add(
 )
 ```
 
-
 #### Adding Resource References
 
-We can add additional resource references to our data set by setting the type = "resource_reference".
+We can add additional resource references to our data set by setting the `type = resource_reference`.
 
 ```{r}
 reference <- readr::read_csv(strollur_example("references.csv"),
   col_names = TRUE, show_col_types = FALSE
 )
 
-add(
+strollur::add(
   data,
   table = reference,
   type = "resource_reference"
 )
 ```
 
+#### Adding Trees
 
-### assign
+Lastly, strollur allows you to add trees that relate your samples or sequences. Let's look at some examples together.
 
-The `assign()` function allows assign sequence abundances, sequence classifications, bins, bin representative sequences, bin classifications, samples and treatments to your data set.
+```{r}
+sample_tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
+sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
+
+strollur::add(data, table = sample_tree, type = "sample_tree")
+strollur::add(data, table = sequence_tree, type = "sequence_tree")
+
+#| fig.alt: >
+#|   Plot of Miseq_SOP's sample relationship tree
+old_par <- par(bg = "white")
+ape::plot.phylo(sample_tree,
+  no.margin = TRUE,
+  cex = 0.5, edge.color = "maroon", tip.color = "navy"
+)
+par(old_par)
+```
+
+### strollur::assign
+
+The `strollur::assign()` function allows assign sequence abundances, sequence classifications, bins, bin representative sequences, bin classifications, samples and treatments to your data set.
 
 #### Assigning Abundances
 
-After adding your FASTA sequences, you can assign abundance and sample data using the assign function with the type = "sequence_abundance".    
+After adding your FASTA sequences, you can assign abundance and sample data using the assign function with the `type = sequence_abundance`.    
     
 ```{r}
 abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 str(abundance_table)
 
-assign(data, table = abundance_table, type = "sequence_abundance")
+strollur::assign(data, table = abundance_table, type = "sequence_abundance")
 
 data
 ```
 
-
 #### Assigning Bins
 
-As you can see we now have abundances, samples and treatments added to the data set. Next, let's assign the sequences to bins using type = "bin". When you assign sequences to bins you must provide a *bin_type*. The bin_type is a tag of your choosing used to reference the bin clusters you are adding. Let's add some [Operational Taxonomic Unit](https://en.wikipedia.org/wiki/Operational_taxonomic_unit) clusters and set the bin_type = "otu".
+As you can see we now have abundances, samples and treatments added to the data set. Next, let's assign the sequences to bins using `type = bin`. When you assign sequences to bins you must provide a *bin_type*. The bin_type is a tag of your choosing used to reference the bin clusters you are adding. Let's add some [Operational Taxonomic Unit](https://en.wikipedia.org/wiki/Operational_taxonomic_unit) clusters and set the `bin_type = otu`.
 
 ```{r}
 bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
 str(bin_table)
 
-assign(data, table = bin_table, type = "bin", bin_type = "otu")
+strollur::assign(data, table = bin_table, type = "bin", bin_type = "otu")
 
 data
 ```
-
 
 You can see from the summary, we now have 531 otus in our dataset. 
 
@@ -194,27 +212,27 @@ Note, if you are importing data from packages that preprocess the Amplicon Seque
 Now that we have assigned our sequences to bins, let's assign taxonomy to our sequences. 
 
 ```{r}
-sequence_classification_data <- read_mothur_taxonomy(
+sequence_classification_data <- strollur::read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
 str(sequence_classification_data)
 
-assign(
+strollur::assign(
   data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
 )
 ```
 
-Note, when you assign taxonomy to sequences that are assigned to bins, strollur will automatically assign the bin taxonomies to be the consensus taxonomy of the sequences in the bins. You can also set bin taxonomies independently by setting the type = "bin_taxonomy".
+Note, when you assign taxonomy to sequences that are assigned to bins, strollur will automatically assign the bin taxonomies to be the consensus taxonomy of the sequences in the bins. You can also set bin taxonomies independently by setting the `type = bin_taxonomy`.
 
 ```{r}
-otu_taxonomy_data <- read_mothur_cons_taxonomy(strollur_example(
+otu_taxonomy_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 str(otu_taxonomy_data)
 
-assign(
+strollur::assign(
   data,
   table = otu_taxonomy_data,
   type = "bin_taxonomy",
@@ -231,7 +249,7 @@ strollur allows you to assign a bin representative sequences to the bins in your
 bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
 str(bin_reps)
 
-assign(
+strollur::assign(
   data,
   table = bin_reps,
   type = "bin_representative"
@@ -241,39 +259,17 @@ assign(
 
 #### Assigning Treatments
 
-In our case the abundance_table included treatment assignments, but you can also assign samples to treatments by setting type = "treatment".
+In our case the abundance_table included treatment assignments, but you can also assign samples to treatments by setting `type = treatment`.
 
 ```{r}
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 str(sample_assignments)
 
-assign(
+strollur::assign(
   data,
   table = sample_assignments,
   type = "treatment"
 )
-```
-
-
-## Sample Trees and Sequence Trees
-
-Lastly, strollur allows you to add tree that relate your samples or sequences. Let's look at some examples together.
-
-```{r}
-sample_tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
-sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
-
-data$add(sample_tree, type = "sample_tree")
-data$add(sequence_tree, type = "sequence_tree")
-
-#| fig.alt: >
-#|   Plot of Miseq_SOP's sample relationship tree
-old_par <- par(bg = "white")
-ape::plot.phylo(data$report(type = "sample_tree"),
-  no.margin = TRUE,
-  cex = 0.5, edge.color = "maroon", tip.color = "navy"
-)
-par(old_par)
 ```
 
 Thanks for following along. To learn more about the functions used to access the data in your data set, take a look at the [Accessing Data](https://mothur.org/strollur/articles/Accessing_Dataset.html) tutorial.

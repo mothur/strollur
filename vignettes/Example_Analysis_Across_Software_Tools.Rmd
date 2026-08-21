@@ -40,7 +40,7 @@ if (!requireNamespace("ggplot2", quietly = TRUE) ||
 Let's create a strollur object from [mothur's](https://mothur.org) [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/) output files.
 
 ```{r}
-strollur_data <- read_mothur(
+strollur_data <- strollur::read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),
   design = strollur_example("mouse.time.design"),
@@ -53,7 +53,8 @@ strollur_data <- read_mothur(
 )
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
-add(strollur_data, table = metadata, type = "report", report_type = "metadata")
+strollur::add(strollur_data, table = metadata,
+              type = "report", report_type = "metadata")
 ```
 
 ## Classify using phylotypr
@@ -61,8 +62,8 @@ add(strollur_data, table = metadata, type = "report", report_type = "metadata")
 [`phylotypr`](https://mothur.org/phylotypr/) provides an R-based implementation of a [naive Bayesian Classifier](https://pubmed.ncbi.nlm.nih.gov/17586664/). It is designed and maintained by the [Schloss Lab](https://www.schlosslab.org) and accepts a strollur object as an input to the `classify_sequences` function. It also includes built in reference databases for your use.
 
 ```{r, eval = FALSE}
-database_reference <- build_kmer_database(trainset9_pds)
-classify_sequences(strollur_data, database_reference)
+database_reference <- phylotypr::build_kmer_database(trainset9_pds)
+phylotypr::classify_sequences(strollur_data, database_reference)
 ```
 
 ## Diversity Analysis using phyloseq
@@ -70,7 +71,7 @@ classify_sequences(strollur_data, database_reference)
 We can use strollur's write functions to create [phyloseq object](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html) from the strollur object and calculate the Shannon Index and Principal Coordinates Analysis (PCoA) values using phyloseq.
 
 ```{r}
-phyloseq_data <- write_phyloseq(strollur_data)
+phyloseq_data <- strollur::write_phyloseq(strollur_data)
 phyloseq_data
 
 alpha_div <- phyloseq::estimate_richness(phyloseq_data,
@@ -80,11 +81,11 @@ alpha_div <- phyloseq::estimate_richness(phyloseq_data,
 metadata <- data.frame(sample_data(phyloseq_data))
 shannon_plot_data <- cbind(metadata, Shannon = alpha_div$Shannon)
 
-ps_rel <- transform_sample_counts(
+ps_rel <- phyloseq::transform_sample_counts(
   phyloseq_data,
   function(x) x / sum(x)
 )
-pcoa_ord <- ordinate(ps_rel, method = "PCoA", distance = "bray")
+pcoa_ord <- phyloseq::ordinate(ps_rel, method = "PCoA", distance = "bray")
 ```
 
 ## Create publication-ready plots grouped by treatment
@@ -117,7 +118,7 @@ ggplot2::ggplot(shannon_plot_data, aes(
 ### Plot PCoA Beta Diversity: 
 
 ```{r}
-pcoa_df <- plot_ordination(ps_rel, pcoa_ord, justDF = TRUE)
+pcoa_df <- phyloseq::plot_ordination(ps_rel, pcoa_ord, justDF = TRUE)
 
 ggplot2::ggplot(pcoa_df, aes(x = Axis.1, y = Axis.2, color = treatment)) +
   geom_point(size = 4, alpha = 0.8) +
