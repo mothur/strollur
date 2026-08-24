@@ -3,14 +3,16 @@
 #' Write a 2 column
 #' \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}
 #'
-#' @param data A `strollur` object
+#' @param data a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+
 #' @param filename a string containing the name of the output file. Default =
 #' 'dataset_name'.taxonomy
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
-#' write_taxonomy(miseq, tempfile())
+#' miseq <- strollur::miseq_sop_example()
+#' strollur::write_taxonomy(miseq, tempfile())
 #'
 #' @return name of taxonomy file
 #' @export

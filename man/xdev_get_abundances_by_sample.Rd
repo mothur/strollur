@@ -7,7 +7,7 @@
 xdev_get_abundances_by_sample(data, samples = as.character(c()))
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{samples}{a vector of strings containing the names of the samples you
 would like sequence names for. By default all samples are included.}
@@ -20,9 +20,9 @@ Get the sequence abundance data in a \href{https://mothur.org/strollur/reference
 }
 \examples{
 
-data <- miseq_sop_example()
+data <- strollur::miseq_sop_example()
 
 # To get the sequence names parsed by sample
-abunds <- xdev_get_abundances_by_sample(data)
+abunds <- strollur::xdev_get_abundances_by_sample(data)
 
 }

@@ -7,11 +7,12 @@
 write_mothur_list(data, file_root = NULL)
 }
 \arguments{
-\item{data}{A \code{strollur} object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{file_root}{a string containing the root name of the output file.
 Default = 'dataset_name'. Resulting in output files
-'dataset_name'.bin_type'.list.}
+\verb{\{dataset_name\}.\{bin_type\}.list}.}
 }
 \value{
 vector containing the names of the files created
@@ -21,7 +22,7 @@ Write mothur formatted \href{https://mothur.org/wiki/list_file/}{list files}
 }
 \examples{
 
-miseq <- miseq_sop_example()
-write_mothur_list(miseq, tempfile())
+miseq <- strollur::miseq_sop_example()
+strollur::write_mothur_list(miseq, tempfile())
 
 }

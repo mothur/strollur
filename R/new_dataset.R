@@ -6,11 +6,11 @@
 #' Default = ""
 #' @examples
 #'
-#' data <- new_dataset()
+#' data <- strollur::new_dataset()
 #'
 #' # to create a new dataset named "soil", run the following:
 #'
-#' data <- new_dataset(dataset_name = "soil")
+#' data <- strollur::new_dataset(dataset_name = "soil")
 #'
 #' @returns a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

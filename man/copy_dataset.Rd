@@ -21,11 +21,11 @@ from an existing dataset.
 }
 \examples{
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 
 # to create a new dataset that is a copy of miseq
 
-data <- copy_dataset(miseq)
+data <- strollur::copy_dataset(miseq)
 
 }
 \seealso{

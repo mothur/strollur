@@ -13,20 +13,20 @@ xdev_names(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{type, }{string containing the type of data you would like. Options
+\item{type}{string containing the type of data you would like. Options
 include: "dataset", "sequence", "bin", "sample", "treatment", "report".
 Default = "sequence".}
 
-\item{bin_type, }{string containing the bin type you would like the names
+\item{bin_type}{string containing the bin type you would like the names
 for. Default = "otu".}
 
-\item{samples, }{vector of strings. samples is only used when 'type' =
+\item{samples}{vector of strings. samples is only used when 'type' =
 "sequence" or 'type' = "bin" . samples should contain the names of the
 samples you want names for. Default = NULL.}
 
-\item{distinct, }{Boolean. distinct is used when 'type' =
+\item{distinct}{Boolean. distinct is used when 'type' =
 "sequence" or 'type' = "bin" and the samples parameter is used. The
 distinct parameter allows you to get the names that are unique to a given
 set of samples. When distinct is TRUE, the names function will return the
@@ -35,44 +35,61 @@ the data returned contains data from a given samples, but may ALSO contain
 data from other samples. Default = FALSE.}
 }
 \value{
-vector of strings, containing the names requested
+vector of strings containing the names requested
 }
 \description{
 Get the names of a given type of data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 
 # To get the name of the dataset
-xdev_names(data = miseq, type = "dataset")
+strollur::xdev_names(data = miseq,
+                       type = "dataset")
 
 # To get the names of the sequences in the dataset
-xdev_names(data = miseq, type = "sequence")
+strollur::xdev_names(data = miseq,
+                       type = "sequence")
 
 # To get the names of the sequences that are unique to sample 'F3D0'
-xdev_names(data = miseq, type = "sequence", samples = c("F3D0"), distinct = TRUE)
+strollur::xdev_names(data = miseq,
+                       type = "sequence",
+                       samples = c("F3D0"),
+                       distinct = TRUE)
 
 # To get the names of the sequences that include sample 'F3D0'
-xdev_names(data = miseq, type = "sequence", samples = c("F3D0"))
+strollur::xdev_names(data = miseq,
+                       type = "sequence",
+                       samples = c("F3D0"))
 
 # To get the names of the samples in the dataset
-xdev_names(data = miseq, type = "sample")
+strollur::xdev_names(data = miseq,
+                       type = "sample")
 
 # To get the names of the treatments in the dataset
-xdev_names(data = miseq, type = "treatment")
+strollur::xdev_names(data = miseq,
+                       type = "treatment")
 
 # To get the names of the bins in the dataset
-xdev_names(data = miseq, type = "bin")
+strollur::xdev_names(data = miseq,
+                       type = "bin")
 
 # To get the names of the bins in the dataset that are unique to 'F3D0'
-xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = TRUE)
+strollur::xdev_names(data = miseq,
+                       type = "bin",
+                       samples = c("F3D0"),
+                       distinct = TRUE)
 
 # To get the names of the bins in the dataset that include sequences
 # from 'F3D0'
-xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = FALSE)
+strollur::xdev_names(data = miseq,
+                       type = "bin",
+                       samples = c("F3D0"),
+                       distinct = FALSE)
 
 # To get the names of the reports in the dataset
-xdev_names(data = miseq, type = "report")
+strollur::xdev_names(data = miseq,
+                       type = "report")
 
 }

@@ -7,9 +7,9 @@
 xdev_remove_sequences(data, sequence_names, trash_tags)
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
 
-\item{sequence_names, }{vector of strings containing the names of the
+\item{sequence_names}{vector of strings containing the names of the
 sequences to remove}
 
 \item{trash_tags}{vector of strings containing the reasons for the sequences
@@ -24,9 +24,9 @@ allows you to remove sequences from a \href{https://mothur.org/strollur/referenc
 }
 \examples{
 
-data <- miseq_sop_example()
+data <- strollur::miseq_sop_example()
 
-count(data = data, type = "sequence")
+strollur::count(data, type = "sequence")
 
 # For the sake of example let's remove the first 3 sequences from
 # miseq_sop_example:
@@ -36,17 +36,18 @@ seqs_to_remove <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 trash_codes <- c("example", "removing", "sequences")
 
-xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
-                      trash_tags = trash_codes)
+strollur::xdev_remove_sequences(data,
+                                  sequence_names = seqs_to_remove,
+                                  trash_tags = trash_codes)
 
 # If you look at the scrap report, you the sequences names, listed with the
 # trash codes set to "example", "removing", "sequences".
 
-report(data = data, type = "sequence_scrap")
+strollur::report(data, type = "sequence_scrap")
 
 # You can see from the get_num_sequences function that the removed
 # sequence's abundances are removed from the dataset.
 
-count(data = data, type = "sequence")
+strollur::count(data, type = "sequence")
 
 }

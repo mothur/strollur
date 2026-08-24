@@ -3,14 +3,15 @@
 #' Write a mothur formatted
 #' \href{https://mothur.org/wiki/count_file/}{count file}
 #'
-#' @param data A `strollur` object
+#' @param data a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param filename a string containing the name of the output file. Default =
 #' 'dataset_name'.count_table
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
-#' write_mothur_count(miseq, tempfile())
+#' miseq <- strollur::miseq_sop_example()
+#' strollur::write_mothur_count(miseq, tempfile())
 #'
 #' @return name of count file
 #' @export

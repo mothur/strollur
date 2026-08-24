@@ -7,7 +7,7 @@
 xdev_has_bin_taxonomy(data, type = "otu")
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
@@ -19,7 +19,7 @@ Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{stroll
 }
 \examples{
 
- data <- miseq_sop_example()
- xdev_has_bin_taxonomy(data)
+ data <- strollur::miseq_sop_example()
+ strollur::xdev_has_bin_taxonomy(data)
 
 }

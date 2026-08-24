@@ -11,8 +11,8 @@
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
-#' data <- import_dataset(export_dataset(miseq))
+#' miseq <- strollur::miseq_sop_example()
+#' data <- strollur::import_dataset(strollur::export_dataset(miseq))
 #' data
 #'
 #' @return a

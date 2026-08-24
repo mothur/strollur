@@ -10,7 +10,7 @@
 #'
 #' @examples
 #'
-#' artifact <- read_qiime2_taxonomy(strollur_example(
+#' artifact <- strollur::read_qiime2_taxonomy(strollur_example(
 #'   "taxonomy.qza"
 #' ))
 #'

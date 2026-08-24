@@ -15,21 +15,21 @@ xdev_assign_bin_taxonomy(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing bin taxonomy assignments}
+\item{table}{a data.frame containing bin taxonomy assignments}
 
 \item{bin_type}{a string indicating the type of bin assignments. Default "otu".}
 
-\item{reference, }{a list created by the function \link{new_reference}. Optional.}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
-\item{bin_name, }{a string containing the name of the column in 'table' that
+\item{bin_name}{a string containing the name of the column in 'table' that
 contains the bin names. Default column name is 'bin_name'.}
 
-\item{taxonomy, }{a string containing the name of the column in 'table' that
+\item{taxonomy}{a string containing the name of the column in 'table' that
 contains the bin taxonomies. Default column name is 'taxonomy'.}
 
-\item{verbose, }{a boolean whether or not you want progress messages.
+\item{verbose}{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
@@ -38,21 +38,24 @@ an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} 
 \description{
 Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 
-Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+Note, if you assign sequence taxonomies and assign bins, \code{strollur} will find
 the concensus taxonomy for each bin for you.
 }
 \examples{
 
-otu_data <- read_mothur_cons_taxonomy(strollur_example(
+otu_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
                         "final.cons.taxonomy"))
 
-data <- new_dataset(dataset_name = "my_dataset")
+data <- strollur::new_dataset(dataset_name = "my_dataset")
 
 # assign otu abundances
-xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+strollur::xdev_assign_bins(data,
+                             table = otu_data,
+                             bin_type = "otu")
 
 # assign otu classifications
-xdev_assign_bin_taxonomy(data = data, table = otu_data,
-                         bin_type = "otu")
+strollur::xdev_assign_bin_taxonomy(data,
+                                     table = otu_data,
+                                     bin_type = "otu")
 
 }

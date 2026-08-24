@@ -7,12 +7,13 @@
 write_fasta(data, filename = NULL, degap = FALSE)
 }
 \arguments{
-\item{data}{A \code{strollur} object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{filename}{a string containing the name of the output file. Default =
 'dataset_name'.fasta}
 
-\item{degap}{a logical. Default = FALSE. When degap = \code{TRUE}, all gap
+\item{degap}{a logical. Default = FALSE. When \code{degap = TRUE}, all gap
 characters will be removed from the sequences.}
 }
 \value{
@@ -24,7 +25,7 @@ formatted sequence file
 }
 \examples{
 
-miseq <- miseq_sop_example()
-write_fasta(miseq, tempfile())
+miseq <- strollur::miseq_sop_example()
+strollur::write_fasta(miseq, tempfile())
 
 }

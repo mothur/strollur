@@ -7,7 +7,7 @@
 xdev_get_sequence_indexes_by_sample(data, samples = as.character(c()))
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{samples}{a vector of strings containing the names of the samples you
 would like sequence names for. By default all samples are included.}
@@ -23,13 +23,13 @@ and sequence names.
 }
 \examples{
 
-data <- miseq_sop_example()
+data <- strollur::miseq_sop_example()
 
-sequences <- xdev_get_sequences(data)
-names <- xdev_names(data)
+sequences <- strollur::xdev_get_sequences(data)
+names <- strollur::xdev_names(data)
 
 # To get the indexes of the names and sequences by sample
-indexes <- xdev_get_sequence_indexes_by_sample(data)
+indexes <- strollur::xdev_get_sequence_indexes_by_sample(data)
 
 # First sequence in first sample
 names[indexes[[1]][1]]

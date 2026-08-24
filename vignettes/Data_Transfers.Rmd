@@ -41,7 +41,8 @@ unlink(file_name)
 We can see that the summaries of miseq and miseq_from_rds are identical. Let's modify miseq_from_rds to verify they are not referring to the same object. We will add clusters created by [mothur](https://mothur.org) using [vsearch's](https://github.com/torognes/vsearch) distance-based greedy clustering (dgc) algorithm. 
 
 ```{r}
-dgc_data <- strollur::read_mothur_list(list = strollur_example("final.dgc.list.gz"))
+dgc_data <-
+  strollur::read_mothur_list(list = strollur_example("final.dgc.list.gz"))
 
 strollur::assign(miseq_from_rds, table = dgc_data, bin_type = "dgc")
 miseq_from_rds

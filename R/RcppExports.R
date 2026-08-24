@@ -92,45 +92,50 @@ is_aligned <- function(data) {
 #' Get a table containing the requested abundance data in a
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param type, string containing the type of data you want the number of.
+#' @param type string containing the type of data you want the number of.
 #' Options include: "sequence", "bin".
 #' Default = "sequence".
 #'
-#' @param bin_type, string containing the bin type you would like the number of
+#' @param bin_type string containing the bin type you would like the number of
 #' bins for. Default = "otu".
 #'
-#' @param by_sample, Boolean. When by_sample is TRUE, the abundance data will
+#' @param by_sample Boolean. When by_sample is TRUE, the abundance data will
 #' be parsed by sample. Default = FALSE.
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
 #' # To the total abundance for each sequence
-#' xdev_abundance(data = miseq, type = "sequence")
+#' strollur::xdev_abundance(data = miseq, type = "sequence")
 #'
 #' # To the total abundance for each sequence parsed by sample
-#' xdev_abundance(data = miseq, type = "sequence", by_sample = TRUE)
+#' strollur::xdev_abundance(data = miseq, type = "sequence",
+#'                            by_sample = TRUE)
 #'
 #' # To the total abundance for each "otu" bin
-#' xdev_abundance(data = miseq, type = "bin", bin_type = "otu")
+#' strollur::xdev_abundance(data = miseq, type = "bin",
+#'                            bin_type = "otu")
 #'
 #' # To the total abundance for each "otu" bin parsed by sample
-#' xdev_abundance(data = miseq, type = "bin", bin_type = "otu", by_sample = TRUE)
+#' strollur::xdev_abundance(data = miseq, type = "bin",
+#'                            bin_type = "otu", by_sample = TRUE)
 #'
 #' # To the total abundance for each "asv" bin
-#' xdev_abundance(data = miseq, type = "bin", bin_type = "asv")
+#' strollur::xdev_abundance(data = miseq, type = "bin",
+#'                            bin_type = "asv")
 #'
 #' # To the total abundance for each "asv" bin parsed by sample
-#' xdev_abundance(data = miseq, type = "bin", bin_type = "asv", by_sample = TRUE)
+#' strollur::xdev_abundance(data = miseq, type = "bin",
+#'                            bin_type = "asv", by_sample = TRUE)
 #'
 #' # To the total abundance of each sample
-#' xdev_abundance(data = miseq, type = "sample")
+#' strollur::xdev_abundance(data = miseq, type = "sample")
 #'
 #' # To the total abundance of each treatment
-#' xdev_abundance(data = miseq, type = "treatment")
+#' strollur::xdev_abundance(data = miseq, type = "treatment")
 #'
 #' @return data.frame
 #' @export
@@ -144,48 +149,48 @@ xdev_abundance <- function(data, type = "sequence", bin_type = "otu", by_sample 
 #' @description
 #' Add resource references to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param table, a data.frame containing reference_names, reference_versions
+#' @param table a data.frame containing reference_names, reference_versions
 #' (optional), reference_usages (optional), reference_parameters (optional),
 #' reference_methods (optional), and reference_urls (optional).
 #'
-#' @param name, a string containing the name of the column in 'table'
+#' @param name a string containing the name of the column in 'table'
 #' that contains the reference names. Default column name is 'name'.
-#' @param vendor, a string containing the name of the column in
+#' @param vendor a string containing the name of the column in
 #'   'table' that contains the reference vendors. Default column name is
 #'   'vendor'.
-#' @param version, a string containing the name of the column in
+#' @param version a string containing the name of the column in
 #' 'table' that contains the reference versions. Default column name is
 #' 'version'.
-#' @param usage, a string containing the name of the column in
+#' @param usage a string containing the name of the column in
 #' 'table' that contains the reference usages. Default column name is
 #'  'usage'.
-#' @param note, a string containing the name of the column in
+#' @param note a string containing the name of the column in
 #' 'table' that contains the reference notes. Default column name is
 #'  'note'.
-#' @param method_url, a string containing the name of the column in
+#' @param method_url a string containing the name of the column in
 #' 'table' that contains the reference methods. Default column name is
 #'  'method_url'.
-#' @param documentation_url, a string containing the name of the column in
+#' @param documentation_url a string containing the name of the column in
 #'   'table' that contains the reference documentation urls. Default column
 #'   name is 'documentation_url'.
-#' @param parameter, a string containing the name of the column in
+#' @param parameter a string containing the name of the column in
 #' 'table' that contains the reference parameters. Default column name is
 #'  'parameter'.
-#' @param citation, a string containing the name of the column in
+#' @param citation a string containing the name of the column in
 #' 'table' that contains the reference citations. Default column name is
 #'  'citation'.
 #'
-#' @param verbose, a boolean whether or not you want progress messages.
+#' @param verbose a boolean whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
-#' data <- new_dataset("just for fun")
+#' data <- strollur::new_dataset("just for fun")
 #' reference_table <- readr::read_csv(strollur_example("references.csv"),
 #'                              col_names = TRUE, show_col_types = FALSE)
-#' xdev_add_references(data, reference_table)
+#' strollur::xdev_add_references(data, reference_table)
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -199,30 +204,34 @@ xdev_add_references <- function(data, table, name = "name", vendor = "vendor", v
 #' @description
 #' Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param table, a data.frame containing your report.
-#' @param type, a string containing the type of report. Default = "report".
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing your report.
+#' @param type a string containing the type of report. Default = "report".
 #' @param sequence_name, a string. If your report relates to the sequence data,
 #'   `sequence_name` should contain the name of the column in 'table' that
 #'   contains the sequence names. Default = 'none'.
-#' @param verbose, a boolean whether or not you want progress messages.
+#' @param verbose a boolean whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
 #' # To add a custom report including your contigs assembly data
 #'
-#' data <- new_dataset("just for fun")
+#' data <- strollur::new_dataset("just for fun")
 #' contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 #'
-#' xdev_add_report(data, contigs_report, "contigs_report", "Name")
+#' strollur::xdev_add_report(data,
+#'                             table = contigs_report,
+#'                             type = "contigs_report",
+#'                             sequence_name = "Name")
 #'
 #' # To add metadata related to your study
 #'
 #' metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 #'
-#' xdev_add_report(data, metadata, "metadata")
+#' strollur::xdev_add_report(data,
+#'                             table = metadata,
+#'                             type = "metadata")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -234,45 +243,46 @@ xdev_add_report <- function(data, table, type = "report", sequence_name = "none"
 #' @description
 #' Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param table, a data.frame containing names, sequences(optional) and
+#' @param table a data.frame containing names, sequences(optional) and
 #' comments(optional).
 #'
-#' @param reference, a list created by the function [new_reference]. Optional.
+#' @param reference a list created by the function [new_reference]. Optional.
 #'
-#' @param sequence_name, a string containing the name of the column in 'table'
+#' @param sequence_name a string containing the name of the column in 'table'
 #' that contains the sequence names. Default column name is 'sequence_name'.
 #'
-#' @param sequence, a string containing the name of the column in 'table' that
+#' @param sequence a string containing the name of the column in 'table' that
 #' contains the sequence nucleotide strings. Default column name is
 #' 'sequence'.
 #'
-#' @param comment, a string containing the name of the column in
+#' @param comment a string containing the name of the column in
 #' 'table' that contains the sequence comments. Default column name is
 #' 'comment'.
 #'
-#' @param verbose, a boolean whether or not you want progress messages.
+#' @param verbose a boolean whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
-#'  data <- new_dataset("miseq_sop")
-#'  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
-#'  xdev_add_sequences(data, fasta_data)
+#'  data <- strollur::new_dataset("miseq_sop")
+#'  fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
+#'  strollur::xdev_add_sequences(data, fasta_data)
 #'
 #' # With the additional parameters to add information about the reference
 #'
-#'  data <- new_dataset("miseq_sop")
-#'  fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+#'  data <- strollur::new_dataset("miseq_sop")
+#'  fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
 #'
-#'  xdev_add_sequences(data, fasta_data,
+#'  strollur::xdev_add_sequences(data, fasta_data,
 #'                new_reference("silva.bacteria.fasta",
 #'                "1.38.1",
 #'                "alignment by mothur2 v1.0 using default options",
 #'                "https://mothur.org/wiki/silva_reference_files/"))
 #'
-#' # You can also add references using the 'add_references' function.
+#' # You can also add references using the `strollur::xdev_add_references`
+#' # function.
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -284,50 +294,51 @@ xdev_add_sequences <- function(data, table, reference = NULL, sequence_name = "s
 #' @description
 #' Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param table, a data.frame containing bin_data assignments
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing bin_data assignments
 #' @param bin_type a string indicating the type of bin assignments. Default "otu".
 #'
-#' @param reference, a list created by the function [new_reference]. Optional.
+#' @param reference a list created by the function [new_reference]. Optional.
 #'
-#' @param bin_name, a string containing the name of the column in 'table' that
+#' @param bin_name a string containing the name of the column in 'table' that
 #' contains the bin names. Default column name is 'bin_name'.
-#' @param abundance, a string containing the name of the column in 'table'
+#' @param abundance a string containing the name of the column in 'table'
 #' that contains the bin abundances. Default column name is 'abundance'. Note:
 #'  You must provide either abundance or sequence_name in the table.
-#' @param sample, a string containing the name of the column in 'table' that
+#' @param sample a string containing the name of the column in 'table' that
 #' contains the sample names for datasets where the abundances are broken down
 #' by sample. Default column name is 'sample'.
-#' @param sequence_name, a string containing the name of the column in 'table'
+#' @param sequence_name a string containing the name of the column in 'table'
 #' that contains the sequence names. Default column name is 'sequence_name'.
 #' Note: You must provide either abundance or sequence_name in the table.
 #'
-#' @param verbose, a boolean whether or not you want progress messages.
+#' @param verbose a boolean whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
 #'   # To assign sequences to bins:
 #'
-#'   data <- new_dataset(dataset_name = "miseq_sop")
-#'   otu_data <- read_mothur_list(list = strollur_example("final.opti_mcc.list.gz"))
+#'   data <- strollur::new_dataset(dataset_name = "miseq_sop")
+#'   otu_data <- strollur::read_mothur_list(
+#'                           list = strollur_example("final.opti_mcc.list.gz"))
 #'
-#'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+#'   strollur::xdev_assign_bins(data, table = otu_data, bin_type = "otu")
 #'
 #'   # To add abundance only bin assignments:
 #'
-#'   data <- new_dataset(dataset_name = "miseq_sop")
-#'   otu_data <- read_mothur_rabund(rabund = strollur_example("final.opti_mcc.rabund"))
+#'   data <- strollur::new_dataset(dataset_name = "miseq_sop")
+#'   otu_data <- strollur::read_mothur_rabund(
+#'                          rabund = strollur_example("final.opti_mcc.rabund"))
 #'
-#'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+#'   strollur::xdev_assign_bins(data, table = otu_data, bin_type = "otu")
 #'
 #'   # To add abundance bin assignments parsed by sample:
 #'
-#'   data <- new_dataset(dataset_name = "miseq_sop")
+#'   data <- strollur::new_dataset(dataset_name = "miseq_sop")
 #'   otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
 #'
-#'   xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+#'   strollur::xdev_assign_bins(data, table = otu_data, bin_type = "otu")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -341,31 +352,30 @@ xdev_assign_bins <- function(data, table, bin_type = "otu", reference = NULL, bi
 #'
 #' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param table, a data.frame containing bin representative assignments
+#' @param table a data.frame containing bin representative assignments
 #'
 #' @param bin_type a string indicating the type of bin assignments.
 #' Default "otu".
 #'
-#' @param reference, a list created by the function [new_reference]. Optional.
+#' @param reference a list created by the function [new_reference]. Optional.
 #'
-#' @param bin_name, a string containing the name of the column in 'table' that
+#' @param bin_name a string containing the name of the column in 'table' that
 #' contains the bin names. Default column name is 'bin_name'.
 #' @param sequence_name a string containing the name of the column in 'table' that
 #' contains the bin names. Default column name is 'sequence_name'.
 #'
-#' @param verbose, a boolean whether or not you want progress messages.
+#' @param verbose a boolean whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
-#'   miseq <- miseq_sop_example()
+#'   miseq <- strollur::miseq_sop_example()
 #'
 #'   bin_reps <- readRDS(strollur_example(
 #'          "miseq_representative_sequences.rds"))
 #'
-#'   xdev_assign_bin_representative_sequences(data = miseq,
-#'                                       table = bin_reps,
-#'                                       bin_type = "otu")
+#'   strollur::xdev_assign_bin_representative_sequences(miseq,
+#'                           table = bin_reps, bin_type = "otu")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -377,37 +387,39 @@ xdev_assign_bin_representative_sequences <- function(data, table, bin_type = "ot
 #' @description
 #' Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' Note, if you assign sequence taxonomies and assign bins, 'Dataset' will find
+#' Note, if you assign sequence taxonomies and assign bins, `strollur` will find
 #'  the concensus taxonomy for each bin for you.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param table, a data.frame containing bin taxonomy assignments
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing bin taxonomy assignments
 #' @param bin_type a string indicating the type of bin assignments. Default "otu".
 #'
-#' @param reference, a list created by the function [new_reference]. Optional.
+#' @param reference a list created by the function [new_reference]. Optional.
 #'
-#' @param bin_name, a string containing the name of the column in 'table' that
+#' @param bin_name a string containing the name of the column in 'table' that
 #' contains the bin names. Default column name is 'bin_name'.
-#' @param taxonomy, a string containing the name of the column in 'table' that
+#' @param taxonomy a string containing the name of the column in 'table' that
 #' contains the bin taxonomies. Default column name is 'taxonomy'.
 #'
-#' @param verbose, a boolean whether or not you want progress messages.
+#' @param verbose a boolean whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
-#' otu_data <- read_mothur_cons_taxonomy(strollur_example(
+#' otu_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
 #'                         "final.cons.taxonomy"))
 #'
-#' data <- new_dataset(dataset_name = "my_dataset")
+#' data <- strollur::new_dataset(dataset_name = "my_dataset")
 #'
 #' # assign otu abundances
-#' xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+#' strollur::xdev_assign_bins(data,
+#'                              table = otu_data,
+#'                              bin_type = "otu")
 #'
 #' # assign otu classifications
-#' xdev_assign_bin_taxonomy(data = data, table = otu_data,
-#'                          bin_type = "otu")
+#' strollur::xdev_assign_bin_taxonomy(data,
+#'                                      table = otu_data,
+#'                                      bin_type = "otu")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -419,41 +431,40 @@ xdev_assign_bin_taxonomy <- function(data, table, bin_type = "otu", reference = 
 #' @description
 #' Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' Note, if you assign sequence taxonomies and assign bins, strollur will find
+#' Note, if you assign sequence taxonomies and assign bins, `strollur` will find
 #'  the consensus taxonomy for each bin for you.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param table, a data.frame containing sequence taxonomy assignments
-#'
-#' @param reference, a list created by the function [new_reference]. Optional.
-#'
-#' @param sequence_name, a string containing the name of the column in 'table'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing sequence taxonomy assignments
+#' @param reference a list created by the function [new_reference]. Optional.
+#' @param sequence_name a string containing the name of the column in 'table'
 #' that contains the sequence names. Default column name is 'sequence_name'.
-#' @param taxonomy, a string containing the name of the column in 'table' that
+#' @param taxonomy a string containing the name of the column in 'table' that
 #' contains the sequence taxonomies. Default column name is 'taxonomy'.
-#'
-#' @param verbose, a boolean whether or not you want progress messages.
+#' @param verbose a boolean whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
-#' sequence_classifications <- read_mothur_taxonomy(strollur_example(
+#' taxonomy <- strollur::read_mothur_taxonomy(strollur_example(
 #'                         "final.taxonomy.gz"))
 #'
-#' data <- new_dataset("my_dataset")
+#' data <- strollur::new_dataset("my_dataset")
 #'
-#' xdev_assign_sequence_taxonomy(data, sequence_classifications)
+#' strollur::xdev_assign_sequence_taxonomy(data,
+#'                                           table = taxonomy)
 #'
 #' # With the reference parameter you can add information about the reference
 #' # you used to classify your sequences. You can also add references using the
-#' # 'add_references' function.
+#' # 'strollur::xdev_add_references' function.
 #'
-#' reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+#' reference <- strollur::new_reference("trainset9_032012.pds.zip", "9_032012",
 #'               "classification by mothur2 v1.0 using default options", "",
 #' "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
 #'
-#' xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
+#' strollur::xdev_assign_sequence_taxonomy(data,
+#'                                         table = taxonomy,
+#'                                         reference = reference)
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -469,7 +480,6 @@ xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequenc
 #' @param table a data.frame containing bin taxonomy assignments
 #' @param bin_type a string indicating the type of bin assignments. Default "otu".
 #' @param reference a list created by the function [new_reference]. Optional.
-#'
 #' @param bin_name a string containing the name of the column in 'table'
 #' that contains the bin names. Default column name is 'bin_name'.
 #' @param level a string containing the name of the column in 'table' that
@@ -486,16 +496,18 @@ xdev_assign_sequence_taxonomy <- function(data, table, reference = NULL, sequenc
 #' bin_classifications <- readRDS(strollur_example("miseq_tidy_bin_taxonomy.rds"))
 #' str(bin_classifications)
 #'
-#' data <- read_mothur(otu_shared = strollur_example("final.opti_mcc.shared"))
+#' data <- strollur::read_mothur(otu_shared =
+#'                                 strollur_example("final.opti_mcc.shared"))
 #'
 #' xdev_assign_bin_taxonomy_tidy(data, bin_classifications)
 #'
 #' # With the reference parameter you can add information about the reference
 #' # you used to classify your bins. You can also add references using the
-#' # 'add_references' function.
+#' # 'strollur::xdev_add_references' function.
 #'
 #' reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
-#'               "classification_otu by mothur2 v1.0.0 using default options", "",
+#'               "classification_otu by mothur2 v1.0.0 using default options",
+#'                "",
 #' "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
 #'
 #' xdev_assign_bin_taxonomy_tidy(data, bin_classifications,
@@ -514,41 +526,41 @@ xdev_assign_bin_taxonomy_tidy <- function(data, table, bin_type = "otu", referen
 #' Note, if you assign sequence taxonomies and assign bins, strollur will find
 #'  the consensus taxonomy for each bin for you.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param table, a data.frame containing sequence taxonomy assignments
-#'
-#' @param reference, a list created by the function [new_reference]. Optional.
-#'
-#' @param sequence_name, a string containing the name of the column in 'table'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing sequence taxonomy assignments
+#' @param reference a list created by the function [new_reference]. Optional.
+#' @param sequence_name a string containing the name of the column in 'table'
 #' that contains the sequence names. Default column name is 'sequence_name'.
-#' @param level, a string containing the name of the column in 'table' that
+#' @param level a string containing the name of the column in 'table' that
 #' contains the taxonomy levels. Default column name is 'level'.
-#' @param taxonomy, a string containing the name of the column in 'table' that
+#' @param taxonomy a string containing the name of the column in 'table' that
 #' contains the sequence taxonomies. Default column name is 'taxonomy'.
 #' @param confidence, a string containing the name of the column in 'table'
 #' that contains the taxonomies confidence. Default column name is 'confidence'.
-#' @param verbose, a boolean whether or not you want progress messages.
+#' @param verbose a boolean whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
-#' sequence_classifications <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
-#' str(sequence_classifications)
+#' taxonomy <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
+#' str(taxonomy)
 #'
-#' data <- new_dataset("my_dataset")
+#' data <- strollur::new_dataset("my_dataset")
 #'
-#' xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications)
+#' strollur::xdev_assign_sequence_taxonomy_tidy(data,
+#'                                              table = taxonomy)
 #'
 #' # With the reference parameter you can add information about the reference
 #' # you used to classify your sequences. You can also add references using the
-#' # 'add_references' function.
+#' # 'strollur::xdev_add_references()' function.
 #'
-#' reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+#' reference <- strollur::new_reference("trainset9_032012.pds.zip", "9_032012",
 #'               "classification by mothur2 v1.0 using default options", "",
 #' "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
 #'
-#' xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications, reference)
+#' strollur::xdev_assign_sequence_taxonomy_tidy(data,
+#'                                                table = taxonomy,
+#'                                                reference = reference)
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -561,29 +573,28 @@ xdev_assign_sequence_taxonomy_tidy <- function(data, table, reference = NULL, se
 #' Assign sequence abundance and optionally assign sample and treatment data to
 #'  a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param table, a data.frame containing sequence abundance assignments
-#'
-#' @param sequence_name, a string containing the name of the column in 'table'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing sequence abundance assignments
+#' @param sequence_name a string containing the name of the column in 'table'
 #'  that contains the sequence names. Default column name is 'sequence_name'.
-#' @param abundance, a string containing the name of the column in 'table'
+#' @param abundance a string containing the name of the column in 'table'
 #'  that contains the sequence abundances. Default column name is 'abundance'.
-#' @param sample, a string containing the name of the column in 'table'
+#' @param sample a string containing the name of the column in 'table'
 #' that contains the sequence samples. Default column name is 'sample'.
 #' (Optional)
-#' @param treatment, a string containing the name of the column in 'table'
+#' @param treatment a string containing the name of the column in 'table'
 #' that contains the sequence treatments. Default column name is 'treatment'.
 #'
-#' @param verbose, a boolean whether or not you want progress messages.
+#' @param verbose a boolean whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
-#' data <- new_dataset("my_dataset")
-#' sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+#' data <- strollur::new_dataset("my_dataset")
+#' abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 #'
-#' xdev_assign_sequence_abundance(data = data, table = sequence_abundance)
+#' strollur::xdev_assign_sequence_abundance(data,
+#'                                            table = abundance)
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -595,28 +606,27 @@ xdev_assign_sequence_abundance <- function(data, table, sequence_name = "sequenc
 #' @description
 #' Assign samples to treatments in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param table, a data.frame containing sample treatment assignments
-#'
-#' @param sample, a string containing the name of the column in 'table'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing sample treatment assignments
+#' @param sample a string containing the name of the column in 'table'
 #' that contains the samples. Default column name is 'sample'.
-#' @param treatment, a string containing the name of the column in 'table'
+#' @param treatment a string containing the name of the column in 'table'
 #' that contains the treatments. Default column name is 'treatment'.
-#'
-#' @param verbose, a boolean indicating whether or not you want progress
+#' @param verbose a boolean indicating whether or not you want progress
 #'  messages. Default = TRUE.
 #'
 #' @examples
 #'
-#' data <- new_dataset("my_dataset")
-#' sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+#' data <- strollur::new_dataset("my_dataset")
+#' abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 #'
-#' xdev_assign_sequence_abundance(data, sequence_abundance)
+#' strollur::xdev_assign_sequence_abundance(data,
+#'                                            table = abundance)
 #'
 #' sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 #'
-#' xdev_assign_treatments(data, sample_assignments)
+#' strollur::xdev_assign_treatments(data,
+#'                                    table = sample_assignments)
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -629,20 +639,16 @@ xdev_assign_treatments <- function(data, table, sample = "sample", treatment = "
 #' Find the number of sequences, samples, treatments or bins of a given type in
 #' a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param type, string containing the type of data you want the number of.
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param type string containing the type of data you want the number of.
 #' Options include: "sequence", "sample", "treatment", "bin" and
 #' "resource_reference". Default = "sequence".
-#'
-#' @param bin_type, string containing the bin type you would like the number of
+#' @param bin_type string containing the bin type you would like the number of
 #' bins for. Default = "otu".
-#'
-#' @param samples, vector of strings. samples is only used when 'type' =
+#' @param samples vector of strings. samples is only used when 'type' =
 #' "sequence" or 'type' = "bin" . samples should contain the names of the
 #' samples you want the count for. Default = NULL.
-#'
-#' @param distinct, Boolean. distinct is used when 'type' =
+#' @param distinct Boolean. distinct is used when 'type' =
 #' "sequence" or 'type' = "bin". When 'type' = "sequence" and distinct is
 #' TRUE the number of unique sequences is returned. When 'type' = "sequence"
 #' and distinct is FALSE total number of sequences is returned. This can also
@@ -656,50 +662,66 @@ xdev_assign_treatments <- function(data, table, sample = "sample", treatment = "
 #' Default = FALSE.
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
 #' # To get the total number of sequences
-#' xdev_count(data = miseq, type = "sequence")
+#' strollur::xdev_count(data = miseq,
+#'                        type = "sequence")
 #'
 #' # To get number of unique sequences
-#' xdev_count(data = miseq, type = "sequence", distinct = TRUE)
+#' strollur::xdev_count(data = miseq,
+#'                        type = "sequence", distinct = TRUE)
 #'
 #' # To get number of unique sequences from samples 'F3D0' and 'F3D1'
 #' # Note these sequences will be present in both samples but may be
 #' # be present in other samples as well
-#' xdev_count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"))
+#' strollur::xdev_count(data = miseq,
+#'                        type = "sequence",
+#'                        samples = c("F3D0", "F3D1"))
 #'
 #' # To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
 #' # Note these sequences are present in both samples and NOT present in
 #' # other samples
-#' xdev_count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"),
-#' distinct = TRUE)
+#' strollur::xdev_count(data = miseq,
+#'                        type = "sequence",
+#'                        samples = c("F3D0", "F3D1"),
+#'                        distinct = TRUE)
 #'
 #' # To get the number of samples in the dataset
-#' xdev_count(data = miseq, type = "sample")
+#' strollur::xdev_count(data = miseq, type = "sample")
 #'
 #' # To get the number of treatments in the dataset
-#' xdev_count(data = miseq, type = "treatment")
+#' strollur::xdev_count(data = miseq, type = "treatment")
 #'
 #' # To get the number of "otu" bins in the dataset
-#' xdev_count(data = miseq, type = "bin", bin_type = "otu")
+#' strollur::xdev_count(data = miseq,
+#'                        type = "bin",
+#'                        bin_type = "otu")
 #'
 #' # To get the number of "asv" bins in the dataset
-#' xdev_count(data = miseq, type = "bin", bin_type = "asv")
+#' strollur::xdev_count(data = miseq,
+#'                        type = "bin",
+#'                        bin_type = "asv")
 #'
 #' # To get the number of "phylotype" bins in the dataset
-#' xdev_count(data = miseq, type = "bin", bin_type = "phylotype")
+#' strollur::xdev_count(data = miseq,
+#'                        type = "bin",
+#'                        bin_type = "phylotype")
 #'
 #' # To get number of bins from samples 'F3D0' and 'F3D1'
 #' # Note these bins will have sequences from both samples but there may be
 #' # other samples present as well
-#' xdev_count(data = miseq, type = "bin", samples = c("F3D0", "F3D1"))
+#' strollur::xdev_count(data = miseq,
+#'                        type = "bin",
+#'                        samples = c("F3D0", "F3D1"))
 #'
 #' # To get number of bins unique to samples 'F3D0' and 'F3D1'
 #' # Note these bins will have sequences from both samples and NO other samples
 #' # will be present in the bins.
-#' xdev_count(data = miseq, type = "bin", samples = c("F3D0", "F3D1"),
-#' distinct = TRUE)
+#' strollur::xdev_count(data = miseq,
+#'                        type = "bin",
+#'                        samples = c("F3D0", "F3D1"),
+#'                        distinct = TRUE)
 #'
 #' @return double
 #' @export
@@ -711,14 +733,14 @@ xdev_count <- function(data, type = "sequence", bin_type = "otu", samples = NULL
 #' @description
 #' Export all data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset")
-#' xdev_export_dataset(dataset)
+#' dataset <- strollur::new_dataset("my_dataset")
+#' strollur::xdev_export_dataset(dataset)
 #'
-#' @return Rcpp::List, containing the data in the 'Dataset' c++ class
+#' @return List, containing the data in the 'Dataset' c++ class
 #' @keywords internal
 #' @noRd
 xdev_export_dataset <- function(data) {
@@ -729,16 +751,15 @@ xdev_export_dataset <- function(data) {
 #' @description
 #' Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param samples a vector of strings containing the names of the samples you
 #' would like sequence names for. By default all samples are included.
 #' @examples
 #'
-#' data <- miseq_sop_example()
+#' data <- strollur::miseq_sop_example()
 #'
 #' # To get the sequence names parsed by sample
-#' abunds <- xdev_get_abundances_by_sample(data)
+#' abunds <- strollur::xdev_get_abundances_by_sample(data)
 #'
 #' @return 2D vector of float containing data requested parsed by sample.
 #' @export
@@ -751,12 +772,12 @@ xdev_get_abundances_by_sample <- function(data, samples = as.character( c())) {
 #' Get the alignment length of sequences in your
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @examples
 #'
-#'  data <- miseq_sop_example()
-#'  xdev_get_alignment_length(data)
+#'  data <- strollur::miseq_sop_example()
+#'  strollur::xdev_get_alignment_length(data)
 #'
 #' @return Integer containing the length of the alignment or -1 if unaligned.
 #' @export
@@ -768,13 +789,12 @@ xdev_get_alignment_length <- function(data) {
 #' @description
 #' Get vector of strings containing the sequences bin data
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param type a string indicating the type of bin assignments. Default "otu".
 #' @examples
 #'
-#' data <- miseq_sop_example()
-#' xdev_get_list_vector(data)
+#' data <- strollur::miseq_sop_example()
+#' strollur::xdev_get_list_vector(data)
 #'
 #' @return vector of strings containing the names of the sequences in each bin
 #' separated by commas
@@ -787,25 +807,24 @@ xdev_get_list_vector <- function(data, type = "otu") {
 #' @description
 #' Get the requested data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param type, string containing the type of data you want the totals of.
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param type string containing the type of data you want the totals of.
 #' Options include: "sequence_name", "sequence". Default = "sequence_name".
-#'
 #' @param samples a vector of strings containing the names of the samples you
 #' would like sequence names for. By default all samples are included.
-#'
 #' @param degap a logical. Default = FALSE. When degap = `TRUE`, all gap
 #' characters will be removed from the sequences.
 #' @examples
 #'
-#' data <- miseq_sop_example()
+#' data <- strollur::miseq_sop_example()
 #'
 #' # To get the sequence names parsed by sample
-#' xdev_get_by_sample(data, "sequence_name")
+#' strollur::xdev_get_by_sample(data,
+#'                                type = "sequence_name")
 #'
 #' # To get the sequence nucleotide strings parsed by sample
-#' parsed_sequences <- xdev_get_by_sample(data, "sequence")
+#' parsed_sequences <- strollur::xdev_get_by_sample(data,
+#'                                          type = "sequence")
 #'
 #' @return 2D vector of strings num_seqs x num_samples containing data
 #' requested parsed by sample.
@@ -818,16 +837,15 @@ xdev_get_by_sample <- function(data, type = "sequence_name", samples = as.charac
 #' @description
 #' Get the nucleotide strings for each sequence in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param sample, a string containing the name of the sample you
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param sample a string containing the name of the sample you
 #' would like sequence names for. For all samples in dataset, sample = "".
-#' @param degap, a logical. Default = FALSE. When degap = `TRUE`, all gap
+#' @param degap a logical. Default = FALSE. When degap = `TRUE`, all gap
 #' characters ('-', '.') will be removed from the sequences.
 #' @examples
 #'
-#'  data <- miseq_sop_example()
-#'  xdev_get_sequences(data)
+#'  data <- strollur::miseq_sop_example()
+#'  strollur::xdev_get_sequences(data)
 #'
 #' @return vector of string containing nucleotide strings of the sequences in
 #' a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -843,19 +861,19 @@ xdev_get_sequences <- function(data, sample = "", degap = FALSE) {
 #' request the indexes parsed by sample, and then get a single copy of the sequences
 #' and sequence names.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param samples a vector of strings containing the names of the samples you
 #' would like sequence names for. By default all samples are included.
 #'
 #' @examples
 #'
-#' data <- miseq_sop_example()
+#' data <- strollur::miseq_sop_example()
 #'
-#' sequences <- xdev_get_sequences(data)
-#' names <- xdev_names(data)
+#' sequences <- strollur::xdev_get_sequences(data)
+#' names <- strollur::xdev_names(data)
 #'
 #' # To get the indexes of the names and sequences by sample
-#' indexes <- xdev_get_sequence_indexes_by_sample(data)
+#' indexes <- strollur::xdev_get_sequence_indexes_by_sample(data)
 #'
 #' # First sequence in first sample
 #' names[indexes[[1]][1]]
@@ -872,13 +890,13 @@ xdev_get_sequence_indexes_by_sample <- function(data, samples = as.character( c(
 #' @description
 #' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param type a string indicating the type of bin assignments. Default "otu".
 #'
 #' @examples
 #'
-#'  data <- miseq_sop_example()
-#'  xdev_has_bin_taxonomy(data)
+#'  data <- strollur::miseq_sop_example()
+#'  strollur::xdev_has_bin_taxonomy(data)
 #'
 #' @return boolean
 #' @export
@@ -890,12 +908,12 @@ xdev_has_bin_taxonomy <- function(data, type = "otu") {
 #' @description
 #' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @examples
 #'
-#'  data <- miseq_sop_example()
-#'  xdev_has_sequence_taxonomy(data)
+#'  data <- strollur::miseq_sop_example()
+#'  strollur::xdev_has_sequence_taxonomy(data)
 #'
 #' @return boolean
 #' @export
@@ -908,30 +926,30 @@ xdev_has_sequence_taxonomy <- function(data) {
 #' Designed with package integration in mind, the merge bins function allows
 #' you to merge bins in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
-#'
-#' @param bin_names, a vector of strings containing the names of the bins you
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+#' @param bin_names a vector of strings containing the names of the bins you
 #' would like merge. The resulting merged bin will be stored in the first
 #' bin_id in the vector.
-#' @param reason, a string indicating why you are merging bins. Default =
+#' @param reason a string indicating why you are merging bins. Default =
 #' "merged".
-#' @param bin_type, a string indicating the type of bin clusters.
+#' @param bin_type a string indicating the type of bin clusters.
 #'  Default = "otu"
 #'
 #' @examples
 #'
-#'  data <- miseq_sop_example()
+#'  data <- strollur::miseq_sop_example()
 #'
 #'  # to merge otu5 and otu6
 #'
 #'  bins_to_merge <- c("Otu005", "Otu006")
 #'
-#'  xdev_merge_bins(data = data, bin_names = bins_to_merge)
+#'  strollur::xdev_merge_bins(data,
+#'                              bin_names = bins_to_merge)
 #'
 #'  # If you look at the scrap report, you will see Otu006 with the trash code
 #'  # set to "merged".
 #'
-#'  report(data = data, type = "bin_scrap")
+#'  strollur::report(data, type = "bin_scrap")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -944,9 +962,8 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu"
 #' Designed with package integration in mind, the merge sequences function
 #' allows you to merge sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
-#'
-#' @param sequence_names, a vector of strings containing the names of the
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+#' @param sequence_names a vector of strings containing the names of the
 #' sequences you would like merge. The resulting merged sequence will be stored
 #' in the first sequence name in the vector.
 #' @param reason a string indicating why you are merging sequences.
@@ -968,10 +985,10 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu"
 #'                 10, 10, 10, 10, 5, 5,
 #'                 1, 2, 3, 4)
 #'
-#' data <- new_dataset("my_data")
+#' data <- strollur::new_dataset("my_data")
 #'
 #'
-#' assign(data = data,
+#' strollur::assign(data,
 #'        table = data.frame(sequence_name = sequence_names,
 #'                           abundance = abundances,
 #'                           sample = samples),
@@ -981,17 +998,20 @@ xdev_merge_bins <- function(data, bin_names, reason = "merged", bin_type = "otu"
 #'
 #' seqs_to_merge <- c("seq1", "seq2", "seq3")
 #'
-#' xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
+#' strollur::xdev_merge_sequences(data,
+#'                                  sequence_names = seqs_to_merge)
 #'
 #' # If you look at the scrap report, you will see the second two sequence
 #' # names, listed with the trash code set to "merged".
 #'
-#' report(data = data, type = "sequence_scrap")
+#' strollur::report(data,
+#'                    type = "sequence_scrap")
 #'
 #' # You can see from the get_num_sequences function that the merged sequence's
 #' # abundances are added to the first sequence.
 #'
-#' count(data = data, type = "sequence")
+#' strollur::count(data,
+#'                   type = "sequence")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -1003,20 +1023,16 @@ xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
 #' @description
 #' Get the names of a given type of data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param type, string containing the type of data you would like. Options
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param type string containing the type of data you would like. Options
 #' include: "dataset", "sequence", "bin", "sample", "treatment", "report".
 #' Default = "sequence".
-#'
-#' @param bin_type, string containing the bin type you would like the names
+#' @param bin_type string containing the bin type you would like the names
 #' for. Default = "otu".
-#'
-#' @param samples, vector of strings. samples is only used when 'type' =
+#' @param samples vector of strings. samples is only used when 'type' =
 #' "sequence" or 'type' = "bin" . samples should contain the names of the
 #' samples you want names for. Default = NULL.
-#'
-#' @param distinct, Boolean. distinct is used when 'type' =
+#' @param distinct Boolean. distinct is used when 'type' =
 #' "sequence" or 'type' = "bin" and the samples parameter is used. The
 #' distinct parameter allows you to get the names that are unique to a given
 #' set of samples. When distinct is TRUE, the names function will return the
@@ -1026,40 +1042,57 @@ xdev_merge_sequences <- function(data, sequence_names, reason = "merged") {
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
 #' # To get the name of the dataset
-#' xdev_names(data = miseq, type = "dataset")
+#' strollur::xdev_names(data = miseq,
+#'                        type = "dataset")
 #'
 #' # To get the names of the sequences in the dataset
-#' xdev_names(data = miseq, type = "sequence")
+#' strollur::xdev_names(data = miseq,
+#'                        type = "sequence")
 #'
 #' # To get the names of the sequences that are unique to sample 'F3D0'
-#' xdev_names(data = miseq, type = "sequence", samples = c("F3D0"), distinct = TRUE)
+#' strollur::xdev_names(data = miseq,
+#'                        type = "sequence",
+#'                        samples = c("F3D0"),
+#'                        distinct = TRUE)
 #'
 #' # To get the names of the sequences that include sample 'F3D0'
-#' xdev_names(data = miseq, type = "sequence", samples = c("F3D0"))
+#' strollur::xdev_names(data = miseq,
+#'                        type = "sequence",
+#'                        samples = c("F3D0"))
 #'
 #' # To get the names of the samples in the dataset
-#' xdev_names(data = miseq, type = "sample")
+#' strollur::xdev_names(data = miseq,
+#'                        type = "sample")
 #'
 #' # To get the names of the treatments in the dataset
-#' xdev_names(data = miseq, type = "treatment")
+#' strollur::xdev_names(data = miseq,
+#'                        type = "treatment")
 #'
 #' # To get the names of the bins in the dataset
-#' xdev_names(data = miseq, type = "bin")
+#' strollur::xdev_names(data = miseq,
+#'                        type = "bin")
 #'
 #' # To get the names of the bins in the dataset that are unique to 'F3D0'
-#' xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = TRUE)
+#' strollur::xdev_names(data = miseq,
+#'                        type = "bin",
+#'                        samples = c("F3D0"),
+#'                        distinct = TRUE)
 #'
 #' # To get the names of the bins in the dataset that include sequences
 #' # from 'F3D0'
-#' xdev_names(data = miseq, type = "bin", samples = c("F3D0"), distinct = FALSE)
+#' strollur::xdev_names(data = miseq,
+#'                        type = "bin",
+#'                        samples = c("F3D0"),
+#'                        distinct = FALSE)
 #'
 #' # To get the names of the reports in the dataset
-#' xdev_names(data = miseq, type = "report")
+#' strollur::xdev_names(data = miseq,
+#'                        type = "report")
 #'
-#' @return vector of strings, containing the names requested
+#' @return vector of strings containing the names requested
 #' @export
 xdev_names <- function(data, type = "sequence", bin_type = "otu", samples = NULL, distinct = FALSE) {
     .Call(`_strollur_xdev_names`, data, type, bin_type, samples, distinct)
@@ -1070,35 +1103,38 @@ xdev_names <- function(data, type = "sequence", bin_type = "otu", samples = NULL
 #' Designed with package integration in mind, the remove bins function allows
 #' you to remove bins from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
-#'
-#' @param bin_names, a vector of strings containing the names of the bins you
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+#' @param bin_names a vector of strings containing the names of the bins you
 #' would like removed.
-#' @param trash_tags, a vector of strings containing the reasons you are
+#' @param trash_tags a vector of strings containing the reasons you are
 #' removing each bin
 #' @param bin_type a string indicating the type of clusters.
 #' @examples
 #'
-#'   data <- new_dataset(dataset_name = "my_dataset")
+#'   data <- strollur::new_dataset(dataset_name = "my_dataset")
 #'
 #'   bin_names <- c("bin1", "bin2", "bin3")
 #'   abundances <- c(110, 525, 80)
 #'
-#'   xdev_assign_bins(data = data,
+#'   strollur::xdev_assign_bins(data,
 #'                    table = data.frame(bin_name = bin_names,
 #'                                       abundance = abundances),
 #'                    bin_type = "otu")
 #'
-#'   count(data = data, type = "bin", bin_type = "otu")
+#'   strollur::count(data,
+#'                     type = "bin",
+#'                     bin_type = "otu")
 #'
 #'   bins_to_remove <- c("bin1")
 #'   trash_tag <- c("bad_bin")
 #'
-#'   xdev_remove_bins(data = data,
+#'   strollur::xdev_remove_bins(data,
 #'                    bin_names = bins_to_remove,
 #'                    trash_tags = trash_tag)
 #'
-#'   count(data = data, type = "bin", bin_type = "otu")
+#'   strollur::count(data,
+#'                     type = "bin",
+#'                     bin_type = "otu")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -1111,15 +1147,14 @@ xdev_remove_bins <- function(data, bin_names, trash_tags, bin_type = "otu") {
 #' Designed with package integration in mind, the remove lineages function
 #' allows you to remove contaminents from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
-#'
-#' @param contaminants, vector of strings containing the taxonomies you would
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+#' @param contaminants vector of strings containing the taxonomies you would
 #' like to remove
-#' @param reason, a string containing reason you are removing the lineages.
+#' @param reason a string containing reason you are removing the lineages.
 #' Default = "contaminant".
 #'
 #' @examples
-#' data <- read_mothur(fasta = strollur_example("final.fasta.gz"),
+#' data <- strollur::read_mothur(fasta = strollur_example("final.fasta.gz"),
 #'                        count = strollur_example("final.count_table.gz"),
 #'                        taxonomy = strollur_example("final.taxonomy.gz"),
 #'                        design = strollur_example("mouse.time.design"),
@@ -1129,7 +1164,7 @@ xdev_remove_bins <- function(data, bin_names, trash_tags, bin_type = "otu") {
 #' contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
 #'  "Eukaryota")
 #'
-#' xdev_remove_lineages(data = data, contaminants = contaminants)
+#' strollur::xdev_remove_lineages(data, contaminants = contaminants)
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -1142,9 +1177,8 @@ xdev_remove_lineages <- function(data, contaminants, reason = "contaminant") {
 #' Designed with package integration in mind, the remove samples function allows
 #' you to remove samples from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
-#'
-#' @param samples, vector of strings containing the names of the samples to
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+#' @param samples vector of strings containing the names of the samples to
 #' remove.
 #'
 #' @param reason, string containing the reason for removal.
@@ -1152,15 +1186,16 @@ xdev_remove_lineages <- function(data, contaminants, reason = "contaminant") {
 #'
 #' @examples
 #'
-#' data <- miseq_sop_example()
+#' data <- strollur::miseq_sop_example()
 #'
-#' count(data = data, type = "sample")
+#' strollur::count(data, type = "sample")
 #'
 #' # To remove samples 'F3D0' and 'F3D1'
 #'
-#' xdev_remove_samples(data, c("F3D0", "F3D1"))
+#' strollur::xdev_remove_samples(data,
+#'                                samples = c("F3D0", "F3D1"))
 #'
-#' count(data = data, type = "sample")
+#' strollur::count(data, type = "sample")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -1173,18 +1208,17 @@ xdev_remove_samples <- function(data, samples, reason = "remove_samples") {
 #' Designed with package integration in mind, the remove sequences function
 #' allows you to remove sequences from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
-#'
-#' @param sequence_names, vector of strings containing the names of the
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+#' @param sequence_names vector of strings containing the names of the
 #' sequences to remove
 #' @param trash_tags vector of strings containing the reasons for the sequences
 #' removals
 #'
 #' @examples
 #'
-#' data <- miseq_sop_example()
+#' data <- strollur::miseq_sop_example()
 #'
-#' count(data = data, type = "sequence")
+#' strollur::count(data, type = "sequence")
 #'
 #' # For the sake of example let's remove the first 3 sequences from
 #' # miseq_sop_example:
@@ -1194,18 +1228,19 @@ xdev_remove_samples <- function(data, samples, reason = "remove_samples") {
 #'                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 #' trash_codes <- c("example", "removing", "sequences")
 #'
-#' xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
-#'                       trash_tags = trash_codes)
+#' strollur::xdev_remove_sequences(data,
+#'                                   sequence_names = seqs_to_remove,
+#'                                   trash_tags = trash_codes)
 #'
 #' # If you look at the scrap report, you the sequences names, listed with the
 #' # trash codes set to "example", "removing", "sequences".
 #'
-#' report(data = data, type = "sequence_scrap")
+#' strollur::report(data, type = "sequence_scrap")
 #'
 #' # You can see from the get_num_sequences function that the removed
 #' # sequence's abundances are removed from the dataset.
 #'
-#' count(data = data, type = "sequence")
+#' strollur::count(data, type = "sequence")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -1217,9 +1252,8 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #' @description
 #' Get a data.frame containing the given report in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param type, string containing the type of report you would like. Options
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param type string containing the type of report you would like. Options
 #' include: "fasta", "sequence", "sequence_bin_assignment",
 #' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
 #'  "sample_assignment", "resource_reference", "sequence_scrap",
@@ -1227,98 +1261,103 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #' contigs_assembly, chimeras or metadata, you can get those as well.
 #'  Default = "sequence".
 #'
-#' @param bin_type, string containing the bin type you would like a bin_taxonomy
+#' @param bin_type string containing the bin type you would like a bin_taxonomy
 #' report for. Default = "otu".
 #'
 #' @examples
 #'
 #' # First let's create a dataset from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
 #'
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
 #' # To get the FASTA data
 #'
-#' fasta <- xdev_report(data = miseq, type = "fasta")
+#' fasta <- strollur::xdev_report(miseq, type = "fasta")
 #' head(fasta, n = 10)
 #'
 #' # To get a report about the FASTA data
 #'
-#' sequence_report <- xdev_report(data = miseq, type = "sequence")
+#' sequence_report <- strollur::xdev_report(miseq,
+#'                                            type = "sequence")
 #' head(sequence_report, n = 10)
 #'
 #' # To get the sequence bin assignments
 #'
-#' bin_assignments <- xdev_report(data = miseq,
+#' bin_assignments <- strollur::xdev_report(miseq,
 #'                                type = "sequence_bin_assignment",
 #'                                bin_type = "otu")
 #' head(bin_assignments, n = 10)
 #'
 #' # To get the sample treatment assignments
 #'
-#' xdev_report(data = miseq, type = "sample_assignment")
+#' strollur::xdev_report(miseq,
+#'                         type = "sample_assignment")
 #'
 #' # To get a report about sequence classifications
 #'
-#' sequence_taxonomy_report <- xdev_report(data = miseq,
+#' sequence_taxonomy_report <- strollur::xdev_report(miseq,
 #'                                        type = "sequence_taxonomy")
 #' head(sequence_taxonomy_report, n = 10)
 #'
 #' # To get a report about bin classifications for 'otu' data
 #'
-#' otu_taxonomy_report <- xdev_report(data = miseq,
+#' otu_taxonomy_report <- strollur::xdev_report(miseq,
 #'                                    type = "bin_taxonomy",
 #'                                    bin_type = "otu")
 #' head(otu_taxonomy_report, n = 10)
 #'
 #' # To get a report about bin classifications for 'asv' data
 #'
-#' asv_taxonomy_report <- xdev_report(data = miseq,
+#' asv_taxonomy_report <- strollur::xdev_report(miseq,
 #'                                    type = "bin_taxonomy",
 #'                                    bin_type = "asv")
 #' head(asv_taxonomy_report, n = 10)
 #'
 #' # To get a report about bin classifications for 'phylotype' data
 #'
-#' phylotype_taxonomy_report <- xdev_report(data = miseq,
+#' phylotype_taxonomy_report <- strollur::xdev_report(miseq,
 #'                                          type = "bin_taxonomy",
 #'                                          bin_type = "phylotype")
 #' head(phylotype_taxonomy_report, n = 10)
 #'
 #' # To get the 'otu' bin representative sequences
 #'
-#' otu_bin_reps <- xdev_report(data = miseq,
+#' otu_bin_reps <- strollur::xdev_report(miseq,
 #'                             type = "bin_representative",
 #'                             bin_type = "otu")
 #' head(otu_bin_reps, n = 10)
 #'
 #' # To get a report about the sequences removed during your analysis:
 #'
-#' scrapped_sequence_report <- xdev_report(data = miseq,
+#' scrapped_sequence_report <- strollur::xdev_report(miseq,
 #'                                         type = "sequence_scrap")
 #'
 #' # To get a report about the "otu" bins removed during your analysis:
 #'
-#' scrapped_otu_report <- xdev_report(data = miseq,
+#' scrapped_otu_report <- strollur::xdev_report(miseq,
 #'                                    type = "bin_scrap",
 #'                                    bin_type = "otu")
 #'
 #' # To get a report about the "phylotype" bins removed during your analysis:
 #'
-#' scrapped_phylotype_report <- xdev_report(data = miseq,
+#' scrapped_phylotype_report <- strollur::xdev_report(miseq,
 #'                                          type = "bin_scrap",
 #'                                          bin_type = "phylotype")
 #'
 #' # To get the metadata associated with your data:
 #'
-#' metadata <- xdev_report(data = miseq, type = "metadata")
+#' metadata <- strollur::xdev_report(miseq,
+#'                                      type = "metadata")
 #'
 #' # To get the resource references associated with your data:
 #'
-#' references <- xdev_report(data = miseq, type = "resource_reference")
+#' references <- strollur::xdev_report(miseq,
+#'                                      type = "resource_reference")
 #'
 #' # To get our custom report containing the contigs assembly data:
 #'
-#' contigs_report <- xdev_report(data = miseq, type = "contigs_report")
+#' contigs_report <- strollur::xdev_report(miseq,
+#'                                          type = "contigs_report")
 #' head(contigs_report, n = 10)
 #'
 #' @return data.frame
@@ -1333,33 +1372,34 @@ xdev_report <- function(data, type = "sequence", bin_type = "otu") {
 #' allows you to change the abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' without samples.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param sequence_names, a vector of strings containing sequence names
-#' @param sequence_abundances, vector containing the abundances of each
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param sequence_names a vector of strings containing sequence names
+#' @param sequence_abundances vector containing the abundances of each
 #' sequence.
-#' @param reason, a string containing the trash tag to be applied to any
+#' @param reason a string containing the trash tag to be applied to any
 #' sequences set to 0 abundance. Default = "update".
 #'
 #' @examples
 #'
 #' names <- c("seq1", "seq2", "seq3",  "seq4")
 #' abunds <- c(1250, 65, 50, 4)
+#' table <- data.frame(sequence_name = names,
+#'                    abundance = abunds)
 #'
-#' data <- new_dataset(dataset_name = "my_dataset")
+#' data <- strollur::new_dataset(dataset_name = "my_dataset")
 #'
-#' xdev_assign_sequence_abundance(data = data, table = data.frame(sequence_name = names,
-#'                                            abundance = abunds))
-#' abundance(data = data, type = "sequence")
+#' strollur::xdev_assign_sequence_abundance(data,
+#'                                          table = table)
+#' strollur::abundance(data, type = "sequence")
 #'
 #' seqs_to_update <- c("seq1", "seq3")
 #' new_abunds <- c(1000, 100)
 #'
-#' xdev_set_abundance(data = data,
+#' strollur::xdev_set_abundance(data,
 #'                    sequence_names = seqs_to_update,
 #'                    sequence_abundances = new_abunds)
 #'
-#' abundance(data = data, type = "sequence")
+#' strollur::abundance(data, type = "sequence")
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -1373,32 +1413,32 @@ xdev_set_abundance <- function(data, sequence_names, sequence_abundances, reason
 #' allows you to change the abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' with samples.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
-#' @param sequence_names, a vector of strings containing sequence names
-#' @param abundances, 2D vector num_seqs x num_samples containing
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param sequence_names a vector of strings containing sequence names
+#' @param abundances 2D vector num_seqs x num_samples containing
 #' the abundances of each sequence parsed by sample.
-#' @param reason, a string containing the trash tag to be applied to any
+#' @param reason a string containing the trash tag to be applied to any
 #' sequences set to 0 abundance. Default = "update".
 #' @examples
 #'
-#' data <- new_dataset(dataset_name = "my_dataset")
+#' data <- strollur::new_dataset(dataset_name = "my_dataset")
 #'
 #' sequence_names <- c("seq1", "seq1", "seq1", "seq2", "seq2", "seq2", "seq3",
 #'                     "seq3", "seq4")
 #' samples <- c("sample2", "sample3", "sample4", "sample2", "sample3",
 #'              "sample4", "sample2", "sample3", "sample4")
 #' abundances <- c(250, 400, 500, 25, 40, 50, 25, 25, 4)
+#' table <- data.frame(sequence_name = sequence_names,
+#'                     abundance = abundances,
+#'                     sample = samples)
 #'
-#' xdev_assign_sequence_abundance(data = data,
-#'                           table = data.frame(sequence_name = sequence_names,
-#'                                              abundance = abundances,
-#'                                              sample = samples))
+#' strollur::xdev_assign_sequence_abundance(data,
+#'                                            table = table)
 #'
 #' seqs_to_update <- c("seq4")
 #' new_abunds <- list(c(20, 10, 4))
 #'
-#' xdev_set_abundances(data = data,
+#' strollur::xdev_set_abundances(data,
 #'                     sequence_names = seqs_to_update,
 #'                     abundances = new_abunds)
 #'
@@ -1415,21 +1455,21 @@ xdev_set_abundances <- function(data, sequence_names, abundances, reason = "upda
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object. For example, set_sequences may be used
 #' after alignment to overwrite the unaligned sequences with aligned sequences.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @param sequence_names, a vector of strings containing sequence names
-#' @param sequences, a vector of strings containing sequence nucleotide strings
-#' @param comments, a vector of strings containing sequence comments.
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param sequence_names a vector of strings containing sequence names
+#' @param sequences a vector of strings containing sequence nucleotide strings
+#' @param comments a vector of strings containing sequence comments.
 #' (Optional)
 #'
 #' @examples
 #'
-#' data <- new_dataset(dataset_name = "my_dataset")
+#' data <- strollur::new_dataset(dataset_name = "my_dataset")
 #'
-#' xdev_add_sequences(data = data,
+#' strollur::xdev_add_sequences(data,
 #'               table = data.frame(sequence_name = c("seq1", "seq2",
 #'                                                   "seq3", "seq4")))
 #'
-#' xdev_set_sequences(data = data,
+#' strollur::xdev_set_sequences(data,
 #'                    sequence_names = c("seq1", "seq2","seq3", "seq4"),
 #'                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 #'
@@ -1443,13 +1483,14 @@ xdev_set_sequences <- function(data, sequence_names, sequences, comments = as.ch
 #' @description
 #' Designed with package integration in mind, set the name of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @param dataset_name, a string containing the desired name
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param dataset_name a string containing the desired name
 #'
 #' @examples
 #'
-#' data <- new_dataset(dataset_name = "my_dataset")
-#' xdev_set_dataset_name(data = data, dataset_name = "new_dataset_name")
+#' data <- strollur::new_dataset(dataset_name = "my_dataset")
+#' strollur::xdev_set_dataset_name(data,
+#'                                 dataset_name = "new_dataset_name")
 #'
 #' @return No return value, called for side effects.
 #' @export
@@ -1461,15 +1502,13 @@ xdev_set_dataset_name <- function(data, dataset_name) {
 #' @description
 #' Summarize the scrapped data in a \link{strollur} object
 #'
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @examples
 #'
-#'  data <- miseq_sop_example()
+#'  data <- strollur::miseq_sop_example()
 #'
 #'  # summarize scrap summary
-#'  xint_get_scrap_summary(data = data)
-#'
+#'  strollur::xint_get_scrap_summary(data)
 #'
 #' @return data.frame()
 #' @keywords internal
@@ -1482,16 +1521,16 @@ xint_get_scrap_summary <- function(data) {
 #' @name xint_copy_pointer
 #' @description
 #' For internal use only, copy an instance of the C++ 'Dataset' class.
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @examples
 #'
-#' data <- read_mothur(fasta = strollur_example("final.fasta.gz"))
+#' data <- strollur::read_mothur(fasta = strollur_example("final.fasta.gz"))
 #'
-#' copy_data <- new_dataset("copy")
+#' copy_data <- strollur::new_dataset("copy")
 #' copy_data
 #'
-#' copy_data$data <- xint_copy_pointer(data)
+#' copy_data$data <- strollur::xint_copy_pointer(data)
 #' copy_data
 #'
 #' @return pointer to an instance of the C++ 'Dataset' class.
@@ -1505,7 +1544,7 @@ xint_copy_pointer <- function(data) {
 #' @name xint_new_pointer
 #' @description
 #' For internal use only, create an instance of the C++ 'Dataset' class.
-#' @param dataset_name, string containing dataset name
+#' @param dataset_name string containing dataset name
 #' @return pointer to an instance of the C++ 'Dataset' class.
 #' @keywords internal
 #' @noRd
@@ -1517,8 +1556,8 @@ xint_new_pointer <- function(dataset_name) {
 #' @name xint_is_equal
 #' @description
 #' For internal use only, compares 2 instances of the C++ 'Dataset' class.
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-#' @param data2, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data2 a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @return boolean
 #' @keywords internal
 #' @noRd
@@ -1531,7 +1570,7 @@ xint_is_equal <- function(data, data2) {
 #' @description
 #' For internal use only, deserialize_dobject an instance of the C++ 'Dataset'
 #'  class.
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @keywords internal
 #' @noRd
 xint_deserialize_dobject <- function(data) {
@@ -1543,7 +1582,7 @@ xint_deserialize_dobject <- function(data) {
 #' @description
 #' For internal use only, xint_serialize_dobject an instance of the C++ 'Dataset'
 #' class.
-#' @param data, a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @keywords internal
 #' @noRd
 xint_serialize_dobject <- function(data) {

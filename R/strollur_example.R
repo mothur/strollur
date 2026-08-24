@@ -7,8 +7,8 @@
 #'
 #' @param file Name of file.
 #' @examples
-#' strollur_example()
-#' strollur_example("final.fasta.gz")
+#' strollur::strollur_example()
+#' strollur::strollur_example("final.fasta.gz")
 #'
 #' @return string, Full path to example files
 #' @export

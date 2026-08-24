@@ -3,15 +3,16 @@
 #' Write mothur formatted
 #' \href{https://mothur.org/wiki/shared_file/}{shared files}
 #'
-#' @param data A `strollur` object
+#' @param data a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param file_root a string containing the root name of the output file.
 #' Default = 'dataset_name'. Resulting in output files
-#' 'dataset_name'.bin_type'.shared.
+#' `{dataset_name}.{bin_type}.shared`.
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
-#' write_mothur_shared(miseq, tempfile())
+#' miseq <- strollur::miseq_sop_example()
+#' strollur::write_mothur_shared(miseq, tempfile())
 #'
 #' @return vector containing the names of the files created
 #' @export

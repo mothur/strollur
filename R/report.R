@@ -25,69 +25,71 @@
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
 #' # To get the FASTA data
 #'
-#' report(data = miseq, type = "fasta") |> head(n = 5)
+#' strollur::report(data = miseq, type = "fasta") |> head(n = 5)
 #'
 #' # To get a report about the FASTA data
 #'
-#' report(data = miseq, type = "sequence") |> head(n = 5)
+#' strollur::report(data = miseq, type = "sequence") |> head(n = 5)
 #'
 #' # To get the sequence bin assignments
 #'
-#' report(data = miseq, type = "sequence_bin_assignment", bin_type = "otu") |>
+#' strollur::report(data = miseq,
+#'                  type = "sequence_bin_assignment", bin_type = "otu") |>
 #'   head(n = 5)
 #'
 #' # To get the sample treatment assignments
 #'
-#' report(data = miseq, type = "sample_assignment")
+#' strollur::report(data = miseq, type = "sample_assignment")
 #'
 #' # To get a report about sequence classifications
 #'
-#' report(data = miseq, type = "sequence_taxonomy") |> head(n = 10)
+#' strollur::report(data = miseq, type = "sequence_taxonomy") |> head(n = 10)
 #'
 #' # To get a report about bin classifications for 'otu' data
 #'
-#' report(data = miseq, type = "bin_taxonomy", bin_type = "otu") |> head(n = 10)
+#' strollur::report(data = miseq,
+#'                  type = "bin_taxonomy", bin_type = "otu") |> head(n = 10)
 #'
 #' # To get the 'otu' bin representative sequences
 #'
-#' report(
+#' strollur::report(
 #'   data = miseq, type = "bin_representative",
 #'   bin_type = "otu"
 #' ) |> head(n = 5)
 #'
 #' # To get a report about the sequences removed during your analysis:
 #'
-#' report(data = miseq, type = "sequence_scrap")
+#' strollur::report(data = miseq, type = "sequence_scrap")
 #'
 #' # To get a report about the "otu" bins removed during your analysis:
 #'
-#' report(data = miseq, type = "bin_scrap", bin_type = "otu")
+#' strollur::report(data = miseq, type = "bin_scrap", bin_type = "otu")
 #'
 #' # To get the metadata associated with your data:
 #'
-#' metadata <- report(data = miseq, type = "metadata")
+#' metadata <- strollur::report(data = miseq, type = "metadata")
 #'
 #' # To get the resource references associated with your data:
 #'
-#' references <- report(data = miseq, type = "resource_reference")
+#' references <- strollur::report(data = miseq, type = "resource_reference")
 #'
 #' # To get our custom report containing the contigs assembly data:
 #'
-#' report(data = miseq, type = "contigs_report") |> head(n = 10)
+#' strollur::report(data = miseq, type = "contigs_report") |> head(n = 10)
 #'
 #' # To get the tree that relates your sequences:
 #'
-#' sequence_tree <- report(data = miseq, type = "sequence_tree")
+#' sequence_tree <- strollur::report(data = miseq, type = "sequence_tree")
 #'
 #' # To get the tree that relates your samples:
 #'
-#' sample_tree <- report(data = miseq, type = "sample_tree")
+#' sample_tree <- strollur::report(data = miseq, type = "sample_tree")
 #'
-#' @return data.frame
+#' @return data.frame or tree
 #' @export
 report <- function(data, type = "sequence", bin_type = "otu") {
   if (!inherits(data, "strollur")) {

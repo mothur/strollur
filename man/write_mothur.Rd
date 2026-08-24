@@ -7,12 +7,13 @@
 write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 }
 \arguments{
-\item{data}{A \code{strollur} object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{dir_path}{a string containing the name of directory where the files
 should be written. Default = current working directory.}
 
-\item{compress}{boolean, Default = TRUE.}
+\item{compress}{logical, Default = TRUE.}
 
 \item{tags}{a vector of strings containing the items you wish to write
 Options are 'sequence_data', 'bin_data', 'metadata',
@@ -29,8 +30,8 @@ mothur.
 }
 \examples{
 
-miseq <- miseq_sop_example()
-files <- write_mothur(miseq, tempdir(), compress = FALSE)
+miseq <- strollur::miseq_sop_example()
+files <- strollur::write_mothur(miseq, tempdir(), compress = FALSE)
 
 }
 \references{

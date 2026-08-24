@@ -2,15 +2,16 @@
 #' @description
 #' Write mothur formatted \href{https://mothur.org/wiki/list_file/}{list files}
 #'
-#' @param data A `strollur` object
+#' @param data a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param file_root a string containing the root name of the output file.
 #' Default = 'dataset_name'. Resulting in output files
-#' 'dataset_name'.bin_type'.list.
+#' `{dataset_name}.{bin_type}.list`.
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
-#' write_mothur_list(miseq, tempfile())
+#' miseq <- strollur::miseq_sop_example()
+#' strollur::write_mothur_list(miseq, tempfile())
 #'
 #' @return vector containing the names of the files created
 #' @export

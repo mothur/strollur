@@ -1,11 +1,15 @@
-#' @title The `strollur` object stores the data associated with your amplicon
-#'   sequence analysis.
+#' @title The `strollur::strollur` object
 #' @name strollur
 #' @rdname strollur
-#' @description 'strollur' is an R6 class that stores nucleotide sequences,
-#' abundance, sample and treatment assignments, taxonomic classifications,
-#' asv / otu clusters and various reports. It is designed to facilitate data
-#' analysis across multiple R packages.
+#'
+#' @description `strollur::strollur` is an R6 class that stores nucleotide
+#'   sequences, abundance, sample and treatment assignments, taxonomic
+#'   classifications, trees, asv / otu clusters and various reports. It is
+#'   designed to facilitate data analysis across multiple R packages.
+#'
+#' \if{html}{\figure{strollur_overview.png}{options: width="672 pixels" alt="Workflow
+#' Diagram"}}
+#' \if{latex}{\figure{strollur_overview.png}{options: width=5in}}
 #'
 #' @author Sarah Westcott, \email{swestcot@@umich.edu}
 #'
@@ -33,16 +37,16 @@ strollur <- R6Class("strollur",
     sample_tree = NULL,
 
     #' @description
-    #' Create a new strollur dataset
+    #' Create a new `strollur::strollur` object
     #' @param name String, name of dataset (optional)
-    #' @param dataset a `strollur` object.
+    #' @param dataset a `strollur::strollur` object.
     #' @examples
     #'
     #' # to create an empty strollur object, run the following:
     #'
-    #' data <- new_dataset("soil")
+    #' data <- strollur::strollur$new("soil")
     #'
-    #' @return A new `strollur` object.
+    #' @return A new `strollur::strollur` object.
     initialize = function(name = "",
                           dataset = NULL) {
       if (is.null(dataset)) {
@@ -69,9 +73,9 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
-    #' Print summary of `strollur` object
+    #' Print a summary of the `strollur::strollur` object
     #' @examples
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #' miseq
     #'
     #' @return No return value, called for side effects.
@@ -106,7 +110,7 @@ strollur <- R6Class("strollur",
 
       if (xdev_count(data = self, type = "sequence", distinct = TRUE) != 0) {
         cat(
-          paste("\nNumber of unique seqs:", count(
+          paste("\nNumber of unique seqs:", strollur::count(
             data = self,
             type = "sequence",
             distinct = TRUE
@@ -209,12 +213,12 @@ strollur <- R6Class("strollur",
     #' @param bin_type string containing the bin type you would like the
     #'   abundance data for. Default = "otu".
     #'
-    #' @param by_sample Boolean. When by_sample is TRUE, the abundance data
+    #' @param by_sample Logical. When by_sample is TRUE, the abundance data
     #'   will be parsed by sample. Default = FALSE.
     #'
     #' @examples
     #'
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To the total abundance for each sequence
     #' miseq$abundance(type = "sequence") |> head(n = 5)
@@ -250,7 +254,7 @@ strollur <- R6Class("strollur",
     },
 
     #' @description
-    #' Add sequences, reports or resource references
+    #' Add sequences, reports, trees or resource references
     #'
     #' @param table a data.frame or tree containing the data you wish to add.
     #' @param type a string containing the type of data. Options include:
@@ -325,16 +329,17 @@ strollur <- R6Class("strollur",
     #' @param reference a list created by the function [new_reference].
     #'   Optional.
     #'
-    #' @param verbose boolean indicating whether or not you want progress
+    #' @param verbose logical, indicating whether or not you want progress
     #'   messages. Default = TRUE.
     #'
     #' @examples
     #'
-    #' fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
+    #' fasta_data <- strollur::read_fasta(fasta =
+    #' strollur_example("final.fasta.gz"))
     #' contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
     #'
-    #' # Create a new empty `strollur` object named 'example_dataset'
-    #' data <- new_dataset(dataset_name = "example_dataset")
+    #' # Create a new empty `strollur::strollur` object named 'example_dataset'
+    #' data <- strollur::strollur$new(name = "example_dataset")
     #'
     #' data$add(table = fasta_data, type = "sequence")
     #' data$add(
@@ -355,16 +360,17 @@ strollur <- R6Class("strollur",
     #' data$add(table = tree, type = "sequence_tree")
     #'
     #' # To add a tree relating to your samples
-    #' data <- new_dataset(dataset_name = "example_dataset")
+    #' data <- strollur::strollur$new(name = "example_dataset")
     #'
-    #' df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+    #' df <-
+    #' strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #' data$assign(table = df, type = "bin", bin_type = "otu")
     #'
     #' tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
     #'
     #' data$add(table = tree, type = "sample_tree")
     #'
-    #' @return Updated `strollur` object - invisible(self)
+    #' @return Updated `strollur::strollur` object
     add = function(table,
                    type = "sequence",
                    report_type = NULL,
@@ -571,14 +577,14 @@ strollur <- R6Class("strollur",
     #' Get length of alignment
     #' @examples
     #'
-    #' data <- miseq_sop_example()
+    #' data <- strollur::miseq_sop_example()
     #' data$alignment_length()
     #'
     #' @return Integer containing the length of the aligned sequences or -1 if
     #'   unaligned.
     #' @export
     alignment_length = function() {
-      xdev_get_alignment_length(self)
+      strollur::xdev_get_alignment_length(self)
     },
 
     #' @description
@@ -644,11 +650,11 @@ strollur <- R6Class("strollur",
     #'
     #' # create a new empty strollur object named 'example_dataset'
     #'
-    #' data <- new_dataset(dataset_name = "example_dataset")
+    #' data <- strollur::strollur$new(name = "example_dataset")
     #'
     #' # Assign sequence abundances
     #'
-    #' abundance_by_sample <- read_mothur_count(strollur_example(
+    #' abundance_by_sample <- strollur::read_mothur_count(strollur_example(
     #'   "final.count_table.gz"
     #' ))
     #'
@@ -656,26 +662,25 @@ strollur <- R6Class("strollur",
     #'
     #' # Assign sequence classifications
     #'
-    #' sequence_classifications <- read_mothur_taxonomy(strollur_example(
-    #'   "final.taxonomy.gz"
-    #' ))
+    #' sequence_classifications <-
+    #' strollur::read_mothur_taxonomy(strollur_example( "final.taxonomy.gz" ))
     #'
     #' data$assign(table = sequence_classifications, type = "sequence_taxonomy")
     #'
     #' # Assigning bins
     #'
     #' # read mothur's otu list file into data.frame
-    #' otu_data <- read_mothur_list(list = strollur_example(
+    #' otu_data <- strollur::read_mothur_list(list = strollur_example(
     #'   "final.opti_mcc.list.gz"
     #' ))
     #'
     #' # read mothur's asv list file into data.frame
-    #' asv_data <- read_mothur_list(list = strollur_example(
+    #' asv_data <- strollur::read_mothur_list(list = strollur_example(
     #'   "final.asv.list.gz"
     #' ))
     #'
     #' # read mothur's phylotype list file into data.frame
-    #' phylo_data <- read_mothur_list(list = strollur_example(
+    #' phylo_data <- strollur::read_mothur_list(list = strollur_example(
     #'   "final.tx.list.gz"
     #' ))
     #'
@@ -698,10 +703,11 @@ strollur <- R6Class("strollur",
     #' # To assign abundance only bins
     #'
     #' # create a new empty strollur object named 'example_dataset'
-    #' data <- new_dataset(dataset_name = "example_dataset")
+    #' data <- strollur::strollur$new(name = "example_dataset")
     #'
     #' # read mothur's shared file
-    #' otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+    #' otu_data <-
+    #' strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
     #'
     #' # assign abundance only otus parsed by sample
     #' data$assign(table = otu_data, bin_type = "otu")
@@ -709,7 +715,7 @@ strollur <- R6Class("strollur",
     #' # Assigning bin classifications
     #'
     #' # read bin taxonomies
-    #' otu_data <- read_mothur_cons_taxonomy(strollur_example(
+    #' otu_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
     #'   "final.cons.taxonomy"
     #' ))
     #'
@@ -726,7 +732,7 @@ strollur <- R6Class("strollur",
     #'
     #' data$assign(table = sample_assignments, type = "treatment")
     #'
-    #' @return Updated `strollur` object
+    #' @return Updated `strollur::strollur` object
     assign = function(table,
                       type = "bin",
                       bin_type = "otu",
@@ -853,14 +859,13 @@ strollur <- R6Class("strollur",
     #' @description
     #' Clear data from datasest
     #' @examples
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #' miseq
     #' miseq$clear()
     #' miseq
-    #' @return Updated `strollur` object
+    #' @return Updated `strollur::strollur` object
     clear = function() {
-      clear(self)
-
+      strollur::clear(self)
       invisible(self)
     },
 
@@ -893,7 +898,7 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To get the total number of sequences
     #' miseq$count(type = "sequence")
@@ -949,7 +954,7 @@ strollur <- R6Class("strollur",
                      bin_type = "otu",
                      samples = NULL,
                      distinct = FALSE) {
-      xdev_count(self, type, bin_type, samples, distinct)
+      strollur::xdev_count(self, type, bin_type, samples, distinct)
     },
 
 
@@ -957,7 +962,7 @@ strollur <- R6Class("strollur",
     #' Get bin table types
     #' @examples
     #'
-    #' data <- miseq_sop_example()
+    #' data <- strollur::miseq_sop_example()
     #' data$get_bin_types()
     #'
     #' @return vector of strings
@@ -972,11 +977,11 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' data <- new_dataset("test")
+    #' data <- strollur::strollur$new("test")
     #'
     #' data$get_version()
     #'
-    #' @returns a logical
+    #' @returns a string
     #' @export
     get_version = function() {
       private$version
@@ -990,7 +995,7 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' miseq$has_bin_taxonomy(bin_type = "otu")
     #'
@@ -1005,7 +1010,7 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' miseq$has_sequence_taxonomy()
     #'
@@ -1025,9 +1030,9 @@ strollur <- R6Class("strollur",
     #'   object
     #' @examples
     #'
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #'
-    #' data <- copy_dataset(miseq)
+    #' data <- strollur::copy_dataset(miseq)
     #'
     #' miseq$is_equal(data)
     #'
@@ -1143,7 +1148,7 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To get the name of the dataset
     #' miseq$names(type = "dataset")
@@ -1189,13 +1194,13 @@ strollur <- R6Class("strollur",
     #' @param name string containing the new name for your dataset
     #' @examples
     #'
-    #' data <- new_dataset("old_name")
+    #' data <- strollur::strollur$new("old_name")
     #' data
     #'
     #' data$rename("new_name")
     #' data
     #'
-    #' @returns Updated `strollur` object
+    #' @returns Updated `strollur::strollur` object
     #' @export
     rename = function(name) {
       xdev_set_dataset_name(self, name)
@@ -1218,7 +1223,7 @@ strollur <- R6Class("strollur",
     #'
     #' @examples
     #'
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To get the FASTA data
     #'
@@ -1330,12 +1335,12 @@ strollur <- R6Class("strollur",
     #'  data and can be accessed with report_type = "contigs_report".
     #'  Default = NULL.
     #'
-    #' @param verbose boolean indicating whether or not you want progress
+    #' @param verbose logical indicating whether or not you want progress
     #'  messages. Default = TRUE.
     #'
     #' @examples
     #'
-    #' miseq <- load_dataset(strollur_example("miseq_sop.rds"))
+    #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
     #'
     #' # To get the summary of your FASTA data
     #' miseq$summary(type = "sequence")
@@ -1344,7 +1349,7 @@ strollur <- R6Class("strollur",
     #' miseq$summary(type = "report", report_type = "contigs_report")
     #'
     #' # remove sample 'F3D0' to produce a scrap report
-    #' xdev_remove_samples(data = miseq, samples = c("F3D0"))
+    #' strollur::xdev_remove_samples(data = miseq, samples = c("F3D0"))
     #'
     #' # summarize scrapped data -
     #' # sequences and bins scrapped by removing the sample "F3D0"

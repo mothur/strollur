@@ -23,7 +23,7 @@ Read a \href{https://qiime2.org}{qiime2} qza containing taxonomy data
 }
 \examples{
 
-artifact <- read_qiime2_taxonomy(strollur_example(
+artifact <- strollur::read_qiime2_taxonomy(strollur_example(
   "taxonomy.qza"
 ))
 

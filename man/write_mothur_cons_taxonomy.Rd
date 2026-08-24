@@ -7,7 +7,8 @@
 write_mothur_cons_taxonomy(data, file_root = NULL)
 }
 \arguments{
-\item{data}{A \code{strollur} object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{file_root}{a string containing the root name of the output file.
 Default = 'dataset_name'. Resulting in output files
@@ -22,7 +23,7 @@ Write a mothur formatted
 }
 \examples{
 
-miseq <- miseq_sop_example()
-write_mothur_cons_taxonomy(miseq, tempfile())
+miseq <- strollur::miseq_sop_example()
+strollur::write_mothur_cons_taxonomy(miseq, tempfile())
 
 }

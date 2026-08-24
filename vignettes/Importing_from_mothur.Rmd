@@ -101,15 +101,23 @@ classification_data <- strollur::read_mothur_taxonomy(
 classification_data is a data.frame containing sequence names and taxonomies. You can add the sequence classification data to your data set as follows:
 
 ```{r}
-strollur::assign(my_data, table = classification_data, type = "sequence_taxonomy")
+strollur::assign(my_data,
+  table = classification_data,
+  type = "sequence_taxonomy"
+)
 ```
 
 To assign sequences to bins, you can read a [mothur list file](https://mothur.org/wiki/list_file/) file using the `strollur::read_mothur_list()` function:
 
 ```{r}
-otu_data <- strollur::read_mothur_list(list = strollur_example("final.opti_mcc.list.gz"))
-asv_data <- strollur::read_mothur_list(list = strollur_example("final.asv.list.gz"))
-phylotype_data <- strollur::read_mothur_list(list = strollur_example("final.tx.list.gz"))
+otu_data <-
+  strollur::read_mothur_list(
+    list = strollur_example("final.opti_mcc.list.gz")
+  )
+asv_data <-
+  strollur::read_mothur_list(list = strollur_example("final.asv.list.gz"))
+phylotype_data <-
+  strollur::read_mothur_list(list = strollur_example("final.tx.list.gz"))
 ```
 
 otu_data, asv_data and phylotype_data are data.frames containing bin names and sequence names. You can add the bin data to your data set as follows:

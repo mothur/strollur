@@ -2,20 +2,21 @@
 % Please edit documentation in R/miseq_sop_example.R
 \name{miseq_sop_example}
 \alias{miseq_sop_example}
-\title{Example strollur object}
+\title{Example \code{strollur::strollur} object}
 \usage{
 miseq_sop_example()
 }
 \value{
-A 'strollur' object
+A \code{strollur::strollur} object
 }
 \description{
-The miseq_sop_example function will create 'strollur' object using the
-analysis files from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
-example.
+The miseq_sop_example function will create
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object. object using the analysis files from the
+\href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP} example.
 }
 \examples{
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 
 }

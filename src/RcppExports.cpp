@@ -289,7 +289,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // xdev_export_dataset
-/******************************************************************************/ Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
+Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
 RcppExport SEXP _strollur_xdev_export_dataset(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

@@ -5,7 +5,7 @@
 #' @name read_phyloseq
 #' @rdname read_phyloseq
 #' @description
-#' The `read_phyloseq()` function reads phyloseq objects created from
+#' The `strollur::read_phyloseq()` function reads phyloseq objects created from
 #' the phyloseq package
 #' (https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html)
 #' and converts it into a strollur object.
@@ -21,13 +21,14 @@
 #' within your sample data that is used to describe treatments. It must
 #' be a character. Defaults to NULL.
 #' @param dataset_name A string containing a name for your dataset.
-#' @return a strollur object.
+#' @return a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @examples
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
 #' if (requireNamespace("phyloseq", quietly = TRUE)) {
-#'   phylo_obj <- write_phyloseq(miseq)
-#'   miseq_re_read <- read_phyloseq(phylo_obj)
+#'   phylo_obj <- strollur::write_phyloseq(miseq)
+#'   miseq_re_read <- strollur::read_phyloseq(phylo_obj)
 #' } else {
 #'   message(paste(
 #'     "To use this functionality you have to install the",

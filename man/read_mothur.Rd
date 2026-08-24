@@ -93,27 +93,27 @@ A
 \description{
 The read_mothur function reads various
 \href{https://mothur.org/wiki/tags/#file_types}{file types} created by
-mothur, and creates a \code{strollur} object.
+mothur, and creates a \code{strollur::strollur} object.
 
 To generate the various input files you can follow Pat's
 \href{https://mothur.org/wiki/miseq_sop/}{Miseq example analysis}.
 }
 \note{
 \itemize{
-\item \emph{consensus taxonomy}, The \code{strollur} object will generate
-consensus taxonomies for you based on the sequence taxonomy assignment. You
-only need to provide the ".cons.taxonomy" file if you are not providing
-sequence taxonomy assignments.
-\item \emph{shared / rabund file}, The \code{strollur} object will generate
-shared and rabund data for you based on the otu assignment in the list file
-and the count data. You only need to provide the ".shared" file if you are
-not providing the list and count files.
+\item \emph{consensus taxonomy}, The \code{strollur::strollur} object will
+generate consensus taxonomies for you based on the sequence taxonomy
+assignment. You only need to provide the ".cons.taxonomy" file if you are not
+providing sequence taxonomy assignments.
+\item \emph{shared / rabund file}, The \code{strollur::strollur} object will
+generate shared and rabund data for you based on the otu assignment in the
+list file and the count data. You only need to provide the ".shared" file if
+you are not providing the list and count files.
 }
 }
 \examples{
 # For dataset's including sequence data:
 
-data <- read_mothur(
+data <- strollur::read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),
   taxonomy = strollur_example("final.taxonomy.gz"),
@@ -127,7 +127,7 @@ data <- read_mothur(
 
 # For dataset's with only otu data:
 
-data <- read_mothur(
+data <- strollur::read_mothur(
   otu_shared = strollur_example("final.opti_mcc.shared"),
   cons_taxonomy = strollur_example(
     "final.cons.taxonomy"

@@ -1,14 +1,15 @@
-#' @title Example strollur object
+#' @title Example `strollur::strollur` object
 #' @description
-#' The miseq_sop_example function will create 'strollur' object using the
-#' analysis files from the \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP}
-#' example.
+#' The miseq_sop_example function will create
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+#' object. object using the analysis files from the
+#' \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP} example.
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
-#' @return A 'strollur' object
+#' @return A `strollur::strollur` object
 #' @export
 miseq_sop_example <- function() {
   data <- read_mothur(

@@ -13,20 +13,20 @@ xdev_count(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{type, }{string containing the type of data you want the number of.
+\item{type}{string containing the type of data you want the number of.
 Options include: "sequence", "sample", "treatment", "bin" and
 "resource_reference". Default = "sequence".}
 
-\item{bin_type, }{string containing the bin type you would like the number of
+\item{bin_type}{string containing the bin type you would like the number of
 bins for. Default = "otu".}
 
-\item{samples, }{vector of strings. samples is only used when 'type' =
+\item{samples}{vector of strings. samples is only used when 'type' =
 "sequence" or 'type' = "bin" . samples should contain the names of the
 samples you want the count for. Default = NULL.}
 
-\item{distinct, }{Boolean. distinct is used when 'type' =
+\item{distinct}{Boolean. distinct is used when 'type' =
 "sequence" or 'type' = "bin". When 'type' = "sequence" and distinct is
 TRUE the number of unique sequences is returned. When 'type' = "sequence"
 and distinct is FALSE total number of sequences is returned. This can also
@@ -48,49 +48,65 @@ a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 
 # To get the total number of sequences
-xdev_count(data = miseq, type = "sequence")
+strollur::xdev_count(data = miseq,
+                       type = "sequence")
 
 # To get number of unique sequences
-xdev_count(data = miseq, type = "sequence", distinct = TRUE)
+strollur::xdev_count(data = miseq,
+                       type = "sequence", distinct = TRUE)
 
 # To get number of unique sequences from samples 'F3D0' and 'F3D1'
 # Note these sequences will be present in both samples but may be
 # be present in other samples as well
-xdev_count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"))
+strollur::xdev_count(data = miseq,
+                       type = "sequence",
+                       samples = c("F3D0", "F3D1"))
 
 # To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
 # Note these sequences are present in both samples and NOT present in
 # other samples
-xdev_count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"),
-distinct = TRUE)
+strollur::xdev_count(data = miseq,
+                       type = "sequence",
+                       samples = c("F3D0", "F3D1"),
+                       distinct = TRUE)
 
 # To get the number of samples in the dataset
-xdev_count(data = miseq, type = "sample")
+strollur::xdev_count(data = miseq, type = "sample")
 
 # To get the number of treatments in the dataset
-xdev_count(data = miseq, type = "treatment")
+strollur::xdev_count(data = miseq, type = "treatment")
 
 # To get the number of "otu" bins in the dataset
-xdev_count(data = miseq, type = "bin", bin_type = "otu")
+strollur::xdev_count(data = miseq,
+                       type = "bin",
+                       bin_type = "otu")
 
 # To get the number of "asv" bins in the dataset
-xdev_count(data = miseq, type = "bin", bin_type = "asv")
+strollur::xdev_count(data = miseq,
+                       type = "bin",
+                       bin_type = "asv")
 
 # To get the number of "phylotype" bins in the dataset
-xdev_count(data = miseq, type = "bin", bin_type = "phylotype")
+strollur::xdev_count(data = miseq,
+                       type = "bin",
+                       bin_type = "phylotype")
 
 # To get number of bins from samples 'F3D0' and 'F3D1'
 # Note these bins will have sequences from both samples but there may be
 # other samples present as well
-xdev_count(data = miseq, type = "bin", samples = c("F3D0", "F3D1"))
+strollur::xdev_count(data = miseq,
+                       type = "bin",
+                       samples = c("F3D0", "F3D1"))
 
 # To get number of bins unique to samples 'F3D0' and 'F3D1'
 # Note these bins will have sequences from both samples and NO other samples
 # will be present in the bins.
-xdev_count(data = miseq, type = "bin", samples = c("F3D0", "F3D1"),
-distinct = TRUE)
+strollur::xdev_count(data = miseq,
+                       type = "bin",
+                       samples = c("F3D0", "F3D1"),
+                       distinct = TRUE)
 
 }

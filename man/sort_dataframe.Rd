@@ -23,13 +23,13 @@ Sort dataframe
 
 # sort results alphabetically
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 
-sequence_names <- names(miseq)
+sequence_names <- strollur::names(miseq)
 
-fasta <- report(miseq, type = fasta)
+fasta <- strollur::report(miseq, type = fasta)
 
-sorted_fasta <- sort_dataframe(fasta,
+sorted_fasta <- strollur::sort_dataframe(fasta,
   order = sort(sequence_names),
   named_col = "sequence_name"
 )

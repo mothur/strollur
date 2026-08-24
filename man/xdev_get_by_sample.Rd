@@ -12,9 +12,9 @@ xdev_get_by_sample(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{type, }{string containing the type of data you want the totals of.
+\item{type}{string containing the type of data you want the totals of.
 Options include: "sequence_name", "sequence". Default = "sequence_name".}
 
 \item{samples}{a vector of strings containing the names of the samples you
@@ -32,12 +32,14 @@ Get the requested data in a \href{https://mothur.org/strollur/reference/strollur
 }
 \examples{
 
-data <- miseq_sop_example()
+data <- strollur::miseq_sop_example()
 
 # To get the sequence names parsed by sample
-xdev_get_by_sample(data, "sequence_name")
+strollur::xdev_get_by_sample(data,
+                               type = "sequence_name")
 
 # To get the sequence nucleotide strings parsed by sample
-parsed_sequences <- xdev_get_by_sample(data, "sequence")
+parsed_sequences <- strollur::xdev_get_by_sample(data,
+                                         type = "sequence")
 
 }

@@ -16,25 +16,25 @@ xdev_assign_sequence_taxonomy_tidy(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing sequence taxonomy assignments}
+\item{table}{a data.frame containing sequence taxonomy assignments}
 
-\item{reference, }{a list created by the function \link{new_reference}. Optional.}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
-\item{sequence_name, }{a string containing the name of the column in 'table'
+\item{sequence_name}{a string containing the name of the column in 'table'
 that contains the sequence names. Default column name is 'sequence_name'.}
 
-\item{level, }{a string containing the name of the column in 'table' that
+\item{level}{a string containing the name of the column in 'table' that
 contains the taxonomy levels. Default column name is 'level'.}
 
-\item{taxonomy, }{a string containing the name of the column in 'table' that
+\item{taxonomy}{a string containing the name of the column in 'table' that
 contains the sequence taxonomies. Default column name is 'taxonomy'.}
 
 \item{confidence, }{a string containing the name of the column in 'table'
 that contains the taxonomies confidence. Default column name is 'confidence'.}
 
-\item{verbose, }{a boolean whether or not you want progress messages.
+\item{verbose}{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
@@ -48,21 +48,24 @@ the consensus taxonomy for each bin for you.
 }
 \examples{
 
-sequence_classifications <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
-str(sequence_classifications)
+taxonomy <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
+str(taxonomy)
 
-data <- new_dataset("my_dataset")
+data <- strollur::new_dataset("my_dataset")
 
-xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications)
+strollur::xdev_assign_sequence_taxonomy_tidy(data,
+                                             table = taxonomy)
 
 # With the reference parameter you can add information about the reference
 # you used to classify your sequences. You can also add references using the
-# 'add_references' function.
+# 'strollur::xdev_add_references()' function.
 
-reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+reference <- strollur::new_reference("trainset9_032012.pds.zip", "9_032012",
               "classification by mothur2 v1.0 using default options", "",
 "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
 
-xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications, reference)
+strollur::xdev_assign_sequence_taxonomy_tidy(data,
+                                               table = taxonomy,
+                                               reference = reference)
 
 }

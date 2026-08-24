@@ -20,7 +20,7 @@ directory. This function make them easy to access them.
 Get path to strollur example
 }
 \examples{
-strollur_example()
-strollur_example("final.fasta.gz")
+strollur::strollur_example()
+strollur::strollur_example("final.fasta.gz")
 
 }

@@ -15,24 +15,24 @@ xdev_assign_sequence_abundance(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing sequence abundance assignments}
+\item{table}{a data.frame containing sequence abundance assignments}
 
-\item{sequence_name, }{a string containing the name of the column in 'table'
+\item{sequence_name}{a string containing the name of the column in 'table'
 that contains the sequence names. Default column name is 'sequence_name'.}
 
-\item{abundance, }{a string containing the name of the column in 'table'
+\item{abundance}{a string containing the name of the column in 'table'
 that contains the sequence abundances. Default column name is 'abundance'.}
 
-\item{sample, }{a string containing the name of the column in 'table'
+\item{sample}{a string containing the name of the column in 'table'
 that contains the sequence samples. Default column name is 'sample'.
 (Optional)}
 
-\item{treatment, }{a string containing the name of the column in 'table'
+\item{treatment}{a string containing the name of the column in 'table'
 that contains the sequence treatments. Default column name is 'treatment'.}
 
-\item{verbose, }{a boolean whether or not you want progress messages.
+\item{verbose}{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
@@ -44,9 +44,10 @@ a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
-data <- new_dataset("my_dataset")
-sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+data <- strollur::new_dataset("my_dataset")
+abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 
-xdev_assign_sequence_abundance(data = data, table = sequence_abundance)
+strollur::xdev_assign_sequence_abundance(data,
+                                           table = abundance)
 
 }

@@ -14,10 +14,10 @@ read_dada2(sequence_table, dataset_name = "")
 \item{dataset_name}{A string containing a name for your dataset.}
 }
 \value{
-A \code{strollur} object
+A \code{strollur::strollur} object
 }
 \description{
-This function reads a dada2 sequence table and creates a \code{strollur}
+This function reads a dada2 sequence table and creates a \code{strollur::strollur}
 object. The dada2 sequence table is a 2D matrix containing the abundance
 counts by sample for each ASV. The sample names are stored as row names and
 the sequence nucleotide strings are stored as column names.
@@ -30,7 +30,8 @@ To generate the dada2 sequence table from your own files you can follow
 seqtab <- readRDS(strollur_example("dada2.rds"))
 dim(seqtab)
 
-data <- read_dada2(sequence_table = seqtab, dataset_name = "dada2 example")
+data <- strollur::read_dada2(sequence_table = seqtab,
+                               dataset_name = "dada2 example")
 
 }
 \references{

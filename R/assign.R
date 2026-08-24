@@ -75,13 +75,13 @@
 #' # Assign sequence classifications
 #'
 #' # create a new empty strollur object named 'example_dataset'
-#' data <- new_dataset(dataset_name = "example_dataset")
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
 #'
-#' sequence_classifications <- read_mothur_taxonomy(strollur_example(
+#' sequence_classifications <- strollur::read_mothur_taxonomy(strollur_example(
 #'   "final.taxonomy.gz"
 #' ))
 #'
-#' assign(
+#' strollur::assign(
 #'   data,
 #'   table = sequence_classifications, type = "sequence_taxonomy"
 #' )
@@ -89,17 +89,17 @@
 #' # Assigning bins
 #'
 #' # read mothur's otu list file into data.frame
-#' otu_data <- read_mothur_list(list = strollur_example(
+#' otu_data <- strollur::read_mothur_list(list = strollur_example(
 #'   "final.opti_mcc.list.gz"
 #' ))
 #'
 #' # read mothur's asv list file into data.frame
-#' asv_data <- read_mothur_list(list = strollur_example(
+#' asv_data <- strollur::read_mothur_list(list = strollur_example(
 #'   "final.asv.list.gz"
 #' ))
 #'
 #' # read mothur's phylotype list file into data.frame
-#' phylo_data <- read_mothur_list(list = strollur_example(
+#' phylo_data <- strollur::read_mothur_list(list = strollur_example(
 #'   "final.tx.list.gz"
 #' ))
 #'
@@ -107,37 +107,38 @@
 #' bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
 #'
 #' # assign 'otu' bins using sequence names
-#' assign(data, table = otu_data, bin_type = "otu")
+#' strollur::assign(data, table = otu_data, bin_type = "otu")
 #'
 #' # assign 'asv' bins using sequence names
-#' assign(data, table = asv_data, bin_type = "asv")
+#' strollur::assign(data, table = asv_data, bin_type = "asv")
 #'
 #' # assign 'phylotype' bins using sequence names
-#' assign(data, table = phylo_data, bin_type = "phylotype")
+#' strollur::assign(data, table = phylo_data, bin_type = "phylotype")
 #'
 #' # assign 'otu' bin representative sequences
-#' assign(data, table = bin_reps, type = "bin_representative")
+#' strollur::assign(data, table = bin_reps, type = "bin_representative")
 #'
 #' # To assign abundance only bins
 #'
 #' # create a new empty strollur object named 'example_dataset'
-#' data <- new_dataset(dataset_name = "example_dataset")
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
 #'
 #' # read mothur's shared file
-#' otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+#' otu_data <-
+#'       strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 #'
 #' # assign abundance only otus parsed by sample
-#' assign(data, table = otu_data, bin_type = "otu")
+#' strollur::assign(data, table = otu_data, bin_type = "otu")
 #'
 #' # Assigning bin classifications
 #'
 #' # read bin taxonomies
-#' otu_data <- read_mothur_cons_taxonomy(strollur_example(
+#' otu_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
 #'   "final.cons.taxonomy"
 #' ))
 #'
 #' # assign otu consensus taxonomies
-#' assign(
+#' strollur::assign(
 #'   data,
 #'   table = otu_data,
 #'   type = "bin_taxonomy", bin_type = "otu"
@@ -147,7 +148,7 @@
 #'
 #' sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 #'
-#' assign(data, table = sample_assignments, type = "treatment")
+#' strollur::assign(data, table = sample_assignments, type = "treatment")
 #'
 #' @return an updated
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

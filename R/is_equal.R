@@ -11,11 +11,11 @@
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
-#' data <- copy_dataset(miseq)
+#' data <- strollur::copy_dataset(miseq)
 #'
-#' is_equal(miseq, data)
+#' strollur::is_equal(miseq, data)
 #'
 #' @returns a logical
 #' @export

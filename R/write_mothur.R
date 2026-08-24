@@ -12,7 +12,8 @@
 #'  software for describing and comparing microbial communities. Applied and
 #'  Environmental Microbiology 75:7537-7541. <doi:10.1128/AEM.01541-09>
 #'
-#' @param data A `strollur` object
+#' @param data a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param dir_path a string containing the name of directory where the files
 #' should be written. Default = current working directory.
 #' @param tags a vector of strings containing the items you wish to write
@@ -20,12 +21,12 @@
 #' 'resource_reference', 'sequence_tree', 'sample_tree' and 'report'.
 #'  By default, everything is written to files.
 #'
-#' @param compress boolean, Default = TRUE.
+#' @param compress logical, Default = TRUE.
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
-#' files <- write_mothur(miseq, tempdir(), compress = FALSE)
+#' miseq <- strollur::miseq_sop_example()
+#' files <- strollur::write_mothur(miseq, tempdir(), compress = FALSE)
 #'
 #' @return a vector of file names
 #' @export

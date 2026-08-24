@@ -7,7 +7,7 @@
 xdev_get_alignment_length(data)
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 }
 \value{
 Integer containing the length of the alignment or -1 if unaligned.
@@ -18,7 +18,7 @@ Get the alignment length of sequences in your
 }
 \examples{
 
- data <- miseq_sop_example()
- xdev_get_alignment_length(data)
+ data <- strollur::miseq_sop_example()
+ strollur::xdev_get_alignment_length(data)
 
 }

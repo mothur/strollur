@@ -21,14 +21,15 @@ Read a mothur formatted
 # You can add your otu assignments to the your data set using the following:
 
 # read rabund file into data.frame
-otu_data <- read_mothur_rabund(
+otu_data <- strollur::read_mothur_rabund(
   rabund =
     strollur_example("final.opti_mcc.rabund")
 )
 
-data <- new_dataset()
+data <- strollur::new_dataset()
 
 # assign abundance only 'otu' bins
-assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
+strollur::assign(data = data, table = otu_data,
+                 type = "bin", bin_type = "otu")
 
 }

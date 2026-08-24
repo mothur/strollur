@@ -6,7 +6,7 @@
 #' @param file a string containing the .rds file name.
 #' @examples
 #'
-#' data <- load_dataset(strollur_example("miseq_sop.rds"))
+#' data <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
 #' data
 #'
 #' @seealso [save_dataset()]

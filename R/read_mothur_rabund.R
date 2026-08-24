@@ -8,16 +8,17 @@
 #' # You can add your otu assignments to the your data set using the following:
 #'
 #' # read rabund file into data.frame
-#' otu_data <- read_mothur_rabund(
+#' otu_data <- strollur::read_mothur_rabund(
 #'   rabund =
 #'     strollur_example("final.opti_mcc.rabund")
 #' )
 #'
-#  #create a new empty `strollur` object
-#' data <- new_dataset()
+#  #create a new empty `strollur::strollur` object
+#' data <- strollur::new_dataset()
 #'
 #' # assign abundance only 'otu' bins
-#' assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
+#' strollur::assign(data = data, table = otu_data,
+#'                  type = "bin", bin_type = "otu")
 #'
 #' @return A data.frame containing the sequence otu assignments
 #' @export

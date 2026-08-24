@@ -51,7 +51,8 @@ my_data <- strollur::new_dataset(dataset_name = "my_data")
 To decompress the individual qza files, you can use the `strollur::unpack_qiime2_artifact()`. unpack_qiime2_artifact will extract a folder containing the data, versioning and provenance information. Let's take a look at the rep_seqs.qza file first.
 
 ```{r}
-fasta_artifact <- strollur::unpack_qiime2_artifact(qza = strollur_example("rep_seqs.qza"))
+fasta_artifact <-
+  strollur::unpack_qiime2_artifact(qza = strollur_example("rep_seqs.qza"))
 ```
 
 fasta_artifact is a list. To add the [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data to your dataset you can use the `strollur::read_fasta()` function:
@@ -160,7 +161,10 @@ metadata <- strollur::read_qiime2_metadata(
 To add the metadata to the my_data dataset, run the following:
 
 ```{r}
-strollur::add(my_data, table = metadata, type = "report", report_type = "metadata")
+strollur::add(my_data,
+  table = metadata,
+  type = "report",
+  report_type = "metadata"
+)
 my_data
 ```
-

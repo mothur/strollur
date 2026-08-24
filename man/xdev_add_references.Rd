@@ -20,48 +20,48 @@ xdev_add_references(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing reference_names, reference_versions
+\item{table}{a data.frame containing reference_names, reference_versions
 (optional), reference_usages (optional), reference_parameters (optional),
 reference_methods (optional), and reference_urls (optional).}
 
-\item{name, }{a string containing the name of the column in 'table'
+\item{name}{a string containing the name of the column in 'table'
 that contains the reference names. Default column name is 'name'.}
 
-\item{vendor, }{a string containing the name of the column in
+\item{vendor}{a string containing the name of the column in
 'table' that contains the reference vendors. Default column name is
 'vendor'.}
 
-\item{version, }{a string containing the name of the column in
+\item{version}{a string containing the name of the column in
 'table' that contains the reference versions. Default column name is
 'version'.}
 
-\item{usage, }{a string containing the name of the column in
+\item{usage}{a string containing the name of the column in
 'table' that contains the reference usages. Default column name is
 'usage'.}
 
-\item{note, }{a string containing the name of the column in
+\item{note}{a string containing the name of the column in
 'table' that contains the reference notes. Default column name is
 'note'.}
 
-\item{method_url, }{a string containing the name of the column in
+\item{method_url}{a string containing the name of the column in
 'table' that contains the reference methods. Default column name is
 'method_url'.}
 
-\item{documentation_url, }{a string containing the name of the column in
+\item{documentation_url}{a string containing the name of the column in
 'table' that contains the reference documentation urls. Default column
 name is 'documentation_url'.}
 
-\item{parameter, }{a string containing the name of the column in
+\item{parameter}{a string containing the name of the column in
 'table' that contains the reference parameters. Default column name is
 'parameter'.}
 
-\item{citation, }{a string containing the name of the column in
+\item{citation}{a string containing the name of the column in
 'table' that contains the reference citations. Default column name is
 'citation'.}
 
-\item{verbose, }{a boolean whether or not you want progress messages.
+\item{verbose}{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
@@ -72,9 +72,9 @@ Add resource references to a \href{https://mothur.org/strollur/reference/strollu
 }
 \examples{
 
-data <- new_dataset("just for fun")
+data <- strollur::new_dataset("just for fun")
 reference_table <- readr::read_csv(strollur_example("references.csv"),
                              col_names = TRUE, show_col_types = FALSE)
-xdev_add_references(data, reference_table)
+strollur::xdev_add_references(data, reference_table)
 
 }

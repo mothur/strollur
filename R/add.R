@@ -3,18 +3,18 @@
 #' @name add
 #' @rdname add
 #' @description
-#' Add sequences, reports or resource references to a
+#' Add sequences, reports, trees or resource references to a
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a
+#' @param data a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param table, a data.frame or tree containing the data you wish to add.
-#' @param type, a string containing the type of data. Options include:
+#' @param table a data.frame or tree containing the data you wish to add.
+#' @param type a string containing the type of data. Options include:
 #'   'sequence', 'sample_tree', 'sequence_tree', 'resource_reference' and
 #'   'report'.
-#' @param report_type, a string containing the type of report you are adding.
-#' @param table_names, named list used to indicate the names of the columns in
+#' @param report_type a string containing the type of report you are adding.
+#' @param table_names named list used to indicate the names of the columns in
 #' the table. By default:
 #'
 #' table_names <- list(sequence_name = "sequence_name",
@@ -78,28 +78,29 @@
 #' column in 'table' that contains the reference citations. Default column name
 #' is 'citation'.
 #'
-#' @param reference, a list created by the function [new_reference]. Optional.
-#' @param verbose, boolean indicating whether or not you want progress messages.
+#' @param reference a list created by the function [new_reference]. Optional.
+#' @param verbose boolean indicating whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
 #' # Create a new empty strollur object named 'example_dataset'
-#' data <- new_dataset(dataset_name = "example_dataset")
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
 #'
 #' # Read FASTA data into data.frame
-#' fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
+#' fasta_data <-
+#'     strollur::read_fasta(fasta = strollur_example("final.fasta.gz"))
 #'
 #' # Add FASTA sequence data
-#' add(data = data, table = fasta_data, type = "sequence")
+#' strollur::add(data = data, table = fasta_data, type = "sequence")
 #'
 #' # To add FASTA data with a resource reference
 #'
 #' # Create a new empty strollur object named 'example_dataset'
-#' data <- new_dataset(dataset_name = "example_dataset")
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
 #'
 #' # Create a resource reference for the FASTA data silva_resource <-
-#' silva_resource <- new_reference(
+#' silva_resource <- strollur::new_reference(
 #'   vendor = "SILVA", name =
 #'     "silva.bacteria.fasta", version = "1.38.1",
 #'   usage = "alignment of sequences",
@@ -110,7 +111,7 @@
 #'
 #' # Add FASTA data with a resource reference
 #'
-#' add(
+#' strollur::add(
 #'   data,
 #'   table = fasta_data,
 #'   type = "sequence",
@@ -121,7 +122,7 @@
 #'
 #' contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 #'
-#' add(
+#' strollur::add(
 #'   data,
 #'   table = contigs_report, type = "report",
 #'   report_type = "contigs_report", list(sequence_name = "Name")
@@ -131,22 +132,23 @@
 #'
 #' metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 #'
-#' add(data, table = metadata, type = "report", report_type = "metadata")
+#' strollur::add(data, table = metadata,
+#'               type = "report", report_type = "metadata")
 #'
 #' # To add a tree relating to your sequences
 #'
 #' tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 #'
-#' add(data, table = tree, type = "sequence_tree")
+#' strollur::add(data, table = tree, type = "sequence_tree")
 #'
 #' # To add a tree relating to your samples
-#' data <- new_dataset(dataset_name = "example_dataset")
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
 #'
-#' df <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+#' df <- strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 #' tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
 #'
-#' assign(data, table = df, type = "bin", bin_type = "otu")
-#' add(data, table = tree, type = "sample_tree")
+#' strollur::assign(data, table = df, type = "bin", bin_type = "otu")
+#' strollur::add(data, table = tree, type = "sample_tree")
 #'
 #' @return an updated
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

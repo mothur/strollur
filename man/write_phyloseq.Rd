@@ -7,20 +7,20 @@
 write_phyloseq(data)
 }
 \arguments{
-\item{data}{the strollur object you created using one of the many
-read functions in this package.}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 }
 \value{
-returns a "phyloseq" object.
+returns a \code{phyloseq} object.
 }
 \description{
-The \code{write_phyloseq()} function will take any strollur object and
-return it as a "phyloseq" object.
+The \code{strollur::write_phyloseq()} function will take any strollur object and
+return it as a \code{phyloseq} object.
 }
 \examples{
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 if (requireNamespace("phyloseq", quietly = TRUE)) {
-  phylo_obj <- write_phyloseq(miseq)
+  phylo_obj <- strollur::write_phyloseq(miseq)
 } else {
   message(paste(
     "To use this functionality you have to install the",

@@ -11,15 +11,16 @@
 #' # using the following:
 #'
 #' # read mothur's taxonomy file into a data.frame
-#' classification_data <- read_mothur_taxonomy(strollur_example(
+#' classification_data <- strollur::read_mothur_taxonomy(strollur_example(
 #'   "final.taxonomy.gz"
 #' ))
 #'
-#' # create a new empty `strollur` object
-#' data <- new_dataset()
+#' # create a new empty `strollur::strollur` object
+#' data <- strollur::new_dataset()
 #'
 #' # assign sequence classifications
-#' assign(data = data, table = classification_data, type = "sequence_taxonomy")
+#' strollur::assign(data = data, table = classification_data,
+#'                  type = "sequence_taxonomy")
 #'
 #' @return A data.frame containing the sequences names and sequences taxonomies.
 #' @export

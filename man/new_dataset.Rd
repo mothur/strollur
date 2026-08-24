@@ -20,11 +20,11 @@ Create a new
 }
 \examples{
 
-data <- new_dataset()
+data <- strollur::new_dataset()
 
 # to create a new dataset named "soil", run the following:
 
-data <- new_dataset(dataset_name = "soil")
+data <- strollur::new_dataset(dataset_name = "soil")
 
 }
 \seealso{
