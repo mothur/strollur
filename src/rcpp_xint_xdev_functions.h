@@ -5,6 +5,7 @@
 #include "../inst/include/strollur.h"
 #include "dataset.h"
 
+
 /******************************************************************************/
 SEXP xint_fill_required_parameters(const Rcpp::DataFrame& df,
                                    const string& given_column_name,
@@ -151,6 +152,7 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
 //'
 //' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @param table a data.frame containing your report.
+//' @param reference a list created by the function [new_reference]. Optional.
 //' @param type a string containing the type of report. Default = "report".
 //' @param sequence_name, a string. If your report relates to the sequence data,
 //'   `sequence_name` should contain the name of the column in 'table' that
@@ -183,6 +185,7 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
                  Rcpp::DataFrame table,
+                 Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
                  const string& type = "report",
                  const string& sequence_name = "none",
                  bool verbose = true);

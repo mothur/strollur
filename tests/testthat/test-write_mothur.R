@@ -32,11 +32,11 @@ test_that("write_mothur - miseq", {
 
   xdev_add_report(
     data,
-    readr::read_tsv(outputs[15],
+    table = readr::read_tsv(outputs[15],
       col_names = TRUE,
       show_col_types = FALSE
     ),
-    "metadata"
+    type = "metadata"
   )
 
   for (output in outputs) {
@@ -102,16 +102,16 @@ test_that("write_mothur - report_data only", {
 
   xdev_add_report(
     data,
-    readRDS(strollur_example("test_alignment_data.rds")),
-    "alignment_report",
-    "QueryName"
+    table = readRDS(strollur_example("test_alignment_data.rds")),
+    type = "alignment_report",
+    sequence_name = "QueryName"
   )
 
   xdev_add_report(
     data,
-    readRDS(strollur_example("test_contigs_data.rds")),
-    "contigs_report",
-    "Name"
+    table = readRDS(strollur_example("test_contigs_data.rds")),
+    type = "contigs_report",
+    sequence_name = "Name"
   )
 
   outputs <- write_mothur(data,
@@ -131,10 +131,10 @@ test_that("write_mothur - report_data only", {
   for (output in outputs) {
     extension <- tail(strsplit(output, "\\.")[[1]], 1)
 
-    xdev_add_report(data2, readr::read_tsv(
+    xdev_add_report(data2, table = readr::read_tsv(
       output,
       col_names = TRUE, show_col_types = FALSE
-    ), extension, seq_col[[output]])
+    ), type = extension, sequence_name = seq_col[[output]])
   }
 
   for (output in outputs) {
@@ -157,10 +157,10 @@ test_that("write_mothur - report_data only", {
 
   data <- new_dataset()
 
-  xdev_add_report(data, readr::read_tsv(
+  xdev_add_report(data, table = readr::read_tsv(
     strollur_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
-  ), "chimera_report", "Query")
+  ), type = "chimera_report", sequence_name = "Query")
 
   outputs <- write_mothur(data,
     dir_path = get_full_name("tmp"),
@@ -173,10 +173,10 @@ test_that("write_mothur - report_data only", {
 
   data2 <- new_dataset()
 
-  xdev_add_report(data2, readr::read_tsv(
+  xdev_add_report(data2, table = readr::read_tsv(
     outputs[2],
     col_names = TRUE, show_col_types = FALSE
-  ), "chimera_report", "Query")
+  ), type = "chimera_report", sequence_name = "Query")
 
   for (output in outputs) {
     remove_file(output)

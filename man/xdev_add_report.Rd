@@ -7,6 +7,7 @@
 xdev_add_report(
   data,
   table,
+  reference = NULL,
   type = "report",
   sequence_name = "none",
   verbose = TRUE
@@ -16,6 +17,8 @@ xdev_add_report(
 \item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{table}{a data.frame containing your report.}
+
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
 \item{type}{a string containing the type of report. Default = "report".}
 

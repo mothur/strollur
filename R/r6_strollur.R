@@ -7,8 +7,10 @@
 #'   classifications, trees, asv / otu clusters and various reports. It is
 #'   designed to facilitate data analysis across multiple R packages.
 #'
+# nolint start
 #' \if{html}{\figure{strollur_overview.png}{options: width="672 pixels" alt="Workflow
 #' Diagram"}}
+# nolint end
 #' \if{latex}{\figure{strollur_overview.png}{options: width=5in}}
 #'
 #' @author Sarah Westcott, \email{swestcot@@umich.edu}
@@ -428,14 +430,14 @@ strollur <- R6Class("strollur",
           # check for sequence name column in table
           if (table_names[["sequence_name"]] %in% base::names(table)) {
             xdev_add_report(
-              data = self, table = table,
+              data = self, table = table, reference = reference,
               type = report_type,
               sequence_name = table_names[["sequence_name"]],
               verbose = verbose
             )
           } else {
             xdev_add_report(
-              data = self, table = table,
+              data = self, table = table, reference = reference,
               type = report_type,
               verbose = verbose
             )

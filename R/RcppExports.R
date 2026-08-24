@@ -206,6 +206,7 @@ xdev_add_references <- function(data, table, name = "name", vendor = "vendor", v
 #'
 #' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param table a data.frame containing your report.
+#' @param reference a list created by the function [new_reference]. Optional.
 #' @param type a string containing the type of report. Default = "report".
 #' @param sequence_name, a string. If your report relates to the sequence data,
 #'   `sequence_name` should contain the name of the column in 'table' that
@@ -235,8 +236,8 @@ xdev_add_references <- function(data, table, name = "name", vendor = "vendor", v
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
-xdev_add_report <- function(data, table, type = "report", sequence_name = "none", verbose = TRUE) {
-    .Call(`_strollur_xdev_add_report`, data, table, type, sequence_name, verbose)
+xdev_add_report <- function(data, table, reference = NULL, type = "report", sequence_name = "none", verbose = TRUE) {
+    .Call(`_strollur_xdev_add_report`, data, table, reference, type, sequence_name, verbose)
 }
 
 #' @title xdev_add_sequences

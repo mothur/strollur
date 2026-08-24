@@ -1446,3 +1446,28 @@ test_that("Tests assignSequenceTaxonomy, assignBinTaxonomy, removeLineages", {
   expect_equal(count(data), 100)
   expect_equal(count(data, "bin"), 1)
 })
+
+test_that("Tests xdev_add_report with reference", {
+  reference <- strollur::new_reference(
+    vendor = "mothur2",
+    name = "align_seqs()",
+    version = "0.1.0",
+    usage = "alignment of sequences",
+    note = "alignment reference trimmed to V4 region"
+  )
+
+  align_report <- readRDS(strollur_example("test_alignment_data.rds"))
+
+  data <- strollur::new_dataset()
+  strollur::xdev_add_report(data,
+    table = align_report,
+    type = "align_report",
+    reference = reference
+  )
+
+  resource_reference <- strollur::report(data, type = "resource_reference")
+
+  expect_equal(resource_reference$name, "align_seqs()")
+  expect_equal(resource_reference$vendor, "mothur2")
+  expect_equal(resource_reference$method_url, "NA")
+})

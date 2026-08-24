@@ -1,6 +1,21 @@
 
 
 #include "rcpp_xint_xdev_functions.h"
+#include <cctype>
+
+/******************************************************************************/
+bool isVowel(char ch) {
+    switch (std::tolower(static_cast<unsigned char>(ch))) {
+    case 'a':
+    case 'e':
+    case 'i':
+    case 'o':
+    case 'u':
+        return true;
+    default:
+        return false;
+    }
+}
 /******************************************************************************/
 void xint_added_message(double num, string tag) {
     string message = "Added ";
@@ -250,6 +265,7 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
 /******************************************************************************/
 Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
                      Rcpp::DataFrame table,
+                     Rcpp::Nullable<Rcpp::List> reference,
                      const string& type,
                      const string& sequence_name,
                      bool verbose) {
@@ -312,7 +328,31 @@ Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
     }
 
     if (verbose) {
-        xint_added_message(-1, "a " + type + " report");
+        if (isVowel(type[0])) {
+            xint_added_message(-1, "an " + type + " report");
+        }else {
+            xint_added_message(-1, "a " + type + " report");
+        }
+    }
+
+    Reference ref;
+    if (reference.isNotNull()) {
+
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        double numAdded = d.get()->addReferences(refs);
+
+        if (verbose) {
+            if (numAdded == 0) {
+                xint_updated_message(1, "resource references");
+            }else {
+                xint_added_message(1, "resource references");
+            }
+        }
     }
 
     return data;

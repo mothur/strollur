@@ -104,17 +104,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // xdev_add_report
-Rcpp::Environment xdev_add_report(const Rcpp::Environment& data, Rcpp::DataFrame table, const string& type, const string& sequence_name, bool verbose);
-RcppExport SEXP _strollur_xdev_add_report(SEXP dataSEXP, SEXP tableSEXP, SEXP typeSEXP, SEXP sequence_nameSEXP, SEXP verboseSEXP) {
+Rcpp::Environment xdev_add_report(const Rcpp::Environment& data, Rcpp::DataFrame table, Rcpp::Nullable<Rcpp::List> reference, const string& type, const string& sequence_name, bool verbose);
+RcppExport SEXP _strollur_xdev_add_report(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP typeSEXP, SEXP sequence_nameSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< Rcpp::DataFrame >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
     Rcpp::traits::input_parameter< const string& >::type type(typeSEXP);
     Rcpp::traits::input_parameter< const string& >::type sequence_name(sequence_nameSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(xdev_add_report(data, table, type, sequence_name, verbose));
+    rcpp_result_gen = Rcpp::wrap(xdev_add_report(data, table, reference, type, sequence_name, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -632,7 +633,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_is_aligned", (DL_FUNC) &_strollur_is_aligned, 1},
     {"_strollur_xdev_abundance", (DL_FUNC) &_strollur_xdev_abundance, 4},
     {"_strollur_xdev_add_references", (DL_FUNC) &_strollur_xdev_add_references, 12},
-    {"_strollur_xdev_add_report", (DL_FUNC) &_strollur_xdev_add_report, 5},
+    {"_strollur_xdev_add_report", (DL_FUNC) &_strollur_xdev_add_report, 6},
     {"_strollur_xdev_add_sequences", (DL_FUNC) &_strollur_xdev_add_sequences, 7},
     {"_strollur_xdev_assign_bins", (DL_FUNC) &_strollur_xdev_assign_bins, 9},
     {"_strollur_xdev_assign_bin_representative_sequences", (DL_FUNC) &_strollur_xdev_assign_bin_representative_sequences, 7},

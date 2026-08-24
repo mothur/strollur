@@ -209,14 +209,14 @@ add <- function(data, table,
       # check for sequence name column in table
       if (table_names[["sequence_name"]] %in% base::names(table)) {
         xdev_add_report(
-          data = data, table = table,
+          data = data, table = table, reference = reference,
           type = report_type,
           sequence_name = table_names[["sequence_name"]],
           verbose
         )
       } else {
         xdev_add_report(
-          data = data, table = table,
+          data = data, table = table, reference = reference,
           type = report_type,
           verbose = verbose
         )

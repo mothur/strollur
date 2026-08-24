@@ -1234,7 +1234,9 @@ test_that("dataset - add reports, get reports", {
 
   # no report added because of missing entries
   xdev_add_sequences(dataset_t, data.frame(sequence_name = c("seq6", "seq7")))
-  xdev_add_report(dataset_t, align_report, "align_report", "QueryName")
+  xdev_add_report(dataset_t,
+                  table = align_report,
+                  type = "align_report", sequence_name = "QueryName")
   expect_equal(report(dataset_t, "align_report"), data.frame())
 })
 
@@ -1242,9 +1244,15 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   dataset_t <- new_dataset("my_dataset")
 
   report <- readRDS(strollur_example("test_contigs_data.rds"))
-  expect_error(xdev_add_report(dataset_t, report, "contigs_report", "badName"))
+  expect_error(xdev_add_report(dataset_t,
+                               table = report,
+                               type = "contigs_report",
+                               sequence_name = "badName"))
 
-  xdev_add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t,
+                  table = report,
+                  type = "contigs_report",
+                  sequence_name = "Name")
 
   report <- report(dataset_t, "contigs_report")
 
@@ -1258,7 +1266,10 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   expect_equal(report[[4, 4]], 2)
 
   clear(dataset_t)
-  xdev_add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t,
+                  table = report,
+                  type = "contigs_report",
+                  sequence_name = "Name")
 
   report <- report(dataset_t, "contigs_report")
 
@@ -1268,7 +1279,10 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   # no report added because of missing entries
   clear(dataset_t)
   xdev_add_sequences(dataset_t, data.frame(sequence_name = c("seq6", "seq7")))
-  xdev_add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t,
+                  table = report,
+                  type = "contigs_report",
+                  sequence_name = "Name")
   expect_equal(length(report(dataset_t, "contigs_report")), 0)
 })
 
@@ -1278,9 +1292,15 @@ test_that("dataset - add / get _chimera_report,", {
   report <- readr::read_tsv(strollur_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  expect_error(xdev_add_report(dataset_t, report, "chimera_report", "badName"))
+  expect_error(xdev_add_report(dataset_t,
+                               table = report,
+                               type = "chimera_report",
+                               sequence_name = "badName"))
 
-  xdev_add_report(dataset_t, report, "chimera_report", "Query")
+  xdev_add_report(dataset_t,
+                  table = report,
+                  type = "chimera_report",
+                  sequence_name = "Query")
 
   report <- report(dataset_t, "chimera_report")
 
@@ -1293,9 +1313,12 @@ test_that("dataset - add / get _chimera_report,", {
 
   clear(dataset_t)
   expect_equal(length(report(dataset_t, "chimera_report")), 0)
-  xdev_add_report(dataset_t, report, "chimera_report", "Query")
+  xdev_add_report(dataset_t,
+                  table = report,
+                  type = "chimera_report",
+                  sequence_name = "Query")
 
-  report <- report(dataset_t, "chimera_report")
+  report <- report(dataset_t, type = "chimera_report")
 
   expect_equal(nrow(report), 71)
   expect_equal(report[, 2], names(dataset_t, "sequence"))
@@ -1305,10 +1328,16 @@ test_that("dataset - get_sequence_summary,", {
   dataset_t <- new_dataset("my_dataset")
 
   report <- readRDS(strollur_example("test_contigs_data.rds"))
-  xdev_add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t,
+                  table = report,
+                  type = "contigs_report",
+                  sequence_name = "Name")
 
   report <- readRDS(strollur_example("test_alignment_data.rds"))
-  xdev_add_report(dataset_t, report, "alignment_report", "QueryName")
+  xdev_add_report(dataset_t,
+                  table = report,
+                  type = "alignment_report",
+                  sequence_name = "QueryName")
 
   summary <- summary(dataset_t,
     type = "report",
