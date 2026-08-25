@@ -4,6 +4,7 @@ export(abundance)
 export(add)
 export(assign)
 export(clear)
+export(convert_qual)
 export(copy_dataset)
 export(count)
 export(export_dataset)
@@ -20,6 +21,7 @@ export(new_dataset)
 export(new_reference)
 export(read_dada2)
 export(read_fasta)
+export(read_fastq)
 export(read_mothur)
 export(read_mothur_cons_taxonomy)
 export(read_mothur_count)
@@ -109,7 +111,10 @@ importFrom(dplyr,
   where
 )
 importFrom(methods,new)
-importFrom(microseq,readFasta)
+importFrom(microseq,
+  readFasta,
+  readFastq
+)
 importFrom(rbiom,read_biom)
 importFrom(readr,
   read_csv,
