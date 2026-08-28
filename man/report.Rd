@@ -12,22 +12,22 @@ report(data, type = "sequence", bin_type = "otu")
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type}{string containing the type of report you would like. Options
-include: "fasta", "sequence", "sequence_bin_assignment",
-"sequence_taxonomy", "sequence_tree", bin_taxonomy", "bin_representative",
-"sample_assignment", "sample_tree", resource_reference", "sequence_scrap",
-"bin_scrap". If you have added custom reports for alignment,
+include: \code{fasta}, \code{fastq}, \code{sequence}, \code{sequence_bin_assignment},
+\code{sequence_taxonomy}, \code{sequence_tree}, \code{bin_taxonomy}, \code{bin_representative},
+\code{sample_assignment}, \code{sample_tree}, \code{resource_reference}, \code{sequence_scrap},
+\code{bin_scrap}. If you have added custom reports for alignment,
 contigs_assembly or chimeras, you can get those as well.
-Default = "sequence".}
+Default = \code{sequence}.}
 
 \item{bin_type}{string containing the bin type you would like a bin_taxonomy
-report for. Default = "otu".}
+report for. Default = \code{otu}.}
 }
 \value{
 data.frame or tree
 }
 \description{
 Get a data.frame containing the report or the phylo tree
-requested. Reports include FASTA format, sequences reports,
+requested. Reports include FASTA format, FASTQ format, sequences reports,
 sequence_bin_assignments, sequence_taxonomy, sequence_tree, bin_taxonomy,
 bin_representatives, sample_assignments, sample_tree, references, custom
 reports, sequence_scrap, and bin_scrap in a

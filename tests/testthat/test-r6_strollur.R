@@ -1235,8 +1235,9 @@ test_that("dataset - add reports, get reports", {
   # no report added because of missing entries
   xdev_add_sequences(dataset_t, data.frame(sequence_name = c("seq6", "seq7")))
   xdev_add_report(dataset_t,
-                  table = align_report,
-                  type = "align_report", sequence_name = "QueryName")
+    table = align_report,
+    type = "align_report", sequence_name = "QueryName"
+  )
   expect_equal(report(dataset_t, "align_report"), data.frame())
 })
 
@@ -1245,14 +1246,16 @@ test_that("dataset - add / get _contigs_assembly_report,", {
 
   report <- readRDS(strollur_example("test_contigs_data.rds"))
   expect_error(xdev_add_report(dataset_t,
-                               table = report,
-                               type = "contigs_report",
-                               sequence_name = "badName"))
+    table = report,
+    type = "contigs_report",
+    sequence_name = "badName"
+  ))
 
   xdev_add_report(dataset_t,
-                  table = report,
-                  type = "contigs_report",
-                  sequence_name = "Name")
+    table = report,
+    type = "contigs_report",
+    sequence_name = "Name"
+  )
 
   report <- report(dataset_t, "contigs_report")
 
@@ -1267,9 +1270,10 @@ test_that("dataset - add / get _contigs_assembly_report,", {
 
   clear(dataset_t)
   xdev_add_report(dataset_t,
-                  table = report,
-                  type = "contigs_report",
-                  sequence_name = "Name")
+    table = report,
+    type = "contigs_report",
+    sequence_name = "Name"
+  )
 
   report <- report(dataset_t, "contigs_report")
 
@@ -1280,9 +1284,10 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   clear(dataset_t)
   xdev_add_sequences(dataset_t, data.frame(sequence_name = c("seq6", "seq7")))
   xdev_add_report(dataset_t,
-                  table = report,
-                  type = "contigs_report",
-                  sequence_name = "Name")
+    table = report,
+    type = "contigs_report",
+    sequence_name = "Name"
+  )
   expect_equal(length(report(dataset_t, "contigs_report")), 0)
 })
 
@@ -1293,14 +1298,16 @@ test_that("dataset - add / get _chimera_report,", {
     col_names = TRUE, show_col_types = FALSE
   )
   expect_error(xdev_add_report(dataset_t,
-                               table = report,
-                               type = "chimera_report",
-                               sequence_name = "badName"))
+    table = report,
+    type = "chimera_report",
+    sequence_name = "badName"
+  ))
 
   xdev_add_report(dataset_t,
-                  table = report,
-                  type = "chimera_report",
-                  sequence_name = "Query")
+    table = report,
+    type = "chimera_report",
+    sequence_name = "Query"
+  )
 
   report <- report(dataset_t, "chimera_report")
 
@@ -1314,9 +1321,10 @@ test_that("dataset - add / get _chimera_report,", {
   clear(dataset_t)
   expect_equal(length(report(dataset_t, "chimera_report")), 0)
   xdev_add_report(dataset_t,
-                  table = report,
-                  type = "chimera_report",
-                  sequence_name = "Query")
+    table = report,
+    type = "chimera_report",
+    sequence_name = "Query"
+  )
 
   report <- report(dataset_t, type = "chimera_report")
 
@@ -1329,15 +1337,17 @@ test_that("dataset - get_sequence_summary,", {
 
   report <- readRDS(strollur_example("test_contigs_data.rds"))
   xdev_add_report(dataset_t,
-                  table = report,
-                  type = "contigs_report",
-                  sequence_name = "Name")
+    table = report,
+    type = "contigs_report",
+    sequence_name = "Name"
+  )
 
   report <- readRDS(strollur_example("test_alignment_data.rds"))
   xdev_add_report(dataset_t,
-                  table = report,
-                  type = "alignment_report",
-                  sequence_name = "QueryName")
+    table = report,
+    type = "alignment_report",
+    sequence_name = "QueryName"
+  )
 
   summary <- summary(dataset_t,
     type = "report",
@@ -1804,4 +1814,34 @@ test_that("dataset - alignment_length, rename", {
     data.frame(sequence_name = names, sequence = seqs)
   )
   expect_equal(data$alignment_length(), -1)
+})
+
+test_that("test strollur$add - fastq", {
+  # Create a new empty strollur object named 'example_dataset'
+  data <- strollur::strollur$new(name = "example_dataset")
+
+  # Read FASTQ data into data.frame
+  fastq_data <-
+    strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+
+  # Add FASTQ sequence data
+  data$add(table = fastq_data, type = "fastq")
+
+  fastq_report <- strollur::xdev_report(data, type = "fastq")
+
+  names <- c(
+    "M00967:43:000000000-A3JHG:1:1101:18327:1699",
+    "M00967:43:000000000-A3JHG:1:1101:14069:1827",
+    "M00967:43:000000000-A3JHG:1:1101:18044:1900"
+  )
+
+  expect_equal(fastq_report$sequence_name, names)
+
+  score_1_15 <- c(2, 29, 29, 32, 32, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+  score_2_15 <- c(18, 32, 32, 30, 32, 33, 33, 35, 33, 37, 37, 33, 36, 38, 38)
+  score_3_15 <- c(33, 32, 31, 33, 33, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+
+  expect_equal(fastq_report$quality_score[[1]][1:15], score_1_15)
+  expect_equal(fastq_report$quality_score[[2]][1:15], score_2_15)
+  expect_equal(fastq_report$quality_score[[3]][1:15], score_3_15)
 })

@@ -46,36 +46,20 @@ read_fastq <- function(fastq, path = NULL, format = "illumina1.8+") {
   # convert quality string to quality scores
   table <- NULL
   if (format == "solexa") {
-    table <- .solexa_convert_table()$to_score
+    i <- -64:64
+    raw_values <- 33 + 10 * log10(1 + 10^(i / 10.0)) + 0.499
+    table <- intToUtf8(as.integer(raw_values), multiple = TRUE)
   }
 
-  scores <- vector("list", length = length(df$Sequence))
-
-  for (i in seq_along(df$Quality)) {
-    scores[[i]] <- convert_qual(df$Quality[i], format, table)
-  }
-
-  data.frame(
+  df <- data.frame(
     sequence_name = gsub(" .*$", "", df$Header),
     sequence = df$Sequence,
-    quality_score = I(scores)
+    quality_score = I(lapply(df$Quality, convert_qual,
+      format = format, table = table
+    ))
   )
-}
-
-#' @title .solexa_convert_table
-#' @description Create table for solexa conversion
-#'
-#' @returns data.frame containing 2 columns to_score and to_string for
-#'   converting solexa quality string to sanger quality strings
-#'
-#' @keywords internal
-#' @noRd
-.solexa_convert_table <- function() {
-  i <- -64:64
-  raw_values <- 33 + 10 * log10(1 + 10^(i / 10.0)) + 0.499
-  int_to_char <- as.integer(raw_values)
-  char_to_int <- intToUtf8(int_to_char, multiple = TRUE)
-  data.frame(to_score = char_to_int, to_string = int_to_char)
+  attr(df, "fastq_format") <- format
+  df
 }
 
 #' @title convert_qual
@@ -99,7 +83,9 @@ convert_qual <- function(quality_string,
   has_negative_scores <- FALSE
 
   if (is.null(table) && (format == "solexa")) {
-    table <- .solexa_convert_table()$to_score
+    i <- -64:64
+    raw_values <- 33 + 10 * log10(1 + 10^(i / 10.0)) + 0.499
+    table <- intToUtf8(as.integer(raw_values), multiple = TRUE)
   }
 
   for (i in seq_along(quality_scores)) {

@@ -219,3 +219,14 @@ test_that("import - errors and warnings", {
   table <- export_dataset(data)
   expect_equal(length(table), 0)
 })
+
+test_that("import - quality data", {
+  table <- strollur::read_fastq(strollur_example("tiny.fastq.gz"))
+
+  data <- strollur::new_dataset()
+  xdev_assign_sequence_fastq_scores(data, table)
+
+  data2 <- strollur::import_dataset(strollur::export_dataset(data))
+
+  expect_true(data2$is_equal(data))
+})

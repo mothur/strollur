@@ -625,6 +625,9 @@ public:
     double addSequences(const vector<string>& n,
                         vector<string> s = nullVector,
                         vector<string> c = nullVector);
+    double assignQualityScores(const vector<string>& n,
+                            const vector<vector<int>>& s,
+                            const string& format = "illumina1.8+");
     double addReferences(const vector<Reference>& refs);
     void addReport(Rcpp::DataFrame& report, const string& type);
 
@@ -679,8 +682,10 @@ public:
     Rcpp::DataFrame getBinRepresentativeSequences(const string& type = "otu") const;
     // 2 column dataframe - bin_id, seq_id
     vector<string> getBinTypes() const;
-    // fasta data.frame 2 or 3 columns, sequence_names, sequences, comments
+    // fasta data.frame 2 or 3 columns, sequence_name, sequence, comment
     Rcpp::DataFrame getFastaReport() const;
+    // fastq data.frame 3 columns, sequence_name, sequence, quality_score
+    Rcpp::DataFrame getFastqReport() const;
 
     const Rcpp::DataFrame getList(const string& type = "otu");
     vector<string> getListVector(const string& type = "otu") const;
@@ -709,6 +714,8 @@ public:
                                            bool bySample = false) const;
     vector<string> getSequenceNames(const vector<string>& sample = nullVector,
                                           bool distinct = false) const;
+    vector<vector<int> > getSequenceQualityScores(const vector<string>& sample = nullVector,
+                                                  bool distinct = false) const;
     vector<int> getSequenceIndexes(const vector<string>& sample = nullVector,
                                     bool distinct = false) const;
     vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector) const;
@@ -766,6 +773,10 @@ private:
     // fasta data
     vector<string> names, seqs, comments, trashCodes;
 
+    // quality scores
+    vector<vector<int> > quality_scores;
+    string fastq_format;
+
     // fasta summary data
     vector<int> starts, ends, lengths, ambigs, polymers, numns;
 
@@ -821,7 +832,8 @@ private:
            starts, ends, lengths, ambigs, polymers,
            numns, names, seqs, comments, trashCodes,
            seqIndex, badAccnos, uniqueBad, hasList, count,
-           binTables, reports, refIndex, sortNeeded);
+           binTables, reports, refIndex, sortNeeded, quality_scores,
+           fastq_format);
     }
 };
 

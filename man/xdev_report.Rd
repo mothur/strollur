@@ -10,7 +10,7 @@ xdev_report(data, type = "sequence", bin_type = "otu")
 \item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type}{string containing the type of report you would like. Options
-include: "fasta", "sequence", "sequence_bin_assignment",
+include: "fasta", "fastq", "sequence", "sequence_bin_assignment",
 "sequence_taxonomy", "bin_taxonomy", "bin_representative",
 "sample_assignment", "resource_reference", "sequence_scrap",
 "bin_scrap". If you have added custom reports for alignment,

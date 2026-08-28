@@ -5,6 +5,7 @@ export(add)
 export(assign)
 export(clear)
 export(convert_qual)
+export(convert_qual_string)
 export(copy_dataset)
 export(count)
 export(export_dataset)
@@ -43,6 +44,7 @@ export(strollur_example)
 export(summary)
 export(unpack_qiime2_artifact)
 export(write_fasta)
+export(write_fastq)
 export(write_mothur)
 export(write_mothur_cons_taxonomy)
 export(write_mothur_count)
@@ -61,6 +63,7 @@ export(xdev_assign_bin_taxonomy)
 export(xdev_assign_bin_taxonomy_tidy)
 export(xdev_assign_bins)
 export(xdev_assign_sequence_abundance)
+export(xdev_assign_sequence_fastq_scores)
 export(xdev_assign_sequence_taxonomy)
 export(xdev_assign_sequence_taxonomy_tidy)
 export(xdev_assign_treatments)
@@ -113,7 +116,8 @@ importFrom(dplyr,
 importFrom(methods,new)
 importFrom(microseq,
   readFasta,
-  readFastq
+  readFastq,
+  writeFastq
 )
 importFrom(rbiom,read_biom)
 importFrom(readr,

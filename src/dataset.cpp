@@ -14,6 +14,7 @@ Dataset::Dataset(string name) : datasetName(std::move(name)) {
     numUnique = 0;
     uniqueBad = 0;
     alignmentLength = 0;
+    fastq_format = "illumina1.8+";
 }
 /******************************************************************************/
 Dataset::Dataset(const Dataset& dataset) {
@@ -49,6 +50,8 @@ Dataset::Dataset(const Dataset& dataset) {
     uniqueBad = dataset.uniqueBad;
     hasList = dataset.hasList;
     sortNeeded = dataset.sortNeeded;
+    fastq_format = dataset.fastq_format;
+    quality_scores = dataset.quality_scores;
 
     count.clone(dataset.count);
 
@@ -84,6 +87,7 @@ void Dataset::clear() {
         numUnique = 0;
         uniqueBad = 0;
         alignmentLength = 0;
+        fastq_format = "illumina1.8+";
 
         // sequence data
         names.clear();
@@ -98,6 +102,7 @@ void Dataset::clear() {
         ambigs.clear();
         polymers.clear();
         numns.clear();
+        quality_scores.clear();
 
         // sequence taxonomy assignments
         taxonomies.clear();
@@ -123,7 +128,7 @@ Rcpp::List Dataset::exportDataset(){
 
     if (hasSequenceData) {
         // sequence data.frame
-        // ids, names, seqs, comments(optional),
+        // ids, names, seqs, comments(optional), quality_scores (optional)
         // trashCodes, taxonomies(optional), tableSeqs
         Rcpp::DataFrame sequenceData = Rcpp::DataFrame::create();
         vector<string> sequenceDataLabels;
@@ -136,6 +141,13 @@ Rcpp::List Dataset::exportDataset(){
         if (!allBlank(seqs)) {
             sequenceData.push_back(seqs);
             sequenceDataLabels.push_back("sequence");
+            if (!quality_scores.empty()) {
+                Rcpp::List qualityList = Rcpp::wrap(quality_scores);
+                qualityList.attr("class") = "AsIs";
+                qualityList.attr("fastq_format") = fastq_format;
+                sequenceData.push_back(qualityList);
+                sequenceDataLabels.push_back("quality_score");
+            }
         }
         if (!allBlank(comments)) {
             sequenceData.push_back(comments);
@@ -320,6 +332,59 @@ double Dataset::addSequences(const vector<string>& n,
     hasSequenceData = true;
 
     return static_cast<double>(n.size());
+}
+/******************************************************************************/
+// assumes sequence data has been added, just checks for matched lengths
+double Dataset::assignQualityScores(const vector<string>& n,
+                                 const vector<vector<int>>& s,
+                                 const string& format) {
+
+    fastq_format = format;
+
+    const vector<string> uniqueNames = unique(n);
+
+    // are there assignments for all seqs in the dataset
+    if (uniqueNames.size() != static_cast<size_t>(numUnique)){
+        string message = "The dataset contains ";
+        message += toString(numUnique) + " sequences, but you are adding ";
+        message += toString(uniqueNames.size()) + " quality scores. All sequences ";
+        message += "in the dataset must be assigned quality scores.\n\n";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    // allocate space
+    if (quality_scores.size() != names.size()) {
+        quality_scores.resize(names.size());
+    }
+
+    double numQualityAssigned = 0;
+    for (size_t i = 0; i < n.size(); i++) {
+
+        auto it = seqIndex.find(n[i]);
+
+        if (it != seqIndex.end()) {
+
+            const int index = it->second;
+            numQualityAssigned++;
+
+            // update quality_scores
+            if (s[i].size() == seqs[i].length()) {
+                quality_scores[index] = s[i];
+            }else {
+                string message = n[i] + " has a sequence length of " + toString(seqs[i].length());
+                message += ", but " + toString(s[i].size()) + " quality scores have been provided.";
+                quality_scores.clear();
+                fastq_format = "illumina1.8+";
+                throw Rcpp::exception(message.c_str());
+            }
+        }else{
+            string message = n[i] + " is not in your dataset,";
+            message += " ignoring.";
+            Rcpp::Rcout << endl << message << endl;
+        }
+    }
+
+    return numQualityAssigned;
 }
 /******************************************************************************/
 double Dataset::assignBins(const vector<string>& binIds,
@@ -756,6 +821,29 @@ int Dataset::getAlignedLength() {
     return alignmentLength;
 }
 /******************************************************************************/
+// fastq data.frame 3 columns, sequence_name, sequence, quality_score
+Rcpp::DataFrame Dataset::getFastqReport() const {
+
+    if (!quality_scores.empty()) {
+
+        Rcpp::DataFrame sequenceData = Rcpp::DataFrame::create();
+        vector<string> sequenceDataLabels = {"sequence_name", "sequence",
+                                             "quality_score"};
+
+        sequenceData.push_back(getSequenceNames());
+        sequenceData.push_back(getSequences());
+
+        Rcpp::List qualityList = Rcpp::wrap(getSequenceQualityScores());
+        qualityList.attr("class") = "AsIs";
+        qualityList.attr("fastq_format") = fastq_format;
+        sequenceData.push_back(qualityList);
+        sequenceData.attr("names") = sequenceDataLabels;
+
+        return sequenceData;
+    }
+    return Rcpp::DataFrame::create();
+}
+/******************************************************************************/
 // fasta data.frame 2 or 3 columns, sequence_names, sequences, comments
 Rcpp::DataFrame Dataset::getFastaReport() const {
     vector<string> n(numUnique, "");
@@ -840,7 +928,7 @@ vector<string> Dataset::getListVector(const string& type) const{
     return nullVector;
 }
 /******************************************************************************/
-vector<int> Dataset:: getSequenceIndexes(const vector<string>& samples,
+vector<int> Dataset::getSequenceIndexes(const vector<string>& samples,
                                           const bool distinct) const {
     vector<int> included;
     auto index = 1; // return R index
@@ -882,7 +970,7 @@ vector<int> Dataset:: getSequenceIndexes(const vector<string>& samples,
     return included;
 }
 /******************************************************************************/
-vector<string> Dataset:: getSequenceNames(const vector<string>& samples,
+vector<string> Dataset::getSequenceNames(const vector<string>& samples,
                                                const bool distinct) const {
     vector<string> included;
 
@@ -919,6 +1007,48 @@ vector<string> Dataset:: getSequenceNames(const vector<string>& samples,
 
     return included;
 }
+/******************************************************************************/
+vector<vector<int> > Dataset::getSequenceQualityScores(const vector<string>& samples,
+                                                 const bool distinct) const {
+    vector<vector<int> > included;
+    if (quality_scores.empty()) {
+        return included;
+    }
+
+    // get all "good" names in dataset
+    if (samples.empty())  {
+        for (size_t i = 0; i < tableSeqs.size(); i++) {
+            if (tableSeqs[i]) {
+                included.push_back(quality_scores[i]);
+            }
+        }
+        // get all "good" names in specific set of samples
+    }else {
+
+        // all seqs
+        for (int i = 0; i < static_cast<int>(tableSeqs.size()); i++) {
+            // if "good" seq
+            if (tableSeqs[i]) {
+
+                if (!distinct) {
+                    // include all the requested samples, but may have
+                    // additional samples present
+                    if (count.hasSamples(samples, i)) {
+                        included.push_back(quality_scores[i]);
+                    }
+                }else {
+                    // sequences must have ONLY the samples requested
+                    if (identical(count.getSamples(i), samples)) {
+                        included.push_back(quality_scores[i]);
+                    }
+                }
+            }
+        }
+    }
+
+    return included;
+}
+
 /******************************************************************************/
 vector<vector<int> > Dataset::getIndexesBySample(const vector<string>& samples) const {
     vector<vector<int> > result;
@@ -1918,6 +2048,11 @@ void Dataset::setSequences(const vector<string>& n, const vector<string>& s,
         throw Rcpp::exception(message.c_str());
     }
 
+    // remove quality data when new FASTA data is set
+    if (!quality_scores.empty()) {
+        quality_scores.clear();
+    }
+
     bool hasComments = false;
     if (!c.empty()) {
         if (c.size() != n.size()) {
@@ -1987,7 +2122,7 @@ void Dataset::sortDataset() {
         seqIndex[sortedVector[i].name] = i;
     }
 
-    // apply ordered to tableSeqs, seqs, comments, trashCodes,
+    // apply ordered to tableSeqs, seqs, comments, trashCodes, quality_scores
     // starts, ends, lengths, ambigs, polymers, numns,
     applyOrder(tableSeqs, order);
     applyOrder(seqs, order);
@@ -1999,6 +2134,7 @@ void Dataset::sortDataset() {
     applyOrder(ambigs, order);
     applyOrder(polymers, order);
     applyOrder(numns, order);
+    applyOrder(quality_scores, order);
 
     // taxonomies
     if (hasSequenceTaxonomy) {

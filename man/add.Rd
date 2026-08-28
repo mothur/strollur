@@ -11,10 +11,11 @@ add(
   type = "sequence",
   report_type = NULL,
   table_names = list(sequence_name = "sequence_name", sequence = "sequence", comment =
-    "comment", reference_vendor = "vendor", reference_name = "name", reference_version =
-    "version", reference_usage = "usage", reference_note = "note", reference_method_url =
-    "method_url", reference_documentation_url = "documentation_url", reference_parameter
-    = "parameter", reference_citation = "citation"),
+    "comment", quality_score = "quality_score", reference_vendor = "vendor",
+    reference_name = "name", reference_version = "version", reference_usage = "usage",
+    reference_note = "note", reference_method_url = "method_url",
+    reference_documentation_url = "documentation_url", reference_parameter = "parameter",
+    reference_citation = "citation"),
   reference = NULL,
   verbose = TRUE
 )
@@ -26,8 +27,8 @@ add(
 \item{table}{a data.frame or tree containing the data you wish to add.}
 
 \item{type}{a string containing the type of data. Options include:
-'sequence', 'sample_tree', 'sequence_tree', 'resource_reference' and
-'report'.}
+\code{sequence}, \code{fastq}, \code{sample_tree}, \code{sequence_tree}, \code{resource_reference}
+and \code{report}.}
 
 \item{report_type}{a string containing the type of report you are adding.}
 
@@ -37,6 +38,7 @@ the table. By default:
 table_names <- list(sequence_name = "sequence_name",
 comment = "comment",
 sequence = "sequence",
+quality_score = "quality_score",
 reference_name = "name",
 reference_vendor = "vendor",
 reference_version = "version",
@@ -58,6 +60,10 @@ are adding FASTA data. Default column name is 'sequence'.
 In table_names, 'comment' is a string containing the name of the column in
 'table' that contains the sequence comments. It is used when you are adding
 FASTA data. Default column name is 'comment'.
+
+In table_names, 'quality_score' is a string containing the name of the column
+in 'table' that contains the sequence quality scores. It is used when you are
+adding FASTQ data. Default column name is 'quality_score'.
 
 In table_names, 'reference_vendor' is a string containing the name of the
 column in 'table' that contains the reference vendor names. It is used when
@@ -114,7 +120,7 @@ data <- strollur::new_dataset(dataset_name = "example_dataset")
 
 # Read FASTA data into data.frame
 fasta_data <-
-    strollur::read_fasta(fasta = strollur_example("final.fasta.gz"))
+  strollur::read_fasta(fasta = strollur_example("final.fasta.gz"))
 
 # Add FASTA sequence data
 strollur::add(data = data, table = fasta_data, type = "sequence")
@@ -143,6 +149,16 @@ strollur::add(
   reference = silva_resource
 )
 
+# Create a new empty strollur object named 'example_dataset'
+data <- strollur::new_dataset(dataset_name = "example_dataset")
+
+# Read FASTQ data into data.frame
+fastq_data <-
+  strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+
+# Add FASTQ sequence data
+strollur::add(data = data, table = fastq_data, type = "fastq")
+
 # Add contigs assembly report with a 'sequence_name' column named 'Name'
 
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
@@ -157,8 +173,10 @@ strollur::add(
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-strollur::add(data, table = metadata,
-              type = "report", report_type = "metadata")
+strollur::add(data,
+  table = metadata,
+  type = "report", report_type = "metadata"
+)
 
 # To add a tree relating to your sequences
 

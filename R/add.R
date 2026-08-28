@@ -11,8 +11,8 @@
 #'
 #' @param table a data.frame or tree containing the data you wish to add.
 #' @param type a string containing the type of data. Options include:
-#'   'sequence', 'sample_tree', 'sequence_tree', 'resource_reference' and
-#'   'report'.
+#'   `sequence`, `fastq`, `sample_tree`, `sequence_tree`, `resource_reference`
+#'   and `report`.
 #' @param report_type a string containing the type of report you are adding.
 #' @param table_names named list used to indicate the names of the columns in
 #' the table. By default:
@@ -20,6 +20,7 @@
 #' table_names <- list(sequence_name = "sequence_name",
 #'                     comment = "comment",
 #'                     sequence = "sequence",
+#'                     quality_score = "quality_score",
 #'                     reference_name = "name",
 #'                     reference_vendor = "vendor",
 #'                     reference_version = "version",
@@ -41,6 +42,10 @@
 #' In table_names, 'comment' is a string containing the name of the column in
 #' 'table' that contains the sequence comments. It is used when you are adding
 #' FASTA data. Default column name is 'comment'.
+#'
+#' In table_names, 'quality_score' is a string containing the name of the column
+#' in 'table' that contains the sequence quality scores. It is used when you are
+#' adding FASTQ data. Default column name is 'quality_score'.
 #'
 #' In table_names, 'reference_vendor' is a string containing the name of the
 #' column in 'table' that contains the reference vendor names. It is used when
@@ -89,7 +94,7 @@
 #'
 #' # Read FASTA data into data.frame
 #' fasta_data <-
-#'     strollur::read_fasta(fasta = strollur_example("final.fasta.gz"))
+#'   strollur::read_fasta(fasta = strollur_example("final.fasta.gz"))
 #'
 #' # Add FASTA sequence data
 #' strollur::add(data = data, table = fasta_data, type = "sequence")
@@ -118,6 +123,16 @@
 #'   reference = silva_resource
 #' )
 #'
+#' # Create a new empty strollur object named 'example_dataset'
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
+#'
+#' # Read FASTQ data into data.frame
+#' fastq_data <-
+#'   strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+#'
+#' # Add FASTQ sequence data
+#' strollur::add(data = data, table = fastq_data, type = "fastq")
+#'
 #' # Add contigs assembly report with a 'sequence_name' column named 'Name'
 #'
 #' contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
@@ -132,8 +147,10 @@
 #'
 #' metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 #'
-#' strollur::add(data, table = metadata,
-#'               type = "report", report_type = "metadata")
+#' strollur::add(data,
+#'   table = metadata,
+#'   type = "report", report_type = "metadata"
+#' )
 #'
 #' # To add a tree relating to your sequences
 #'
@@ -160,6 +177,7 @@ add <- function(data, table,
                   sequence_name = "sequence_name",
                   sequence = "sequence",
                   comment = "comment",
+                  quality_score = "quality_score",
                   reference_vendor = "vendor",
                   reference_name = "name",
                   reference_version = "version",
@@ -182,6 +200,7 @@ add <- function(data, table,
     sequence_name = "sequence_name",
     sequence = "sequence",
     comment = "comment",
+    quality_score = "quality_score",
     reference_vendor = "vendor",
     reference_name = "name",
     reference_version = "version",
@@ -201,6 +220,15 @@ add <- function(data, table,
       sequence_name = table_names[["sequence_name"]],
       sequence = table_names[["sequence"]],
       comment = table_names[["comment"]],
+      reference = reference,
+      verbose = verbose
+    )
+  } else if (type == "fastq") {
+    xdev_assign_sequence_fastq_scores(
+      data = data, table = table,
+      sequence_name = table_names[["sequence_name"]],
+      sequence = table_names[["sequence"]],
+      quality_score = table_names[["quality_score"]],
       reference = reference,
       verbose = verbose
     )

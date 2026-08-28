@@ -77,9 +77,10 @@ sort_dataframe <- function(data, order, named_col) {
     # metadata is a generalized report in version 0.1.1 that allows for no
     # sequence name column in the report
     return(TRUE)
-  } else if ((table_version == "0.1.1") && (current_version == "0.1.2")) {
-    # main difference in these 0.1.1 and 0.1.2 version is the addition of
-    # has_sequence_taxonomy and has_bin_taxonomy functions to r6 object
+  } else if ((table_version == "0.1.1") &&
+               (current_version == "0.1.2") && !deserialize) {
+    # if deserialize is needed, these are not compatible because 0.1.1
+    # has different dataset.cpp members. The table is convertable.
     return(TRUE)
   } else if ((table_version == "0.1.0") &&
                (current_version == "0.1.2") && !deserialize) {

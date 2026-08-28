@@ -662,6 +662,100 @@ Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data,
     return data;
 }
 /******************************************************************************/
+Rcpp::Environment xdev_assign_sequence_fastq_scores(const Rcpp::Environment& data,
+                                                const Rcpp::DataFrame& table,
+                                                Rcpp::Nullable<Rcpp::List> reference,
+                                                const string& sequence_name,
+                                                const string& sequence,
+                                                const string& quality_score,
+                                                const bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    vector<string> sequence_names = Rcpp::as<vector<string>>(
+        xint_fill_required_parameters(table, sequence_name));
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+
+    double numAssigned = 0;
+
+    // if this table is just quality scores, make sure we have sequences to
+    // pair them with
+    if (!table.containsElementNamed(sequence.c_str())) {
+
+        // do we have sequence strings
+        vector<string> seqs = xdev_get_sequences(data);
+
+        if (allBlank(seqs)) {
+            string message = "Expected a data.frame column named `" +
+                sequence + "` to be provided. Alternatively you can add FASTA data";
+            message += " using the strollur::add() function before adding quality scores. ";
+            message += "You must have neucleotide sequence strings in your ";
+            message += "strollur::strollur object to add quality data.";
+            throw Rcpp::exception(message.c_str());
+        }
+    }
+
+    vector<string> unique_names = unique(sequence_names);
+    vector<string> dataset_names = d.get()->getSequenceNames();
+
+    // add seqs if needed
+    if (dataset_names.size() == 0) {
+        // add fasta data
+        xdev_add_sequences(data, table, R_NilValue,
+                           sequence_name, sequence, "comment", verbose);
+    }else {
+        // sanity check, make sure names are present in dataset
+        if (!identical(unique_names, dataset_names)) {
+            string message = "You must provide quality scores for all";
+            message += " sequences in your dataset.";
+            throw Rcpp::exception(message.c_str());
+        }
+    }
+
+    vector<vector<int>> scores;
+    scores = Rcpp::as<vector<vector<int>>>(
+        xint_fill_required_parameters(table, quality_score));
+
+    // get format option
+    SEXP format = table.attr("fastq_format");
+    if (format == R_NilValue) {
+        // assign quality scores
+        numAssigned = d.get()->assignQualityScores(sequence_names, scores);
+    }else {
+        // assign quality scores
+        numAssigned = d.get()->assignQualityScores(sequence_names,
+                            scores, Rcpp::as<string>(format));
+    }
+
+
+    if (verbose) {
+        xint_assigned_message(numAssigned, " quality scores.");
+    }
+
+    if (reference.isNotNull()) {
+
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
+    }
+
+    return data;
+}
+/******************************************************************************/
 Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
                                       const Rcpp::DataFrame& table,
                                       const string& sequence_name,
@@ -1202,6 +1296,10 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
     // sequence fasta data
     else if (type == "fasta") {
         return d.get()->getFastaReport();
+    }
+    // sequence fastq data
+    else if (type == "fastq") {
+        return d.get()->getFastqReport();
     }
     // sequence bin assignments report
     else if (type == "sequence_bin_assignment") {

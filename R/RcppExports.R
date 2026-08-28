@@ -520,6 +520,38 @@ xdev_assign_bin_taxonomy_tidy <- function(data, table, bin_type = "otu", referen
     .Call(`_strollur_xdev_assign_bin_taxonomy_tidy`, data, table, bin_type, reference, bin_name, level, taxonomy, confidence, verbose)
 }
 
+#' @title xdev_assign_sequence_fastq_scores
+#' @description
+#' Add FASTQ data to a
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+#' Scores are stored as vector<int> for each sequence.
+#'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing FASTQ data you are trying to add
+#' @param reference a list created by the function [new_reference]. Optional.
+#' @param sequence_name a string containing the name of the column in 'table'
+#' that contains the sequence names. Default column name is 'sequence_name'.
+#' @param sequence a string containing the name of the column in 'table' that
+#' contains the sequence nucleotide strings. Default column name is
+#' 'sequence'. (Optional)
+#' @param quality_score a string containing the name of the column in 'table'
+#'   that contains the quality scores stored as vector<int>. Default column
+#'   name is 'quality_score'.
+#' @param verbose a logical whether or not you want progress messages.
+#' Default = TRUE.
+#' @examples
+#'
+#' table <- strollur::read_fastq(strollur_example("tiny.fastq.gz"))
+#' data <- strollur::new_dataset("example")
+#' strollur::xdev_assign_sequence_fastq_scores(data, table)
+#' data
+#'
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @export
+xdev_assign_sequence_fastq_scores <- function(data, table, reference = NULL, sequence_name = "sequence_name", sequence = "sequence", quality_score = "quality_score", verbose = TRUE) {
+    .Call(`_strollur_xdev_assign_sequence_fastq_scores`, data, table, reference, sequence_name, sequence, quality_score, verbose)
+}
+
 #' @title xdev_assign_sequence_taxonomy_tidy
 #' @description
 #' Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -1255,7 +1287,7 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #'
 #' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param type string containing the type of report you would like. Options
-#' include: "fasta", "sequence", "sequence_bin_assignment",
+#' include: "fasta", "fastq", "sequence", "sequence_bin_assignment",
 #' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
 #'  "sample_assignment", "resource_reference", "sequence_scrap",
 #' "bin_scrap". If you have added custom reports for alignment,

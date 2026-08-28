@@ -1471,3 +1471,96 @@ test_that("Tests xdev_add_report with reference", {
   expect_equal(resource_reference$vendor, "mothur2")
   expect_equal(resource_reference$method_url, "NA")
 })
+
+test_that("Tests xdev_assign_sequence_fastq_scores ", {
+  reference <- strollur::new_reference(
+    vendor = "mothur2",
+    name = "test()",
+    version = "0.1.0",
+    usage = "quality of sequences",
+    note = "format = illumina1.8+"
+  )
+
+  fastq_data <- strollur::read_fastq(strollur_example("tiny.fastq.gz"))
+
+  data <- strollur::new_dataset()
+  strollur::xdev_assign_sequence_fastq_scores(data,
+    table = fastq_data,
+    reference = reference
+  )
+
+  resource_reference <- strollur::report(data, type = "resource_reference")
+
+  expect_equal(resource_reference$name, "test()")
+  expect_equal(resource_reference$vendor, "mothur2")
+
+  fastq_report <- strollur::xdev_report(data, type = "fastq")
+
+  names <- c(
+    "M00967:43:000000000-A3JHG:1:1101:18327:1699",
+    "M00967:43:000000000-A3JHG:1:1101:14069:1827",
+    "M00967:43:000000000-A3JHG:1:1101:18044:1900"
+  )
+
+  expect_equal(fastq_report$sequence_name, names)
+
+  seq_1 <- paste0(
+    "NACGGAGGATGCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGTAGGCGGC",
+    "CTGCCAAGTCAGCGGTAAAATTGCGGGGCTCAACCCCGTACAGCCGTTGAAACTGC",
+    "CGGGCTCGAGTGGGCGAGAAGTATGCGGAATGCGTGGTGTAGCGGTGAAATGCATA",
+    "GATATCACGCAGAACCCCGATTGCGAAGGCAGCATACCGGCGCCCTACTGACGCTG",
+    "AGGCACGAAAGTGCGGGGATCAAACAG"
+  )
+
+  seq_2 <- paste0(
+    "TACGGAGGATGCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGTAGGCGGC",
+    "CTGCCAAGTCAGCGGTAAAATTGCGGGGCTCAACCCCGTACAGCCGTTGAAACTGC",
+    "CGGGCTCGAGTGGGCGAGAAGTATGCGGAATGCGTGGTGTAGCGGTGAAATGCATA",
+    "GATATCACGCAGAACCCCGATTGCGAAGGCAGCATACCGGCGCCCTACTGACGCTG",
+    "AGGCACGAAAGTGCGGGGATCAAACAG"
+  )
+
+  seq_3 <- paste0(
+    "TACGGAGGATGCGAGCGTTGTCCGGAATCACTGGGCGTAAAGGGCGCGTAGGCGGTT",
+    "TAATAAGTCAGTGGTGAAAACTGAGGGCTCAACCCTCAGCCTGCCACTGATACTGTT",
+    "AGACTTGAGTATGGAAGAGGAGAATGGAATTCCTAGTGTAGCGGTGAAATGCGTAGA",
+    "TATTAGGAGGAACACCAGTGGCGAAGGCGATTCTCTGGGCCAAGACTGACGCTGAGG",
+    "CGCGAAAGCGTGGGGAGCAAACA"
+  )
+  sequences <- c(seq_1, seq_2, seq_3)
+
+  expect_equal(fastq_report$sequence, sequences)
+
+  score_1_15 <- c(2, 29, 29, 32, 32, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+  score_2_15 <- c(18, 32, 32, 30, 32, 33, 33, 35, 33, 37, 37, 33, 36, 38, 38)
+  score_3_15 <- c(33, 32, 31, 33, 33, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+
+  expect_equal(fastq_report$quality_score[[1]][1:15], score_1_15)
+  expect_equal(fastq_report$quality_score[[2]][1:15], score_2_15)
+  expect_equal(fastq_report$quality_score[[3]][1:15], score_3_15)
+
+  # errors
+  fastq_data <- data.frame(
+    sequence_name = c("seq1", "seq2", "seq3"),
+    sequence = c("AATCG", "GGCTA", "TATTCCC")
+  )
+
+  data <- strollur::new_dataset()
+  # fasta data instead of fastq
+  expect_error(strollur::xdev_assign_sequence_fastq_scores(data,
+    table = fastq_data
+  ))
+
+  fastq_data <- data.frame(
+    sequence_name = c("seq1", "seq2", "seq3"),
+    sequence = c("AATCG", "GGCTA", "TATTCCC"),
+    quality_score = I(list(
+      c(33, 34, 35, 35, 36),
+      c(33, 34, 35, 35, 36),
+      c(33, 34, 35, 35, 36)
+    ))
+  )
+  # incorrect number of scores for sequence length
+  expect_error(strollur::xdev_assign_sequence_fastq_scores(data,
+                                                           table = fastq_data))
+})

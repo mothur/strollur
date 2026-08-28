@@ -108,6 +108,16 @@ tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
 
 data$add(table = tree, type = "sample_tree")
 
+# Create a new empty `strollur::strollur` object named 'example_dataset'
+data <- strollur::strollur$new(name = "example_dataset")
+
+# Read FASTQ data into data.frame
+fastq_data <-
+    strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+
+# Add FASTQ sequence data
+data$add(table = fastq_data, type = "fastq")
+
 
 ## ------------------------------------------------
 ## Method `strollur$alignment_length()`
@@ -633,10 +643,11 @@ miseq$abundance(type = "treatment")
   type = "sequence",
   report_type = NULL,
   table_names = list(sequence_name = "sequence_name", sequence = "sequence", comment =
-    "comment", reference_vendor = "vendor", reference_name = "name", reference_version =
-    "version", reference_usage = "usage", reference_note = "note", reference_method_url =
-    "method_url", reference_documentation_url = "documentation_url", reference_parameter
-    = "parameter", reference_citation = "citation"),
+    "comment", quality_score = "quality_score", reference_vendor = "vendor",
+    reference_name = "name", reference_version = "version", reference_usage = "usage",
+    reference_note = "note", reference_method_url = "method_url",
+    reference_documentation_url = "documentation_url", reference_parameter = "parameter",
+    reference_citation = "citation"),
   reference = NULL,
   verbose = TRUE
 )}
@@ -647,8 +658,8 @@ miseq$abundance(type = "treatment")
     \describe{
       \item{\code{table}}{a data.frame or tree containing the data you wish to add.}
       \item{\code{type}}{a string containing the type of data. Options include:
-'sequence', 'sample_tree', 'sequence_tree', 'resource_reference' and
-'report'.}
+\code{sequence}, \code{fastq}, \code{sample_tree}, \code{sequence_tree},
+\code{resource_reference} and \code{report}.}
       \item{\code{report_type}}{a string containing the type of report you are
 adding.}
       \item{\code{table_names}}{named list used to indicate the names of the columns
@@ -657,6 +668,7 @@ in the table. By default:
 table_names <- list(sequence_name = "sequence_name",
 comment = "comment",
 sequence = "sequence",
+quality_score = "quality_score",
 reference_name = "name",
 reference_vendor = "vendor",
 reference_version = "version",
@@ -678,6 +690,10 @@ you are adding FASTA data. Default column name is 'sequence'.
 In table_names, 'comment' is a string containing the name of the column
 in 'table' that contains the sequence comments. It is used when you are
 adding FASTA data. Default column name is 'comment'.
+
+In table_names, 'quality_score' is a string containing the name of the
+column in 'table' that contains the sequence quality scores. It is used
+when you are adding FASTQ data. Default column name is 'quality_score'.
 
 In table_names, 'reference_vendor' is a string containing the name of the
 column in 'table' that contains the reference vendor names. It is used
@@ -761,6 +777,16 @@ data$assign(table = df, type = "bin", bin_type = "otu")
 tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
 
 data$add(table = tree, type = "sample_tree")
+
+# Create a new empty `strollur::strollur` object named 'example_dataset'
+data <- strollur::strollur$new(name = "example_dataset")
+
+# Read FASTQ data into data.frame
+fastq_data <-
+    strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+
+# Add FASTQ sequence data
+data$add(table = fastq_data, type = "fastq")
 }
     \if{html}{\out{</div>}}
   }
@@ -1342,14 +1368,14 @@ requested.
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{type}}{string containing the type of report you would like. Options
-include: "fasta", "sequence", "sequence_bin_assignment",
-"sequence_taxonomy", "sequence_tree", "bin_taxonomy",
-"bin_representative", "sample_assignment", "sample_tree",
-"resource_reference", "sequence_scrap", "bin_scrap". If you have added
+include: \code{fasta}, \code{fastq}, \code{sequence}, \code{sequence_bin_assignment},
+\code{sequence_taxonomy}, \code{sequence_tree}, \code{bin_taxonomy},
+\code{bin_representative}, \code{sample_assignment}, \code{sample_tree},
+\code{resource_reference}, \code{sequence_scrap}, \code{bin_scrap}. If you have added
 custom reports for alignment, contigs_assembly or chimeras, you can get
-those as well. Default = "sequence".}
+those as well. Default = \code{sequence}.}
       \item{\code{bin_type}}{string containing the bin type you would like a
-bin_taxonomy report for. Default = "otu".}
+bin_taxonomy report for. Default = \code{otu}.}
     }
     \if{html}{\out{</div>}}
   }

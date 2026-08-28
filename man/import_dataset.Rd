@@ -9,7 +9,7 @@ import_dataset(table)
 \arguments{
 \item{table}{a table containing the data from a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-object. You can create the table using 'export(data)'.}
+object. You can create the table using \code{strollur::export_dataset(data)}.}
 }
 \value{
 a

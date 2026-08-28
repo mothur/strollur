@@ -109,3 +109,33 @@ test_that("test add - sequence_tree, sample_tree", {
   # confirm pruning
   expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
 })
+
+test_that("test add - fastq", {
+  # Create a new empty strollur object named 'example_dataset'
+  data <- strollur::new_dataset(dataset_name = "example_dataset")
+
+  # Read FASTQ data into data.frame
+  fastq_data <-
+    strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+
+  # Add FASTQ sequence data
+  strollur::add(data = data, table = fastq_data, type = "fastq")
+
+  fastq_report <- strollur::xdev_report(data, type = "fastq")
+
+  names <- c(
+    "M00967:43:000000000-A3JHG:1:1101:18327:1699",
+    "M00967:43:000000000-A3JHG:1:1101:14069:1827",
+    "M00967:43:000000000-A3JHG:1:1101:18044:1900"
+  )
+
+  expect_equal(fastq_report$sequence_name, names)
+
+  score_1_15 <- c(2, 29, 29, 32, 32, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+  score_2_15 <- c(18, 32, 32, 30, 32, 33, 33, 35, 33, 37, 37, 33, 36, 38, 38)
+  score_3_15 <- c(33, 32, 31, 33, 33, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+
+  expect_equal(fastq_report$quality_score[[1]][1:15], score_1_15)
+  expect_equal(fastq_report$quality_score[[2]][1:15], score_2_15)
+  expect_equal(fastq_report$quality_score[[3]][1:15], score_3_15)
+})

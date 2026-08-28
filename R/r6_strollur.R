@@ -260,8 +260,8 @@ strollur <- R6Class("strollur",
     #'
     #' @param table a data.frame or tree containing the data you wish to add.
     #' @param type a string containing the type of data. Options include:
-    #'   'sequence', 'sample_tree', 'sequence_tree', 'resource_reference' and
-    #'   'report'.
+    #'   `sequence`, `fastq`, `sample_tree`, `sequence_tree`,
+    #'   `resource_reference` and `report`.
     #' @param report_type a string containing the type of report you are
     #' adding.
     #' @param table_names named list used to indicate the names of the columns
@@ -270,6 +270,7 @@ strollur <- R6Class("strollur",
     #' table_names <- list(sequence_name = "sequence_name",
     #'                     comment = "comment",
     #'                     sequence = "sequence",
+    #'                     quality_score = "quality_score",
     #'                     reference_name = "name",
     #'                     reference_vendor = "vendor",
     #'                     reference_version = "version",
@@ -291,6 +292,10 @@ strollur <- R6Class("strollur",
     #' In table_names, 'comment' is a string containing the name of the column
     #' in 'table' that contains the sequence comments. It is used when you are
     #' adding FASTA data. Default column name is 'comment'.
+    #'
+    #' In table_names, 'quality_score' is a string containing the name of the
+    #' column in 'table' that contains the sequence quality scores. It is used
+    #' when you are adding FASTQ data. Default column name is 'quality_score'.
     #'
     #' In table_names, 'reference_vendor' is a string containing the name of the
     #' column in 'table' that contains the reference vendor names. It is used
@@ -372,6 +377,16 @@ strollur <- R6Class("strollur",
     #'
     #' data$add(table = tree, type = "sample_tree")
     #'
+    #' # Create a new empty `strollur::strollur` object named 'example_dataset'
+    #' data <- strollur::strollur$new(name = "example_dataset")
+    #'
+    #' # Read FASTQ data into data.frame
+    #' fastq_data <-
+    #'     strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+    #'
+    #' # Add FASTQ sequence data
+    #' data$add(table = fastq_data, type = "fastq")
+    #'
     #' @return Updated `strollur::strollur` object
     add = function(table,
                    type = "sequence",
@@ -380,6 +395,7 @@ strollur <- R6Class("strollur",
                      sequence_name = "sequence_name",
                      sequence = "sequence",
                      comment = "comment",
+                     quality_score = "quality_score",
                      reference_vendor = "vendor",
                      reference_name = "name",
                      reference_version = "version",
@@ -396,6 +412,7 @@ strollur <- R6Class("strollur",
         sequence_name = "sequence_name",
         sequence = "sequence",
         comment = "comment",
+        quality_score = "quality_score",
         reference_vendor = "vendor",
         reference_name = "name",
         reference_version = "version",
@@ -422,6 +439,15 @@ strollur <- R6Class("strollur",
           sequence_name = table_names[["sequence_name"]],
           sequence = table_names[["sequence"]],
           comment = table_names[["comment"]],
+          reference = reference,
+          verbose = verbose
+        )
+      } else if (type == "fastq") {
+        xdev_assign_sequence_fastq_scores(
+          data = self, table = table,
+          sequence_name = table_names[["sequence_name"]],
+          sequence = table_names[["sequence"]],
+          quality_score = table_names[["quality_score"]],
           reference = reference,
           verbose = verbose
         )
@@ -1213,15 +1239,15 @@ strollur <- R6Class("strollur",
     #' requested.
     #'
     #' @param type string containing the type of report you would like. Options
-    #'   include: "fasta", "sequence", "sequence_bin_assignment",
-    #'   "sequence_taxonomy", "sequence_tree", "bin_taxonomy",
-    #'   "bin_representative", "sample_assignment", "sample_tree",
-    #'   "resource_reference", "sequence_scrap", "bin_scrap". If you have added
+    #'   include: `fasta`, `fastq`, `sequence`, `sequence_bin_assignment`,
+    #'   `sequence_taxonomy`, `sequence_tree`, `bin_taxonomy`,
+    #'   `bin_representative`, `sample_assignment`, `sample_tree`,
+    #'   `resource_reference`, `sequence_scrap`, `bin_scrap`. If you have added
     #'   custom reports for alignment, contigs_assembly or chimeras, you can get
-    #'   those as well. Default = "sequence".
+    #'   those as well. Default = `sequence`.
     #'
     #' @param bin_type string containing the bin type you would like a
-    #'   bin_taxonomy report for. Default = "otu".
+    #'   bin_taxonomy report for. Default = `otu`.
     #'
     #' @examples
     #'

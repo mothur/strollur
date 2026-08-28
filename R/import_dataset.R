@@ -7,7 +7,7 @@
 #'
 #' @param table a table containing the data from a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-#'   object. You can create the table using 'export(data)'.
+#'   object. You can create the table using `strollur::export_dataset(data)`.
 #'
 #' @examples
 #'
@@ -34,7 +34,7 @@ import_dataset <- function(table) {
       cli::cli_alert(message)
     } else {
       message <- paste0(
-        "Unable to create 'strollur' object. ",
+        "Unable to create `strollur::strollur` object. ",
         "The table was created with strollur version ", table_version,
         ", which is not compatible with the current strollur version: ",
         current_version, "."
@@ -134,6 +134,13 @@ import_dataset <- function(table) {
 
     # "sequence_name", "sequence", "comment"
     add(data = data, table = table$sequence_data, type = "sequence")
+
+    # "sequence_name", "quality_score"
+    if ("quality_score" %in% sequence_data_names) {
+      xdev_assign_sequence_fastq_scores(
+        data = data, table = table$sequence_data
+      )
+    }
 
     # "sequence_name", "taxonomy"
     if ("taxonomy" %in% sequence_data_names) {
