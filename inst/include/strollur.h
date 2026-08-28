@@ -686,6 +686,8 @@ public:
     Rcpp::DataFrame getFastaReport() const;
     // fastq data.frame 3 columns, sequence_name, sequence, quality_score
     Rcpp::DataFrame getFastqReport() const;
+    // fastq data.frame 2 columns, sequence_name, quality_score
+    Rcpp::DataFrame getQualityReport() const;
 
     const Rcpp::DataFrame getList(const string& type = "otu");
     vector<string> getListVector(const string& type = "otu") const;

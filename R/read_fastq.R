@@ -31,13 +31,12 @@
 #' @return A data.frame containing the FASTQ sequence data
 #' @export
 read_fastq <- function(fastq, path = NULL, format = "illumina1.8+") {
-  if (!file.exists(fastq)) {
-    .abort_nonexistant_file(fastq)
-  }
-
   # if path is set, adjust fastq file name
   if (!is.null(path)) {
     fastq <- file.path(path, basename(fastq))
+  }
+  if (!file.exists(fastq)) {
+    .abort_nonexistant_file(fastq)
   }
 
   # use microseq to read fasta file
@@ -75,7 +74,8 @@ read_fastq <- function(fastq, path = NULL, format = "illumina1.8+") {
 #' convert_qual(quality_string)
 #'
 #' @returns vector of integers
-#' @export
+#' @keywords internal
+#' @noRd
 convert_qual <- function(quality_string,
                          format = "illumina1.8+",
                          table = NULL) {

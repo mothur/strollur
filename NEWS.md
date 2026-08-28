@@ -1,20 +1,29 @@
 # strollur 0.1.4
 
 New Features:
-  - Adds `strollur::read_fastq()` and `strollur::write_fastq()` functions.
-  - Expands member functions of the [strollur_object](https://mothur.org/strollur/reference/strollur.html).
-       - `strollur_object$alignment_length()` returns the sequences alignment length or -1 if the sequences are unaligned.
-       - `strollur_object$has_bin_taxonomy()` returns `TRUE` if your dataset includes bin classifications.
-       - `strollur_object$has_sequence_taxonomy()` returns `TRUE` if your dataset includes sequence classifications.
-       - `strollur_object$rename()` rename the strollur object.
+
+- Expands built in read / write functions.
+     - `strollur::read_fastq()` returns data.frame with fastq data.
+     - `strollur::write_fastq()` writes fastq data to file.
+     - `strollur::read_quality()` returns data.frame with sequence quality data.
+     - `strollur::write_quality()` writes sequence quality data to file.
+- Expands member functions of the [strollur_object](https://mothur.org/strollur/reference/strollur.html).
+     - `strollur_object$alignment_length()` returns the sequences alignment length or -1 if the sequences are unaligned.
+     - `strollur_object$has_bin_taxonomy()` returns `TRUE` if your dataset includes bin classifications.
+     - `strollur_object$has_sequence_taxonomy()` returns `TRUE` if your dataset includes sequence classifications.
+     - `strollur_object$rename()` rename the strollur object.
 
 Enhancements:
 
-- Adds `fastq`, `sequence_tree`, `sample_tree` types to:
-     - `strollur::add()`
-     - `strollur_object$add()`
+- Adds `fastq`, `quality`, `sequence_tree`, `sample_tree` types to:
      - `strollur::report()`
      - `strollur_object$report()`
+- Adds `fastq` type to:
+     - `strollur::add()`
+     - `strollur_object$add()`
+- Adds `quality` type to:
+     - `strollur::assign()`
+     - `strollur_object$assign()`
 
 Functions for Package developers
 
@@ -22,17 +31,18 @@ Functions for Package developers
 - Adds `strollur::xdev_assign_bin_taxonomy_tidy()` function.
 - Adds `strollur::xdev_has_bin_taxonomy()` function.
 - Adds `strollur::xdev_get_sequence_indexes_by_sample()` function.
-- Adds `strollur::xdev_assign_sequence_fastq_scores()` function.
+- Adds `strollur::xdev_add_sequence_fastq_scores()` function.
 
 Bug Fixes:
  - `strollur::summary()` will now display results that accurately represent the data.
 
 Deprecated:
+
  - Simplifies member functions of the [strollur_object](https://mothur.org/strollur/reference/strollur.html). 
-       - Removes `strollur_object$add_sequence_tree()` :  Functionality now included in`strollur_object$add()`.
-       - Removes `strollur_object$add_sample_tree()`  :  Functionality now included in`strollur_object$add()`. 
-       - Removes `strollur_object$get_sequence_tree()` :  Functionality now included in`strollur_object$report()`.
-       - Removes `strollur_object$get_sample_tree()` :  Functionality now included in`strollur_object$report()`. 
+     - Removes `strollur_object$add_sequence_tree()` :  Functionality now included in`strollur_object$add()`.
+     - Removes `strollur_object$add_sample_tree()`  :  Functionality now included in`strollur_object$add()`. 
+     - Removes `strollur_object$get_sequence_tree()` :  Functionality now included in`strollur_object$report()`.
+     - Removes `strollur_object$get_sample_tree()` :  Functionality now included in`strollur_object$report()`. 
 
 # strollur 0.1.3
 

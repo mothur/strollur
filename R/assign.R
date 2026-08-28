@@ -15,17 +15,18 @@
 #' @param table a data.frame containing the data you wish to assign
 #'
 #' @param type a string containing the type of data. Options include:
-#' 'sequence_abundance', 'sequence_taxonomy', 'bin',
-#'  'bin_representative', 'bin_taxonomy' and 'treatment'.
-#'  Default = "bin".
+#' `sequence_abundance`, `sequence_taxonomy`, `bin`, `quality`,
+#'  `bin_representative`, `bin_taxonomy` and `treatment`.
+#'  Default = `bin`.
 #'
 #' @param bin_type string containing the bin type you would like the number of
-#' bins for. Default = "otu".
+#' bins for. Default = `otu`.
 #'
 #' @param table_names named list used to indicate the names of the columns in
 #' the table. By default:
 #'
 #' table_names <- list(sequence_name = "sequence_name",
+#'                     quality_score = "quality_score",
 #'                     abundance = "abundance",
 #'                     sample = "sample",
 #'                     treatment = "treatment",
@@ -37,6 +38,10 @@
 #' In table_names, `sequence_name` is a string containing the name of the column
 #' in 'table' that contains the sequence names. Default column name is
 #' 'sequence_name'.
+#'
+#' In table_names, `quality_score` is a string containing the name of the column
+#' in 'table' that contains the sequence quality scores. It is used when you are
+#' adding quality data. Default column name is 'quality_score'.
 #'
 #' In table_names, `abundance` is a string containing the name of the column in
 #' 'table' that contains the abundances. Default column name is 'abundance'.
@@ -125,7 +130,7 @@
 #'
 #' # read mothur's shared file
 #' otu_data <-
-#'       strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+#'   strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 #'
 #' # assign abundance only otus parsed by sample
 #' strollur::assign(data, table = otu_data, bin_type = "otu")
@@ -158,6 +163,7 @@ assign <- function(data, table,
                    bin_type = "otu",
                    table_names = list(
                      sequence_name = "sequence_name",
+                     quality_score = "quality_score",
                      abundance = "abundance",
                      sample = "sample",
                      treatment = "treatment",
@@ -174,6 +180,7 @@ assign <- function(data, table,
 
   default_tn <- list(
     sequence_name = "sequence_name",
+    quality_score = "quality_score",
     abundance = "abundance",
     sample = "sample",
     treatment = "treatment",
@@ -268,6 +275,13 @@ assign <- function(data, table,
       abundance = table_names[["abundance"]],
       sample = table_names[["sample"]],
       treatment = table_names[["treatment"]],
+      verbose = verbose
+    )
+  } else if (type == "quality") {
+    num <- xdev_assign_sequence_quality_scores(
+      data = data, table = table,
+      sequence_name = table_names[["sequence_name"]],
+      quality_score = table_names[["quality_score"]],
       verbose = verbose
     )
   } else {

@@ -844,6 +844,27 @@ Rcpp::DataFrame Dataset::getFastqReport() const {
     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
+// fastq data.frame 2 columns, sequence_name, quality_score
+Rcpp::DataFrame Dataset::getQualityReport() const {
+
+    if (!quality_scores.empty()) {
+
+        Rcpp::DataFrame sequenceData = Rcpp::DataFrame::create();
+        vector<string> sequenceDataLabels = {"sequence_name", "quality_score"};
+
+        sequenceData.push_back(getSequenceNames());
+
+        Rcpp::List qualityList = Rcpp::wrap(getSequenceQualityScores());
+        qualityList.attr("class") = "AsIs";
+        qualityList.attr("fastq_format") = fastq_format;
+        sequenceData.push_back(qualityList);
+        sequenceData.attr("names") = sequenceDataLabels;
+
+        return sequenceData;
+    }
+    return Rcpp::DataFrame::create();
+}
+/******************************************************************************/
 // fasta data.frame 2 or 3 columns, sequence_names, sequences, comments
 Rcpp::DataFrame Dataset::getFastaReport() const {
     vector<string> n(numUnique, "");

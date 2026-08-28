@@ -820,16 +820,17 @@ data$alignment_length()
 \if{latex}{\out{\hypertarget{method-strollur-assign}{}}}
 \subsection{\code{strollur$assign()}}{
   Assign sequence abundances, sequence classifications, bins, bin
-representative sequences, bin classifications or treatments.
+representative sequences, sequence quality data, bin classifications or
+treatments.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{strollur$assign(
   table,
   type = "bin",
   bin_type = "otu",
-  table_names = list(sequence_name = "sequence_name", abundance = "abundance", sample =
-    "sample", treatment = "treatment", taxonomy = "taxonomy", level = "level", confidence
-    = "confidence", bin_name = "bin_name"),
+  table_names = list(sequence_name = "sequence_name", quality_score = "quality_score",
+    abundance = "abundance", sample = "sample", treatment = "treatment", taxonomy =
+    "taxonomy", level = "level", confidence = "confidence", bin_name = "bin_name"),
   reference = NULL,
   verbose = TRUE
 )}
@@ -840,11 +841,11 @@ representative sequences, bin classifications or treatments.
     \describe{
       \item{\code{table}}{a data.frame containing the data you wish to assign}
       \item{\code{type}}{a string containing the type of data. Options include:
-'sequence_abundance', 'sequence_taxonomy', 'bin',
-'bin_representative', 'bin_taxonomy' and 'treatment'.
-Default = "bin".}
+\code{sequence_abundance}, \code{sequence_taxonomy}, \code{bin}, \code{quality}
+\code{bin_representative}, \code{bin_taxonomy} and \code{treatment}.
+Default = \code{bin}.}
       \item{\code{bin_type}}{string containing the bin type you would like the number
-of bins for. Default = "otu".}
+of bins for. Default = \code{otu}.}
       \item{\code{table_names}}{named list used to indicate the names of the columns
 in the table. By default:
 
@@ -852,34 +853,38 @@ table_names <- list(sequence_name = "sequence_name", abundance =
 "abundance", sample = "sample", treatment = "treatment", taxonomy =
 "taxonomy", bin_name = "bin_name")
 
-In table_names, 'sequence_name' is a string containing the name of the
+In table_names, \code{sequence_name} is a string containing the name of the
 column in 'table' that contains the sequence names. Default column name
 is 'sequence_name'.
 
-In table_names, 'abundance' is a string containing the name of the
+In table_names, \code{quality_score} is a string containing the name of the
+column in 'table' that contains the sequence quality scores. It is used
+when you are adding quality data. Default column name is 'quality_score'.
+
+In table_names, \code{abundance} is a string containing the name of the
 column in 'table' that contains the abundances. Default column name is
 'abundance'.
 
-In table_names, 'sample' is a string containing the name of the column
+In table_names, \code{sample} is a string containing the name of the column
 in 'table' that contains the samples. Default column name is 'sample'.
 
-In table_names, 'treatment' is a string containing the name of the
+In table_names, \code{treatment} is a string containing the name of the
 column in 'table' that contains the treatment names. Default column
 name is 'treatment'.
 
-In table_names, 'taxonomy' is a string containing the name of the
+In table_names, \code{taxonomy} is a string containing the name of the
 column in 'table' that contains the classifications. Default column
 name is 'taxonomy'.
 
-In table_names, 'level' is a string containing the name of the column in
+In table_names, \code{level} is a string containing the name of the column in
 the data.frame that contains the classifications. Default column name is
 'level'.
 
-In table_names, 'confidence' is a string containing the name of the
+In table_names, \code{confidence} is a string containing the name of the
 column in the data.frame that contains the classifications confidence
 scores. Default column name is 'confidence'.
 
-In table_names, 'bin_name' is a string containing the name of the
+In table_names, \code{bin_name} is a string containing the name of the
 column in 'table' that contains the bin names. Default column name is
 'bin_name'.}
       \item{\code{reference}}{a list created by the function \link{new_reference}.
@@ -1368,12 +1373,12 @@ requested.
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{type}}{string containing the type of report you would like. Options
-include: \code{fasta}, \code{fastq}, \code{sequence}, \code{sequence_bin_assignment},
-\code{sequence_taxonomy}, \code{sequence_tree}, \code{bin_taxonomy},
-\code{bin_representative}, \code{sample_assignment}, \code{sample_tree},
-\code{resource_reference}, \code{sequence_scrap}, \code{bin_scrap}. If you have added
-custom reports for alignment, contigs_assembly or chimeras, you can get
-those as well. Default = \code{sequence}.}
+include: \code{fasta}, \code{fastq}, \code{sequence}, \code{quality},
+\code{sequence_bin_assignment}, \code{sequence_taxonomy}, \code{sequence_tree},
+\code{bin_taxonomy}, \code{bin_representative}, \code{sample_assignment},
+\code{sample_tree}, \code{resource_reference}, \code{sequence_scrap}, \code{bin_scrap}. If
+you have added custom reports for alignment, contigs_assembly or
+chimeras, you can get those as well. Default = \code{sequence}.}
       \item{\code{bin_type}}{string containing the bin type you would like a
 bin_taxonomy report for. Default = \code{otu}.}
     }

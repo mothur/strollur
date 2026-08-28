@@ -503,7 +503,7 @@ Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data,
                                                       const string& confidence = "confidence",
                                                       const bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_sequence_fastq_scores
+//' @title xdev_add_sequence_fastq_scores
 //' @description
 //' Add FASTQ data to a
 //' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
@@ -526,19 +526,56 @@ Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data,
 //'
 //' table <- strollur::read_fastq(strollur_example("tiny.fastq.gz"))
 //' data <- strollur::new_dataset("example")
-//' strollur::xdev_assign_sequence_fastq_scores(data, table)
+//' strollur::xdev_add_sequence_fastq_scores(data, table)
 //' data
 //'
 //' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @export
 //[[Rcpp::export]]
-Rcpp::Environment xdev_assign_sequence_fastq_scores(const Rcpp::Environment& data,
+Rcpp::Environment xdev_add_sequence_fastq_scores(const Rcpp::Environment& data,
                               const Rcpp::DataFrame& table,
                               Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
                               const string& sequence_name = "sequence_name",
                               const string& sequence = "sequence",
                               const string& quality_score = "quality_score",
                               const bool verbose = true);
+/******************************************************************************/
+//' @title xdev_assign_sequence_quality_scores
+//' @description
+//' Add quality data to a
+//' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+//' Scores are stored as vector<int> for each sequence.
+//'
+//' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @param table a data.frame containing quality data you are trying to add
+//' @param reference a list created by the function [new_reference]. Optional.
+//' @param sequence_name a string containing the name of the column in 'table'
+//' that contains the sequence names. Default column name is 'sequence_name'.
+//' @param quality_score a string containing the name of the column in 'table'
+//'   that contains the quality scores stored as vector<int>. Default column
+//'   name is 'quality_score'.
+//' @param verbose a logical whether or not you want progress messages.
+//' Default = TRUE.
+//' @examples
+//'
+//' qual_table <- strollur::read_quality(strollur_example("tiny.qual"))
+//' fasta_table <- strollur::read_fasta(strollur_example("tiny.fasta"))
+//'
+//' data <- strollur::new_dataset("example")
+//' strollur::xdev_add_sequences(data, fasta_table)
+//' strollur::xdev_assign_sequence_quality_scores(data, qual_table)
+//'
+//' data
+//'
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @export
+//[[Rcpp::export]]
+Rcpp::Environment xdev_assign_sequence_quality_scores(const Rcpp::Environment& data,
+                                                  const Rcpp::DataFrame& table,
+                                                  Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
+                                                  const string& sequence_name = "sequence_name",
+                                                  const string& quality_score = "quality_score",
+                                                  const bool verbose = true);
 /******************************************************************************/
 //' @title xdev_assign_sequence_taxonomy_tidy
 //' @description
@@ -1306,15 +1343,15 @@ Rcpp::Environment xdev_remove_sequences(const Rcpp::Environment& data,
 //'
 //' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @param type string containing the type of report you would like. Options
-//' include: "fasta", "fastq", "sequence", "sequence_bin_assignment",
-//' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
-//'  "sample_assignment", "resource_reference", "sequence_scrap",
+//' include: `fasta`, `fastq`, `quality`, `sequence`, `sequence_bin_assignment`,
+//' `sequence_taxonomy`, `bin_taxonomy`, `bin_representative`,
+//'  `sample_assignment`, `resource_reference`, `sequence_scrap`,
 //' "bin_scrap". If you have added custom reports for alignment,
 //' contigs_assembly, chimeras or metadata, you can get those as well.
-//'  Default = "sequence".
+//'  Default = `sequence`.
 //'
 //' @param bin_type string containing the bin type you would like a bin_taxonomy
-//' report for. Default = "otu".
+//' report for. Default = `otu`.
 //'
 //' @examples
 //'

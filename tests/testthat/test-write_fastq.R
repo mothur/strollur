@@ -57,9 +57,23 @@ test_that("write_fastq", {
   expect_equal(df$quality_score[[2]][1:15], score_2_15)
   expect_equal(df$quality_score[[3]][1:15], score_3_15)
 
+  output <- write_fastq(data, get_full_name("example_dataset"))
+
+  df <- read_fastq(output, format = "solexa")
+
+  remove_file(output)
+
+  score_1_15 <- c(0, 2, 2, 3, 3, 4, 3, 4, 4, 6, 6, 6, 7, 7, 7)
+  score_2_15 <- c(0, 3, 3, 2, 3, 4, 4, 5, 4, 6, 6, 4, 5, 7, 7)
+  score_3_15 <- c(4, 3, 3, 4, 4, 4, 3, 4, 4, 6, 6, 6, 7, 7, 7)
+
+  expect_equal(df$quality_score[[1]][1:15], score_1_15)
+  expect_equal(df$quality_score[[2]][1:15], score_2_15)
+  expect_equal(df$quality_score[[3]][1:15], score_3_15)
+
   data <- read_mothur(
-    otu_list = strollur_example("final.opti_mcc.list.gz"),
-    dataset_name = "data"
+      otu_list = strollur_example("final.opti_mcc.list.gz"),
+      dataset_name = "data"
   )
 
   expect_equal(write_fastq(data), "no_fastq_data")

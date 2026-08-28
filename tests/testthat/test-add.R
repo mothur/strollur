@@ -52,8 +52,35 @@ test_that("test add - errors", {
 })
 
 test_that("test add - sequence_tree, sample_tree", {
-  names <- c("seq1", "seq2", "seq3", "seq4")
+  dataset_t <- new_dataset()
+  names <- c("seq1", "seq2", "seq3", "seq4", "seq5")
   seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
+  xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
+
+  l <- lapply(strsplit(seqs, split = ""), "[")
+  names(l) <- c("seq1", "seq2", "seq3", "seq4")
+
+  # tree is missing name in dataset - no tree added
+  add(dataset_t, table = nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
+
+  expect_null(dataset_t$report(type = "sequence_tree"))
+
+  dataset_t <- new_dataset()
+  names <- c("seq1", "seq2", "seq3")
+  seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
+  xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
+
+  l <- lapply(strsplit(seqs, split = ""), "[")
+  names(l) <- c("seq1", "seq2", "seq3", "seq4")
+
+  # tree contains extra names - prune tree
+  add(dataset_t, table = nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
+
+  tree <- dataset_t$report(type = "sequence_tree")
+
+  expect_equal(c("seq1", "seq2", "seq3"), sort(tree$tip.label))
+
+  names <- c("seq1", "seq2", "seq3", "seq4")
 
   dataset_t <- new_dataset()
   xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
@@ -74,14 +101,20 @@ test_that("test add - sequence_tree, sample_tree", {
   )
 
   dataset_t <- read_mothur(
+      fasta = strollur_example("final.fasta.gz"))
+
+  sample_tree <- ape::read.tree(
+      strollur_example("final.opti_mcc.jclass.ave.tre")
+  )
+
+  add(dataset_t, table = tree, type = "sample_tree")
+  expect_null(dataset_t$report(type = "sample_tree"))
+
+  dataset_t <- read_mothur(
     fasta = strollur_example("final.fasta.gz"),
     count = strollur_example("final.count_table.gz"),
     otu_list = strollur_example("final.opti_mcc.list.gz"),
     dataset_name = "miseq_sop"
-  )
-
-  sample_tree <- ape::read.tree(
-    strollur_example("final.opti_mcc.jclass.ave.tre")
   )
 
   expect_error(add(dataset_t, table = c("bad_type"), type = "sample_tree"))

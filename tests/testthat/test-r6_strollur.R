@@ -1113,6 +1113,23 @@ test_that("dataset - add_metadata, get_metadata", {
   expect_equal(metadata[[8, 3]], "left palm")
   expect_equal(metadata[[2, 3]], "gut")
   expect_equal(metadata[[3, 7]], "subject-1")
+
+  add(dataset_t, table = metadata, type = "report", report_type = "metadata")
+  metadata <- report(dataset_t, "metadata")
+
+  expect_equal(names(metadata), c(
+      "sample-id", "barcode-sequence",
+      "body-site", "year", "month", "day",
+      "subject", "reported-antibiotic-usage",
+      "days-since-experiment-start"
+  ))
+  expect_equal(nrow(metadata), 34)
+
+  # random spot checks
+  expect_equal(metadata[[5, 8]], "No")
+  expect_equal(metadata[[8, 3]], "left palm")
+  expect_equal(metadata[[2, 3]], "gut")
+  expect_equal(metadata[[3, 7]], "subject-1")
 })
 
 test_that("dataset - add_references, get_references", {
@@ -1844,4 +1861,35 @@ test_that("test strollur$add - fastq", {
   expect_equal(fastq_report$quality_score[[1]][1:15], score_1_15)
   expect_equal(fastq_report$quality_score[[2]][1:15], score_2_15)
   expect_equal(fastq_report$quality_score[[3]][1:15], score_3_15)
+})
+
+test_that("test strollur$assign - quality", {
+  data <- strollur::new_dataset(dataset_name = "example_dataset")
+  # Read quality data into data.frame
+  quality_data <-
+    strollur::read_quality(quality = strollur_example("tiny.qual"))
+  fasta_data <-
+    strollur::read_fasta(fasta = strollur_example("tiny.fasta"))
+
+  # Add FASTA sequence data
+  strollur::add(data = data, table = fasta_data, type = "sequence")
+  strollur::assign(data, table = quality_data, type = "quality")
+
+  quality_report <- data$report(type = "quality")
+
+  names <- c(
+    "M00967:43:000000000-A3JHG:1:1101:18327:1699",
+    "M00967:43:000000000-A3JHG:1:1101:14069:1827",
+    "M00967:43:000000000-A3JHG:1:1101:18044:1900"
+  )
+
+  expect_equal(quality_report$sequence_name, names)
+
+  score_1_15 <- c(2, 29, 29, 32, 32, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+  score_2_15 <- c(18, 32, 32, 30, 32, 33, 33, 35, 33, 37, 37, 33, 36, 38, 38)
+  score_3_15 <- c(33, 32, 31, 33, 33, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+
+  expect_equal(quality_report$quality_score[[1]][1:15], score_1_15)
+  expect_equal(quality_report$quality_score[[2]][1:15], score_2_15)
+  expect_equal(quality_report$quality_score[[3]][1:15], score_3_15)
 })

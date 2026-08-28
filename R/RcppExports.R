@@ -520,7 +520,7 @@ xdev_assign_bin_taxonomy_tidy <- function(data, table, bin_type = "otu", referen
     .Call(`_strollur_xdev_assign_bin_taxonomy_tidy`, data, table, bin_type, reference, bin_name, level, taxonomy, confidence, verbose)
 }
 
-#' @title xdev_assign_sequence_fastq_scores
+#' @title xdev_add_sequence_fastq_scores
 #' @description
 #' Add FASTQ data to a
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
@@ -543,13 +543,46 @@ xdev_assign_bin_taxonomy_tidy <- function(data, table, bin_type = "otu", referen
 #'
 #' table <- strollur::read_fastq(strollur_example("tiny.fastq.gz"))
 #' data <- strollur::new_dataset("example")
-#' strollur::xdev_assign_sequence_fastq_scores(data, table)
+#' strollur::xdev_add_sequence_fastq_scores(data, table)
 #' data
 #'
 #' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
-xdev_assign_sequence_fastq_scores <- function(data, table, reference = NULL, sequence_name = "sequence_name", sequence = "sequence", quality_score = "quality_score", verbose = TRUE) {
-    .Call(`_strollur_xdev_assign_sequence_fastq_scores`, data, table, reference, sequence_name, sequence, quality_score, verbose)
+xdev_add_sequence_fastq_scores <- function(data, table, reference = NULL, sequence_name = "sequence_name", sequence = "sequence", quality_score = "quality_score", verbose = TRUE) {
+    .Call(`_strollur_xdev_add_sequence_fastq_scores`, data, table, reference, sequence_name, sequence, quality_score, verbose)
+}
+
+#' @title xdev_assign_sequence_quality_scores
+#' @description
+#' Add quality data to a
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+#' Scores are stored as vector<int> for each sequence.
+#'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a data.frame containing quality data you are trying to add
+#' @param reference a list created by the function [new_reference]. Optional.
+#' @param sequence_name a string containing the name of the column in 'table'
+#' that contains the sequence names. Default column name is 'sequence_name'.
+#' @param quality_score a string containing the name of the column in 'table'
+#'   that contains the quality scores stored as vector<int>. Default column
+#'   name is 'quality_score'.
+#' @param verbose a logical whether or not you want progress messages.
+#' Default = TRUE.
+#' @examples
+#'
+#' qual_table <- strollur::read_quality(strollur_example("tiny.qual"))
+#' fasta_table <- strollur::read_fasta(strollur_example("tiny.fasta"))
+#'
+#' data <- strollur::new_dataset("example")
+#' strollur::xdev_add_sequences(data, fasta_table)
+#' strollur::xdev_assign_sequence_quality_scores(data, qual_table)
+#'
+#' data
+#'
+#' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @export
+xdev_assign_sequence_quality_scores <- function(data, table, reference = NULL, sequence_name = "sequence_name", quality_score = "quality_score", verbose = TRUE) {
+    .Call(`_strollur_xdev_assign_sequence_quality_scores`, data, table, reference, sequence_name, quality_score, verbose)
 }
 
 #' @title xdev_assign_sequence_taxonomy_tidy
@@ -1287,15 +1320,15 @@ xdev_remove_sequences <- function(data, sequence_names, trash_tags) {
 #'
 #' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param type string containing the type of report you would like. Options
-#' include: "fasta", "fastq", "sequence", "sequence_bin_assignment",
-#' "sequence_taxonomy", "bin_taxonomy", "bin_representative",
-#'  "sample_assignment", "resource_reference", "sequence_scrap",
+#' include: `fasta`, `fastq`, `quality`, `sequence`, `sequence_bin_assignment`,
+#' `sequence_taxonomy`, `bin_taxonomy`, `bin_representative`,
+#'  `sample_assignment`, `resource_reference`, `sequence_scrap`,
 #' "bin_scrap". If you have added custom reports for alignment,
 #' contigs_assembly, chimeras or metadata, you can get those as well.
-#'  Default = "sequence".
+#'  Default = `sequence`.
 #'
 #' @param bin_type string containing the bin type you would like a bin_taxonomy
-#' report for. Default = "otu".
+#' report for. Default = `otu`.
 #'
 #' @examples
 #'

@@ -137,7 +137,7 @@ import_dataset <- function(table) {
 
     # "sequence_name", "quality_score"
     if ("quality_score" %in% sequence_data_names) {
-      xdev_assign_sequence_fastq_scores(
+      xdev_add_sequence_fastq_scores(
         data = data, table = table$sequence_data
       )
     }

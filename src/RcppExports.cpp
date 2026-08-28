@@ -224,9 +224,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// xdev_assign_sequence_fastq_scores
-Rcpp::Environment xdev_assign_sequence_fastq_scores(const Rcpp::Environment& data, const Rcpp::DataFrame& table, Rcpp::Nullable<Rcpp::List> reference, const string& sequence_name, const string& sequence, const string& quality_score, const bool verbose);
-RcppExport SEXP _strollur_xdev_assign_sequence_fastq_scores(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP sequence_nameSEXP, SEXP sequenceSEXP, SEXP quality_scoreSEXP, SEXP verboseSEXP) {
+// xdev_add_sequence_fastq_scores
+Rcpp::Environment xdev_add_sequence_fastq_scores(const Rcpp::Environment& data, const Rcpp::DataFrame& table, Rcpp::Nullable<Rcpp::List> reference, const string& sequence_name, const string& sequence, const string& quality_score, const bool verbose);
+RcppExport SEXP _strollur_xdev_add_sequence_fastq_scores(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP sequence_nameSEXP, SEXP sequenceSEXP, SEXP quality_scoreSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -237,7 +237,23 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const string& >::type sequence(sequenceSEXP);
     Rcpp::traits::input_parameter< const string& >::type quality_score(quality_scoreSEXP);
     Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(xdev_assign_sequence_fastq_scores(data, table, reference, sequence_name, sequence, quality_score, verbose));
+    rcpp_result_gen = Rcpp::wrap(xdev_add_sequence_fastq_scores(data, table, reference, sequence_name, sequence, quality_score, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// xdev_assign_sequence_quality_scores
+Rcpp::Environment xdev_assign_sequence_quality_scores(const Rcpp::Environment& data, const Rcpp::DataFrame& table, Rcpp::Nullable<Rcpp::List> reference, const string& sequence_name, const string& quality_score, const bool verbose);
+RcppExport SEXP _strollur_xdev_assign_sequence_quality_scores(SEXP dataSEXP, SEXP tableSEXP, SEXP referenceSEXP, SEXP sequence_nameSEXP, SEXP quality_scoreSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::Environment& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::DataFrame& >::type table(tableSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::List> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< const string& >::type sequence_name(sequence_nameSEXP);
+    Rcpp::traits::input_parameter< const string& >::type quality_score(quality_scoreSEXP);
+    Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(xdev_assign_sequence_quality_scores(data, table, reference, sequence_name, quality_score, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -657,7 +673,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_strollur_xdev_assign_bin_taxonomy", (DL_FUNC) &_strollur_xdev_assign_bin_taxonomy, 7},
     {"_strollur_xdev_assign_sequence_taxonomy", (DL_FUNC) &_strollur_xdev_assign_sequence_taxonomy, 6},
     {"_strollur_xdev_assign_bin_taxonomy_tidy", (DL_FUNC) &_strollur_xdev_assign_bin_taxonomy_tidy, 9},
-    {"_strollur_xdev_assign_sequence_fastq_scores", (DL_FUNC) &_strollur_xdev_assign_sequence_fastq_scores, 7},
+    {"_strollur_xdev_add_sequence_fastq_scores", (DL_FUNC) &_strollur_xdev_add_sequence_fastq_scores, 7},
+    {"_strollur_xdev_assign_sequence_quality_scores", (DL_FUNC) &_strollur_xdev_assign_sequence_quality_scores, 6},
     {"_strollur_xdev_assign_sequence_taxonomy_tidy", (DL_FUNC) &_strollur_xdev_assign_sequence_taxonomy_tidy, 8},
     {"_strollur_xdev_assign_sequence_abundance", (DL_FUNC) &_strollur_xdev_assign_sequence_abundance, 7},
     {"_strollur_xdev_assign_treatments", (DL_FUNC) &_strollur_xdev_assign_treatments, 5},

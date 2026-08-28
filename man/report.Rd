@@ -12,7 +12,7 @@ report(data, type = "sequence", bin_type = "otu")
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type}{string containing the type of report you would like. Options
-include: \code{fasta}, \code{fastq}, \code{sequence}, \code{sequence_bin_assignment},
+include: \code{fasta}, \code{fastq}, \code{sequence}, \code{quality}, \code{sequence_bin_assignment},
 \code{sequence_taxonomy}, \code{sequence_tree}, \code{bin_taxonomy}, \code{bin_representative},
 \code{sample_assignment}, \code{sample_tree}, \code{resource_reference}, \code{sequence_scrap},
 \code{bin_scrap}. If you have added custom reports for alignment,
@@ -28,10 +28,11 @@ data.frame or tree
 \description{
 Get a data.frame containing the report or the phylo tree
 requested. Reports include FASTA format, FASTQ format, sequences reports,
-sequence_bin_assignments, sequence_taxonomy, sequence_tree, bin_taxonomy,
-bin_representatives, sample_assignments, sample_tree, references, custom
-reports, sequence_scrap, and bin_scrap in a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+sequence quality data, sequence_bin_assignments, sequence_taxonomy,
+sequence_tree, bin_taxonomy, bin_representatives, sample_assignments,
+sample_tree, references, custom reports, sequence_scrap, and bin_scrap in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object.
 }
 \examples{
 

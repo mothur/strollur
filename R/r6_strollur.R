@@ -443,7 +443,7 @@ strollur <- R6Class("strollur",
           verbose = verbose
         )
       } else if (type == "fastq") {
-        xdev_assign_sequence_fastq_scores(
+        xdev_add_sequence_fastq_scores(
           data = self, table = table,
           sequence_name = table_names[["sequence_name"]],
           sequence = table_names[["sequence"]],
@@ -617,17 +617,18 @@ strollur <- R6Class("strollur",
 
     #' @description
     #' Assign sequence abundances, sequence classifications, bins, bin
-    #' representative sequences, bin classifications or treatments.
+    #' representative sequences, sequence quality data, bin classifications or
+    #' treatments.
     #'
     #' @param table a data.frame containing the data you wish to assign
     #'
     #' @param type a string containing the type of data. Options include:
-    #' 'sequence_abundance', 'sequence_taxonomy', 'bin',
-    #'  'bin_representative', 'bin_taxonomy' and 'treatment'.
-    #'  Default = "bin".
+    #' `sequence_abundance`, `sequence_taxonomy`, `bin`, `quality`
+    #'  `bin_representative`, `bin_taxonomy` and `treatment`.
+    #'  Default = `bin`.
     #'
     #' @param bin_type string containing the bin type you would like the number
-    #'   of bins for. Default = "otu".
+    #'   of bins for. Default = `otu`.
     #'
     #' @param table_names named list used to indicate the names of the columns
     #'   in the table. By default:
@@ -636,34 +637,38 @@ strollur <- R6Class("strollur",
     #'   "abundance", sample = "sample", treatment = "treatment", taxonomy =
     #'   "taxonomy", bin_name = "bin_name")
     #'
-    #'   In table_names, 'sequence_name' is a string containing the name of the
+    #'   In table_names, `sequence_name` is a string containing the name of the
     #'   column in 'table' that contains the sequence names. Default column name
     #'   is 'sequence_name'.
     #'
-    #'   In table_names, 'abundance' is a string containing the name of the
+    #' In table_names, `quality_score` is a string containing the name of the
+    #' column in 'table' that contains the sequence quality scores. It is used
+    #' when you are adding quality data. Default column name is 'quality_score'.
+    #'
+    #'   In table_names, `abundance` is a string containing the name of the
     #'   column in 'table' that contains the abundances. Default column name is
     #'   'abundance'.
     #'
-    #'   In table_names, 'sample' is a string containing the name of the column
+    #'   In table_names, `sample` is a string containing the name of the column
     #'   in 'table' that contains the samples. Default column name is 'sample'.
     #'
-    #'   In table_names, 'treatment' is a string containing the name of the
+    #'   In table_names, `treatment` is a string containing the name of the
     #'   column in 'table' that contains the treatment names. Default column
     #'   name is 'treatment'.
     #'
-    #'   In table_names, 'taxonomy' is a string containing the name of the
+    #'   In table_names, `taxonomy` is a string containing the name of the
     #'   column in 'table' that contains the classifications. Default column
     #'   name is 'taxonomy'.
     #'
-    #' In table_names, 'level' is a string containing the name of the column in
+    #' In table_names, `level` is a string containing the name of the column in
     #' the data.frame that contains the classifications. Default column name is
     #' 'level'.
     #'
-    #' In table_names, 'confidence' is a string containing the name of the
+    #' In table_names, `confidence` is a string containing the name of the
     #' column in the data.frame that contains the classifications confidence
     #' scores. Default column name is 'confidence'.
     #'
-    #'   In table_names, 'bin_name' is a string containing the name of the
+    #'   In table_names, `bin_name` is a string containing the name of the
     #'   column in 'table' that contains the bin names. Default column name is
     #'   'bin_name'.
     #'
@@ -766,6 +771,7 @@ strollur <- R6Class("strollur",
                       bin_type = "otu",
                       table_names = list(
                         sequence_name = "sequence_name",
+                        quality_score = "quality_score",
                         abundance = "abundance",
                         sample = "sample",
                         treatment = "treatment",
@@ -778,6 +784,7 @@ strollur <- R6Class("strollur",
                       verbose = TRUE) {
       default_tn <- list(
         sequence_name = "sequence_name",
+        quality_score = "quality_score",
         abundance = "abundance",
         sample = "sample",
         treatment = "treatment",
@@ -872,6 +879,13 @@ strollur <- R6Class("strollur",
           abundance = table_names[["abundance"]],
           sample = table_names[["sample"]],
           treatment = table_names[["treatment"]],
+          verbose = verbose
+        )
+      } else if (type == "quality") {
+        num <- xdev_assign_sequence_quality_scores(
+          data = self, table = table,
+          sequence_name = table_names[["sequence_name"]],
+          quality_score = table_names[["quality_score"]],
           verbose = verbose
         )
       } else {
@@ -1239,12 +1253,12 @@ strollur <- R6Class("strollur",
     #' requested.
     #'
     #' @param type string containing the type of report you would like. Options
-    #'   include: `fasta`, `fastq`, `sequence`, `sequence_bin_assignment`,
-    #'   `sequence_taxonomy`, `sequence_tree`, `bin_taxonomy`,
-    #'   `bin_representative`, `sample_assignment`, `sample_tree`,
-    #'   `resource_reference`, `sequence_scrap`, `bin_scrap`. If you have added
-    #'   custom reports for alignment, contigs_assembly or chimeras, you can get
-    #'   those as well. Default = `sequence`.
+    #'   include: `fasta`, `fastq`, `sequence`, `quality`,
+    #'   `sequence_bin_assignment`, `sequence_taxonomy`, `sequence_tree`,
+    #'   `bin_taxonomy`, `bin_representative`, `sample_assignment`,
+    #'   `sample_tree`, `resource_reference`, `sequence_scrap`, `bin_scrap`. If
+    #'   you have added custom reports for alignment, contigs_assembly or
+    #'   chimeras, you can get those as well. Default = `sequence`.
     #'
     #' @param bin_type string containing the bin type you would like a
     #'   bin_taxonomy report for. Default = `otu`.

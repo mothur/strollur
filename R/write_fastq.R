@@ -34,7 +34,7 @@ write_fastq <- function(data, filename = NULL) {
     if (filename == "") {
       .abort_no_name()
     }
-    filename <- paste0(filename, ".fasta")
+    filename <- paste0(filename, ".fastq")
   }
 
   fastq <- xdev_report(data, type = "fastq")
@@ -84,7 +84,8 @@ write_fastq <- function(data, filename = NULL) {
 #' convert_qual_string(quality_score)
 #'
 #' @returns vector of characters
-#' @export
+#' @keywords internal
+#' @noRd
 convert_qual_string <- function(quality_score,
                                 format = "illumina1.8+",
                                 table = NULL) {

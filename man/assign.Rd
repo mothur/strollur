@@ -11,9 +11,9 @@ assign(
   table,
   type = "bin",
   bin_type = "otu",
-  table_names = list(sequence_name = "sequence_name", abundance = "abundance", sample =
-    "sample", treatment = "treatment", taxonomy = "taxonomy", level = "level", confidence
-    = "confidence", bin_name = "bin_name"),
+  table_names = list(sequence_name = "sequence_name", quality_score = "quality_score",
+    abundance = "abundance", sample = "sample", treatment = "treatment", taxonomy =
+    "taxonomy", level = "level", confidence = "confidence", bin_name = "bin_name"),
   reference = NULL,
   verbose = TRUE
 )
@@ -25,17 +25,18 @@ assign(
 \item{table}{a data.frame containing the data you wish to assign}
 
 \item{type}{a string containing the type of data. Options include:
-'sequence_abundance', 'sequence_taxonomy', 'bin',
-'bin_representative', 'bin_taxonomy' and 'treatment'.
-Default = "bin".}
+\code{sequence_abundance}, \code{sequence_taxonomy}, \code{bin}, \code{quality},
+\code{bin_representative}, \code{bin_taxonomy} and \code{treatment}.
+Default = \code{bin}.}
 
 \item{bin_type}{string containing the bin type you would like the number of
-bins for. Default = "otu".}
+bins for. Default = \code{otu}.}
 
 \item{table_names}{named list used to indicate the names of the columns in
 the table. By default:
 
 table_names <- list(sequence_name = "sequence_name",
+quality_score = "quality_score",
 abundance = "abundance",
 sample = "sample",
 treatment = "treatment",
@@ -47,6 +48,10 @@ bin_name = "bin_name")
 In table_names, \code{sequence_name} is a string containing the name of the column
 in 'table' that contains the sequence names. Default column name is
 'sequence_name'.
+
+In table_names, \code{quality_score} is a string containing the name of the column
+in 'table' that contains the sequence quality scores. It is used when you are
+adding quality data. Default column name is 'quality_score'.
 
 In table_names, \code{abundance} is a string containing the name of the column in
 'table' that contains the abundances. Default column name is 'abundance'.
@@ -143,7 +148,7 @@ data <- strollur::new_dataset(dataset_name = "example_dataset")
 
 # read mothur's shared file
 otu_data <-
-      strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+  strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
 # assign abundance only otus parsed by sample
 strollur::assign(data, table = otu_data, bin_type = "otu")

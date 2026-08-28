@@ -662,7 +662,7 @@ Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data,
     return data;
 }
 /******************************************************************************/
-Rcpp::Environment xdev_assign_sequence_fastq_scores(const Rcpp::Environment& data,
+Rcpp::Environment xdev_add_sequence_fastq_scores(const Rcpp::Environment& data,
                                                 const Rcpp::DataFrame& table,
                                                 Rcpp::Nullable<Rcpp::List> reference,
                                                 const string& sequence_name,
@@ -812,6 +812,78 @@ Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
     if (verbose) {
         string tag = " sequence abundances.";
         xint_assigned_message(numAssigned, tag);
+    }
+
+    return data;
+}
+/******************************************************************************/
+Rcpp::Environment xdev_assign_sequence_quality_scores(const Rcpp::Environment& data,
+                                                    const Rcpp::DataFrame& table,
+                                                    Rcpp::Nullable<Rcpp::List> reference,
+                                                    const string& sequence_name,
+                                                    const string& quality_score,
+                                                    const bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    vector<string> sequence_names = Rcpp::as<vector<string>>(
+        xint_fill_required_parameters(table, sequence_name));
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+
+    double numAssigned = 0;
+
+    // this table is just quality scores, make sure we have sequences to
+    // pair them with
+    vector<string> seqs = xdev_get_sequences(data);
+
+    if (allBlank(seqs)) {
+        string message = "You must have neucleotide sequence strings in your ";
+        message += "strollur::strollur object to add quality data.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+
+    vector<string> unique_names = unique(sequence_names);
+    vector<string> dataset_names = d.get()->getSequenceNames();
+
+    // sanity check, make sure names are present in dataset
+    if (!identical(unique_names, dataset_names)) {
+        string message = "You must provide quality scores for all";
+        message += " sequences in your dataset.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+
+    vector<vector<int>> scores;
+    scores = Rcpp::as<vector<vector<int>>>(
+        xint_fill_required_parameters(table, quality_score));
+
+    numAssigned = d.get()->assignQualityScores(sequence_names, scores);
+
+
+    if (verbose) {
+        xint_assigned_message(numAssigned, " quality scores.");
+    }
+
+    if (reference.isNotNull()) {
+
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return data;
@@ -1300,6 +1372,10 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
     // sequence fastq data
     else if (type == "fastq") {
         return d.get()->getFastqReport();
+    }
+    // sequence quality data
+    else if (type == "quality") {
+        return d.get()->getQualityReport();
     }
     // sequence bin assignments report
     else if (type == "sequence_bin_assignment") {

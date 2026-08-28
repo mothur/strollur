@@ -1472,7 +1472,7 @@ test_that("Tests xdev_add_report with reference", {
   expect_equal(resource_reference$method_url, "NA")
 })
 
-test_that("Tests xdev_assign_sequence_fastq_scores ", {
+test_that("Tests xdev_add_sequence_fastq_scores ", {
   reference <- strollur::new_reference(
     vendor = "mothur2",
     name = "test()",
@@ -1484,7 +1484,7 @@ test_that("Tests xdev_assign_sequence_fastq_scores ", {
   fastq_data <- strollur::read_fastq(strollur_example("tiny.fastq.gz"))
 
   data <- strollur::new_dataset()
-  strollur::xdev_assign_sequence_fastq_scores(data,
+  strollur::xdev_add_sequence_fastq_scores(data,
     table = fastq_data,
     reference = reference
   )
@@ -1547,7 +1547,7 @@ test_that("Tests xdev_assign_sequence_fastq_scores ", {
 
   data <- strollur::new_dataset()
   # fasta data instead of fastq
-  expect_error(strollur::xdev_assign_sequence_fastq_scores(data,
+  expect_error(strollur::xdev_add_sequence_fastq_scores(data,
     table = fastq_data
   ))
 
@@ -1561,6 +1561,7 @@ test_that("Tests xdev_assign_sequence_fastq_scores ", {
     ))
   )
   # incorrect number of scores for sequence length
-  expect_error(strollur::xdev_assign_sequence_fastq_scores(data,
-                                                           table = fastq_data))
+  expect_error(strollur::xdev_add_sequence_fastq_scores(data,
+    table = fastq_data
+  ))
 })

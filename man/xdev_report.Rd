@@ -10,15 +10,15 @@ xdev_report(data, type = "sequence", bin_type = "otu")
 \item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type}{string containing the type of report you would like. Options
-include: "fasta", "fastq", "sequence", "sequence_bin_assignment",
-"sequence_taxonomy", "bin_taxonomy", "bin_representative",
-"sample_assignment", "resource_reference", "sequence_scrap",
+include: \code{fasta}, \code{fastq}, \code{quality}, \code{sequence}, \code{sequence_bin_assignment},
+\code{sequence_taxonomy}, \code{bin_taxonomy}, \code{bin_representative},
+\code{sample_assignment}, \code{resource_reference}, \code{sequence_scrap},
 "bin_scrap". If you have added custom reports for alignment,
 contigs_assembly, chimeras or metadata, you can get those as well.
-Default = "sequence".}
+Default = \code{sequence}.}
 
 \item{bin_type}{string containing the bin type you would like a bin_taxonomy
-report for. Default = "otu".}
+report for. Default = \code{otu}.}
 }
 \value{
 data.frame

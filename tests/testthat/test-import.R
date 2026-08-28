@@ -224,7 +224,7 @@ test_that("import - quality data", {
   table <- strollur::read_fastq(strollur_example("tiny.fastq.gz"))
 
   data <- strollur::new_dataset()
-  xdev_assign_sequence_fastq_scores(data, table)
+  xdev_add_sequence_fastq_scores(data, table)
 
   data2 <- strollur::import_dataset(strollur::export_dataset(data))
 

@@ -224,7 +224,7 @@ add <- function(data, table,
       verbose = verbose
     )
   } else if (type == "fastq") {
-    xdev_assign_sequence_fastq_scores(
+    xdev_add_sequence_fastq_scores(
       data = data, table = table,
       sequence_name = table_names[["sequence_name"]],
       sequence = table_names[["sequence"]],
@@ -320,7 +320,7 @@ add <- function(data, table,
       .abort_incorrect_type("phylo", table)
     }
 
-    # if no samples, add sequences in tree to dataset
+    # if no samples, ignore tree
     if (count(data, type = "sample") == 0) {
       message <- paste0("Your dataset does not contain sample ",
         "data, ignoring sample tree.",
