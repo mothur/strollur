@@ -51,7 +51,7 @@ read_fasta <- function(fasta) {
   if (has_comments) {
     return(data.frame(
       sequence_name = names,
-      sequence = df$Sequence,
+      sequence = gsub("U", "T", toupper(df$Sequence)),
       comment = comments
     ))
   }

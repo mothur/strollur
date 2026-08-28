@@ -1118,10 +1118,10 @@ test_that("dataset - add_metadata, get_metadata", {
   metadata <- report(dataset_t, "metadata")
 
   expect_equal(names(metadata), c(
-      "sample-id", "barcode-sequence",
-      "body-site", "year", "month", "day",
-      "subject", "reported-antibiotic-usage",
-      "days-since-experiment-start"
+    "sample-id", "barcode-sequence",
+    "body-site", "year", "month", "day",
+    "subject", "reported-antibiotic-usage",
+    "days-since-experiment-start"
   ))
   expect_equal(nrow(metadata), 34)
 

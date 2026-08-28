@@ -302,7 +302,11 @@ double Dataset::addSequences(const vector<string>& n,
     // add to names
     names.insert(names.end(), n.begin(), n.end());
 
-    // add to seqs
+    // add to seqs - toUpper and U -> T
+    for (string& seq : s) {
+        toUpper(seq);
+        std::replace(seq.begin(), seq.end(), 'U', 'T');
+    }
     seqs.insert(seqs.end(), s.begin(), s.end());
 
     // innocent

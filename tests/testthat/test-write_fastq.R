@@ -72,8 +72,8 @@ test_that("write_fastq", {
   expect_equal(df$quality_score[[3]][1:15], score_3_15)
 
   data <- read_mothur(
-      otu_list = strollur_example("final.opti_mcc.list.gz"),
-      dataset_name = "data"
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    dataset_name = "data"
   )
 
   expect_equal(write_fastq(data), "no_fastq_data")

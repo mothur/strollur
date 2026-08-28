@@ -100,12 +100,10 @@ test_that("test add - sequence_tree, sample_tree", {
     c(0.26, 0.33, 0.07, 0.33, 0.26)
   )
 
-  dataset_t <- read_mothur(
-      fasta = strollur_example("final.fasta.gz"))
+  dataset_t <- read_mothur(fasta = strollur_example("final.fasta.gz"))
 
-  sample_tree <- ape::read.tree(
-      strollur_example("final.opti_mcc.jclass.ave.tre")
-  )
+  treefile <- strollur_example("final.opti_mcc.jclass.ave.tre")
+  sample_tree <- ape::read.tree(treefile)
 
   add(dataset_t, table = tree, type = "sample_tree")
   expect_null(dataset_t$report(type = "sample_tree"))

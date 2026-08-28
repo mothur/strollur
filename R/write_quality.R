@@ -23,33 +23,37 @@
 #' @return name of sequence quality file
 #' @export
 write_quality <- function(data, filename = NULL) {
-    if (!inherits(data, "strollur")) {
-        stop("data must be a strollur object.")
+  if (!inherits(data, "strollur")) {
+    stop("data must be a strollur object.")
+  }
+
+  if (is.null(filename)) {
+    filename <- names(data, "dataset")
+    if (filename == "") {
+      .abort_no_name()
     }
+    filename <- paste0(filename, ".qual")
+  }
 
-    if (is.null(filename)) {
-        filename <- names(data, "dataset")
-        if (filename == "") {
-            .abort_no_name()
-        }
-        filename <- paste0(filename, ".qual")
-    }
+  quality <- xdev_report(data, type = "quality")
 
-    quality <- xdev_report(data, type = "quality")
+  # data contains sequences
+  if (nrow(quality) != 0) {
+    clean_scores <- sapply(
+      quality$quality_score,
+      function(x) paste(x, collapse = ", ")
+    )
 
-    # data contains sequences
-    if (nrow(quality) != 0) {
-        clean_scores <- sapply(quality$quality_score,
-                               function(x) paste(x, collapse = ", "))
+    # Format the data
+    formatted_lines <- paste0(
+      ">", quality$sequence_name,
+      "\n", clean_scores
+    )
 
-        # Format the data
-        formatted_lines <- paste0(">", quality$sequence_name,
-                                  "\n", clean_scores)
+    # Write to a text file
+    writeLines(formatted_lines, filename)
+    return(filename)
+  }
 
-        # Write to a text file
-        writeLines(formatted_lines, filename)
-        return(filename)
-    }
-
-    "no_quality_data"
+  "no_quality_data"
 }

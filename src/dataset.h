@@ -47,6 +47,10 @@ static bool inline isEqual(const float& t, const float value) {
 static bool inline isDoubleEqual(const double& t, const double value) {
     return (isZero(t-value));
 }
+
+static inline void toUpper(string &s) {
+    for_each(s.begin(), s.end(), [](char & c) { c = ::toupper(c); });
+}
 /**********************************************************************/
 struct orderAlpha {
     string name;
