@@ -813,7 +813,26 @@ xdev_export_dataset <- function(data) {
     .Call(`_strollur_xdev_export_dataset`, data)
 }
 
-#' @title xdev_get_abundances_by_sample
+#' @title xdev_get_bin_abundances_by_sample
+#' @description
+#' Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
+#'
+#' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param bin_type a string indicating the type of bin clusters. Default = "otu"
+#' @examples
+#'
+#' data <- strollur::miseq_sop_example()
+#'
+#' # To get the `otu` bin abundances parsed by sample
+#' otu_abunds <- strollur::xdev_get_bin_abundances_by_sample(data)
+#'
+#' @return 2D vector of float containing data requested parsed by sample.
+#' @export
+xdev_get_bin_abundances_by_sample <- function(data, bin_type = "otu") {
+    .Call(`_strollur_xdev_get_bin_abundances_by_sample`, data, bin_type)
+}
+
+#' @title xdev_get_sequence_abundances_by_sample
 #' @description
 #' Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 #'
@@ -825,12 +844,12 @@ xdev_export_dataset <- function(data) {
 #' data <- strollur::miseq_sop_example()
 #'
 #' # To get the sequence names parsed by sample
-#' abunds <- strollur::xdev_get_abundances_by_sample(data)
+#' abunds <- strollur::xdev_get_sequence_abundances_by_sample(data)
 #'
 #' @return 2D vector of float containing data requested parsed by sample.
 #' @export
-xdev_get_abundances_by_sample <- function(data, samples = as.character( c())) {
-    .Call(`_strollur_xdev_get_abundances_by_sample`, data, samples)
+xdev_get_sequence_abundances_by_sample <- function(data, samples = as.character( c())) {
+    .Call(`_strollur_xdev_get_sequence_abundances_by_sample`, data, samples)
 }
 
 #' @title xdev_get_alignment_length

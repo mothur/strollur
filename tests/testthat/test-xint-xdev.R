@@ -671,7 +671,7 @@ test_that("xdev_get_sequence_indexes_by_sample", {
   expect_equal(names[expected[[1]][2]], "seq4")
 })
 
-test_that("xdev_get_abundances_by_sample - getSequenceAbundanceBySample", {
+test_that("xdev_get_sequence_abundances_by_sample", {
   data <- new_dataset()
 
   seq_names <- c(
@@ -707,13 +707,13 @@ test_that("xdev_get_abundances_by_sample - getSequenceAbundanceBySample", {
     c(2), c(5, 10, 5), c(3, 5, 5), c(4)
   )
 
-  actual <- xdev_get_abundances_by_sample(data)
+  actual <- xdev_get_sequence_abundances_by_sample(data)
 
   expect_equal(actual, expected)
 
   x <- 10
   expect_error(
-    xdev_get_abundances_by_sample(x),
+    xdev_get_sequence_abundances_by_sample(x),
     "data must be a strollur object."
   )
 })

@@ -1106,7 +1106,19 @@ Rcpp::List xdev_export_dataset(const Rcpp::Environment& data) {
     return d.get()->exportDataset();
 }
 /******************************************************************************/
-vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& data,
+vector<vector<float> > xdev_get_bin_abundances_by_sample(const Rcpp::Environment& data,
+                                                         const string& bin_type) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+
+    return d.get()->getBinAbundanceBySample(bin_type);
+}
+/******************************************************************************/
+vector<vector<float> > xdev_get_sequence_abundances_by_sample(const Rcpp::Environment& data,
                                                      const Rcpp::CharacterVector& samples) {
     if (!data.inherits("strollur")) {
         string message = "data must be a strollur object.";

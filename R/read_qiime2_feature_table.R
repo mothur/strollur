@@ -68,7 +68,7 @@ read_qiime2_feature_table <- function(qza, dir_path = NULL,
     # bin assignments
     if (artifact$type == "FeatureTable[Frequency]") {
       # read biom file
-      hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
+      hdata <- rbiom::read_biom(file.path(data_dir, "feature-table.biom"))
 
       counts_matrix <- hdata$counts
       sample_indices <- rep(seq_len(ncol(counts_matrix)), diff(counts_matrix@p))

@@ -1175,6 +1175,14 @@ Rcpp::DataFrame Dataset::getBinAbundances(const string& bin_type, const bool byS
     return Rcpp::DataFrame::create();
 }
 /******************************************************************************/
+vector<vector<float>> Dataset::getBinAbundanceBySample(const string bin_type) const {
+    if (hasBinTable(bin_type)) {
+        return binTables[getBinTableIndex(bin_type)].getSharedVector(count);
+    }
+
+    return vector<vector<float>>{};
+}
+/******************************************************************************/
 Rcpp::DataFrame Dataset::getReports(const string& type) {
     Rcpp::DataFrame reportResults = Rcpp::DataFrame::create();
 

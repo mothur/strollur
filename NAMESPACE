@@ -42,6 +42,7 @@ export(strollur)
 export(strollur_example)
 export(summary)
 export(unpack_qiime2_artifact)
+export(write_biom)
 export(write_fasta)
 export(write_fastq)
 export(write_mothur)
@@ -69,10 +70,11 @@ export(xdev_assign_sequence_taxonomy)
 export(xdev_assign_sequence_taxonomy_tidy)
 export(xdev_assign_treatments)
 export(xdev_count)
-export(xdev_get_abundances_by_sample)
 export(xdev_get_alignment_length)
+export(xdev_get_bin_abundances_by_sample)
 export(xdev_get_by_sample)
 export(xdev_get_list_vector)
+export(xdev_get_sequence_abundances_by_sample)
 export(xdev_get_sequence_indexes_by_sample)
 export(xdev_get_sequences)
 export(xdev_has_bin_taxonomy)
@@ -127,11 +129,14 @@ importFrom(readr,
 )
 importFrom(stats,
   na.omit,
-  reshape
+  reshape,
+  setNames
 )
 importFrom(tidyr,pivot_wider)
 importFrom(utils,
   modifyList,
+  packageDescription,
+  packageVersion,
   read.table,
   unzip
 )

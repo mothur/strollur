@@ -7,6 +7,7 @@ New Features:
      - `strollur::write_fastq()` writes fastq data to file.
      - `strollur::read_quality()` returns data.frame with sequence quality data.
      - `strollur::write_quality()` writes sequence quality data to file.
+     - `strollur::write_biom()` writes biom files containing the [strollur_object](https://mothur.org/strollur/reference/strollur.html).
 - Expands member functions of the [strollur_object](https://mothur.org/strollur/reference/strollur.html).
      - `strollur_object$alignment_length()` returns the sequences alignment length or -1 if the sequences are unaligned.
      - `strollur_object$has_bin_taxonomy()` returns `TRUE` if your dataset includes bin classifications.

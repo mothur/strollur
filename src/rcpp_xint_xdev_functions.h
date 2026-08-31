@@ -821,7 +821,26 @@ double xdev_count(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
 /******************************************************************************/
-//' @title xdev_get_abundances_by_sample
+//' @title xdev_get_bin_abundances_by_sample
+//' @description
+//' Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
+//'
+//' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @param bin_type a string indicating the type of bin clusters. Default = "otu"
+//' @examples
+//'
+//' data <- strollur::miseq_sop_example()
+//'
+//' # To get the `otu` bin abundances parsed by sample
+//' otu_abunds <- strollur::xdev_get_bin_abundances_by_sample(data)
+//'
+//' @return 2D vector of float containing data requested parsed by sample.
+//' @export
+//[[Rcpp::export]]
+vector<vector<float> > xdev_get_bin_abundances_by_sample(const Rcpp::Environment& data,
+                                                         const string& bin_type = "otu");
+/******************************************************************************/
+//' @title xdev_get_sequence_abundances_by_sample
 //' @description
 //' Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 //'
@@ -833,12 +852,12 @@ Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
 //' data <- strollur::miseq_sop_example()
 //'
 //' # To get the sequence names parsed by sample
-//' abunds <- strollur::xdev_get_abundances_by_sample(data)
+//' abunds <- strollur::xdev_get_sequence_abundances_by_sample(data)
 //'
 //' @return 2D vector of float containing data requested parsed by sample.
 //' @export
 //[[Rcpp::export]]
-vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& data,
+vector<vector<float> > xdev_get_sequence_abundances_by_sample(const Rcpp::Environment& data,
                                             const Rcpp::CharacterVector& samples = Rcpp::CharacterVector::create());
 /******************************************************************************/
 //' @title xdev_get_alignment_length

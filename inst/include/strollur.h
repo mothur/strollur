@@ -726,6 +726,7 @@ public:
     vector<string> getSequences(const string& sample = "", bool degap = false) const;
     vector<vector<string> > getSequencesBySample(vector<string> samples,
                                                        bool degap = false) const;
+    vector<vector<float>> getBinAbundanceBySample(const string bin_type = "otu") const;
 
     double getTotal(const vector<string>& samples = nullVector) const;
     Rcpp::DataFrame getTotals(const string& type = "sample") const;
