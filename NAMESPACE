@@ -132,6 +132,7 @@ importFrom(readr,
 )
 importFrom(stats,
   na.omit,
+  quantile,
   reshape,
   setNames
 )

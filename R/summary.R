@@ -88,6 +88,8 @@ summary <- function(data, type = "sequence",
   dataset_summary
 }
 
+#' @importFrom stats quantile
+#'
 generate_sequence_report <- function(dataset) {
   report <- report(dataset)
   abunds <- abundance(dataset)
