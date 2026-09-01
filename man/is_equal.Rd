@@ -8,17 +8,17 @@ is_equal(data, data2)
 }
 \arguments{
 \item{data, }{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{data2, }{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 }
 \value{
 a logical
 }
 \description{
 Determine if two
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} objects
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}s
 are equal.
 }
 \examples{

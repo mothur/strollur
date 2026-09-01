@@ -17,7 +17,7 @@ xdev_assign_bins(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing bin_data assignments}
 
@@ -44,10 +44,10 @@ Note: You must provide either abundance or sequence_name in the table.}
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
-Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

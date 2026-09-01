@@ -1,12 +1,12 @@
 #' @title Create a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   from the exported table of a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   object.
 #' @description The import_dataset function will create a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   from the exported table of a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   object.
 #'
 #' @param table a table containing the data from a
@@ -20,7 +20,7 @@
 #' data
 #'
 #' @return a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @seealso [export_dataset()]
 #' @export
 import_dataset <- function(table) {

@@ -9,10 +9,10 @@
 #' Assign sequence abundances, sequence classifications, bins, bin
 #' representative sequences, bin classifications, sample distances or
 #' treatments to a
-#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'
 #' @param data a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'
 #' @param table a data.frame containing the data you wish to assign
 #'
@@ -167,7 +167,7 @@
 #' strollur::assign(data, table = sample_dists, type = "sample_distance")
 #'
 #' @return an updated
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @export
 assign <- function(data, table,
                    type = "bin",

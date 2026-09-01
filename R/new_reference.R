@@ -1,9 +1,9 @@
 #' @title Create a resource reference for your
-#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' to aid in reproducibility.
 #' @description
 #' Create a resource reference for your
-#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' to aid in reproducibility.
 #'
 #' @param name a string containing the name of the resource used. For

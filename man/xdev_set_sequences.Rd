@@ -13,7 +13,7 @@ xdev_set_sequences(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{sequence_names}{a vector of strings containing sequence names}
 
@@ -23,12 +23,12 @@ xdev_set_sequences(
 (Optional)}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Designed with package integration in mind, the set sequences function allows
 you to change the nucleotide strings of sequences in a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object. For example, set_sequences may be used
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}. For example, set_sequences may be used
 after alignment to overwrite the unaligned sequences with aligned sequences.
 }
 \examples{

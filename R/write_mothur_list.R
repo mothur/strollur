@@ -4,7 +4,7 @@
 #' Write mothur formatted \href{https://mothur.org/wiki/list_file/}{list files}
 #'
 #' @param data a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @param file_root a string containing the root name of the output file.
 #' Default = 'dataset_name'. Resulting in output files
 #' `{dataset_name}.{bin_type}.list`.

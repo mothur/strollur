@@ -1,5 +1,5 @@
 #' @title Create a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   from a biom formatted file.
 #' @name read_biom
 #' @rdname read_biom
@@ -22,7 +22,7 @@
 #' }
 #'
 #' @return A
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @export
 read_biom <- function(biom) {
   if (!require_namespace("h5lite")) {

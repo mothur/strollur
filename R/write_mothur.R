@@ -1,6 +1,6 @@
 #' @title Write the various \href{https://mothur.org/wiki/tags/#file_types}{file
 #'   types} from your
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   for use with mothur.
 #' @description
 #' The write_mothur function will write various
@@ -16,7 +16,7 @@
 #'  Environmental Microbiology 75:7537-7541. <doi:10.1128/AEM.01541-09>
 #'
 #' @param data a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @param dir_path a string containing the name of directory where the files
 #' should be written. Default = current working directory.
 #' @param tags a vector of strings containing the items you wish to write

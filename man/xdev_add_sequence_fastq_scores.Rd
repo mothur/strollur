@@ -16,7 +16,7 @@ xdev_add_sequence_fastq_scores(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing FASTQ data you are trying to add}
 
@@ -37,11 +37,11 @@ name is 'quality_score'.}
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Add FASTQ data to a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.
 Scores are stored as vector\if{html}{\out{<int>}} for each sequence.
 }
 \examples{

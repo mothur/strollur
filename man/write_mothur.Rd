@@ -4,14 +4,14 @@
 \alias{write_mothur}
 \title{Write the various \href{https://mothur.org/wiki/tags/#file_types}{file
 types} from your
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 for use with mothur.}
 \usage{
 write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{dir_path}{a string containing the name of directory where the files
 should be written. Default = current working directory.}

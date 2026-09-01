@@ -3,7 +3,7 @@
 \name{read_mothur}
 \alias{read_mothur}
 \title{Create a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from mothur outputs}
 \usage{
 read_mothur(
@@ -92,7 +92,7 @@ containing the distances between samples.}
 }
 \value{
 A
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 The read_mothur function reads various

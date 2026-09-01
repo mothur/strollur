@@ -7,7 +7,7 @@
 xdev_assign_sample_distances(data, table, reference = NULL, verbose = TRUE)
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a 3 column data.frame (sample1 sample2 distance) containing distances between your samples}
 
@@ -17,10 +17,10 @@ xdev_assign_sample_distances(data, table, reference = NULL, verbose = TRUE)
 messages. Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
-Assign samples distances in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Assign samples distances in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

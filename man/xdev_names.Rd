@@ -13,7 +13,7 @@ xdev_names(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{type}{string containing the type of data you would like. Options
 include: "dataset", "sequence", "bin", "sample", "treatment", "report".
@@ -38,7 +38,7 @@ data from other samples. Default = FALSE.}
 vector of strings containing the names requested
 }
 \description{
-Get the names of a given type of data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Get the names of a given type of data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

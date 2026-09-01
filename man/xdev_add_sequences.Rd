@@ -15,7 +15,7 @@ xdev_add_sequences(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing names, sequences(optional) and
 comments(optional).}
@@ -37,10 +37,10 @@ contains the sequence nucleotide strings. Default column name is
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
-Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

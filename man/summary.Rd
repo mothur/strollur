@@ -3,13 +3,13 @@
 \name{summary}
 \alias{summary}
 \title{Summarize the sequences data, custom reports, and scrapped data in a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 summary(data, type = "sequence", report_type = NULL, verbose = TRUE)
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{type}{string containing the type of data you want the number of.
 Options include: "sequence", "report" and "scrap". Default = "sequence".}
@@ -26,7 +26,7 @@ data.frame
 }
 \description{
 Summarize the sequences data, custom reports, and scrapped data in a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

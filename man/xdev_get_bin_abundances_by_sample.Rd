@@ -7,7 +7,7 @@
 xdev_get_bin_abundances_by_sample(data, bin_type = "otu")
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{bin_type}{a string indicating the type of bin clusters. Default = "otu"}
 }
@@ -15,7 +15,7 @@ xdev_get_bin_abundances_by_sample(data, bin_type = "otu")
 2D vector of float containing data requested parsed by sample.
 }
 \description{
-Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
+Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} parsed by sample
 }
 \examples{
 

@@ -14,7 +14,7 @@ xdev_add_report(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing your report.}
 
@@ -30,10 +30,10 @@ contains the sequence names. Default = 'none'.}
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
-Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

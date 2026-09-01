@@ -21,7 +21,7 @@ assign(
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing the data you wish to assign}
 
@@ -87,13 +87,13 @@ Default = TRUE.}
 }
 \value{
 an updated
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Assign sequence abundances, sequence classifications, bins, bin
 representative sequences, bin classifications, sample distances or
 treatments to a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

@@ -9,7 +9,7 @@ write_phyloseq(data)
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 }
 \value{
 returns a \code{phyloseq} object.

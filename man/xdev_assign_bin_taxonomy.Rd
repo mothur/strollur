@@ -15,7 +15,7 @@ xdev_assign_bin_taxonomy(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing bin taxonomy assignments}
 
@@ -33,10 +33,10 @@ contains the bin taxonomies. Default column name is 'taxonomy'.}
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
-Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 
 Note, if you assign sequence taxonomies and assign bins, \code{strollur} will find
 the concensus taxonomy for each bin for you.

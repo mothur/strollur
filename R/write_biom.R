@@ -3,15 +3,15 @@
 #' @importFrom utils packageVersion
 #'
 #' @title Write a \href{https://biom-format.org}{BIOM} formatted file containing
-#'   your \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-#'   objects data.
+#'   a \href{https://mothur.org/strollur/reference/strollur.html}{strollur
+#'   object's} data.
 #' @description
 #'
 #' Write a \href{https://biom-format.org}{BIOM} formatted file containing your
 #' strollur::strollur objects data.
 #'
 #' @param data a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @param file_root a string containing the root name of the output file.
 #'   Default = `{dataset_name}`.`{bin_type}`.biom
 #' @param path string containing the name of directory where the files

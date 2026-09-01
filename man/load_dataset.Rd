@@ -3,7 +3,7 @@
 \name{load_dataset}
 \alias{load_dataset}
 \title{Load a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from a file.}
 \usage{
 load_dataset(file)
@@ -13,11 +13,11 @@ load_dataset(file)
 }
 \value{
 a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 The load_dataset function will create a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from an RDS file.
 }
 \examples{

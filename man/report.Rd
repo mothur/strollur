@@ -3,13 +3,13 @@
 \name{report}
 \alias{report}
 \title{Get a data.frame containing the given report in a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 report(data, type = "sequence", bin_type = "otu")
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{type}{string containing the type of report you would like. Options
 include: \code{fasta}, \code{fastq}, \code{sequence}, \code{quality},
@@ -33,8 +33,8 @@ sequence quality data, sequence_bin_assignments, sequence_taxonomy,
 sequence_tree, bin_taxonomy, bin_representatives, sample_assignments,
 sample distances, sample_tree, references, custom reports, sequence_scrap,
 and bin_scrap in a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-object.
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur
+object}.
 }
 \examples{
 

@@ -3,7 +3,7 @@
 \name{new_reference}
 \alias{new_reference}
 \title{Create a resource reference for your
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 to aid in reproducibility.}
 \usage{
 new_reference(
@@ -63,7 +63,7 @@ a list
 }
 \description{
 Create a resource reference for your
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 to aid in reproducibility.
 }
 \examples{

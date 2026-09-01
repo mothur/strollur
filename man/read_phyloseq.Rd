@@ -3,7 +3,7 @@
 \name{read_phyloseq}
 \alias{read_phyloseq}
 \title{Create a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from a phyloseq object}
 \usage{
 read_phyloseq(phyloseq_object, treatment_column_name = NULL, dataset_name = "")
@@ -20,7 +20,7 @@ be a character. Defaults to NULL.}
 }
 \value{
 a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 The \code{strollur::read_phyloseq()} function reads phyloseq objects created from

@@ -13,7 +13,7 @@ xdev_assign_treatments(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing sample treatment assignments}
 
@@ -27,10 +27,10 @@ that contains the treatments. Default column name is 'treatment'.}
 messages. Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
-Assign samples to treatments in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Assign samples to treatments in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

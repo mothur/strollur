@@ -7,13 +7,13 @@
 xdev_has_sequence_taxonomy(data)
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 }
 \value{
 boolean
 }
 \description{
-Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
+Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} has sequence taxonomy assignments
 }
 \examples{
 

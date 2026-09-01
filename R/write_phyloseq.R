@@ -8,7 +8,7 @@
 #'  Reproducible Interactive Analysis and Graphics of Microbiome Census Data.
 #'  PLoS ONE 8:e61217. <doi:10.1371/journal.pone.0061217>
 #' @param data a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @return returns a `phyloseq` object.
 #' @examples
 #' miseq <- strollur::miseq_sop_example()

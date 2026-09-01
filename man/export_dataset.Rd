@@ -3,20 +3,20 @@
 \name{export_dataset}
 \alias{export_dataset}
 \title{Create a human readable table containing all data from a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.}
 \usage{
 export_dataset(data)
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 }
 \value{
 list, containing the data in the strollur::strollur object
 }
 \description{
 Export all data from a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.
 }
 \examples{
 

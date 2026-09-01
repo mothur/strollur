@@ -3,7 +3,7 @@
 \name{read_biom}
 \alias{read_biom}
 \title{Create a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from a biom formatted file.}
 \usage{
 read_biom(biom)
@@ -13,7 +13,7 @@ read_biom(biom)
 }
 \value{
 A
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 The read_biom function reads a \href{https://biom-format.org}{biom formatted}

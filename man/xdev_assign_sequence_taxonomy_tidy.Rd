@@ -16,7 +16,7 @@ xdev_assign_sequence_taxonomy_tidy(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing sequence taxonomy assignments}
 
@@ -38,10 +38,10 @@ that contains the taxonomies confidence. Default column name is 'confidence'.}
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
-Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 
 Note, if you assign sequence taxonomies and assign bins, strollur will find
 the consensus taxonomy for each bin for you.

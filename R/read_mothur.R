@@ -1,5 +1,5 @@
 #' @title Create a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   from mothur outputs
 #' @name read_mothur
 #' @rdname read_mothur
@@ -111,7 +111,7 @@
 #' )
 #'
 #' @return A
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @export
 read_mothur <- function(fasta = NULL, count = NULL,
                         taxonomy = NULL, otu_list = NULL, asv_list = NULL,

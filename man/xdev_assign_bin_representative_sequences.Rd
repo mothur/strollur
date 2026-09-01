@@ -15,7 +15,7 @@ xdev_assign_bin_representative_sequences(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing bin representative assignments}
 
@@ -34,7 +34,7 @@ contains the bin names. Default column name is 'sequence_name'.}
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Assign representative sequences to bins.

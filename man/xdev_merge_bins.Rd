@@ -7,7 +7,7 @@
 xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.}
 
 \item{bin_names}{a vector of strings containing the names of the bins you
 would like merge. The resulting merged bin will be stored in the first
@@ -20,11 +20,11 @@ bin_id in the vector.}
 Default = "otu"}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Designed with package integration in mind, the merge bins function allows
-you to merge bins in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+you to merge bins in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

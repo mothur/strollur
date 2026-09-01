@@ -14,8 +14,8 @@ A \code{strollur::strollur} object
 }
 \description{
 The miseq_sop_example function will create
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-object using the analysis files from the
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
+using the analysis files from the
 \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP} example.
 }
 \examples{

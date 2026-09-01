@@ -7,7 +7,7 @@
 xdev_get_sample_distances(data)
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 }
 \value{
 Rcpp::DataFrame with 3 columns (sample1, sample2, distance)

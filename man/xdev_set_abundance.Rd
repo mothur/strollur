@@ -12,7 +12,7 @@ xdev_set_abundance(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{sequence_names}{a vector of strings containing sequence names}
 
@@ -23,11 +23,11 @@ sequence.}
 sequences set to 0 abundance. Default = "update".}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Designed with package integration in mind, the set abundance function
-allows you to change the abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+allows you to change the abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 without samples.
 }
 \examples{

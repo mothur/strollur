@@ -20,7 +20,7 @@ xdev_add_references(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing reference_names, reference_versions
 (optional), reference_usages (optional), reference_parameters (optional),
@@ -65,10 +65,10 @@ name is 'documentation_url'.}
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
-Add resource references to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Add resource references to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

@@ -6,15 +6,15 @@ summary <- function(x, type = "sequence",
 }
 
 #' @title Summarize the sequences data, custom reports, and scrapped data in a
-#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @name summary
 #' @rdname summary
 #' @description
 #' Summarize the sequences data, custom reports, and scrapped data in a
-#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'
 #' @param data a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'
 #' @param type string containing the type of data you want the number of.
 #' Options include: "sequence", "report" and "scrap". Default = "sequence".

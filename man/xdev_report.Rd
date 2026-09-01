@@ -7,7 +7,7 @@
 xdev_report(data, type = "sequence", bin_type = "otu")
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{type}{string containing the type of report you would like. Options
 include: \code{fasta}, \code{fastq}, \code{quality}, \code{sequence}, \code{sequence_bin_assignment},
@@ -24,7 +24,7 @@ report for. Default = \code{otu}.}
 data.frame
 }
 \description{
-Get a data.frame containing the given report in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+Get a data.frame containing the given report in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

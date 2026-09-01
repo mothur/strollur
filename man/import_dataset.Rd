@@ -3,9 +3,9 @@
 \name{import_dataset}
 \alias{import_dataset}
 \title{Create a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from the exported table of a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 object.}
 \usage{
 import_dataset(table)
@@ -17,13 +17,13 @@ object. You can create the table using \code{strollur::export_dataset(data)}.}
 }
 \value{
 a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 The import_dataset function will create a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from the exported table of a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 object.
 }
 \examples{

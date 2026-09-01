@@ -7,7 +7,7 @@
 xdev_get_sequence_indexes_by_sample(data, samples = as.character(c()))
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{samples}{a vector of strings containing the names of the samples you
 would like sequence names for. By default all samples are included.}

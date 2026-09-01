@@ -15,7 +15,7 @@ xdev_assign_sequence_quality_scores(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing quality data you are trying to add}
 
@@ -32,11 +32,11 @@ name is 'quality_score'.}
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Add quality data to a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.
 Scores are stored as vector\if{html}{\out{<int>}} for each sequence.
 }
 \examples{

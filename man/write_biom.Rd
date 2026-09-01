@@ -3,8 +3,8 @@
 \name{write_biom}
 \alias{write_biom}
 \title{Write a \href{https://biom-format.org}{BIOM} formatted file containing
-your \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-objects data.}
+a \href{https://mothur.org/strollur/reference/strollur.html}{strollur
+object's} data.}
 \usage{
 write_biom(
   data,
@@ -16,7 +16,7 @@ write_biom(
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{file_root}{a string containing the root name of the output file.
 Default = \code{{dataset_name}}.\code{{bin_type}}.biom}

@@ -1,13 +1,13 @@
 #' @title is_equal
 #' @description
 #' Determine if two
-#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} objects
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}s
 #' are equal.
 #'
 #' @param data, a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @param data2, a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'
 #' @examples
 #'

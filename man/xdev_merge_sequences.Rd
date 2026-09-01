@@ -7,7 +7,7 @@
 xdev_merge_sequences(data, sequence_names, reason = "merged")
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.}
 
 \item{sequence_names}{a vector of strings containing the names of the
 sequences you would like merge. The resulting merged sequence will be stored
@@ -17,11 +17,11 @@ in the first sequence name in the vector.}
 Default = "merged"}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Designed with package integration in mind, the merge sequences function
-allows you to merge sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+allows you to merge sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.
 }
 \examples{
 

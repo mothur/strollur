@@ -9,7 +9,7 @@
 #' formatted file
 #'
 #' @param data a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @param filename a string containing the name of the output file. Default =
 #' 'dataset_name'.fastq
 #' @examples

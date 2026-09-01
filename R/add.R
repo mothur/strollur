@@ -1,13 +1,13 @@
 #' @title Add sequences, reports, trees or resource references to a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @name add
 #' @rdname add
 #' @description
 #' Add sequences, reports, trees or resource references to a
-#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'
 #' @param data a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'
 #' @param table a data.frame or tree containing the data you wish to add.
 #' @param type a string containing the type of data. Options include:
@@ -168,7 +168,7 @@
 #' strollur::add(data, table = tree, type = "sample_tree")
 #'
 #' @return an updated
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @export
 add <- function(data, table,
                 type = "sequence",

@@ -16,7 +16,7 @@ xdev_assign_sequence_abundance(
 )
 }
 \arguments{
-\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame containing sequence abundance assignments}
 
@@ -37,11 +37,11 @@ that contains the sequence treatments. Default column name is 'treatment'.}
 Default = TRUE.}
 }
 \value{
-an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Assign sequence abundance and optionally assign sample and treatment data to
-a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

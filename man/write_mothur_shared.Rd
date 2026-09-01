@@ -9,7 +9,7 @@ write_mothur_shared(data, file_root = NULL)
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{file_root}{a string containing the root name of the output file.
 Default = 'dataset_name'. Resulting in output files

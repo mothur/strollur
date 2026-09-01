@@ -3,14 +3,14 @@
 \name{save_dataset}
 \alias{save_dataset}
 \title{Save the
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 to file.}
 \usage{
 save_dataset(data, file)
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{file}{a string containing the file name.}
 }
@@ -19,7 +19,7 @@ A file containing the \code{strollur::strollur} object
 }
 \description{
 The save_dataset function will save the
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 to file.
 }
 \examples{

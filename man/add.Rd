@@ -3,7 +3,7 @@
 \name{add}
 \alias{add}
 \title{Add sequences, reports, trees or resource references to a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 add(
   data,
@@ -22,7 +22,7 @@ add(
 }
 \arguments{
 \item{data}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 
 \item{table}{a data.frame or tree containing the data you wish to add.}
 
@@ -107,11 +107,11 @@ Default = TRUE.}
 }
 \value{
 an updated
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Add sequences, reports, trees or resource references to a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \examples{
 

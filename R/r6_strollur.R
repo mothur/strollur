@@ -1028,8 +1028,8 @@ strollur <- R6Class("strollur",
 
     #' @description
     #' Get the version of the
-    #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-    #' object.
+    #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur
+    #' object}
     #'
     #' @examples
     #'
@@ -1078,12 +1078,12 @@ strollur <- R6Class("strollur",
 
     #' @description
     #' Determine if two
-    #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-    #'  objects are equal.
+    #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur
+    #' object}s are equal.
     #'
     #' @param data, a
-    #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-    #'   object
+    #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur
+    #'   object}
     #' @examples
     #'
     #' miseq <- strollur::load_dataset(strollur_example("miseq_sop.rds"))

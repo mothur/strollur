@@ -3,22 +3,22 @@
 \name{copy_dataset}
 \alias{copy_dataset}
 \title{Create a new
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from an existing dataset.}
 \usage{
 copy_dataset(data)
 }
 \arguments{
 \item{data, }{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 }
 \value{
 a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 Create a new
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from an existing dataset.
 }
 \examples{
@@ -32,5 +32,5 @@ data <- strollur::copy_dataset(miseq)
 }
 \seealso{
 The 'new' method in the
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }

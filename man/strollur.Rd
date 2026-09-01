@@ -1159,8 +1159,8 @@ data$get_bin_types()
 \if{latex}{\out{\hypertarget{method-strollur-get_version}{}}}
 \subsection{\code{strollur$get_version()}}{
   Get the version of the
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-object.
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur
+object}
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{strollur$get_version()}
@@ -1238,8 +1238,8 @@ miseq$has_sequence_taxonomy()
 \if{latex}{\out{\hypertarget{method-strollur-is_equal}{}}}
 \subsection{\code{strollur$is_equal()}}{
   Determine if two
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-objects are equal.
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur
+object}s are equal.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{strollur$is_equal(data)}
@@ -1249,8 +1249,8 @@ objects are equal.
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{data, }}{a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-object}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur
+object}}
     }
     \if{html}{\out{</div>}}
   }

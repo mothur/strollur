@@ -1,8 +1,8 @@
 #' @title Load a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   from a file.
 #' @description The load_dataset function will create a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   from an RDS file.
 #'
 #' @param file a string containing the .rds file name.
@@ -13,7 +13,7 @@
 #'
 #' @seealso [save_dataset()]
 #' @return a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @export
 load_dataset <- function(file) {
   if (!file.exists(file)) {

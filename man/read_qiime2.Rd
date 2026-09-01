@@ -3,7 +3,7 @@
 \name{read_qiime2}
 \alias{read_qiime2}
 \title{Create a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from a qiime2 outputs}
 \usage{
 read_qiime2(
@@ -29,7 +29,7 @@ and temporary directories will be removed. Default = TRUE.}
 }
 \value{
 a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 }
 \description{
 The read_qiime2 function reads various types of .qza files created by

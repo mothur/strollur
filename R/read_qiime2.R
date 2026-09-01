@@ -1,5 +1,5 @@
 #' @title Create a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   from a qiime2 outputs
 #' @name read_qiime2
 #' @rdname read_qiime2
@@ -49,7 +49,7 @@
 #' }
 #'
 #' @return a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @export
 read_qiime2 <- function(qza, metadata = NULL,
                         dataset_name = "", dir_path = NULL,

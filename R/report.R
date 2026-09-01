@@ -1,5 +1,5 @@
 #' @title Get a data.frame containing the given report in a
-#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @name report
 #' @rdname report
 #' @description Get a data.frame containing the report or the phylo tree
@@ -8,11 +8,11 @@
 #'   sequence_tree, bin_taxonomy, bin_representatives, sample_assignments,
 #'   sample distances, sample_tree, references, custom reports, sequence_scrap,
 #'   and bin_scrap in a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-#'   object.
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur
+#'   object}.
 #'
 #' @param data a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'
 #' @param type string containing the type of report you would like. Options
 #'   include: `fasta`, `fastq`, `sequence`, `quality`,

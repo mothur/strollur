@@ -1,5 +1,5 @@
 #' @title Create a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   from dada2 outputs
 #' @name read_dada2
 #' @rdname read_dada2

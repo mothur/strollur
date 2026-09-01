@@ -1,6 +1,6 @@
 #' @importFrom stats reshape
 #' @title Create a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #'   from a phyloseq object
 #' @name read_phyloseq
 #' @rdname read_phyloseq
@@ -22,7 +22,7 @@
 #' be a character. Defaults to NULL.
 #' @param dataset_name A string containing a name for your dataset.
 #' @return a
-#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @examples
 #' miseq <- strollur::miseq_sop_example()
 #'
