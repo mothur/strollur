@@ -43,17 +43,17 @@ write_biom <- function(data, file_root = NULL, path = NULL,
   }
 
   # if no path given, set to current working directory
-  if (is.null(path)) {
-    path <- dirname(file_root)
-    if (path == ".") {
-      path <- getwd()
+  if (!is.null(path)) {
+    if (!dir.exists(path)) {
+      # create it
+      dir.create(path)
     }
-  }
-  file_root <- basename(file_root)
-
-  if (!dir.exists(path)) {
-    # create it
-    dir.create(path)
+    file_root <- file.path(path, basename(file_root))
+  } else {
+    # if path = NULL and file_root does not include a path
+    if (file_root == basename(file_root)) {
+      file_root <- file.path(getwd(), basename(file_root))
+    }
   }
 
   bin_types <- data$get_bin_types()
@@ -133,8 +133,7 @@ write_biom <- function(data, file_root = NULL, path = NULL,
             reps$representative_sequence,
             bin_names
           )
-        } else if (count(data,
-                         type = "sequence",
+        } else if (count(data, type = "sequence",
                          distinct = TRUE) == num_bins) {
           # same number of sequences as bins
           biom_obj$sequences <- setNames(
@@ -148,7 +147,6 @@ write_biom <- function(data, file_root = NULL, path = NULL,
       biom_obj$date <- format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ")
 
       output_file <- paste0(file_root, ".", type, ".biom")
-      output_file <- file.path(path, output_file)
 
       if (file.exists(output_file)) {
         file.remove(output_file)

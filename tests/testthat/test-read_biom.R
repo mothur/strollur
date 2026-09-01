@@ -3,6 +3,7 @@ test_that("read_biom - errors", {
 })
 
 test_that("read_biom", {
+  skip_if_not_installed("h5lite")
   data <- strollur::read_biom(biom = strollur_example("miseq_sop.otu.biom"))
 
   bin_types <- data$get_bin_types()
