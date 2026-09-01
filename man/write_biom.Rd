@@ -40,7 +40,14 @@ strollur::strollur objects data.
 }
 \examples{
 
-miseq <- strollur::miseq_sop_example()
-strollur::write_biom(miseq, tempfile())
+if (requireNamespace("h5lite", quietly = TRUE)) {
+  miseq <- strollur::miseq_sop_example()
+  strollur::write_biom(miseq, tempfile())
+} else {
+  message(paste(
+    "To use this functionality you have to install the",
+    "h5lite package."
+  ))
+}
 
 }
