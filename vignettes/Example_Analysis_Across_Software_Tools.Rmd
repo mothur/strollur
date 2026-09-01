@@ -59,7 +59,7 @@ strollur::add(strollur_data, table = metadata,
 
 ## Classify using phylotypr
 
-[`phylotypr`](https://mothur.org/phylotypr/) provides an R-based implementation of a [naive Bayesian Classifier](https://doi.org/10.1128/AEM.00062-07). It is designed and maintained by the [Schloss Lab](https://github.com/schlosslab) and accepts a strollur object as an input to the `classify_sequences` function. It also includes built in reference databases for your use.
+[`phylotypr`](https://mothur.org/phylotypr/) provides an R-based implementation of a [naive Bayesian Classifier](https://doi.org/10.1128/AEM.00062-07). It is designed and maintained by the [Schloss Lab](https://www.schlosslab.org) and accepts a strollur object as an input to the `classify_sequences` function. It also includes built in reference databases for your use.
 
 ```{r, eval = FALSE}
 database_reference <- phylotypr::build_kmer_database(trainset9_pds)

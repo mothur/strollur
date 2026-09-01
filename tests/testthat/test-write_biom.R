@@ -7,6 +7,7 @@ test_that("write_biom - errors", {
 })
 
 test_that("write_biom", {
+  skip_if_not_installed("h5lite")
   miseq <- miseq_sop_example()
 
   bin_types <- miseq$get_bin_types()
