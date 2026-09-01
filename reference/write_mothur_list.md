@@ -12,8 +12,8 @@ write_mothur_list(data, file_root = NULL)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - file_root:
 
@@ -44,7 +44,7 @@ miseq <- strollur::miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 strollur::write_mothur_list(miseq, tempfile())
-#> [1] "/tmp/RtmpUVSXMn/file3efd1fff72f3.otu.list"      
-#> [2] "/tmp/RtmpUVSXMn/file3efd1fff72f3.asv.list"      
-#> [3] "/tmp/RtmpUVSXMn/file3efd1fff72f3.phylotype.list"
+#> [1] "/tmp/RtmptQFCni/file1d8b19968e00.otu.list"      
+#> [2] "/tmp/RtmptQFCni/file1d8b19968e00.asv.list"      
+#> [3] "/tmp/RtmptQFCni/file1d8b19968e00.phylotype.list"
 ```

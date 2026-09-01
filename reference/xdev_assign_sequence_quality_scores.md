@@ -1,8 +1,8 @@
 # Add quality data to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Add quality data to a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object.
-Scores are stored as vector for each sequence.
+Add quality data to a [strollur
+object](https://mothur.org/strollur/reference/strollur.html). Scores are
+stored as vector for each sequence.
 
 ## Usage
 
@@ -21,8 +21,8 @@ xdev_assign_sequence_quality_scores(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - table:
 
@@ -51,8 +51,8 @@ xdev_assign_sequence_quality_scores(
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

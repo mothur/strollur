@@ -14,8 +14,8 @@ xdev_get_sequence_indexes_by_sample(data, samples = as.character(c()))
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - samples:
 

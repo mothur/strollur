@@ -1,8 +1,8 @@
 # Assign sequence abundance and optionally assign sample and treatment data to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Assign sequence abundance and optionally assign sample and treatment
-data to a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+data to a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -22,8 +22,8 @@ xdev_assign_sequence_abundance(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - table:
 
@@ -55,8 +55,8 @@ xdev_assign_sequence_abundance(
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

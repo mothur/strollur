@@ -1,8 +1,8 @@
 # Determine if a [strollur object](https://mothur.org/strollur/reference/strollur.html) contains aligned sequences.
 
-Determine if a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
-contains aligned sequences.
+Determine if a [strollur
+object](https://mothur.org/strollur/reference/strollur.html) contains
+aligned sequences.
 
 ## Usage
 
@@ -14,8 +14,8 @@ is_aligned(data)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Value
 

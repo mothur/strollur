@@ -1,7 +1,7 @@
 # Determine if a given sample is in a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Determine if a given sample is in a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+Determine if a given sample is in a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -13,8 +13,8 @@ has_sample(data, sample)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object.
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html).
 
 - sample:
 

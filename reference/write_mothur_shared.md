@@ -13,8 +13,8 @@ write_mothur_shared(data, file_root = NULL)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - file_root:
 
@@ -45,7 +45,7 @@ miseq <- strollur::miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 strollur::write_mothur_shared(miseq, tempfile())
-#> [1] "/tmp/RtmpUVSXMn/file3efd758c6515.otu.shared"      
-#> [2] "/tmp/RtmpUVSXMn/file3efd758c6515.asv.shared"      
-#> [3] "/tmp/RtmpUVSXMn/file3efd758c6515.phylotype.shared"
+#> [1] "/tmp/RtmptQFCni/file1d8b706f2bf4.otu.shared"      
+#> [2] "/tmp/RtmptQFCni/file1d8b706f2bf4.asv.shared"      
+#> [3] "/tmp/RtmptQFCni/file1d8b706f2bf4.phylotype.shared"
 ```

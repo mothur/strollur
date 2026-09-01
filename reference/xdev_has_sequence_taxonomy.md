@@ -1,8 +1,8 @@
 # Determine if a [strollur object](https://mothur.org/strollur/reference/strollur.html) has sequence taxonomy assignments
 
-Determine if a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
-has sequence taxonomy assignments
+Determine if a [strollur
+object](https://mothur.org/strollur/reference/strollur.html) has
+sequence taxonomy assignments
 
 ## Usage
 
@@ -14,8 +14,8 @@ xdev_has_sequence_taxonomy(data)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Value
 

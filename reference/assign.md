@@ -2,8 +2,8 @@
 
 Assign sequence abundances, sequence classifications, bins, bin
 representative sequences, bin classifications, sample distances or
-treatments to a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+treatments to a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -25,8 +25,8 @@ assign(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - table:
 
@@ -103,8 +103,8 @@ assign(
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## See also
 

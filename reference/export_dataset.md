@@ -1,7 +1,7 @@
-# Create a human readable table containing all data from a [strollur](https://mothur.org/strollur/reference/strollur.html) object.
+# Create a human readable table containing all data from a [strollur object](https://mothur.org/strollur/reference/strollur.html).
 
-Export all data from a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object.
+Export all data from a [strollur
+object](https://mothur.org/strollur/reference/strollur.html).
 
 ## Usage
 
@@ -13,8 +13,8 @@ export_dataset(data)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Value
 

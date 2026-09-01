@@ -12,8 +12,8 @@ xdev_get_list_vector(data, type = "otu")
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - type:
 

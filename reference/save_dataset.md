@@ -1,8 +1,7 @@
-# Save the [strollur](https://mothur.org/strollur/reference/strollur.html) object to file.
+# Save the [strollur object](https://mothur.org/strollur/reference/strollur.html) to file.
 
-The save_dataset function will save the
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
-to file.
+The save_dataset function will save the [strollur
+object](https://mothur.org/strollur/reference/strollur.html) to file.
 
 ## Usage
 
@@ -14,8 +13,8 @@ save_dataset(data, file)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - file:
 
@@ -51,5 +50,5 @@ data <- strollur::read_mothur(
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 strollur::save_dataset(data, file = file_name)
-#> [1] "/tmp/RtmpUVSXMn/miseq_sop.rds"
+#> [1] "/tmp/RtmptQFCni/miseq_sop.rds"
 ```

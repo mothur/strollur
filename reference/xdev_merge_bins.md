@@ -1,8 +1,8 @@
 # Merge bins in your [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Designed with package integration in mind, the merge bins function
-allows you to merge bins in a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+allows you to merge bins in a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -14,8 +14,8 @@ xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object.
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html).
 
 - bin_names:
 
@@ -33,8 +33,8 @@ xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

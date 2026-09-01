@@ -13,8 +13,8 @@ write_mothur_count(data, filename = NULL)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - filename:
 
@@ -44,5 +44,5 @@ miseq <- strollur::miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 strollur::write_mothur_count(miseq, tempfile())
-#> [1] "/tmp/RtmpUVSXMn/file3efd3a00a98e"
+#> [1] "/tmp/RtmptQFCni/file1d8ba6f9f4c"
 ```

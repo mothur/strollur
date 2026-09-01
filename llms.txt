@@ -128,8 +128,8 @@ Adding and using data
 
 - [`add()`](https://mothur.org/strollur/reference/add.md) :
 
-  Add sequences, reports, trees or resource references to a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  Add sequences, reports, trees or resource references to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`assign()`](https://mothur.org/strollur/reference/assign.md) :
 
@@ -140,30 +140,30 @@ Adding and using data
 
 - [`names()`](https://mothur.org/strollur/reference/names.md) :
 
-  Get the names of various data in a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  Get the names of various data in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`count()`](https://mothur.org/strollur/reference/count.md) :
 
   Find the number of sequences, samples, treatments or bins of a given
-  type in a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  type in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`abundance()`](https://mothur.org/strollur/reference/abundance.md) :
 
   Get the abundance data for sequences, bins, samples, and treatments in
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`report()`](https://mothur.org/strollur/reference/report.md) :
 
-  Get a data.frame containing the given report in a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  Get a data.frame containing the given report in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`summary()`](https://mothur.org/strollur/reference/summary.md) :
 
   Summarize the sequences data, custom reports, and scrapped data in a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`strollur`](https://mothur.org/strollur/reference/strollur.md) :
 
@@ -181,16 +181,16 @@ DADA2
 
 - [`read_biom()`](https://mothur.org/strollur/reference/read_biom.md) :
 
-  Create a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  from a biom formatted file.
+  Create a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) from a
+  biom formatted file.
 
 - [`read_dada2()`](https://mothur.org/strollur/reference/read_dada2.md)
   :
 
-  Create a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  from dada2 outputs
+  Create a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) from
+  dada2 outputs
 
 - [`read_fasta()`](https://mothur.org/strollur/reference/read_fasta.md)
   :
@@ -207,9 +207,9 @@ DADA2
 - [`read_mothur()`](https://mothur.org/strollur/reference/read_mothur.md)
   :
 
-  Create a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  from mothur outputs
+  Create a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) from
+  mothur outputs
 
 - [`read_mothur_cons_taxonomy()`](https://mothur.org/strollur/reference/read_mothur_cons_taxonomy.md)
   :
@@ -256,16 +256,16 @@ DADA2
 - [`read_phyloseq()`](https://mothur.org/strollur/reference/read_phyloseq.md)
   :
 
-  Create a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  from a phyloseq object
+  Create a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) from a
+  phyloseq object
 
 - [`read_qiime2()`](https://mothur.org/strollur/reference/read_qiime2.md)
   :
 
-  Create a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  from a qiime2 outputs
+  Create a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) from a
+  qiime2 outputs
 
 - [`read_qiime2_feature_table()`](https://mothur.org/strollur/reference/read_qiime2_feature_table.md)
   :
@@ -306,15 +306,15 @@ Create datasets and references, clear data
 - [`new_dataset()`](https://mothur.org/strollur/reference/new_dataset.md)
   :
 
-  Create a new
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  Create a new [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`new_reference()`](https://mothur.org/strollur/reference/new_reference.md)
   :
 
-  Create a resource reference for your
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  to aid in reproducibility.
+  Create a resource reference for your [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) to aid in
+  reproducibility.
 
 - [`clear()`](https://mothur.org/strollur/reference/clear.md) :
 
@@ -350,45 +350,43 @@ Save, copy, load, import, export and write to file
 - [`save_dataset()`](https://mothur.org/strollur/reference/save_dataset.md)
   :
 
-  Save the
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  to file.
+  Save the [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) to file.
 
 - [`load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md)
   :
 
-  Load a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object from a file.
+  Load a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) from a
+  file.
 
 - [`export_dataset()`](https://mothur.org/strollur/reference/export_dataset.md)
   :
 
-  Create a human readable table containing all data from a
-  [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object.
+  Create a human readable table containing all data from a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html).
 
 - [`import_dataset()`](https://mothur.org/strollur/reference/import_dataset.md)
   :
 
-  Create a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  from the exported table of a
-  [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object.
+  Create a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) from the
+  exported table of a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) object.
 
 - [`copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
   :
 
-  Create a new
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  from an existing dataset.
+  Create a new [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) from an
+  existing dataset.
 
 - [`write_biom()`](https://mothur.org/strollur/reference/write_biom.md)
   :
 
-  Write a [BIOM](https://biom-format.org) formatted file containing your
-  [strollur](https://mothur.org/strollur/reference/strollur.html)
-  objects data.
+  Write a [BIOM](https://biom-format.org) formatted file containing a
+  [strollur
+  object's](https://mothur.org/strollur/reference/strollur.html) data.
 
 - [`write_fasta()`](https://mothur.org/strollur/reference/write_fasta.md)
   :
@@ -406,9 +404,9 @@ Save, copy, load, import, export and write to file
   :
 
   Write the various [file
-  types](https://mothur.org/wiki/tags/#file_types) from your
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
-  for use with mothur.
+  types](https://mothur.org/wiki/tags/#file_types) from your [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) for use
+  with mothur.
 
 - [`write_mothur_cons_taxonomy()`](https://mothur.org/strollur/reference/write_mothur_cons_taxonomy.md)
   :

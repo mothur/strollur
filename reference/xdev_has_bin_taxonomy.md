@@ -1,8 +1,8 @@
 # Determine if a [strollur object](https://mothur.org/strollur/reference/strollur.html) has bin taxonomy assignments
 
-Determine if a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
-has bin taxonomy assignments
+Determine if a [strollur
+object](https://mothur.org/strollur/reference/strollur.html) has bin
+taxonomy assignments
 
 ## Usage
 
@@ -14,8 +14,8 @@ xdev_has_bin_taxonomy(data, type = "otu")
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - type:
 

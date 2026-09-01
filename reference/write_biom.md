@@ -1,4 +1,4 @@
-# Write a [BIOM](https://biom-format.org) formatted file containing your [strollur](https://mothur.org/strollur/reference/strollur.html) objects data.
+# Write a [BIOM](https://biom-format.org) formatted file containing a [strollur object's](https://mothur.org/strollur/reference/strollur.html) data.
 
 Write a [BIOM](https://biom-format.org) formatted file containing your
 strollur::strollur objects data.
@@ -19,8 +19,8 @@ write_biom(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - file_root:
 
@@ -73,7 +73,7 @@ if (requireNamespace("h5lite", quietly = TRUE)) {
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
-#> [1] "/tmp/RtmpUVSXMn/file3efd5c4ce97e.otu.biom"      
-#> [2] "/tmp/RtmpUVSXMn/file3efd5c4ce97e.asv.biom"      
-#> [3] "/tmp/RtmpUVSXMn/file3efd5c4ce97e.phylotype.biom"
+#> [1] "/tmp/RtmptQFCni/file1d8b66528e58.otu.biom"      
+#> [2] "/tmp/RtmptQFCni/file1d8b66528e58.asv.biom"      
+#> [3] "/tmp/RtmptQFCni/file1d8b66528e58.phylotype.biom"
 ```

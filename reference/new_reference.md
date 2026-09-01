@@ -1,8 +1,8 @@
-# Create a resource reference for your [strollur](https://mothur.org/strollur/reference/strollur.html) object to aid in reproducibility.
+# Create a resource reference for your [strollur object](https://mothur.org/strollur/reference/strollur.html) to aid in reproducibility.
 
-Create a resource reference for your
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
-to aid in reproducibility.
+Create a resource reference for your [strollur
+object](https://mothur.org/strollur/reference/strollur.html) to aid in
+reproducibility.
 
 ## Usage
 

@@ -1,8 +1,8 @@
 # Remove contaminants from a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Designed with package integration in mind, the remove lineages function
-allows you to remove contaminents from a
-[strollur](https://mothur.org/strollur/reference/strollur.html)
+allows you to remove contaminents from a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -14,8 +14,8 @@ xdev_remove_lineages(data, contaminants, reason = "contaminant")
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object.
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html).
 
 - contaminants:
 
@@ -28,8 +28,8 @@ xdev_remove_lineages(data, contaminants, reason = "contaminant")
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

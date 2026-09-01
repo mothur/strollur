@@ -1,8 +1,8 @@
 # Get the sequence abundance data in a [strollur object](https://mothur.org/strollur/reference/strollur.html) parsed by sample
 
-Get the sequence abundance data in a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
-parsed by sample
+Get the sequence abundance data in a [strollur
+object](https://mothur.org/strollur/reference/strollur.html) parsed by
+sample
 
 ## Usage
 
@@ -14,8 +14,8 @@ xdev_get_bin_abundances_by_sample(data, bin_type = "otu")
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - bin_type:
 

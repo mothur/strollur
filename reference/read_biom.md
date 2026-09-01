@@ -1,4 +1,4 @@
-# Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from a biom formatted file.
+# Create a [strollur object](https://mothur.org/strollur/reference/strollur.html) from a biom formatted file.
 
 The read_biom function reads a [biom formatted](https://biom-format.org)
 file and creates a
@@ -19,7 +19,7 @@ read_biom(biom)
 
 ## Value
 
-A [strollur](https://mothur.org/strollur/reference/strollur.html) object
+A [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

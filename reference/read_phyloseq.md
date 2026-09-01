@@ -1,4 +1,4 @@
-# Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from a phyloseq object
+# Create a [strollur object](https://mothur.org/strollur/reference/strollur.html) from a phyloseq object
 
 The `strollur::read_phyloseq()` function reads phyloseq objects created
 from the phyloseq package
@@ -30,7 +30,7 @@ read_phyloseq(phyloseq_object, treatment_column_name = NULL, dataset_name = "")
 
 ## Value
 
-a [strollur](https://mothur.org/strollur/reference/strollur.html) object
+a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 ## References
 

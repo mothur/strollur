@@ -1,7 +1,7 @@
-# Get the abundance data for sequences, bins, samples, and treatments in a [strollur](https://mothur.org/strollur/reference/strollur.html) object
+# Get the abundance data for sequences, bins, samples, and treatments in a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Get the abundance data for sequences, bins, samples, and treatments in a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+[strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -13,8 +13,8 @@ abundance(data, type = "sequence", bin_type = "otu", by_sample = FALSE)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - type, :
 

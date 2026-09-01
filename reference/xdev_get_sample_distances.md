@@ -14,8 +14,8 @@ xdev_get_sample_distances(data)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Value
 

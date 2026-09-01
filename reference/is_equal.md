@@ -1,8 +1,7 @@
 # is_equal
 
-Determine if two
-[strollur](https://mothur.org/strollur/reference/strollur.html) objects
-are equal.
+Determine if two [strollur
+object](https://mothur.org/strollur/reference/strollur.html)s are equal.
 
 ## Usage
 
@@ -14,13 +13,13 @@ is_equal(data, data2)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - data2, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Value
 

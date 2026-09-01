@@ -1,8 +1,8 @@
 # Merge sequences combines the abundances of sequences
 
 Designed with package integration in mind, the merge sequences function
-allows you to merge sequences in a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object.
+allows you to merge sequences in a [strollur
+object](https://mothur.org/strollur/reference/strollur.html).
 
 ## Usage
 
@@ -14,8 +14,8 @@ xdev_merge_sequences(data, sequence_names, reason = "merged")
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object.
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html).
 
 - sequence_names:
 
@@ -29,8 +29,8 @@ xdev_merge_sequences(data, sequence_names, reason = "merged")
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

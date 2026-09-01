@@ -1,12 +1,12 @@
-# Get a data.frame containing the given report in a [strollur](https://mothur.org/strollur/reference/strollur.html) object
+# Get a data.frame containing the given report in a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Get a data.frame containing the report or the phylo tree requested.
 Reports include FASTA format, FASTQ format, sequences reports, sequence
 quality data, sequence_bin_assignments, sequence_taxonomy,
 sequence_tree, bin_taxonomy, bin_representatives, sample_assignments,
 sample distances, sample_tree, references, custom reports,
-sequence_scrap, and bin_scrap in a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object.
+sequence_scrap, and bin_scrap in a [strollur
+object](https://mothur.org/strollur/reference/strollur.html).
 
 ## Usage
 
@@ -18,8 +18,8 @@ report(data, type = "sequence", bin_type = "otu")
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - type:
 

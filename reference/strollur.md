@@ -720,8 +720,8 @@ vector of strings
 
 ### `strollur$get_version()`
 
-Get the version of the
-[strollur](https://mothur.org/strollur/reference/strollur.html) object.
+Get the version of the [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 #### Usage
 
@@ -788,9 +788,8 @@ a logical
 
 ### `strollur$is_equal()`
 
-Determine if two
-[strollur](https://mothur.org/strollur/reference/strollur.html) objects
-are equal.
+Determine if two [strollur
+object](https://mothur.org/strollur/reference/strollur.html)s are equal.
 
 #### Usage
 
@@ -800,8 +799,8 @@ are equal.
 
 - `data, `:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 #### Returns
 

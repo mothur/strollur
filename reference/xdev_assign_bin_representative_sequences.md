@@ -20,8 +20,8 @@ xdev_assign_bin_representative_sequences(
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - table:
 
@@ -53,8 +53,8 @@ xdev_assign_bin_representative_sequences(
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

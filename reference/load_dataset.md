@@ -1,8 +1,8 @@
-# Load a [strollur](https://mothur.org/strollur/reference/strollur.html) object from a file.
+# Load a [strollur object](https://mothur.org/strollur/reference/strollur.html) from a file.
 
-The load_dataset function will create a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
-from an RDS file.
+The load_dataset function will create a [strollur
+object](https://mothur.org/strollur/reference/strollur.html) from an RDS
+file.
 
 ## Usage
 
@@ -18,7 +18,7 @@ load_dataset(file)
 
 ## Value
 
-a [strollur](https://mothur.org/strollur/reference/strollur.html) object
+a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 ## See also
 

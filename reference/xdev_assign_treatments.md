@@ -1,7 +1,7 @@
 # Assign samples to treatments in a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Assign samples to treatments in a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+Assign samples to treatments in a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -19,8 +19,8 @@ xdev_assign_treatments(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - table:
 
@@ -43,8 +43,8 @@ xdev_assign_treatments(
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

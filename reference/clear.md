@@ -1,7 +1,7 @@
 # Clear data from a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Clear data from a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+Clear data from a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -13,13 +13,13 @@ clear(data)
 
 - data, :
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

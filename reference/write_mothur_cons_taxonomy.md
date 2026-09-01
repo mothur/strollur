@@ -13,8 +13,8 @@ write_mothur_cons_taxonomy(data, file_root = NULL)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - file_root:
 
@@ -45,7 +45,7 @@ miseq <- strollur::miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 strollur::write_mothur_cons_taxonomy(miseq, tempfile())
-#> [1] "/tmp/RtmpUVSXMn/file3efd33937edc.otu.cons.taxonomy"      
-#> [2] "/tmp/RtmpUVSXMn/file3efd33937edc.asv.cons.taxonomy"      
-#> [3] "/tmp/RtmpUVSXMn/file3efd33937edc.phylotype.cons.taxonomy"
+#> [1] "/tmp/RtmptQFCni/file1d8b851d2ae.otu.cons.taxonomy"      
+#> [2] "/tmp/RtmptQFCni/file1d8b851d2ae.asv.cons.taxonomy"      
+#> [3] "/tmp/RtmptQFCni/file1d8b851d2ae.phylotype.cons.taxonomy"
 ```

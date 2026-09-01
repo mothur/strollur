@@ -1,7 +1,7 @@
-# Create a new [strollur](https://mothur.org/strollur/reference/strollur.html) object
+# Create a new [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Create a new
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+Create a new [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -17,12 +17,12 @@ new_dataset(dataset_name = "")
 
 ## Value
 
-a [strollur](https://mothur.org/strollur/reference/strollur.html) object
+a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 ## See also
 
-The 'new' method in the
-[strollur](https://mothur.org/strollur/reference/strollur.html) class
+The 'new' method in the [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

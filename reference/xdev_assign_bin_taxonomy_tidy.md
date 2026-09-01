@@ -1,7 +1,7 @@
 # Assign bin classifications to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Assign bin classifications to a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+Assign bin classifications to a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -23,8 +23,8 @@ xdev_assign_bin_taxonomy_tidy(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - table:
 
@@ -66,8 +66,8 @@ xdev_assign_bin_taxonomy_tidy(
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

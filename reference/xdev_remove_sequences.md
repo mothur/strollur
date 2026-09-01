@@ -1,8 +1,8 @@
 # Remove sequences from a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Designed with package integration in mind, the remove sequences function
-allows you to remove sequences from a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+allows you to remove sequences from a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -14,8 +14,8 @@ xdev_remove_sequences(data, sequence_names, trash_tags)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object.
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html).
 
 - sequence_names:
 
@@ -27,8 +27,8 @@ xdev_remove_sequences(data, sequence_names, trash_tags)
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

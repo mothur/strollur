@@ -1,4 +1,4 @@
-# Write the various [file types](https://mothur.org/wiki/tags/#file_types) from your [strollur](https://mothur.org/strollur/reference/strollur.html) object for use with mothur.
+# Write the various [file types](https://mothur.org/wiki/tags/#file_types) from your [strollur object](https://mothur.org/strollur/reference/strollur.html) for use with mothur.
 
 The write_mothur function will write various [file
 types](https://mothur.org/wiki/tags/#file_types) for use with mothur.
@@ -13,8 +13,8 @@ write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - dir_path:
 

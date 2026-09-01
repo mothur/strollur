@@ -1,4 +1,4 @@
-# Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from dada2 outputs
+# Create a [strollur object](https://mothur.org/strollur/reference/strollur.html) from dada2 outputs
 
 This function reads a dada2 sequence table and creates a
 [`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)

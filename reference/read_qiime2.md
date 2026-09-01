@@ -1,4 +1,4 @@
-# Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from a qiime2 outputs
+# Create a [strollur object](https://mothur.org/strollur/reference/strollur.html) from a qiime2 outputs
 
 The read_qiime2 function reads various types of .qza files created by
 [qiime2](https://qiime2.org), and creates a
@@ -43,7 +43,7 @@ read_qiime2(
 
 ## Value
 
-a [strollur](https://mothur.org/strollur/reference/strollur.html) object
+a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 ## References
 

@@ -1,7 +1,7 @@
 # Assign bin classifications to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Assign bin classifications to a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+Assign bin classifications to a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 Note, if you assign sequence taxonomies and assign bins, `strollur` will
 find the concensus taxonomy for each bin for you.
@@ -24,8 +24,8 @@ xdev_assign_bin_taxonomy(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - table:
 
@@ -57,8 +57,8 @@ xdev_assign_bin_taxonomy(
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

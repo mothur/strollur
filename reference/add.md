@@ -1,7 +1,7 @@
-# Add sequences, reports, trees or resource references to a [strollur](https://mothur.org/strollur/reference/strollur.html) object
+# Add sequences, reports, trees or resource references to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Add sequences, reports, trees or resource references to a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+Add sequences, reports, trees or resource references to a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -26,8 +26,8 @@ add(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - table:
 
@@ -123,8 +123,8 @@ add(
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

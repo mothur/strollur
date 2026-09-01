@@ -1,7 +1,7 @@
 # Set the name of a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Designed with package integration in mind, set the name of a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object.
+Designed with package integration in mind, set the name of a [strollur
+object](https://mothur.org/strollur/reference/strollur.html).
 
 ## Usage
 
@@ -13,8 +13,8 @@ xdev_set_dataset_name(data, dataset_name)
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - dataset_name:
 

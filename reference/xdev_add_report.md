@@ -1,7 +1,7 @@
 # Add a report to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Add a report to a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+Add a report to a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -20,8 +20,8 @@ xdev_add_report(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - table:
 
@@ -49,8 +49,8 @@ xdev_add_report(
 
 ## Value
 
-an updated
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+an updated [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Examples
 

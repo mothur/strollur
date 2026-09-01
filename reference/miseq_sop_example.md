@@ -1,9 +1,9 @@
 # Create a [strollur object](https://mothur.org/strollur/reference/strollur.html) using the analysis files from the [MiSeq_SOP](https://mothur.org/wiki/miseq_sop/) example.
 
-The miseq_sop_example function will create
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
-using the analysis files from the
-[MiSeq_SOP](https://mothur.org/wiki/miseq_sop/) example.
+The miseq_sop_example function will create [strollur
+object](https://mothur.org/strollur/reference/strollur.html) using the
+analysis files from the [MiSeq_SOP](https://mothur.org/wiki/miseq_sop/)
+example.
 
 ## Usage
 

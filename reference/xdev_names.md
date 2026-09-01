@@ -1,7 +1,7 @@
 # Get the names of a given type of data in a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-Get the names of a given type of data in a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
+Get the names of a given type of data in a [strollur
+object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Usage
 
@@ -19,8 +19,8 @@ xdev_names(
 
 - data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - type:
 
