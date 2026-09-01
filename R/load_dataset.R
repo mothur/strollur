@@ -1,4 +1,6 @@
-#' @title Load strollur object from .rds file
+#' @title Load a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from a file.
 #' @description The load_dataset function will create a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'   from an RDS file.

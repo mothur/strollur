@@ -2,7 +2,9 @@
 % Please edit documentation in R/new_reference.R
 \name{new_reference}
 \alias{new_reference}
-\title{new_reference}
+\title{Create a resource reference for your
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+to aid in reproducibility.}
 \usage{
 new_reference(
   name,

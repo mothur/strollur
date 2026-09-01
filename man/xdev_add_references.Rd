@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_add_references}
 \alias{xdev_add_references}
-\title{Add resource references}
+\title{Add resource references to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} to aid in reproducibility}
 \usage{
 xdev_add_references(
   data,

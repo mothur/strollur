@@ -1,5 +1,5 @@
-#' @title Add sequences, reports or resource references to a
-#'   \link{strollur} object
+#' @title Add sequences, reports, trees or resource references to a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @name add
 #' @rdname add
 #' @description

@@ -756,6 +756,71 @@ Rcpp::Environment xdev_add_sequence_fastq_scores(const Rcpp::Environment& data,
     return data;
 }
 /******************************************************************************/
+Rcpp::Environment xdev_assign_sample_distances(const Rcpp::Environment& data,
+                                               const Rcpp::DataFrame& table,
+                                               Rcpp::Nullable<Rcpp::List> reference,
+                                               bool verbose) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    if (d.get()->getNumSamples() == 0) {
+        string message = "You cannot assign sample distances, your dataset";
+        message += " does not include sample data.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    if (table.size() < 3) {
+        string message = "Expecting a 3 column data.frame ";
+        message += "(sample1 sample2 distance). Ignoring sample distances.";
+        Rcpp::Rcout << endl << message << endl << endl;
+        return data;
+    }
+    vector<string> sample1, sample2, allSamples;
+    vector<float> dists;
+    sample1 = Rcpp::as<vector<string>>(table[0]);
+    sample2 = Rcpp::as<vector<string>>(table[1]);
+    dists = Rcpp::as<vector<float>>(table[2]);
+    allSamples = sample1;
+    allSamples.insert(allSamples.end(), sample2.begin(), sample2.end());
+
+    // make sure every sample in dataset is assigned a treatment
+    if (!identical(d.get()->getSamples(), unique(allSamples))) {
+        string message = "You must provide distance assignments for";
+        message += " all samples in your dataset.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const double numAssigned = d.get()->assignSampleDistances(sample1,
+                                     sample2, dists);
+
+    if (verbose) {
+        xint_assigned_message(numAssigned, " samples distances.");
+    }
+
+    if (reference.isNotNull()) {
+
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
+    }
+
+    return data;
+}
+/******************************************************************************/
 Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
                                       const Rcpp::DataFrame& table,
                                       const string& sequence_name,
@@ -1187,6 +1252,16 @@ vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
         throw Rcpp::exception(message.c_str());
     }
     return null2DVector;
+}
+/******************************************************************************/
+Rcpp::DataFrame xdev_get_sample_distances(const Rcpp::Environment& data){
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->getSampleDistances();
 }
 /******************************************************************************/
 vector<string> xdev_get_sequences(const Rcpp::Environment& data,

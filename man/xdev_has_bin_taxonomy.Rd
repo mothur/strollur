@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_has_bin_taxonomy}
 \alias{xdev_has_bin_taxonomy}
-\title{xdev_has_bin_taxonomy}
+\title{Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} has bin taxonomy assignments}
 \usage{
 xdev_has_bin_taxonomy(data, type = "otu")
 }
@@ -15,7 +15,7 @@ xdev_has_bin_taxonomy(data, type = "otu")
 boolean
 }
 \description{
-Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
+Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has bin taxonomy assignments
 }
 \examples{
 

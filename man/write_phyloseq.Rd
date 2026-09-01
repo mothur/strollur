@@ -2,7 +2,8 @@
 % Please edit documentation in R/write_phyloseq.R
 \name{write_phyloseq}
 \alias{write_phyloseq}
-\title{write_phyloseq}
+\title{Create a phyloseq object from your
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 write_phyloseq(data)
 }

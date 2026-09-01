@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_fastq.R
 \name{read_fastq}
 \alias{read_fastq}
-\title{read_fastq}
+\title{Read a \href{https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/}{FASTQ}
+formatted file}
 \usage{
 read_fastq(fastq, path = NULL, format = "illumina1.8+")
 }

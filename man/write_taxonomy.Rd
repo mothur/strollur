@@ -2,7 +2,8 @@
 % Please edit documentation in R/write_taxonomy.R
 \name{write_taxonomy}
 \alias{write_taxonomy}
-\title{write_taxonomy}
+\title{Write a 2 column
+\href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}}
 \usage{
 write_taxonomy(data, filename = NULL)
 }

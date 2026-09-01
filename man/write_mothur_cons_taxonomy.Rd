@@ -2,7 +2,8 @@
 % Please edit documentation in R/write_mothur_cons_taxonomy.R
 \name{write_mothur_cons_taxonomy}
 \alias{write_mothur_cons_taxonomy}
-\title{write_mothur_cons_taxonomy}
+\title{Write a mothur formatted
+\href{https://mothur.org/wiki/constaxonomy_file/}{cons_taxonomy file}}
 \usage{
 write_mothur_cons_taxonomy(data, file_root = NULL)
 }

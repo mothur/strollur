@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_assign_sequence_taxonomy_tidy}
 \alias{xdev_assign_sequence_taxonomy_tidy}
-\title{xdev_assign_sequence_taxonomy_tidy}
+\title{Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_assign_sequence_taxonomy_tidy(
   data,

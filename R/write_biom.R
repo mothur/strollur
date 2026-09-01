@@ -2,7 +2,9 @@
 #' @importFrom utils packageDescription
 #' @importFrom utils packageVersion
 #'
-#' @title write_biom
+#' @title Write a \href{https://biom-format.org}{BIOM} formatted file containing
+#'   your \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+#'   objects data.
 #' @description
 #'
 #' Write a \href{https://biom-format.org}{BIOM} formatted file containing your

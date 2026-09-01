@@ -1,4 +1,5 @@
-#' @title write_mothur_list
+#' @title Write mothur formatted \href{https://mothur.org/wiki/list_file/}{list
+#'   files}
 #' @description
 #' Write mothur formatted \href{https://mothur.org/wiki/list_file/}{list files}
 #'

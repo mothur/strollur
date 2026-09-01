@@ -1,5 +1,6 @@
 #' @importFrom microseq readFastq
-#' @title read_fastq
+#' @title Read a \href{https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/}{FASTQ}
+#' formatted file
 #'
 #' @description
 #' Read a \href{https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/}{FASTQ}

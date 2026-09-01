@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_assign_treatments}
 \alias{xdev_assign_treatments}
-\title{xdev_assign_treatments}
+\title{Assign samples to treatments in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_assign_treatments(
   data,

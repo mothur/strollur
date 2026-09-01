@@ -2,7 +2,8 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_set_sequences}
 \alias{xdev_set_sequences}
-\title{xdev_set_sequences}
+\title{Set neucleotide sequence string in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_set_sequences(
   data,

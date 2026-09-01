@@ -2,7 +2,8 @@
 % Please edit documentation in R/write_mothur_shared.R
 \name{write_mothur_shared}
 \alias{write_mothur_shared}
-\title{write_mothur_shared}
+\title{Write mothur formatted
+\href{https://mothur.org/wiki/shared_file/}{shared files}}
 \usage{
 write_mothur_shared(data, file_root = NULL)
 }

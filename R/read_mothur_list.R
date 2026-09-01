@@ -1,4 +1,5 @@
-#' @title read_mothur_list
+#' @title Read a mothur formatted \href{https://mothur.org/wiki/list_file/}{list
+#'   file}
 #' @description
 #' Read a mothur formatted \href{https://mothur.org/wiki/list_file/}{list file}
 #' @param list file name. The

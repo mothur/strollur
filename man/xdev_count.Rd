@@ -2,7 +2,8 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_count}
 \alias{xdev_count}
-\title{xdev_count}
+\title{Find the number of sequences, samples, treatments or bins of a given type in
+a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_count(
   data,

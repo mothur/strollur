@@ -1,4 +1,5 @@
-#' @title new_dataset
+#' @title Create a new
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @description Create a new
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'

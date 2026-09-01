@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_set_abundances}
 \alias{xdev_set_abundances}
-\title{xdev_set_abundances}
+\title{Set abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} with sample data}
 \usage{
 xdev_set_abundances(data, sequence_names, abundances, reason = "update")
 }

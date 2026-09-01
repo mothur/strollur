@@ -1,4 +1,5 @@
-#' @title write_taxonomy
+#' @title Write a 2 column
+#' \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}
 #' @description
 #' Write a 2 column
 #' \href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}

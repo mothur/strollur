@@ -2,7 +2,11 @@
 % Please edit documentation in R/import_dataset.R
 \name{import_dataset}
 \alias{import_dataset}
-\title{Import strollur object from exported data.frame.}
+\title{Create a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from the exported table of a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object.}
 \usage{
 import_dataset(table)
 }

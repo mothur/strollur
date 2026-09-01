@@ -2,7 +2,8 @@
 % Please edit documentation in R/write_mothur_design.R
 \name{write_mothur_design}
 \alias{write_mothur_design}
-\title{write_mothur_design}
+\title{Write a mothur formatted
+\href{https://mothur.org/wiki/design_file/}{design file}}
 \usage{
 write_mothur_design(data, filename = NULL)
 }

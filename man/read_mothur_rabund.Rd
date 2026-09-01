@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_mothur_rabund.R
 \name{read_mothur_rabund}
 \alias{read_mothur_rabund}
-\title{read_mothur_rabund}
+\title{Read a mothur formatted
+\href{https://mothur.org/wiki/rabund_file/}{rabund file}}
 \usage{
 read_mothur_rabund(rabund)
 }

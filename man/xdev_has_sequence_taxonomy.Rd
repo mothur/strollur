@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_has_sequence_taxonomy}
 \alias{xdev_has_sequence_taxonomy}
-\title{xdev_has_sequence_taxonomy}
+\title{Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} has sequence taxonomy assignments}
 \usage{
 xdev_has_sequence_taxonomy(data)
 }

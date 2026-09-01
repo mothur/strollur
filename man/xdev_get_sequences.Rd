@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_get_sequences}
 \alias{xdev_get_sequences}
-\title{xdev_get_sequences}
+\title{Get the nucleotide strings for each sequence in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_get_sequences(data, sample = "", degap = FALSE)
 }

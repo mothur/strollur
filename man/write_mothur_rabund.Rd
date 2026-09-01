@@ -2,7 +2,8 @@
 % Please edit documentation in R/write_mothur_rabund.R
 \name{write_mothur_rabund}
 \alias{write_mothur_rabund}
-\title{write_mothur_rabund}
+\title{Write mothur formatted
+\href{https://mothur.org/wiki/rabund_file/}{rabund files}}
 \usage{
 write_mothur_rabund(data, file_root = NULL)
 }

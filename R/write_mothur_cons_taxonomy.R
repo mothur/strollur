@@ -1,4 +1,5 @@
-#' @title write_mothur_cons_taxonomy
+#' @title Write a mothur formatted
+#' \href{https://mothur.org/wiki/constaxonomy_file/}{cons_taxonomy file}
 #' @description
 #' Write a mothur formatted
 #' \href{https://mothur.org/wiki/constaxonomy_file/}{cons_taxonomy file}

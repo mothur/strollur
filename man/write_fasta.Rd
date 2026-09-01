@@ -2,7 +2,9 @@
 % Please edit documentation in R/write_fasta.R
 \name{write_fasta}
 \alias{write_fasta}
-\title{write_fasta}
+\title{Write a
+\href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA} formatted
+sequence file}
 \usage{
 write_fasta(data, filename = NULL, degap = FALSE)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_get_list_vector}
 \alias{xdev_get_list_vector}
-\title{xdev_get_list_vector}
+\title{Get vector of strings containing the sequences bin data}
 \usage{
 xdev_get_list_vector(data, type = "otu")
 }

@@ -79,7 +79,7 @@ Rcpp::DataFrame xdev_abundance(const Rcpp::Environment& data,
                                const string& bin_type = "otu",
                                bool by_sample = false);
 /******************************************************************************/
-//' @title Add resource references
+//' @title Add resource references to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} to aid in reproducibility
 //' @name xdev_add_references
 //' @rdname xdev_add_references
 //' @description
@@ -144,7 +144,7 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
                        const string& citation = "citation",
                        bool verbose = true);
 /******************************************************************************/
-//' @title Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @title Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @name xdev_add_report
 //' @rdname xdev_add_report
 //' @description
@@ -190,7 +190,7 @@ Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
                  const string& sequence_name = "none",
                  bool verbose = true);
 /******************************************************************************/
-//' @title xdev_add_sequences
+//' @title Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -246,7 +246,7 @@ Rcpp::Environment xdev_add_sequences(const Rcpp::Environment& data,
                       const string& comment = "comment",
                       bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_bins
+//' @title Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -309,7 +309,7 @@ Rcpp::Environment xdev_assign_bins(const Rcpp::Environment& data,
                     const string& sequence_name = "sequence_name",
                     bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_bin_representative_sequences
+//' @title Assign representative sequences to bins
 //' @description
 //' Assign representative sequences to bins.
 //'
@@ -351,7 +351,7 @@ Rcpp::Environment xdev_assign_bin_representative_sequences(const Rcpp::Environme
                                             const string& sequence_name = "sequence_name",
                                             bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_bin_taxonomy
+//' @title Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -400,7 +400,7 @@ Rcpp::Environment xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
                             const string& taxonomy = "taxonomy",
                             bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_sequence_taxonomy
+//' @title Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -449,7 +449,7 @@ Rcpp::Environment xdev_assign_sequence_taxonomy(const Rcpp::Environment& data,
                                  const string& taxonomy = "taxonomy",
                                  bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_bin_taxonomy_tidy
+//' @title Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Assign bin classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -503,7 +503,8 @@ Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data,
                                                       const string& confidence = "confidence",
                                                       const bool verbose = true);
 /******************************************************************************/
-//' @title xdev_add_sequence_fastq_scores
+//' @title Add FASTQ data to a
+//' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Add FASTQ data to a
 //' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
@@ -540,7 +541,42 @@ Rcpp::Environment xdev_add_sequence_fastq_scores(const Rcpp::Environment& data,
                               const string& quality_score = "quality_score",
                               const bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_sequence_quality_scores
+//' @title Assign samples distances in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
+//' @description
+//' Assign samples distances in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//'
+//' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @param reference a list created by the function [new_reference]. Optional.
+//' @param verbose a boolean indicating whether or not you want progress
+//'  messages. Default = TRUE.
+//' @examples
+//'
+//' shared_file <- strollur_example("final.opti_mcc.shared")
+//' dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+//' reference <- strollur::new_reference(name = "jclass estimator distances",
+//'                                      vendor = "mothur_v1.48.6")
+//'
+//' data <- strollur::new_dataset("my_dataset")
+//' df <- read_mothur_shared(shared_file)
+//' xdev_assign_bins(data, table = df, bin_type = "otu")
+//'
+//' sample_dists <- readr::read_table(dist_file,
+//'                                   col_names = FALSE,
+//'                                   show_col_types = FALSE)
+//' xdev_assign_sample_distances(data, table = sample_dists,
+//'                              reference = reference)
+//' data
+//'
+//' @return an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @export
+//[[Rcpp::export]]
+Rcpp::Environment xdev_assign_sample_distances(const Rcpp::Environment& data,
+                                               const Rcpp::DataFrame& table,
+                                               Rcpp::Nullable<Rcpp::List> reference = R_NilValue,
+                                               bool verbose = true);
+/******************************************************************************/
+//' @title Add quality data to a
+//' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Add quality data to a
 //' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
@@ -577,7 +613,7 @@ Rcpp::Environment xdev_assign_sequence_quality_scores(const Rcpp::Environment& d
                                                   const string& quality_score = "quality_score",
                                                   const bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_sequence_taxonomy_tidy
+//' @title Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -632,7 +668,8 @@ Rcpp::Environment xdev_assign_sequence_taxonomy_tidy(const Rcpp::Environment& da
                                      const string& confidence = "confidence",
                                      const bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_sequence_abundance
+//' @title Assign sequence abundance and optionally assign sample and treatment data to
+//'  a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Assign sequence abundance and optionally assign sample and treatment data to
 //'  a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -671,7 +708,7 @@ Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
                                   const string& treatment = "treatment",
                                   bool verbose = true);
 /******************************************************************************/
-//' @title xdev_assign_treatments
+//' @title Assign samples to treatments in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Assign samples to treatments in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -706,7 +743,8 @@ Rcpp::Environment xdev_assign_treatments(const Rcpp::Environment& data,
                           const string& treatment = "treatment",
                           bool verbose = true);
 /******************************************************************************/
-//' @title xdev_count
+//' @title Find the number of sequences, samples, treatments or bins of a given type in
+//' a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Find the number of sequences, samples, treatments or bins of a given type in
 //' a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -804,7 +842,7 @@ double xdev_count(const Rcpp::Environment& data,
             Rcpp::Nullable<Rcpp::List> samples = R_NilValue,
             bool distinct = false);
 /******************************************************************************/
-//' @title xdev_export_dataset
+//' @title Export data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} (excludes trees)
 //' @description
 //' Export all data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 //'
@@ -821,7 +859,7 @@ double xdev_count(const Rcpp::Environment& data,
 //[[Rcpp::export]]
 Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
 /******************************************************************************/
-//' @title xdev_get_bin_abundances_by_sample
+//' @title Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} parsed by sample
 //' @description
 //' Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 //'
@@ -840,7 +878,7 @@ Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
 vector<vector<float> > xdev_get_bin_abundances_by_sample(const Rcpp::Environment& data,
                                                          const string& bin_type = "otu");
 /******************************************************************************/
-//' @title xdev_get_sequence_abundances_by_sample
+//' @title Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} parsed by sample
 //' @description
 //' Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 //'
@@ -860,7 +898,8 @@ vector<vector<float> > xdev_get_bin_abundances_by_sample(const Rcpp::Environment
 vector<vector<float> > xdev_get_sequence_abundances_by_sample(const Rcpp::Environment& data,
                                             const Rcpp::CharacterVector& samples = Rcpp::CharacterVector::create());
 /******************************************************************************/
-//' @title xdev_get_alignment_length
+//' @title Get the alignment length of sequences in your
+//' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Get the alignment length of sequences in your
 //' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
@@ -877,7 +916,7 @@ vector<vector<float> > xdev_get_sequence_abundances_by_sample(const Rcpp::Enviro
 //[[Rcpp::export]]
 int xdev_get_alignment_length(const Rcpp::Environment& data);
 /******************************************************************************/
-//' @title xdev_get_list_vector
+//' @title Get vector of strings containing the sequences bin data
 //' @description
 //' Get vector of strings containing the sequences bin data
 //'
@@ -895,7 +934,7 @@ int xdev_get_alignment_length(const Rcpp::Environment& data);
 vector<string> xdev_get_list_vector(const Rcpp::Environment& data,
                                     const string& type = "otu");
 /******************************************************************************/
-//' @title xdev_get_by_sample
+//' @title Get the requested data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} parsed by sample
 //' @description
 //' Get the requested data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object parsed by sample
 //'
@@ -927,7 +966,22 @@ vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
                                       const Rcpp::CharacterVector& samples = Rcpp::CharacterVector::create(),
                                       bool degap = false);
 /******************************************************************************/
-//' @title xdev_get_sequences
+//' @title Get distances between samples in your `\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
+//' @description
+//' Get distances between samples in your `strollur::strollur` object
+//'
+//' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+//' @examples
+//'
+//'  data <- strollur::miseq_sop_example()
+//'  strollur::xdev_get_sample_distances(data)
+//'
+//' @return Rcpp::DataFrame with 3 columns (sample1, sample2, distance)
+//' @export
+//[[Rcpp::export]]
+Rcpp::DataFrame xdev_get_sample_distances(const Rcpp::Environment& data);
+/******************************************************************************/
+//' @title Get the nucleotide strings for each sequence in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Get the nucleotide strings for each sequence in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -950,7 +1004,7 @@ vector<string> xdev_get_sequences(const Rcpp::Environment& data,
                                   bool degap = false);
 
 /******************************************************************************/
-//' @title xdev_get_sequence_indexes_by_sample
+//' @title Get indexes of sequences parsed by sample
 //' @description
 //'
 //' As a developer you may want to process data by sample. To save space you can
@@ -982,9 +1036,9 @@ vector<string> xdev_get_sequences(const Rcpp::Environment& data,
 vector<vector<int> > xdev_get_sequence_indexes_by_sample(const Rcpp::Environment& data,
                                                          const Rcpp::CharacterVector& samples= Rcpp::CharacterVector::create());
 /******************************************************************************/
-//' @title xdev_has_bin_taxonomy
+//' @title Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} has bin taxonomy assignments
 //' @description
-//' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
+//' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has bin taxonomy assignments
 //'
 //' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //' @param type a string indicating the type of bin assignments. Default "otu".
@@ -1000,7 +1054,7 @@ vector<vector<int> > xdev_get_sequence_indexes_by_sample(const Rcpp::Environment
 bool xdev_has_bin_taxonomy(const Rcpp::Environment& data,
                            const string& type = "otu");
 /******************************************************************************/
-//' @title xdev_has_sequence_taxonomy
+//' @title Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} has sequence taxonomy assignments
 //' @description
 //' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object has sequence taxonomy assignments
 //'
@@ -1018,7 +1072,7 @@ bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data);
 /******************************************************************************/
 // ******** merging *********
 
-//' @title xdev_merge_bins
+//' @title Merge bins in your \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Designed with package integration in mind, the merge bins function allows
 //' you to merge bins in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -1054,7 +1108,7 @@ bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data);
 Rcpp::Environment xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
                      const string& reason = "merged", const string& bin_type = "otu");
 /******************************************************************************/
-//' @title xdev_merge_sequences
+//' @title Merge sequences combines the abundances of sequences
 //' @description
 //' Designed with package integration in mind, the merge sequences function
 //' allows you to merge sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
@@ -1117,7 +1171,7 @@ Rcpp::Environment xdev_merge_sequences(const Rcpp::Environment& data,
                           const vector<string>& sequence_names,
                           const string& reason = "merged");
 /******************************************************************************/
-//' @title xdev_names
+//' @title Get the names of a given type of data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Get the names of a given type of data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -1201,7 +1255,7 @@ vector<string> xdev_names(const Rcpp::Environment& data,
 
 // ************** removing ******************
 
-//' @title xdev_remove_bins
+//' @title Remove bins from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Designed with package integration in mind, the remove bins function allows
 //' you to remove bins from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -1247,7 +1301,7 @@ Rcpp::Environment xdev_remove_bins(const Rcpp::Environment& data,
                       const vector<string>& trash_tags,
                       const string& bin_type = "otu");
 
-//' @title xdev_remove_lineages
+//' @title Remove contaminants from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Designed with package integration in mind, the remove lineages function
 //' allows you to remove contaminents from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
@@ -1278,7 +1332,7 @@ Rcpp::Environment xdev_remove_lineages(const Rcpp::Environment& data,
                           const vector<string>& contaminants,
                           const string& reason = "contaminant");
 
-//' @title xdev_remove_samples
+//' @title Remove samples from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Designed with package integration in mind, the remove samples function allows
 //' you to remove samples from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -1310,7 +1364,7 @@ Rcpp::Environment xdev_remove_samples(const Rcpp::Environment& data,
                          const vector<string>& samples,
                          const string& reason = "remove_samples");
 
-//' @title xdev_remove_sequences
+//' @title Remove sequences from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Designed with package integration in mind, the remove sequences function
 //' allows you to remove sequences from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -1356,7 +1410,7 @@ Rcpp::Environment xdev_remove_sequences(const Rcpp::Environment& data,
                            const vector<string>& sequence_names,
                            const vector<string>& trash_tags) ;
 
-//' @title xdev_report
+//' @title Get a data.frame containing the given report in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Get a data.frame containing the given report in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -1476,7 +1530,7 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data,
                             const string& bin_type = "otu");
 // ****************** setting *******************
 
-//' @title xdev_set_abundance
+//' @title Set abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} without sample data
 //' @description
 //' Designed with package integration in mind, the set abundance function
 //' allows you to change the abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -1519,7 +1573,7 @@ Rcpp::Environment xdev_set_abundance(const Rcpp::Environment& data,
                         const vector<float>& sequence_abundances,
                         const string& reason = "update");
 
-//' @title xdev_set_abundances
+//' @title Set abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} with sample data
 //' @description
 //' Designed with package integration in mind, the set abundances function
 //' allows you to change the abundances of sequences in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -1562,7 +1616,8 @@ Rcpp::Environment xdev_set_abundances(const Rcpp::Environment& data,
                          const vector<vector<float>>& abundances,
                          const string& reason = "update");
 
-//' @title xdev_set_sequences
+//' @title Set neucleotide sequence string in a
+//' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Designed with package integration in mind, the set sequences function allows
 //' you to change the nucleotide strings of sequences in a
@@ -1595,7 +1650,7 @@ Rcpp::Environment xdev_set_sequences(const Rcpp::Environment& data,
                         const vector<string>& sequences,
                         const Rcpp::CharacterVector& comments = Rcpp::CharacterVector::create());
 
-//' @title xdev_set_dataset_name
+//' @title Set the name of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Designed with package integration in mind, set the name of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 //'
@@ -1614,7 +1669,7 @@ Rcpp::Environment xdev_set_sequences(const Rcpp::Environment& data,
 void xdev_set_dataset_name(const Rcpp::Environment& data, const string& dataset_name);
 
 // ***************** internal ******************
-//' @title xint_get_scrap_summary
+//' @title Summarize the scrapped data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Summarize the scrapped data in a \link{strollur} object
 //'

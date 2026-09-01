@@ -1,4 +1,4 @@
-#' @title write_quality
+#' @title Write a file containing sequence quality scores
 #' @description
 #'
 #' Write a file containing sequence quality scores

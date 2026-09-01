@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_qiime2_metadata.R
 \name{read_qiime2_metadata}
 \alias{read_qiime2_metadata}
-\title{read_qiime2_metadata}
+\title{Read a \href{https://qiime2.org}{qiime2} .tsv table containing
+metadata.}
 \usage{
 read_qiime2_metadata(metadata)
 }

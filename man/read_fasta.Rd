@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_fasta.R
 \name{read_fasta}
 \alias{read_fasta}
-\title{read_fasta}
+\title{Read a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}
+formatted sequence file}
 \usage{
 read_fasta(fasta)
 }

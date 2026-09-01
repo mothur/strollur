@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_mothur_count.R
 \name{read_mothur_count}
 \alias{read_mothur_count}
-\title{read_mothur_count}
+\title{Read a mothur formatted
+\href{https://mothur.org/wiki/count_file/}{count file}}
 \usage{
 read_mothur_count(filename)
 }

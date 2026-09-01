@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_remove_sequences}
 \alias{xdev_remove_sequences}
-\title{xdev_remove_sequences}
+\title{Remove sequences from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_remove_sequences(data, sequence_names, trash_tags)
 }

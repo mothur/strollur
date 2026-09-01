@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{get_bin_types}
 \alias{get_bin_types}
-\title{get_bin_types}
+\title{Get bin table types of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 get_bin_types(data)
 }

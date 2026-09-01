@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{is_aligned}
 \alias{is_aligned}
-\title{is_aligned}
+\title{Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} contains aligned sequences.}
 \usage{
 is_aligned(data)
 }

@@ -2,7 +2,8 @@
 % Please edit documentation in R/unpack_qiime2_artifact.R
 \name{unpack_qiime2_artifact}
 \alias{unpack_qiime2_artifact}
-\title{unpack_qiime2_artifact}
+\title{The unpack_qiime2_artifact function reads .qza files created by
+\href{https://qiime2.org}{qiime2}, and returns the artifact.}
 \usage{
 unpack_qiime2_artifact(qza, dir_path = NULL)
 }

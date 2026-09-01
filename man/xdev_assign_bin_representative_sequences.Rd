@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_assign_bin_representative_sequences}
 \alias{xdev_assign_bin_representative_sequences}
-\title{xdev_assign_bin_representative_sequences}
+\title{Assign representative sequences to bins}
 \usage{
 xdev_assign_bin_representative_sequences(
   data,

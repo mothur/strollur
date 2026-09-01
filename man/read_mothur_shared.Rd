@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_mothur_shared.R
 \name{read_mothur_shared}
 \alias{read_mothur_shared}
-\title{read_mothur_shared}
+\title{Read a mothur formatted
+\href{https://mothur.org/wiki/shared_file/}{shared file}}
 \usage{
 read_mothur_shared(shared)
 }

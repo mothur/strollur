@@ -2,7 +2,9 @@
 % Please edit documentation in R/write_fastq.R
 \name{write_fastq}
 \alias{write_fastq}
-\title{write_fastq}
+\title{Write a
+\href{https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/}{FASTQ} formatted
+file}
 \usage{
 write_fastq(data, filename = NULL)
 }

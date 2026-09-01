@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_merge_sequences}
 \alias{xdev_merge_sequences}
-\title{xdev_merge_sequences}
+\title{Merge sequences combines the abundances of sequences}
 \usage{
 xdev_merge_sequences(data, sequence_names, reason = "merged")
 }

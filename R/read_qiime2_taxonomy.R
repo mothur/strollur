@@ -1,4 +1,4 @@
-#' @title read_qiime2_taxonomy
+#' @title Read a \href{https://qiime2.org}{qiime2} qza containing taxonomy data
 #' @description
 #' Read a \href{https://qiime2.org}{qiime2} qza containing taxonomy data
 #'

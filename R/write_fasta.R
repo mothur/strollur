@@ -1,4 +1,6 @@
-#' @title write_fasta
+#' @title Write a
+#'   \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA} formatted
+#'   sequence file
 #' @description
 #'
 #' Write a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}

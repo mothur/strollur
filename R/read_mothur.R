@@ -67,6 +67,8 @@
 #'  using sequence trees. With the ever growing size of modern datasets,
 #'  sequence tree can be difficult / impossible to build without hitting a
 #'  memory limitation.
+#' @param sample_distance filename, a column formatted distance matrix
+#'   containing the distances between samples.
 #' @note
 #' \itemize{
 #' \item \emph{consensus taxonomy}, The `strollur::strollur` object will
@@ -90,6 +92,8 @@
 #'   asv_list = strollur_example("final.asv.list.gz"),
 #'   phylo_list = strollur_example("final.tx.list.gz"),
 #'   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
+#'   sample_distance = strollur_example(
+#'   "final.opti_mcc.jclass.0.03.column.dist"),
 #'   dataset_name = "miseq_sop"
 #' )
 #'
@@ -113,7 +117,8 @@ read_mothur <- function(fasta = NULL, count = NULL,
                         phylo_list = NULL, design = NULL, cons_taxonomy = NULL,
                         otu_shared = NULL, asv_shared = NULL,
                         phylo_shared = NULL, sample_tree = NULL,
-                        sequence_tree = NULL, dataset_name = "") {
+                        sequence_tree = NULL, sample_distance = NULL,
+                        dataset_name = "") {
   if (!is.null(otu_list) && !is.null(otu_shared)) {
     cli_abort("You can provide a list or shared file, not both.")
   }
@@ -197,6 +202,14 @@ read_mothur <- function(fasta = NULL, count = NULL,
       show_col_types = FALSE
     )
     xdev_assign_treatments(data = data, table = df)
+  }
+
+  if (!is.null(sample_distance)) {
+      df <- readr::read_table(
+          file = sample_distance, col_names = FALSE,
+          show_col_types = FALSE
+      )
+      xdev_assign_sample_distances(data, table = df)
   }
 
   if (!is.null(cons_taxonomy)) {

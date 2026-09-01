@@ -2,7 +2,9 @@
 % Please edit documentation in R/write_biom.R
 \name{write_biom}
 \alias{write_biom}
-\title{write_biom}
+\title{Write a \href{https://biom-format.org}{BIOM} formatted file containing
+your \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+objects data.}
 \usage{
 write_biom(
   data,

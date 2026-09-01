@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_mothur_cons_taxonomy.R
 \name{read_mothur_cons_taxonomy}
 \alias{read_mothur_cons_taxonomy}
-\title{read_mothur_cons_taxonomy}
+\title{Read a mothur formatted
+\href{https://mothur.org/wiki/constaxonomy_file/}{cons_taxonomy file}}
 \usage{
 read_mothur_cons_taxonomy(taxonomy)
 }

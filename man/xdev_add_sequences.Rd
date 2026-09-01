@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_add_sequences}
 \alias{xdev_add_sequences}
-\title{xdev_add_sequences}
+\title{Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_add_sequences(
   data,

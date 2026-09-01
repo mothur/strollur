@@ -2,7 +2,9 @@
 % Please edit documentation in R/copy_dataset.R
 \name{copy_dataset}
 \alias{copy_dataset}
-\title{copy_dataset}
+\title{Create a new
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from an existing dataset.}
 \usage{
 copy_dataset(data)
 }

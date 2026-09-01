@@ -1,4 +1,7 @@
-#' @title write_mothur
+#' @title Write the various \href{https://mothur.org/wiki/tags/#file_types}{file
+#'   types} from your
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   for use with mothur.
 #' @description
 #' The write_mothur function will write various
 #' \href{https://mothur.org/wiki/tags/#file_types}{file types} for use with

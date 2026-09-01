@@ -1,4 +1,5 @@
-#' @title read_mothur_shared
+#' @title Read a mothur formatted
+#' \href{https://mothur.org/wiki/shared_file/}{shared file}
 #' @description
 #' Read a mothur formatted
 #' \href{https://mothur.org/wiki/shared_file/}{shared file}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_qiime2_feature_table.R
 \name{read_qiime2_feature_table}
 \alias{read_qiime2_feature_table}
-\title{read_qiime2_feature_table}
+\title{Read a \href{https://qiime2.org}{qiime2} qza containing bin data}
 \usage{
 read_qiime2_feature_table(
   qza,

@@ -20,6 +20,7 @@ read_mothur(
   phylo_shared = NULL,
   sample_tree = NULL,
   sequence_tree = NULL,
+  sample_distance = NULL,
   dataset_name = ""
 )
 }
@@ -84,6 +85,9 @@ using sequence trees. With the ever growing size of modern datasets,
 sequence tree can be difficult / impossible to build without hitting a
 memory limitation.}
 
+\item{sample_distance}{filename, a column formatted distance matrix
+containing the distances between samples.}
+
 \item{dataset_name}{A string containing a name for your dataset.}
 }
 \value{
@@ -122,6 +126,8 @@ data <- strollur::read_mothur(
   asv_list = strollur_example("final.asv.list.gz"),
   phylo_list = strollur_example("final.tx.list.gz"),
   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
+  sample_distance = strollur_example(
+  "final.opti_mcc.jclass.0.03.column.dist"),
   dataset_name = "miseq_sop"
 )
 

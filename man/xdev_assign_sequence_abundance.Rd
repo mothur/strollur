@@ -2,7 +2,8 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_assign_sequence_abundance}
 \alias{xdev_assign_sequence_abundance}
-\title{xdev_assign_sequence_abundance}
+\title{Assign sequence abundance and optionally assign sample and treatment data to
+a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_assign_sequence_abundance(
   data,

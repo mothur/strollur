@@ -1,4 +1,6 @@
-#' @title unpack_qiime2_artifact
+#' @title The unpack_qiime2_artifact function reads .qza files created by
+#' \href{https://qiime2.org}{qiime2}, and returns the artifact.
+#'
 #' @description
 #' The unpack_qiime2_artifact function reads .qza files created by
 #' \href{https://qiime2.org}{qiime2}, and returns the artifact.

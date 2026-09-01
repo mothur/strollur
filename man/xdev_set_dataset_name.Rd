@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_set_dataset_name}
 \alias{xdev_set_dataset_name}
-\title{xdev_set_dataset_name}
+\title{Set the name of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_set_dataset_name(data, dataset_name)
 }

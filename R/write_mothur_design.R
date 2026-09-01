@@ -1,4 +1,5 @@
-#' @title write_mothur_design
+#' @title Write a mothur formatted
+#' \href{https://mothur.org/wiki/design_file/}{design file}
 #' @description
 #' Write a mothur formatted
 #' \href{https://mothur.org/wiki/design_file/}{design file}

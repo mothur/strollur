@@ -2,7 +2,8 @@
 % Please edit documentation in R/export_dataset.R
 \name{export_dataset}
 \alias{export_dataset}
-\title{export_dataset}
+\title{Create a human readable table containing all data from a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
 \usage{
 export_dataset(data)
 }

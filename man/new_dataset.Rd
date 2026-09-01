@@ -2,7 +2,8 @@
 % Please edit documentation in R/new_dataset.R
 \name{new_dataset}
 \alias{new_dataset}
-\title{new_dataset}
+\title{Create a new
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
 new_dataset(dataset_name = "")
 }

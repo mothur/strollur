@@ -1,4 +1,4 @@
-#' @title read_qiime2_feature_table
+#' @title Read a \href{https://qiime2.org}{qiime2} qza containing bin data
 #' @description
 #' Read a \href{https://qiime2.org}{qiime2} qza containing bin data
 #'

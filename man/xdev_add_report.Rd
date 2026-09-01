@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_add_report}
 \alias{xdev_add_report}
-\title{Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\title{Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_add_report(
   data,

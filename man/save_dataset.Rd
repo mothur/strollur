@@ -2,7 +2,9 @@
 % Please edit documentation in R/save_dataset.R
 \name{save_dataset}
 \alias{save_dataset}
-\title{save_dataset}
+\title{Save the
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+to file.}
 \usage{
 save_dataset(data, file)
 }

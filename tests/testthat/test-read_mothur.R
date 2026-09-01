@@ -35,6 +35,8 @@ test_that("test read_mothur", {
     taxonomy = strollur_example("final.taxonomy.gz"),
     design = strollur_example("mouse.time.design"),
     otu_list = strollur_example("final.opti_mcc.list.gz"),
+    sample_distance = strollur_example(
+        "final.opti_mcc.jclass.0.03.column.dist"),
     dataset_name = "miseq_sop"
   )
 
@@ -44,6 +46,9 @@ test_that("test read_mothur", {
   expect_equal(count(dataset, "treatment"), 2)
   expect_equal(count(dataset, "sample"), 19)
   expect_equal(count(dataset, type = "bin", bin_type = "otu"), 531)
+
+  dists <- xdev_get_sample_distances(dataset)
+  expect_equal(nrow(dists), 171)
 
   # test count table only, no samples
   dataset <- read_mothur(count = strollur_example(
@@ -123,6 +128,8 @@ test_that("test read taxonomy files", {
     phylo_list = strollur_example("final.tx.list.gz"),
     sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
     sequence_tree = strollur_example("final.phylip.tre.gz"),
+    sample_distance = strollur_example(
+                        "final.opti_mcc.jclass.0.03.column.dist"),
     dataset_name = "miseq_sop"
   )
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/write_quality.R
 \name{write_quality}
 \alias{write_quality}
-\title{write_quality}
+\title{Write a file containing sequence quality scores}
 \usage{
 write_quality(data, filename = NULL)
 }

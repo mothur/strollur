@@ -1,4 +1,8 @@
-#' @title Import strollur object from exported data.frame.
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from the exported table of a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+#'   object.
 #' @description The import_dataset function will create a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'   from the exported table of a

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_remove_samples}
 \alias{xdev_remove_samples}
-\title{xdev_remove_samples}
+\title{Remove samples from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_remove_samples(data, samples, reason = "remove_samples")
 }

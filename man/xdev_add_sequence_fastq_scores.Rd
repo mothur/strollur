@@ -2,7 +2,8 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_add_sequence_fastq_scores}
 \alias{xdev_add_sequence_fastq_scores}
-\title{xdev_add_sequence_fastq_scores}
+\title{Add FASTQ data to a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_add_sequence_fastq_scores(
   data,

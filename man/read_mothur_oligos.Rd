@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_mothur_oligos.R
 \name{read_mothur_oligos}
 \alias{read_mothur_oligos}
-\title{read_mothur_oligos}
+\title{Read a mothur formatted
+\href{https://mothur.org/wiki/oligos_file/}{oligos file}}
 \usage{
 read_mothur_oligos(oligos)
 }

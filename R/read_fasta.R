@@ -1,4 +1,5 @@
-#' @title read_fasta
+#' @title Read a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}
+#' formatted sequence file
 #' @description
 #' Read a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}
 #' formatted sequence file

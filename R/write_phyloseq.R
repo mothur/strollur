@@ -1,4 +1,5 @@
-#' @title write_phyloseq
+#' @title Create a phyloseq object from your
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @description
 #' The `strollur::write_phyloseq()` function will take any strollur object and
 #' return it as a `phyloseq` object.

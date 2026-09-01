@@ -2,7 +2,9 @@
 % Please edit documentation in R/load_dataset.R
 \name{load_dataset}
 \alias{load_dataset}
-\title{Load strollur object from .rds file}
+\title{Load a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from a file.}
 \usage{
 load_dataset(file)
 }

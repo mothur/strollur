@@ -1,4 +1,4 @@
-#' @title read_quality
+#' @title Read a file containing sequence quality scores
 #'
 #' @description
 #' Read a file containing sequence quality scores

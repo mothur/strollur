@@ -2,7 +2,8 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_get_alignment_length}
 \alias{xdev_get_alignment_length}
-\title{xdev_get_alignment_length}
+\title{Get the alignment length of sequences in your
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_get_alignment_length(data)
 }

@@ -1,4 +1,6 @@
-#' @title save_dataset
+#' @title Save the
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' to file.
 #' @description The save_dataset function will save the
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' to file.

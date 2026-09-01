@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_mothur_taxonomy.R
 \name{read_mothur_taxonomy}
 \alias{read_mothur_taxonomy}
-\title{read_mothur_taxonomy}
+\title{Read a mothur formatted
+\href{https://mothur.org/wiki/taxonomy_file/}{taxonomy file}}
 \usage{
 read_mothur_taxonomy(taxonomy)
 }

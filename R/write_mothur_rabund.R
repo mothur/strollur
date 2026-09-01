@@ -1,4 +1,5 @@
-#' @title write_mothur_rabund
+#' @title Write mothur formatted
+#' \href{https://mothur.org/wiki/rabund_file/}{rabund files}
 #' @description
 #' Write mothur formatted
 #' \href{https://mothur.org/wiki/rabund_file/}{rabund files}

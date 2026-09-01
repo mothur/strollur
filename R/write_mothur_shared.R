@@ -1,4 +1,5 @@
-#' @title write_mothur_shared
+#' @title Write mothur formatted
+#' \href{https://mothur.org/wiki/shared_file/}{shared files}
 #' @description
 #' Write mothur formatted
 #' \href{https://mothur.org/wiki/shared_file/}{shared files}

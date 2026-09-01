@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_report}
 \alias{xdev_report}
-\title{xdev_report}
+\title{Get a data.frame containing the given report in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_report(data, type = "sequence", bin_type = "otu")
 }

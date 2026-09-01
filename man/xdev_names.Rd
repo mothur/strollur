@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_names}
 \alias{xdev_names}
-\title{xdev_names}
+\title{Get the names of a given type of data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_names(
   data,

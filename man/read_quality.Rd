@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_quality.R
 \name{read_quality}
 \alias{read_quality}
-\title{read_quality}
+\title{Read a file containing sequence quality scores}
 \usage{
 read_quality(quality, path = NULL)
 }

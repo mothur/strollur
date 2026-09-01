@@ -1,4 +1,6 @@
-#' @title copy_dataset
+#' @title Create a new
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' from an existing dataset.
 #' @description
 #' Create a new
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

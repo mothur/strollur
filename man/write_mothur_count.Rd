@@ -2,7 +2,8 @@
 % Please edit documentation in R/write_mothur_count.R
 \name{write_mothur_count}
 \alias{write_mothur_count}
-\title{write_mothur_count}
+\title{Write a mothur formatted
+\href{https://mothur.org/wiki/count_file/}{count file}}
 \usage{
 write_mothur_count(data, filename = NULL)
 }

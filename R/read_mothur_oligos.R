@@ -1,4 +1,5 @@
-#' @title read_mothur_oligos
+#' @title Read a mothur formatted
+#' \href{https://mothur.org/wiki/oligos_file/}{oligos file}
 #' @description
 #' Read a mothur formatted
 #' \href{https://mothur.org/wiki/oligos_file/}{oligos file}

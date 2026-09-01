@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_remove_bins}
 \alias{xdev_remove_bins}
-\title{xdev_remove_bins}
+\title{Remove bins from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_remove_bins(data, bin_names, trash_tags, bin_type = "otu")
 }

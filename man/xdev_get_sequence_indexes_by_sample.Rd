@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_get_sequence_indexes_by_sample}
 \alias{xdev_get_sequence_indexes_by_sample}
-\title{xdev_get_sequence_indexes_by_sample}
+\title{Get indexes of sequences parsed by sample}
 \usage{
 xdev_get_sequence_indexes_by_sample(data, samples = as.character(c()))
 }

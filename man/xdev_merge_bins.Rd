@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_merge_bins}
 \alias{xdev_merge_bins}
-\title{xdev_merge_bins}
+\title{Merge bins in your \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 }

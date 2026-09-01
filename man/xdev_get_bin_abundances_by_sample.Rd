@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_get_bin_abundances_by_sample}
 \alias{xdev_get_bin_abundances_by_sample}
-\title{xdev_get_bin_abundances_by_sample}
+\title{Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} parsed by sample}
 \usage{
 xdev_get_bin_abundances_by_sample(data, bin_type = "otu")
 }

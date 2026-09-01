@@ -449,6 +449,55 @@ private:
     }
 };
 /******************************************************************************/
+struct sparseDistance {
+    vector<float> sampleDistances;
+    vector<string> rowSamples;
+    vector<string> colSamples;
+
+    sparseDistance() {}
+    ~sparseDistance() = default;
+    void load(const vector<string>& sample1,
+              const vector<string>& sample2,
+              const vector<float>& dists) {
+        rowSamples = sample1;
+        colSamples = sample2;
+        sampleDistances = dists;
+    }
+
+    Rcpp::DataFrame getSparseDistances(const AbundTable& abund) const {
+        vector<float> PsampleDistances;
+        vector<string> ProwSamples;
+        vector<string> PcolSamples;
+
+        vector<string> goodSamples = abund.getSamples();
+
+        // remove samples not in dataset
+        for (int i = 0; i < rowSamples.size(); i++) {
+            if ((std::find(goodSamples.begin(), goodSamples.end(), rowSamples[i]) != goodSamples.end()) &&
+                (std::find(goodSamples.begin(), goodSamples.end(), colSamples[i]) != goodSamples.end())) {
+                   ProwSamples.push_back(rowSamples[i]);
+                   PcolSamples.push_back(colSamples[i]);
+                   PsampleDistances.push_back(sampleDistances[i]);
+            }
+        }
+
+        if (!ProwSamples.empty()) {
+            Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                Rcpp::Named("sample1") = ProwSamples,
+                Rcpp::_["sample2"] = PcolSamples,
+                Rcpp::_["distance"] = PsampleDistances);
+            return df;
+        }
+        return Rcpp::DataFrame::create();
+    }
+
+    // This method lets Cereal know how to serialize.
+    template<class Archive>
+    void serialize(Archive & archive) {
+        archive(sampleDistances, rowSamples, colSamples);
+    }
+};
+/******************************************************************************/
 /*
  * The 'BinTable' class will store asv / otu / phylotype data.
  */
@@ -663,6 +712,10 @@ public:
                                  const vector<float>& confidences,
                                  const string& type = "otu");
 
+    double assignSampleDistances(const vector<string>& sample1,
+                                 const vector<string>& sample2,
+                                 const vector<float>& distances);
+
     double assignTreatments(const vector<string>& samples,
                             const vector<string>& treatments);
 
@@ -706,6 +759,7 @@ public:
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getSequenceTaxonomyReport();
     vector<string> getSamples() const;
+    Rcpp::DataFrame getSampleDistances() const;
     Rcpp::DataFrame getSampleTreatmentAssignments() const;
     const Rcpp::DataFrame getScrapReport(string mode = "sequence");
     // type, trashCode, uniqueCount, totalCount
@@ -812,6 +866,8 @@ private:
     // sequence reports
     map<string, Report> reports;
 
+    sparseDistance sampleDists;
+
     // if unaligned, returns -1
     string degapSeq(const string& sequence) const;
     vector<int> getIncludedNamesIndexes() const;
@@ -836,7 +892,7 @@ private:
            numns, names, seqs, comments, trashCodes,
            seqIndex, badAccnos, uniqueBad, hasList, count,
            binTables, reports, refIndex, sortNeeded, quality_scores,
-           fastq_format);
+           fastq_format, sampleDists);
     }
 };
 

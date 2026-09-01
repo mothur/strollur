@@ -2,7 +2,8 @@
 % Please edit documentation in R/write_mothur_list.R
 \name{write_mothur_list}
 \alias{write_mothur_list}
-\title{write_mothur_list}
+\title{Write mothur formatted \href{https://mothur.org/wiki/list_file/}{list
+files}}
 \usage{
 write_mothur_list(data, file_root = NULL)
 }

@@ -194,6 +194,11 @@ Rcpp::List Dataset::exportDataset(){
         resultsLabels.push_back("sequence_abundance_table");
     }
 
+    Rcpp::DataFrame sdists = sampleDists.getSparseDistances(count);
+    if (sdists.size() != 0) {
+        results.push_back(sdists);
+        resultsLabels.push_back("sample_distance_table");
+    }
 
     // sequence bin table
     for (BinTable& binTable : binTables) {
@@ -514,6 +519,13 @@ double Dataset::assignBinTaxonomyTidy(const vector<string>& bin_names,
     }
 
     return numBinTaxonomiesAdded;
+}
+/******************************************************************************/
+double Dataset::assignSampleDistances(const vector<string>& sample1,
+                             const vector<string>& sample2,
+                             const vector<float>& distances) {
+    sampleDists.load(sample1, sample2, distances);
+    return (double) sample1.size();
 }
 /******************************************************************************/
 double Dataset::assignBinTaxonomy(const vector<string>& binIds,
@@ -1275,6 +1287,10 @@ Rcpp::DataFrame Dataset::getReferences() const {
 /******************************************************************************/
 vector<string> Dataset::getSamples() const {
     return count.getSamples();
+}
+/******************************************************************************/
+Rcpp::DataFrame Dataset::getSampleDistances() const {
+    return sampleDists.getSparseDistances(count);
 }
 /******************************************************************************/
 Rcpp::DataFrame Dataset::getSampleTreatmentAssignments() const{

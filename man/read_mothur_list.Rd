@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_mothur_list.R
 \name{read_mothur_list}
 \alias{read_mothur_list}
-\title{read_mothur_list}
+\title{Read a mothur formatted \href{https://mothur.org/wiki/list_file/}{list
+file}}
 \usage{
 read_mothur_list(list)
 }

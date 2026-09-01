@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_remove_lineages}
 \alias{xdev_remove_lineages}
-\title{xdev_remove_lineages}
+\title{Remove contaminants from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_remove_lineages(data, contaminants, reason = "contaminant")
 }

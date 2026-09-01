@@ -2,7 +2,10 @@
 % Please edit documentation in R/miseq_sop_example.R
 \name{miseq_sop_example}
 \alias{miseq_sop_example}
-\title{Example \code{strollur::strollur} object}
+\title{Create a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
+using the analysis files from the
+\href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP} example.}
 \usage{
 miseq_sop_example()
 }
@@ -12,7 +15,7 @@ A \code{strollur::strollur} object
 \description{
 The miseq_sop_example function will create
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-object. object using the analysis files from the
+object using the analysis files from the
 \href{https://mothur.org/wiki/miseq_sop/}{MiSeq_SOP} example.
 }
 \examples{

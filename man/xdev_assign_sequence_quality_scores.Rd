@@ -2,7 +2,8 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_assign_sequence_quality_scores}
 \alias{xdev_assign_sequence_quality_scores}
-\title{xdev_assign_sequence_quality_scores}
+\title{Add quality data to a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_assign_sequence_quality_scores(
   data,

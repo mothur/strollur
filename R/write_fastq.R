@@ -1,5 +1,8 @@
 #' @importFrom microseq writeFastq
-#' @title write_fastq
+#'
+#' @title Write a
+#'   \href{https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/}{FASTQ} formatted
+#'   file
 #' @description
 #'
 #' Write a \href{https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/}{FASTQ}

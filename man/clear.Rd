@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{clear}
 \alias{clear}
-\title{clear}
+\title{Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 clear(data)
 }
