@@ -2,7 +2,9 @@
 % Please edit documentation in R/save_dataset.R
 \name{save_dataset}
 \alias{save_dataset}
-\title{save_dataset}
+\title{Save the
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+to file.}
 \usage{
 save_dataset(data, file)
 }
@@ -13,7 +15,7 @@ save_dataset(data, file)
 \item{file}{a string containing the file name.}
 }
 \value{
-A file containing the `strollur` object
+A file containing the \code{strollur::strollur} object
 }
 \description{
 The save_dataset function will save the
@@ -22,7 +24,7 @@ to file.
 }
 \examples{
 
-data <- read_mothur(
+data <- strollur::read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),
   taxonomy = strollur_example("final.taxonomy.gz"),
@@ -32,9 +34,9 @@ data <- read_mothur(
 )
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
-save_dataset(data, file = file_name)
+strollur::save_dataset(data, file = file_name)
 
 }
 \seealso{
-[load_dataset()]
+\code{\link[=load_dataset]{load_dataset()}}
 }

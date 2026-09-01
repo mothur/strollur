@@ -3,8 +3,8 @@
 \name{names}
 \alias{names}
 \title{Get the names of various data
-  in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-  object}
+in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object}
 \usage{
 names(
   data,
@@ -15,22 +15,22 @@ names(
 )
 }
 \arguments{
-\item{data, }{a
+\item{data}{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{type, }{string containing the type of data you would like. Options
+\item{type}{string containing the type of data you would like. Options
 include: "dataset", "sequence", "bin", "sample", "treatment", "report".
 Default = "sequence".}
 
-\item{bin_type, }{string containing the bin type you would like the names
+\item{bin_type}{string containing the bin type you would like the names
 for. Default = "otu".}
 
-\item{samples, }{vector of strings. samples is only used when 'type' =
+\item{samples}{vector of strings. samples is only used when 'type' =
 "sequence" or 'type' = "bin" . samples should contain the names of the
 samples you want names for. Default = NULL.}
 
-\item{distinct, }{Boolean. distinct is used when 'type' =
-"sequence" or 'type' = "bin" and the samples parameter is used. The
+\item{distinct}{logical. distinct is used when \code{type = sequence} or
+\code{type = bin} and the samples parameter is used. The
 distinct parameter allows you to get the names that present given
 set of samples. When distinct is TRUE, the names function will return the
 names that ONLY contain data from the given samples. When distinct is FALSE
@@ -42,41 +42,44 @@ vector of strings, containing the names requested
 }
 \description{
 Get the names of names sequences, bins, samples, treatments, and
-  reports data in a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+reports data in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 
 # To get the name of the dataset
-names(data = miseq, type = "dataset")
+strollur::names(data = miseq, type = "dataset")
 
 # To get the names of the sequences
-names(data = miseq, type = "sequence")
+strollur::names(data = miseq, type = "sequence")
 
 # To get the names of the sequences present sample 'F3D0'
-names(data = miseq, type = "sequence", samples = c("F3D0"))
+strollur::names(data = miseq, type = "sequence", samples = c("F3D0"))
 
 #' # To get the names of the sequences unique to sample 'F3D0'
-names(data = miseq, type = "sequence", samples = c("F3D0"), distinct = TRUE)
+strollur::names(data = miseq, type = "sequence",
+                samples = c("F3D0"), distinct = TRUE)
 
 # To get the names of the samples
-names(data = miseq, type = "sample")
+strollur::names(data = miseq, type = "sample")
 
 # To get the names of the treatments
-names(data = miseq, type = "treatment")
+strollur::names(data = miseq, type = "treatment")
 
 # To get the names of the bins
-names(data = miseq, type = "bin")
+strollur::names(data = miseq, type = "bin")
 
 # To get the names of the bins that are unique to 'F3D0'
-names(data = miseq, type = "bin", samples = c("F3D0"), distinct = TRUE)
+strollur::names(data = miseq, type = "bin",
+                samples = c("F3D0"), distinct = TRUE)
 
 # To get the names of the bins that include sequences from 'F3D0'
-names(data = miseq, type = "bin", samples = c("F3D0"), distinct = FALSE)
+strollur::names(data = miseq, type = "bin",
+                samples = c("F3D0"), distinct = FALSE)
 
 # To get the names of the reports
-names(data = miseq, type = "report")
+strollur::names(data = miseq, type = "report")
 
 }

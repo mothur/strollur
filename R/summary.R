@@ -13,38 +13,39 @@ summary <- function(x, type = "sequence",
 #' Summarize the sequences data, custom reports, and scrapped data in a
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a
+#' @param data a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param type, string containing the type of data you want the number of.
+#' @param type string containing the type of data you want the number of.
 #' Options include: "sequence", "report" and "scrap". Default = "sequence".
 #'
-#' @param report_type, string containing the report type you would summarized.
+#' @param report_type string containing the report type you would summarized.
 #' For example, the miseq_sop_example includes contigs assembly data and can be
 #' accessed with report_type = "contigs_report". Default = NULL.
 #'
-#' @param verbose, boolean indicating whether or not you want progress messages.
+#' @param verbose boolean indicating whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
 #' # To get the summary of your FASTA data
-#' summary(data = miseq, type = "sequence")
+#' strollur::summary(data = miseq, type = "sequence")
 #'
 #' # summarize contigs_report
-#' summary(data = miseq, type = "report", report_type = "contigs_report")
+#' strollur::summary(data = miseq,
+#'                   type = "report", report_type = "contigs_report")
 #'
 #' # remove sample 'F3D0' to produce a scrap report
-#' xdev_remove_samples(data = miseq, samples = c("F3D0"))
+#' strollur::xdev_remove_samples(data = miseq, samples = c("F3D0"))
 #'
 #' # summarize FASTA data after removal of sample F3D0
-#' summary(data = miseq, type = "sequence")
+#' strollur::summary(data = miseq, type = "sequence")
 #'
 #' # summarize scrapped data -
 #' # sequences and bins scrapped by removing the sample "F3D0"
-#' summary(data = miseq, type = "scrap")
+#' strollur::summary(data = miseq, type = "scrap")
 #'
 #' @return data.frame
 #' @export
@@ -87,6 +88,8 @@ summary <- function(data, type = "sequence",
   dataset_summary
 }
 
+#' @importFrom stats quantile
+#'
 generate_sequence_report <- function(dataset) {
   report <- report(dataset)
   abunds <- abundance(dataset)

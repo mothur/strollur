@@ -2,33 +2,37 @@
 % Please edit documentation in R/import_dataset.R
 \name{import_dataset}
 \alias{import_dataset}
-\title{Import strollur object from exported data.frame.}
+\title{Create a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from the exported table of a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object.}
 \usage{
 import_dataset(table)
 }
 \arguments{
 \item{table}{a table containing the data from a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-object. You can create the table using 'export(data)'.}
+object. You can create the table using \code{strollur::export_dataset(data)}.}
 }
 \value{
 a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 The import_dataset function will create a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-  from the exported table of a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-  object.
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from the exported table of a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object.
 }
 \examples{
 
-miseq <- miseq_sop_example()
-data <- import_dataset(export_dataset(miseq))
+miseq <- strollur::miseq_sop_example()
+data <- strollur::import_dataset(strollur::export_dataset(miseq))
 data
 
 }
 \seealso{
-[export_dataset()]
+\code{\link[=export_dataset]{export_dataset()}}
 }

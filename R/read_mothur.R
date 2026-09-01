@@ -6,7 +6,7 @@
 #' @description
 #' The read_mothur function reads various
 #' \href{https://mothur.org/wiki/tags/#file_types}{file types} created by
-#' mothur, and creates a `strollur` object.
+#' mothur, and creates a `strollur::strollur` object.
 #'
 #' To generate the various input files you can follow Pat's
 #' \href{https://mothur.org/wiki/miseq_sop/}{Miseq example analysis}.
@@ -67,21 +67,23 @@
 #'  using sequence trees. With the ever growing size of modern datasets,
 #'  sequence tree can be difficult / impossible to build without hitting a
 #'  memory limitation.
+#' @param sample_distance filename, a column formatted distance matrix
+#'   containing the distances between samples.
 #' @note
 #' \itemize{
-#' \item \emph{consensus taxonomy}, The `strollur` object will generate
-#' consensus taxonomies for you based on the sequence taxonomy assignment. You
-#' only need to provide the ".cons.taxonomy" file if you are not providing
-#' sequence taxonomy assignments.
-#' \item \emph{shared / rabund file}, The `strollur` object will generate
-#' shared and rabund data for you based on the otu assignment in the list file
-#' and the count data. You only need to provide the ".shared" file if you are
-#' not providing the list and count files.
+#' \item \emph{consensus taxonomy}, The `strollur::strollur` object will
+#' generate consensus taxonomies for you based on the sequence taxonomy
+#' assignment. You only need to provide the ".cons.taxonomy" file if you are not
+#' providing sequence taxonomy assignments.
+#' \item \emph{shared / rabund file}, The `strollur::strollur` object will
+#' generate shared and rabund data for you based on the otu assignment in the
+#' list file and the count data. You only need to provide the ".shared" file if
+#' you are not providing the list and count files.
 #' }
 #' @examples
 #' # For dataset's including sequence data:
 #'
-#' data <- read_mothur(
+#' data <- strollur::read_mothur(
 #'   fasta = strollur_example("final.fasta.gz"),
 #'   count = strollur_example("final.count_table.gz"),
 #'   taxonomy = strollur_example("final.taxonomy.gz"),
@@ -90,12 +92,15 @@
 #'   asv_list = strollur_example("final.asv.list.gz"),
 #'   phylo_list = strollur_example("final.tx.list.gz"),
 #'   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
+#'   sample_distance = strollur_example(
+#'     "final.opti_mcc.jclass.0.03.column.dist"
+#'   ),
 #'   dataset_name = "miseq_sop"
 #' )
 #'
 #' # For dataset's with only otu data:
 #'
-#' data <- read_mothur(
+#' data <- strollur::read_mothur(
 #'   otu_shared = strollur_example("final.opti_mcc.shared"),
 #'   cons_taxonomy = strollur_example(
 #'     "final.cons.taxonomy"
@@ -113,7 +118,8 @@ read_mothur <- function(fasta = NULL, count = NULL,
                         phylo_list = NULL, design = NULL, cons_taxonomy = NULL,
                         otu_shared = NULL, asv_shared = NULL,
                         phylo_shared = NULL, sample_tree = NULL,
-                        sequence_tree = NULL, dataset_name = "") {
+                        sequence_tree = NULL, sample_distance = NULL,
+                        dataset_name = "") {
   if (!is.null(otu_list) && !is.null(otu_shared)) {
     cli_abort("You can provide a list or shared file, not both.")
   }
@@ -199,6 +205,14 @@ read_mothur <- function(fasta = NULL, count = NULL,
     xdev_assign_treatments(data = data, table = df)
   }
 
+  if (!is.null(sample_distance)) {
+    df <- readr::read_table(
+      file = sample_distance, col_names = FALSE,
+      show_col_types = FALSE
+    )
+    xdev_assign_sample_distances(data, table = df)
+  }
+
   if (!is.null(cons_taxonomy)) {
     df <- read_mothur_cons_taxonomy(cons_taxonomy)
     xdev_assign_bin_taxonomy(data = data, table = df, bin_type = "otu")
@@ -206,12 +220,12 @@ read_mothur <- function(fasta = NULL, count = NULL,
 
   if (!is.null(sample_tree)) {
     tree <- ape::read.tree(sample_tree)
-    data$add_sample_tree(tree)
+    data$add(tree, type = "sample_tree")
   }
 
   if (!is.null(sequence_tree)) {
     tree <- ape::read.tree(sequence_tree)
-    data$add_sequence_tree(tree)
+    data$add(table = tree, type = "sequence_tree")
   }
 
   data

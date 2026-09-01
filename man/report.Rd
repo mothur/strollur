@@ -8,84 +8,102 @@
 report(data, type = "sequence", bin_type = "otu")
 }
 \arguments{
-\item{data, }{a
+\item{data}{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{type, }{string containing the type of report you would like. Options
-include: "fasta", "sequence", "sequence_bin_assignment",
-"sequence_taxonomy", "bin_taxonomy", "bin_representative",
- "sample_assignment", "resource_reference", "sequence_scrap",
-"bin_scrap". If you have added custom reports for alignment,
-contigs_assembly or chimeras, you can get those as well.
- Default = "sequence".}
+\item{type}{string containing the type of report you would like. Options
+include: \code{fasta}, \code{fastq}, \code{sequence}, \code{quality},
+\code{sequence_bin_assignment}, \code{sequence_taxonomy}, \code{sequence_tree},
+\code{bin_taxonomy}, \code{bin_representative}, \code{sample_assignment},
+\code{sample_distance}, \code{sample_tree}, \code{resource_reference}, \code{sequence_scrap},
+\code{bin_scrap}. If you have added custom reports for alignment,
+contigs_assembly or chimeras, you can get those as well. Default =
+\code{sequence}.}
 
-\item{bin_type, }{string containing the bin type you would like a bin_taxonomy
-report for. Default = "otu".}
+\item{bin_type}{string containing the bin type you would like a bin_taxonomy
+report for. Default = \code{otu}.}
 }
 \value{
-data.frame
+data.frame or tree
 }
 \description{
-Get a data.frame containing the report. Reports include FASTA format,
-sequences reports, sequence_bin_assignments, sequence_taxonomy, bin_taxonomy,
-bin_representatives, sample_assignments, references, custom reports,
-sequence_scrap, and bin_scrap in a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+Get a data.frame containing the report or the phylo tree
+requested. Reports include FASTA format, FASTQ format, sequences reports,
+sequence quality data, sequence_bin_assignments, sequence_taxonomy,
+sequence_tree, bin_taxonomy, bin_representatives, sample_assignments,
+sample distances, sample_tree, references, custom reports, sequence_scrap,
+and bin_scrap in a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+object.
 }
 \examples{
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 
 # To get the FASTA data
 
-report(data = miseq, type = "fasta") |> head(n = 5)
+strollur::report(data = miseq, type = "fasta") |> head(n = 5)
 
 # To get a report about the FASTA data
 
-report(data = miseq, type = "sequence") |> head(n = 5)
+strollur::report(data = miseq, type = "sequence") |> head(n = 5)
 
 # To get the sequence bin assignments
 
-report(data = miseq, type = "sequence_bin_assignment", bin_type = "otu") |>
+strollur::report(data = miseq,
+                 type = "sequence_bin_assignment", bin_type = "otu") |>
   head(n = 5)
 
 # To get the sample treatment assignments
 
-report(data = miseq, type = "sample_assignment")
+strollur::report(data = miseq, type = "sample_assignment")
 
 # To get a report about sequence classifications
 
-report(data = miseq, type = "sequence_taxonomy") |> head(n = 10)
+strollur::report(data = miseq, type = "sequence_taxonomy") |> head(n = 10)
 
 # To get a report about bin classifications for 'otu' data
 
-report(data = miseq, type = "bin_taxonomy", bin_type = "otu") |> head(n = 10)
+strollur::report(data = miseq,
+                 type = "bin_taxonomy", bin_type = "otu") |> head(n = 10)
 
 # To get the 'otu' bin representative sequences
 
-report(
+strollur::report(
   data = miseq, type = "bin_representative",
   bin_type = "otu"
 ) |> head(n = 5)
 
 # To get a report about the sequences removed during your analysis:
 
-report(data = miseq, type = "sequence_scrap")
+strollur::report(data = miseq, type = "sequence_scrap")
 
 # To get a report about the "otu" bins removed during your analysis:
 
-report(data = miseq, type = "bin_scrap", bin_type = "otu")
+strollur::report(data = miseq, type = "bin_scrap", bin_type = "otu")
 
 # To get the metadata associated with your data:
 
-metadata <- report(data = miseq, type = "metadata")
+metadata <- strollur::report(data = miseq, type = "metadata")
 
 # To get the resource references associated with your data:
 
-references <- report(data = miseq, type = "resource_reference")
+references <- strollur::report(data = miseq, type = "resource_reference")
 
 # To get our custom report containing the contigs assembly data:
 
-report(data = miseq, type = "contigs_report") |> head(n = 10)
+strollur::report(data = miseq, type = "contigs_report") |> head(n = 10)
+
+# To get the tree that relates your sequences:
+
+sequence_tree <- strollur::report(data = miseq, type = "sequence_tree")
+
+# To get the tree that relates your samples:
+
+sample_tree <- strollur::report(data = miseq, type = "sample_tree")
+
+# To get the distances between your samples:
+
+sample_dists <- strollur::report(data = miseq, type = "sample_distance")
 
 }

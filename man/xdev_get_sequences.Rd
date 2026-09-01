@@ -2,17 +2,17 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_get_sequences}
 \alias{xdev_get_sequences}
-\title{xdev_get_sequences}
+\title{Get the nucleotide strings for each sequence in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_get_sequences(data, sample = "", degap = FALSE)
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{sample, }{a string containing the name of the sample you
+\item{sample}{a string containing the name of the sample you
 would like sequence names for. For all samples in dataset, sample = "".}
 
-\item{degap, }{a logical. Default = FALSE. When degap = `TRUE`, all gap
+\item{degap}{a logical. Default = FALSE. When degap = \code{TRUE}, all gap
 characters ('-', '.') will be removed from the sequences.}
 }
 \value{
@@ -24,7 +24,7 @@ Get the nucleotide strings for each sequence in a \href{https://mothur.org/strol
 }
 \examples{
 
- data <- miseq_sop_example()
- xdev_get_sequences(data)
+ data <- strollur::miseq_sop_example()
+ strollur::xdev_get_sequences(data)
 
 }

@@ -1,24 +1,26 @@
-#' @title Add sequences, reports or resource references to a
-#'   \link{strollur} object
+#' @title Add sequences, reports, trees or resource references to a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @name add
 #' @rdname add
 #' @description
-#' Add sequences, reports or resource references to a
+#' Add sequences, reports, trees or resource references to a
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param data, a
+#' @param data a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
-#' @param table, a data.frame containing the data you wish to add.
-#' @param type, a string containing the type of data. Options include:
-#' 'sequence', 'resource_reference' and 'report'.
-#' @param report_type, a string containing the type of report you are adding.
-#' @param table_names, named list used to indicate the names of the columns in
+#' @param table a data.frame or tree containing the data you wish to add.
+#' @param type a string containing the type of data. Options include:
+#'   `sequence`, `fastq`, `sample_tree`, `sequence_tree`, `resource_reference`
+#'   and `report`.
+#' @param report_type a string containing the type of report you are adding.
+#' @param table_names named list used to indicate the names of the columns in
 #' the table. By default:
 #'
 #' table_names <- list(sequence_name = "sequence_name",
 #'                     comment = "comment",
 #'                     sequence = "sequence",
+#'                     quality_score = "quality_score",
 #'                     reference_name = "name",
 #'                     reference_vendor = "vendor",
 #'                     reference_version = "version",
@@ -40,6 +42,10 @@
 #' In table_names, 'comment' is a string containing the name of the column in
 #' 'table' that contains the sequence comments. It is used when you are adding
 #' FASTA data. Default column name is 'comment'.
+#'
+#' In table_names, 'quality_score' is a string containing the name of the column
+#' in 'table' that contains the sequence quality scores. It is used when you are
+#' adding FASTQ data. Default column name is 'quality_score'.
 #'
 #' In table_names, 'reference_vendor' is a string containing the name of the
 #' column in 'table' that contains the reference vendor names. It is used when
@@ -77,28 +83,29 @@
 #' column in 'table' that contains the reference citations. Default column name
 #' is 'citation'.
 #'
-#' @param reference, a list created by the function [new_reference]. Optional.
-#' @param verbose, boolean indicating whether or not you want progress messages.
+#' @param reference a list created by the function [new_reference]. Optional.
+#' @param verbose boolean indicating whether or not you want progress messages.
 #' Default = TRUE.
 #'
 #' @examples
 #'
 #' # Create a new empty strollur object named 'example_dataset'
-#' data <- new_dataset(dataset_name = "example_dataset")
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
 #'
 #' # Read FASTA data into data.frame
-#' fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
+#' fasta_data <-
+#'   strollur::read_fasta(fasta = strollur_example("final.fasta.gz"))
 #'
 #' # Add FASTA sequence data
-#' add(data = data, table = fasta_data, type = "sequence")
+#' strollur::add(data = data, table = fasta_data, type = "sequence")
 #'
 #' # To add FASTA data with a resource reference
 #'
 #' # Create a new empty strollur object named 'example_dataset'
-#' data <- new_dataset(dataset_name = "example_dataset")
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
 #'
 #' # Create a resource reference for the FASTA data silva_resource <-
-#' silva_resource <- new_reference(
+#' silva_resource <- strollur::new_reference(
 #'   vendor = "SILVA", name =
 #'     "silva.bacteria.fasta", version = "1.38.1",
 #'   usage = "alignment of sequences",
@@ -109,18 +116,28 @@
 #'
 #' # Add FASTA data with a resource reference
 #'
-#' add(
+#' strollur::add(
 #'   data,
 #'   table = fasta_data,
 #'   type = "sequence",
 #'   reference = silva_resource
 #' )
 #'
+#' # Create a new empty strollur object named 'example_dataset'
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
+#'
+#' # Read FASTQ data into data.frame
+#' fastq_data <-
+#'   strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+#'
+#' # Add FASTQ sequence data
+#' strollur::add(data = data, table = fastq_data, type = "fastq")
+#'
 #' # Add contigs assembly report with a 'sequence_name' column named 'Name'
 #'
 #' contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 #'
-#' add(
+#' strollur::add(
 #'   data,
 #'   table = contigs_report, type = "report",
 #'   report_type = "contigs_report", list(sequence_name = "Name")
@@ -130,7 +147,25 @@
 #'
 #' metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 #'
-#' add(data, table = metadata, type = "report", report_type = "metadata")
+#' strollur::add(data,
+#'   table = metadata,
+#'   type = "report", report_type = "metadata"
+#' )
+#'
+#' # To add a tree relating to your sequences
+#'
+#' tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
+#'
+#' strollur::add(data, table = tree, type = "sequence_tree")
+#'
+#' # To add a tree relating to your samples
+#' data <- strollur::new_dataset(dataset_name = "example_dataset")
+#'
+#' df <- strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+#' tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
+#'
+#' strollur::assign(data, table = df, type = "bin", bin_type = "otu")
+#' strollur::add(data, table = tree, type = "sample_tree")
 #'
 #' @return an updated
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -142,6 +177,7 @@ add <- function(data, table,
                   sequence_name = "sequence_name",
                   sequence = "sequence",
                   comment = "comment",
+                  quality_score = "quality_score",
                   reference_vendor = "vendor",
                   reference_name = "name",
                   reference_version = "version",
@@ -164,6 +200,7 @@ add <- function(data, table,
     sequence_name = "sequence_name",
     sequence = "sequence",
     comment = "comment",
+    quality_score = "quality_score",
     reference_vendor = "vendor",
     reference_name = "name",
     reference_version = "version",
@@ -186,19 +223,28 @@ add <- function(data, table,
       reference = reference,
       verbose = verbose
     )
+  } else if (type == "fastq") {
+    xdev_add_sequence_fastq_scores(
+      data = data, table = table,
+      sequence_name = table_names[["sequence_name"]],
+      sequence = table_names[["sequence"]],
+      quality_score = table_names[["quality_score"]],
+      reference = reference,
+      verbose = verbose
+    )
   } else if (type == "report") {
     if (!is.null(report_type)) {
       # check for sequence name column in table
       if (table_names[["sequence_name"]] %in% base::names(table)) {
         xdev_add_report(
-          data = data, table = table,
+          data = data, table = table, reference = reference,
           type = report_type,
           sequence_name = table_names[["sequence_name"]],
           verbose
         )
       } else {
         xdev_add_report(
-          data = data, table = table,
+          data = data, table = table, reference = reference,
           type = report_type,
           verbose = verbose
         )
@@ -220,6 +266,105 @@ add <- function(data, table,
       citation = table_names[["reference_citation"]],
       verbose = verbose
     )
+  } else if (type == "sequence_tree") {
+    if (!inherits(table, "phylo")) {
+      .abort_incorrect_type("phylo", table)
+    }
+
+    # if no seqs yet, add sequences in tree to dataset
+    if (count(data, type = "sequence") == 0) {
+      xdev_add_sequences(data, data.frame(sequence_name = table$tip.label))
+
+      # save tree
+      data$sequence_tree <- table
+    } else {
+      # make sure the tree includes all "good" sequences
+      if (identical(
+        sort(table$tip.label),
+        sort(names(data, type = "sequence"))
+      )) {
+        # save tree
+        data$sequence_tree <- table
+      } else {
+        # seqs in dataset and not in tree
+        missing_seqs <- setdiff(
+          names(data, type = "sequence"),
+          table$tip.label
+        )
+
+        # if tree is "missing" names, then ignore tree
+        if (length(missing_seqs) != 0) {
+          message <- paste("Your tree does not",
+            "contain a node for every sequence in",
+            "your dataset, ignoring tree.",
+            "Missing tree nodes for:",
+            paste(missing_seqs, collapse = ", "),
+            ".",
+            collapse = ""
+          )
+          cli_alert(message)
+        } else {
+          # seqs in tree and not in dataset
+          extra_seqs <- setdiff(
+            table$tip.label,
+            names(data, type = "sequence")
+          )
+
+          # if tree contains "extra" names, prune the tree
+          data$sequence_tree <- drop.tip(table, tip = extra_seqs)
+        }
+      }
+    }
+  } else if (type == "sample_tree") {
+    if (!inherits(table, "phylo")) {
+      .abort_incorrect_type("phylo", table)
+    }
+
+    # if no samples, ignore tree
+    if (count(data, type = "sample") == 0) {
+      message <- paste0("Your dataset does not contain sample ",
+        "data, ignoring sample tree.",
+        collapse = ""
+      )
+      cli::cli_alert(message)
+    } else {
+      # make sure the tree includes all "good" samples
+      if (identical(
+        sort(table$tip.label),
+        sort(names(data, type = "sample"))
+      )) {
+        # save tree
+        data$sample_tree <- table
+      } else {
+        # samples in dataset and not in tree
+        missing_samples <- setdiff(
+          names(data, type = "sample"),
+          table$tip.label
+        )
+
+        # if tree is "missing" names, then ignore tree
+        if (length(missing_samples) != 0) {
+          message <- paste("Your tree does not",
+            "contain a node for every sample in",
+            "your dataset, ignoring tree.",
+            "Missing tree nodes for:",
+            paste(missing_samples, collapse = ", "),
+            ".",
+            collapse = ""
+          )
+          cli_alert(message)
+        } else {
+          # samples in tree and not in dataset
+          extra_samples <- setdiff(
+            table$tip.label,
+            names(data, type = "sample")
+          )
+
+          # if tree contains "extra" names, prune the tree
+          data$sample_tree <- drop.tip(table, tip = extra_samples)
+        }
+      }
+    }
   } else {
     message <- paste0(
       type, " is not a valid 'type' for the add()",

@@ -1,4 +1,8 @@
-#' @title Import strollur object from exported data.frame.
+#' @title Create a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   from the exported table of a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
+#'   object.
 #' @description The import_dataset function will create a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'   from the exported table of a
@@ -7,12 +11,12 @@
 #'
 #' @param table a table containing the data from a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
-#'   object. You can create the table using 'export(data)'.
+#'   object. You can create the table using `strollur::export_dataset(data)`.
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
-#' data <- import_dataset(export_dataset(miseq))
+#' miseq <- strollur::miseq_sop_example()
+#' data <- strollur::import_dataset(strollur::export_dataset(miseq))
 #' data
 #'
 #' @return a
@@ -34,7 +38,7 @@ import_dataset <- function(table) {
       cli::cli_alert(message)
     } else {
       message <- paste0(
-        "Unable to create 'strollur' object. ",
+        "Unable to create `strollur::strollur` object. ",
         "The table was created with strollur version ", table_version,
         ", which is not compatible with the current strollur version: ",
         current_version, "."
@@ -128,12 +132,24 @@ import_dataset <- function(table) {
     }
   }
 
+  if ("sample_distance_table" %in% names) {
+    bt <- "sample_distance_table"
+    table[[bt]] <- table[[bt]][table[[bt]]$include, ]
+  }
+
   # look at sequence_data
   if (has_sequence_data) {
     sequence_data_names <- names(table$sequence_data)
 
     # "sequence_name", "sequence", "comment"
     add(data = data, table = table$sequence_data, type = "sequence")
+
+    # "sequence_name", "quality_score"
+    if ("quality_score" %in% sequence_data_names) {
+      xdev_add_sequence_fastq_scores(
+        data = data, table = table$sequence_data
+      )
+    }
 
     # "sequence_name", "taxonomy"
     if ("taxonomy" %in% sequence_data_names) {
@@ -236,6 +252,10 @@ import_dataset <- function(table) {
     }
   }
 
+  if ("sample_distance_table" %in% names) {
+    xdev_assign_sample_distances(data, table = table$sample_distance_table)
+  }
+
   # add references
   if ("resource_reference" %in% names) {
     xdev_add_references(data = data, table = table$resource_reference)
@@ -244,7 +264,7 @@ import_dataset <- function(table) {
   # list all report names
   table_names <- c(
     "sequence_data", "sequence_report",
-    "sequence_abundance_table", "otu_bin_data",
+    "sequence_abundance_table", "sample_distance_table", "otu_bin_data",
     "otu_sequence_bin_assignment", "otu_bin_representative_sequence",
     "asv_bin_data",
     "asv_sequence_bin_assignment", "phylotype_bin_data",
@@ -268,12 +288,12 @@ import_dataset <- function(table) {
 
   # add sequence_tree
   if ("sequence_tree" %in% names) {
-    data$add_sequence_tree(table$sequence_tree)
+    data$add(table = table$sequence_tree, type = "sequence_tree")
   }
 
   # add sample_tree
   if ("sample_tree" %in% names) {
-    data$add_sample_tree(table$sample_tree)
+    data$add(table$sample_tree, type = "sample_tree")
   }
 
   data

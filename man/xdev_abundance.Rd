@@ -7,16 +7,16 @@
 xdev_abundance(data, type = "sequence", bin_type = "otu", by_sample = FALSE)
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{type, }{string containing the type of data you want the number of.
+\item{type}{string containing the type of data you want the number of.
 Options include: "sequence", "bin".
 Default = "sequence".}
 
-\item{bin_type, }{string containing the bin type you would like the number of
+\item{bin_type}{string containing the bin type you would like the number of
 bins for. Default = "otu".}
 
-\item{by_sample, }{Boolean. When by_sample is TRUE, the abundance data will
+\item{by_sample}{Boolean. When by_sample is TRUE, the abundance data will
 be parsed by sample. Default = FALSE.}
 }
 \value{
@@ -28,30 +28,35 @@ Get a table containing the requested abundance data in a
 }
 \examples{
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 
 # To the total abundance for each sequence
-xdev_abundance(data = miseq, type = "sequence")
+strollur::xdev_abundance(data = miseq, type = "sequence")
 
 # To the total abundance for each sequence parsed by sample
-xdev_abundance(data = miseq, type = "sequence", by_sample = TRUE)
+strollur::xdev_abundance(data = miseq, type = "sequence",
+                           by_sample = TRUE)
 
 # To the total abundance for each "otu" bin
-xdev_abundance(data = miseq, type = "bin", bin_type = "otu")
+strollur::xdev_abundance(data = miseq, type = "bin",
+                           bin_type = "otu")
 
 # To the total abundance for each "otu" bin parsed by sample
-xdev_abundance(data = miseq, type = "bin", bin_type = "otu", by_sample = TRUE)
+strollur::xdev_abundance(data = miseq, type = "bin",
+                           bin_type = "otu", by_sample = TRUE)
 
 # To the total abundance for each "asv" bin
-xdev_abundance(data = miseq, type = "bin", bin_type = "asv")
+strollur::xdev_abundance(data = miseq, type = "bin",
+                           bin_type = "asv")
 
 # To the total abundance for each "asv" bin parsed by sample
-xdev_abundance(data = miseq, type = "bin", bin_type = "asv", by_sample = TRUE)
+strollur::xdev_abundance(data = miseq, type = "bin",
+                           bin_type = "asv", by_sample = TRUE)
 
 # To the total abundance of each sample
-xdev_abundance(data = miseq, type = "sample")
+strollur::xdev_abundance(data = miseq, type = "sample")
 
 # To the total abundance of each treatment
-xdev_abundance(data = miseq, type = "treatment")
+strollur::xdev_abundance(data = miseq, type = "treatment")
 
 }

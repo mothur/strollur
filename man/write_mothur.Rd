@@ -2,22 +2,26 @@
 % Please edit documentation in R/write_mothur.R
 \name{write_mothur}
 \alias{write_mothur}
-\title{write_mothur}
+\title{Write the various \href{https://mothur.org/wiki/tags/#file_types}{file
+types} from your
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+for use with mothur.}
 \usage{
 write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 }
 \arguments{
-\item{data}{A `strollur` object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{dir_path}{a string containing the name of directory where the files
 should be written. Default = current working directory.}
 
-\item{compress}{boolean, Default = TRUE.}
+\item{compress}{logical, Default = TRUE.}
 
 \item{tags}{a vector of strings containing the items you wish to write
 Options are 'sequence_data', 'bin_data', 'metadata',
 'resource_reference', 'sequence_tree', 'sample_tree' and 'report'.
- By default, everything is written to files.}
+By default, everything is written to files.}
 }
 \value{
 a vector of file names
@@ -29,15 +33,15 @@ mothur.
 }
 \examples{
 
-miseq <- miseq_sop_example()
-files <- write_mothur(miseq, tempdir(), compress = FALSE)
+miseq <- strollur::miseq_sop_example()
+files <- strollur::write_mothur(miseq, tempdir(), compress = FALSE)
 
 }
 \references{
 Schloss,P.D., Westcott,S.L., Ryabin,T., Hall,J.R., Hartmann,M.,
- Hollister,E.B., Lesniewski,R.A., Oakley,B.B., Parks,D.H., Robinson,C.J.,
- Sahl,J.W., Stres,B., Thallinger,G.G., Van Horn,D.J. and Weber,C.F. (2009),
- Introducing mothur: Open-source, platform-independent, community-supported
- software for describing and comparing microbial communities. Applied and
- Environmental Microbiology 75:7537-7541. <doi:10.1128/AEM.01541-09>
+Hollister,E.B., Lesniewski,R.A., Oakley,B.B., Parks,D.H., Robinson,C.J.,
+Sahl,J.W., Stres,B., Thallinger,G.G., Van Horn,D.J. and Weber,C.F. (2009),
+Introducing mothur: Open-source, platform-independent, community-supported
+software for describing and comparing microbial communities. Applied and
+Environmental Microbiology 75:7537-7541. \url{doi:10.1128/AEM.01541-09}
 }

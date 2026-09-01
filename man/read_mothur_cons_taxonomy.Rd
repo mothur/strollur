@@ -2,14 +2,15 @@
 % Please edit documentation in R/read_mothur_cons_taxonomy.R
 \name{read_mothur_cons_taxonomy}
 \alias{read_mothur_cons_taxonomy}
-\title{read_mothur_cons_taxonomy}
+\title{Read a mothur formatted
+\href{https://mothur.org/wiki/constaxonomy_file/}{cons_taxonomy file}}
 \usage{
 read_mothur_cons_taxonomy(taxonomy)
 }
 \arguments{
 \item{taxonomy}{file name, a mothur
 \href{https://mothur.org/wiki/constaxonomy_file/}{consensus taxonomy file}.
- The cons_taxonomy file is created by
+The cons_taxonomy file is created by
 \href{https://mothur.org/wiki/classify.otu/}{classify.otu}.}
 }
 \value{
@@ -26,17 +27,18 @@ Read a mothur formatted
 # using the following:
 
 # read mothur's consensus taxonomy file into a data.frame
-otu_data <- read_mothur_cons_taxonomy(strollur_example(
+otu_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 
-data <- new_dataset()
+data <- strollur::new_dataset()
 
 # assign abundance only 'otu' bins
-assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
+strollur::assign(data = data, table = otu_data,
+                 type = "bin", bin_type = "otu")
 
 # assign consensus taxonomies to 'otu' bins
-assign(
+strollur::assign(
   data = data, table = otu_data,
   type = "bin_taxonomy", bin_type = "otu"
 )

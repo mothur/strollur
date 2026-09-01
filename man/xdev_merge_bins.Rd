@@ -2,21 +2,21 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_merge_bins}
 \alias{xdev_merge_bins}
-\title{xdev_merge_bins}
+\title{Merge bins in your \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
 
-\item{bin_names, }{a vector of strings containing the names of the bins you
+\item{bin_names}{a vector of strings containing the names of the bins you
 would like merge. The resulting merged bin will be stored in the first
 bin_id in the vector.}
 
-\item{reason, }{a string indicating why you are merging bins. Default =
+\item{reason}{a string indicating why you are merging bins. Default =
 "merged".}
 
-\item{bin_type, }{a string indicating the type of bin clusters.
+\item{bin_type}{a string indicating the type of bin clusters.
 Default = "otu"}
 }
 \value{
@@ -28,17 +28,18 @@ you to merge bins in a \href{https://mothur.org/strollur/reference/strollur.html
 }
 \examples{
 
- data <- miseq_sop_example()
+ data <- strollur::miseq_sop_example()
 
  # to merge otu5 and otu6
 
  bins_to_merge <- c("Otu005", "Otu006")
 
- xdev_merge_bins(data = data, bin_names = bins_to_merge)
+ strollur::xdev_merge_bins(data,
+                             bin_names = bins_to_merge)
 
  # If you look at the scrap report, you will see Otu006 with the trash code
  # set to "merged".
 
- report(data = data, type = "bin_scrap")
+ strollur::report(data, type = "bin_scrap")
 
 }

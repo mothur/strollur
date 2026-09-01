@@ -620,7 +620,58 @@ test_that("xdev_get_by_sample", {
   expect_equal(actual, list(expected))
 })
 
-test_that("xdev_get_abundances_by_sample - getSequenceAbundanceBySample", {
+test_that("xdev_get_sequence_indexes_by_sample", {
+  x <- 10
+  expect_error(
+    xdev_get_sequence_indexes_by_sample(x),
+    "data must be a strollur object."
+  )
+
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("..AT-TG-C..", ".AT---TGC", "A-TTGC.", "..ATTGC..")
+
+  samples <- c("sample1", "sample2", "sample1", "sample2")
+  abunds <- c(10, 10, 10, 10)
+
+  data <- new_dataset()
+
+  xdev_add_sequences(
+    data,
+    data.frame(
+      sequence_name = names,
+      sequence = seqs
+    )
+  )
+
+  # add samples
+  xdev_assign_sequence_abundance(data, data.frame(
+    sequence_name = names,
+    sample = samples,
+    abundance = abunds
+  ))
+
+  expected <- list(c(1, 3), c(2, 4))
+  actual <- xdev_get_sequence_indexes_by_sample(data)
+  expect_equal(actual, expected)
+
+  names <- xdev_names(data)
+  seqs <- xdev_get_sequences(data)
+
+  expect_equal(names[expected[[1]][1]], "seq1")
+  expect_equal(names[expected[[1]][2]], "seq3")
+  expect_equal(names[expected[[2]][1]], "seq2")
+  expect_equal(names[expected[[2]][2]], "seq4")
+
+  # just sample2
+  expected <- list(c(2, 4))
+  actual <- xdev_get_sequence_indexes_by_sample(data, samples = c("sample2"))
+  expect_equal(actual, expected)
+
+  expect_equal(names[expected[[1]][1]], "seq2")
+  expect_equal(names[expected[[1]][2]], "seq4")
+})
+
+test_that("xdev_get_sequence_abundances_by_sample", {
   data <- new_dataset()
 
   seq_names <- c(
@@ -656,13 +707,13 @@ test_that("xdev_get_abundances_by_sample - getSequenceAbundanceBySample", {
     c(2), c(5, 10, 5), c(3, 5, 5), c(4)
   )
 
-  actual <- xdev_get_abundances_by_sample(data)
+  actual <- xdev_get_sequence_abundances_by_sample(data)
 
   expect_equal(actual, expected)
 
   x <- 10
   expect_error(
-    xdev_get_abundances_by_sample(x),
+    xdev_get_sequence_abundances_by_sample(x),
     "data must be a strollur object."
   )
 })
@@ -1381,9 +1432,174 @@ test_that("Tests assignSequenceTaxonomy, assignBinTaxonomy, removeLineages", {
     "Betaproteobacteria"
   ))
 
+  # change a taxon and use tidy format
+  bin_taxonomy_report[[3]][3] <- "changed"
+  bin_taxonomy_report[["confidence"]] <- c(100, 100, 90, 100, 90, 85)
+
+  xdev_assign_bin_taxonomy_tidy(data, table = bin_taxonomy_report)
+  bin_taxonomy_report <- report(data, "bin_taxonomy")
+  expect_equal(bin_taxonomy_report[[3]][3], "changed")
+
   contaminants <- c("Proteobacteria")
   xdev_remove_lineages(data, contaminants, "contaminant")
 
   expect_equal(count(data), 100)
   expect_equal(count(data, "bin"), 1)
+})
+
+test_that("Tests xdev_add_report with reference", {
+  reference <- strollur::new_reference(
+    vendor = "mothur2",
+    name = "align_seqs()",
+    version = "0.1.0",
+    usage = "alignment of sequences",
+    note = "alignment reference trimmed to V4 region"
+  )
+
+  align_report <- readRDS(strollur_example("test_alignment_data.rds"))
+
+  data <- strollur::new_dataset()
+  strollur::xdev_add_report(data,
+    table = align_report,
+    type = "align_report",
+    reference = reference
+  )
+
+  resource_reference <- strollur::report(data, type = "resource_reference")
+
+  expect_equal(resource_reference$name, "align_seqs()")
+  expect_equal(resource_reference$vendor, "mothur2")
+  expect_equal(resource_reference$method_url, "NA")
+})
+
+test_that("Tests xdev_add_sequence_fastq_scores ", {
+  reference <- strollur::new_reference(
+    vendor = "mothur2",
+    name = "test()",
+    version = "0.1.0",
+    usage = "quality of sequences",
+    note = "format = illumina1.8+"
+  )
+
+  fastq_data <- strollur::read_fastq(strollur_example("tiny.fastq.gz"))
+
+  data <- strollur::new_dataset()
+  strollur::xdev_add_sequence_fastq_scores(data,
+    table = fastq_data,
+    reference = reference
+  )
+
+  resource_reference <- strollur::report(data, type = "resource_reference")
+
+  expect_equal(resource_reference$name, "test()")
+  expect_equal(resource_reference$vendor, "mothur2")
+
+  fastq_report <- strollur::xdev_report(data, type = "fastq")
+
+  names <- c(
+    "M00967:43:000000000-A3JHG:1:1101:18327:1699",
+    "M00967:43:000000000-A3JHG:1:1101:14069:1827",
+    "M00967:43:000000000-A3JHG:1:1101:18044:1900"
+  )
+
+  expect_equal(fastq_report$sequence_name, names)
+
+  seq_1 <- paste0(
+    "NACGGAGGATGCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGTAGGCGGC",
+    "CTGCCAAGTCAGCGGTAAAATTGCGGGGCTCAACCCCGTACAGCCGTTGAAACTGC",
+    "CGGGCTCGAGTGGGCGAGAAGTATGCGGAATGCGTGGTGTAGCGGTGAAATGCATA",
+    "GATATCACGCAGAACCCCGATTGCGAAGGCAGCATACCGGCGCCCTACTGACGCTG",
+    "AGGCACGAAAGTGCGGGGATCAAACAG"
+  )
+
+  seq_2 <- paste0(
+    "TACGGAGGATGCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGTAGGCGGC",
+    "CTGCCAAGTCAGCGGTAAAATTGCGGGGCTCAACCCCGTACAGCCGTTGAAACTGC",
+    "CGGGCTCGAGTGGGCGAGAAGTATGCGGAATGCGTGGTGTAGCGGTGAAATGCATA",
+    "GATATCACGCAGAACCCCGATTGCGAAGGCAGCATACCGGCGCCCTACTGACGCTG",
+    "AGGCACGAAAGTGCGGGGATCAAACAG"
+  )
+
+  seq_3 <- paste0(
+    "TACGGAGGATGCGAGCGTTGTCCGGAATCACTGGGCGTAAAGGGCGCGTAGGCGGTT",
+    "TAATAAGTCAGTGGTGAAAACTGAGGGCTCAACCCTCAGCCTGCCACTGATACTGTT",
+    "AGACTTGAGTATGGAAGAGGAGAATGGAATTCCTAGTGTAGCGGTGAAATGCGTAGA",
+    "TATTAGGAGGAACACCAGTGGCGAAGGCGATTCTCTGGGCCAAGACTGACGCTGAGG",
+    "CGCGAAAGCGTGGGGAGCAAACA"
+  )
+  sequences <- c(seq_1, seq_2, seq_3)
+
+  expect_equal(fastq_report$sequence, sequences)
+
+  score_1_15 <- c(2, 29, 29, 32, 32, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+  score_2_15 <- c(18, 32, 32, 30, 32, 33, 33, 35, 33, 37, 37, 33, 36, 38, 38)
+  score_3_15 <- c(33, 32, 31, 33, 33, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+
+  expect_equal(fastq_report$quality_score[[1]][1:15], score_1_15)
+  expect_equal(fastq_report$quality_score[[2]][1:15], score_2_15)
+  expect_equal(fastq_report$quality_score[[3]][1:15], score_3_15)
+
+  # errors
+  fastq_data <- data.frame(
+    sequence_name = c("seq1", "seq2", "seq3"),
+    sequence = c("AATCG", "GGCTA", "TATTCCC")
+  )
+
+  data <- strollur::new_dataset()
+  # fasta data instead of fastq
+  expect_error(strollur::xdev_add_sequence_fastq_scores(data,
+    table = fastq_data
+  ))
+
+  fastq_data <- data.frame(
+    sequence_name = c("seq1", "seq2", "seq3"),
+    sequence = c("AATCG", "GGCTA", "TATTCCC"),
+    quality_score = I(list(
+      c(33, 34, 35, 35, 36),
+      c(33, 34, 35, 35, 36),
+      c(33, 34, 35, 35, 36)
+    ))
+  )
+  # incorrect number of scores for sequence length
+  expect_error(strollur::xdev_add_sequence_fastq_scores(data,
+    table = fastq_data
+  ))
+})
+
+test_that("Tests xdev_assign_sample_distances / get ", {
+  reference <- strollur::new_reference(
+    vendor = "mothur2",
+    name = "test()",
+    version = "0.1.0"
+  )
+
+  shared_file <- strollur_example("final.opti_mcc.shared")
+  dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+  reference <- strollur::new_reference(
+    name = "jclass estimator distances",
+    vendor = "mothur_v1.48.6"
+  )
+  data <- strollur::new_dataset("my_dataset")
+  df <- read_mothur_shared(shared_file)
+  xdev_assign_bins(data, table = df, bin_type = "otu")
+  sample_dists <- readr::read_table(dist_file,
+    col_names = FALSE,
+    show_col_types = FALSE
+  )
+  xdev_assign_sample_distances(data,
+    table = sample_dists,
+    reference = reference
+  )
+  dists <- xdev_get_sample_distances(data)
+  expect_equal(nrow(dists), 171)
+  expect_equal(ncol(dists), 3)
+  expect_equal(round(dists[1:3, 3], 2), c(0.47, 0.53, 0.55))
+
+  # remove sample F3D1 and check the pruning
+  xdev_remove_samples(data, samples = c("F3D1"))
+
+  dists <- xdev_report(data, type = "sample_distance")
+  expect_equal(nrow(dists), 153)
+  expect_equal(ncol(dists), 3)
+  expect_equal(round(dists[1:3, 3], 2), c(0.53, 0.57, 0.51))
 })

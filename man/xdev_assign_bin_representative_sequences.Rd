@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_assign_bin_representative_sequences}
 \alias{xdev_assign_bin_representative_sequences}
-\title{xdev_assign_bin_representative_sequences}
+\title{Assign representative sequences to bins}
 \usage{
 xdev_assign_bin_representative_sequences(
   data,
@@ -17,20 +17,20 @@ xdev_assign_bin_representative_sequences(
 \arguments{
 \item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing bin representative assignments}
+\item{table}{a data.frame containing bin representative assignments}
 
 \item{bin_type}{a string indicating the type of bin assignments.
 Default "otu".}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
-\item{bin_name, }{a string containing the name of the column in 'table' that
+\item{bin_name}{a string containing the name of the column in 'table' that
 contains the bin names. Default column name is 'bin_name'.}
 
 \item{sequence_name}{a string containing the name of the column in 'table' that
 contains the bin names. Default column name is 'sequence_name'.}
 
-\item{verbose, }{a boolean whether or not you want progress messages.
+\item{verbose}{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
@@ -41,13 +41,12 @@ Assign representative sequences to bins.
 }
 \examples{
 
-  miseq <- miseq_sop_example()
+  miseq <- strollur::miseq_sop_example()
 
   bin_reps <- readRDS(strollur_example(
          "miseq_representative_sequences.rds"))
 
-  xdev_assign_bin_representative_sequences(data = miseq,
-                                      table = bin_reps,
-                                      bin_type = "otu")
+  strollur::xdev_assign_bin_representative_sequences(miseq,
+                          table = bin_reps, bin_type = "otu")
 
 }

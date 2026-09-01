@@ -1,4 +1,5 @@
-#' @title read_mothur_oligos
+#' @title Read a mothur formatted
+#' \href{https://mothur.org/wiki/oligos_file/}{oligos file}
 #' @description
 #' Read a mothur formatted
 #' \href{https://mothur.org/wiki/oligos_file/}{oligos file}
@@ -6,15 +7,16 @@
 #' \href{https://mothur.org/wiki/oligos_file/}{oligos file}
 #' @examples
 #'
-#' oligos <- read_mothur_oligos(strollur_example("paired_read.oligos"))
+#' oligos <-
+#'      strollur::read_mothur_oligos(strollur_example("paired_read.oligos"))
 #'
 #' # Create a new dataset and add your oligos data
 #'
-#' data <- new_dataset() |>
-#'   add(
+#' data <- strollur::new_dataset() |>
+#'   strollur::add(
 #'     table = oligos,
 #'     type = "report",
-#'     report_type = "paired_oligos"
+#'     report_type = "oligos"
 #'   )
 #'
 #' @return A data.frame containing the oligos data.

@@ -8,7 +8,7 @@ test_that("import - version 0.1.1", {
 
   expect_equal(count(data), 113963)
 
-  # 0.1.0 is compatible with 0.1.1
+  # 0.1.0 is compatible with 0.1.1 and 0.1.2
   table <- readRDS(strollur_example("miseq_sop_table.010.rds"))
   data2 <- import_dataset(table)
 
@@ -41,6 +41,7 @@ test_that("import - miseq_sop_example", {
 
   expect_equal(count(miseq, "bin", "phylotype"), 63)
   expect_equal(count(miseq, distinct = TRUE), 2425)
+  expect_equal(nrow(xdev_get_sample_distances(miseq)), 171)
 
   exported_miseq <- export_dataset(miseq)
 
@@ -68,6 +69,7 @@ test_that("import - miseq_sop_example", {
     abundance(dataset_t, "treatment"),
     abundance(miseq, "treatment")
   )
+  expect_equal(nrow(xdev_get_sample_distances(miseq)), 171)
 
   dfd <- report(dataset_t, "bin_representative")
   dfm <- report(miseq, "bin_representative")
@@ -218,4 +220,15 @@ test_that("import - errors and warnings", {
 
   table <- export_dataset(data)
   expect_equal(length(table), 0)
+})
+
+test_that("import - quality data", {
+  table <- strollur::read_fastq(strollur_example("tiny.fastq.gz"))
+
+  data <- strollur::new_dataset()
+  xdev_add_sequence_fastq_scores(data, table)
+
+  data2 <- strollur::import_dataset(strollur::export_dataset(data))
+
+  expect_true(data2$is_equal(data))
 })

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_qiime2_taxonomy.R
 \name{read_qiime2_taxonomy}
 \alias{read_qiime2_taxonomy}
-\title{read_qiime2_taxonomy}
+\title{Read a \href{https://qiime2.org}{qiime2} qza containing taxonomy data}
 \usage{
 read_qiime2_taxonomy(qza, dir_path = NULL, remove_unpacked_artifacts = TRUE)
 }
@@ -23,7 +23,7 @@ Read a \href{https://qiime2.org}{qiime2} qza containing taxonomy data
 }
 \examples{
 
-artifact <- read_qiime2_taxonomy(strollur_example(
+artifact <- strollur::read_qiime2_taxonomy(strollur_example(
   "taxonomy.qza"
 ))
 

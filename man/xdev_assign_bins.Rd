@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_assign_bins}
 \alias{xdev_assign_bins}
-\title{xdev_assign_bins}
+\title{Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_assign_bins(
   data,
@@ -17,30 +17,30 @@ xdev_assign_bins(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing bin_data assignments}
+\item{table}{a data.frame containing bin_data assignments}
 
 \item{bin_type}{a string indicating the type of bin assignments. Default "otu".}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
-\item{bin_name, }{a string containing the name of the column in 'table' that
+\item{bin_name}{a string containing the name of the column in 'table' that
 contains the bin names. Default column name is 'bin_name'.}
 
-\item{abundance, }{a string containing the name of the column in 'table'
+\item{abundance}{a string containing the name of the column in 'table'
 that contains the bin abundances. Default column name is 'abundance'. Note:
- You must provide either abundance or sequence_name in the table.}
+You must provide either abundance or sequence_name in the table.}
 
-\item{sample, }{a string containing the name of the column in 'table' that
+\item{sample}{a string containing the name of the column in 'table' that
 contains the sample names for datasets where the abundances are broken down
 by sample. Default column name is 'sample'.}
 
-\item{sequence_name, }{a string containing the name of the column in 'table'
+\item{sequence_name}{a string containing the name of the column in 'table'
 that contains the sequence names. Default column name is 'sequence_name'.
 Note: You must provide either abundance or sequence_name in the table.}
 
-\item{verbose, }{a boolean whether or not you want progress messages.
+\item{verbose}{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
@@ -53,23 +53,25 @@ Add bin assignments to a \href{https://mothur.org/strollur/reference/strollur.ht
 
   # To assign sequences to bins:
 
-  data <- new_dataset(dataset_name = "miseq_sop")
-  otu_data <- read_mothur_list(list = strollur_example("final.opti_mcc.list.gz"))
+  data <- strollur::new_dataset(dataset_name = "miseq_sop")
+  otu_data <- strollur::read_mothur_list(
+                          list = strollur_example("final.opti_mcc.list.gz"))
 
-  xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+  strollur::xdev_assign_bins(data, table = otu_data, bin_type = "otu")
 
   # To add abundance only bin assignments:
 
-  data <- new_dataset(dataset_name = "miseq_sop")
-  otu_data <- read_mothur_rabund(rabund = strollur_example("final.opti_mcc.rabund"))
+  data <- strollur::new_dataset(dataset_name = "miseq_sop")
+  otu_data <- strollur::read_mothur_rabund(
+                         rabund = strollur_example("final.opti_mcc.rabund"))
 
-  xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+  strollur::xdev_assign_bins(data, table = otu_data, bin_type = "otu")
 
   # To add abundance bin assignments parsed by sample:
 
-  data <- new_dataset(dataset_name = "miseq_sop")
+  data <- strollur::new_dataset(dataset_name = "miseq_sop")
   otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
 
-  xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+  strollur::xdev_assign_bins(data, table = otu_data, bin_type = "otu")
 
 }

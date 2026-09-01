@@ -2,12 +2,12 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_has_sequence_taxonomy}
 \alias{xdev_has_sequence_taxonomy}
-\title{xdev_has_sequence_taxonomy}
+\title{Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} has sequence taxonomy assignments}
 \usage{
 xdev_has_sequence_taxonomy(data)
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 }
 \value{
 boolean
@@ -17,7 +17,7 @@ Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{stroll
 }
 \examples{
 
- data <- miseq_sop_example()
- xdev_has_sequence_taxonomy(data)
+ data <- strollur::miseq_sop_example()
+ strollur::xdev_has_sequence_taxonomy(data)
 
 }

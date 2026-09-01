@@ -2,7 +2,8 @@
 % Please edit documentation in R/new_dataset.R
 \name{new_dataset}
 \alias{new_dataset}
-\title{new_dataset}
+\title{Create a new
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
 new_dataset(dataset_name = "")
 }
@@ -12,7 +13,7 @@ Default = ""}
 }
 \value{
 a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Create a new
@@ -20,14 +21,14 @@ Create a new
 }
 \examples{
 
-data <- new_dataset()
+data <- strollur::new_dataset()
 
 # to create a new dataset named "soil", run the following:
 
-data <- new_dataset(dataset_name = "soil")
+data <- strollur::new_dataset(dataset_name = "soil")
 
 }
 \seealso{
 The 'new' method in the
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} class
 }

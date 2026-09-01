@@ -2,8 +2,8 @@
 % Please edit documentation in R/add.R
 \name{add}
 \alias{add}
-\title{Add sequences, reports or resource references to a
-  \link{strollur} object}
+\title{Add sequences, reports, trees or resource references to a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 \usage{
 add(
   data,
@@ -11,40 +11,43 @@ add(
   type = "sequence",
   report_type = NULL,
   table_names = list(sequence_name = "sequence_name", sequence = "sequence", comment =
-    "comment", reference_vendor = "vendor", reference_name = "name", reference_version =
-    "version", reference_usage = "usage", reference_note = "note", reference_method_url =
-    "method_url", reference_documentation_url = "documentation_url", reference_parameter
-    = "parameter", reference_citation = "citation"),
+    "comment", quality_score = "quality_score", reference_vendor = "vendor",
+    reference_name = "name", reference_version = "version", reference_usage = "usage",
+    reference_note = "note", reference_method_url = "method_url",
+    reference_documentation_url = "documentation_url", reference_parameter = "parameter",
+    reference_citation = "citation"),
   reference = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{data, }{a
+\item{data}{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing the data you wish to add.}
+\item{table}{a data.frame or tree containing the data you wish to add.}
 
-\item{type, }{a string containing the type of data. Options include:
-'sequence', 'resource_reference' and 'report'.}
+\item{type}{a string containing the type of data. Options include:
+\code{sequence}, \code{fastq}, \code{sample_tree}, \code{sequence_tree}, \code{resource_reference}
+and \code{report}.}
 
-\item{report_type, }{a string containing the type of report you are adding.}
+\item{report_type}{a string containing the type of report you are adding.}
 
-\item{table_names, }{named list used to indicate the names of the columns in
+\item{table_names}{named list used to indicate the names of the columns in
 the table. By default:
 
 table_names <- list(sequence_name = "sequence_name",
-                    comment = "comment",
-                    sequence = "sequence",
-                    reference_name = "name",
-                    reference_vendor = "vendor",
-                    reference_version = "version",
-                    reference_usage = "usage",
-                    reference_note = "note",
-                    reference_documentation_url = "documentation_url",
-                    reference_method_url = "method_url",
-                    reference_parameter = "parameter",
-                    reference_citation = "citation")
+comment = "comment",
+sequence = "sequence",
+quality_score = "quality_score",
+reference_name = "name",
+reference_vendor = "vendor",
+reference_version = "version",
+reference_usage = "usage",
+reference_note = "note",
+reference_documentation_url = "documentation_url",
+reference_method_url = "method_url",
+reference_parameter = "parameter",
+reference_citation = "citation")
 
 In table_names, 'sequence_name' is a string containing the name of the column
 in 'table' that contains the sequence names. It is used when you are adding
@@ -57,6 +60,10 @@ are adding FASTA data. Default column name is 'sequence'.
 In table_names, 'comment' is a string containing the name of the column in
 'table' that contains the sequence comments. It is used when you are adding
 FASTA data. Default column name is 'comment'.
+
+In table_names, 'quality_score' is a string containing the name of the column
+in 'table' that contains the sequence quality scores. It is used when you are
+adding FASTQ data. Default column name is 'quality_score'.
 
 In table_names, 'reference_vendor' is a string containing the name of the
 column in 'table' that contains the reference vendor names. It is used when
@@ -75,7 +82,7 @@ column in 'table' that contains the reference usages. Default column name is
 
 In table_names, 'reference_note' is a string containing the name of the
 column in 'table' that contains the reference notes. Default column name is
- 'note'.
+'note'.
 
 In table_names, 'reference_method_url' is a string containing the name of the
 column in 'table' that contains the reference method urls. Default column
@@ -93,37 +100,38 @@ In table_names, 'reference_citation' is a string containing the name of the
 column in 'table' that contains the reference citations. Default column name
 is 'citation'.}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
-\item{verbose, }{boolean indicating whether or not you want progress messages.
+\item{verbose}{boolean indicating whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
 an updated
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
-Add sequences, reports or resource references to a
+Add sequences, reports, trees or resource references to a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
 
 # Create a new empty strollur object named 'example_dataset'
-data <- new_dataset(dataset_name = "example_dataset")
+data <- strollur::new_dataset(dataset_name = "example_dataset")
 
 # Read FASTA data into data.frame
-fasta_data <- read_fasta(fasta = strollur_example("final.fasta.gz"))
+fasta_data <-
+  strollur::read_fasta(fasta = strollur_example("final.fasta.gz"))
 
 # Add FASTA sequence data
-add(data = data, table = fasta_data, type = "sequence")
+strollur::add(data = data, table = fasta_data, type = "sequence")
 
 # To add FASTA data with a resource reference
 
 # Create a new empty strollur object named 'example_dataset'
-data <- new_dataset(dataset_name = "example_dataset")
+data <- strollur::new_dataset(dataset_name = "example_dataset")
 
 # Create a resource reference for the FASTA data silva_resource <-
-silva_resource <- new_reference(
+silva_resource <- strollur::new_reference(
   vendor = "SILVA", name =
     "silva.bacteria.fasta", version = "1.38.1",
   usage = "alignment of sequences",
@@ -134,18 +142,28 @@ silva_resource <- new_reference(
 
 # Add FASTA data with a resource reference
 
-add(
+strollur::add(
   data,
   table = fasta_data,
   type = "sequence",
   reference = silva_resource
 )
 
+# Create a new empty strollur object named 'example_dataset'
+data <- strollur::new_dataset(dataset_name = "example_dataset")
+
+# Read FASTQ data into data.frame
+fastq_data <-
+  strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+
+# Add FASTQ sequence data
+strollur::add(data = data, table = fastq_data, type = "fastq")
+
 # Add contigs assembly report with a 'sequence_name' column named 'Name'
 
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
-add(
+strollur::add(
   data,
   table = contigs_report, type = "report",
   report_type = "contigs_report", list(sequence_name = "Name")
@@ -155,6 +173,24 @@ add(
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-add(data, table = metadata, type = "report", report_type = "metadata")
+strollur::add(data,
+  table = metadata,
+  type = "report", report_type = "metadata"
+)
+
+# To add a tree relating to your sequences
+
+tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
+
+strollur::add(data, table = tree, type = "sequence_tree")
+
+# To add a tree relating to your samples
+data <- strollur::new_dataset(dataset_name = "example_dataset")
+
+df <- strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
+
+strollur::assign(data, table = df, type = "bin", bin_type = "otu")
+strollur::add(data, table = tree, type = "sample_tree")
 
 }

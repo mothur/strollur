@@ -1,4 +1,6 @@
-#' @title copy_dataset
+#' @title Create a new
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' from an existing dataset.
 #' @description
 #' Create a new
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
@@ -8,11 +10,11 @@
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #'
 #' # to create a new dataset that is a copy of miseq
 #'
-#' data <- copy_dataset(miseq)
+#' data <- strollur::copy_dataset(miseq)
 #'
 #' @returns a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object

@@ -2,16 +2,18 @@
 % Please edit documentation in R/write_mothur_rabund.R
 \name{write_mothur_rabund}
 \alias{write_mothur_rabund}
-\title{write_mothur_rabund}
+\title{Write mothur formatted
+\href{https://mothur.org/wiki/rabund_file/}{rabund files}}
 \usage{
 write_mothur_rabund(data, file_root = NULL)
 }
 \arguments{
-\item{data}{A `strollur` object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{file_root}{a string containing the root name of the output file.
 Default = 'dataset_name'. Resulting in output files
-'dataset_name'.bin_type'.rabund.}
+\verb{\{dataset_name\}.\{bin_type\}.rabund}.}
 }
 \value{
 vector containing the names of the files created
@@ -22,7 +24,7 @@ Write mothur formatted
 }
 \examples{
 
-miseq <- miseq_sop_example()
-write_mothur_rabund(miseq, tempfile())
+miseq <- strollur::miseq_sop_example()
+strollur::write_mothur_rabund(miseq, tempfile())
 
 }

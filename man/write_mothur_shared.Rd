@@ -2,16 +2,18 @@
 % Please edit documentation in R/write_mothur_shared.R
 \name{write_mothur_shared}
 \alias{write_mothur_shared}
-\title{write_mothur_shared}
+\title{Write mothur formatted
+\href{https://mothur.org/wiki/shared_file/}{shared files}}
 \usage{
 write_mothur_shared(data, file_root = NULL)
 }
 \arguments{
-\item{data}{A `strollur` object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{file_root}{a string containing the root name of the output file.
 Default = 'dataset_name'. Resulting in output files
-'dataset_name'.bin_type'.shared.}
+\verb{\{dataset_name\}.\{bin_type\}.shared}.}
 }
 \value{
 vector containing the names of the files created
@@ -22,7 +24,7 @@ Write mothur formatted
 }
 \examples{
 
-miseq <- miseq_sop_example()
-write_mothur_shared(miseq, tempfile())
+miseq <- strollur::miseq_sop_example()
+strollur::write_mothur_shared(miseq, tempfile())
 
 }

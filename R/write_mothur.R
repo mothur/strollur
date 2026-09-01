@@ -1,4 +1,7 @@
-#' @title write_mothur
+#' @title Write the various \href{https://mothur.org/wiki/tags/#file_types}{file
+#'   types} from your
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   for use with mothur.
 #' @description
 #' The write_mothur function will write various
 #' \href{https://mothur.org/wiki/tags/#file_types}{file types} for use with
@@ -12,7 +15,8 @@
 #'  software for describing and comparing microbial communities. Applied and
 #'  Environmental Microbiology 75:7537-7541. <doi:10.1128/AEM.01541-09>
 #'
-#' @param data A `strollur` object
+#' @param data a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param dir_path a string containing the name of directory where the files
 #' should be written. Default = current working directory.
 #' @param tags a vector of strings containing the items you wish to write
@@ -20,12 +24,12 @@
 #' 'resource_reference', 'sequence_tree', 'sample_tree' and 'report'.
 #'  By default, everything is written to files.
 #'
-#' @param compress boolean, Default = TRUE.
+#' @param compress logical, Default = TRUE.
 #'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
-#' files <- write_mothur(miseq, tempdir(), compress = FALSE)
+#' miseq <- strollur::miseq_sop_example()
+#' files <- strollur::write_mothur(miseq, tempdir(), compress = FALSE)
 #'
 #' @return a vector of file names
 #' @export
@@ -163,7 +167,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("sample_tree" %in% tags)) {
-    sample_tree <- data$get_sample_tree()
+    sample_tree <- data$report(type = "sample_tree")
 
     if (!is.null(sample_tree)) {
       filename <- file.path(
@@ -178,7 +182,7 @@ write_mothur <- function(data, dir_path = NULL, compress = TRUE, tags = NULL) {
   }
 
   if (!ht || ("sequence_tree" %in% tags)) {
-    sequence_tree <- data$get_sequence_tree()
+    sequence_tree <- data$report(type = "sequence_tree")
 
     if (!is.null(sequence_tree)) {
       filename <- file.path(

@@ -2,14 +2,14 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_remove_samples}
 \alias{xdev_remove_samples}
-\title{xdev_remove_samples}
+\title{Remove samples from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_remove_samples(data, samples, reason = "remove_samples")
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
 
-\item{samples, }{vector of strings containing the names of the samples to
+\item{samples}{vector of strings containing the names of the samples to
 remove.}
 
 \item{reason, }{string containing the reason for removal.
@@ -24,14 +24,15 @@ you to remove samples from a \href{https://mothur.org/strollur/reference/strollu
 }
 \examples{
 
-data <- miseq_sop_example()
+data <- strollur::miseq_sop_example()
 
-count(data = data, type = "sample")
+strollur::count(data, type = "sample")
 
 # To remove samples 'F3D0' and 'F3D1'
 
-xdev_remove_samples(data, c("F3D0", "F3D1"))
+strollur::xdev_remove_samples(data,
+                               samples = c("F3D0", "F3D1"))
 
-count(data = data, type = "sample")
+strollur::count(data, type = "sample")
 
 }

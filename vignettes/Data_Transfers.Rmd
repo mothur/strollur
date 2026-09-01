@@ -17,23 +17,23 @@ knitr::opts_chunk$set(
 
 The *strollur* package stores the data associated with your Amplicon Sequence Analysis. This tutorial will explain how to save, load, copy, export, and import your `strollur` object. If you haven't reviewed the [Getting Started](http://mothur.org/strollur/articles/strollur.html) tuturial, we recommend you start there. 
 
-Let's use the `miseq_sop_example()` function to create a strollur object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
+Let's use the `strollur::miseq_sop_example()` function to create a strollur object from the [Miseq SOP Example](https://mothur.org/wiki/miseq_sop/). 
 
 ```{r}
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 miseq
 ```
 
 ## Saving and Loading
 
-The strollur package has a function to save a dataset object as an *.rds* file, `save_dataset()`, and a function to create a dataset from an *.rds* file, `load_dataset()`. Let's use the miseq data object to learn how to do that.
+The strollur package has a function to save a dataset object as an *.rds* file, `strollur::save_dataset()`, and a function to create a dataset from an *.rds* file, `strollur::load_dataset()`. Let's use the miseq data object to learn how to do that.
 
 
 ```{r}
 file_name <- file.path(tempdir(), "miseq_sop.rds")
-save_dataset(miseq, file = file_name)
+strollur::save_dataset(miseq, file = file_name)
 
-miseq_from_rds <- load_dataset(file = file_name)
+miseq_from_rds <- strollur::load_dataset(file = file_name)
 miseq_from_rds
 unlink(file_name)
 ```
@@ -41,9 +41,10 @@ unlink(file_name)
 We can see that the summaries of miseq and miseq_from_rds are identical. Let's modify miseq_from_rds to verify they are not referring to the same object. We will add clusters created by [mothur](https://mothur.org) using [vsearch's](https://github.com/torognes/vsearch) distance-based greedy clustering (dgc) algorithm. 
 
 ```{r}
-dgc_data <- read_mothur_list(list = strollur_example("final.dgc.list.gz"))
+dgc_data <-
+  strollur::read_mothur_list(list = strollur_example("final.dgc.list.gz"))
 
-assign(miseq_from_rds, table = dgc_data, bin_type = "dgc")
+strollur::assign(miseq_from_rds, table = dgc_data, bin_type = "dgc")
 miseq_from_rds
 miseq
 ```
@@ -52,25 +53,25 @@ We can see from the summary that 361 'dgc' bins were added to miseq_from_rds and
 
 ## Export and Import
 
-The *.rds* file is in binary format and is not human readable. You can use the `export_dataset()` to see a human readable form of the raw data stored in the dataset. Let's export *miseq* and look at the table created.
+The *.rds* file is in binary format and is not human readable. You can use the `strollur::export_dataset()` to see a human readable form of the raw data stored in the dataset. Let's export *miseq* and look at the table created.
 
 ```{r}
-table <- export_dataset(miseq)
+table <- strollur::export_dataset(miseq)
 str(table)
 ```
 
-Similarly to `load_dataset()`, you can use the `import_dataset()` function to create a new dataset object from the exported table. 
+Similarly to `strollur::load_dataset()`, you can use the `strollur::import_dataset()` function to create a new dataset object from the exported table. 
 
 ```{r}
-miseq_import <- import_dataset(table = table)
+miseq_import <- strollur::import_dataset(table = table)
 miseq_import
 ```
 
-Again, we can see that the summary of miseq_import is identical to the summary of miseq.
+Again, we can see that the summary of miseq_import is identical to the summary of miseq. Note, `strollur::export_dataset` and `strollur::import_dataset()` is the best method to use to convert an older version of the `strollur_object` to a newer version. 
 
 ## Copy
 
-Lastly, you can make a deep copy of your dataset using the `copy_dataset()` function. Note, if you use an assignment operator to copy it's a shallow copy. The dataset object is an R6 object to keep the memory usage low. First let's learn how to use the `copy_dataset()` function, then we will take a closer look at how deep and shallow copying differ.
+Lastly, you can make a deep copy of your dataset using the `strollur::copy_dataset()` function. Note, if you use an assignment operator to copy it's a shallow copy. The dataset object is an R6 object to keep the memory usage low. First let's learn how to use the `strollur::copy_dataset()` function, then we will take a closer look at how deep and shallow copying differ.
 
 ```{r}
 miseq_deep_copy <- copy_dataset(miseq)
@@ -81,7 +82,7 @@ miseq_shallow_copy <- miseq
 Let's add the dgc_data to miseq_shallow_copy and then compare miseq, miseq_deep_copy, and mise_shallow_copy.
 
 ```{r}
-assign(miseq_shallow_copy, table = dgc_data, bin_type = "dgc")
+strollur::assign(miseq_shallow_copy, table = dgc_data, bin_type = "dgc")
 
 miseq
 

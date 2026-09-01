@@ -2,17 +2,17 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_remove_lineages}
 \alias{xdev_remove_lineages}
-\title{xdev_remove_lineages}
+\title{Remove contaminants from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_remove_lineages(data, contaminants, reason = "contaminant")
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
 
-\item{contaminants, }{vector of strings containing the taxonomies you would
+\item{contaminants}{vector of strings containing the taxonomies you would
 like to remove}
 
-\item{reason, }{a string containing reason you are removing the lineages.
+\item{reason}{a string containing reason you are removing the lineages.
 Default = "contaminant".}
 }
 \value{
@@ -23,7 +23,7 @@ Designed with package integration in mind, the remove lineages function
 allows you to remove contaminents from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
 }
 \examples{
-data <- read_mothur(fasta = strollur_example("final.fasta.gz"),
+data <- strollur::read_mothur(fasta = strollur_example("final.fasta.gz"),
                        count = strollur_example("final.count_table.gz"),
                        taxonomy = strollur_example("final.taxonomy.gz"),
                        design = strollur_example("mouse.time.design"),
@@ -33,6 +33,6 @@ data <- read_mothur(fasta = strollur_example("final.fasta.gz"),
 contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
  "Eukaryota")
 
-xdev_remove_lineages(data = data, contaminants = contaminants)
+strollur::xdev_remove_lineages(data, contaminants = contaminants)
 
 }

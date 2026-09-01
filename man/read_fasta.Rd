@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_fasta.R
 \name{read_fasta}
 \alias{read_fasta}
-\title{read_fasta}
+\title{Read a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}
+formatted sequence file}
 \usage{
 read_fasta(fasta)
 }
@@ -18,7 +19,7 @@ formatted sequence file
 }
 \examples{
 
-fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
 
 # fasta_data is a data.frame.
 # To access the names of the sequences in the file, run the following:

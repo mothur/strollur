@@ -51,3 +51,31 @@ test_that("test read_fasta - comments", {
     results$comment
   )
 })
+
+test_that("test read_fasta - mixed case with Us", {
+  name1 <- ">seq1"
+  seq1 <- "utgctuATTG"
+  name2 <- ">seq2 my next comment"
+  seq2 <- "ATTCUG"
+  name3 <- ">seq3"
+  seq3 <- "uuutttacg"
+
+  create_dummy_file(
+    "file_with_mixed_case_and_Us.fasta",
+    c(name1, seq1, name2, seq2, name3, seq3)
+  )
+
+  # read fasta file with comments
+  results <- read_fasta("file_with_mixed_case_and_Us.fasta")
+  remove_file("file_with_mixed_case_and_Us.fasta")
+
+  expect_equal(names(results), c(
+    "sequence_name",
+    "sequence", "comment"
+  ))
+  expect_equal(results$sequence_name, c("seq1", "seq2", "seq3"))
+  expect_equal(
+    results$sequence,
+    c("TTGCTTATTG", "ATTCTG", "TTTTTTACG")
+  )
+})

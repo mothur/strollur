@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_assign_treatments}
 \alias{xdev_assign_treatments}
-\title{xdev_assign_treatments}
+\title{Assign samples to treatments in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_assign_treatments(
   data,
@@ -13,17 +13,17 @@ xdev_assign_treatments(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing sample treatment assignments}
+\item{table}{a data.frame containing sample treatment assignments}
 
-\item{sample, }{a string containing the name of the column in 'table'
+\item{sample}{a string containing the name of the column in 'table'
 that contains the samples. Default column name is 'sample'.}
 
-\item{treatment, }{a string containing the name of the column in 'table'
+\item{treatment}{a string containing the name of the column in 'table'
 that contains the treatments. Default column name is 'treatment'.}
 
-\item{verbose, }{a boolean indicating whether or not you want progress
+\item{verbose}{a boolean indicating whether or not you want progress
 messages. Default = TRUE.}
 }
 \value{
@@ -34,13 +34,15 @@ Assign samples to treatments in a \href{https://mothur.org/strollur/reference/st
 }
 \examples{
 
-data <- new_dataset("my_dataset")
-sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+data <- strollur::new_dataset("my_dataset")
+abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 
-xdev_assign_sequence_abundance(data, sequence_abundance)
+strollur::xdev_assign_sequence_abundance(data,
+                                           table = abundance)
 
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
-xdev_assign_treatments(data, sample_assignments)
+strollur::xdev_assign_treatments(data,
+                                   table = sample_assignments)
 
 }

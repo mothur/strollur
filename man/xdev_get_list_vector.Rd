@@ -2,12 +2,12 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_get_list_vector}
 \alias{xdev_get_list_vector}
-\title{xdev_get_list_vector}
+\title{Get vector of strings containing the sequences bin data}
 \usage{
 xdev_get_list_vector(data, type = "otu")
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{type}{a string indicating the type of bin assignments. Default "otu".}
 }
@@ -20,7 +20,7 @@ Get vector of strings containing the sequences bin data
 }
 \examples{
 
-data <- miseq_sop_example()
-xdev_get_list_vector(data)
+data <- strollur::miseq_sop_example()
+strollur::xdev_get_list_vector(data)
 
 }

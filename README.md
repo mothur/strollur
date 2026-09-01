@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # strollur <a href="https://mothur.org/strollur/"><img src="man/figures/logo.png" align="right" height="139" alt="strollur website" /></a>
 
 <!-- # strollur <a href="https://mothur.org/strollur/"><img src="man/figures/logo.png" align="right" height="200" style="float:right; height:200px;" alt="strollur website"> -->
@@ -11,7 +9,6 @@
 [![Codecov test
 coverage](https://codecov.io/gh/mothur/strollur/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mothur/strollur?branch=main)
 [![pkgdown](https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/mothur/strollur/actions/workflows/pkgdown.yaml)
-
 [![CRAN
 status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.org/package=strollur)
 [![CRAN

@@ -1,11 +1,12 @@
-#' @title read_fasta
+#' @title Read a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}
+#' formatted sequence file
 #' @description
 #' Read a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}
 #' formatted sequence file
 #' @param fasta FASTA file name (required)
 #' @examples
 #'
-#' fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+#' fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
 #'
 #' # fasta_data is a data.frame.
 #' # To access the names of the sequences in the file, run the following:
@@ -51,7 +52,7 @@ read_fasta <- function(fasta) {
   if (has_comments) {
     return(data.frame(
       sequence_name = names,
-      sequence = df$Sequence,
+      sequence = gsub("U", "T", toupper(df$Sequence)),
       comment = comments
     ))
   }

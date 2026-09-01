@@ -2,14 +2,14 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_set_dataset_name}
 \alias{xdev_set_dataset_name}
-\title{xdev_set_dataset_name}
+\title{Set the name of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_set_dataset_name(data, dataset_name)
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{dataset_name, }{a string containing the desired name}
+\item{dataset_name}{a string containing the desired name}
 }
 \value{
 No return value, called for side effects.
@@ -19,7 +19,8 @@ Designed with package integration in mind, set the name of a \href{https://mothu
 }
 \examples{
 
-data <- new_dataset(dataset_name = "my_dataset")
-xdev_set_dataset_name(data = data, dataset_name = "new_dataset_name")
+data <- strollur::new_dataset(dataset_name = "my_dataset")
+strollur::xdev_set_dataset_name(data,
+                                dataset_name = "new_dataset_name")
 
 }

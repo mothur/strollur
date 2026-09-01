@@ -1,17 +1,19 @@
-#' @title export_dataset
+#' @title Create a human readable table containing all data from a
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
+
 #' @description
 #' Export all data from a
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.
 #'
-#' @param data, a
+#' @param data a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @examples
 #'
-#' dataset <- new_dataset("my_dataset")
-#' export_dataset(dataset)
+#' dataset <- strollur::new_dataset("my_dataset")
+#' strollur::export_dataset(dataset)
 #'
-#' @return Rcpp::List, containing the data in the 'Dataset
+#' @return list, containing the data in the strollur::strollur object
 #' @export
 export_dataset <- function(data) {
   if (!inherits(data, "strollur")) {

@@ -1,4 +1,4 @@
-#' @title read_qiime2_feature_table
+#' @title Read a \href{https://qiime2.org}{qiime2} qza containing bin data
 #' @description
 #' Read a \href{https://qiime2.org}{qiime2} qza containing bin data
 #'
@@ -11,17 +11,18 @@
 #' @examples
 #'
 #' if (requireNamespace("h5lite", quietly = TRUE)) {
-#'   artifact <- read_qiime2_feature_table(strollur_example("table.qza"))
+#'   artifact <-
+#'        strollur::read_qiime2_feature_table(strollur_example("table.qza"))
 #'
 #'   # access the bin assignment table
 #'
 #'   artifact$data
 #'
-#'   # to create a `strollur` object with your data
+#'   # to create a `strollur::strollur` object with your data
 #'
-#'   data <- new_dataset("my_data")
+#'   data <- strollur::new_dataset("my_data")
 #'
-#'   assign(data = data, table = artifact$data, type = "bin")
+#'   strollur::assign(data = data, table = artifact$data, type = "bin")
 #'   data
 #' } else {
 #'   message(paste(
@@ -67,7 +68,7 @@ read_qiime2_feature_table <- function(qza, dir_path = NULL,
     # bin assignments
     if (artifact$type == "FeatureTable[Frequency]") {
       # read biom file
-      hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
+      hdata <- rbiom::read_biom(file.path(data_dir, "feature-table.biom"))
 
       counts_matrix <- hdata$counts
       sample_indices <- rep(seq_len(ncol(counts_matrix)), diff(counts_matrix@p))

@@ -50,3 +50,123 @@ test_that("test add - errors", {
     "alignment reference trimmed to V4 region"
   )
 })
+
+test_that("test add - sequence_tree, sample_tree", {
+  dataset_t <- new_dataset()
+  names <- c("seq1", "seq2", "seq3", "seq4", "seq5")
+  seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
+  xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
+
+  l <- lapply(strsplit(seqs, split = ""), "[")
+  names(l) <- c("seq1", "seq2", "seq3", "seq4")
+
+  # tree is missing name in dataset - no tree added
+  add(dataset_t, table = nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
+
+  expect_null(dataset_t$report(type = "sequence_tree"))
+
+  dataset_t <- new_dataset()
+  names <- c("seq1", "seq2", "seq3")
+  seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
+  xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
+
+  l <- lapply(strsplit(seqs, split = ""), "[")
+  names(l) <- c("seq1", "seq2", "seq3", "seq4")
+
+  # tree contains extra names - prune tree
+  add(dataset_t, table = nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
+
+  tree <- dataset_t$report(type = "sequence_tree")
+
+  expect_equal(c("seq1", "seq2", "seq3"), sort(tree$tip.label))
+
+  names <- c("seq1", "seq2", "seq3", "seq4")
+
+  dataset_t <- new_dataset()
+  xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
+
+  l <- lapply(strsplit(seqs, split = ""), "[")
+  names(l) <- names
+
+  add(dataset_t, table = nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
+
+  tree <- dataset_t$report(type = "sequence_tree")
+
+  expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
+  expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
+  expect_equal(tree$edge[, 2], c(4, 3, 6, 1, 2))
+  expect_equal(
+    round(tree$edge.length, digits = 2),
+    c(0.26, 0.33, 0.07, 0.33, 0.26)
+  )
+
+  dataset_t <- read_mothur(fasta = strollur_example("final.fasta.gz"))
+
+  treefile <- strollur_example("final.opti_mcc.jclass.ave.tre")
+  sample_tree <- ape::read.tree(treefile)
+
+  add(dataset_t, table = tree, type = "sample_tree")
+  expect_null(dataset_t$report(type = "sample_tree"))
+
+  dataset_t <- read_mothur(
+    fasta = strollur_example("final.fasta.gz"),
+    count = strollur_example("final.count_table.gz"),
+    otu_list = strollur_example("final.opti_mcc.list.gz"),
+    dataset_name = "miseq_sop"
+  )
+
+  expect_error(add(dataset_t, table = c("bad_type"), type = "sample_tree"))
+  add(dataset_t, table = tree, type = "sample_tree")
+  expect_null(dataset_t$report(type = "sample_tree"))
+
+  add(dataset_t, table = sample_tree, type = "sample_tree")
+
+  tree <- dataset_t$report(type = "sample_tree")
+
+  expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
+  expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
+
+  xdev_remove_samples(dataset_t, c("F3D1", "F3D141"))
+
+  tree <- dataset_t$report(type = "sample_tree")
+
+  expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
+
+  # add tree with all groups, prune tree on add
+  add(dataset_t, table = sample_tree, type = "sample_tree")
+
+  tree <- dataset_t$report(type = "sample_tree")
+
+  # confirm pruning
+  expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
+})
+
+test_that("test add - fastq", {
+  # Create a new empty strollur object named 'example_dataset'
+  data <- strollur::new_dataset(dataset_name = "example_dataset")
+
+  # Read FASTQ data into data.frame
+  fastq_data <-
+    strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+
+  # Add FASTQ sequence data
+  strollur::add(data = data, table = fastq_data, type = "fastq")
+
+  fastq_report <- strollur::xdev_report(data, type = "fastq")
+
+  names <- c(
+    "M00967:43:000000000-A3JHG:1:1101:18327:1699",
+    "M00967:43:000000000-A3JHG:1:1101:14069:1827",
+    "M00967:43:000000000-A3JHG:1:1101:18044:1900"
+  )
+
+  expect_equal(fastq_report$sequence_name, names)
+
+  score_1_15 <- c(2, 29, 29, 32, 32, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+  score_2_15 <- c(18, 32, 32, 30, 32, 33, 33, 35, 33, 37, 37, 33, 36, 38, 38)
+  score_3_15 <- c(33, 32, 31, 33, 33, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+
+  expect_equal(fastq_report$quality_score[[1]][1:15], score_1_15)
+  expect_equal(fastq_report$quality_score[[2]][1:15], score_2_15)
+  expect_equal(fastq_report$quality_score[[3]][1:15], score_3_15)
+})

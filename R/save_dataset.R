@@ -1,4 +1,6 @@
-#' @title save_dataset
+#' @title Save the
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' to file.
 #' @description The save_dataset function will save the
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' to file.
@@ -9,7 +11,7 @@
 #' @param file a string containing the file name.
 #' @examples
 #'
-#' data <- read_mothur(
+#' data <- strollur::read_mothur(
 #'   fasta = strollur_example("final.fasta.gz"),
 #'   count = strollur_example("final.count_table.gz"),
 #'   taxonomy = strollur_example("final.taxonomy.gz"),
@@ -19,11 +21,11 @@
 #' )
 #'
 #' file_name <- file.path(tempdir(), "miseq_sop.rds")
-#' save_dataset(data, file = file_name)
+#' strollur::save_dataset(data, file = file_name)
 #'
 #' @seealso [load_dataset()]
 #'
-#' @return A file containing the `strollur` object
+#' @return A file containing the `strollur::strollur` object
 #' @export
 save_dataset <- function(data, file) {
   if (!inherits(data, "strollur")) {

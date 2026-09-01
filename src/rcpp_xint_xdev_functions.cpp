@@ -1,6 +1,21 @@
 
 
 #include "rcpp_xint_xdev_functions.h"
+#include <cctype>
+
+/******************************************************************************/
+bool isVowel(char ch) {
+    switch (std::tolower(static_cast<unsigned char>(ch))) {
+    case 'a':
+    case 'e':
+    case 'i':
+    case 'o':
+    case 'u':
+        return true;
+    default:
+        return false;
+    }
+}
 /******************************************************************************/
 void xint_added_message(double num, string tag) {
     string message = "Added ";
@@ -250,6 +265,7 @@ Rcpp::Environment xdev_add_references(const Rcpp::Environment& data,
 /******************************************************************************/
 Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
                      Rcpp::DataFrame table,
+                     Rcpp::Nullable<Rcpp::List> reference,
                      const string& type,
                      const string& sequence_name,
                      bool verbose) {
@@ -312,7 +328,31 @@ Rcpp::Environment xdev_add_report(const Rcpp::Environment& data,
     }
 
     if (verbose) {
-        xint_added_message(-1, "a " + type + " report");
+        if (isVowel(type[0])) {
+            xint_added_message(-1, "an " + type + " report");
+        }else {
+            xint_added_message(-1, "a " + type + " report");
+        }
+    }
+
+    Reference ref;
+    if (reference.isNotNull()) {
+
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        double numAdded = d.get()->addReferences(refs);
+
+        if (verbose) {
+            if (numAdded == 0) {
+                xint_updated_message(1, "resource references");
+            }else {
+                xint_added_message(1, "resource references");
+            }
+        }
     }
 
     return data;
@@ -557,6 +597,230 @@ Rcpp::Environment xdev_assign_bin_taxonomy(const Rcpp::Environment& data,
     return data;
 }
 /******************************************************************************/
+Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data,
+                                           const Rcpp::DataFrame& table,
+                                           const string& bin_type,
+                                           Rcpp::Nullable<Rcpp::List> reference,
+                                           const string& bin_name,
+                                           const string& level,
+                                           const string& taxonomy,
+                                           const string& confidence,
+                                           bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    if (d.get()->getNumBins(bin_type) == 0) {
+        string message = "No bin data for type " + bin_type + ", please ";
+        message += " assign bins using the 'assign' function then try ";
+        message += "again.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    vector<string> bin_names, taxonomies;
+    vector<float> confidences;
+    vector<int> levels;
+
+    bin_names = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                       bin_name));
+    taxonomies = Rcpp::as<vector<string>>(xint_fill_required_parameters(table,
+                                                                        taxonomy));
+    levels = Rcpp::as<vector<int>>(xint_fill_required_parameters(table,
+                                                                 level));
+    confidences = Rcpp::as<vector<float>>(xint_fill_required_parameters(table,
+                                                                        confidence));
+
+    double numAssigned = d.get()->assignBinTaxonomyTidy(bin_names, levels,
+                               taxonomies, confidences, bin_type);
+
+    if (verbose) {
+        string tag = " " + bin_type +" bin taxonomies.";
+        xint_assigned_message(numAssigned, tag);
+    }
+
+
+    if (reference.isNotNull()) {
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
+    }
+
+    return data;
+}
+/******************************************************************************/
+Rcpp::Environment xdev_add_sequence_fastq_scores(const Rcpp::Environment& data,
+                                                const Rcpp::DataFrame& table,
+                                                Rcpp::Nullable<Rcpp::List> reference,
+                                                const string& sequence_name,
+                                                const string& sequence,
+                                                const string& quality_score,
+                                                const bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    vector<string> sequence_names = Rcpp::as<vector<string>>(
+        xint_fill_required_parameters(table, sequence_name));
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+
+    double numAssigned = 0;
+
+    // if this table is just quality scores, make sure we have sequences to
+    // pair them with
+    if (!table.containsElementNamed(sequence.c_str())) {
+
+        // do we have sequence strings
+        vector<string> seqs = xdev_get_sequences(data);
+
+        if (allBlank(seqs)) {
+            string message = "Expected a data.frame column named `" +
+                sequence + "` to be provided. Alternatively you can add FASTA data";
+            message += " using the strollur::add() function before adding quality scores. ";
+            message += "You must have neucleotide sequence strings in your ";
+            message += "strollur::strollur object to add quality data.";
+            throw Rcpp::exception(message.c_str());
+        }
+    }
+
+    vector<string> unique_names = unique(sequence_names);
+    vector<string> dataset_names = d.get()->getSequenceNames();
+
+    // add seqs if needed
+    if (dataset_names.size() == 0) {
+        // add fasta data
+        xdev_add_sequences(data, table, R_NilValue,
+                           sequence_name, sequence, "comment", verbose);
+    }else {
+        // sanity check, make sure names are present in dataset
+        if (!identical(unique_names, dataset_names)) {
+            string message = "You must provide quality scores for all";
+            message += " sequences in your dataset.";
+            throw Rcpp::exception(message.c_str());
+        }
+    }
+
+    vector<vector<int>> scores;
+    scores = Rcpp::as<vector<vector<int>>>(
+        xint_fill_required_parameters(table, quality_score));
+
+    // get format option
+    SEXP format = table.attr("fastq_format");
+    if (format == R_NilValue) {
+        // assign quality scores
+        numAssigned = d.get()->assignQualityScores(sequence_names, scores);
+    }else {
+        // assign quality scores
+        numAssigned = d.get()->assignQualityScores(sequence_names,
+                            scores, Rcpp::as<string>(format));
+    }
+
+
+    if (verbose) {
+        xint_assigned_message(numAssigned, " quality scores.");
+    }
+
+    if (reference.isNotNull()) {
+
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
+    }
+
+    return data;
+}
+/******************************************************************************/
+Rcpp::Environment xdev_assign_sample_distances(const Rcpp::Environment& data,
+                                               const Rcpp::DataFrame& table,
+                                               Rcpp::Nullable<Rcpp::List> reference,
+                                               bool verbose) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    Rcpp::XPtr<Dataset> d = data["data"];
+
+    if (d.get()->getNumSamples() == 0) {
+        string message = "You cannot assign sample distances, your dataset";
+        message += " does not include sample data.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    if (table.size() < 3) {
+        string message = "Expecting a 3 column data.frame ";
+        message += "(sample1 sample2 distance). Ignoring sample distances.";
+        Rcpp::Rcout << endl << message << endl << endl;
+        return data;
+    }
+    vector<string> sample1, sample2, allSamples;
+    vector<float> dists;
+    sample1 = Rcpp::as<vector<string>>(table[0]);
+    sample2 = Rcpp::as<vector<string>>(table[1]);
+    dists = Rcpp::as<vector<float>>(table[2]);
+    allSamples = sample1;
+    allSamples.insert(allSamples.end(), sample2.begin(), sample2.end());
+
+    // make sure every sample in dataset is assigned a treatment
+    if (!identical(d.get()->getSamples(), unique(allSamples))) {
+        string message = "You must provide distance assignments for";
+        message += " all samples in your dataset.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const double numAssigned = d.get()->assignSampleDistances(sample1,
+                                     sample2, dists);
+
+    if (verbose) {
+        xint_assigned_message(numAssigned, " samples distances.");
+    }
+
+    if (reference.isNotNull()) {
+
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
+    }
+
+    return data;
+}
+/******************************************************************************/
 Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
                                       const Rcpp::DataFrame& table,
                                       const string& sequence_name,
@@ -613,6 +877,78 @@ Rcpp::Environment xdev_assign_sequence_abundance(const Rcpp::Environment& data,
     if (verbose) {
         string tag = " sequence abundances.";
         xint_assigned_message(numAssigned, tag);
+    }
+
+    return data;
+}
+/******************************************************************************/
+Rcpp::Environment xdev_assign_sequence_quality_scores(const Rcpp::Environment& data,
+                                                    const Rcpp::DataFrame& table,
+                                                    Rcpp::Nullable<Rcpp::List> reference,
+                                                    const string& sequence_name,
+                                                    const string& quality_score,
+                                                    const bool verbose) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    vector<string> sequence_names = Rcpp::as<vector<string>>(
+        xint_fill_required_parameters(table, sequence_name));
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+
+    double numAssigned = 0;
+
+    // this table is just quality scores, make sure we have sequences to
+    // pair them with
+    vector<string> seqs = xdev_get_sequences(data);
+
+    if (allBlank(seqs)) {
+        string message = "You must have neucleotide sequence strings in your ";
+        message += "strollur::strollur object to add quality data.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+
+    vector<string> unique_names = unique(sequence_names);
+    vector<string> dataset_names = d.get()->getSequenceNames();
+
+    // sanity check, make sure names are present in dataset
+    if (!identical(unique_names, dataset_names)) {
+        string message = "You must provide quality scores for all";
+        message += " sequences in your dataset.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+
+    vector<vector<int>> scores;
+    scores = Rcpp::as<vector<vector<int>>>(
+        xint_fill_required_parameters(table, quality_score));
+
+    numAssigned = d.get()->assignQualityScores(sequence_names, scores);
+
+
+    if (verbose) {
+        xint_assigned_message(numAssigned, " quality scores.");
+    }
+
+    if (reference.isNotNull()) {
+
+        Reference ref;
+        Rcpp::List ref_list = Rcpp::as<Rcpp::List>(reference);
+
+        fillReference(ref, ref_list);
+
+        vector<Reference> refs;
+        refs.push_back(ref);
+
+        d.get()->addReferences(refs);
+
+        if (verbose) {
+            xint_added_message(1, "resource references");
+        }
     }
 
     return data;
@@ -835,7 +1171,19 @@ Rcpp::List xdev_export_dataset(const Rcpp::Environment& data) {
     return d.get()->exportDataset();
 }
 /******************************************************************************/
-vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& data,
+vector<vector<float> > xdev_get_bin_abundances_by_sample(const Rcpp::Environment& data,
+                                                         const string& bin_type) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+
+    return d.get()->getBinAbundanceBySample(bin_type);
+}
+/******************************************************************************/
+vector<vector<float> > xdev_get_sequence_abundances_by_sample(const Rcpp::Environment& data,
                                                      const Rcpp::CharacterVector& samples) {
     if (!data.inherits("strollur")) {
         string message = "data must be a strollur object.";
@@ -846,7 +1194,17 @@ vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& da
 
     return d.get()->getSequenceAbundanceBySample(Rcpp::as<vector<string>>(samples));
 }
+/******************************************************************************/
+int xdev_get_alignment_length(const Rcpp::Environment& data) {
 
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->getAlignedLength();
+}
 /******************************************************************************/
 vector<string> xdev_get_list_vector(const Rcpp::Environment& data,
                                     const string& type) {
@@ -857,6 +1215,17 @@ vector<string> xdev_get_list_vector(const Rcpp::Environment& data,
 
     const Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->getListVector(type);
+}
+/******************************************************************************/
+vector<vector<int> > xdev_get_sequence_indexes_by_sample(const Rcpp::Environment& data,
+                                           const Rcpp::CharacterVector& samples) {
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->getIndexesBySample(Rcpp::as<vector<string>>(samples));
 }
 /******************************************************************************/
 vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
@@ -885,6 +1254,16 @@ vector<vector<string> > xdev_get_by_sample(const Rcpp::Environment& data,
     return null2DVector;
 }
 /******************************************************************************/
+Rcpp::DataFrame xdev_get_sample_distances(const Rcpp::Environment& data){
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->getSampleDistances();
+}
+/******************************************************************************/
 vector<string> xdev_get_sequences(const Rcpp::Environment& data,
                                   const string& sample,
                                   bool degap) {
@@ -906,6 +1285,18 @@ bool xdev_has_sequence_taxonomy(const Rcpp::Environment& data) {
 
     const Rcpp::XPtr<Dataset> d = data["data"];
     return d.get()->hasSequenceTaxonomy;
+}
+/******************************************************************************/
+bool xdev_has_bin_taxonomy(const Rcpp::Environment& data,
+                           const string& type) {
+
+    if (!data.inherits("strollur")) {
+        string message = "data must be a strollur object.";
+        throw Rcpp::exception(message.c_str());
+    }
+
+    const Rcpp::XPtr<Dataset> d = data["data"];
+    return d.get()->hasBinTaxonomy(type);
 }
 /******************************************************************************/
 Rcpp::Environment xdev_merge_bins(const Rcpp::Environment& data, const vector<string>& bin_names,
@@ -1065,6 +1456,14 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
     else if (type == "fasta") {
         return d.get()->getFastaReport();
     }
+    // sequence fastq data
+    else if (type == "fastq") {
+        return d.get()->getFastqReport();
+    }
+    // sequence quality data
+    else if (type == "quality") {
+        return d.get()->getQualityReport();
+    }
     // sequence bin assignments report
     else if (type == "sequence_bin_assignment") {
         return d.get()->getList(bin_type);
@@ -1072,6 +1471,10 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
     // sample treatment assignments report
     else if (type == "sample_assignment") {
         return d.get()->getSampleTreatmentAssignments();
+    }
+    // sample distances report
+    else if (type == "sample_distance") {
+        return xdev_get_sample_distances(data);
     }
     // representative sequences assignments report
     else if (type == "bin_representative") {
@@ -1099,7 +1502,35 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
     }
     else {
         // custom reports like alignreport, contigs report and chimera reports
-        return d.get()->getReports(type);
+        Rcpp::DataFrame report = d.get()->getReports(type);
+
+        if (report.size() > 0 && report.hasAttribute("names")) {
+            Rcpp::CharacterVector current_names = report.attr("names");
+            Rcpp::CharacterVector clean_names(current_names.size());
+
+            for (int i = 0; i < current_names.size(); ++i) {
+                std::string name_str = Rcpp::as<std::string>(current_names[i]);
+
+                // If the name starts with X followed by digits and a dot (e.g., X2.error_seq)
+                // then the names have been mangled due to multiple reports of the same type
+                if (name_str.rfind("X", 0) == 0 && name_str.find(".") != std::string::npos) {
+                    size_t dot_pos = name_str.find(".");
+
+                    bool is_mangled = true;
+                    for (size_t j = 1; j < dot_pos; ++j) {
+                        if (!isdigit(name_str[j])) { is_mangled = false; break; }
+                    }
+
+                    if (is_mangled && dot_pos < name_str.length() - 1) {
+                        name_str = name_str.substr(dot_pos + 1);
+                    }
+                }
+                clean_names[i] = name_str;
+            }
+            report.attr("names") = clean_names;
+        }
+
+        return report;
     }
 
     // empty report

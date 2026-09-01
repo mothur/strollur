@@ -1,18 +1,19 @@
-#' @title write_phyloseq
+#' @title Create a phyloseq object from your
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @description
-#' The `write_phyloseq()` function will take any strollur object and
-#' return it as a "phyloseq" object.
+#' The `strollur::write_phyloseq()` function will take any strollur object and
+#' return it as a `phyloseq` object.
 #' @references
 #'  McMurdie,P.J. and Holmes,S. (2013), phyloseq: An R Package for
 #'  Reproducible Interactive Analysis and Graphics of Microbiome Census Data.
 #'  PLoS ONE 8:e61217. <doi:10.1371/journal.pone.0061217>
-#' @param data the strollur object you created using one of the many
-#' read functions in this package.
-#' @return returns a "phyloseq" object.
+#' @param data a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @return returns a `phyloseq` object.
 #' @examples
-#' miseq <- miseq_sop_example()
+#' miseq <- strollur::miseq_sop_example()
 #' if (requireNamespace("phyloseq", quietly = TRUE)) {
-#'   phylo_obj <- write_phyloseq(miseq)
+#'   phylo_obj <- strollur::write_phyloseq(miseq)
 #' } else {
 #'   message(paste(
 #'     "To use this functionality you have to install the",
@@ -76,9 +77,9 @@ write_phyloseq <- function(data) {
     phyloseq_parameter_list[[2]] <- phyloseq::tax_table(taxas)
   }
 
-  if (!is.null(data$get_sequence_tree())) {
+  if (!is.null(data$report(type = "sequence_tree"))) {
     phyloseq_parameter_list[[3]] <-
-      phyloseq::phy_tree(data$get_sequence_tree())
+      phyloseq::phy_tree(data$report(type = "sequence_tree"))
   }
 
 

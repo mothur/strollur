@@ -2,12 +2,14 @@
 % Please edit documentation in R/write_mothur_count.R
 \name{write_mothur_count}
 \alias{write_mothur_count}
-\title{write_mothur_count}
+\title{Write a mothur formatted
+\href{https://mothur.org/wiki/count_file/}{count file}}
 \usage{
 write_mothur_count(data, filename = NULL)
 }
 \arguments{
-\item{data}{A `strollur` object}
+\item{data}{a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
 \item{filename}{a string containing the name of the output file. Default =
 'dataset_name'.count_table}
@@ -21,7 +23,7 @@ Write a mothur formatted
 }
 \examples{
 
-miseq <- miseq_sop_example()
-write_mothur_count(miseq, tempfile())
+miseq <- strollur::miseq_sop_example()
+strollur::write_mothur_count(miseq, tempfile())
 
 }

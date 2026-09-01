@@ -2,17 +2,17 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_remove_bins}
 \alias{xdev_remove_bins}
-\title{xdev_remove_bins}
+\title{Remove bins from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_remove_bins(data, bin_names, trash_tags, bin_type = "otu")
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
 
-\item{bin_names, }{a vector of strings containing the names of the bins you
+\item{bin_names}{a vector of strings containing the names of the bins you
 would like removed.}
 
-\item{trash_tags, }{a vector of strings containing the reasons you are
+\item{trash_tags}{a vector of strings containing the reasons you are
 removing each bin}
 
 \item{bin_type}{a string indicating the type of clusters.}
@@ -26,25 +26,29 @@ you to remove bins from a \href{https://mothur.org/strollur/reference/strollur.h
 }
 \examples{
 
-  data <- new_dataset(dataset_name = "my_dataset")
+  data <- strollur::new_dataset(dataset_name = "my_dataset")
 
   bin_names <- c("bin1", "bin2", "bin3")
   abundances <- c(110, 525, 80)
 
-  xdev_assign_bins(data = data,
+  strollur::xdev_assign_bins(data,
                    table = data.frame(bin_name = bin_names,
                                       abundance = abundances),
                    bin_type = "otu")
 
-  count(data = data, type = "bin", bin_type = "otu")
+  strollur::count(data,
+                    type = "bin",
+                    bin_type = "otu")
 
   bins_to_remove <- c("bin1")
   trash_tag <- c("bad_bin")
 
-  xdev_remove_bins(data = data,
+  strollur::xdev_remove_bins(data,
                    bin_names = bins_to_remove,
                    trash_tags = trash_tag)
 
-  count(data = data, type = "bin", bin_type = "otu")
+  strollur::count(data,
+                    type = "bin",
+                    bin_type = "otu")
 
 }

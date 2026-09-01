@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_add_sequences}
 \alias{xdev_add_sequences}
-\title{xdev_add_sequences}
+\title{Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_add_sequences(
   data,
@@ -15,25 +15,25 @@ xdev_add_sequences(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing names, sequences(optional) and
+\item{table}{a data.frame containing names, sequences(optional) and
 comments(optional).}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
-\item{sequence_name, }{a string containing the name of the column in 'table'
+\item{sequence_name}{a string containing the name of the column in 'table'
 that contains the sequence names. Default column name is 'sequence_name'.}
 
-\item{sequence, }{a string containing the name of the column in 'table' that
+\item{sequence}{a string containing the name of the column in 'table' that
 contains the sequence nucleotide strings. Default column name is
 'sequence'.}
 
-\item{comment, }{a string containing the name of the column in
+\item{comment}{a string containing the name of the column in
 'table' that contains the sequence comments. Default column name is
 'comment'.}
 
-\item{verbose, }{a boolean whether or not you want progress messages.
+\item{verbose}{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
@@ -44,21 +44,22 @@ Add sequence data to a \href{https://mothur.org/strollur/reference/strollur.html
 }
 \examples{
 
- data <- new_dataset("miseq_sop")
- fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
- xdev_add_sequences(data, fasta_data)
+ data <- strollur::new_dataset("miseq_sop")
+ fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
+ strollur::xdev_add_sequences(data, fasta_data)
 
 # With the additional parameters to add information about the reference
 
- data <- new_dataset("miseq_sop")
- fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+ data <- strollur::new_dataset("miseq_sop")
+ fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
 
- xdev_add_sequences(data, fasta_data,
+ strollur::xdev_add_sequences(data, fasta_data,
                new_reference("silva.bacteria.fasta",
                "1.38.1",
                "alignment by mothur2 v1.0 using default options",
                "https://mothur.org/wiki/silva_reference_files/"))
 
-# You can also add references using the 'add_references' function.
+# You can also add references using the `strollur::xdev_add_references`
+# function.
 
 }

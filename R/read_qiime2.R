@@ -5,7 +5,7 @@
 #' @rdname read_qiime2
 #' @description
 #' The read_qiime2 function reads various types of .qza files created by
-#' \href{https://qiime2.org}{qiime2}, and creates a `strollur` object.
+#' \href{https://qiime2.org}{qiime2}, and creates a `strollur::strollur` object.
 #'
 #' @references
 #'  Bolyen,E., Rideout,J.R., Dillon,M.R. et al. (2019),
@@ -35,7 +35,7 @@
 #' )
 #'
 #' if (requireNamespace("h5lite", quietly = TRUE)) {
-#'   data <- read_qiime2(
+#'   data <- strollur::read_qiime2(
 #'     qza = qza_files,
 #'     metadata = strollur_example("sample_metadata.tsv"),
 #'     dataset_name = "qiime2_moving_pictures"
@@ -48,7 +48,8 @@
 #'   ))
 #' }
 #'
-#' @return A `strollur` object
+#' @return a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
 read_qiime2 <- function(qza, metadata = NULL,
                         dataset_name = "", dir_path = NULL,
@@ -92,7 +93,7 @@ read_qiime2 <- function(qza, metadata = NULL,
       # feature table in biom format - shared bin data
       if (artifact$type == "FeatureTable[Frequency]") {
         # read biom file
-        hdata <- read_biom(file.path(data_dir, "feature-table.biom"))
+        hdata <- rbiom::read_biom(file.path(data_dir, "feature-table.biom"))
 
         counts_matrix <- hdata$counts
         sample_indices <- rep(
@@ -208,7 +209,8 @@ read_qiime2 <- function(qza, metadata = NULL,
 
     # add sequence tree
     if ("sequence_tree" %in% data_names) {
-      data$add_sequence_tree(data_found[["sequence_tree"]])
+      data$add(table = data_found[["sequence_tree"]],
+               type = "sequence_tree")
     }
   }
 

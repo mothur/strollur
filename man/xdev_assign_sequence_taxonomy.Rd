@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_assign_sequence_taxonomy}
 \alias{xdev_assign_sequence_taxonomy}
-\title{xdev_assign_sequence_taxonomy}
+\title{Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_assign_sequence_taxonomy(
   data,
@@ -14,19 +14,19 @@ xdev_assign_sequence_taxonomy(
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing sequence taxonomy assignments}
+\item{table}{a data.frame containing sequence taxonomy assignments}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
-\item{sequence_name, }{a string containing the name of the column in 'table'
+\item{sequence_name}{a string containing the name of the column in 'table'
 that contains the sequence names. Default column name is 'sequence_name'.}
 
-\item{taxonomy, }{a string containing the name of the column in 'table' that
+\item{taxonomy}{a string containing the name of the column in 'table' that
 contains the sequence taxonomies. Default column name is 'taxonomy'.}
 
-\item{verbose, }{a boolean whether or not you want progress messages.
+\item{verbose}{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
@@ -35,26 +35,29 @@ an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur} 
 \description{
 Assign sequence classifications to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 
-Note, if you assign sequence taxonomies and assign bins, strollur will find
- the consensus taxonomy for each bin for you.
+Note, if you assign sequence taxonomies and assign bins, \code{strollur} will find
+the consensus taxonomy for each bin for you.
 }
 \examples{
 
-sequence_classifications <- read_mothur_taxonomy(strollur_example(
+taxonomy <- strollur::read_mothur_taxonomy(strollur_example(
                         "final.taxonomy.gz"))
 
-data <- new_dataset("my_dataset")
+data <- strollur::new_dataset("my_dataset")
 
-xdev_assign_sequence_taxonomy(data, sequence_classifications)
+strollur::xdev_assign_sequence_taxonomy(data,
+                                          table = taxonomy)
 
 # With the reference parameter you can add information about the reference
 # you used to classify your sequences. You can also add references using the
-# 'add_references' function.
+# 'strollur::xdev_add_references' function.
 
-reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+reference <- strollur::new_reference("trainset9_032012.pds.zip", "9_032012",
               "classification by mothur2 v1.0 using default options", "",
 "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
 
-xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
+strollur::xdev_assign_sequence_taxonomy(data,
+                                        table = taxonomy,
+                                        reference = reference)
 
 }

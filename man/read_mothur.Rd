@@ -3,8 +3,8 @@
 \name{read_mothur}
 \alias{read_mothur}
 \title{Create a
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
-  from mothur outputs}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+from mothur outputs}
 \usage{
 read_mothur(
   fasta = NULL,
@@ -20,6 +20,7 @@ read_mothur(
   phylo_shared = NULL,
   sample_tree = NULL,
   sequence_tree = NULL,
+  sample_distance = NULL,
   dataset_name = ""
 )
 }
@@ -36,19 +37,19 @@ read_mothur(
 
 \item{otu_list}{filename, a mothur
 \href{https://mothur.org/wiki/list_file/}{list file} containing otu bin
- assignments. The otu_list file is created by
+assignments. The otu_list file is created by
 \href{https://mothur.org/wiki/cluster/}{cluster},
 \href{https://mothur.org/wiki/cluster.split/}{cluster.split}, and
 \href{https://mothur.org/wiki/cluster.fit/}{cluster.fit}}
 
 \item{asv_list}{filename, a mothur
 \href{https://mothur.org/wiki/list_file/}{list file} containing asv bin
- assignments. The asv_list file is created by
+assignments. The asv_list file is created by
 \href{https://mothur.org/wiki/cluster/}{cluster} using the 'unique' method.}
 
 \item{phylo_list}{filename, a mothur
 \href{https://mothur.org/wiki/list_file/}{list file} containing phylotype bin
- assignments. The phylo_list file is created by
+assignments. The phylo_list file is created by
 \href{https://mothur.org/wiki/phylotype/}{phylotype}.}
 
 \item{design}{filename, a mothur
@@ -69,51 +70,54 @@ sample abundance assignments.}
 
 \item{phylo_shared}{filename, a mothur
 \href{https://mothur.org/wiki/shared_file/}{shared file} containing phylotype
- bin sample abundance assignments.}
+bin sample abundance assignments.}
 
 \item{sample_tree}{filename, a tree that relates samples.
 The sample tree is created by
 \href{https://mothur.org/wiki/tree.shared/}{tree.shared}. We recommend
- running tree.shared with subsample = true, and using the 'ave.tre' output
- for best results.}
+running tree.shared with subsample = true, and using the 'ave.tre' output
+for best results.}
 
 \item{sequence_tree}{filename, a tree that relates sequences.
 The sequence tree is created by
 \href{https://mothur.org/wiki/clearcut/}{clearcut}. We DO NOT recommend
- using sequence trees. With the ever growing size of modern datasets,
- sequence tree can be difficult / impossible to build without hitting a
- memory limitation.}
+using sequence trees. With the ever growing size of modern datasets,
+sequence tree can be difficult / impossible to build without hitting a
+memory limitation.}
+
+\item{sample_distance}{filename, a column formatted distance matrix
+containing the distances between samples.}
 
 \item{dataset_name}{A string containing a name for your dataset.}
 }
 \value{
 A
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 The read_mothur function reads various
 \href{https://mothur.org/wiki/tags/#file_types}{file types} created by
-mothur, and creates a `strollur` object.
+mothur, and creates a \code{strollur::strollur} object.
 
 To generate the various input files you can follow Pat's
 \href{https://mothur.org/wiki/miseq_sop/}{Miseq example analysis}.
 }
 \note{
 \itemize{
-\item \emph{consensus taxonomy}, The `strollur` object will generate
-consensus taxonomies for you based on the sequence taxonomy assignment. You
-only need to provide the ".cons.taxonomy" file if you are not providing
-sequence taxonomy assignments.
-\item \emph{shared / rabund file}, The `strollur` object will generate
-shared and rabund data for you based on the otu assignment in the list file
-and the count data. You only need to provide the ".shared" file if you are
-not providing the list and count files.
+\item \emph{consensus taxonomy}, The \code{strollur::strollur} object will
+generate consensus taxonomies for you based on the sequence taxonomy
+assignment. You only need to provide the ".cons.taxonomy" file if you are not
+providing sequence taxonomy assignments.
+\item \emph{shared / rabund file}, The \code{strollur::strollur} object will
+generate shared and rabund data for you based on the otu assignment in the
+list file and the count data. You only need to provide the ".shared" file if
+you are not providing the list and count files.
 }
 }
 \examples{
 # For dataset's including sequence data:
 
-data <- read_mothur(
+data <- strollur::read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),
   taxonomy = strollur_example("final.taxonomy.gz"),
@@ -122,12 +126,15 @@ data <- read_mothur(
   asv_list = strollur_example("final.asv.list.gz"),
   phylo_list = strollur_example("final.tx.list.gz"),
   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
+  sample_distance = strollur_example(
+    "final.opti_mcc.jclass.0.03.column.dist"
+  ),
   dataset_name = "miseq_sop"
 )
 
 # For dataset's with only otu data:
 
-data <- read_mothur(
+data <- strollur::read_mothur(
   otu_shared = strollur_example("final.opti_mcc.shared"),
   cons_taxonomy = strollur_example(
     "final.cons.taxonomy"
@@ -140,9 +147,9 @@ data <- read_mothur(
 }
 \references{
 Schloss,P.D., Westcott,S.L., Ryabin,T., Hall,J.R., Hartmann,M.,
- Hollister,E.B., Lesniewski,R.A., Oakley,B.B., Parks,D.H., Robinson,C.J.,
- Sahl,J.W., Stres,B., Thallinger,G.G., Van Horn,D.J. and Weber,C.F. (2009),
- Introducing mothur: Open-source, platform-independent, community-supported
- software for describing and comparing microbial communities. Applied and
- Environmental Microbiology 75:7537-7541. <doi:10.1128/AEM.01541-09>
+Hollister,E.B., Lesniewski,R.A., Oakley,B.B., Parks,D.H., Robinson,C.J.,
+Sahl,J.W., Stres,B., Thallinger,G.G., Van Horn,D.J. and Weber,C.F. (2009),
+Introducing mothur: Open-source, platform-independent, community-supported
+software for describing and comparing microbial communities. Applied and
+Environmental Microbiology 75:7537-7541. \url{doi:10.1128/AEM.01541-09}
 }

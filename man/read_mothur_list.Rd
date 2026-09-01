@@ -2,7 +2,8 @@
 % Please edit documentation in R/read_mothur_list.R
 \name{read_mothur_list}
 \alias{read_mothur_list}
-\title{read_mothur_list}
+\title{Read a mothur formatted \href{https://mothur.org/wiki/list_file/}{list
+file}}
 \usage{
 read_mothur_list(list)
 }
@@ -26,12 +27,14 @@ Read a mothur formatted \href{https://mothur.org/wiki/list_file/}{list file}
 # You can add your otu assignments to the your data set using the following:
 
 # read mothur's list file into data.frame
-otu_data <- read_mothur_list(strollur_example("final.opti_mcc.list.gz"))
+otu_data <-
+     strollur::read_mothur_list(strollur_example("final.opti_mcc.list.gz"))
 
-# create a new empty `strollur` object
-data <- new_dataset()
+# create a new empty `strollur::strollur` object
+data <- strollur::new_dataset()
 
 # assign sequences to 'otu' bins
-assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
+strollur::assign(data = data, table = otu_data,
+                 type = "bin", bin_type = "otu")
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{has_sample}
 \alias{has_sample}
-\title{has_sample}
+\title{Determine if a given sample is in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 has_sample(data, sample)
 }

@@ -2,28 +2,31 @@
 % Please edit documentation in R/RcppExports.R
 \name{xdev_add_report}
 \alias{xdev_add_report}
-\title{Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\title{Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 xdev_add_report(
   data,
   table,
+  reference = NULL,
   type = "report",
   sequence_name = "none",
   verbose = TRUE
 )
 }
 \arguments{
-\item{data, }{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+\item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing your report.}
+\item{table}{a data.frame containing your report.}
 
-\item{type, }{a string containing the type of report. Default = "report".}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
+
+\item{type}{a string containing the type of report. Default = "report".}
 
 \item{sequence_name, }{a string. If your report relates to the sequence data,
-`sequence_name` should contain the name of the column in 'table' that
+\code{sequence_name} should contain the name of the column in 'table' that
 contains the sequence names. Default = 'none'.}
 
-\item{verbose, }{a boolean whether or not you want progress messages.
+\item{verbose}{a boolean whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
@@ -36,15 +39,20 @@ Add a report to a \href{https://mothur.org/strollur/reference/strollur.html}{str
 
 # To add a custom report including your contigs assembly data
 
-data <- new_dataset("just for fun")
+data <- strollur::new_dataset("just for fun")
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
-xdev_add_report(data, contigs_report, "contigs_report", "Name")
+strollur::xdev_add_report(data,
+                            table = contigs_report,
+                            type = "contigs_report",
+                            sequence_name = "Name")
 
 # To add metadata related to your study
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-xdev_add_report(data, metadata, "metadata")
+strollur::xdev_add_report(data,
+                            table = metadata,
+                            type = "metadata")
 
 }

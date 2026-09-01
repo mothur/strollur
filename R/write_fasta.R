@@ -1,19 +1,21 @@
-#' @title write_fasta
+#' @title Write a
+#'   \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA} formatted
+#'   sequence file
 #' @description
 #'
 #' Write a \href{https://www.ncbi.nlm.nih.gov/genbank/fastaformat/}{FASTA}
 #' formatted sequence file
 #'
-#' @param data A `strollur` object
+#' @param data a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @param filename a string containing the name of the output file. Default =
 #' 'dataset_name'.fasta
-#' @param degap a logical. Default = FALSE. When degap = `TRUE`, all gap
+#' @param degap a logical. Default = FALSE. When `degap = TRUE`, all gap
 #' characters will be removed from the sequences.
-#'
 #' @examples
 #'
-#' miseq <- miseq_sop_example()
-#' write_fasta(miseq, tempfile())
+#' miseq <- strollur::miseq_sop_example()
+#' strollur::write_fasta(miseq, tempfile())
 #'
 #' @return name of FASTA file
 #' @export

@@ -2,16 +2,17 @@
 % Please edit documentation in R/export_dataset.R
 \name{export_dataset}
 \alias{export_dataset}
-\title{export_dataset}
+\title{Create a human readable table containing all data from a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object.}
 \usage{
 export_dataset(data)
 }
 \arguments{
-\item{data, }{a
+\item{data}{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 }
 \value{
-Rcpp::List, containing the data in the 'Dataset
+list, containing the data in the strollur::strollur object
 }
 \description{
 Export all data from a
@@ -19,7 +20,7 @@ Export all data from a
 }
 \examples{
 
-dataset <- new_dataset("my_dataset")
-export_dataset(dataset)
+dataset <- strollur::new_dataset("my_dataset")
+strollur::export_dataset(dataset)
 
 }

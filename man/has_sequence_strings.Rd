@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{has_sequence_strings}
 \alias{has_sequence_strings}
-\title{has_sequence_strings}
+\title{Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} contains sequence nucleotide strings.}
 \usage{
 has_sequence_strings(data)
 }

@@ -449,6 +449,77 @@ private:
     }
 };
 /******************************************************************************/
+struct sparseDistance {
+    vector<float> sampleDistances;
+    vector<string> rowSamples;
+    vector<string> colSamples;
+
+    sparseDistance() {}
+    ~sparseDistance() = default;
+    void load(const vector<string>& sample1,
+              const vector<string>& sample2,
+              const vector<float>& dists) {
+        rowSamples = sample1;
+        colSamples = sample2;
+        sampleDistances = dists;
+    }
+
+    Rcpp::DataFrame getSparseDistances(const AbundTable& abund, bool forExport = false) const {
+
+        if (rowSamples.empty()) {  return Rcpp::DataFrame::create(); }
+
+        vector<float> PsampleDistances;
+        vector<string> ProwSamples;
+        vector<string> PcolSamples;
+
+        vector<string> goodSamples = abund.getSamples();
+
+        if (!forExport) {
+            // remove samples not in dataset
+            for (int i = 0; i < rowSamples.size(); i++) {
+                if ((std::find(goodSamples.begin(), goodSamples.end(), rowSamples[i]) != goodSamples.end()) &&
+                    (std::find(goodSamples.begin(), goodSamples.end(), colSamples[i]) != goodSamples.end())) {
+                    ProwSamples.push_back(rowSamples[i]);
+                    PcolSamples.push_back(colSamples[i]);
+                    PsampleDistances.push_back(sampleDistances[i]);
+                }
+            }
+
+            if (!ProwSamples.empty()) {
+                Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                    Rcpp::Named("sample1") = ProwSamples,
+                    Rcpp::_["sample2"] = PcolSamples,
+                    Rcpp::_["distance"] = PsampleDistances);
+                return df;
+            }
+        }else {
+            vector<bool> include(rowSamples.size(), false);
+            // include all samples and add include flags
+            for (int i = 0; i < rowSamples.size(); i++) {
+                if ((std::find(goodSamples.begin(), goodSamples.end(), rowSamples[i]) != goodSamples.end()) &&
+                    (std::find(goodSamples.begin(), goodSamples.end(), colSamples[i]) != goodSamples.end())) {
+                    include[i] = true;
+                }
+            }
+
+            Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                Rcpp::Named("sample1") = rowSamples,
+                Rcpp::_["sample2"] = colSamples,
+                Rcpp::_["distance"] = sampleDistances,
+                Rcpp::_["include"] = include);
+            return df;
+
+        }
+        return Rcpp::DataFrame::create();
+    }
+
+    // This method lets Cereal know how to serialize.
+    template<class Archive>
+    void serialize(Archive & archive) {
+        archive(sampleDistances, rowSamples, colSamples);
+    }
+};
+/******************************************************************************/
 /*
  * The 'BinTable' class will store asv / otu / phylotype data.
  */
@@ -625,6 +696,9 @@ public:
     double addSequences(const vector<string>& n,
                         vector<string> s = nullVector,
                         vector<string> c = nullVector);
+    double assignQualityScores(const vector<string>& n,
+                            const vector<vector<int>>& s,
+                            const string& format = "illumina1.8+");
     double addReferences(const vector<Reference>& refs);
     void addReport(Rcpp::DataFrame& report, const string& type);
 
@@ -654,11 +728,24 @@ public:
                              const vector<string>& taxonomies,
                              const string& type = "otu");
 
+    double assignBinTaxonomyTidy(const vector<string>& bin_names,
+                                 const vector<int>& levels,
+                                 const vector<string>& taxonomies,
+                                 const vector<float>& confidences,
+                                 const string& type = "otu");
+
+    double assignSampleDistances(const vector<string>& sample1,
+                                 const vector<string>& sample2,
+                                 const vector<float>& distances);
+
     double assignTreatments(const vector<string>& samples,
                             const vector<string>& treatments);
 
 
     vector<vector<float> > getSequenceAbundanceBySample(const vector<string>& samples = nullVector) const;
+    vector<vector<int> > getIndexesBySample(const vector<string>& samples = nullVector) const;
+
+    int getAlignedLength();
 
     // names of bins
     vector<string> getBinIds(const string& type = "otu",
@@ -670,8 +757,12 @@ public:
     Rcpp::DataFrame getBinRepresentativeSequences(const string& type = "otu") const;
     // 2 column dataframe - bin_id, seq_id
     vector<string> getBinTypes() const;
-    // fasta data.frame 2 or 3 columns, sequence_names, sequences, comments
+    // fasta data.frame 2 or 3 columns, sequence_name, sequence, comment
     Rcpp::DataFrame getFastaReport() const;
+    // fastq data.frame 3 columns, sequence_name, sequence, quality_score
+    Rcpp::DataFrame getFastqReport() const;
+    // fastq data.frame 2 columns, sequence_name, quality_score
+    Rcpp::DataFrame getQualityReport() const;
 
     const Rcpp::DataFrame getList(const string& type = "otu");
     vector<string> getListVector(const string& type = "otu") const;
@@ -690,6 +781,7 @@ public:
     // n columns: id, taxonomy split by level
     Rcpp::DataFrame getSequenceTaxonomyReport();
     vector<string> getSamples() const;
+    Rcpp::DataFrame getSampleDistances() const;
     Rcpp::DataFrame getSampleTreatmentAssignments() const;
     const Rcpp::DataFrame getScrapReport(string mode = "sequence");
     // type, trashCode, uniqueCount, totalCount
@@ -700,12 +792,17 @@ public:
                                            bool bySample = false) const;
     vector<string> getSequenceNames(const vector<string>& sample = nullVector,
                                           bool distinct = false) const;
+    vector<vector<int> > getSequenceQualityScores(const vector<string>& sample = nullVector,
+                                                  bool distinct = false) const;
+    vector<int> getSequenceIndexes(const vector<string>& sample = nullVector,
+                                    bool distinct = false) const;
     vector<vector<string> > getSequenceNamesBySample(vector<string> samples = nullVector) const;
 
 
     vector<string> getSequences(const string& sample = "", bool degap = false) const;
     vector<vector<string> > getSequencesBySample(vector<string> samples,
                                                        bool degap = false) const;
+    vector<vector<float>> getBinAbundanceBySample(const string bin_type = "otu") const;
 
     double getTotal(const vector<string>& samples = nullVector) const;
     Rcpp::DataFrame getTotals(const string& type = "sample") const;
@@ -716,6 +813,7 @@ public:
     bool hasSamples(const vector<string>& samples = nullVector) const;
     bool hasListAssignments() const { return hasList; }
     bool hasSeqs() const;
+    bool hasBinTaxonomy(const string& bin_type = "otu") const;
 
     bool isEqual(Dataset& dataset);
 
@@ -754,6 +852,10 @@ private:
     // fasta data
     vector<string> names, seqs, comments, trashCodes;
 
+    // quality scores
+    vector<vector<int> > quality_scores;
+    string fastq_format;
+
     // fasta summary data
     vector<int> starts, ends, lengths, ambigs, polymers, numns;
 
@@ -786,9 +888,10 @@ private:
     // sequence reports
     map<string, Report> reports;
 
+    sparseDistance sampleDists;
+
     // if unaligned, returns -1
     string degapSeq(const string& sequence) const;
-    int getAlignedLength();
     vector<int> getIncludedNamesIndexes() const;
     vector<int> getIndexes(const vector<string>&) const;
     bool hasBinTable(const string& type) const;
@@ -810,7 +913,8 @@ private:
            starts, ends, lengths, ambigs, polymers,
            numns, names, seqs, comments, trashCodes,
            seqIndex, badAccnos, uniqueBad, hasList, count,
-           binTables, reports, refIndex, sortNeeded);
+           binTables, reports, refIndex, sortNeeded, quality_scores,
+           fastq_format, sampleDists);
     }
 };
 

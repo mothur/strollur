@@ -18,8 +18,10 @@ export(miseq_sop_example)
 export(names)
 export(new_dataset)
 export(new_reference)
+export(read_biom)
 export(read_dada2)
 export(read_fasta)
+export(read_fastq)
 export(read_mothur)
 export(read_mothur_cons_taxonomy)
 export(read_mothur_count)
@@ -33,6 +35,7 @@ export(read_qiime2)
 export(read_qiime2_feature_table)
 export(read_qiime2_metadata)
 export(read_qiime2_taxonomy)
+export(read_quality)
 export(report)
 export(save_dataset)
 export(sort_dataframe)
@@ -40,7 +43,9 @@ export(strollur)
 export(strollur_example)
 export(summary)
 export(unpack_qiime2_artifact)
+export(write_biom)
 export(write_fasta)
+export(write_fastq)
 export(write_mothur)
 export(write_mothur_cons_taxonomy)
 export(write_mothur_count)
@@ -49,23 +54,33 @@ export(write_mothur_list)
 export(write_mothur_rabund)
 export(write_mothur_shared)
 export(write_phyloseq)
+export(write_quality)
 export(write_taxonomy)
 export(xdev_abundance)
 export(xdev_add_references)
 export(xdev_add_report)
+export(xdev_add_sequence_fastq_scores)
 export(xdev_add_sequences)
 export(xdev_assign_bin_representative_sequences)
 export(xdev_assign_bin_taxonomy)
+export(xdev_assign_bin_taxonomy_tidy)
 export(xdev_assign_bins)
+export(xdev_assign_sample_distances)
 export(xdev_assign_sequence_abundance)
+export(xdev_assign_sequence_quality_scores)
 export(xdev_assign_sequence_taxonomy)
 export(xdev_assign_sequence_taxonomy_tidy)
 export(xdev_assign_treatments)
 export(xdev_count)
-export(xdev_get_abundances_by_sample)
+export(xdev_get_alignment_length)
+export(xdev_get_bin_abundances_by_sample)
 export(xdev_get_by_sample)
 export(xdev_get_list_vector)
+export(xdev_get_sample_distances)
+export(xdev_get_sequence_abundances_by_sample)
+export(xdev_get_sequence_indexes_by_sample)
 export(xdev_get_sequences)
+export(xdev_has_bin_taxonomy)
 export(xdev_has_sequence_taxonomy)
 export(xdev_merge_bins)
 export(xdev_merge_sequences)
@@ -82,33 +97,53 @@ export(xdev_set_sequences)
 import(cli)
 importFrom(R.utils,decompressFile)
 importFrom(R6,R6Class)
-importFrom(Rcpp,evalCpp)
-importFrom(Rcpp,sourceCpp)
-importFrom(ape,as.DNAbin)
-importFrom(ape,dist.dna)
-importFrom(ape,drop.tip)
-importFrom(ape,nj)
-importFrom(ape,read.tree)
-importFrom(dplyr,across)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,reframe)
-importFrom(dplyr,relocate)
-importFrom(dplyr,summarise)
-importFrom(dplyr,where)
+importFrom(Rcpp,
+  evalCpp,
+  sourceCpp
+)
+importFrom(ape,
+  as.DNAbin,
+  dist.dna,
+  drop.tip,
+  nj,
+  read.tree
+)
+importFrom(dplyr,
+  across,
+  filter,
+  group_by,
+  left_join,
+  mutate,
+  reframe,
+  relocate,
+  summarise,
+  where
+)
 importFrom(methods,new)
-importFrom(microseq,readFasta)
+importFrom(microseq,
+  readFasta,
+  readFastq,
+  writeFastq
+)
 importFrom(rbiom,read_biom)
-importFrom(readr,read_csv)
-importFrom(readr,read_tsv)
-importFrom(stats,na.omit)
-importFrom(stats,reshape)
+importFrom(readr,
+  read_csv,
+  read_tsv
+)
+importFrom(stats,
+  na.omit,
+  quantile,
+  reshape,
+  setNames
+)
 importFrom(tidyr,pivot_wider)
-importFrom(utils,modifyList)
-importFrom(utils,read.table)
-importFrom(utils,unzip)
+importFrom(utils,
+  modifyList,
+  packageDescription,
+  packageVersion,
+  read.table,
+  unzip
+)
 importFrom(waldo,compare)
 importFrom(yaml,read_yaml)
 useDynLib(strollur, .registration = TRUE)

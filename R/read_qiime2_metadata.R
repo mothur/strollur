@@ -1,4 +1,5 @@
-#' @title read_qiime2_metadata
+#' @title Read a \href{https://qiime2.org}{qiime2} .tsv table containing
+#'   metadata.
 #' @description
 #' Read a \href{https://qiime2.org}{qiime2} .tsv table containing metadata.
 #'
@@ -7,7 +8,7 @@
 #'
 #' @examples
 #'
-#' metadata <- read_qiime2_metadata(strollur_example(
+#' metadata <- strollur::read_qiime2_metadata(strollur_example(
 #'   "sample_metadata.tsv"
 #' ))
 #'

@@ -47,6 +47,10 @@ static bool inline isEqual(const float& t, const float value) {
 static bool inline isDoubleEqual(const double& t, const double value) {
     return (isZero(t-value));
 }
+
+static inline void toUpper(string &s) {
+    for_each(s.begin(), s.end(), [](char & c) { c = ::toupper(c); });
+}
 /**********************************************************************/
 struct orderAlpha {
     string name;
@@ -187,16 +191,17 @@ vector<T> setDiff(vector<T> x, vector<T> y) {
 }
 /**********************************************************************/
 template<typename T>
-bool addNextColumn(Rcpp::DataFrame& data, map<int, vector<T>>& y, int index) {
+bool addNextColumn(Rcpp::DataFrame& data, map<int, vector<T>>& y, int index, const string& name) {
 
     auto it = y.find(index);
 
     if (it != y.end()) {
-        data.push_back(it->second);
+        data.push_back(it->second, name);
         return true;
     }
     return false;
 }
+
 /**********************************************************************/
 // parse s by delim store in result. return numItems
 template <typename Out>

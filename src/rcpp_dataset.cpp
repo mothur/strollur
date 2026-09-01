@@ -7,7 +7,7 @@
 #include "dataset.h"
 
 /******************************************************************************/
-//' @title clear
+//' @title Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Clear data from a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -32,7 +32,7 @@ Rcpp::Environment clear(Rcpp::Environment& data) {
     return data;
 }
 /******************************************************************************/
-//' @title get_bin_types
+//' @title Get bin table types of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Get bin table types of a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -50,7 +50,7 @@ vector<string> get_bin_types(Rcpp::Environment data) {
      return d.get()->getBinTypes();
 }
 /******************************************************************************/
-//' @title has_sample
+//' @title Determine if a given sample is in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @description
 //' Determine if a given sample is in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 //'
@@ -70,7 +70,7 @@ bool has_sample(Rcpp::Environment data, string sample) {
      return d.get()->hasSample(sample);
 }
 /******************************************************************************/
-//' @title has_sequence_strings
+//' @title Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} contains sequence nucleotide strings.
 //' @description
 //' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object contains sequence nucleotide strings.
 //'
@@ -89,7 +89,7 @@ bool has_sequence_strings(Rcpp::Environment data) {
      return d.get()->hasSeqs();
 }
 /******************************************************************************/
-//' @title is_aligned
+//' @title Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} contains aligned sequences.
 //' @description
 //' Determine if a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object contains aligned sequences.
 //'

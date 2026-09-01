@@ -15,6 +15,11 @@ test_that("dataset - intialize from read_mothur / print", {
     dataset_name = "miseq_sop"
   )
 
+  expect_true(dataset_t$has_sequence_taxonomy())
+  expect_true(dataset_t$has_bin_taxonomy("otu"))
+  expect_true(dataset_t$has_bin_taxonomy("asv"))
+  expect_true(dataset_t$has_bin_taxonomy("phylotype"))
+
   # add references, custom report and metadata
   contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
   xdev_add_report(
@@ -450,7 +455,24 @@ test_that("dataset - assign bins and bin_taxonomy", {
 
   data$assign(table = otu_data, type = "bin_taxonomy")
 
-  expect_equal(nrow(data$report(type = "bin_taxonomy")), 3186)
+  bin_tax_tidy <- data$report(type = "bin_taxonomy")
+
+  expect_equal(nrow(bin_tax_tidy), 3186)
+  expect_equal(bin_tax_tidy[["taxonomy"]][1], "Bacteria")
+
+  bin_tax_tidy[["taxonomy"]][1] <- "changed"
+  data$assign(table = bin_tax_tidy, type = "bin_taxonomy")
+
+  bin_tax_tidy <- data$report(type = "bin_taxonomy")
+
+  expect_equal(bin_tax_tidy[["taxonomy"]][1], "changed")
+
+  bin_tax_tidy[["taxonomy"]][1] <- "changed_again"
+  assign(data, table = bin_tax_tidy, type = "bin_taxonomy")
+
+  bin_tax_tidy <- data$report(type = "bin_taxonomy")
+
+  expect_equal(bin_tax_tidy[["taxonomy"]][1], "changed_again")
 })
 
 test_that("dataset - assign_sequence_abundance, remove_sequences", {
@@ -1091,6 +1113,23 @@ test_that("dataset - add_metadata, get_metadata", {
   expect_equal(metadata[[8, 3]], "left palm")
   expect_equal(metadata[[2, 3]], "gut")
   expect_equal(metadata[[3, 7]], "subject-1")
+
+  add(dataset_t, table = metadata, type = "report", report_type = "metadata")
+  metadata <- report(dataset_t, "metadata")
+
+  expect_equal(names(metadata), c(
+    "sample-id", "barcode-sequence",
+    "body-site", "year", "month", "day",
+    "subject", "reported-antibiotic-usage",
+    "days-since-experiment-start"
+  ))
+  expect_equal(nrow(metadata), 34)
+
+  # random spot checks
+  expect_equal(metadata[[5, 8]], "No")
+  expect_equal(metadata[[8, 3]], "left palm")
+  expect_equal(metadata[[2, 3]], "gut")
+  expect_equal(metadata[[3, 7]], "subject-1")
 })
 
 test_that("dataset - add_references, get_references", {
@@ -1212,7 +1251,10 @@ test_that("dataset - add reports, get reports", {
 
   # no report added because of missing entries
   xdev_add_sequences(dataset_t, data.frame(sequence_name = c("seq6", "seq7")))
-  xdev_add_report(dataset_t, align_report, "align_report", "QueryName")
+  xdev_add_report(dataset_t,
+    table = align_report,
+    type = "align_report", sequence_name = "QueryName"
+  )
   expect_equal(report(dataset_t, "align_report"), data.frame())
 })
 
@@ -1220,9 +1262,17 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   dataset_t <- new_dataset("my_dataset")
 
   report <- readRDS(strollur_example("test_contigs_data.rds"))
-  expect_error(xdev_add_report(dataset_t, report, "contigs_report", "badName"))
+  expect_error(xdev_add_report(dataset_t,
+    table = report,
+    type = "contigs_report",
+    sequence_name = "badName"
+  ))
 
-  xdev_add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t,
+    table = report,
+    type = "contigs_report",
+    sequence_name = "Name"
+  )
 
   report <- report(dataset_t, "contigs_report")
 
@@ -1236,7 +1286,11 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   expect_equal(report[[4, 4]], 2)
 
   clear(dataset_t)
-  xdev_add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t,
+    table = report,
+    type = "contigs_report",
+    sequence_name = "Name"
+  )
 
   report <- report(dataset_t, "contigs_report")
 
@@ -1246,7 +1300,11 @@ test_that("dataset - add / get _contigs_assembly_report,", {
   # no report added because of missing entries
   clear(dataset_t)
   xdev_add_sequences(dataset_t, data.frame(sequence_name = c("seq6", "seq7")))
-  xdev_add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t,
+    table = report,
+    type = "contigs_report",
+    sequence_name = "Name"
+  )
   expect_equal(length(report(dataset_t, "contigs_report")), 0)
 })
 
@@ -1256,9 +1314,17 @@ test_that("dataset - add / get _chimera_report,", {
   report <- readr::read_tsv(strollur_example("chimera_report.tsv"),
     col_names = TRUE, show_col_types = FALSE
   )
-  expect_error(xdev_add_report(dataset_t, report, "chimera_report", "badName"))
+  expect_error(xdev_add_report(dataset_t,
+    table = report,
+    type = "chimera_report",
+    sequence_name = "badName"
+  ))
 
-  xdev_add_report(dataset_t, report, "chimera_report", "Query")
+  xdev_add_report(dataset_t,
+    table = report,
+    type = "chimera_report",
+    sequence_name = "Query"
+  )
 
   report <- report(dataset_t, "chimera_report")
 
@@ -1271,9 +1337,13 @@ test_that("dataset - add / get _chimera_report,", {
 
   clear(dataset_t)
   expect_equal(length(report(dataset_t, "chimera_report")), 0)
-  xdev_add_report(dataset_t, report, "chimera_report", "Query")
+  xdev_add_report(dataset_t,
+    table = report,
+    type = "chimera_report",
+    sequence_name = "Query"
+  )
 
-  report <- report(dataset_t, "chimera_report")
+  report <- report(dataset_t, type = "chimera_report")
 
   expect_equal(nrow(report), 71)
   expect_equal(report[, 2], names(dataset_t, "sequence"))
@@ -1283,10 +1353,18 @@ test_that("dataset - get_sequence_summary,", {
   dataset_t <- new_dataset("my_dataset")
 
   report <- readRDS(strollur_example("test_contigs_data.rds"))
-  xdev_add_report(dataset_t, report, "contigs_report", "Name")
+  xdev_add_report(dataset_t,
+    table = report,
+    type = "contigs_report",
+    sequence_name = "Name"
+  )
 
   report <- readRDS(strollur_example("test_alignment_data.rds"))
-  xdev_add_report(dataset_t, report, "alignment_report", "QueryName")
+  xdev_add_report(dataset_t,
+    table = report,
+    type = "alignment_report",
+    sequence_name = "QueryName"
+  )
 
   summary <- summary(dataset_t,
     type = "report",
@@ -1312,20 +1390,20 @@ test_that("dataset - get_sequence_summary,", {
   expect_equal(summary$SearchScore[7], 82.44)
 })
 
-test_that("dataset - add_sequence_tree / get_sequence_tree,", {
+test_that("dataset - add sequence_tree / report sequence_tree,", {
   # create tree from sequences
 
   names <- c("seq1", "seq2", "seq3", "seq4")
   seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
   dataset_t <- new_dataset()
 
-  expect_error(dataset_t$add_sequence_tree(tree = c("bad_type")))
+  expect_error(dataset_t$add(table = c("bad_type"), type = "sequence_tree"))
 
   xdev_add_sequences(
     dataset_t,
     data.frame(sequence_name = names, sequence = seqs)
   )
-  expect_equal(dataset_t$get_sequence_tree(), NULL)
+  expect_equal(dataset_t$report(type = "sequence_tree"), NULL)
 
   # add full tree
   dataset_t <- new_dataset()
@@ -1335,9 +1413,9 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   names(l) <- names
 
   # should alert that the tree is missing reads, and not save it
-  dataset_t$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
+  dataset_t$add(table = nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
 
-  tree <- dataset_t$get_sequence_tree()
+  tree <- dataset_t$report(type = "sequence_tree")
 
   expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
@@ -1350,7 +1428,7 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   # remove seq and make sure tree is pruned as well
   xdev_remove_sequences(dataset_t, c("seq1"), c("bad"))
 
-  tree <- dataset_t$get_sequence_tree()
+  tree <- dataset_t$report(type = "sequence_tree")
 
   expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(4, 4, 4))
@@ -1367,15 +1445,15 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   # should alert that the tree is missing reads, and not save it
   dataset_t <- new_dataset()
   xdev_add_sequences(dataset_t, data.frame(sequence_name = names))
-  dataset_t$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
-  expect_equal(dataset_t$get_sequence_tree(), NULL)
+  dataset_t$add(nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
+  expect_equal(dataset_t$report(type = "sequence_tree"), NULL)
 
   # add tree from file
   dataset_t <- new_dataset()
-  dataset_t$add_sequence_tree(read.tree(
+  dataset_t$add(read.tree(
     strollur_example("final.phylip.tre.gz")
-  ))
-  tree <- dataset_t$get_sequence_tree()
+  ), type = "sequence_tree")
+  tree <- dataset_t$report(type = "sequence_tree")
 
   expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(2426, 2427, 2427, 2426, 2428))
@@ -1395,9 +1473,9 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   # add tree with extra sequences, forcing prune
   l <- lapply(strsplit(seqs, split = ""), "[")
   names(l) <- names
-  dataset_t$add_sequence_tree(nj(dist.dna(as.DNAbin(l))))
+  dataset_t$add(nj(dist.dna(as.DNAbin(l))), type = "sequence_tree")
 
-  tree <- dataset_t$get_sequence_tree()
+  tree <- dataset_t$report(type = "sequence_tree")
 
   expect_equal(sort(names(dataset_t, "sequence")), sort(tree$tip.label))
   expect_equal(tree$edge[, 1], c(5, 5, 5, 6, 6))
@@ -1408,17 +1486,17 @@ test_that("dataset - add_sequence_tree / get_sequence_tree,", {
   )
 })
 
-test_that("dataset - add_sample_tree / get_sample_tree,", {
+test_that("dataset - add sample_tree / report sample_tree,", {
   dataset_t <- new_dataset()
-  expect_null(dataset_t$get_sample_tree())
+  expect_null(dataset_t$report(type = "sample_tree"))
 
   sample_tree <- ape::read.tree(
     strollur_example("final.opti_mcc.jclass.ave.tre")
   )
 
   # should report no samples and not save
-  dataset_t$add_sample_tree(sample_tree)
-  expect_null(dataset_t$get_sample_tree())
+  dataset_t$add(sample_tree, type = "sample_tree")
+  expect_null(dataset_t$report(type = "sample_tree"))
 
   dataset_t <- read_mothur(
     fasta = strollur_example("final.fasta.gz"),
@@ -1429,31 +1507,31 @@ test_that("dataset - add_sample_tree / get_sample_tree,", {
     dataset_name = "miseq_sop"
   )
 
-  expect_error(dataset_t$add_sample_tree(tree = c("bad_type")))
+  expect_error(dataset_t$add(table = c("bad_type"), type = "sample_tree"))
 
   sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
 
   # should report missing samples since this is a sequence tree and not save
-  dataset_t$add_sample_tree(sequence_tree)
-  expect_null(dataset_t$get_sample_tree())
+  dataset_t$add(sequence_tree, type = "sample_tree")
+  expect_null(dataset_t$report(type = "sample_tree"))
 
-  dataset_t$add_sample_tree(sample_tree)
+  dataset_t$add(sample_tree, type = "sample_tree")
 
-  tree <- dataset_t$get_sample_tree()
+  tree <- dataset_t$report(type = "sample_tree")
 
   expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
   expect_equal(tree$edge[1:5, 1], c(20, 21, 22, 23, 24))
 
   xdev_remove_samples(dataset_t, c("F3D1", "F3D141"))
 
-  tree <- dataset_t$get_sample_tree()
+  tree <- dataset_t$report(type = "sample_tree")
 
   expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
 
   # add tree with all groups, prune tree on add
-  dataset_t$add_sample_tree(sample_tree)
+  dataset_t$add(sample_tree, type = "sample_tree")
 
-  tree <- dataset_t$get_sample_tree()
+  tree <- dataset_t$report(type = "sample_tree")
 
   # confirm pruning
   expect_equal(sort(names(dataset_t, "sample")), sort(tree$tip.label))
@@ -1557,7 +1635,23 @@ test_that("dataset - assign_sequence_taxonomy", {
 
   report <- report(dataset_t, "sequence_taxonomy")
 
-  expect_equal(nrow(report(dataset_t, "sequence_taxonomy")), 14550)
+  expect_equal(nrow(report), 14550)
+  expect_equal(report[["taxonomy"]][1], "Bacteria")
+
+  # tidy format
+  report[["taxonomy"]][1] <- "changed"
+  dataset_t$assign(table = report, type = "sequence_taxonomy")
+  report <- report(dataset_t, "sequence_taxonomy")
+
+  expect_equal(nrow(report), 14550)
+  expect_equal(report[["taxonomy"]][1], "changed")
+
+  report[["taxonomy"]][1] <- "changed_again"
+  assign(dataset_t, table = report, type = "sequence_taxonomy")
+  report <- report(dataset_t, "sequence_taxonomy")
+
+  expect_equal(nrow(report), 14550)
+  expect_equal(report[["taxonomy"]][1], "changed_again")
 
   dataset_t <- read_mothur(
     fasta = strollur_example("final.fasta.gz"),
@@ -1583,7 +1677,7 @@ test_that("dataset - export,", {
 
   table_names <- c(
     "sequence_data", "sequence_report",
-    "sequence_abundance_table", "otu_bin_data",
+    "sequence_abundance_table", "sample_distance_table", "otu_bin_data",
     "otu_sequence_bin_assignment", "otu_bin_representative_sequence",
     "asv_bin_data",
     "asv_sequence_bin_assignment", "phylotype_bin_data",
@@ -1711,4 +1805,115 @@ test_that("dataset - assign_bin_representative_sequences", {
     dataset_name = "miseq_sop"
   )
   expect_equal(report(dataset_t, "sample_assignment"), data.frame())
+})
+
+test_that("dataset - alignment_length, rename", {
+  data <- new_dataset("old_name")
+  expect_equal(names(data, type = "dataset"), "old_name")
+
+  data$rename("new_name")
+  expect_equal(names(data, type = "dataset"), "new_name")
+
+  names <- c("seq1", "seq2", "seq3", "seq4")
+  seqs <- c("ACTGC", "ATTCC", "GTTGC", "ATGGC")
+
+  xdev_add_sequences(
+    data,
+    data.frame(sequence_name = names, sequence = seqs)
+  )
+  expect_equal(data$alignment_length(), 5)
+
+  names <- c("seq5", "seq6")
+  seqs <- c("..ACTGC..", "ATTCC_")
+
+  xdev_add_sequences(
+    data,
+    data.frame(sequence_name = names, sequence = seqs)
+  )
+  expect_equal(data$alignment_length(), -1)
+})
+
+test_that("test strollur$add - fastq", {
+  # Create a new empty strollur object named 'example_dataset'
+  data <- strollur::strollur$new(name = "example_dataset")
+
+  # Read FASTQ data into data.frame
+  fastq_data <-
+    strollur::read_fastq(fastq = strollur_example("tiny.fastq.gz"))
+
+  # Add FASTQ sequence data
+  data$add(table = fastq_data, type = "fastq")
+
+  fastq_report <- strollur::xdev_report(data, type = "fastq")
+
+  names <- c(
+    "M00967:43:000000000-A3JHG:1:1101:18327:1699",
+    "M00967:43:000000000-A3JHG:1:1101:14069:1827",
+    "M00967:43:000000000-A3JHG:1:1101:18044:1900"
+  )
+
+  expect_equal(fastq_report$sequence_name, names)
+
+  score_1_15 <- c(2, 29, 29, 32, 32, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+  score_2_15 <- c(18, 32, 32, 30, 32, 33, 33, 35, 33, 37, 37, 33, 36, 38, 38)
+  score_3_15 <- c(33, 32, 31, 33, 33, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+
+  expect_equal(fastq_report$quality_score[[1]][1:15], score_1_15)
+  expect_equal(fastq_report$quality_score[[2]][1:15], score_2_15)
+  expect_equal(fastq_report$quality_score[[3]][1:15], score_3_15)
+})
+
+test_that("test strollur$assign - quality", {
+  data <- strollur::new_dataset(dataset_name = "example_dataset")
+  # Read quality data into data.frame
+  quality_data <-
+    strollur::read_quality(quality = strollur_example("tiny.qual"))
+  fasta_data <-
+    strollur::read_fasta(fasta = strollur_example("tiny.fasta"))
+
+  # Add FASTA sequence data
+  strollur::add(data = data, table = fasta_data, type = "sequence")
+  strollur::assign(data, table = quality_data, type = "quality")
+
+  quality_report <- data$report(type = "quality")
+
+  names <- c(
+    "M00967:43:000000000-A3JHG:1:1101:18327:1699",
+    "M00967:43:000000000-A3JHG:1:1101:14069:1827",
+    "M00967:43:000000000-A3JHG:1:1101:18044:1900"
+  )
+
+  expect_equal(quality_report$sequence_name, names)
+
+  score_1_15 <- c(2, 29, 29, 32, 32, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+  score_2_15 <- c(18, 32, 32, 30, 32, 33, 33, 35, 33, 37, 37, 33, 36, 38, 38)
+  score_3_15 <- c(33, 32, 31, 33, 33, 33, 32, 33, 33, 37, 37, 37, 38, 38, 38)
+
+  expect_equal(quality_report$quality_score[[1]][1:15], score_1_15)
+  expect_equal(quality_report$quality_score[[2]][1:15], score_2_15)
+  expect_equal(quality_report$quality_score[[3]][1:15], score_3_15)
+})
+
+test_that("test strollur$assign - sample distances", {
+  shared_file <- strollur_example("final.opti_mcc.shared")
+  dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+  reference <- strollur::new_reference(
+    name = "jclass estimator distances",
+    vendor = "mothur_v1.48.6"
+  )
+  data <- strollur::new_dataset("my_dataset")
+  df <- read_mothur_shared(shared_file)
+  xdev_assign_bins(data, table = df, bin_type = "otu")
+  sample_dists <- readr::read_table(dist_file,
+    col_names = FALSE,
+    show_col_types = FALSE
+  )
+  xdev_assign_sample_distances(data,
+    table = sample_dists,
+    reference = reference
+  )
+  dists <- xdev_get_sample_distances(data)
+  expect_equal(nrow(dists), 171)
+  expect_equal(ncol(dists), 3)
+  expect_equal(round(dists[1:3, 3], 2), c(0.47, 0.53, 0.55))
 })

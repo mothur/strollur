@@ -3,78 +3,96 @@
 \name{assign}
 \alias{assign}
 \title{Assign sequence abundances, sequence classifications, bins, bin
-representative sequences, bin classifications or treatments to a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+representative sequences, bin classifications, sample distances or
+treatments to a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 assign(
   data,
   table,
   type = "bin",
   bin_type = "otu",
-  table_names = list(sequence_name = "sequence_name", abundance = "abundance", sample =
-    "sample", treatment = "treatment", taxonomy = "taxonomy", bin_name = "bin_name"),
+  table_names = list(sequence_name = "sequence_name", quality_score = "quality_score",
+    abundance = "abundance", sample = "sample", treatment = "treatment", taxonomy =
+    "taxonomy", level = "level", confidence = "confidence", bin_name = "bin_name"),
   reference = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{data, }{a
+\item{data}{a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
-\item{table, }{a data.frame containing the data you wish to assign}
+\item{table}{a data.frame containing the data you wish to assign}
 
-\item{type, }{a string containing the type of data. Options include:
-'sequence_abundance', 'sequence_taxonomy', 'bin',
- 'bin_representative', 'bin_taxonomy' and 'treatment'.
- Default = "bin".}
+\item{type}{a string containing the type of data. Options include:
+\code{sequence_abundance}, \code{sequence_taxonomy}, \code{bin}, \code{quality},
+\code{bin_representative}, \code{bin_taxonomy}, \code{sample_distance} and \code{treatment}.
+Default = \code{bin}.}
 
-\item{bin_type, }{string containing the bin type you would like the number of
-bins for. Default = "otu".}
+\item{bin_type}{string containing the bin type you would like the number of
+bins for. Default = \code{otu}.}
 
-\item{table_names, }{named list used to indicate the names of the columns in
+\item{table_names}{named list used to indicate the names of the columns in
 the table. By default:
 
 table_names <- list(sequence_name = "sequence_name",
-                    abundance = "abundance",
-                    sample = "sample",
-                    treatment = "treatment",
-                    taxonomy = "taxonomy",
-                    bin_name = "bin_name")
+quality_score = "quality_score",
+abundance = "abundance",
+sample = "sample",
+treatment = "treatment",
+taxonomy = "taxonomy",
+level = "level",
+confidence = "confidence",
+bin_name = "bin_name")
 
-In table_names, 'sequence_name' is a string containing the name of the column
+In table_names, \code{sequence_name} is a string containing the name of the column
 in 'table' that contains the sequence names. Default column name is
 'sequence_name'.
 
-In table_names, 'abundance' is a string containing the name of the column in
+In table_names, \code{quality_score} is a string containing the name of the column
+in 'table' that contains the sequence quality scores. It is used when you are
+adding quality data. Default column name is 'quality_score'.
+
+In table_names, \code{abundance} is a string containing the name of the column in
 'table' that contains the abundances. Default column name is 'abundance'.
 
-In table_names, 'sample' is a string containing the name of the column in
+In table_names, \code{sample} is a string containing the name of the column in
 'table' that contains the samples. Default column name is 'sample'.
 
-In table_names, 'treatment' is a string containing the name of the
+In table_names, \code{treatment} is a string containing the name of the
 column in 'table' that contains the treatment names. Default column name is
- 'treatment'.
+'treatment'.
 
-In table_names, 'taxonomy' is a string containing the name of the
+In table_names, \code{taxonomy} is a string containing the name of the
 column in 'table' that contains the classifications. Default column name
 is 'taxonomy'.
 
-In table_names, 'bin_name' is a string containing the name of the
+In table_names, \code{level} is a string containing the name of the column
+in the data.frame that contains the classifications. Default column name is
+\code{level}.
+
+In table_names, \code{confidence} is a string containing the name of the column in
+the data.frame that contains the classifications confidence scores. Default
+column name is \code{confidence}.
+
+In table_names, \code{bin_name} is a string containing the name of the
 column in 'table' that contains the bin names. Default column name is
 'bin_name'.}
 
-\item{reference, }{a list created by the function [new_reference]. Optional.}
+\item{reference}{a list created by the function \link{new_reference}. Optional.}
 
-\item{verbose, }{boolean indicating whether or not you want progress messages.
+\item{verbose}{boolean indicating whether or not you want progress messages.
 Default = TRUE.}
 }
 \value{
 an updated
-  \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \description{
 Assign sequence abundances, sequence classifications, bins, bin
-representative sequences, bin classifications or treatments to a
+representative sequences, bin classifications, sample distances or
+treatments to a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
@@ -82,13 +100,13 @@ representative sequences, bin classifications or treatments to a
 # Assign sequence classifications
 
 # create a new empty strollur object named 'example_dataset'
-data <- new_dataset(dataset_name = "example_dataset")
+data <- strollur::new_dataset(dataset_name = "example_dataset")
 
-sequence_classifications <- read_mothur_taxonomy(strollur_example(
+sequence_classifications <- strollur::read_mothur_taxonomy(strollur_example(
   "final.taxonomy.gz"
 ))
 
-assign(
+strollur::assign(
   data,
   table = sequence_classifications, type = "sequence_taxonomy"
 )
@@ -96,17 +114,17 @@ assign(
 # Assigning bins
 
 # read mothur's otu list file into data.frame
-otu_data <- read_mothur_list(list = strollur_example(
+otu_data <- strollur::read_mothur_list(list = strollur_example(
   "final.opti_mcc.list.gz"
 ))
 
 # read mothur's asv list file into data.frame
-asv_data <- read_mothur_list(list = strollur_example(
+asv_data <- strollur::read_mothur_list(list = strollur_example(
   "final.asv.list.gz"
 ))
 
 # read mothur's phylotype list file into data.frame
-phylo_data <- read_mothur_list(list = strollur_example(
+phylo_data <- strollur::read_mothur_list(list = strollur_example(
   "final.tx.list.gz"
 ))
 
@@ -114,37 +132,38 @@ phylo_data <- read_mothur_list(list = strollur_example(
 bin_reps <- readRDS(strollur_example("miseq_representative_sequences.rds"))
 
 # assign 'otu' bins using sequence names
-assign(data, table = otu_data, bin_type = "otu")
+strollur::assign(data, table = otu_data, bin_type = "otu")
 
 # assign 'asv' bins using sequence names
-assign(data, table = asv_data, bin_type = "asv")
+strollur::assign(data, table = asv_data, bin_type = "asv")
 
 # assign 'phylotype' bins using sequence names
-assign(data, table = phylo_data, bin_type = "phylotype")
+strollur::assign(data, table = phylo_data, bin_type = "phylotype")
 
 # assign 'otu' bin representative sequences
-assign(data, table = bin_reps, type = "bin_representative")
+strollur::assign(data, table = bin_reps, type = "bin_representative")
 
 # To assign abundance only bins
 
 # create a new empty strollur object named 'example_dataset'
-data <- new_dataset(dataset_name = "example_dataset")
+data <- strollur::new_dataset(dataset_name = "example_dataset")
 
 # read mothur's shared file
-otu_data <- read_mothur_shared(strollur_example("final.opti_mcc.shared"))
+otu_data <-
+  strollur::read_mothur_shared(strollur_example("final.opti_mcc.shared"))
 
 # assign abundance only otus parsed by sample
-assign(data, table = otu_data, bin_type = "otu")
+strollur::assign(data, table = otu_data, bin_type = "otu")
 
 # Assigning bin classifications
 
 # read bin taxonomies
-otu_data <- read_mothur_cons_taxonomy(strollur_example(
+otu_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 
 # assign otu consensus taxonomies
-assign(
+strollur::assign(
   data,
   table = otu_data,
   type = "bin_taxonomy", bin_type = "otu"
@@ -154,6 +173,18 @@ assign(
 
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
-assign(data, table = sample_assignments, type = "treatment")
+strollur::assign(data, table = sample_assignments, type = "treatment")
 
+# Assign sample distances
+
+dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+sample_dists <- readr::read_table(dist_file,
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+strollur::assign(data, table = sample_dists, type = "sample_distance")
+
+}
+\seealso{
+\link{taxonomy_table_format}
 }
