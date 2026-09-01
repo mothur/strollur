@@ -11,22 +11,22 @@ xdev_abundance(data, type = "sequence", bin_type = "otu", by_sample = FALSE)
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- type, :
+- type:
 
   string containing the type of data you want the number of. Options
   include: "sequence", "bin". Default = "sequence".
 
-- bin_type, :
+- bin_type:
 
   string containing the bin type you would like the number of bins for.
   Default = "otu".
 
-- by_sample, :
+- by_sample:
 
   Boolean. When by_sample is TRUE, the abundance data will be parsed by
   sample. Default = FALSE.
@@ -39,7 +39,7 @@ data.frame
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -47,6 +47,7 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -54,7 +55,7 @@ miseq <- miseq_sop_example()
 #> Added a contigs_report report.
 
 # To the total abundance for each sequence
-xdev_abundance(data = miseq, type = "sequence")
+strollur::xdev_abundance(data = miseq, type = "sequence")
 #>                                     sequence_name abundance
 #> 1    M00967_43_000000000-A3JHG_1_2101_16474_12783         1
 #> 2     M00967_43_000000000-A3JHG_1_1113_12711_3318         1
@@ -2483,7 +2484,8 @@ xdev_abundance(data = miseq, type = "sequence")
 #> 2425 M00967_43_000000000-A3JHG_1_1107_26400_19526         1
 
 # To the total abundance for each sequence parsed by sample
-xdev_abundance(data = miseq, type = "sequence", by_sample = TRUE)
+strollur::xdev_abundance(data = miseq, type = "sequence",
+                           by_sample = TRUE)
 #>                                     sequence_name abundance sample treatment
 #> 1    M00967_43_000000000-A3JHG_1_2101_16474_12783         1 F3D150      Late
 #> 2     M00967_43_000000000-A3JHG_1_1113_12711_3318         1 F3D142      Late
@@ -8026,7 +8028,8 @@ xdev_abundance(data = miseq, type = "sequence", by_sample = TRUE)
 #> 5539 M00967_43_000000000-A3JHG_1_1107_26400_19526         1   F3D6     Early
 
 # To the total abundance for each "otu" bin
-xdev_abundance(data = miseq, type = "bin", bin_type = "otu")
+strollur::xdev_abundance(data = miseq, type = "bin",
+                           bin_type = "otu")
 #>     otu_id abundance
 #> 1   Otu001     12288
 #> 2   Otu002      8892
@@ -8561,7 +8564,8 @@ xdev_abundance(data = miseq, type = "bin", bin_type = "otu")
 #> 531 Otu531         1
 
 # To the total abundance for each "otu" bin parsed by sample
-xdev_abundance(data = miseq, type = "bin", bin_type = "otu", by_sample = TRUE)
+strollur::xdev_abundance(data = miseq, type = "bin",
+                           bin_type = "otu", by_sample = TRUE)
 #>      bin_name abundance sample treatment
 #> 1      Otu001       499   F3D0     Early
 #> 2      Otu001       351   F3D1     Early
@@ -11996,7 +12000,8 @@ xdev_abundance(data = miseq, type = "bin", bin_type = "otu", by_sample = TRUE)
 #> 3431   Otu531         1 F3D141      Late
 
 # To the total abundance for each "asv" bin
-xdev_abundance(data = miseq, type = "bin", bin_type = "asv")
+strollur::xdev_abundance(data = miseq, type = "bin",
+                           bin_type = "asv")
 #>       asv_id abundance
 #> 1    Asv0001     12196
 #> 2    Asv0002      8829
@@ -14425,7 +14430,8 @@ xdev_abundance(data = miseq, type = "bin", bin_type = "asv")
 #> 2425 Asv2425         1
 
 # To the total abundance for each "asv" bin parsed by sample
-xdev_abundance(data = miseq, type = "bin", bin_type = "asv", by_sample = TRUE)
+strollur::xdev_abundance(data = miseq, type = "bin",
+                           bin_type = "asv", by_sample = TRUE)
 #>      bin_name abundance sample treatment
 #> 1     Asv0001       495   F3D0     Early
 #> 2     Asv0001       340   F3D1     Early
@@ -19968,7 +19974,7 @@ xdev_abundance(data = miseq, type = "bin", bin_type = "asv", by_sample = TRUE)
 #> 5539  Asv2425         1 F3D148      Late
 
 # To the total abundance of each sample
-xdev_abundance(data = miseq, type = "sample")
+strollur::xdev_abundance(data = miseq, type = "sample")
 #>    sample abundance
 #> 1    F3D0      6191
 #> 2    F3D1      4652
@@ -19991,7 +19997,7 @@ xdev_abundance(data = miseq, type = "sample")
 #> 19   F3D9      5735
 
 # To the total abundance of each treatment
-xdev_abundance(data = miseq, type = "treatment")
+strollur::xdev_abundance(data = miseq, type = "treatment")
 #>   treatment abundance
 #> 1     Early     55634
 #> 2      Late     58329

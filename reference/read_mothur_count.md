@@ -1,4 +1,4 @@
-# read_mothur_count
+# Read a mothur formatted [count file](https://mothur.org/wiki/count_file/)
 
 Read a mothur formatted [count
 file](https://mothur.org/wiki/count_file/)
@@ -44,16 +44,17 @@ data.frame
 #  9:   seq4 sample4         4
 
 # read a count file with samples
-sample_table <- read_mothur_count(strollur_example("final.count_table.gz"))
+sample_table <-
+      strollur::read_mothur_count(strollur_example("final.count_table.gz"))
 
 # You can add your sequence abundance data to your `strollur` object as
 # follows:
 
-# create a new empty `strollur` object
-data <- new_dataset()
+# create a new empty `strollur::strollur` object
+data <- strollur::new_dataset()
 
 # assign sequence abundances parsed by sample
-assign(data, table = sample_table, type = "sequence_abundance")
+strollur::assign(data, table = sample_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
 
 # print summary of data

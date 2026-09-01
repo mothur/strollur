@@ -1,9 +1,9 @@
-# xdev_assign_bin_taxonomy
+# Assign bin classifications to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Assign bin classifications to a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
-Note, if you assign sequence taxonomies and assign bins, 'Dataset' will
+Note, if you assign sequence taxonomies and assign bins, `strollur` will
 find the concensus taxonomy for each bin for you.
 
 ## Usage
@@ -22,12 +22,12 @@ xdev_assign_bin_taxonomy(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- table, :
+- table:
 
   a data.frame containing bin taxonomy assignments
 
@@ -35,21 +35,23 @@ xdev_assign_bin_taxonomy(
 
   a string indicating the type of bin assignments. Default "otu".
 
-- reference, :
+- reference:
 
-  a list created by the function \[new_reference\]. Optional.
+  a list created by the function
+  [new_reference](https://mothur.org/strollur/reference/new_reference.md).
+  Optional.
 
-- bin_name, :
+- bin_name:
 
   a string containing the name of the column in 'table' that contains
   the bin names. Default column name is 'bin_name'.
 
-- taxonomy, :
+- taxonomy:
 
   a string containing the name of the column in 'table' that contains
   the bin taxonomies. Default column name is 'taxonomy'.
 
-- verbose, :
+- verbose:
 
   a boolean whether or not you want progress messages. Default = TRUE.
 
@@ -62,13 +64,15 @@ an updated
 
 ``` r
 
-otu_data <- read_mothur_cons_taxonomy(strollur_example(
+otu_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
                         "final.cons.taxonomy"))
 
-data <- new_dataset(dataset_name = "my_dataset")
+data <- strollur::new_dataset(dataset_name = "my_dataset")
 
 # assign otu abundances
-xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+strollur::xdev_assign_bins(data,
+                             table = otu_data,
+                             bin_type = "otu")
 #> Assigned 531 otu bins.
 #> my_dataset:
 #> 
@@ -80,8 +84,9 @@ xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
 #> 
 
 # assign otu classifications
-xdev_assign_bin_taxonomy(data = data, table = otu_data,
-                         bin_type = "otu")
+strollur::xdev_assign_bin_taxonomy(data,
+                                     table = otu_data,
+                                     bin_type = "otu")
 #> Assigned 531 otu bin taxonomies.
 #> my_dataset:
 #> 

@@ -1,10 +1,5 @@
 # strollur
 
-[![CRAN
-status](https://www.r-pkg.org/badges/version/strollur)](https://CRAN.R-project.org/package=strollur)
-[![CRAN
-downloads](https://cranlogs.r-pkg.org/badges/strollur)](https://CRAN.R-project.org/package=strollur)
-
 [![](https://img.shields.io/badge/ORCID-Patrick%20Schloss-A6CE39.svg)](https://orcid.org/0000-0002-6935-4275)
 [![](https://img.shields.io/badge/ORCID-Sarah%20Westcott-A6CE39.svg)](https://orcid.org/0009-0001-1529-8247)
 [![](https://img.shields.io/badge/ORCID-Gregory%20Johnson-A6CE39.svg)](https://orcid.org/0009-0008-3890-0297)
@@ -131,14 +126,17 @@ contributing to this project, you agree to abide by its terms.
 
 Adding and using data
 
-- [`add()`](https://mothur.org/strollur/reference/add.md) : Add
-  sequences, reports or resource references to a strollur object
+- [`add()`](https://mothur.org/strollur/reference/add.md) :
+
+  Add sequences, reports, trees or resource references to a
+  [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 - [`assign()`](https://mothur.org/strollur/reference/assign.md) :
 
   Assign sequence abundances, sequence classifications, bins, bin
-  representative sequences, bin classifications or treatments to a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  representative sequences, bin classifications, sample distances or
+  treatments to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`names()`](https://mothur.org/strollur/reference/names.md) :
 
@@ -167,9 +165,11 @@ Adding and using data
   Summarize the sequences data, custom reports, and scrapped data in a
   [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
-- [`strollur`](https://mothur.org/strollur/reference/strollur.md) : The
-  \`strollur\` object stores the data associated with your amplicon
-  sequence analysis.
+- [`strollur`](https://mothur.org/strollur/reference/strollur.md) :
+
+  The
+  [`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)
+  object
 
 - [`strollur-package`](https://mothur.org/strollur/reference/strollur-package.md)
   : strollur: Store and Transfer Amplicon Sequence Data
@@ -179,6 +179,12 @@ Adding and using data
 Importing from other software tools namely: mothur, qiime2, phyloseq and
 DADA2
 
+- [`read_biom()`](https://mothur.org/strollur/reference/read_biom.md) :
+
+  Create a
+  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  from a biom formatted file.
+
 - [`read_dada2()`](https://mothur.org/strollur/reference/read_dada2.md)
   :
 
@@ -187,7 +193,16 @@ DADA2
   from dada2 outputs
 
 - [`read_fasta()`](https://mothur.org/strollur/reference/read_fasta.md)
-  : read_fasta
+  :
+
+  Read a [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/)
+  formatted sequence file
+
+- [`read_fastq()`](https://mothur.org/strollur/reference/read_fastq.md)
+  :
+
+  Read a [FASTQ](https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/)
+  formatted file
 
 - [`read_mothur()`](https://mothur.org/strollur/reference/read_mothur.md)
   :
@@ -197,25 +212,46 @@ DADA2
   from mothur outputs
 
 - [`read_mothur_cons_taxonomy()`](https://mothur.org/strollur/reference/read_mothur_cons_taxonomy.md)
-  : read_mothur_cons_taxonomy
+  :
+
+  Read a mothur formatted [cons_taxonomy
+  file](https://mothur.org/wiki/constaxonomy_file/)
 
 - [`read_mothur_count()`](https://mothur.org/strollur/reference/read_mothur_count.md)
-  : read_mothur_count
+  :
+
+  Read a mothur formatted [count
+  file](https://mothur.org/wiki/count_file/)
 
 - [`read_mothur_list()`](https://mothur.org/strollur/reference/read_mothur_list.md)
-  : read_mothur_list
+  :
+
+  Read a mothur formatted [list
+  file](https://mothur.org/wiki/list_file/)
 
 - [`read_mothur_oligos()`](https://mothur.org/strollur/reference/read_mothur_oligos.md)
-  : read_mothur_oligos
+  :
+
+  Read a mothur formatted [oligos
+  file](https://mothur.org/wiki/oligos_file/)
 
 - [`read_mothur_rabund()`](https://mothur.org/strollur/reference/read_mothur_rabund.md)
-  : read_mothur_rabund
+  :
+
+  Read a mothur formatted [rabund
+  file](https://mothur.org/wiki/rabund_file/)
 
 - [`read_mothur_shared()`](https://mothur.org/strollur/reference/read_mothur_shared.md)
-  : read_mothur_shared
+  :
+
+  Read a mothur formatted [shared
+  file](https://mothur.org/wiki/shared_file/)
 
 - [`read_mothur_taxonomy()`](https://mothur.org/strollur/reference/read_mothur_taxonomy.md)
-  : read_mothur_taxonomy
+  :
+
+  Read a mothur formatted [taxonomy
+  file](https://mothur.org/wiki/taxonomy_file/)
 
 - [`read_phyloseq()`](https://mothur.org/strollur/reference/read_phyloseq.md)
   :
@@ -232,71 +268,198 @@ DADA2
   from a qiime2 outputs
 
 - [`read_qiime2_feature_table()`](https://mothur.org/strollur/reference/read_qiime2_feature_table.md)
-  : read_qiime2_feature_table
+  :
+
+  Read a [qiime2](https://qiime2.org) qza containing bin data
 
 - [`read_qiime2_metadata()`](https://mothur.org/strollur/reference/read_qiime2_metadata.md)
-  : read_qiime2_metadata
+  :
+
+  Read a [qiime2](https://qiime2.org) .tsv table containing metadata.
 
 - [`read_qiime2_taxonomy()`](https://mothur.org/strollur/reference/read_qiime2_taxonomy.md)
-  : read_qiime2_taxonomy
+  :
+
+  Read a [qiime2](https://qiime2.org) qza containing taxonomy data
+
+- [`read_quality()`](https://mothur.org/strollur/reference/read_quality.md)
+  : Read a file containing sequence quality scores
 
 - [`unpack_qiime2_artifact()`](https://mothur.org/strollur/reference/unpack_qiime2_artifact.md)
-  : unpack_qiime2_artifact
+  :
+
+  The unpack_qiime2_artifact function reads .qza files created by
+  [qiime2](https://qiime2.org), and returns the artifact.
 
 ## General
 
 Create datasets and references, clear data
 
 - [`miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
-  : Example strollur object
+  :
+
+  Create a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) using the
+  analysis files from the
+  [MiSeq_SOP](https://mothur.org/wiki/miseq_sop/) example.
+
 - [`new_dataset()`](https://mothur.org/strollur/reference/new_dataset.md)
-  : new_dataset
+  :
+
+  Create a new
+  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+
 - [`new_reference()`](https://mothur.org/strollur/reference/new_reference.md)
-  : new_reference
-- [`clear()`](https://mothur.org/strollur/reference/clear.md) : clear
+  :
+
+  Create a resource reference for your
+  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  to aid in reproducibility.
+
+- [`clear()`](https://mothur.org/strollur/reference/clear.md) :
+
+  Clear data from a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
 - [`is_aligned()`](https://mothur.org/strollur/reference/is_aligned.md)
-  : is_aligned
+  :
+
+  Determine if a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) contains
+  aligned sequences.
+
 - [`is_equal()`](https://mothur.org/strollur/reference/is_equal.md) :
   is_equal
+
 - [`has_sample()`](https://mothur.org/strollur/reference/has_sample.md)
-  : has_sample
+  :
+
+  Determine if a given sample is in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
 - [`get_bin_types()`](https://mothur.org/strollur/reference/get_bin_types.md)
-  : get_bin_types
+  :
+
+  Get bin table types of a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 ## Data Transfers
 
 Save, copy, load, import, export and write to file
 
 - [`save_dataset()`](https://mothur.org/strollur/reference/save_dataset.md)
-  : save_dataset
+  :
+
+  Save the
+  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  to file.
+
 - [`load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md)
-  : Load strollur object from .rds file
+  :
+
+  Load a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object from a file.
+
 - [`export_dataset()`](https://mothur.org/strollur/reference/export_dataset.md)
-  : export_dataset
+  :
+
+  Create a human readable table containing all data from a
+  [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object.
+
 - [`import_dataset()`](https://mothur.org/strollur/reference/import_dataset.md)
-  : Import strollur object from exported data.frame.
+  :
+
+  Create a
+  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  from the exported table of a
+  [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object.
+
 - [`copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
-  : copy_dataset
+  :
+
+  Create a new
+  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  from an existing dataset.
+
+- [`write_biom()`](https://mothur.org/strollur/reference/write_biom.md)
+  :
+
+  Write a [BIOM](https://biom-format.org) formatted file containing your
+  [strollur](https://mothur.org/strollur/reference/strollur.html)
+  objects data.
+
 - [`write_fasta()`](https://mothur.org/strollur/reference/write_fasta.md)
-  : write_fasta
+  :
+
+  Write a [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/)
+  formatted sequence file
+
+- [`write_fastq()`](https://mothur.org/strollur/reference/write_fastq.md)
+  :
+
+  Write a [FASTQ](https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/)
+  formatted file
+
 - [`write_mothur()`](https://mothur.org/strollur/reference/write_mothur.md)
-  : write_mothur
+  :
+
+  Write the various [file
+  types](https://mothur.org/wiki/tags/#file_types) from your
+  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  for use with mothur.
+
 - [`write_mothur_cons_taxonomy()`](https://mothur.org/strollur/reference/write_mothur_cons_taxonomy.md)
-  : write_mothur_cons_taxonomy
+  :
+
+  Write a mothur formatted [cons_taxonomy
+  file](https://mothur.org/wiki/constaxonomy_file/)
+
 - [`write_mothur_count()`](https://mothur.org/strollur/reference/write_mothur_count.md)
-  : write_mothur_count
+  :
+
+  Write a mothur formatted [count
+  file](https://mothur.org/wiki/count_file/)
+
 - [`write_mothur_design()`](https://mothur.org/strollur/reference/write_mothur_design.md)
-  : write_mothur_design
+  :
+
+  Write a mothur formatted [design
+  file](https://mothur.org/wiki/design_file/)
+
 - [`write_mothur_list()`](https://mothur.org/strollur/reference/write_mothur_list.md)
-  : write_mothur_list
+  :
+
+  Write mothur formatted [list
+  files](https://mothur.org/wiki/list_file/)
+
 - [`write_mothur_rabund()`](https://mothur.org/strollur/reference/write_mothur_rabund.md)
-  : write_mothur_rabund
+  :
+
+  Write mothur formatted [rabund
+  files](https://mothur.org/wiki/rabund_file/)
+
 - [`write_mothur_shared()`](https://mothur.org/strollur/reference/write_mothur_shared.md)
-  : write_mothur_shared
+  :
+
+  Write mothur formatted [shared
+  files](https://mothur.org/wiki/shared_file/)
+
 - [`write_phyloseq()`](https://mothur.org/strollur/reference/write_phyloseq.md)
-  : write_phyloseq
+  :
+
+  Create a phyloseq object from your [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
+- [`write_quality()`](https://mothur.org/strollur/reference/write_quality.md)
+  : Write a file containing sequence quality scores
+
 - [`write_taxonomy()`](https://mothur.org/strollur/reference/write_taxonomy.md)
-  : write_taxonomy
+  :
+
+  Write a 2 column [taxonomy
+  file](https://mothur.org/wiki/taxonomy_file/)
 
 ## Functions for Package Developers
 
@@ -307,7 +470,11 @@ these functions
   : strollur_example
 
 - [`has_sequence_strings()`](https://mothur.org/strollur/reference/has_sequence_strings.md)
-  : has_sequence_strings
+  :
+
+  Determine if a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) contains
+  sequence nucleotide strings.
 
 - [`remove_file()`](https://mothur.org/strollur/reference/remove_file.md)
   : remove_file
@@ -319,91 +486,224 @@ these functions
   : Get a data.frame containing the requested abundance data
 
 - [`xdev_add_references()`](https://mothur.org/strollur/reference/xdev_add_references.md)
-  : Add resource references
+  :
+
+  Add resource references to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) to aid in
+  reproducibility
 
 - [`xdev_add_report()`](https://mothur.org/strollur/reference/xdev_add_report.md)
   :
 
-  Add a report to a
-  [strollur](https://mothur.org/strollur/reference/strollur.html) object
+  Add a report to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
+- [`xdev_add_sequence_fastq_scores()`](https://mothur.org/strollur/reference/xdev_add_sequence_fastq_scores.md)
+  :
+
+  Add FASTQ data to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_add_sequences()`](https://mothur.org/strollur/reference/xdev_add_sequences.md)
-  : xdev_add_sequences
+  :
+
+  Add sequence data to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_assign_bin_representative_sequences()`](https://mothur.org/strollur/reference/xdev_assign_bin_representative_sequences.md)
-  : xdev_assign_bin_representative_sequences
+  : Assign representative sequences to bins
 
 - [`xdev_assign_bin_taxonomy()`](https://mothur.org/strollur/reference/xdev_assign_bin_taxonomy.md)
-  : xdev_assign_bin_taxonomy
+  :
+
+  Assign bin classifications to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
+- [`xdev_assign_bin_taxonomy_tidy()`](https://mothur.org/strollur/reference/xdev_assign_bin_taxonomy_tidy.md)
+  :
+
+  Assign bin classifications to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_assign_bins()`](https://mothur.org/strollur/reference/xdev_assign_bins.md)
-  : xdev_assign_bins
+  :
+
+  Add bin assignments to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
+- [`xdev_assign_sample_distances()`](https://mothur.org/strollur/reference/xdev_assign_sample_distances.md)
+  :
+
+  Assign samples distances in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_assign_sequence_abundance()`](https://mothur.org/strollur/reference/xdev_assign_sequence_abundance.md)
-  : xdev_assign_sequence_abundance
+  :
+
+  Assign sequence abundance and optionally assign sample and treatment
+  data to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
+- [`xdev_assign_sequence_quality_scores()`](https://mothur.org/strollur/reference/xdev_assign_sequence_quality_scores.md)
+  :
+
+  Add quality data to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_assign_sequence_taxonomy()`](https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy.md)
-  : xdev_assign_sequence_taxonomy
+  :
+
+  Assign sequence classifications to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_assign_sequence_taxonomy_tidy()`](https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy_tidy.md)
-  : xdev_assign_sequence_taxonomy_tidy
+  :
+
+  Assign sequence classifications to a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_assign_treatments()`](https://mothur.org/strollur/reference/xdev_assign_treatments.md)
-  : xdev_assign_treatments
+  :
+
+  Assign samples to treatments in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_count()`](https://mothur.org/strollur/reference/xdev_count.md)
-  : xdev_count
+  :
 
-- [`xdev_get_abundances_by_sample()`](https://mothur.org/strollur/reference/xdev_get_abundances_by_sample.md)
-  : xdev_get_abundances_by_sample
+  Find the number of sequences, samples, treatments or bins of a given
+  type in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
+- [`xdev_get_alignment_length()`](https://mothur.org/strollur/reference/xdev_get_alignment_length.md)
+  :
+
+  Get the alignment length of sequences in your [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
+- [`xdev_get_bin_abundances_by_sample()`](https://mothur.org/strollur/reference/xdev_get_bin_abundances_by_sample.md)
+  :
+
+  Get the sequence abundance data in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) parsed by
+  sample
 
 - [`xdev_get_by_sample()`](https://mothur.org/strollur/reference/xdev_get_by_sample.md)
-  : xdev_get_by_sample
+  :
+
+  Get the requested data in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) parsed by
+  sample
 
 - [`xdev_get_list_vector()`](https://mothur.org/strollur/reference/xdev_get_list_vector.md)
-  : xdev_get_list_vector
+  : Get vector of strings containing the sequences bin data
+
+- [`xdev_get_sample_distances()`](https://mothur.org/strollur/reference/xdev_get_sample_distances.md)
+  :
+
+  Get distances between samples in your \`[strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
+- [`xdev_get_sequence_abundances_by_sample()`](https://mothur.org/strollur/reference/xdev_get_sequence_abundances_by_sample.md)
+  :
+
+  Get the sequence abundance data in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) parsed by
+  sample
+
+- [`xdev_get_sequence_indexes_by_sample()`](https://mothur.org/strollur/reference/xdev_get_sequence_indexes_by_sample.md)
+  : Get indexes of sequences parsed by sample
 
 - [`xdev_get_sequences()`](https://mothur.org/strollur/reference/xdev_get_sequences.md)
-  : xdev_get_sequences
+  :
+
+  Get the nucleotide strings for each sequence in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
+
+- [`xdev_has_bin_taxonomy()`](https://mothur.org/strollur/reference/xdev_has_bin_taxonomy.md)
+  :
+
+  Determine if a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) has bin
+  taxonomy assignments
 
 - [`xdev_has_sequence_taxonomy()`](https://mothur.org/strollur/reference/xdev_has_sequence_taxonomy.md)
-  : xdev_has_sequence_taxonomy
+  :
+
+  Determine if a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) has
+  sequence taxonomy assignments
 
 - [`xdev_merge_bins()`](https://mothur.org/strollur/reference/xdev_merge_bins.md)
-  : xdev_merge_bins
+  :
+
+  Merge bins in your [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_merge_sequences()`](https://mothur.org/strollur/reference/xdev_merge_sequences.md)
-  : xdev_merge_sequences
+  : Merge sequences combines the abundances of sequences
 
 - [`xdev_names()`](https://mothur.org/strollur/reference/xdev_names.md)
-  : xdev_names
+  :
+
+  Get the names of a given type of data in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_remove_bins()`](https://mothur.org/strollur/reference/xdev_remove_bins.md)
-  : xdev_remove_bins
+  :
+
+  Remove bins from a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_remove_lineages()`](https://mothur.org/strollur/reference/xdev_remove_lineages.md)
-  : xdev_remove_lineages
+  :
+
+  Remove contaminants from a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_remove_samples()`](https://mothur.org/strollur/reference/xdev_remove_samples.md)
-  : xdev_remove_samples
+  :
+
+  Remove samples from a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_remove_sequences()`](https://mothur.org/strollur/reference/xdev_remove_sequences.md)
-  : xdev_remove_sequences
+  :
+
+  Remove sequences from a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_report()`](https://mothur.org/strollur/reference/xdev_report.md)
-  : xdev_report
+  :
+
+  Get a data.frame containing the given report in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_set_abundance()`](https://mothur.org/strollur/reference/xdev_set_abundance.md)
-  : xdev_set_abundance
+  :
+
+  Set abundances of sequences in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) without
+  sample data
 
 - [`xdev_set_abundances()`](https://mothur.org/strollur/reference/xdev_set_abundances.md)
-  : xdev_set_abundances
+  :
+
+  Set abundances of sequences in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) with
+  sample data
 
 - [`xdev_set_dataset_name()`](https://mothur.org/strollur/reference/xdev_set_dataset_name.md)
-  : xdev_set_dataset_name
+  :
+
+  Set the name of a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`xdev_set_sequences()`](https://mothur.org/strollur/reference/xdev_set_sequences.md)
-  : xdev_set_sequences
+  :
+
+  Set neucleotide sequence string in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 # Articles
 

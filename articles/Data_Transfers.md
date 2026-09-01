@@ -7,13 +7,13 @@ export, and import your `strollur` object. If you haven’t reviewed the
 tuturial, we recommend you start there.
 
 Let’s use the
-[`miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
+[`strollur::miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
 function to create a strollur object from the [Miseq SOP
 Example](https://mothur.org/wiki/miseq_sop/).
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -21,6 +21,7 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -59,18 +60,18 @@ miseq
 
 The strollur package has a function to save a dataset object as an
 *.rds* file,
-[`save_dataset()`](https://mothur.org/strollur/reference/save_dataset.md),
+[`strollur::save_dataset()`](https://mothur.org/strollur/reference/save_dataset.md),
 and a function to create a dataset from an *.rds* file,
-[`load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md).
+[`strollur::load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md).
 Let’s use the miseq data object to learn how to do that.
 
 ``` r
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
-save_dataset(miseq, file = file_name)
-#> [1] "/tmp/RtmpjWdWfm/miseq_sop.rds"
+strollur::save_dataset(miseq, file = file_name)
+#> [1] "/tmp/Rtmp39aMss/miseq_sop.rds"
 
-miseq_from_rds <- load_dataset(file = file_name)
+miseq_from_rds <- strollur::load_dataset(file = file_name)
 miseq_from_rds
 #> miseq_sop:
 #> 
@@ -109,9 +110,10 @@ greedy clustering (dgc) algorithm.
 
 ``` r
 
-dgc_data <- read_mothur_list(list = strollur_example("final.dgc.list.gz"))
+dgc_data <-
+  strollur::read_mothur_list(list = strollur_example("final.dgc.list.gz"))
 
-assign(miseq_from_rds, table = dgc_data, bin_type = "dgc")
+strollur::assign(miseq_from_rds, table = dgc_data, bin_type = "dgc")
 #> Assigned 361 dgc bins.
 miseq_from_rds
 #> miseq_sop:
@@ -178,15 +180,15 @@ miseq_from_rds and not to miseq.
 
 The *.rds* file is in binary format and is not human readable. You can
 use the
-[`export_dataset()`](https://mothur.org/strollur/reference/export_dataset.md)
+[`strollur::export_dataset()`](https://mothur.org/strollur/reference/export_dataset.md)
 to see a human readable form of the raw data stored in the dataset.
 Let’s export *miseq* and look at the table created.
 
 ``` r
 
-table <- export_dataset(miseq)
+table <- strollur::export_dataset(miseq)
 str(table)
-#> List of 15
+#> List of 16
 #>  $ sequence_data                    :'data.frame':   2425 obs. of  5 variables:
 #>   ..$ sequence_id     : int [1:2425] 0 1 2 3 4 5 6 7 8 9 ...
 #>   ..$ sequence_name   : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_10133_8460" "M00967_43_000000000-A3JHG_1_1101_10331_23332" "M00967_43_000000000-A3JHG_1_1101_10382_22128" "M00967_43_000000000-A3JHG_1_1101_11035_15765" ...
@@ -206,6 +208,11 @@ str(table)
 #>   ..$ abundance  : num [1:5539] 32 127 1 1 1 222 5 13 20 17 ...
 #>   ..$ sample     : chr [1:5539] "F3D0" "F3D1" "F3D146" "F3D149" ...
 #>   ..$ treatment  : chr [1:5539] "Early" "Early" "Late" "Late" ...
+#>  $ sample_distance_table            :'data.frame':   171 obs. of  4 variables:
+#>   ..$ sample1 : chr [1:171] "F3D1" "F3D141" "F3D141" "F3D142" ...
+#>   ..$ sample2 : chr [1:171] "F3D0" "F3D0" "F3D1" "F3D0" ...
+#>   ..$ distance: num [1:171] 0.468 0.528 0.553 0.565 0.597 ...
+#>   ..$ include : logi [1:171] TRUE TRUE TRUE TRUE TRUE TRUE ...
 #>  $ otu_bin_data                     :'data.frame':   531 obs. of  5 variables:
 #>   ..$ bin_id     : int [1:531] 0 1 2 3 4 5 6 7 8 9 ...
 #>   ..$ bin_name   : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...
@@ -246,7 +253,7 @@ str(table)
 #>   ..$ documentation_url: chr [1:2] "https://mothur.org/phylotypr/" "https://mothur.org/wiki/silva_reference_files/"
 #>   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"
 #>   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"
-#>   ..$ creation_date    : chr [1:2] "2026-07-13" "2026-07-13"
+#>   ..$ creation_date    : chr [1:2] "2026-09-01" "2026-09-01"
 #>  $ contigs_report                   :'data.frame':   2425 obs. of  8 variables:
 #>   ..$ Name           : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_10133_8460" "M00967_43_000000000-A3JHG_1_1101_10331_23332" "M00967_43_000000000-A3JHG_1_1101_10382_22128" "M00967_43_000000000-A3JHG_1_1101_11035_15765" ...
 #>   ..$ Length         : num [1:2425] 253 253 253 252 253 252 253 253 252 252 ...
@@ -275,19 +282,19 @@ str(table)
 #>   ..$ root.edge  : num 0.221
 #>   ..- attr(*, "class")= chr "phylo"
 #>   ..- attr(*, "order")= chr "cladewise"
-#>  - attr(*, "strollur_version")= chr "0.1.1"
+#>  - attr(*, "strollur_version")= chr "0.1.2"
 #>  - attr(*, "dataset_name")= chr "miseq_sop"
 ```
 
 Similarly to
-[`load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md),
+[`strollur::load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md),
 you can use the
-[`import_dataset()`](https://mothur.org/strollur/reference/import_dataset.md)
+[`strollur::import_dataset()`](https://mothur.org/strollur/reference/import_dataset.md)
 function to create a new dataset object from the exported table.
 
 ``` r
 
-miseq_import <- import_dataset(table = table)
+miseq_import <- strollur::import_dataset(table = table)
 #> Added 2425 sequences.
 #> Assigned 2425 sequence taxonomies.
 #> Assigned 2425 sequence abundances.
@@ -298,6 +305,7 @@ miseq_import <- import_dataset(table = table)
 #> Assigned 2425 asv bin taxonomies.
 #> Assigned 63 phylotype bins.
 #> Assigned 63 phylotype bin taxonomies.
+#> Assigned 171 samples distances.
 #> Added 2 resource references.
 #> Added a contigs_report report.
 #> Added a metadata report.
@@ -331,16 +339,21 @@ miseq_import
 ```
 
 Again, we can see that the summary of miseq_import is identical to the
-summary of miseq.
+summary of miseq. Note,
+[`strollur::export_dataset`](https://mothur.org/strollur/reference/export_dataset.md)
+and
+[`strollur::import_dataset()`](https://mothur.org/strollur/reference/import_dataset.md)
+is the best method to use to convert an older version of the
+`strollur_object` to a newer version.
 
 ## Copy
 
 Lastly, you can make a deep copy of your dataset using the
-[`copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
+[`strollur::copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
 function. Note, if you use an assignment operator to copy it’s a shallow
 copy. The dataset object is an R6 object to keep the memory usage low.
 First let’s learn how to use the
-[`copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
+[`strollur::copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
 function, then we will take a closer look at how deep and shallow
 copying differ.
 
@@ -356,7 +369,7 @@ miseq_deep_copy, and mise_shallow_copy.
 
 ``` r
 
-assign(miseq_shallow_copy, table = dgc_data, bin_type = "dgc")
+strollur::assign(miseq_shallow_copy, table = dgc_data, bin_type = "dgc")
 #> Assigned 361 dgc bins.
 
 miseq

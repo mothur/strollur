@@ -1,4 +1,4 @@
-# read_qiime2_metadata
+# Read a [qiime2](https://qiime2.org) .tsv table containing metadata.
 
 Read a [qiime2](https://qiime2.org) .tsv table containing metadata.
 
@@ -22,7 +22,7 @@ A data.frame containing metadata
 
 ``` r
 
-metadata <- read_qiime2_metadata(strollur_example(
+metadata <- strollur::read_qiime2_metadata(strollur_example(
   "sample_metadata.tsv"
 ))
 ```

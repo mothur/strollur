@@ -1,4 +1,4 @@
-# xdev_merge_sequences
+# Merge sequences combines the abundances of sequences
 
 Designed with package integration in mind, the merge sequences function
 allows you to merge sequences in a
@@ -12,12 +12,12 @@ xdev_merge_sequences(data, sequence_names, reason = "merged")
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object.
 
-- sequence_names, :
+- sequence_names:
 
   a vector of strings containing the names of the sequences you would
   like merge. The resulting merged sequence will be stored in the first
@@ -50,10 +50,10 @@ abundances <- c(10, 10, 5, 5, 5, 5,
                 10, 10, 10, 10, 5, 5,
                 1, 2, 3, 4)
 
-data <- new_dataset("my_data")
+data <- strollur::new_dataset("my_data")
 
 
-assign(data = data,
+strollur::assign(data,
        table = data.frame(sequence_name = sequence_names,
                           abundance = abundances,
                           sample = samples),
@@ -64,7 +64,8 @@ assign(data = data,
 
 seqs_to_merge <- c("seq1", "seq2", "seq3")
 
-xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
+strollur::xdev_merge_sequences(data,
+                                 sequence_names = seqs_to_merge)
 #> my_data:
 #> 
 #> 
@@ -81,7 +82,8 @@ xdev_merge_sequences(data = data, sequence_names = seqs_to_merge)
 # If you look at the scrap report, you will see the second two sequence
 # names, listed with the trash code set to "merged".
 
-report(data = data, type = "sequence_scrap")
+strollur::report(data,
+                   type = "sequence_scrap")
 #>   sequence_name trash_code
 #> 1          seq2     merged
 #> 2          seq3     merged
@@ -89,6 +91,7 @@ report(data = data, type = "sequence_scrap")
 # You can see from the get_num_sequences function that the merged sequence's
 # abundances are added to the first sequence.
 
-count(data = data, type = "sequence")
+strollur::count(data,
+                  type = "sequence")
 #> [1] 100
 ```

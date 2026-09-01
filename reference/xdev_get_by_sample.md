@@ -1,4 +1,4 @@
-# xdev_get_by_sample
+# Get the requested data in a [strollur object](https://mothur.org/strollur/reference/strollur.html) parsed by sample
 
 Get the requested data in a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -17,12 +17,12 @@ xdev_get_by_sample(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- type, :
+- type:
 
   string containing the type of data you want the totals of. Options
   include: "sequence_name", "sequence". Default = "sequence_name".
@@ -34,19 +34,19 @@ xdev_get_by_sample(
 
 - degap:
 
-  a logical. Default = FALSE. When degap = \`TRUE\`, all gap characters
+  a logical. Default = FALSE. When degap = `TRUE`, all gap characters
   will be removed from the sequences.
 
 ## Value
 
-2D vector of strings (\[num_seqs\]\[num_samples\]) containing data
-requested parsed by sample.
+2D vector of strings num_seqs x num_samples containing data requested
+parsed by sample.
 
 ## Examples
 
 ``` r
 
-data <- miseq_sop_example()
+data <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -54,6 +54,7 @@ data <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -61,7 +62,8 @@ data <- miseq_sop_example()
 #> Added a contigs_report report.
 
 # To get the sequence names parsed by sample
-xdev_get_by_sample(data, "sequence_name")
+strollur::xdev_get_by_sample(data,
+                               type = "sequence_name")
 #> [[1]]
 #>   [1] "M00967_43_000000000-A3JHG_1_2103_25452_6018" 
 #>   [2] "M00967_43_000000000-A3JHG_1_1109_13330_21597"
@@ -5641,5 +5643,6 @@ xdev_get_by_sample(data, "sequence_name")
 #> 
 
 # To get the sequence nucleotide strings parsed by sample
-parsed_sequences <- xdev_get_by_sample(data, "sequence")
+parsed_sequences <- strollur::xdev_get_by_sample(data,
+                                         type = "sequence")
 ```

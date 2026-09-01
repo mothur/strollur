@@ -1,4 +1,4 @@
-# xdev_remove_samples
+# Remove samples from a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Designed with package integration in mind, the remove samples function
 allows you to remove samples from a
@@ -12,12 +12,12 @@ xdev_remove_samples(data, samples, reason = "remove_samples")
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object.
 
-- samples, :
+- samples:
 
   vector of strings containing the names of the samples to remove.
 
@@ -34,7 +34,7 @@ an updated
 
 ``` r
 
-data <- miseq_sop_example()
+data <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -42,18 +42,20 @@ data <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
 
-count(data = data, type = "sample")
+strollur::count(data, type = "sample")
 #> [1] 19
 
 # To remove samples 'F3D0' and 'F3D1'
 
-xdev_remove_samples(data, c("F3D0", "F3D1"))
+strollur::xdev_remove_samples(data,
+                               samples = c("F3D0", "F3D1"))
 #> miseq_sop:
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
@@ -89,6 +91,6 @@ xdev_remove_samples(data, c("F3D0", "F3D1"))
 #> Total number of custom reports: 2 
 #> 
 
-count(data = data, type = "sample")
+strollur::count(data, type = "sample")
 #> [1] 17
 ```

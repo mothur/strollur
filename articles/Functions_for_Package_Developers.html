@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,16 +97,8 @@ use, and not for the general user.</p>
 <p>The <code>strollur</code> object is an R6 object to keep the memory
 usage low. An R6 class is inherently passed by reference rather than by
 value. You can make a deep copy of your dataset using the
-<code><a href="../reference/copy_dataset.html">copy_dataset()</a></code> function. Note, if you use an assignment
-operator to copy it’s a shallow copy.</p>
-<p>The <code>strollur</code> object has several public fields, but I’d
-like to bring special attention to the <em>data</em> field.
-<em>data</em> is an Rcpp external pointer (safe pointer) to ‘Dataset’
-c++ class (class definitions found in stroller.h). This format allows
-package developers an easy access point to the underlying C++ code with
-additional functionality. While many of the most frequently used
-functions have exported Rcpp functions, you can also write your own
-functions to access any public function in the ‘Dataset’ class.</p>
+<code><a href="../reference/copy_dataset.html">strollur::copy_dataset()</a></code> function. Note, if you use an
+assignment operator to copy it’s a shallow copy.</p>
 </div>
 <div class="section level3">
 <h3 id="setting-functions">Setting functions<a class="anchor" aria-label="anchor" href="#setting-functions"></a>
@@ -115,9 +107,9 @@ functions to access any public function in the ‘Dataset’ class.</p>
 abundances of sequences, modify sequence nucleotide strings due to
 alignment, screening or filtering, and change the data set name. Let’s
 take a close look at functions you will need to do so using the
-<code><a href="../reference/miseq_sop_example.html">miseq_sop_example()</a></code> data set.</p>
+<code><a href="../reference/miseq_sop_example.html">strollur::miseq_sop_example()</a></code> data set.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
@@ -125,6 +117,7 @@ take a close look at functions you will need to do so using the
 <span><span class="co">#&gt; Assigned 2425 asv bins.</span></span>
 <span><span class="co">#&gt; Assigned 63 phylotype bins.</span></span>
 <span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
+<span><span class="co">#&gt; Assigned 171 samples distances.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
 <span><span class="co">#&gt; Added a metadata report.</span></span>
@@ -161,12 +154,12 @@ take a close look at functions you will need to do so using the
 <h4 id="setting-the-dataset-name">Setting the dataset name<a class="anchor" aria-label="anchor" href="#setting-the-dataset-name"></a>
 </h4>
 <p>To change the data set name you can use the
-<code><a href="../reference/xdev_set_dataset_name.html">xdev_set_dataset_name()</a></code> function.</p>
+<code><a href="../reference/xdev_set_dataset_name.html">strollur::xdev_set_dataset_name()</a></code> function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "miseq_sop"</span></span>
-<span><span class="fu"><a href="../reference/xdev_set_dataset_name.html">xdev_set_dataset_name</a></span><span class="op">(</span><span class="va">miseq</span>, dataset_name <span class="op">=</span> <span class="st">"modified_miseq"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_set_dataset_name.html">xdev_set_dataset_name</a></span><span class="op">(</span><span class="va">miseq</span>, dataset_name <span class="op">=</span> <span class="st">"modified_miseq"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "modified_miseq"</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -177,7 +170,7 @@ but for the sake of example let’s set the nucleotide strings of
 sequences <em>exclusive</em> to sample ‘F3D0’ to ‘NNNN’. First we will
 get the names of the sequences only present in sample ‘F3D0’.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">f3d0_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">f3d0_names</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
@@ -187,16 +180,17 @@ get the names of the sequences only present in sample ‘F3D0’.</p>
 <span><span class="co">#&gt; [1] 101</span></span></code></pre></div>
 <p>Now we will assign nucleotide strings of the sequences
 <em>exclusive</em> to sample ‘F3D0’ to ‘NNNN’. Then we can use the
-<code><a href="../reference/xdev_get_by_sample.html">xdev_get_by_sample()</a></code> get all the sequences in present in
-sample ‘F3D0’ for closer inspection.</p>
+<code><a href="../reference/xdev_get_by_sample.html">strollur::xdev_get_by_sample()</a></code> get all the sequences in
+present in sample ‘F3D0’ for closer inspection.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nnnn_neucleotides</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"NNNN"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">f3d0_names</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">comments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"example_set_sequences"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">f3d0_names</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/xdev_set_sequences.html">xdev_set_sequences</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_set_sequences.html">xdev_set_sequences</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  sequence_names <span class="op">=</span> <span class="va">f3d0_names</span>,</span>
-<span>  sequences <span class="op">=</span> <span class="va">nnnn_neucleotides</span>, comments <span class="op">=</span> <span class="va">comments</span></span>
+<span>  sequences <span class="op">=</span> <span class="va">nnnn_neucleotides</span>,</span>
+<span>  comments <span class="op">=</span> <span class="va">comments</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; modified_miseq:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -225,9 +219,10 @@ sample ‘F3D0’ for closer inspection.</p>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
 <span><span class="co">#&gt; Total number of custom reports: 2</span></span>
 <span></span>
-<span><span class="va">f3d0_sequences</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/xdev_get_by_sample.html">xdev_get_by_sample</a></span><span class="op">(</span></span>
+<span><span class="va">f3d0_sequences</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_get_by_sample.html">xdev_get_by_sample</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequence"</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span></span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
+<span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">f3d0_sequences</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">300</span><span class="op">:</span><span class="fl">305</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-T-TA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-GC-C-C-AA-AG--CT-C-AA-C-T-T-C-G-G-G-ACT-G-C-TTTT-GAAAC-TG-T-GTAAC-TAGA-GT-GC-AG-GA-G-G---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGC-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG"</span></span>
@@ -241,22 +236,24 @@ sample ‘F3D0’ for closer inspection.</p>
 <h4 id="setting-sequence-abundances">Setting sequence abundances<a class="anchor" aria-label="anchor" href="#setting-sequence-abundances"></a>
 </h4>
 <p>Now that we know how to set sequence strings, let’s learn how to set
-sequence abundances. In most cases you can use the <code><a href="../reference/assign.html">assign()</a></code>
-function to set sequence abundances, but there may be cases where you
-want more flexibility. The assign function requires abundances to be
-provided for each sequence. If you only need to update a subset of the
-sequences, there are two functions to that allow you to do that,
-<code><a href="../reference/xdev_set_abundances.html">xdev_set_abundances()</a></code> and
-<code><a href="../reference/xdev_set_abundance.html">xdev_set_abundance()</a></code>. <em>xdev_set_abundances</em> is used
-with data sets that include samples, <em>xdev_set_abundance</em> is used
-for data sets without samples. Let’s set the abundances of all sequences
+sequence abundances. In most cases you can use the
+<code><a href="../reference/assign.html">strollur::assign()</a></code> function to set sequence abundances, but
+there may be cases where you want more flexibility. The assign function
+requires abundances to be provided for each sequence. If you only need
+to update a subset of the sequences, there are two functions to that
+allow you to do that, <code><a href="../reference/xdev_set_abundances.html">strollur::xdev_set_abundances()</a></code> and
+<code><a href="../reference/xdev_set_abundance.html">strollur::xdev_set_abundance()</a></code>.
+<em>strollur::xdev_set_abundances</em> is used with data sets that
+include samples, <em>strollur::xdev_set_abundance</em> is used for data
+sets without samples. Let’s set the abundances of all sequences
 <em>exclusive</em> to sample F3D0 to 0, in essence removing them. First
 we will get the abundance table for the whole data set and create the
-inputs for <code><a href="../reference/xdev_set_abundances.html">xdev_set_abundances()</a></code>.</p>
+inputs for <code><a href="../reference/xdev_set_abundances.html">strollur::xdev_set_abundances()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"sequence"</span>, by_sample <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
+<span>  by_sample <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">abundance_table</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                   sequence_name abundance sample treatment</span></span>
@@ -271,10 +268,10 @@ inputs for <code><a href="../reference/xdev_set_abundances.html">xdev_set_abunda
 <span><span class="co">#&gt; 9  M00967_43_000000000-A3JHG_1_1108_14299_17220        12 F3D148      Late</span></span>
 <span><span class="co">#&gt; 10 M00967_43_000000000-A3JHG_1_1108_14299_17220         9 F3D149      Late</span></span>
 <span></span>
-<span><span class="va">num_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
+<span><span class="va">num_samples</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="va">new_abunds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">num_samples</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">f3d0_names</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/xdev_set_abundances.html">xdev_set_abundances</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_set_abundances.html">xdev_set_abundances</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  sequence_names <span class="op">=</span> <span class="va">f3d0_names</span>,</span>
 <span>  abundances <span class="op">=</span> <span class="va">new_abunds</span>,</span>
@@ -349,9 +346,10 @@ inputs for <code><a href="../reference/xdev_set_abundances.html">xdev_set_abunda
 <span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>You can see that not all of the sequences in ‘F3D0’ are removed. That
 is because the majority of sequences in the data set are present in
-multiple samples. mothur2 uses xdev_set_abundances when running the
-pre_cluster() function, sequences are clustered by sample, and the
-abundances are set accordingly.</p>
+multiple samples. <code>mothur2</code> uses
+<code><a href="../reference/xdev_set_abundances.html">strollur::xdev_set_abundances</a></code> when running the
+<code>mothur2::pre_cluster()</code> function, sequences are clustered by
+sample, and the abundances are set accordingly.</p>
 </div>
 </div>
 <div class="section level3">
@@ -360,29 +358,32 @@ abundances are set accordingly.</p>
 <p>In the course of analyzing your data, there may be times when you
 want to merge sequence abundances. When sequence nucleotide string are
 identical you can save time processing by merging the identical read’s
-abundances. mothur2 merges sequences abundances in the unique_seqs
-function. The miseq example includes merged sequences that have been
-assigned to bins. In practice, you would would not merge sequences after
-assigning them to bins. Note, the code below is set to ‘eval=FALSE’
-because you can only merge sequences assigned to the same bin and it
-will throw errors accordingly. Let’s take a look at how to use the
-<code><a href="../reference/xdev_merge_sequences.html">xdev_merge_sequences()</a></code> function for your reference.</p>
+abundances. <code>mothur2</code> merges sequences abundances in the
+<code>mothur2::unique_seqs()</code> function. The miseq example includes
+merged sequences that have been assigned to bins. In practice, you would
+would not merge sequences after assigning them to bins. Note, the code
+below is set to ‘eval=FALSE’ because you can only merge sequences
+assigned to the same bin and it will throw errors accordingly. Let’s
+take a look at how to use the
+<code><a href="../reference/xdev_merge_sequences.html">strollur::xdev_merge_sequences()</a></code> function for your
+reference.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">random_sequence_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">random_sequence_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/xdev_merge_sequences.html">xdev_merge_sequences</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_merge_sequences.html">xdev_merge_sequences</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  sequence_names <span class="op">=</span> <span class="va">random_sequence_names</span>,</span>
 <span>  reason <span class="op">=</span> <span class="st">"merge_sequences_example"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Similarly, you may want to merge bins and the
-<code><a href="../reference/xdev_merge_bins.html">xdev_merge_bins()</a></code> function will allow you to do so. For
-this example we will randomly select 100 ‘otu’ bins to merge.</p>
+<code><a href="../reference/xdev_merge_bins.html">strollur::xdev_merge_bins()</a></code> function will allow you to do
+so. For this example we will randomly select 100 ‘otu’ bins to
+merge.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">random_bin_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<span>  <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>    <span class="va">miseq</span>,</span>
 <span>    type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>    bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
@@ -390,7 +391,7 @@ this example we will randomly select 100 ‘otu’ bins to merge.</p>
 <span>  size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/xdev_merge_bins.html">xdev_merge_bins</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_merge_bins.html">xdev_merge_bins</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  bin_names <span class="op">=</span> <span class="va">random_bin_names</span>,</span>
 <span>  reason <span class="op">=</span> <span class="st">"merge_bins_example"</span>,</span>
@@ -473,25 +474,27 @@ sequences remain the same but the number of otu bins is reduced by
 <h3 id="removing-functions">Removing Functions<a class="anchor" aria-label="anchor" href="#removing-functions"></a>
 </h3>
 <p>Over the course of your analysis, you may want to remove sequences,
-bins, samples or contaminants. strollur has several functions to help
-with that, namely <code><a href="../reference/xdev_remove_sequences.html">xdev_remove_sequences()</a></code>,
-<code><a href="../reference/xdev_remove_bins.html">xdev_remove_bins()</a></code>, <code><a href="../reference/xdev_remove_samples.html">xdev_remove_samples()</a></code>, and
-<code><a href="../reference/xdev_remove_lineages.html">xdev_remove_lineages()</a></code>.</p>
+bins, samples or contaminants. <code>strollur</code> has several
+functions to help with that, namely
+<code><a href="../reference/xdev_remove_sequences.html">strollur::xdev_remove_sequences()</a></code>,
+<code><a href="../reference/xdev_remove_bins.html">strollur::xdev_remove_bins()</a></code>,
+<code><a href="../reference/xdev_remove_samples.html">strollur::xdev_remove_samples()</a></code>, and
+<code><a href="../reference/xdev_remove_lineages.html">strollur::xdev_remove_lineages()</a></code>.</p>
 <div class="section level4">
 <h4 id="removing-sequences">Removing Sequences<a class="anchor" aria-label="anchor" href="#removing-sequences"></a>
 </h4>
 <p>There are several reasons you may want to remove sequences including
 removing chimeras, removing sequence without good overlap and removing
-sequences with ambiguous bases. The <code><a href="../reference/xdev_remove_sequences.html">xdev_remove_sequences()</a></code>
-function allows you to easily do that. The
-<code><a href="../reference/miseq_sop_example.html">miseq_sop_example()</a></code> has already been screened for chimeras,
-overlap, sequence length and ambiguous bases, so let’s randomly select
-100 sequences to remove.</p>
+sequences with ambiguous bases. The
+<code><a href="../reference/xdev_remove_sequences.html">strollur::xdev_remove_sequences()</a></code> function allows you to
+easily do that. The <code><a href="../reference/miseq_sop_example.html">strollur::miseq_sop_example()</a></code> has
+already been screened for chimeras, overlap, sequence length and
+ambiguous bases, so let’s randomly select 100 sequences to remove.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">random_sequence_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">random_sequence_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/xdev_remove_sequences.html">xdev_remove_sequences</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_remove_sequences.html">xdev_remove_sequences</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  sequence_names <span class="op">=</span> <span class="va">random_sequence_names</span>,</span>
 <span>  trash_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"remove_sequences_example"</span>, <span class="fl">100</span><span class="op">)</span></span>
@@ -580,18 +583,18 @@ overlap, sequence length and ambiguous bases, so let’s randomly select
 <h4 id="removing-bins">Removing Bins<a class="anchor" aria-label="anchor" href="#removing-bins"></a>
 </h4>
 <p>Similarly, lets randomly select and remove 10 phylotype bins with the
-<code><a href="../reference/xdev_remove_bins.html">xdev_remove_bins()</a></code> function. Note, removing the bins also
-removes sequences. The removal of the sequences from the data set also
-effects the bins in the ‘otu’ and ‘asv’ clusters.</p>
+<code><a href="../reference/xdev_remove_bins.html">strollur::xdev_remove_bins()</a></code> function. Note, removing the
+bins also removes sequences. The removal of the sequences from the data
+set also effects the bins in the ‘otu’ and ‘asv’ clusters.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">random_bin_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<span>  <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>    <span class="va">miseq</span>,</span>
 <span>    type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  size <span class="op">=</span> <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/xdev_remove_bins.html">xdev_remove_bins</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_remove_bins.html">xdev_remove_bins</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  bin_names <span class="op">=</span> <span class="va">random_bin_names</span>,</span>
 <span>  trash_tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"remove_bins_example"</span>, <span class="fl">10</span><span class="op">)</span>,</span>
@@ -692,11 +695,11 @@ removed 134 bins and the ‘asv’ cluster removed 851 bins.</p>
 </h4>
 <p>If you included a mock community in your data set, you will want to
 remove it after assessing your error rates in preparation for the rest
-of your analysis. The <code><a href="../reference/miseq_sop_example.html">miseq_sop_example()</a></code> already has the
-mock community removed so for the sake of example we will remove sample
-‘F3D142’.</p>
+of your analysis. The <code><a href="../reference/miseq_sop_example.html">strollur::miseq_sop_example()</a></code> already
+has the mock community removed so for the sake of example we will remove
+sample ‘F3D142’.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/xdev_remove_samples.html">xdev_remove_samples</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_remove_samples.html">xdev_remove_samples</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D142"</span><span class="op">)</span>, reason <span class="op">=</span> <span class="st">"remove_samples_example"</span></span>
 <span><span class="op">)</span></span>
@@ -794,10 +797,10 @@ mock community removed so for the sake of example we will remove sample
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
 <span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>Lastly, we can remove contaminants from the data set using the
-<code><a href="../reference/xdev_remove_lineages.html">xdev_remove_lineages()</a></code> function. The miseq example has
-already had the contaminants removed after classification and before bin
-assignment. For the sake of example we will remove all sequences
-assigned to
+<code><a href="../reference/xdev_remove_lineages.html">strollur::xdev_remove_lineages()</a></code> function. The miseq
+example has already had the contaminants removed after classification
+and before bin assignment. For the sake of example we will remove all
+sequences assigned to
 ‘Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;’.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bad_tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
@@ -805,7 +808,7 @@ assigned to
 <span>  <span class="st">"Clostridiales_unclassified;"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/xdev_remove_lineages.html">xdev_remove_lineages</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/xdev_remove_lineages.html">xdev_remove_lineages</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  contaminants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">bad_tax</span><span class="op">)</span>,</span>
 <span>  reason <span class="op">=</span> <span class="st">"remove_contaminants_example"</span></span>

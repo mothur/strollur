@@ -9,7 +9,7 @@ strollur object"><meta property="og:image" content="https://mothur.org/strollur/
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,23 +66,23 @@ strollur object"><meta property="og:image" content="https://mothur.org/strollur/
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-data-">data, <a class="anchor" aria-label="anchor" href="#arg-data-"></a></dt>
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>a
 <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</p></dd>
 
 
-<dt id="arg-type-">type, <a class="anchor" aria-label="anchor" href="#arg-type-"></a></dt>
+<dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>string containing the type of data you want the number of.
 Options include: "sequence", "report" and "scrap". Default = "sequence".</p></dd>
 
 
-<dt id="arg-report-type-">report_type, <a class="anchor" aria-label="anchor" href="#arg-report-type-"></a></dt>
+<dt id="arg-report-type">report_type<a class="anchor" aria-label="anchor" href="#arg-report-type"></a></dt>
 <dd><p>string containing the report type you would summarized.
 For example, the miseq_sop_example includes contigs assembly data and can be
 accessed with report_type = "contigs_report". Default = NULL.</p></dd>
 
 
-<dt id="arg-verbose-">verbose, <a class="anchor" aria-label="anchor" href="#arg-verbose-"></a></dt>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>boolean indicating whether or not you want progress messages.
 Default = TRUE.</p></dd>
 
@@ -95,7 +95,7 @@ Default = TRUE.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added 2425 sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence abundances.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 sequence taxonomies.</span>
@@ -103,6 +103,7 @@ Default = TRUE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 2425 asv bins.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 63 phylotype bins.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 19 samples to treatments.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 171 samples distances.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin taxonomies.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Assigned 531 otu bin representative sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a metadata report.</span>
@@ -110,7 +111,7 @@ Default = TRUE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Added a contigs_report report.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the summary of your FASTA data</span></span></span>
-<span class="r-in"><span><span class="fu">summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu">summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends   nbases ambigs polymers numns   numseqs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375 249.0000      0 3.000000     0      1.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2850.05</span>
@@ -131,7 +132,8 @@ Default = TRUE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mean:            1  375 252.7406      0 4.496082     0  56982.00</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># summarize contigs_report</span></span></span>
-<span class="r-in"><span><span class="fu">summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span>, report_type <span class="op">=</span> <span class="st">"contigs_report"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu">summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>,</span></span>
+<span class="r-in"><span>                  type <span class="op">=</span> <span class="st">"report"</span>, report_type <span class="op">=</span> <span class="st">"contigs_report"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:    250.0000       232.0000      0.000000    248.0000   0.000000      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:  252.0000       246.0000      1.000000    250.0000   0.000000      0</span>
@@ -170,7 +172,7 @@ Default = TRUE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mean:          0.0738509482</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># remove sample 'F3D0' to produce a scrap report</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="xdev_remove_samples.html">xdev_remove_samples</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="xdev_remove_samples.html">xdev_remove_samples</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> miseq_sop:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends nbases ambigs polymers numns   numseqs</span>
@@ -207,7 +209,7 @@ Default = TRUE.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># summarize FASTA data after removal of sample F3D0</span></span></span>
-<span class="r-in"><span><span class="fu">summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu">summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             starts ends   nbases ambigs polymers numns    numseqs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Minimum:         1  375 249.0000      0 3.000000     0      1.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2695.275</span>
@@ -229,7 +231,7 @@ Default = TRUE.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># summarize scrapped data -</span></span></span>
 <span class="r-in"><span><span class="co"># sequences and bins scrapped by removing the sample "F3D0"</span></span></span>
-<span class="r-in"><span><span class="fu">summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"scrap"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu">summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"scrap"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        type     trash_code unique total</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  sequence remove_samples    101   109</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       otu remove_samples     14    14</span>

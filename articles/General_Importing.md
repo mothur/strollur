@@ -1,9 +1,9 @@
 # General Importing
 
-The strollur package stores data associated with your Amplicon Sequence
-analysis. This tutorial will familiarize you some of with the functions
-available in the strollur package. If you haven’t reviewed the “Getting
-Started” tutorial, we recommend you start there.
+The `strollur` package stores data associated with your Amplicon
+Sequence analysis. This tutorial will familiarize you some of with the
+functions available in the `strollur` package. If you haven’t reviewed
+the “Getting Started” tutorial, we recommend you start there.
 
 ## Creating a new dataset
 
@@ -11,7 +11,7 @@ First let’s create an empty data set named my_data.
 
 ``` r
 
-data <- new_dataset(dataset_name = "my_data")
+data <- strollur::new_dataset(dataset_name = "my_data")
 ```
 
 ## Importing Data
@@ -19,26 +19,27 @@ data <- new_dataset(dataset_name = "my_data")
 The *strollur* package includes two functions to allow you to add
 sequence data.
 
-[`add()`](https://mothur.org/strollur/reference/add.md) - The add
-function allows you to add sequences, reports, metadata, and resource
-references to your data set.
+[`strollur::add()`](https://mothur.org/strollur/reference/add.md) - The
+add function allows you to add sequences, reports, metadata, and
+resource references to your data set.
 
-[`assign()`](https://mothur.org/strollur/reference/assign.md) - The
-assign function allows assign sequence abundances, sequence
+[`strollur::assign()`](https://mothur.org/strollur/reference/assign.md) -
+The assign function allows assign sequence abundances, sequence
 classifications, bins, bin representative sequences, bin
 classifications, samples and treatments to your data set.
 
-### add
+### strollur::add
 
-The add function allows you to add sequences, reports, metadata, and
+The [`strollur::add()`](https://mothur.org/strollur/reference/add.md)
+function allows you to add sequences, reports, metadata, trees and
 resource references to your data set.
 
 #### Adding FASTA sequences
 
 First, let’s add some
 [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data.
-strollur has a function for reading FASTA files named
-[`read_fasta()`](https://mothur.org/strollur/reference/read_fasta.md).
+`strollur` has a function for reading FASTA files named
+[`strollur::read_fasta()`](https://mothur.org/strollur/reference/read_fasta.md).
 We will use it to read the sequence data into a data.frame.
 
 ``` r
@@ -49,7 +50,7 @@ str(fasta_data)
 #>  $ sequence_name: chr  "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...
 #>  $ sequence     : chr  "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-"| __truncated__ "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--TCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-G-CT-G-T-T-AA-G-T-"| __truncated__ ...
 
-add(
+strollur::add(
   data,
   table = fasta_data,
   type = "sequence"
@@ -73,22 +74,23 @@ data
 ```
 
 If you want to include a resource reference about your fasta data you
-can use the `new_reference` function and the reference parameter.
-strollur does not allow you to add sequences with the same name, so
-let’s use the
-[`clear()`](https://mothur.org/strollur/reference/clear.md) function to
-remove all data from our data set.
+can use the
+[`strollur::new_reference`](https://mothur.org/strollur/reference/new_reference.md)
+function and the reference parameter. strollur does not allow you to add
+sequences with the same name, so let’s use the
+[`strollur::clear()`](https://mothur.org/strollur/reference/clear.md)
+function to remove all data from our data set.
 
 ``` r
 
-clear(data)
+strollur::clear(data)
 #> 
 #> Total number of seqs: 0
 
 documentation_url <- "https://mothur.org/wiki/silva_reference_files/"
 method_url <- "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"
 
-silva_resource <- new_reference(
+silva_resource <- strollur::new_reference(
   vendor = "SILVA",
   name = "silva.bacteria.fasta",
   version = "1.38.1",
@@ -98,7 +100,7 @@ silva_resource <- new_reference(
   method_url = method_url
 )
 
-add(
+strollur::add(
   data,
   table = fasta_data,
   type = "sequence",
@@ -127,7 +129,7 @@ data
 
 You may want to add custom reports to your data set such as an contigs
 assembly report, chimera report or alignment report. You can do so by
-setting type = “report”. You must also provide a report_type.
+setting `type = report`. You must also provide a report_type.
 
 This is also a good time to explain what the table_names parameter does
 for you. strollur expects the columns in custom reports to have specific
@@ -138,7 +140,7 @@ will see an error like that below.
 
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
-add(
+strollur::add(
   data,
   table = contigs_report,
   type = "report",
@@ -146,9 +148,9 @@ add(
 )
 
 # Error: The report must include a column containing sequence names.
-# sequence_names is not a named column in your report.
+# sequence_name is not a named column in your report.
 
-# Called from: xdev_add_report(data, table = table, type = report_type,
+# Called from: strollur::xdev_add_report(data, table = table, type = report_type,
 #    sequence_name = table_names[["sequence_name"]], verbose)
 ```
 
@@ -183,7 +185,7 @@ str(contigs_report)
 #>   .. )
 #>  - attr(*, "problems")=<pointer: (nil)>
 
-add(
+strollur::add(
   data,
   table = contigs_report,
   type = "report",
@@ -209,11 +211,15 @@ data
 #> Total number of custom reports: 1
 ```
 
+Note, when a report is tied to sequence names the report will be
+filtered to remove any sequences removed from the dataset.
+
 #### Adding Metadata
 
 Now that we have added our custom contigs assembly report, let’s learn
 how to add reports not tied to sequence names. We can add metadata to
-our data set by setting the type = “report”, report_type = “metadata”.
+our data set by setting the `type = report` and
+`report_type = metadata`.
 
 ``` r
 
@@ -229,7 +235,7 @@ str(metadata)
 #>   .. )
 #>  - attr(*, "problems")=<pointer: (nil)>
 
-add(
+strollur::add(
   data,
   table = metadata,
   type = "report",
@@ -241,7 +247,7 @@ add(
 #### Adding Resource References
 
 We can add additional resource references to our data set by setting the
-type = “resource_reference”.
+`type = resource_reference`.
 
 ``` r
 
@@ -249,7 +255,7 @@ reference <- readr::read_csv(strollur_example("references.csv"),
   col_names = TRUE, show_col_types = FALSE
 )
 
-add(
+strollur::add(
   data,
   table = reference,
   type = "resource_reference"
@@ -260,9 +266,40 @@ add(
 #> Added 1 resource references.
 ```
 
-### assign
+#### Adding Trees
 
-The [`assign()`](https://mothur.org/strollur/reference/assign.md)
+Lastly, strollur allows you to add trees that relate your samples or
+sequences. Let’s look at some examples together.
+
+``` r
+
+sample_tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
+sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
+
+strollur::add(data, table = sample_tree, type = "sample_tree")
+#> → Your dataset does not contain sample data, ignoring sample tree.
+strollur::add(data, table = sequence_tree, type = "sequence_tree")
+
+#| fig.alt: >
+#|   Plot of Miseq_SOP's sample relationship tree
+old_par <- par(bg = "white")
+ape::plot.phylo(sample_tree,
+  no.margin = TRUE,
+  cex = 0.5, edge.color = "maroon", tip.color = "navy"
+)
+```
+
+![](General_Importing_files/figure-html/unnamed-chunk-9-1.png)
+
+``` r
+
+par(old_par)
+```
+
+### strollur::assign
+
+The
+[`strollur::assign()`](https://mothur.org/strollur/reference/assign.md)
 function allows assign sequence abundances, sequence classifications,
 bins, bin representative sequences, bin classifications, samples and
 treatments to your data set.
@@ -270,7 +307,7 @@ treatments to your data set.
 #### Assigning Abundances
 
 After adding your FASTA sequences, you can assign abundance and sample
-data using the assign function with the type = “sequence_abundance”.
+data using the assign function with the `type = sequence_abundance`.
 
 ``` r
 
@@ -290,7 +327,7 @@ str(abundance_table)
 #>   .. )
 #>  - attr(*, "problems")=<pointer: (nil)>
 
-assign(data, table = abundance_table, type = "sequence_abundance")
+strollur::assign(data, table = abundance_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
 
 data
@@ -316,12 +353,12 @@ data
 #### Assigning Bins
 
 As you can see we now have abundances, samples and treatments added to
-the data set. Next, let’s assign the sequences to bins using type =
-“bin”. When you assign sequences to bins you must provide a *bin_type*.
-The bin_type is a tag of your choosing used to reference the bin
-clusters you are adding. Let’s add some [Operational Taxonomic
+the data set. Next, let’s assign the sequences to bins using
+`type = bin`. When you assign sequences to bins you must provide a
+*bin_type*. The bin_type is a tag of your choosing used to reference the
+bin clusters you are adding. Let’s add some [Operational Taxonomic
 Unit](https://en.wikipedia.org/wiki/Operational_taxonomic_unit) clusters
-and set the bin_type = “otu”.
+and set the `bin_type = otu`.
 
 ``` r
 
@@ -337,7 +374,7 @@ str(bin_table)
 #>   .. )
 #>  - attr(*, "problems")=<pointer: (nil)>
 
-assign(data, table = bin_table, type = "bin", bin_type = "otu")
+strollur::assign(data, table = bin_table, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
 
 data
@@ -377,7 +414,7 @@ to our sequences.
 
 ``` r
 
-sequence_classification_data <- read_mothur_taxonomy(
+sequence_classification_data <- strollur::read_mothur_taxonomy(
   taxonomy = strollur_example("final.taxonomy.gz")
 )
 str(sequence_classification_data)
@@ -390,7 +427,7 @@ str(sequence_classification_data)
 #>   ..   X2 = col_character()
 #>   .. )
 
-assign(
+strollur::assign(
   data,
   table = sequence_classification_data,
   type = "sequence_taxonomy"
@@ -401,11 +438,11 @@ assign(
 Note, when you assign taxonomy to sequences that are assigned to bins,
 strollur will automatically assign the bin taxonomies to be the
 consensus taxonomy of the sequences in the bins. You can also set bin
-taxonomies independently by setting the type = “bin_taxonomy”.
+taxonomies independently by setting the `type = bin_taxonomy`.
 
 ``` r
 
-otu_taxonomy_data <- read_mothur_cons_taxonomy(strollur_example(
+otu_taxonomy_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 str(otu_taxonomy_data)
@@ -420,7 +457,7 @@ str(otu_taxonomy_data)
 #>   ..   Taxonomy = col_character()
 #>   .. )
 
-assign(
+strollur::assign(
   data,
   table = otu_taxonomy_data,
   type = "bin_taxonomy",
@@ -448,7 +485,7 @@ str(bin_reps)
 #>   .. )
 #>  - attr(*, "problems")=<pointer: (nil)>
 
-assign(
+strollur::assign(
   data,
   table = bin_reps,
   type = "bin_representative"
@@ -459,7 +496,7 @@ assign(
 #### Assigning Treatments
 
 In our case the abundance_table included treatment assignments, but you
-can also assign samples to treatments by setting type = “treatment”.
+can also assign samples to treatments by setting `type = treatment`.
 
 ``` r
 
@@ -474,41 +511,12 @@ str(sample_assignments)
 #>   ..   treatments = col_character()
 #>   .. )
 
-assign(
+strollur::assign(
   data,
   table = sample_assignments,
   type = "treatment"
 )
 #> Assigned 19 samples to treatments.
-```
-
-## Sample Trees and Sequence Trees
-
-Lastly, strollur allows you to add tree that relate your samples or
-sequences. Let’s look at some examples together.
-
-``` r
-
-sample_tree <- ape::read.tree(strollur_example("final.opti_mcc.jclass.ave.tre"))
-sequence_tree <- ape::read.tree(strollur_example("final.phylip.tre.gz"))
-
-data$add_sample_tree(sample_tree)
-data$add_sequence_tree(sequence_tree)
-
-#| fig.alt: >
-#|   Plot of Miseq_SOP's sample relationship tree
-old_par <- par(bg = "white")
-ape::plot.phylo(data$get_sample_tree(),
-  no.margin = TRUE,
-  cex = 0.5, edge.color = "maroon", tip.color = "navy"
-)
-```
-
-![](General_Importing_files/figure-html/unnamed-chunk-15-1.png)
-
-``` r
-
-par(old_par)
 ```
 
 Thanks for following along. To learn more about the functions used to

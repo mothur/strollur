@@ -1,4 +1,4 @@
-# xdev_get_sequences
+# Get the nucleotide strings for each sequence in a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Get the nucleotide strings for each sequence in a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -11,19 +11,19 @@ xdev_get_sequences(data, sample = "", degap = FALSE)
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- sample, :
+- sample:
 
   a string containing the name of the sample you would like sequence
   names for. For all samples in dataset, sample = "".
 
-- degap, :
+- degap:
 
-  a logical. Default = FALSE. When degap = \`TRUE\`, all gap characters
+  a logical. Default = FALSE. When degap = `TRUE`, all gap characters
   ('-', '.') will be removed from the sequences.
 
 ## Value
@@ -35,7 +35,7 @@ vector of string containing nucleotide strings of the sequences in a
 
 ``` r
 
- data <- miseq_sop_example()
+ data <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -43,12 +43,13 @@ vector of string containing nucleotide strings of the sequences in a
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
- xdev_get_sequences(data)
+ strollur::xdev_get_sequences(data)
 #>    [1] "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-C-A-G-C-G-G--TA-A-AA-TT-G-A-GA-GG--CT-C-AA-C-C-T-C-T-T-C--CC-G-C-CGTT-GAAAC-TG-A-TTGTC-TTGA-GT-GG-GC-GA-G-A---AG-T-A-TGTGGAATGCGTGGTGT-AGCGGT-GAAATGCATAG-AT-A-TC-AC-GC-AG-AACTCCGAT-TGCGAAGGCA------GCATA-CCG-G-CG-CC-C-A-ACTGACG-CTGA-AGCA-CGAAA-GCG-TGGGT-ATC-GAACAGG"
 #>    [2] "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-AC-C-C-GG-GG--CT-C-AA-C---C-C-TGG-G-AGT-G-C-TTTT-GAAAC-TG-T-GCGGC-TAGA-GT-GT-CG-GA-G-G---GG-T-A-AGTGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCAGT-GGCGAAGGCG------GCTTA-CTG-G-AC-GA-T-G-ACTGACG-CTGA-GGCT-CGAAA-GCG-TGGGT-ATC-GAACAGG"
 #>    [3] "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-C-T-G-A-A-G--TG-A-AA-GC-C-C-GT-GG--CT-C-AA-C-C-G-C-G-G-A-ACC-G-C-TTTG-GAAAC-TG-C-GAGGC-TGGA-GT-GC-TG-GA-G-A---GG-T-A-AGCGGAATTCCTGGTGT-AGCGGT-GAAATGCGTAG-AT-A-TC-AG-GA-GG-AACACCGGT-GGCGAAGGCG------GCTTA-CTG-G-AC-AG-T-G-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-GAACAGG"

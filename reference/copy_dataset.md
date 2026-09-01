@@ -1,4 +1,4 @@
-# copy_dataset
+# Create a new [strollur](https://mothur.org/strollur/reference/strollur.html) object from an existing dataset.
 
 Create a new
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -30,7 +30,7 @@ The 'new' method in the
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -38,6 +38,7 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -46,5 +47,5 @@ miseq <- miseq_sop_example()
 
 # to create a new dataset that is a copy of miseq
 
-data <- copy_dataset(miseq)
+data <- strollur::copy_dataset(miseq)
 ```

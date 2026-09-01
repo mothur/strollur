@@ -1,4 +1,4 @@
-# read_mothur_cons_taxonomy
+# Read a mothur formatted [cons_taxonomy file](https://mothur.org/wiki/constaxonomy_file/)
 
 Read a mothur formatted [cons_taxonomy
 file](https://mothur.org/wiki/constaxonomy_file/)
@@ -31,18 +31,19 @@ taxonomies.
 # using the following:
 
 # read mothur's consensus taxonomy file into a data.frame
-otu_data <- read_mothur_cons_taxonomy(strollur_example(
+otu_data <- strollur::read_mothur_cons_taxonomy(strollur_example(
   "final.cons.taxonomy"
 ))
 
-data <- new_dataset()
+data <- strollur::new_dataset()
 
 # assign abundance only 'otu' bins
-assign(data = data, table = otu_data, type = "bin", bin_type = "otu")
+strollur::assign(data = data, table = otu_data,
+                 type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
 
 # assign consensus taxonomies to 'otu' bins
-assign(
+strollur::assign(
   data = data, table = otu_data,
   type = "bin_taxonomy", bin_type = "otu"
 )

@@ -1,4 +1,4 @@
-# Load strollur object from .rds file
+# Load a [strollur](https://mothur.org/strollur/reference/strollur.html) object from a file.
 
 The load_dataset function will create a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -22,13 +22,13 @@ a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## See also
 
-\[save_dataset()\]
+[`save_dataset()`](https://mothur.org/strollur/reference/save_dataset.md)
 
 ## Examples
 
 ``` r
 
-data <- load_dataset(strollur_example("miseq_sop.rds"))
+data <- strollur::load_dataset(strollur_example("miseq_sop.rds"))
 data
 #> miseq_sop:
 #> 

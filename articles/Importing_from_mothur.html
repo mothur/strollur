@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,15 +85,16 @@
 
     
     
-<p><em>strollur</em> includes the function <code><a href="../reference/read_mothur.html">read_mothur()</a></code> as
-well as several functions to read <a href="https://mothur.org" class="external-link">mothur</a> output files individually. To
-create a data set from the outputs of the <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">Miseq SOP Example</a>, run the
+<p><em>strollur</em> includes the function
+<code><a href="../reference/read_mothur.html">strollur::read_mothur()</a></code> as well as several functions to
+read <a href="https://mothur.org" class="external-link">mothur</a> output files individually.
+To create a data set from the outputs of the <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">Miseq SOP Example</a>, run the
 following:</p>
 <div class="section level2">
-<h2 id="using-read_mothur">Using <code>read_mothur()</code><a class="anchor" aria-label="anchor" href="#using-read_mothur"></a>
+<h2 id="using-strollurread_mothur">Using <code>strollur::read_mothur()</code><a class="anchor" aria-label="anchor" href="#using-strollurread_mothur"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur.html">read_mothur</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur.html">read_mothur</a></span><span class="op">(</span></span>
 <span>  fasta <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span>,</span>
 <span>  count <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.count_table.gz"</span><span class="op">)</span>,</span>
 <span>  taxonomy <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span>,</span>
@@ -144,41 +145,49 @@ following:</p>
 </h2>
 <ul>
 <li>
-<code><a href="../reference/read_fasta.html">read_fasta()</a></code> read a <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a>
+<code><a href="../reference/read_fasta.html">strollur::read_fasta()</a></code> read a <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a>
 formatted sequence file</li>
 <li>
-<code><a href="../reference/read_mothur_count.html">read_mothur_count()</a></code> read a mothur formatted <a href="https://mothur.org/wiki/count_file/" class="external-link">count file</a>
+<code><a href="../reference/read_mothur_count.html">strollur::read_mothur_count()</a></code> read a mothur formatted
+<a href="https://mothur.org/wiki/count_file/" class="external-link">count file</a>
 </li>
 <li>
-<code><a href="../reference/read_mothur_taxonomy.html">read_mothur_taxonomy()</a></code> read a mothur formatted <a href="https://mothur.org/wiki/taxonomy_file/" class="external-link">taxonomy file</a>
-</li>
-<li>
-<code><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy()</a></code> read a mothur formatted <a href="https://mothur.org/wiki/constaxonomy_file/" class="external-link">cons_taxonomy
+<code><a href="../reference/read_mothur_taxonomy.html">strollur::read_mothur_taxonomy()</a></code> read a mothur
+formatted <a href="https://mothur.org/wiki/taxonomy_file/" class="external-link">taxonomy
 file</a>
 </li>
 <li>
-<code><a href="../reference/read_mothur_list.html">read_mothur_list()</a></code> read a mothur formatted <a href="https://mothur.org/wiki/list_file/" class="external-link">list file</a>
+<code><a href="../reference/read_mothur_cons_taxonomy.html">strollur::read_mothur_cons_taxonomy()</a></code> read a mothur
+formatted <a href="https://mothur.org/wiki/constaxonomy_file/" class="external-link">cons_taxonomy
+file</a>
 </li>
 <li>
-<code><a href="../reference/read_mothur_shared.html">read_mothur_shared()</a></code> read a mothur formatted <a href="https://mothur.org/wiki/shared_file/" class="external-link">shared file</a>
+<code><a href="../reference/read_mothur_list.html">strollur::read_mothur_list()</a></code> read a mothur formatted <a href="https://mothur.org/wiki/list_file/" class="external-link">list file</a>
 </li>
 <li>
-<code><a href="../reference/read_mothur_rabund.html">read_mothur_rabund()</a></code> read a mothur formatted <a href="https://mothur.org/wiki/rabund_file/" class="external-link">rabund file</a>
+<code><a href="../reference/read_mothur_shared.html">strollur::read_mothur_shared()</a></code> read a mothur formatted
+<a href="https://mothur.org/wiki/shared_file/" class="external-link">shared file</a>
+</li>
+<li>
+<code><a href="../reference/read_mothur_rabund.html">strollur::read_mothur_rabund()</a></code> read a mothur formatted
+<a href="https://mothur.org/wiki/rabund_file/" class="external-link">rabund file</a>
 </li>
 </ul>
 <p>To create a data set and read the individual file types, you can use
 the functions below. First let’s create a data set named my_data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"my_data"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"my_data"</span><span class="op">)</span></span></code></pre></div>
 <p>To add <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> data
-to your data set you can use the <code><a href="../reference/read_fasta.html">read_fasta()</a></code> function:</p>
+to your data set you can use the <code><a href="../reference/read_fasta.html">strollur::read_fasta()</a></code>
+function:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_fasta.html">read_fasta</a></span><span class="op">(</span>fasta <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>fasta_data is a data.frame containing sequence names, sequence
 nucleotide strings, and comments if provided. You can add the FASTA
-sequences to your data set using the <code><a href="../reference/add.html">add()</a></code> function:</p>
+sequences to your data set using the <code><a href="../reference/add.html">strollur::add()</a></code>
+function:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="va">my_data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
@@ -196,16 +205,16 @@ sequences to your data set using the <code><a href="../reference/add.html">add()
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 2425</span></span></code></pre></div>
 <p>To add your sequence abundance data, you can read a <a href="https://mothur.org/wiki/count_file/" class="external-link">mothur count file</a> file
-using the <code><a href="../reference/read_mothur_count.html">read_mothur_count()</a></code> function:</p>
+using the <code><a href="../reference/read_mothur_count.html">strollur::read_mothur_count()</a></code> function:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sample_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_count.html">read_mothur_count</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">sample_table</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur_count.html">read_mothur_count</a></span><span class="op">(</span></span>
 <span>  filename <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.count_table.gz"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>sample_table is a data.frame containing sequence_names, samples, and
 abundances. You can add the sequence abundance data to your data set
-using the <code><a href="../reference/assign.html">assign()</a></code> function:</p>
+using the <code><a href="../reference/assign.html">strollur::assign()</a></code> function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">sample_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">sample_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
 <span><span class="va">my_data</span></span>
 <span><span class="co">#&gt; my_data:</span></span>
@@ -225,32 +234,40 @@ using the <code><a href="../reference/assign.html">assign()</a></code> function:
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of samples: 19</span></span></code></pre></div>
 <p>To add sequence taxonomy assignments, you can read a <a href="https://mothur.org/wiki/taxonomy_file/" class="external-link">taxonomy file</a> file
-using the <code><a href="../reference/read_mothur_taxonomy.html">read_mothur_taxonomy()</a></code> function:</p>
+using the <code><a href="../reference/read_mothur_taxonomy.html">strollur::read_mothur_taxonomy()</a></code> function:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">classification_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">classification_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span></span>
 <span>  taxonomy <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>classification_data is a data.frame containing sequence names and
 taxonomies. You can add the sequence classification data to your data
 set as follows:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">classification_data</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>,</span>
+<span>  table <span class="op">=</span> <span class="va">classification_data</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span></code></pre></div>
 <p>To assign sequences to bins, you can read a <a href="https://mothur.org/wiki/list_file/" class="external-link">mothur list file</a> file
-using the <code><a href="../reference/read_mothur_list.html">read_mothur_list()</a></code> function:</p>
+using the <code><a href="../reference/read_mothur_list.html">strollur::read_mothur_list()</a></code> function:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">otu_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.list.gz"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">asv_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.asv.list.gz"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">phylotype_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.tx.list.gz"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">otu_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span></span>
+<span>    list <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.list.gz"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">asv_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.asv.list.gz"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">phylotype_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.tx.list.gz"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>otu_data, asv_data and phylotype_data are data.frames containing bin
 names and sequence names. You can add the bin data to your data set as
 follows:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_data</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">asv_data</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">asv_data</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"asv"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 asv bins.</span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">my_data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">phylotype_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"phylotype"</span></span>
@@ -283,10 +300,10 @@ follows:</p>
 <p>When you assign bins to sequences with taxonomic assignments the data
 set object will find the consensus taxonomy of the bins automatically.
 If you wish to assign the bin taxonomy separately, you can read a <a href="https://mothur.org/wiki/constaxonomy_file/" class="external-link">mothur cons_taxonomy
-file</a> file using the <code><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy()</a></code>
-function:</p>
+file</a> file using the
+<code><a href="../reference/read_mothur_cons_taxonomy.html">strollur::read_mothur_cons_taxonomy()</a></code> function:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">otu_taxonomy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">otu_taxonomy_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy</a></span><span class="op">(</span></span>
 <span>  taxonomy <span class="op">=</span></span>
 <span>    <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.cons.taxonomy"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -294,7 +311,7 @@ function:</p>
 and taxonomies. You can add the bin taxonomic data to your data set as
 follows:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_taxonomy_data</span>, type <span class="op">=</span> <span class="st">"bin_taxonomy"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">my_data</span>, table <span class="op">=</span> <span class="va">otu_taxonomy_data</span>, type <span class="op">=</span> <span class="st">"bin_taxonomy"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -302,33 +319,41 @@ follows:</p>
 </h2>
 <ul>
 <li>
-<code><a href="../reference/write_mothur.html">write_mothur()</a></code> write mothur formatted files for all
-data</li>
+<code><a href="../reference/write_mothur.html">strollur::write_mothur()</a></code> write mothur formatted files
+for all data</li>
 <li>
-<code><a href="../reference/write_fasta.html">write_fasta()</a></code> read a <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a>
+<code><a href="../reference/write_fasta.html">strollur::write_fasta()</a></code> read a <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a>
 formatted sequence file</li>
 <li>
-<code><a href="../reference/write_mothur_count.html">write_mothur_count()</a></code> write a mothur formatted <a href="https://mothur.org/wiki/count_file/" class="external-link">count file</a>
+<code><a href="../reference/write_mothur_count.html">strollur::write_mothur_count()</a></code> write a mothur formatted
+<a href="https://mothur.org/wiki/count_file/" class="external-link">count file</a>
 </li>
 <li>
-<code><a href="../reference/write_mothur_design.html">write_mothur_design()</a></code> write a mothur formatted <a href="https://mothur.org/wiki/design_file/" class="external-link">design file</a>
-</li>
-<li>
-<code><a href="../reference/write_taxonomy.html">write_taxonomy()</a></code> write a mothur formatted <a href="https://mothur.org/wiki/taxonomy_file/" class="external-link">taxonomy file</a>
-</li>
-<li>
-<code><a href="../reference/write_mothur_cons_taxonomy.html">write_mothur_cons_taxonomy()</a></code> write a mothur formatted
-<a href="https://mothur.org/wiki/constaxonomy_file/" class="external-link">cons_taxonomy
+<code><a href="../reference/write_mothur_design.html">strollur::write_mothur_design()</a></code> write a mothur
+formatted <a href="https://mothur.org/wiki/design_file/" class="external-link">design
 file</a>
 </li>
 <li>
-<code><a href="../reference/write_mothur_list.html">write_mothur_list()</a></code> write a mothur formatted <a href="https://mothur.org/wiki/list_file/" class="external-link">list file</a>
+<code><a href="../reference/write_taxonomy.html">strollur::write_taxonomy()</a></code> write a mothur formatted <a href="https://mothur.org/wiki/taxonomy_file/" class="external-link">taxonomy file</a>
 </li>
 <li>
-<code><a href="../reference/write_mothur_shared.html">write_mothur_shared()</a></code> write a mothur formatted <a href="https://mothur.org/wiki/shared_file/" class="external-link">shared file</a>
+<code><a href="../reference/write_mothur_cons_taxonomy.html">strollur::write_mothur_cons_taxonomy()</a></code> write a mothur
+formatted <a href="https://mothur.org/wiki/constaxonomy_file/" class="external-link">cons_taxonomy
+file</a>
 </li>
 <li>
-<code><a href="../reference/write_mothur_rabund.html">write_mothur_rabund()</a></code> write a mothur formatted <a href="https://mothur.org/wiki/rabund_file/" class="external-link">rabund file</a>
+<code><a href="../reference/write_mothur_list.html">strollur::write_mothur_list()</a></code> write a mothur formatted
+<a href="https://mothur.org/wiki/list_file/" class="external-link">list file</a>
+</li>
+<li>
+<code><a href="../reference/write_mothur_shared.html">strollur::write_mothur_shared()</a></code> write a mothur
+formatted <a href="https://mothur.org/wiki/shared_file/" class="external-link">shared
+file</a>
+</li>
+<li>
+<code><a href="../reference/write_mothur_rabund.html">strollur::write_mothur_rabund()</a></code> write a mothur
+formatted <a href="https://mothur.org/wiki/rabund_file/" class="external-link">rabund
+file</a>
 </li>
 </ul>
 </div>

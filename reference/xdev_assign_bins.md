@@ -1,4 +1,4 @@
-# xdev_assign_bins
+# Add bin assignments to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Add bin assignments to a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -21,12 +21,12 @@ xdev_assign_bins(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- table, :
+- table:
 
   a data.frame containing bin_data assignments
 
@@ -34,34 +34,36 @@ xdev_assign_bins(
 
   a string indicating the type of bin assignments. Default "otu".
 
-- reference, :
+- reference:
 
-  a list created by the function \[new_reference\]. Optional.
+  a list created by the function
+  [new_reference](https://mothur.org/strollur/reference/new_reference.md).
+  Optional.
 
-- bin_name, :
+- bin_name:
 
   a string containing the name of the column in 'table' that contains
   the bin names. Default column name is 'bin_name'.
 
-- abundance, :
+- abundance:
 
   a string containing the name of the column in 'table' that contains
   the bin abundances. Default column name is 'abundance'. Note: You must
   provide either abundance or sequence_name in the table.
 
-- sample, :
+- sample:
 
   a string containing the name of the column in 'table' that contains
   the sample names for datasets where the abundances are broken down by
   sample. Default column name is 'sample'.
 
-- sequence_name, :
+- sequence_name:
 
   a string containing the name of the column in 'table' that contains
   the sequence names. Default column name is 'sequence_name'. Note: You
   must provide either abundance or sequence_name in the table.
 
-- verbose, :
+- verbose:
 
   a boolean whether or not you want progress messages. Default = TRUE.
 
@@ -76,10 +78,11 @@ an updated
 
   # To assign sequences to bins:
 
-  data <- new_dataset(dataset_name = "miseq_sop")
-  otu_data <- read_mothur_list(list = strollur_example("final.opti_mcc.list.gz"))
+  data <- strollur::new_dataset(dataset_name = "miseq_sop")
+  otu_data <- strollur::read_mothur_list(
+                          list = strollur_example("final.opti_mcc.list.gz"))
 
-  xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+  strollur::xdev_assign_bins(data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
 #> miseq_sop:
 #> 
@@ -92,10 +95,11 @@ an updated
 
   # To add abundance only bin assignments:
 
-  data <- new_dataset(dataset_name = "miseq_sop")
-  otu_data <- read_mothur_rabund(rabund = strollur_example("final.opti_mcc.rabund"))
+  data <- strollur::new_dataset(dataset_name = "miseq_sop")
+  otu_data <- strollur::read_mothur_rabund(
+                         rabund = strollur_example("final.opti_mcc.rabund"))
 
-  xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+  strollur::xdev_assign_bins(data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
 #> miseq_sop:
 #> 
@@ -108,10 +112,10 @@ an updated
 
   # To add abundance bin assignments parsed by sample:
 
-  data <- new_dataset(dataset_name = "miseq_sop")
+  data <- strollur::new_dataset(dataset_name = "miseq_sop")
   otu_data <- readRDS(strollur_example("miseq_shared_otu.rds"))
 
-  xdev_assign_bins(data = data, table = otu_data, bin_type = "otu")
+  strollur::xdev_assign_bins(data, table = otu_data, bin_type = "otu")
 #> Assigned 531 otu bins.
 #> miseq_sop:
 #> 

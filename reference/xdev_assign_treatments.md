@@ -1,4 +1,4 @@
-# xdev_assign_treatments
+# Assign samples to treatments in a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Assign samples to treatments in a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -17,26 +17,26 @@ xdev_assign_treatments(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- table, :
+- table:
 
   a data.frame containing sample treatment assignments
 
-- sample, :
+- sample:
 
   a string containing the name of the column in 'table' that contains
   the samples. Default column name is 'sample'.
 
-- treatment, :
+- treatment:
 
   a string containing the name of the column in 'table' that contains
   the treatments. Default column name is 'treatment'.
 
-- verbose, :
+- verbose:
 
   a boolean indicating whether or not you want progress messages.
   Default = TRUE.
@@ -50,10 +50,11 @@ an updated
 
 ``` r
 
-data <- new_dataset("my_dataset")
-sequence_abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
+data <- strollur::new_dataset("my_dataset")
+abundance <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 
-xdev_assign_sequence_abundance(data, sequence_abundance)
+strollur::xdev_assign_sequence_abundance(data,
+                                           table = abundance)
 #> Assigned 2425 sequence abundances.
 #> my_dataset:
 #> 
@@ -67,7 +68,8 @@ xdev_assign_sequence_abundance(data, sequence_abundance)
 
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
-xdev_assign_treatments(data, sample_assignments)
+strollur::xdev_assign_treatments(data,
+                                   table = sample_assignments)
 #> Assigned 19 samples to treatments.
 #> my_dataset:
 #> 

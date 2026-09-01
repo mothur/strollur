@@ -1,4 +1,4 @@
-# export_dataset
+# Create a human readable table containing all data from a [strollur](https://mothur.org/strollur/reference/strollur.html) object.
 
 Export all data from a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object.
@@ -11,24 +11,24 @@ export_dataset(data)
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
 ## Value
 
-Rcpp::List, containing the data in the 'Dataset
+list, containing the data in the strollur::strollur object
 
 ## Examples
 
 ``` r
 
-dataset <- new_dataset("my_dataset")
-export_dataset(dataset)
+dataset <- strollur::new_dataset("my_dataset")
+strollur::export_dataset(dataset)
 #> named list()
 #> attr(,"strollur_version")
-#> [1] "0.1.1"
+#> [1] "0.1.2"
 #> attr(,"dataset_name")
 #> [1] "my_dataset"
 ```

@@ -1,4 +1,4 @@
-# write_fasta
+# Write a [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) formatted sequence file
 
 Write a [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/)
 formatted sequence file
@@ -13,7 +13,8 @@ write_fasta(data, filename = NULL, degap = FALSE)
 
 - data:
 
-  A \`strollur\` object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - filename:
 
@@ -22,7 +23,7 @@ write_fasta(data, filename = NULL, degap = FALSE)
 
 - degap:
 
-  a logical. Default = FALSE. When degap = \`TRUE\`, all gap characters
+  a logical. Default = FALSE. When `degap = TRUE`, all gap characters
   will be removed from the sequences.
 
 ## Value
@@ -33,7 +34,7 @@ name of FASTA file
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -41,11 +42,12 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
-write_fasta(miseq, tempfile())
-#> [1] "/tmp/RtmpXm5suC/file1b205ac07fe0"
+strollur::write_fasta(miseq, tempfile())
+#> [1] "/tmp/RtmpUVSXMn/file3efd371aca40"
 ```

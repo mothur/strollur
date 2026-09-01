@@ -1,4 +1,4 @@
-# save_dataset
+# Save the [strollur](https://mothur.org/strollur/reference/strollur.html) object to file.
 
 The save_dataset function will save the
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -23,17 +23,19 @@ save_dataset(data, file)
 
 ## Value
 
-A file containing the \`strollur\` object
+A file containing the
+[`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)
+object
 
 ## See also
 
-\[load_dataset()\]
+[`load_dataset()`](https://mothur.org/strollur/reference/load_dataset.md)
 
 ## Examples
 
 ``` r
 
-data <- read_mothur(
+data <- strollur::read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),
   taxonomy = strollur_example("final.taxonomy.gz"),
@@ -48,6 +50,6 @@ data <- read_mothur(
 #> Assigned 19 samples to treatments.
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
-save_dataset(data, file = file_name)
-#> [1] "/tmp/RtmpXm5suC/miseq_sop.rds"
+strollur::save_dataset(data, file = file_name)
+#> [1] "/tmp/RtmpUVSXMn/miseq_sop.rds"
 ```

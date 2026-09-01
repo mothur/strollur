@@ -1,6 +1,6 @@
 # Getting Started
 
-The *strollur* package stores the data associated with your Amplicon
+The `*strollur*` package stores the data associated with your Amplicon
 Sequence analysis. This includes nucleotide sequences, abundance, sample
 and treatment assignments, taxonomic classifications, asv, otu and
 phylotype clusters, metadata, trees and various reports. It is designed

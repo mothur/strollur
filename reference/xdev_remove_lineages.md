@@ -1,4 +1,4 @@
-# xdev_remove_lineages
+# Remove contaminants from a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Designed with package integration in mind, the remove lineages function
 allows you to remove contaminents from a
@@ -12,16 +12,16 @@ xdev_remove_lineages(data, contaminants, reason = "contaminant")
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object.
 
-- contaminants, :
+- contaminants:
 
   vector of strings containing the taxonomies you would like to remove
 
-- reason, :
+- reason:
 
   a string containing reason you are removing the lineages. Default =
   "contaminant".
@@ -34,7 +34,7 @@ an updated
 ## Examples
 
 ``` r
-data <- read_mothur(fasta = strollur_example("final.fasta.gz"),
+data <- strollur::read_mothur(fasta = strollur_example("final.fasta.gz"),
                        count = strollur_example("final.count_table.gz"),
                        taxonomy = strollur_example("final.taxonomy.gz"),
                        design = strollur_example("mouse.time.design"),
@@ -49,7 +49,7 @@ data <- read_mothur(fasta = strollur_example("final.fasta.gz"),
 contaminants <- c("Chloroplast", "Mitochondria", "unknown", "Archaea",
  "Eukaryota")
 
-xdev_remove_lineages(data = data, contaminants = contaminants)
+strollur::xdev_remove_lineages(data, contaminants = contaminants)
 #> miseq_sop:
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs

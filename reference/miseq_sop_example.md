@@ -1,8 +1,9 @@
-# Example strollur object
+# Create a [strollur object](https://mothur.org/strollur/reference/strollur.html) using the analysis files from the [MiSeq_SOP](https://mothur.org/wiki/miseq_sop/) example.
 
-The miseq_sop_example function will create 'strollur' object using the
-analysis files from the [MiSeq_SOP](https://mothur.org/wiki/miseq_sop/)
-example.
+The miseq_sop_example function will create
+[strollur](https://mothur.org/strollur/reference/strollur.html) object
+using the analysis files from the
+[MiSeq_SOP](https://mothur.org/wiki/miseq_sop/) example.
 
 ## Usage
 
@@ -12,13 +13,15 @@ miseq_sop_example()
 
 ## Value
 
-A 'strollur' object
+A
+[`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)
+object
 
 ## Examples
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -26,6 +29,7 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.

@@ -1,4 +1,4 @@
-# xdev_has_sequence_taxonomy
+# Determine if a [strollur object](https://mothur.org/strollur/reference/strollur.html) has sequence taxonomy assignments
 
 Determine if a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -12,7 +12,7 @@ xdev_has_sequence_taxonomy(data)
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
@@ -25,7 +25,7 @@ boolean
 
 ``` r
 
- data <- miseq_sop_example()
+ data <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -33,11 +33,12 @@ boolean
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
- xdev_has_sequence_taxonomy(data)
+ strollur::xdev_has_sequence_taxonomy(data)
 #> [1] TRUE
 ```

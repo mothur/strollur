@@ -1,4 +1,4 @@
-# xdev_assign_bin_representative_sequences
+# Assign representative sequences to bins
 
 Assign representative sequences to bins.
 
@@ -23,7 +23,7 @@ xdev_assign_bin_representative_sequences(
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- table, :
+- table:
 
   a data.frame containing bin representative assignments
 
@@ -31,11 +31,13 @@ xdev_assign_bin_representative_sequences(
 
   a string indicating the type of bin assignments. Default "otu".
 
-- reference, :
+- reference:
 
-  a list created by the function \[new_reference\]. Optional.
+  a list created by the function
+  [new_reference](https://mothur.org/strollur/reference/new_reference.md).
+  Optional.
 
-- bin_name, :
+- bin_name:
 
   a string containing the name of the column in 'table' that contains
   the bin names. Default column name is 'bin_name'.
@@ -45,7 +47,7 @@ xdev_assign_bin_representative_sequences(
   a string containing the name of the column in 'table' that contains
   the bin names. Default column name is 'sequence_name'.
 
-- verbose, :
+- verbose:
 
   a boolean whether or not you want progress messages. Default = TRUE.
 
@@ -58,7 +60,7 @@ an updated
 
 ``` r
 
-  miseq <- miseq_sop_example()
+  miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -66,6 +68,7 @@ an updated
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -75,9 +78,8 @@ an updated
   bin_reps <- readRDS(strollur_example(
          "miseq_representative_sequences.rds"))
 
-  xdev_assign_bin_representative_sequences(data = miseq,
-                                      table = bin_reps,
-                                      bin_type = "otu")
+  strollur::xdev_assign_bin_representative_sequences(miseq,
+                          table = bin_reps, bin_type = "otu")
 #> Assigned 531 otu bin representative sequences.
 #> miseq_sop:
 #> 

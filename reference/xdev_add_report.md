@@ -1,4 +1,4 @@
-# Add a report to a [strollur](https://mothur.org/strollur/reference/strollur.html) object
+# Add a report to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Add a report to a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -9,6 +9,7 @@ Add a report to a
 xdev_add_report(
   data,
   table,
+  reference = NULL,
   type = "report",
   sequence_name = "none",
   verbose = TRUE
@@ -17,26 +18,32 @@ xdev_add_report(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- table, :
+- table:
 
   a data.frame containing your report.
 
-- type, :
+- reference:
+
+  a list created by the function
+  [new_reference](https://mothur.org/strollur/reference/new_reference.md).
+  Optional.
+
+- type:
 
   a string containing the type of report. Default = "report".
 
 - sequence_name, :
 
-  a string. If your report relates to the sequence data,
-  \`sequence_name\` should contain the name of the column in 'table'
-  that contains the sequence names. Default = 'none'.
+  a string. If your report relates to the sequence data, `sequence_name`
+  should contain the name of the column in 'table' that contains the
+  sequence names. Default = 'none'.
 
-- verbose, :
+- verbose:
 
   a boolean whether or not you want progress messages. Default = TRUE.
 
@@ -51,10 +58,13 @@ an updated
 
 # To add a custom report including your contigs assembly data
 
-data <- new_dataset("just for fun")
+data <- strollur::new_dataset("just for fun")
 contigs_report <- readRDS(strollur_example("miseq_contigs_report.rds"))
 
-xdev_add_report(data, contigs_report, "contigs_report", "Name")
+strollur::xdev_add_report(data,
+                            table = contigs_report,
+                            type = "contigs_report",
+                            sequence_name = "Name")
 #> Added a contigs_report report.
 #> just for fun:
 #> 
@@ -69,7 +79,9 @@ xdev_add_report(data, contigs_report, "contigs_report", "Name")
 
 metadata <- readRDS(strollur_example("miseq_metadata.rds"))
 
-xdev_add_report(data, metadata, "metadata")
+strollur::xdev_add_report(data,
+                            table = metadata,
+                            type = "metadata")
 #> Added a metadata report.
 #> just for fun:
 #> 

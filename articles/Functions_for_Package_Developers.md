@@ -12,18 +12,9 @@ user.
 The `strollur` object is an R6 object to keep the memory usage low. An
 R6 class is inherently passed by reference rather than by value. You can
 make a deep copy of your dataset using the
-[`copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
+[`strollur::copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
 function. Note, if you use an assignment operator to copy it’s a shallow
 copy.
-
-The `strollur` object has several public fields, but I’d like to bring
-special attention to the *data* field. *data* is an Rcpp external
-pointer (safe pointer) to ‘Dataset’ c++ class (class definitions found
-in stroller.h). This format allows package developers an easy access
-point to the underlying C++ code with additional functionality. While
-many of the most frequently used functions have exported Rcpp functions,
-you can also write your own functions to access any public function in
-the ‘Dataset’ class.
 
 ### Setting functions
 
@@ -31,12 +22,12 @@ Over the course of an analysis your package may want to change the
 abundances of sequences, modify sequence nucleotide strings due to
 alignment, screening or filtering, and change the data set name. Let’s
 take a close look at functions you will need to do so using the
-[`miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
+[`strollur::miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
 data set.
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -44,6 +35,7 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -81,15 +73,15 @@ miseq
 #### Setting the dataset name
 
 To change the data set name you can use the
-[`xdev_set_dataset_name()`](https://mothur.org/strollur/reference/xdev_set_dataset_name.md)
+[`strollur::xdev_set_dataset_name()`](https://mothur.org/strollur/reference/xdev_set_dataset_name.md)
 function.
 
 ``` r
 
-names(miseq, type = "dataset")
+strollur::names(miseq, type = "dataset")
 #> [1] "miseq_sop"
-xdev_set_dataset_name(miseq, dataset_name = "modified_miseq")
-names(miseq, type = "dataset")
+strollur::xdev_set_dataset_name(miseq, dataset_name = "modified_miseq")
+strollur::names(miseq, type = "dataset")
 #> [1] "modified_miseq"
 ```
 
@@ -102,7 +94,7 @@ names of the sequences only present in sample ‘F3D0’.
 
 ``` r
 
-f3d0_names <- names(
+f3d0_names <- strollur::names(
   miseq,
   type = "sequence",
   samples = c("F3D0"),
@@ -114,7 +106,7 @@ length(f3d0_names)
 
 Now we will assign nucleotide strings of the sequences *exclusive* to
 sample ‘F3D0’ to ‘NNNN’. Then we can use the
-[`xdev_get_by_sample()`](https://mothur.org/strollur/reference/xdev_get_by_sample.md)
+[`strollur::xdev_get_by_sample()`](https://mothur.org/strollur/reference/xdev_get_by_sample.md)
 get all the sequences in present in sample ‘F3D0’ for closer inspection.
 
 ``` r
@@ -122,10 +114,11 @@ get all the sequences in present in sample ‘F3D0’ for closer inspection.
 nnnn_neucleotides <- rep("NNNN", length(f3d0_names))
 comments <- rep("example_set_sequences", length(f3d0_names))
 
-xdev_set_sequences(
+strollur::xdev_set_sequences(
   miseq,
   sequence_names = f3d0_names,
-  sequences = nnnn_neucleotides, comments = comments
+  sequences = nnnn_neucleotides,
+  comments = comments
 )
 #> modified_miseq:
 #> 
@@ -154,9 +147,10 @@ xdev_set_sequences(
 #> Total number of resource references: 2 
 #> Total number of custom reports: 2
 
-f3d0_sequences <- xdev_get_by_sample(
+f3d0_sequences <- strollur::xdev_get_by_sample(
   miseq,
-  type = "sequence", samples = c("F3D0")
+  type = "sequence",
+  samples = c("F3D0")
 )
 f3d0_sequences[[1]][300:305]
 #> [1] "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-T-TA-T-G-C-AA-G-T-C-A-G-A-A-G--TG-A-AA-GC-C-C-AA-AG--CT-C-AA-C-T-T-C-G-G-G-ACT-G-C-TTTT-GAAAC-TG-T-GTAAC-TAGA-GT-GC-AG-GA-G-G---GG-T-A-AGCGGAATTCCTAGTGT-AGCGGT-GAAATGCGTAG-AT-A-TT-AG-GA-GG-AACACCGGC-GGCGAAGGCG------GCTTA-CTG-G-AC-TG-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG"
@@ -171,26 +165,27 @@ f3d0_sequences[[1]][300:305]
 
 Now that we know how to set sequence strings, let’s learn how to set
 sequence abundances. In most cases you can use the
-[`assign()`](https://mothur.org/strollur/reference/assign.md) function
-to set sequence abundances, but there may be cases where you want more
-flexibility. The assign function requires abundances to be provided for
-each sequence. If you only need to update a subset of the sequences,
-there are two functions to that allow you to do that,
-[`xdev_set_abundances()`](https://mothur.org/strollur/reference/xdev_set_abundances.md)
+[`strollur::assign()`](https://mothur.org/strollur/reference/assign.md)
+function to set sequence abundances, but there may be cases where you
+want more flexibility. The assign function requires abundances to be
+provided for each sequence. If you only need to update a subset of the
+sequences, there are two functions to that allow you to do that,
+[`strollur::xdev_set_abundances()`](https://mothur.org/strollur/reference/xdev_set_abundances.md)
 and
-[`xdev_set_abundance()`](https://mothur.org/strollur/reference/xdev_set_abundance.md).
-*xdev_set_abundances* is used with data sets that include samples,
-*xdev_set_abundance* is used for data sets without samples. Let’s set
-the abundances of all sequences *exclusive* to sample F3D0 to 0, in
-essence removing them. First we will get the abundance table for the
-whole data set and create the inputs for
-[`xdev_set_abundances()`](https://mothur.org/strollur/reference/xdev_set_abundances.md).
+[`strollur::xdev_set_abundance()`](https://mothur.org/strollur/reference/xdev_set_abundance.md).
+*strollur::xdev_set_abundances* is used with data sets that include
+samples, *strollur::xdev_set_abundance* is used for data sets without
+samples. Let’s set the abundances of all sequences *exclusive* to sample
+F3D0 to 0, in essence removing them. First we will get the abundance
+table for the whole data set and create the inputs for
+[`strollur::xdev_set_abundances()`](https://mothur.org/strollur/reference/xdev_set_abundances.md).
 
 ``` r
 
-abundance_table <- abundance(
+abundance_table <- strollur::abundance(
   miseq,
-  type = "sequence", by_sample = TRUE
+  type = "sequence",
+  by_sample = TRUE
 )
 head(abundance_table, n = 10)
 #>                                   sequence_name abundance sample treatment
@@ -205,10 +200,10 @@ head(abundance_table, n = 10)
 #> 9  M00967_43_000000000-A3JHG_1_1108_14299_17220        12 F3D148      Late
 #> 10 M00967_43_000000000-A3JHG_1_1108_14299_17220         9 F3D149      Late
 
-num_samples <- count(miseq, type = "sample")
+num_samples <- strollur::count(miseq, type = "sample")
 new_abunds <- rep(list(rep(0, num_samples)), length(f3d0_names))
 
-xdev_set_abundances(
+strollur::xdev_set_abundances(
   miseq,
   sequence_names = f3d0_names,
   abundances = new_abunds,
@@ -285,31 +280,33 @@ miseq
 
 You can see that not all of the sequences in ‘F3D0’ are removed. That is
 because the majority of sequences in the data set are present in
-multiple samples. mothur2 uses xdev_set_abundances when running the
-pre_cluster() function, sequences are clustered by sample, and the
-abundances are set accordingly.
+multiple samples. `mothur2` uses
+[`strollur::xdev_set_abundances`](https://mothur.org/strollur/reference/xdev_set_abundances.md)
+when running the `mothur2::pre_cluster()` function, sequences are
+clustered by sample, and the abundances are set accordingly.
 
 ### Merging Functions
 
 In the course of analyzing your data, there may be times when you want
 to merge sequence abundances. When sequence nucleotide string are
 identical you can save time processing by merging the identical read’s
-abundances. mothur2 merges sequences abundances in the unique_seqs
-function. The miseq example includes merged sequences that have been
-assigned to bins. In practice, you would would not merge sequences after
-assigning them to bins. Note, the code below is set to ‘eval=FALSE’
-because you can only merge sequences assigned to the same bin and it
-will throw errors accordingly. Let’s take a look at how to use the
-[`xdev_merge_sequences()`](https://mothur.org/strollur/reference/xdev_merge_sequences.md)
+abundances. `mothur2` merges sequences abundances in the
+`mothur2::unique_seqs()` function. The miseq example includes merged
+sequences that have been assigned to bins. In practice, you would would
+not merge sequences after assigning them to bins. Note, the code below
+is set to ‘eval=FALSE’ because you can only merge sequences assigned to
+the same bin and it will throw errors accordingly. Let’s take a look at
+how to use the
+[`strollur::xdev_merge_sequences()`](https://mothur.org/strollur/reference/xdev_merge_sequences.md)
 function for your reference.
 
 ``` r
 
-random_sequence_names <- sample(names(miseq),
+random_sequence_names <- sample(strollur::names(miseq),
   size = 100, replace = FALSE
 )
 
-xdev_merge_sequences(
+strollur::xdev_merge_sequences(
   miseq,
   sequence_names = random_sequence_names,
   reason = "merge_sequences_example"
@@ -317,14 +314,14 @@ xdev_merge_sequences(
 ```
 
 Similarly, you may want to merge bins and the
-[`xdev_merge_bins()`](https://mothur.org/strollur/reference/xdev_merge_bins.md)
+[`strollur::xdev_merge_bins()`](https://mothur.org/strollur/reference/xdev_merge_bins.md)
 function will allow you to do so. For this example we will randomly
 select 100 ‘otu’ bins to merge.
 
 ``` r
 
 random_bin_names <- sample(
-  names(
+  strollur::names(
     miseq,
     type = "bin",
     bin_type = "otu"
@@ -332,7 +329,7 @@ random_bin_names <- sample(
   size = 100, replace = FALSE
 )
 
-xdev_merge_bins(
+strollur::xdev_merge_bins(
   miseq,
   bin_names = random_bin_names,
   reason = "merge_bins_example",
@@ -415,31 +412,31 @@ remain the same but the number of otu bins is reduced by 99.
 ### Removing Functions
 
 Over the course of your analysis, you may want to remove sequences,
-bins, samples or contaminants. strollur has several functions to help
+bins, samples or contaminants. `strollur` has several functions to help
 with that, namely
-[`xdev_remove_sequences()`](https://mothur.org/strollur/reference/xdev_remove_sequences.md),
-[`xdev_remove_bins()`](https://mothur.org/strollur/reference/xdev_remove_bins.md),
-[`xdev_remove_samples()`](https://mothur.org/strollur/reference/xdev_remove_samples.md),
+[`strollur::xdev_remove_sequences()`](https://mothur.org/strollur/reference/xdev_remove_sequences.md),
+[`strollur::xdev_remove_bins()`](https://mothur.org/strollur/reference/xdev_remove_bins.md),
+[`strollur::xdev_remove_samples()`](https://mothur.org/strollur/reference/xdev_remove_samples.md),
 and
-[`xdev_remove_lineages()`](https://mothur.org/strollur/reference/xdev_remove_lineages.md).
+[`strollur::xdev_remove_lineages()`](https://mothur.org/strollur/reference/xdev_remove_lineages.md).
 
 #### Removing Sequences
 
 There are several reasons you may want to remove sequences including
 removing chimeras, removing sequence without good overlap and removing
 sequences with ambiguous bases. The
-[`xdev_remove_sequences()`](https://mothur.org/strollur/reference/xdev_remove_sequences.md)
+[`strollur::xdev_remove_sequences()`](https://mothur.org/strollur/reference/xdev_remove_sequences.md)
 function allows you to easily do that. The
-[`miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
+[`strollur::miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
 has already been screened for chimeras, overlap, sequence length and
 ambiguous bases, so let’s randomly select 100 sequences to remove.
 
 ``` r
 
-random_sequence_names <- sample(names(miseq),
+random_sequence_names <- sample(strollur::names(miseq),
   size = 100, replace = FALSE
 )
-xdev_remove_sequences(
+strollur::xdev_remove_sequences(
   miseq,
   sequence_names = random_sequence_names,
   trash_tags = rep("remove_sequences_example", 100)
@@ -528,7 +525,7 @@ Note, sequences can also be removed by setting their abundance to 0.
 #### Removing Bins
 
 Similarly, lets randomly select and remove 10 phylotype bins with the
-[`xdev_remove_bins()`](https://mothur.org/strollur/reference/xdev_remove_bins.md)
+[`strollur::xdev_remove_bins()`](https://mothur.org/strollur/reference/xdev_remove_bins.md)
 function. Note, removing the bins also removes sequences. The removal of
 the sequences from the data set also effects the bins in the ‘otu’ and
 ‘asv’ clusters.
@@ -536,13 +533,13 @@ the sequences from the data set also effects the bins in the ‘otu’ and
 ``` r
 
 random_bin_names <- sample(
-  names(
+  strollur::names(
     miseq,
     type = "bin", bin_type = "phylotype"
   ),
   size = 10, replace = FALSE
 )
-xdev_remove_bins(
+strollur::xdev_remove_bins(
   miseq,
   bin_names = random_bin_names,
   trash_tags = rep("remove_bins_example", 10),
@@ -645,13 +642,13 @@ removed 134 bins and the ‘asv’ cluster removed 851 bins.
 If you included a mock community in your data set, you will want to
 remove it after assessing your error rates in preparation for the rest
 of your analysis. The
-[`miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
+[`strollur::miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
 already has the mock community removed so for the sake of example we
 will remove sample ‘F3D142’.
 
 ``` r
 
-xdev_remove_samples(
+strollur::xdev_remove_samples(
   miseq,
   samples = c("F3D142"), reason = "remove_samples_example"
 )
@@ -751,7 +748,7 @@ miseq
 ```
 
 Lastly, we can remove contaminants from the data set using the
-[`xdev_remove_lineages()`](https://mothur.org/strollur/reference/xdev_remove_lineages.md)
+[`strollur::xdev_remove_lineages()`](https://mothur.org/strollur/reference/xdev_remove_lineages.md)
 function. The miseq example has already had the contaminants removed
 after classification and before bin assignment. For the sake of example
 we will remove all sequences assigned to
@@ -764,7 +761,7 @@ bad_tax <- paste0(
   "Clostridiales_unclassified;"
 )
 
-xdev_remove_lineages(
+strollur::xdev_remove_lineages(
   miseq,
   contaminants = c(bad_tax),
   reason = "remove_contaminants_example"

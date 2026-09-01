@@ -1,4 +1,4 @@
-# xdev_assign_sequence_taxonomy_tidy
+# Assign sequence classifications to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Assign sequence classifications to a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -23,30 +23,32 @@ xdev_assign_sequence_taxonomy_tidy(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- table, :
+- table:
 
   a data.frame containing sequence taxonomy assignments
 
-- reference, :
+- reference:
 
-  a list created by the function \[new_reference\]. Optional.
+  a list created by the function
+  [new_reference](https://mothur.org/strollur/reference/new_reference.md).
+  Optional.
 
-- sequence_name, :
+- sequence_name:
 
   a string containing the name of the column in 'table' that contains
   the sequence names. Default column name is 'sequence_name'.
 
-- level, :
+- level:
 
   a string containing the name of the column in 'table' that contains
   the taxonomy levels. Default column name is 'level'.
 
-- taxonomy, :
+- taxonomy:
 
   a string containing the name of the column in 'table' that contains
   the sequence taxonomies. Default column name is 'taxonomy'.
@@ -56,7 +58,7 @@ xdev_assign_sequence_taxonomy_tidy(
   a string containing the name of the column in 'table' that contains
   the taxonomies confidence. Default column name is 'confidence'.
 
-- verbose, :
+- verbose:
 
   a boolean whether or not you want progress messages. Default = TRUE.
 
@@ -69,17 +71,18 @@ an updated
 
 ``` r
 
-sequence_classifications <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
-str(sequence_classifications)
+taxonomy <- readRDS(strollur_example("miseq_tidy_taxonomy.rds"))
+str(taxonomy)
 #> 'data.frame':    14550 obs. of  4 variables:
 #>  $ sequence_name: chr  "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_2101_16474_12783" ...
 #>  $ level        : int  1 2 3 4 5 6 1 2 3 4 ...
 #>  $ taxonomy     : chr  "Bacteria" "\"Bacteroidetes\"" "\"Bacteroidia\"" "\"Bacteroidales\"" ...
 #>  $ confidence   : int  100 100 99 99 88 88 100 100 100 100 ...
 
-data <- new_dataset("my_dataset")
+data <- strollur::new_dataset("my_dataset")
 
-xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications)
+strollur::xdev_assign_sequence_taxonomy_tidy(data,
+                                             table = taxonomy)
 #> Assigned 2425 sequence taxonomies.
 #> my_dataset:
 #> 
@@ -92,13 +95,15 @@ xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications)
 
 # With the reference parameter you can add information about the reference
 # you used to classify your sequences. You can also add references using the
-# 'add_references' function.
+# 'strollur::xdev_add_references()' function.
 
-reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+reference <- strollur::new_reference("trainset9_032012.pds.zip", "9_032012",
               "classification by mothur2 v1.0 using default options", "",
 "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
 
-xdev_assign_sequence_taxonomy_tidy(data, sequence_classifications, reference)
+strollur::xdev_assign_sequence_taxonomy_tidy(data,
+                                               table = taxonomy,
+                                               reference = reference)
 #> Assigned 2425 sequence taxonomies.
 #> Added 1 resource references.
 #> my_dataset:

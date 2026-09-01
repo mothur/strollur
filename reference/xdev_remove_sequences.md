@@ -1,4 +1,4 @@
-# xdev_remove_sequences
+# Remove sequences from a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Designed with package integration in mind, the remove sequences function
 allows you to remove sequences from a
@@ -12,12 +12,12 @@ xdev_remove_sequences(data, sequence_names, trash_tags)
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object.
 
-- sequence_names, :
+- sequence_names:
 
   vector of strings containing the names of the sequences to remove
 
@@ -34,7 +34,7 @@ an updated
 
 ``` r
 
-data <- miseq_sop_example()
+data <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -42,13 +42,14 @@ data <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
 
-count(data = data, type = "sequence")
+strollur::count(data, type = "sequence")
 #> [1] 113963
 
 # For the sake of example let's remove the first 3 sequences from
@@ -59,8 +60,9 @@ seqs_to_remove <- c("M00967_43_000000000-A3JHG_1_2101_16474_12783",
                    "M00967_43_000000000-A3JHG_1_2108_14707_9807")
 trash_codes <- c("example", "removing", "sequences")
 
-xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
-                      trash_tags = trash_codes)
+strollur::xdev_remove_sequences(data,
+                                  sequence_names = seqs_to_remove,
+                                  trash_tags = trash_codes)
 #> miseq_sop:
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
@@ -101,7 +103,7 @@ xdev_remove_sequences(data = data, sequence_names = seqs_to_remove,
 # If you look at the scrap report, you the sequences names, listed with the
 # trash codes set to "example", "removing", "sequences".
 
-report(data = data, type = "sequence_scrap")
+strollur::report(data, type = "sequence_scrap")
 #>                                  sequence_name trash_code
 #> 1 M00967_43_000000000-A3JHG_1_2101_16474_12783    example
 #> 2  M00967_43_000000000-A3JHG_1_1113_12711_3318   removing
@@ -110,6 +112,6 @@ report(data = data, type = "sequence_scrap")
 # You can see from the get_num_sequences function that the removed
 # sequence's abundances are removed from the dataset.
 
-count(data = data, type = "sequence")
+strollur::count(data, type = "sequence")
 #> [1] 113960
 ```

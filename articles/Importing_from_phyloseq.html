@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,34 +99,32 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     assign, names, summary</span></span></code></pre></div>
 <p><code>strollur</code> includes functionality for the reading and
-writing of phyloseq objects. To convert a phyloseq object to a strollur
-object, you need to run the <code><a href="../reference/read_phyloseq.html">read_phyloseq()</a></code> function.</p>
+writing of <code>phyloseq</code> objects. To convert a phyloseq object
+to a strollur object, you need to run the
+<code><a href="../reference/read_phyloseq.html">strollur::read_phyloseq()</a></code> function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Using the phyloseq example data</span></span>
-<span><span class="va">phylo_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"GlobalPatterns.RDS"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">rdata_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_phyloseq.html">read_phyloseq</a></span><span class="op">(</span><span class="va">phylo_object</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">phyloseq_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"GlobalPatterns.RDS"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">phyloseq_object</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "phyloseq"</span></span>
+<span><span class="co">#&gt; attr(,"package")</span></span>
+<span><span class="co">#&gt; [1] "phyloseq"</span></span>
+<span><span class="va">strollur_object</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_phyloseq.html">read_phyloseq</a></span><span class="op">(</span><span class="va">phyloseq_object</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 19216 sequences.</span></span>
 <span><span class="co">#&gt; Assigned 19216 sequence abundances.</span></span>
 <span><span class="co">#&gt; Assigned 19216 sequence taxonomies.</span></span>
 <span><span class="co">#&gt; Added a metadata report.</span></span>
-<span><span class="va">rdata_object</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Number of unique seqs: 19216 </span></span>
-<span><span class="co">#&gt; Total number of seqs: 28216678 </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Total number of samples: 26 </span></span>
-<span><span class="co">#&gt; Total number of sequence classifications: 19216 </span></span>
-<span><span class="co">#&gt; Total number of custom reports: 1</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">strollur_object</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "strollur" "R6"</span></span></code></pre></div>
 <p>Now that are phyloseq object is converted into a strollur object, we
-can utilize functions like <code><a href="../reference/count.html">count()</a></code>,
-<code><a href="../reference/abundance.html">abundance()</a></code>, and <code><a href="../reference/names.html">names()</a></code> to inspect the
-data.</p>
+can utilize functions like <code><a href="../reference/count.html">strollur::count()</a></code>,
+<code><a href="../reference/abundance.html">strollur::abundance()</a></code>, and <code><a href="../reference/names.html">strollur::names()</a></code>
+to inspect the data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">rdata_object</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">strollur_object</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 26</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">rdata_object</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">strollur_object</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "549322" "522457" "951"    "244423" "586076" "246140"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span><span class="va">rdata_object</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span><span class="va">strollur_object</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   sequence_name abundance</span></span>
 <span><span class="co">#&gt; 1        549322       259</span></span>
 <span><span class="co">#&gt; 2        522457         8</span></span>
@@ -135,9 +133,9 @@ data.</p>
 <span><span class="co">#&gt; 5        586076         3</span></span>
 <span><span class="co">#&gt; 6        246140         4</span></span></code></pre></div>
 <p>Furthermore, we can output strollur objects as phyloseq objects using
-the <code><a href="../reference/write_phyloseq.html">write_phyloseq()</a></code> function.</p>
+the <code><a href="../reference/write_phyloseq.html">strollur::write_phyloseq()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">phyloseq_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_phyloseq.html">write_phyloseq</a></span><span class="op">(</span><span class="va">rdata_object</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">phyloseq_object</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/write_phyloseq.html">write_phyloseq</a></span><span class="op">(</span><span class="va">strollur_object</span><span class="op">)</span></span>
 <span><span class="va">phyloseq_object</span></span>
 <span><span class="co">#&gt; phyloseq-class experiment-level object</span></span>
 <span><span class="co">#&gt; otu_table()   OTU Table:         [ 19216 taxa and 26 samples ]</span></span>
@@ -145,9 +143,7 @@ the <code><a href="../reference/write_phyloseq.html">write_phyloseq()</a></code>
 <span><span class="co">#&gt; tax_table()   Taxonomy Table:    [ 19216 taxa by 7 taxonomic ranks ]</span></span>
 <span><span class="co">#&gt; phy_tree()    Phylogenetic Tree: [ 19216 tips and 19215 internal nodes ]</span></span>
 <span></span>
-<span></span>
-<span><span class="co"># With the miseq example data</span></span>
-<span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
@@ -155,12 +151,13 @@ the <code><a href="../reference/write_phyloseq.html">write_phyloseq()</a></code>
 <span><span class="co">#&gt; Assigned 2425 asv bins.</span></span>
 <span><span class="co">#&gt; Assigned 63 phylotype bins.</span></span>
 <span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
+<span><span class="co">#&gt; Assigned 171 samples distances.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
 <span><span class="co">#&gt; Added a metadata report.</span></span>
 <span><span class="co">#&gt; Added 2 resource references.</span></span>
 <span><span class="co">#&gt; Added a contigs_report report.</span></span>
-<span><span class="va">miseq_phyloseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_phyloseq.html">write_phyloseq</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span></span>
+<span><span class="va">miseq_phyloseq</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/write_phyloseq.html">write_phyloseq</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span></span>
 <span><span class="va">miseq_phyloseq</span></span>
 <span><span class="co">#&gt; phyloseq-class experiment-level object</span></span>
 <span><span class="co">#&gt; otu_table()   OTU Table:         [ 2425 taxa and 19 samples ]</span></span>

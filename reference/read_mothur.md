@@ -2,7 +2,9 @@
 
 The read_mothur function reads various [file
 types](https://mothur.org/wiki/tags/#file_types) created by mothur, and
-creates a \`strollur\` object.
+creates a
+[`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)
+object.
 
 To generate the various input files you can follow Pat's [Miseq example
 analysis](https://mothur.org/wiki/miseq_sop/).
@@ -24,6 +26,7 @@ read_mothur(
   phylo_shared = NULL,
   sample_tree = NULL,
   sequence_tree = NULL,
+  sample_distance = NULL,
   dataset_name = ""
 )
 ```
@@ -106,6 +109,11 @@ read_mothur(
   sequence tree can be difficult / impossible to build without hitting a
   memory limitation.
 
+- sample_distance:
+
+  filename, a column formatted distance matrix containing the distances
+  between samples.
+
 - dataset_name:
 
   A string containing a name for your dataset.
@@ -116,15 +124,19 @@ A [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## Note
 
-- *consensus taxonomy*, The \`strollur\` object will generate consensus
-  taxonomies for you based on the sequence taxonomy assignment. You only
-  need to provide the ".cons.taxonomy" file if you are not providing
-  sequence taxonomy assignments.
+- *consensus taxonomy*, The
+  [`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)
+  object will generate consensus taxonomies for you based on the
+  sequence taxonomy assignment. You only need to provide the
+  ".cons.taxonomy" file if you are not providing sequence taxonomy
+  assignments.
 
-- *shared / rabund file*, The \`strollur\` object will generate shared
-  and rabund data for you based on the otu assignment in the list file
-  and the count data. You only need to provide the ".shared" file if you
-  are not providing the list and count files.
+- *shared / rabund file*, The
+  [`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)
+  object will generate shared and rabund data for you based on the otu
+  assignment in the list file and the count data. You only need to
+  provide the ".shared" file if you are not providing the list and count
+  files.
 
 ## References
 
@@ -134,14 +146,14 @@ Sahl,J.W., Stres,B., Thallinger,G.G., Van Horn,D.J. and Weber,C.F.
 (2009), Introducing mothur: Open-source, platform-independent,
 community-supported software for describing and comparing microbial
 communities. Applied and Environmental Microbiology 75:7537-7541.
-\<doi:10.1128/AEM.01541-09\>
+<doi:10.1128/AEM.01541-09>
 
 ## Examples
 
 ``` r
 # For dataset's including sequence data:
 
-data <- read_mothur(
+data <- strollur::read_mothur(
   fasta = strollur_example("final.fasta.gz"),
   count = strollur_example("final.count_table.gz"),
   taxonomy = strollur_example("final.taxonomy.gz"),
@@ -150,6 +162,9 @@ data <- read_mothur(
   asv_list = strollur_example("final.asv.list.gz"),
   phylo_list = strollur_example("final.tx.list.gz"),
   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
+  sample_distance = strollur_example(
+    "final.opti_mcc.jclass.0.03.column.dist"
+  ),
   dataset_name = "miseq_sop"
 )
 #> Added 2425 sequences.
@@ -159,10 +174,11 @@ data <- read_mothur(
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 
 # For dataset's with only otu data:
 
-data <- read_mothur(
+data <- strollur::read_mothur(
   otu_shared = strollur_example("final.opti_mcc.shared"),
   cons_taxonomy = strollur_example(
     "final.cons.taxonomy"

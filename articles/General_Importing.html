@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,40 +85,43 @@
 
     
     
-<p>The strollur package stores data associated with your Amplicon
-Sequence analysis. This tutorial will familiarize you some of with the
-functions available in the strollur package. If you haven’t reviewed the
-“Getting Started” tutorial, we recommend you start there.</p>
+<p>The <code>strollur</code> package stores data associated with your
+Amplicon Sequence analysis. This tutorial will familiarize you some of
+with the functions available in the <code>strollur</code> package. If
+you haven’t reviewed the “Getting Started” tutorial, we recommend you
+start there.</p>
 <div class="section level2">
 <h2 id="creating-a-new-dataset">Creating a new dataset<a class="anchor" aria-label="anchor" href="#creating-a-new-dataset"></a>
 </h2>
 <p>First let’s create an empty data set named my_data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"my_data"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"my_data"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="importing-data">Importing Data<a class="anchor" aria-label="anchor" href="#importing-data"></a>
 </h2>
 <p>The <em>strollur</em> package includes two functions to allow you to
 add sequence data.</p>
-<p><code><a href="../reference/add.html">add()</a></code> - The add function allows you to add sequences,
-reports, metadata, and resource references to your data set.</p>
-<p><code><a href="../reference/assign.html">assign()</a></code> - The assign function allows assign sequence
-abundances, sequence classifications, bins, bin representative
+<p><code><a href="../reference/add.html">strollur::add()</a></code> - The add function allows you to add
+sequences, reports, metadata, and resource references to your data
+set.</p>
+<p><code><a href="../reference/assign.html">strollur::assign()</a></code> - The assign function allows assign
+sequence abundances, sequence classifications, bins, bin representative
 sequences, bin classifications, samples and treatments to your data
 set.</p>
 <div class="section level3">
-<h3 id="add">add<a class="anchor" aria-label="anchor" href="#add"></a>
+<h3 id="strolluradd">strollur::add<a class="anchor" aria-label="anchor" href="#strolluradd"></a>
 </h3>
-<p>The add function allows you to add sequences, reports, metadata, and
-resource references to your data set.</p>
+<p>The <code><a href="../reference/add.html">strollur::add()</a></code> function allows you to add
+sequences, reports, metadata, trees and resource references to your data
+set.</p>
 <div class="section level4">
 <h4 id="adding-fasta-sequences">Adding FASTA sequences<a class="anchor" aria-label="anchor" href="#adding-fasta-sequences"></a>
 </h4>
 <p>First, let’s add some <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> data.
-strollur has a function for reading FASTA files named
-<code><a href="../reference/read_fasta.html">read_fasta()</a></code>. We will use it to read the sequence data into
-a data.frame.</p>
+<code>strollur</code> has a function for reading FASTA files named
+<code><a href="../reference/read_fasta.html">strollur::read_fasta()</a></code>. We will use it to read the sequence
+data into a data.frame.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">fasta_data</span><span class="op">)</span></span>
@@ -126,7 +129,7 @@ a data.frame.</p>
 <span><span class="co">#&gt;  $ sequence_name: chr  "M00967_43_000000000-A3JHG_1_2101_16474_12783" "M00967_43_000000000-A3JHG_1_1113_12711_3318" "M00967_43_000000000-A3JHG_1_2108_14707_9807" "M00967_43_000000000-A3JHG_1_1110_4126_16552" ...</span></span>
 <span><span class="co">#&gt;  $ sequence     : chr  "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGTGAT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-A-CA-G-T-T-AA-G-T-"| __truncated__ "TAC--GT-AG-GGG--GCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GGC-G-G-C-CA-T-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--GCG-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-C-T--GG-GT--GT-A-AA-GG-GA-GC-G-TA-GAC-G-G-C-GG-C-G-C-AA-G-T-"| __truncated__ "TAC--GG-AG-GAT--TCA-A-G-C-G-T-T--AT-C-CGG-AT--TT-A-T-T--GG-GT--TT-A-AA-GG-GT-GC-G-TA-GGC-G-G-G-CT-G-T-T-AA-G-T-"| __truncated__ ...</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span></span>
@@ -148,19 +151,19 @@ a data.frame.</p>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 2425</span></span></code></pre></div>
 <p>If you want to include a resource reference about your fasta data you
-can use the <code>new_reference</code> function and the reference
-parameter. strollur does not allow you to add sequences with the same
-name, so let’s use the <code><a href="../reference/clear.html">clear()</a></code> function to remove all data
-from our data set.</p>
+can use the <code><a href="../reference/new_reference.html">strollur::new_reference</a></code> function and the
+reference parameter. strollur does not allow you to add sequences with
+the same name, so let’s use the <code><a href="../reference/clear.html">strollur::clear()</a></code> function
+to remove all data from our data set.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/clear.html">clear</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/clear.html">clear</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of seqs: 0</span></span>
 <span></span>
 <span><span class="va">documentation_url</span> <span class="op">&lt;-</span> <span class="st">"https://mothur.org/wiki/silva_reference_files/"</span></span>
 <span><span class="va">method_url</span> <span class="op">&lt;-</span> <span class="st">"https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"</span></span>
 <span></span>
-<span><span class="va">silva_resource</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new_reference.html">new_reference</a></span><span class="op">(</span></span>
+<span><span class="va">silva_resource</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/new_reference.html">new_reference</a></span><span class="op">(</span></span>
 <span>  vendor <span class="op">=</span> <span class="st">"SILVA"</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"silva.bacteria.fasta"</span>,</span>
 <span>  version <span class="op">=</span> <span class="st">"1.38.1"</span>,</span>
@@ -170,7 +173,7 @@ from our data set.</p>
 <span>  method_url <span class="op">=</span> <span class="va">method_url</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">fasta_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
@@ -199,7 +202,8 @@ from our data set.</p>
 </h4>
 <p>You may want to add custom reports to your data set such as an
 contigs assembly report, chimera report or alignment report. You can do
-so by setting type = “report”. You must also provide a report_type.</p>
+so by setting <code>type = report</code>. You must also provide a
+report_type.</p>
 <p>This is also a good time to explain what the table_names parameter
 does for you. strollur expects the columns in custom reports to have
 specific names. If your table’s names differ from what strollur is
@@ -207,7 +211,7 @@ expecting, you will see an error like that below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">contigs_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_contigs_report.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">contigs_report</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"report"</span>,</span>
@@ -215,9 +219,9 @@ expecting, you will see an error like that below.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Error: The report must include a column containing sequence names.</span></span>
-<span><span class="co"># sequence_names is not a named column in your report.</span></span>
+<span><span class="co"># sequence_name is not a named column in your report.</span></span>
 <span></span>
-<span><span class="co"># Called from: xdev_add_report(data, table = table, type = report_type,</span></span>
+<span><span class="co"># Called from: strollur::xdev_add_report(data, table = table, type = report_type,</span></span>
 <span><span class="co">#    sequence_name = table_names[["sequence_name"]], verbose)</span></span></code></pre></div>
 <p>You can use the table_names parameter to tell strollur what the
 specific column is called in your custom report table. In the
@@ -248,7 +252,7 @@ contigs_report the <em>sequence_name</em> column is called
 <span><span class="co">#&gt;   .. )</span></span>
 <span><span class="co">#&gt;  - attr(*, "problems")=&lt;pointer: (nil)&gt;</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">contigs_report</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"report"</span>,</span>
@@ -272,14 +276,16 @@ contigs_report the <em>sequence_name</em> column is called
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total number of resource references: 1 </span></span>
 <span><span class="co">#&gt; Total number of custom reports: 1</span></span></code></pre></div>
+<p>Note, when a report is tied to sequence names the report will be
+filtered to remove any sequences removed from the dataset.</p>
 </div>
 <div class="section level4">
 <h4 id="adding-metadata">Adding Metadata<a class="anchor" aria-label="anchor" href="#adding-metadata"></a>
 </h4>
 <p>Now that we have added our custom contigs assembly report, let’s
 learn how to add reports not tied to sequence names. We can add metadata
-to our data set by setting the type = “report”, report_type =
-“metadata”.</p>
+to our data set by setting the <code>type = report</code> and
+<code>report_type = metadata</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_metadata.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">metadata</span><span class="op">)</span></span>
@@ -293,7 +299,7 @@ to our data set by setting the type = “report”, report_type =
 <span><span class="co">#&gt;   .. )</span></span>
 <span><span class="co">#&gt;  - attr(*, "problems")=&lt;pointer: (nil)&gt;</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">metadata</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"report"</span>,</span>
@@ -305,13 +311,13 @@ to our data set by setting the type = “report”, report_type =
 <h4 id="adding-resource-references">Adding Resource References<a class="anchor" aria-label="anchor" href="#adding-resource-references"></a>
 </h4>
 <p>We can add additional resource references to our data set by setting
-the type = “resource_reference”.</p>
+the <code>type = resource_reference</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">reference</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"references.csv"</span><span class="op">)</span>,</span>
 <span>  col_names <span class="op">=</span> <span class="cn">TRUE</span>, show_col_types <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">reference</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"resource_reference"</span></span>
@@ -321,20 +327,45 @@ the type = “resource_reference”.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Added 1 resource references.</span></span></code></pre></div>
 </div>
+<div class="section level4">
+<h4 id="adding-trees">Adding Trees<a class="anchor" aria-label="anchor" href="#adding-trees"></a>
+</h4>
+<p>Lastly, strollur allows you to add trees that relate your samples or
+sequences. Let’s look at some examples together.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sample_tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.jclass.ave.tre"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">sequence_tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre.gz"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">sample_tree</span>, type <span class="op">=</span> <span class="st">"sample_tree"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; → Your dataset does not contain sample data, ignoring sample tree.</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">sequence_tree</span>, type <span class="op">=</span> <span class="st">"sequence_tree"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#| fig.alt: &gt;</span></span>
+<span><span class="co">#|   Plot of Miseq_SOP's sample relationship tree</span></span>
+<span><span class="va">old_par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
+<span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">sample_tree</span>,</span>
+<span>  no.margin <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cex <span class="op">=</span> <span class="fl">0.5</span>, edge.color <span class="op">=</span> <span class="st">"maroon"</span>, tip.color <span class="op">=</span> <span class="st">"navy"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="General_Importing_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level3">
-<h3 id="assign">assign<a class="anchor" aria-label="anchor" href="#assign"></a>
+<h3 id="strollurassign">strollur::assign<a class="anchor" aria-label="anchor" href="#strollurassign"></a>
 </h3>
-<p>The <code><a href="../reference/assign.html">assign()</a></code> function allows assign sequence abundances,
-sequence classifications, bins, bin representative sequences, bin
-classifications, samples and treatments to your data set.</p>
+<p>The <code><a href="../reference/assign.html">strollur::assign()</a></code> function allows assign sequence
+abundances, sequence classifications, bins, bin representative
+sequences, bin classifications, samples and treatments to your data
+set.</p>
 <div class="section level4">
 <h4 id="assigning-abundances">Assigning Abundances<a class="anchor" aria-label="anchor" href="#assigning-abundances"></a>
 </h4>
 <p>After adding your FASTA sequences, you can assign abundance and
-sample data using the assign function with the type =
-“sequence_abundance”.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+sample data using the assign function with the
+<code>type = sequence_abundance</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_abundance_by_sample.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">abundance_table</span><span class="op">)</span></span>
 <span><span class="co">#&gt; spc_tbl_ [5,539 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
@@ -351,7 +382,7 @@ sample data using the assign function with the type =
 <span><span class="co">#&gt;   .. )</span></span>
 <span><span class="co">#&gt;  - attr(*, "problems")=&lt;pointer: (nil)&gt;</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
 <span></span>
 <span><span class="va">data</span></span>
@@ -377,12 +408,12 @@ sample data using the assign function with the type =
 <h4 id="assigning-bins">Assigning Bins<a class="anchor" aria-label="anchor" href="#assigning-bins"></a>
 </h4>
 <p>As you can see we now have abundances, samples and treatments added
-to the data set. Next, let’s assign the sequences to bins using type =
-“bin”. When you assign sequences to bins you must provide a
-<em>bin_type</em>. The bin_type is a tag of your choosing used to
-reference the bin clusters you are adding. Let’s add some <a href="https://en.wikipedia.org/wiki/Operational_taxonomic_unit" class="external-link">Operational
-Taxonomic Unit</a> clusters and set the bin_type = “otu”.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+to the data set. Next, let’s assign the sequences to bins using
+<code>type = bin</code>. When you assign sequences to bins you must
+provide a <em>bin_type</em>. The bin_type is a tag of your choosing used
+to reference the bin clusters you are adding. Let’s add some <a href="https://en.wikipedia.org/wiki/Operational_taxonomic_unit" class="external-link">Operational
+Taxonomic Unit</a> clusters and set the <code>bin_type = otu</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_list_otu.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">bin_table</span><span class="op">)</span></span>
 <span><span class="co">#&gt; spc_tbl_ [2,425 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
@@ -395,7 +426,7 @@ Taxonomic Unit</a> clusters and set the bin_type = “otu”.</p>
 <span><span class="co">#&gt;   .. )</span></span>
 <span><span class="co">#&gt;  - attr(*, "problems")=&lt;pointer: (nil)&gt;</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
 <span></span>
 <span><span class="va">data</span></span>
@@ -429,8 +460,8 @@ Sequence Variant</a> clusters or <em>asv</em> bins.</p>
 </h4>
 <p>Now that we have assigned our sequences to bins, let’s assign
 taxonomy to our sequences.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sequence_classification_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sequence_classification_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span></span>
 <span>  taxonomy <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sequence_classification_data</span><span class="op">)</span></span>
@@ -443,7 +474,7 @@ taxonomy to our sequences.</p>
 <span><span class="co">#&gt;   ..   X2 = <span style="color: #BB0000;">col_character()</span></span></span>
 <span><span class="co">#&gt;   .. )</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">sequence_classification_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span>
@@ -452,9 +483,10 @@ taxonomy to our sequences.</p>
 <p>Note, when you assign taxonomy to sequences that are assigned to
 bins, strollur will automatically assign the bin taxonomies to be the
 consensus taxonomy of the sequences in the bins. You can also set bin
-taxonomies independently by setting the type = “bin_taxonomy”.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">otu_taxonomy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
+taxonomies independently by setting the
+<code>type = bin_taxonomy</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">otu_taxonomy_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span></span>
 <span>  <span class="st">"final.cons.taxonomy"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">otu_taxonomy_data</span><span class="op">)</span></span>
@@ -469,7 +501,7 @@ taxonomies independently by setting the type = “bin_taxonomy”.</p>
 <span><span class="co">#&gt;   ..   Taxonomy = <span style="color: #BB0000;">col_character()</span></span></span>
 <span><span class="co">#&gt;   .. )</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">otu_taxonomy_data</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span>
@@ -483,7 +515,7 @@ taxonomies independently by setting the type = “bin_taxonomy”.</p>
 <p>strollur allows you to assign a bin representative sequences to the
 bins in your clusters. Let’s assign bin representatives to our
 <em>otu</em> bins.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bin_reps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_representative_sequences.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">bin_reps</span><span class="op">)</span></span>
 <span><span class="co">#&gt; spc_tbl_ [531 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
@@ -496,7 +528,7 @@ bins in your clusters. Let’s assign bin representatives to our
 <span><span class="co">#&gt;   .. )</span></span>
 <span><span class="co">#&gt;  - attr(*, "problems")=&lt;pointer: (nil)&gt;</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">bin_reps</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_representative"</span></span>
@@ -507,9 +539,9 @@ bins in your clusters. Let’s assign bin representatives to our
 <h4 id="assigning-treatments">Assigning Treatments<a class="anchor" aria-label="anchor" href="#assigning-treatments"></a>
 </h4>
 <p>In our case the abundance_table included treatment assignments, but
-you can also assign samples to treatments by setting type =
-“treatment”.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+you can also assign samples to treatments by setting
+<code>type = treatment</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_sample_design.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sample_assignments</span><span class="op">)</span></span>
 <span><span class="co">#&gt; spc_tbl_ [19 × 2] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
@@ -521,40 +553,17 @@ you can also assign samples to treatments by setting type =
 <span><span class="co">#&gt;   ..   treatments = <span style="color: #BB0000;">col_character()</span></span></span>
 <span><span class="co">#&gt;   .. )</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  table <span class="op">=</span> <span class="va">sample_assignments</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"treatment"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span></code></pre></div>
-</div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="sample-trees-and-sequence-trees">Sample Trees and Sequence Trees<a class="anchor" aria-label="anchor" href="#sample-trees-and-sequence-trees"></a>
-</h2>
-<p>Lastly, strollur allows you to add tree that relate your samples or
-sequences. Let’s look at some examples together.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sample_tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.opti_mcc.jclass.ave.tre"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">sequence_tree</span> <span class="op">&lt;-</span> <span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/read.tree.html" class="external-link">read.tree</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.phylip.tre.gz"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="fu">add_sample_tree</span><span class="op">(</span><span class="va">sample_tree</span><span class="op">)</span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="fu">add_sequence_tree</span><span class="op">(</span><span class="va">sequence_tree</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#| fig.alt: &gt;</span></span>
-<span><span class="co">#|   Plot of Miseq_SOP's sample relationship tree</span></span>
-<span><span class="va">old_par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
-<span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="fu">get_sample_tree</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  no.margin <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  cex <span class="op">=</span> <span class="fl">0.5</span>, edge.color <span class="op">=</span> <span class="st">"maroon"</span>, tip.color <span class="op">=</span> <span class="st">"navy"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="General_Importing_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="700"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
 <p>Thanks for following along. To learn more about the functions used to
 access the data in your data set, take a look at the <a href="https://mothur.org/strollur/articles/Accessing_Dataset.html">Accessing
 Data</a> tutorial.</p>
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

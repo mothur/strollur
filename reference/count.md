@@ -18,29 +18,29 @@ count(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- type, :
+- type:
 
   string containing the type of data you want the number of. Options
   include: "sequence", "sample", "treatment", "bin", and
   "resource_reference". Default = "sequence".
 
-- bin_type, :
+- bin_type:
 
   string containing the bin type you would like the number of bins for.
   Default = "otu".
 
-- samples, :
+- samples:
 
   vector of strings. samples is only used when 'type' = "sequence" or
   'type' = "bin" . samples should contain the names of the samples you
   want the count for. Default = NULL.
 
-- distinct, :
+- distinct:
 
   Boolean. distinct is used when 'type' = "sequence" or 'type' = "bin".
   When 'type' = "sequence" and distinct is TRUE the number of unique
@@ -63,7 +63,7 @@ double
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -71,6 +71,7 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -78,52 +79,52 @@ miseq <- miseq_sop_example()
 #> Added a contigs_report report.
 
 # To get the total number of sequences
-count(data = miseq, type = "sequence")
+strollur::count(data = miseq, type = "sequence")
 #> [1] 113963
 
 # To get number of unique sequences
-count(data = miseq, type = "sequence", distinct = TRUE)
+strollur::count(data = miseq, type = "sequence", distinct = TRUE)
 #> [1] 2425
 
 # To get number of unique sequences from samples 'F3D0' and 'F3D1'
 # Note these sequences will be present in both samples but may be
 # be present in other samples as well
-count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"))
+strollur::count(data = miseq, type = "sequence", samples = c("F3D0", "F3D1"))
 #> [1] 9385
 
 # To get number of unique sequences exclusive to samples 'F3D0' and 'F3D1'
 # Note sequences are present in both samples and NOT present in any other
 # samples.
-count(
+strollur::count(
   data = miseq, type = "sequence", samples = c("F3D0", "F3D1"),
   distinct = TRUE
 )
 #> [1] 2
 
 # To get the number of samples in the dataset
-count(data = miseq, type = "sample")
+strollur::count(data = miseq, type = "sample")
 #> [1] 19
 
 # To get the number of treatments in the dataset
-count(data = miseq, type = "treatment")
+strollur::count(data = miseq, type = "treatment")
 #> [1] 2
 
 # To get the number of "otu" bins in the dataset
-count(data = miseq, type = "bin", bin_type = "otu")
+strollur::count(data = miseq, type = "bin", bin_type = "otu")
 #> [1] 531
 
 # To get the number of "asv" bins in the dataset
-count(data = miseq, type = "bin", bin_type = "asv")
+strollur::count(data = miseq, type = "bin", bin_type = "asv")
 #> [1] 2425
 
 # To get the number of "phylotype" bins in the dataset
-count(data = miseq, type = "bin", bin_type = "phylotype")
+strollur::count(data = miseq, type = "bin", bin_type = "phylotype")
 #> [1] 63
 
 # To get number of "otu" bins from samples 'F3D0' and 'F3D1'
 # Note these bins will have sequences from both samples but there may be
 # other samples present as well
-count(
+strollur::count(
   data = miseq,
   type = "bin", bin_type = "otu", samples = c("F3D0", "F3D1")
 )
@@ -132,7 +133,7 @@ count(
 # To get number of "otu" bins unique to samples 'F3D0' and 'F3D1'
 # Note these bins will have sequences from both samples and NO other samples
 # will be present in the bins.
-count(
+strollur::count(
   data = miseq, type = "bin", bin_type = "otu",
   samples = c("F3D0", "F3D1"), distinct = TRUE
 )

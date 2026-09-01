@@ -1,4 +1,4 @@
-# new_dataset
+# Create a new [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 Create a new
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -28,9 +28,9 @@ The 'new' method in the
 
 ``` r
 
-data <- new_dataset()
+data <- strollur::new_dataset()
 
 # to create a new dataset named "soil", run the following:
 
-data <- new_dataset(dataset_name = "soil")
+data <- strollur::new_dataset(dataset_name = "soil")
 ```

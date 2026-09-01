@@ -1,4 +1,4 @@
-# write_mothur_cons_taxonomy
+# Write a mothur formatted [cons_taxonomy file](https://mothur.org/wiki/constaxonomy_file/)
 
 Write a mothur formatted [cons_taxonomy
 file](https://mothur.org/wiki/constaxonomy_file/)
@@ -13,7 +13,8 @@ write_mothur_cons_taxonomy(data, file_root = NULL)
 
 - data:
 
-  A \`strollur\` object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - file_root:
 
@@ -29,7 +30,7 @@ vector containing the names of the files created
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -37,13 +38,14 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
-write_mothur_cons_taxonomy(miseq, tempfile())
-#> [1] "/tmp/RtmpXm5suC/file1b20536abfb1.otu.cons.taxonomy"      
-#> [2] "/tmp/RtmpXm5suC/file1b20536abfb1.asv.cons.taxonomy"      
-#> [3] "/tmp/RtmpXm5suC/file1b20536abfb1.phylotype.cons.taxonomy"
+strollur::write_mothur_cons_taxonomy(miseq, tempfile())
+#> [1] "/tmp/RtmpUVSXMn/file3efd33937edc.otu.cons.taxonomy"      
+#> [2] "/tmp/RtmpUVSXMn/file3efd33937edc.asv.cons.taxonomy"      
+#> [3] "/tmp/RtmpUVSXMn/file3efd33937edc.phylotype.cons.taxonomy"
 ```

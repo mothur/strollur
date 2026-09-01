@@ -1,4 +1,4 @@
-# write_mothur
+# Write the various [file types](https://mothur.org/wiki/tags/#file_types) from your [strollur](https://mothur.org/strollur/reference/strollur.html) object for use with mothur.
 
 The write_mothur function will write various [file
 types](https://mothur.org/wiki/tags/#file_types) for use with mothur.
@@ -13,7 +13,8 @@ write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 
 - data:
 
-  A \`strollur\` object
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 - dir_path:
 
@@ -22,7 +23,7 @@ write_mothur(data, dir_path = NULL, compress = TRUE, tags = NULL)
 
 - compress:
 
-  boolean, Default = TRUE.
+  logical, Default = TRUE.
 
 - tags:
 
@@ -43,13 +44,13 @@ Sahl,J.W., Stres,B., Thallinger,G.G., Van Horn,D.J. and Weber,C.F.
 (2009), Introducing mothur: Open-source, platform-independent,
 community-supported software for describing and comparing microbial
 communities. Applied and Environmental Microbiology 75:7537-7541.
-\<doi:10.1128/AEM.01541-09\>
+<doi:10.1128/AEM.01541-09>
 
 ## Examples
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -57,10 +58,11 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
-files <- write_mothur(miseq, tempdir(), compress = FALSE)
+files <- strollur::write_mothur(miseq, tempdir(), compress = FALSE)
 ```

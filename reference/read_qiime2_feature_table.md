@@ -1,4 +1,4 @@
-# read_qiime2_feature_table
+# Read a [qiime2](https://qiime2.org) qza containing bin data
 
 Read a [qiime2](https://qiime2.org) qza containing bin data
 
@@ -37,17 +37,18 @@ A list containing artifact
 ``` r
 
 if (requireNamespace("h5lite", quietly = TRUE)) {
-  artifact <- read_qiime2_feature_table(strollur_example("table.qza"))
+  artifact <-
+       strollur::read_qiime2_feature_table(strollur_example("table.qza"))
 
   # access the bin assignment table
 
   artifact$data
 
-  # to create a `strollur` object with your data
+  # to create a `strollur::strollur` object with your data
 
-  data <- new_dataset("my_data")
+  data <- strollur::new_dataset("my_data")
 
-  assign(data = data, table = artifact$data, type = "bin")
+  strollur::assign(data = data, table = artifact$data, type = "bin")
   data
 } else {
   message(paste(

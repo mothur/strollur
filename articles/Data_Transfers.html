@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,10 +90,10 @@ Amplicon Sequence Analysis. This tutorial will explain how to save,
 load, copy, export, and import your <code>strollur</code> object. If you
 haven’t reviewed the <a href="http://mothur.org/strollur/articles/strollur.html" class="external-link">Getting
 Started</a> tuturial, we recommend you start there.</p>
-<p>Let’s use the <code><a href="../reference/miseq_sop_example.html">miseq_sop_example()</a></code> function to create a
-strollur object from the <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">Miseq SOP Example</a>.</p>
+<p>Let’s use the <code><a href="../reference/miseq_sop_example.html">strollur::miseq_sop_example()</a></code> function to
+create a strollur object from the <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">Miseq SOP Example</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
@@ -101,6 +101,7 @@ strollur object from the <a href="https://mothur.org/wiki/miseq_sop/" class="ext
 <span><span class="co">#&gt; Assigned 2425 asv bins.</span></span>
 <span><span class="co">#&gt; Assigned 63 phylotype bins.</span></span>
 <span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
+<span><span class="co">#&gt; Assigned 171 samples distances.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
 <span><span class="co">#&gt; Added a metadata report.</span></span>
@@ -137,16 +138,16 @@ strollur object from the <a href="https://mothur.org/wiki/miseq_sop/" class="ext
 <h2 id="saving-and-loading">Saving and Loading<a class="anchor" aria-label="anchor" href="#saving-and-loading"></a>
 </h2>
 <p>The strollur package has a function to save a dataset object as an
-<em>.rds</em> file, <code><a href="../reference/save_dataset.html">save_dataset()</a></code>, and a function to
-create a dataset from an <em>.rds</em> file,
-<code><a href="../reference/load_dataset.html">load_dataset()</a></code>. Let’s use the miseq data object to learn
-how to do that.</p>
+<em>.rds</em> file, <code><a href="../reference/save_dataset.html">strollur::save_dataset()</a></code>, and a
+function to create a dataset from an <em>.rds</em> file,
+<code><a href="../reference/load_dataset.html">strollur::load_dataset()</a></code>. Let’s use the miseq data object
+to learn how to do that.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"miseq_sop.rds"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/save_dataset.html">save_dataset</a></span><span class="op">(</span><span class="va">miseq</span>, file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpjWdWfm/miseq_sop.rds"</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/save_dataset.html">save_dataset</a></span><span class="op">(</span><span class="va">miseq</span>, file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp39aMss/miseq_sop.rds"</span></span>
 <span></span>
-<span><span class="va">miseq_from_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_dataset.html">load_dataset</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
+<span><span class="va">miseq_from_rds</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/load_dataset.html">load_dataset</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span></span>
 <span><span class="va">miseq_from_rds</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -180,9 +181,10 @@ identical. Let’s modify miseq_from_rds to verify they are not referring
 to the same object. We will add clusters created by <a href="https://mothur.org" class="external-link">mothur</a> using <a href="https://github.com/torognes/vsearch" class="external-link">vsearch’s</a> distance-based
 greedy clustering (dgc) algorithm.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dgc_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.dgc.list.gz"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dgc_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur_list.html">read_mothur_list</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.dgc.list.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">miseq_from_rds</span>, table <span class="op">=</span> <span class="va">dgc_data</span>, bin_type <span class="op">=</span> <span class="st">"dgc"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">miseq_from_rds</span>, table <span class="op">=</span> <span class="va">dgc_data</span>, bin_type <span class="op">=</span> <span class="st">"dgc"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 361 dgc bins.</span></span>
 <span><span class="va">miseq_from_rds</span></span>
 <span><span class="co">#&gt; miseq_sop:</span></span>
@@ -247,13 +249,13 @@ miseq_from_rds and not to miseq.</p>
 <h2 id="export-and-import">Export and Import<a class="anchor" aria-label="anchor" href="#export-and-import"></a>
 </h2>
 <p>The <em>.rds</em> file is in binary format and is not human readable.
-You can use the <code><a href="../reference/export_dataset.html">export_dataset()</a></code> to see a human readable
-form of the raw data stored in the dataset. Let’s export <em>miseq</em>
-and look at the table created.</p>
+You can use the <code><a href="../reference/export_dataset.html">strollur::export_dataset()</a></code> to see a human
+readable form of the raw data stored in the dataset. Let’s export
+<em>miseq</em> and look at the table created.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/export_dataset.html">export_dataset</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/export_dataset.html">export_dataset</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">table</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 15</span></span>
+<span><span class="co">#&gt; List of 16</span></span>
 <span><span class="co">#&gt;  $ sequence_data                    :'data.frame':   2425 obs. of  5 variables:</span></span>
 <span><span class="co">#&gt;   ..$ sequence_id     : int [1:2425] 0 1 2 3 4 5 6 7 8 9 ...</span></span>
 <span><span class="co">#&gt;   ..$ sequence_name   : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_10133_8460" "M00967_43_000000000-A3JHG_1_1101_10331_23332" "M00967_43_000000000-A3JHG_1_1101_10382_22128" "M00967_43_000000000-A3JHG_1_1101_11035_15765" ...</span></span>
@@ -273,6 +275,11 @@ and look at the table created.</p>
 <span><span class="co">#&gt;   ..$ abundance  : num [1:5539] 32 127 1 1 1 222 5 13 20 17 ...</span></span>
 <span><span class="co">#&gt;   ..$ sample     : chr [1:5539] "F3D0" "F3D1" "F3D146" "F3D149" ...</span></span>
 <span><span class="co">#&gt;   ..$ treatment  : chr [1:5539] "Early" "Early" "Late" "Late" ...</span></span>
+<span><span class="co">#&gt;  $ sample_distance_table            :'data.frame':   171 obs. of  4 variables:</span></span>
+<span><span class="co">#&gt;   ..$ sample1 : chr [1:171] "F3D1" "F3D141" "F3D141" "F3D142" ...</span></span>
+<span><span class="co">#&gt;   ..$ sample2 : chr [1:171] "F3D0" "F3D0" "F3D1" "F3D0" ...</span></span>
+<span><span class="co">#&gt;   ..$ distance: num [1:171] 0.468 0.528 0.553 0.565 0.597 ...</span></span>
+<span><span class="co">#&gt;   ..$ include : logi [1:171] TRUE TRUE TRUE TRUE TRUE TRUE ...</span></span>
 <span><span class="co">#&gt;  $ otu_bin_data                     :'data.frame':   531 obs. of  5 variables:</span></span>
 <span><span class="co">#&gt;   ..$ bin_id     : int [1:531] 0 1 2 3 4 5 6 7 8 9 ...</span></span>
 <span><span class="co">#&gt;   ..$ bin_name   : chr [1:531] "Otu001" "Otu002" "Otu003" "Otu004" ...</span></span>
@@ -313,7 +320,7 @@ and look at the table created.</p>
 <span><span class="co">#&gt;   ..$ documentation_url: chr [1:2] "https://mothur.org/phylotypr/" "https://mothur.org/wiki/silva_reference_files/"</span></span>
 <span><span class="co">#&gt;   ..$ parameter        : chr [1:2] "kmer_size=8,num_bootstraps=100,min_confidence=80" "NA"</span></span>
 <span><span class="co">#&gt;   ..$ citation         : chr [1:2] "@article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. "| __truncated__ "NA"</span></span>
-<span><span class="co">#&gt;   ..$ creation_date    : chr [1:2] "2026-07-13" "2026-07-13"</span></span>
+<span><span class="co">#&gt;   ..$ creation_date    : chr [1:2] "2026-09-01" "2026-09-01"</span></span>
 <span><span class="co">#&gt;  $ contigs_report                   :'data.frame':   2425 obs. of  8 variables:</span></span>
 <span><span class="co">#&gt;   ..$ Name           : chr [1:2425] "M00967_43_000000000-A3JHG_1_1101_10133_8460" "M00967_43_000000000-A3JHG_1_1101_10331_23332" "M00967_43_000000000-A3JHG_1_1101_10382_22128" "M00967_43_000000000-A3JHG_1_1101_11035_15765" ...</span></span>
 <span><span class="co">#&gt;   ..$ Length         : num [1:2425] 253 253 253 252 253 252 253 253 252 252 ...</span></span>
@@ -342,13 +349,13 @@ and look at the table created.</p>
 <span><span class="co">#&gt;   ..$ root.edge  : num 0.221</span></span>
 <span><span class="co">#&gt;   ..- attr(*, "class")= chr "phylo"</span></span>
 <span><span class="co">#&gt;   ..- attr(*, "order")= chr "cladewise"</span></span>
-<span><span class="co">#&gt;  - attr(*, "strollur_version")= chr "0.1.1"</span></span>
+<span><span class="co">#&gt;  - attr(*, "strollur_version")= chr "0.1.2"</span></span>
 <span><span class="co">#&gt;  - attr(*, "dataset_name")= chr "miseq_sop"</span></span></code></pre></div>
-<p>Similarly to <code><a href="../reference/load_dataset.html">load_dataset()</a></code>, you can use the
-<code><a href="../reference/import_dataset.html">import_dataset()</a></code> function to create a new dataset object
-from the exported table.</p>
+<p>Similarly to <code><a href="../reference/load_dataset.html">strollur::load_dataset()</a></code>, you can use the
+<code><a href="../reference/import_dataset.html">strollur::import_dataset()</a></code> function to create a new dataset
+object from the exported table.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">miseq_import</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_dataset.html">import_dataset</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">table</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">miseq_import</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/import_dataset.html">import_dataset</a></span><span class="op">(</span>table <span class="op">=</span> <span class="va">table</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
@@ -359,6 +366,7 @@ from the exported table.</p>
 <span><span class="co">#&gt; Assigned 2425 asv bin taxonomies.</span></span>
 <span><span class="co">#&gt; Assigned 63 phylotype bins.</span></span>
 <span><span class="co">#&gt; Assigned 63 phylotype bin taxonomies.</span></span>
+<span><span class="co">#&gt; Assigned 171 samples distances.</span></span>
 <span><span class="co">#&gt; Added 2 resource references.</span></span>
 <span><span class="co">#&gt; Added a contigs_report report.</span></span>
 <span><span class="co">#&gt; Added a metadata report.</span></span>
@@ -390,17 +398,20 @@ from the exported table.</p>
 <span><span class="co">#&gt; Total number of resource references: 2 </span></span>
 <span><span class="co">#&gt; Total number of custom reports: 2</span></span></code></pre></div>
 <p>Again, we can see that the summary of miseq_import is identical to
-the summary of miseq.</p>
+the summary of miseq. Note, <code><a href="../reference/export_dataset.html">strollur::export_dataset</a></code> and
+<code><a href="../reference/import_dataset.html">strollur::import_dataset()</a></code> is the best method to use to
+convert an older version of the <code>strollur_object</code> to a newer
+version.</p>
 </div>
 <div class="section level2">
 <h2 id="copy">Copy<a class="anchor" aria-label="anchor" href="#copy"></a>
 </h2>
 <p>Lastly, you can make a deep copy of your dataset using the
-<code><a href="../reference/copy_dataset.html">copy_dataset()</a></code> function. Note, if you use an assignment
-operator to copy it’s a shallow copy. The dataset object is an R6 object
-to keep the memory usage low. First let’s learn how to use the
-<code><a href="../reference/copy_dataset.html">copy_dataset()</a></code> function, then we will take a closer look at
-how deep and shallow copying differ.</p>
+<code><a href="../reference/copy_dataset.html">strollur::copy_dataset()</a></code> function. Note, if you use an
+assignment operator to copy it’s a shallow copy. The dataset object is
+an R6 object to keep the memory usage low. First let’s learn how to use
+the <code><a href="../reference/copy_dataset.html">strollur::copy_dataset()</a></code> function, then we will take a
+closer look at how deep and shallow copying differ.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">miseq_deep_copy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copy_dataset.html">copy_dataset</a></span><span class="op">(</span><span class="va">miseq</span><span class="op">)</span></span>
 <span></span>
@@ -408,7 +419,7 @@ how deep and shallow copying differ.</p>
 <p>Let’s add the dgc_data to miseq_shallow_copy and then compare miseq,
 miseq_deep_copy, and mise_shallow_copy.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">miseq_shallow_copy</span>, table <span class="op">=</span> <span class="va">dgc_data</span>, bin_type <span class="op">=</span> <span class="st">"dgc"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/assign.html">assign</a></span><span class="op">(</span><span class="va">miseq_shallow_copy</span>, table <span class="op">=</span> <span class="va">dgc_data</span>, bin_type <span class="op">=</span> <span class="st">"dgc"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 361 dgc bins.</span></span>
 <span></span>
 <span><span class="va">miseq</span></span>

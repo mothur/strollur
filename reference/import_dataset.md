@@ -1,4 +1,4 @@
-# Import strollur object from exported data.frame.
+# Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from the exported table of a [strollur](https://mothur.org/strollur/reference/strollur.html) object.
 
 The import_dataset function will create a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -17,7 +17,8 @@ import_dataset(table)
 
   a table containing the data from a
   [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object. You can create the table using 'export(data)'.
+  object. You can create the table using
+  `strollur::export_dataset(data)`.
 
 ## Value
 
@@ -25,13 +26,13 @@ a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## See also
 
-\[export_dataset()\]
+[`export_dataset()`](https://mothur.org/strollur/reference/export_dataset.md)
 
 ## Examples
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -39,12 +40,13 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
-data <- import_dataset(export_dataset(miseq))
+data <- strollur::import_dataset(strollur::export_dataset(miseq))
 #> Added 2425 sequences.
 #> Assigned 2425 sequence taxonomies.
 #> Assigned 2425 sequence abundances.
@@ -55,6 +57,7 @@ data <- import_dataset(export_dataset(miseq))
 #> Assigned 2425 asv bin taxonomies.
 #> Assigned 63 phylotype bins.
 #> Assigned 63 phylotype bin taxonomies.
+#> Assigned 171 samples distances.
 #> Added 2 resource references.
 #> Added a contigs_report report.
 #> Added a metadata report.

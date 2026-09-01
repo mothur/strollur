@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,10 +97,10 @@ there.</p>
 <div class="section level2">
 <h2 id="loading-the-example-dataset">Loading the example dataset<a class="anchor" aria-label="anchor" href="#loading-the-example-dataset"></a>
 </h2>
-<p>We can use the <code><a href="../reference/miseq_sop_example.html">miseq_sop_example()</a></code> function to create a
-dataset object from the <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">Miseq SOP Example</a>.</p>
+<p>We can use the <code><a href="../reference/miseq_sop_example.html">strollur::miseq_sop_example()</a></code> function to
+create a dataset object from the <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">Miseq SOP Example</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">miseq</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/miseq_sop_example.html">miseq_sop_example</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
@@ -108,6 +108,7 @@ dataset object from the <a href="https://mothur.org/wiki/miseq_sop/" class="exte
 <span><span class="co">#&gt; Assigned 2425 asv bins.</span></span>
 <span><span class="co">#&gt; Assigned 63 phylotype bins.</span></span>
 <span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
+<span><span class="co">#&gt; Assigned 171 samples distances.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin taxonomies.</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bin representative sequences.</span></span>
 <span><span class="co">#&gt; Added a metadata report.</span></span>
@@ -148,34 +149,35 @@ dataset object from the <a href="https://mothur.org/wiki/miseq_sop/" class="exte
 </h2>
 <p>The <em>strollur</em> package includes several functions to access
 your sequence data.</p>
-<p><code><a href="../reference/names.html">names()</a></code> - The names function is an extension of base R’s
-names function. It allows you to get the name of your dataset or the
-names of the sequences, bins, samples, treatments and reports in your
+<p><code><a href="../reference/names.html">strollur::names()</a></code> - The names function is an extension
+of base R’s names function. It allows you to get the name of your
+dataset or the names of the sequences, bins, samples, treatments and
+reports in your dataset.</p>
+<p><code><a href="../reference/count.html">strollur::count()</a></code> - The count function allows you to get
+the number of sequences, bins, samples and treatments in your
 dataset.</p>
-<p><code><a href="../reference/count.html">count()</a></code> - The count function allows you to get the
-number of sequences, bins, samples and treatments in your dataset.</p>
-<p><code><a href="../reference/abundance.html">abundance()</a></code> - The abundance function can be used to
-access the abundance data for sequences, bins, samples, and
+<p><code><a href="../reference/abundance.html">strollur::abundance()</a></code> - The abundance function can be
+used to access the abundance data for sequences, bins, samples, and
 treatments.</p>
-<p><code><a href="../reference/report.html">report()</a></code> - The report function can be used to access the
-various data associated with your dataset.</p>
-<p><code><a href="../reference/summary.html">summary()</a></code> - The summary function allows you to summarize
-sequences, your custom reports, and scrapped data.</p>
+<p><code><a href="../reference/report.html">strollur::report()</a></code> - The report function can be used to
+access the various data associated with your dataset.</p>
+<p><code><a href="../reference/summary.html">strollur::summary()</a></code> - The summary function allows you to
+summarize sequences, your custom reports, and scrapped data.</p>
 <div class="section level3">
-<h3 id="names">names<a class="anchor" aria-label="anchor" href="#names"></a>
+<h3 id="strollurnames">strollur::names<a class="anchor" aria-label="anchor" href="#strollurnames"></a>
 </h3>
-<p>The <code><a href="../reference/names.html">names()</a></code> function allows you to get the names of
-sequences, bins, samples, treatments and reports. Let’s take a closer
-look at how use it.</p>
+<p>The <code><a href="../reference/names.html">strollur::names()</a></code> function allows you to get the
+names of sequences, bins, samples, treatments and reports. Let’s take a
+closer look at how use it.</p>
 <p>To get the name of the dataset, set the type parameter to
-‘dataset’:</p>
+<code>dataset</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "miseq_sop"</span></span></code></pre></div>
 <p>To get the names of the sequences in your dataset, set the type
-parameter to ‘sequence’:</p>
+parameter to <code>sequence</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">all_sequences</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">all_sequences</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -191,7 +193,7 @@ parameter to ‘sequence’:</p>
 <p>To get the names of the sequences <em>present</em> in sample
 ‘F3D0’:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">include_f3d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">include_f3d0</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
@@ -208,7 +210,7 @@ parameter to ‘sequence’:</p>
 <p>To get the names of the sequences <em>exclusive</em> to sample
 ‘F3D0’:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">exclusive_f3d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">exclusive_f3d0</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
@@ -227,7 +229,7 @@ bin_type. The miseq example contains 3 bin types: <em>otu</em>,
 <em>asv</em> and <em>phylotype</em>. Let’s find the bin names for the
 ‘otu’ bin type.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">otu_bins</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">otu_bins</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
@@ -239,7 +241,7 @@ bin_type. The miseq example contains 3 bin types: <em>otu</em>,
 <p>To get the names of the ‘otu’ bins that include sequences
 <em>present</em> in sample ‘F3D0’:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">include_f3d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">include_f3d0</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
@@ -252,7 +254,7 @@ bin_type. The miseq example contains 3 bin types: <em>otu</em>,
 <p>To get the names of the “otu” bins that are <em>exclusive</em> to
 sample ‘F3D0’:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">exclusive_f3d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">exclusive_f3d0</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
@@ -262,39 +264,42 @@ sample ‘F3D0’:</p>
 <span><span class="co">#&gt; [1] 14</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">exclusive_f3d0</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Otu330" "Otu339" "Otu341" "Otu345" "Otu347"</span></span></code></pre></div>
-<p>To get the names of the samples</p>
+<p>To get the names of the samples, set the type parameter to
+<code>sample</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "F3D0"   "F3D1"   "F3D141" "F3D142" "F3D143" "F3D144" "F3D145" "F3D146"</span></span>
 <span><span class="co">#&gt;  [9] "F3D147" "F3D148" "F3D149" "F3D150" "F3D2"   "F3D3"   "F3D5"   "F3D6"  </span></span>
 <span><span class="co">#&gt; [17] "F3D7"   "F3D8"   "F3D9"</span></span></code></pre></div>
-<p>To get the names of the treatments</p>
+<p>To get the names of the treatments, set the type parameter to
+<code>treatment</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Early" "Late"</span></span></code></pre></div>
-<p>To get the names of the custom reports</p>
+<p>To get the names of the custom reports, set the type parameter to
+<code>report</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "contigs_report" "metadata"</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="count">count<a class="anchor" aria-label="anchor" href="#count"></a>
+<h3 id="strollurcount">strollur::count<a class="anchor" aria-label="anchor" href="#strollurcount"></a>
 </h3>
-<p>The <code><a href="../reference/count.html">count()</a></code> function allows you to get the number of
-sequences, bins, samples and treatments in your dataset.</p>
+<p>The <code><a href="../reference/count.html">strollur::count()</a></code> function allows you to get the
+number of sequences, bins, samples and treatments in your dataset.</p>
 <p>To find the <em>total</em> number of sequences in the dataset, run
 the following:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 113963</span></span></code></pre></div>
 <p>To find the number of <em>unique</em> sequences in the dataset, set
-‘distinct’ to TRUE:</p>
+<code>distinct = TRUE</code>:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -304,7 +309,7 @@ the following:</p>
 you can set the samples parameter. Note, these sequences will be present
 in the sample but may be be present in other samples as well.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
@@ -314,7 +319,7 @@ in the sample but may be be present in other samples as well.</p>
 <p>To get number of <em>unique</em> sequences <em>exclusive</em> to
 sample ‘F3D0’:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0"</span><span class="op">)</span>,</span>
@@ -326,7 +331,7 @@ the bin_type. The miseq example contains 3 bin types: <em>otu</em>,
 <em>asv</em> and <em>phylotype</em>. Let’s find the number of bins for
 the ‘otu’ bin type.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
@@ -337,7 +342,7 @@ sample ‘F3D0’: <em>Note these bins will have sequences from sample
 ‘F3D0’ and may contain </em> <em>sequences from other samples as
 well.</em></p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
@@ -349,7 +354,7 @@ well.</em></p>
 ‘F3D0’: <em>Note these bins will have sequences from sample ‘F3D0’ and
 NO other samples </em> <em>will be present in the bins.</em></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
@@ -357,28 +362,31 @@ NO other samples </em> <em>will be present in the bins.</em></p>
 <span>  distinct <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 14</span></span></code></pre></div>
-<p>To get the number of samples in the dataset:</p>
+<p>To get the number of samples in the dataset, set
+<code>type = sample</code>:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 19</span></span></code></pre></div>
-<p>To get the number of treatments in the dataset:</p>
+<p>To get the number of treatments in the dataset, set
+<code>type = treatment</code>:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/count.html">count</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="abundance">abundance<a class="anchor" aria-label="anchor" href="#abundance"></a>
+<h3 id="strollurabundance">strollur::abundance<a class="anchor" aria-label="anchor" href="#strollurabundance"></a>
 </h3>
-<p>Now that we are familiar with the <code><a href="../reference/names.html">names()</a></code> and
-<code><a href="../reference/count.html">count()</a></code> functions. Let’s learn how we can use the
-<code><a href="../reference/abundance.html">abundance()</a></code> function. The abundance function can be used to
-access the abundance data for sequences, bins, samples, and treatments.
-It returns a data.frame containing the requested abundance data.</p>
-<p>To the total abundance for each sequence, set the type = ‘sequence’.
-This will return a 2 column data.frame containing sequence_names and
-abundances.</p>
+<p>Now that we are familiar with the <code><a href="../reference/names.html">strollur::names()</a></code> and
+<code><a href="../reference/count.html">strollur::count()</a></code> functions. Let’s learn how we can use the
+<code><a href="../reference/abundance.html">strollur::abundance()</a></code> function. The abundance function can
+be used to access the abundance data for sequences, bins, samples, and
+treatments. It returns a data.frame containing the requested abundance
+data.</p>
+<p>To the total abundance for each sequence, set the
+<code>type = sequence</code>. This will return a 2 column data.frame
+containing sequence_names and abundances.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sequence_abundance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">sequence_abundance</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  by_sample <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -395,11 +403,12 @@ abundances.</p>
 <span><span class="co">#&gt; 8   M00967_43_000000000-A3JHG_1_1114_8059_18290         1</span></span>
 <span><span class="co">#&gt; 9    M00967_43_000000000-A3JHG_1_2112_9811_9982         1</span></span>
 <span><span class="co">#&gt; 10  M00967_43_000000000-A3JHG_1_2103_25452_6018         1</span></span></code></pre></div>
-<p>To the abundance for each sequence parsed by sample, set by_sample =
-TRUE. This will return a 3 or 4 column data.frame containing
-sequence_names, abundances, samples and treatments (if assigned).</p>
+<p>To the abundance for each sequence parsed by sample, set
+<code>by_sample = TRUE</code>. This will return a 3 or 4 column
+data.frame containing sequence_names, abundances, samples and treatments
+(if assigned).</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sequence_abundance_by_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">sequence_abundance_by_sample</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span>,</span>
 <span>  by_sample <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -422,7 +431,7 @@ specify the bin_type. The miseq example contains 3 bin types:
 abundance data of bins for the <em>otu</em> bin type. This will return a
 2 column data.frame containing bin_names and abundances.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bin_abundance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">bin_abundance</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
@@ -440,11 +449,12 @@ abundance data of bins for the <em>otu</em> bin type. This will return a
 <span><span class="co">#&gt; 8  Otu008      5337</span></span>
 <span><span class="co">#&gt; 9  Otu009      3606</span></span>
 <span><span class="co">#&gt; 10 Otu010      3061</span></span></code></pre></div>
-<p>To the abundance for each bin parsed by sample, set by_sample = TRUE.
-This will return a 3 or 4 column data.frame containing bin_names,
-abundances, samples and treatments (if assigned).</p>
+<p>To the abundance for each bin parsed by sample, set
+<code>by_sample = TRUE</code>. This will return a 3 or 4 column
+data.frame containing bin_names, abundances, samples and treatments (if
+assigned).</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bin_abundance_by_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">bin_abundance_by_sample</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span>,</span>
@@ -463,10 +473,10 @@ abundances, samples and treatments (if assigned).</p>
 <span><span class="co">#&gt; 9    Otu001      1316 F3D147      Late</span></span>
 <span><span class="co">#&gt; 10   Otu001       750 F3D148      Late</span></span></code></pre></div>
 <p>To access the distribution of sequences across the samples in your
-dataset, set the type = ‘sample’. This will return a 2 column data.frame
-containing sample names and abundances.</p>
+dataset, set the <code>type = sample</code>. This will return a 2 column
+data.frame containing sample names and abundances.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sample"</span></span>
 <span><span class="op">)</span></span>
@@ -491,29 +501,29 @@ containing sample names and abundances.</p>
 <span><span class="co">#&gt; 18   F3D8      4253</span></span>
 <span><span class="co">#&gt; 19   F3D9      5735</span></span></code></pre></div>
 <p>To access the distribution of sequences across the treatments in your
-dataset, set the type = ‘treatment’. This will return a 2 column
-data.frame containing treatment names and abundances.</p>
+dataset, set the <code>type = treatment</code>. This will return a 2
+column data.frame containing treatment names and abundances.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/abundance.html">abundance</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"treatment"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   treatment abundance</span></span>
 <span><span class="co">#&gt; 1     Early     55634</span></span>
 <span><span class="co">#&gt; 2      Late     58329</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="report">report<a class="anchor" aria-label="anchor" href="#report"></a>
+<h3 id="strollurreport">strollur::report<a class="anchor" aria-label="anchor" href="#strollurreport"></a>
 </h3>
-<p>The <code><a href="../reference/report.html">report()</a></code> function allows you access you to access
-FASTA sequences, sequence and classification reports, bin assignments,
-sample assignments, metadata, sequence data reports, custom reports,
-resource references and scrapped data reports. It returns a data.frame
-containing the requested report data. Let’s look at some examples
-together.</p>
+<p>The <code><a href="../reference/report.html">strollur::report()</a></code> function allows you access you to
+access FASTA sequences, sequence and classification reports, bin
+assignments, sample assignments, metadata, phylo trees, sequence data
+reports, custom reports, resource references and scrapped data reports.
+It returns a data.frame or tree containing the requested report data.
+Let’s look at some examples together.</p>
 <p>To get a report containing the sequences <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> data,
-set the type = “fasta”. This will be a 2 or 3 column data.frame
-containing sequence names, sequence nucleotide strings, and comments (if
-provided).</p>
+set the <code>type = fasta</code>. This will be a 2 or 3 column
+data.frame containing sequence names, sequence nucleotide strings, and
+comments (if provided).</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fasta_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">fasta_report</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"fasta"</span></span>
 <span><span class="op">)</span></span>
@@ -533,9 +543,9 @@ provided).</p>
 <p>If you want to take a closer look at the sequences, you can request a
 report containing the sequence names, starts, ends, lengths, ambiguous
 bases, longest homopolymers, and number of N’s. To get a sequence
-report, set type = “sequence”.</p>
+report, set <code>type = sequence</code>.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sequence_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">sequence_report</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence"</span></span>
 <span><span class="op">)</span></span>
@@ -555,11 +565,12 @@ report, set type = “sequence”.</p>
 <p>The report function also allows you to access classification reports
 about your dataset. There are 2 types of classification reports:
 <em>sequence_taxonomy</em> and <em>bin_taxonomy</em>. To get a report
-about the sequence classifications, set type = “sequence_taxonomy”. This
-will create a 3 or 4 column report containing sequence names, taxonomic
-levels, taxons and confidence scores(if provided).</p>
+about the sequence classifications, set
+<code>type = sequence_taxonomy</code>. This will create a 3 or 4 column
+report containing sequence names, taxonomic levels, taxons and
+confidence scores(if provided).</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sequence_classification</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">sequence_classification</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span></span>
 <span><span class="op">)</span></span>
@@ -591,7 +602,7 @@ you need to specify the bin_type. The miseq example contains 3 bin
 types: <em>otu</em>, <em>asv</em> and <em>phylotype</em>. Let’s find the
 consensus taxonomies of bins for the <em>otu</em> bin type.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bin_classification</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">bin_classification</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_taxonomy"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
@@ -611,7 +622,7 @@ consensus taxonomies of bins for the <em>otu</em> bin type.</p>
 <p>To get the sequence bin assignments for the <em>otu</em> bins, run
 the following:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sequence_bin_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">sequence_bin_assignments</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_bin_assignment"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
@@ -628,10 +639,10 @@ the following:</p>
 <span><span class="co">#&gt; 8  Otu001 M00967_43_000000000-A3JHG_1_1114_13556_18457</span></span>
 <span><span class="co">#&gt; 9  Otu001 M00967_43_000000000-A3JHG_1_2114_12634_10967</span></span>
 <span><span class="co">#&gt; 10 Otu001 M00967_43_000000000-A3JHG_1_1102_18640_14309</span></span></code></pre></div>
-<p>To get the sample treatment assignments, set type =
-“sample_assignment”.</p>
+<p>To get the sample treatment assignments, set
+<code>type = sample_assignment</code>.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sample_treatment_assignments</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">sample_treatment_assignments</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sample_assignment"</span></span>
 <span><span class="op">)</span></span>
@@ -643,11 +654,11 @@ the following:</p>
 <span><span class="co">#&gt; 4 F3D142      Late</span></span>
 <span><span class="co">#&gt; 5 F3D143      Late</span></span></code></pre></div>
 <p>If you assigned bin representative sequences, you can access the
-report by setting type = “bin_representative”. The miseq example
-includes bin representatives for the <em>otu</em> bins. Let’s take a
-look:</p>
+report by setting <code>type = bin_representative</code>. The miseq
+example includes bin representatives for the <em>otu</em> bins. Let’s
+take a look:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">otu_bin_representatives</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">otu_bin_representatives</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_representative"</span>,</span>
 <span>  bin_type <span class="op">=</span> <span class="st">"otu"</span></span>
@@ -668,12 +679,12 @@ look:</p>
 <p>The miseq example contains a custum report. To access the custom
 reports, first let’s find the names.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "contigs_report" "metadata"</span></span></code></pre></div>
-<p>To access the custom contigs assembly report, set type =
-“contigs_report”.</p>
+<p>To access the custom contigs assembly report, set
+<code>type = contigs_report</code>.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">contigs_assembly_report</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">contigs_assembly_report</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"contigs_report"</span></span>
 <span><span class="op">)</span></span>
@@ -690,10 +701,10 @@ reports, first let’s find the names.</p>
 <span><span class="co">#&gt; 3             2         251          0      0      0.00196774</span></span>
 <span><span class="co">#&gt; 4             2         251          4      0      0.05629750</span></span>
 <span><span class="co">#&gt; 5             2         251          0      0      0.00259554</span></span></code></pre></div>
-<p>To get the metadata associated with your dataset, set type =
-“metadata”.</p>
+<p>To get the metadata associated with your dataset, set
+<code>type = metadata</code>.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"metadata"</span></span>
 <span><span class="op">)</span></span>
@@ -704,10 +715,10 @@ reports, first let’s find the names.</p>
 <span><span class="co">#&gt; 3 F3D141            141</span></span>
 <span><span class="co">#&gt; 4 F3D142            142</span></span>
 <span><span class="co">#&gt; 5 F3D143            143</span></span></code></pre></div>
-<p>To get the resource references associated with your dataset, set type
-= “resource_reference”.</p>
+<p>To get the resource references associated with your dataset, set
+<code>type = resource_reference</code>.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"resource_reference"</span></span>
 <span><span class="op">)</span></span>
@@ -727,38 +738,67 @@ reports, first let’s find the names.</p>
 <span><span class="co">#&gt; 1 @article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy}, journal = {Applied and Environmental Microbiology}, volume = {73}, number = {16}, pages = {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL = {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint = {https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}</span></span>
 <span><span class="co">#&gt; 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NA</span></span>
 <span><span class="co">#&gt;   creation_date</span></span>
-<span><span class="co">#&gt; 1    2026-07-13</span></span>
-<span><span class="co">#&gt; 2    2026-07-13</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    2026-09-01</span></span>
+<span><span class="co">#&gt; 2    2026-09-01</span></span></code></pre></div>
+<p>strollur allows you to include trees relating the sequences and
+samples within your dataset. You can access and plot them using the
+following functions.</p>
+<p>To access the tree that relates the sequences in your dataset, set
+<code>type = sequence_tree</code>.</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sequence_tree</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<span>  <span class="va">miseq</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sequence_tree"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>To access the tree that relates the samples in your dataset, set
+<code>type = sample_tree</code>.</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sample_tree</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<span>  <span class="va">miseq</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sample_tree"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#| fig.alt: &gt;</span></span>
+<span><span class="co">#|   Plot of Miseq_SOP's sample relationship tree</span></span>
+<span><span class="va">old_par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
+<span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">sample_tree</span>,</span>
+<span>  no.margin <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cex <span class="op">=</span> <span class="fl">0.5</span>, edge.color <span class="op">=</span> <span class="st">"maroon"</span>, tip.color <span class="op">=</span> <span class="st">"navy"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="Accessing_Dataset_files/figure-html/unnamed-chunk-41-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
 <p>Lastly, if sequences or bins have been removed over the course of
 your analysis you can see a report about the scrapped data by setting
-type = “sequence_scrap” or “bin_scrap”. The miseq example does not
-include scrapped data, but let’s take a look at how to access it.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<code>type = sequence_scrap</code> or <code>type = bin_scrap</code>. The
+miseq example does not include scrapped data, but let’s take a look at
+how to access it.</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"sequence_scrap"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; data frame with 0 columns and 0 rows</span></span>
-<span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"bin_scrap"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; data frame with 0 columns and 0 rows</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="summary">summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+<h3 id="strollursummary">strollur::summary<a class="anchor" aria-label="anchor" href="#strollursummary"></a>
 </h3>
-<p>The <code><a href="../reference/summary.html">summary()</a></code> function allows you to summarize
+<p>The <code><a href="../reference/summary.html">strollur::summary()</a></code> function allows you to summarize
 sequences, custom reports, and scrapped data.</p>
 <p>To get a summary for our custom reports, first let’s find the report
 names.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/names.html">names</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"report"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "contigs_report" "metadata"</span></span></code></pre></div>
 <p>You can see we have a custom report so let get the summary by setting
-report_type = “contigs_report”.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span></span>
+<code>report_type = contigs_report</code>.</p>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span></span>
 <span>  <span class="va">miseq</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"report"</span>,</span>
 <span>  report_type <span class="op">=</span> <span class="st">"contigs_report"</span></span>
@@ -801,34 +841,12 @@ report_type = “contigs_report”.</p>
 <span><span class="co">#&gt; Mean:          0.0738509482</span></span></code></pre></div>
 <p>Lastly, if sequences or bins have been removed over the course of
 your analysis you can see a summary about the scrapped data by setting
-type = “scrap”. The miseq example does not include scrapped data, but
-let’s take a look at how to access it.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"scrap"</span><span class="op">)</span></span>
+<code>type = scrap</code>. The miseq example does not include scrapped
+data, but let’s take a look at how to access it.</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span><span class="va">miseq</span>, type <span class="op">=</span> <span class="st">"scrap"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; data frame with 0 columns and 0 rows</span></span>
 <span><span class="co">#&gt; data frame with 0 columns and 0 rows</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="sample-trees-and-sequence-trees">Sample Trees and Sequence Trees<a class="anchor" aria-label="anchor" href="#sample-trees-and-sequence-trees"></a>
-</h2>
-<p>strollur allows you to include trees relating the sequences and
-samples within your dataset. You can access and plot them using the
-following functions.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">miseq_sequence_tree</span> <span class="op">&lt;-</span> <span class="va">miseq</span><span class="op">$</span><span class="fu">get_sequence_tree</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">miseq_sample_tree</span> <span class="op">&lt;-</span> <span class="va">miseq</span><span class="op">$</span><span class="fu">get_sample_tree</span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#| fig.alt: &gt;</span></span>
-<span><span class="co">#|   Plot of Miseq_SOP's sample relationship tree</span></span>
-<span><span class="va">old_par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
-<span><span class="fu">ape</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ape/man/plot.phylo.html" class="external-link">plot.phylo</a></span><span class="op">(</span><span class="va">miseq_sample_tree</span>,</span>
-<span>  no.margin <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  cex <span class="op">=</span> <span class="fl">0.5</span>, edge.color <span class="op">=</span> <span class="st">"maroon"</span>, tip.color <span class="op">=</span> <span class="st">"navy"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><img src="Accessing_Dataset_files/figure-html/unnamed-chunk-44-1.png" class="r-plt" alt="" width="700"></p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span></span></code></pre></div>
 <p>Thanks for following along. Next, find out how to import your own
 data using the links below:</p>
 <ul>
@@ -841,6 +859,7 @@ data from qiime2</a></li>
 <li><a href="https://mothur.org/strollur/articles/Importing_from_phyloseq.html">Importing
 data from phyloseq</a></li>
 </ul>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

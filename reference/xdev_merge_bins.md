@@ -1,4 +1,4 @@
-# xdev_merge_bins
+# Merge bins in your [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Designed with package integration in mind, the merge bins function
 allows you to merge bins in a
@@ -12,22 +12,22 @@ xdev_merge_bins(data, bin_names, reason = "merged", bin_type = "otu")
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object.
 
-- bin_names, :
+- bin_names:
 
   a vector of strings containing the names of the bins you would like
   merge. The resulting merged bin will be stored in the first bin_id in
   the vector.
 
-- reason, :
+- reason:
 
   a string indicating why you are merging bins. Default = "merged".
 
-- bin_type, :
+- bin_type:
 
   a string indicating the type of bin clusters. Default = "otu"
 
@@ -40,7 +40,7 @@ an updated
 
 ``` r
 
- data <- miseq_sop_example()
+ data <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -48,6 +48,7 @@ an updated
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -58,7 +59,8 @@ an updated
 
  bins_to_merge <- c("Otu005", "Otu006")
 
- xdev_merge_bins(data = data, bin_names = bins_to_merge)
+ strollur::xdev_merge_bins(data,
+                             bin_names = bins_to_merge)
 #> miseq_sop:
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
@@ -94,7 +96,7 @@ an updated
  # If you look at the scrap report, you will see Otu006 with the trash code
  # set to "merged".
 
- report(data = data, type = "bin_scrap")
+ strollur::report(data, type = "bin_scrap")
 #>   bin_name trash_code
 #> 1   Otu006     merged
 ```

@@ -1,7 +1,9 @@
 # Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from a qiime2 outputs
 
 The read_qiime2 function reads various types of .qza files created by
-[qiime2](https://qiime2.org), and creates a \`strollur\` object.
+[qiime2](https://qiime2.org), and creates a
+[`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)
+object.
 
 ## Usage
 
@@ -41,13 +43,13 @@ read_qiime2(
 
 ## Value
 
-A \`strollur\` object
+a [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
 ## References
 
 Bolyen,E., Rideout,J.R., Dillon,M.R. et al. (2019), Reproducible,
 interactive, scalable and extensible microbiome data science using QIIME
-2. Bioinformatics 37:852-857. \<doi:10.1038/s41587-019-0209-9\>
+2. Bioinformatics 37:852-857. <doi:10.1038/s41587-019-0209-9>
 
 ## Examples
 
@@ -65,7 +67,7 @@ qza_files <- c(
 )
 
 if (requireNamespace("h5lite", quietly = TRUE)) {
-  data <- read_qiime2(
+  data <- strollur::read_qiime2(
     qza = qza_files,
     metadata = strollur_example("sample_metadata.tsv"),
     dataset_name = "qiime2_moving_pictures"

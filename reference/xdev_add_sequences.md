@@ -1,4 +1,4 @@
-# xdev_add_sequences
+# Add sequence data to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Add sequence data to a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -19,36 +19,38 @@ xdev_add_sequences(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- table, :
+- table:
 
   a data.frame containing names, sequences(optional) and
   comments(optional).
 
-- reference, :
+- reference:
 
-  a list created by the function \[new_reference\]. Optional.
+  a list created by the function
+  [new_reference](https://mothur.org/strollur/reference/new_reference.md).
+  Optional.
 
-- sequence_name, :
+- sequence_name:
 
   a string containing the name of the column in 'table' that contains
   the sequence names. Default column name is 'sequence_name'.
 
-- sequence, :
+- sequence:
 
   a string containing the name of the column in 'table' that contains
   the sequence nucleotide strings. Default column name is 'sequence'.
 
-- comment, :
+- comment:
 
   a string containing the name of the column in 'table' that contains
   the sequence comments. Default column name is 'comment'.
 
-- verbose, :
+- verbose:
 
   a boolean whether or not you want progress messages. Default = TRUE.
 
@@ -61,9 +63,9 @@ an updated
 
 ``` r
 
- data <- new_dataset("miseq_sop")
- fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
- xdev_add_sequences(data, fasta_data)
+ data <- strollur::new_dataset("miseq_sop")
+ fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
+ strollur::xdev_add_sequences(data, fasta_data)
 #> Added 2425 sequences.
 #> miseq_sop:
 #> 
@@ -84,10 +86,10 @@ an updated
 
 # With the additional parameters to add information about the reference
 
- data <- new_dataset("miseq_sop")
- fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+ data <- strollur::new_dataset("miseq_sop")
+ fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
 
- xdev_add_sequences(data, fasta_data,
+ strollur::xdev_add_sequences(data, fasta_data,
                new_reference("silva.bacteria.fasta",
                "1.38.1",
                "alignment by mothur2 v1.0 using default options",
@@ -112,5 +114,6 @@ an updated
 #> Total number of resource references: 1 
 #> 
 
-# You can also add references using the 'add_references' function.
+# You can also add references using the `strollur::xdev_add_references`
+# function.
 ```

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,8 +50,65 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.4" id="strollur-014">strollur 0.1.4<a class="anchor" aria-label="anchor" href="#strollur-014"></a></h2>
+<p>New Features:</p>
+<ul><li>Expands built in read / write functions.
+<ul><li>
+<code><a href="../reference/read_fastq.html">strollur::read_fastq()</a></code> returns data.frame with fastq data.</li>
+<li>
+<code><a href="../reference/write_fastq.html">strollur::write_fastq()</a></code> writes fastq data to file.</li>
+<li>
+<code><a href="../reference/read_quality.html">strollur::read_quality()</a></code> returns data.frame with sequence quality data.</li>
+<li>
+<code><a href="../reference/write_quality.html">strollur::write_quality()</a></code> writes sequence quality data to file.</li>
+<li>
+<code><a href="../reference/read_biom.html">strollur::read_biom()</a></code> returns a <a href="https://mothur.org/strollur/reference/strollur.html">strollur_object</a>.</li>
+<li>
+<code><a href="../reference/write_biom.html">strollur::write_biom()</a></code> writes biom files containing the <a href="https://mothur.org/strollur/reference/strollur.html">strollur_object</a>.</li>
+</ul></li>
+<li>Expands member functions of the <a href="https://mothur.org/strollur/reference/strollur.html">strollur_object</a>.
+<ul><li>
+<code>strollur_object$alignment_length()</code> returns the sequences alignment length or -1 if the sequences are unaligned.</li>
+<li>
+<code>strollur_object$has_bin_taxonomy()</code> returns <code>TRUE</code> if your dataset includes bin classifications.</li>
+<li>
+<code>strollur_object$has_sequence_taxonomy()</code> returns <code>TRUE</code> if your dataset includes sequence classifications.</li>
+<li>
+<code>strollur_object$rename()</code> rename the strollur object.</li>
+</ul></li>
+</ul><p>Enhancements:</p>
+<ul><li>Adds <code>fastq</code>, <code>quality</code>, <code>sequence_tree</code>, <code>sample_tree</code>, <code>sample_distance</code> types to:
+<ul><li><code><a href="../reference/report.html">strollur::report()</a></code></li>
+<li><code>strollur_object$report()</code></li>
+</ul></li>
+<li>Adds <code>fastq</code> type to:
+<ul><li><code><a href="../reference/add.html">strollur::add()</a></code></li>
+<li><code>strollur_object$add()</code></li>
+</ul></li>
+<li>Adds <code>quality</code> and <code>sample_distance</code> type to:
+<ul><li><code><a href="../reference/assign.html">strollur::assign()</a></code></li>
+<li><code>strollur_object$assign()</code></li>
+</ul></li>
+</ul><p>Functions for Package developers</p>
+<ul><li>Adds <code>strollur::xdev_alignment_length()</code> function</li>
+<li>Adds <code><a href="../reference/xdev_assign_bin_taxonomy_tidy.html">strollur::xdev_assign_bin_taxonomy_tidy()</a></code> function.</li>
+<li>Adds <code><a href="../reference/xdev_has_bin_taxonomy.html">strollur::xdev_has_bin_taxonomy()</a></code> function.</li>
+<li>Adds <code><a href="../reference/xdev_get_sequence_indexes_by_sample.html">strollur::xdev_get_sequence_indexes_by_sample()</a></code> function.</li>
+<li>Adds <code><a href="../reference/xdev_add_sequence_fastq_scores.html">strollur::xdev_add_sequence_fastq_scores()</a></code> function.</li>
+<li>Adds <code><a href="../reference/xdev_get_sample_distances.html">strollur::xdev_get_sample_distances()</a></code> function.</li>
+<li>Adds <code><a href="../reference/xdev_assign_sample_distances.html">strollur::xdev_assign_sample_distances()</a></code> function.</li>
+</ul><p>Bug Fixes: - <code><a href="../reference/summary.html">strollur::summary()</a></code> will now display results that accurately represent the data.</p>
+<p>Deprecated:</p>
+<ul><li>Simplifies member functions of the <a href="https://mothur.org/strollur/reference/strollur.html">strollur_object</a>.
+<ul><li>Removes <code>strollur_object$add_sequence_tree()</code> : Functionality now included in<code>strollur_object$add()</code>.</li>
+<li>Removes <code>strollur_object$add_sample_tree()</code> : Functionality now included in<code>strollur_object$add()</code>.</li>
+<li>Removes <code>strollur_object$get_sequence_tree()</code> : Functionality now included in<code>strollur_object$report()</code>.</li>
+<li>Removes <code>strollur_object$get_sample_tree()</code> : Functionality now included in<code>strollur_object$report()</code>.</li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.3" id="strollur-013">strollur 0.1.3<a class="anchor" aria-label="anchor" href="#strollur-013"></a></h2><p class="text-muted">CRAN release: 2026-07-02</p>
-<ul><li>Adds <code><a href="../reference/read_mothur_oligos.html">read_mothur_oligos()</a></code> function for the import of oligo data from <a href="https://mothur.org" class="external-link">mothur</a>.</li>
+<ul><li>Adds <code><a href="../reference/read_mothur_oligos.html">strollur::read_mothur_oligos()</a></code> function for the import of oligo data from <a href="https://mothur.org" class="external-link">mothur</a>.</li>
 <li>Makes report format more flexible. You can now add reports that are not tied to sequence data. These can be general metadata, oligo information, paired fastq file tables and much more.</li>
 </ul></div>
     <div class="section level2">

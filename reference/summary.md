@@ -11,23 +11,23 @@ summary(data, type = "sequence", report_type = NULL, verbose = TRUE)
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- type, :
+- type:
 
   string containing the type of data you want the number of. Options
   include: "sequence", "report" and "scrap". Default = "sequence".
 
-- report_type, :
+- report_type:
 
   string containing the report type you would summarized. For example,
   the miseq_sop_example includes contigs assembly data and can be
   accessed with report_type = "contigs_report". Default = NULL.
 
-- verbose, :
+- verbose:
 
   boolean indicating whether or not you want progress messages. Default
   = TRUE.
@@ -40,7 +40,7 @@ data.frame
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -48,6 +48,7 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -55,7 +56,7 @@ miseq <- miseq_sop_example()
 #> Added a contigs_report report.
 
 # To get the summary of your FASTA data
-summary(data = miseq, type = "sequence")
+strollur::summary(data = miseq, type = "sequence")
 #>             starts ends   nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375 249.0000      0 3.000000     0      1.00
 #> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2850.05
@@ -76,7 +77,8 @@ summary(data = miseq, type = "sequence")
 #> Mean:            1  375 252.7406      0 4.496082     0  56982.00
 
 # summarize contigs_report
-summary(data = miseq, type = "report", report_type = "contigs_report")
+strollur::summary(data = miseq,
+                  type = "report", report_type = "contigs_report")
 #>               Length Overlap_Length Overlap_Start Overlap_End MisMatches Num_Ns
 #> Minimum:    250.0000       232.0000      0.000000    248.0000   0.000000      0
 #> 2.5%-tile:  252.0000       246.0000      1.000000    250.0000   0.000000      0
@@ -115,7 +117,7 @@ summary(data = miseq, type = "report", report_type = "contigs_report")
 #> Mean:          0.0738509482
 
 # remove sample 'F3D0' to produce a scrap report
-xdev_remove_samples(data = miseq, samples = c("F3D0"))
+strollur::xdev_remove_samples(data = miseq, samples = c("F3D0"))
 #> miseq_sop:
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
@@ -152,7 +154,7 @@ xdev_remove_samples(data = miseq, samples = c("F3D0"))
 #> 
 
 # summarize FASTA data after removal of sample F3D0
-summary(data = miseq, type = "sequence")
+strollur::summary(data = miseq, type = "sequence")
 #>             starts ends   nbases ambigs polymers numns    numseqs
 #> Minimum:         1  375 249.0000      0 3.000000     0      1.000
 #> 2.5%-tile:       1  375 252.0000      0 4.000000     0   2695.275
@@ -174,7 +176,7 @@ summary(data = miseq, type = "sequence")
 
 # summarize scrapped data -
 # sequences and bins scrapped by removing the sample "F3D0"
-summary(data = miseq, type = "scrap")
+strollur::summary(data = miseq, type = "scrap")
 #>        type     trash_code unique total
 #> 1  sequence remove_samples    101   109
 #> 2       otu remove_samples     14    14

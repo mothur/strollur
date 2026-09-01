@@ -1,6 +1,7 @@
 # Create a [strollur](https://mothur.org/strollur/reference/strollur.html) object from dada2 outputs
 
-This function reads a dada2 sequence table and creates a \`strollur\`
+This function reads a dada2 sequence table and creates a
+[`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)
 object. The dada2 sequence table is a 2D matrix containing the abundance
 counts by sample for each ASV. The sample names are stored as row names
 and the sequence nucleotide strings are stored as column names.
@@ -26,14 +27,16 @@ read_dada2(sequence_table, dataset_name = "")
 
 ## Value
 
-A \`strollur\` object
+A
+[`strollur::strollur`](https://mothur.org/strollur/reference/strollur.md)
+object
 
 ## References
 
 Callahan,B.J., McMurdie,P.J., Rosen,M.J., Han,A.W., Johnson,A.J.A. and
 Holmes,S.P. (2016), DADA2: High-resolution sample inference from
 Illumina amplicon data. Nature Methods 13:581-583.
-\<doi:10.1038/nmeth.3869\>
+<doi:10.1038/nmeth.3869>
 
 ## Examples
 
@@ -43,7 +46,8 @@ seqtab <- readRDS(strollur_example("dada2.rds"))
 dim(seqtab)
 #> [1]  19 279
 
-data <- read_dada2(sequence_table = seqtab, dataset_name = "dada2 example")
+data <- strollur::read_dada2(sequence_table = seqtab,
+                               dataset_name = "dada2 example")
 #> Added 279 sequences.
 #> Assigned 279 sequence abundances.
 ```

@@ -1,4 +1,4 @@
-# xdev_set_sequences
+# Set neucleotide sequence string in a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Designed with package integration in mind, the set sequences function
 allows you to change the nucleotide strings of sequences in a
@@ -19,20 +19,20 @@ xdev_set_sequences(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- sequence_names, :
+- sequence_names:
 
   a vector of strings containing sequence names
 
-- sequences, :
+- sequences:
 
   a vector of strings containing sequence nucleotide strings
 
-- comments, :
+- comments:
 
   a vector of strings containing sequence comments. (Optional)
 
@@ -45,9 +45,9 @@ an updated
 
 ``` r
 
-data <- new_dataset(dataset_name = "my_dataset")
+data <- strollur::new_dataset(dataset_name = "my_dataset")
 
-xdev_add_sequences(data = data,
+strollur::xdev_add_sequences(data,
               table = data.frame(sequence_name = c("seq1", "seq2",
                                                   "seq3", "seq4")))
 #> Added 4 sequences.
@@ -59,7 +59,7 @@ xdev_add_sequences(data = data,
 #> 
 #> 
 
-xdev_set_sequences(data = data,
+strollur::xdev_set_sequences(data,
                    sequence_names = c("seq1", "seq2","seq3", "seq4"),
                    sequences = c("ATTGC", "ACTGC", "AGTGC", "TTTGC"))
 #> my_dataset:

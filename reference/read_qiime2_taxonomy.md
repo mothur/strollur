@@ -1,4 +1,4 @@
-# read_qiime2_taxonomy
+# Read a [qiime2](https://qiime2.org) qza containing taxonomy data
 
 Read a [qiime2](https://qiime2.org) qza containing taxonomy data
 
@@ -32,7 +32,7 @@ A list containing artifact
 
 ``` r
 
-artifact <- read_qiime2_taxonomy(strollur_example(
+artifact <- strollur::read_qiime2_taxonomy(strollur_example(
   "taxonomy.qza"
 ))
 

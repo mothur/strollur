@@ -1,4 +1,4 @@
-# new_reference
+# Create a resource reference for your [strollur](https://mothur.org/strollur/reference/strollur.html) object to aid in reproducibility.
 
 Create a resource reference for your
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -22,7 +22,7 @@ new_reference(
 
 ## Arguments
 
-- name, :
+- name:
 
   a string containing the name of the resource used. For example:
   'silva.bacteria.fasta' or 'R package phylotypr'.
@@ -32,41 +32,41 @@ new_reference(
   a string containing name of entity that created original resource.
   example: "Silva" or "Schloss Lab - University of Michigan"
 
-- version, :
+- version:
 
   a string containing the version of the reference resource. For
   example: '1.38.1' or '0.1.1'. Default = "".
 
-- usage, :
+- usage:
 
   a string containing the usage of the resource reference in your
   analysis. For example: 'alignment of sequences' or 'classification of
   sequences'. Default = "".
 
-- note, :
+- note:
 
   a string containing additional notes about the resource reference in
   your analysis. For example: 'alignment reference trimmed to V4 region'
   or 'classification of sequences using Bayesian method'. Default = "".
 
-- documentation_url, :
+- documentation_url:
 
   a string containing a web address where the reference may be
   downloaded or documentation may be found. Default = "".
 
-- method_url, :
+- method_url:
 
   a string containing any publications describing the methods used by
   the resource reference. For example: 'doi:10.1128/mra.01144-24'.
   Default = "".
 
-- parameter, :
+- parameter:
 
   a string containing the any specific parameters used by the resource.
   For example: 'kmer_size = 8, num_bootstraps = 100, min_confidence =
   80' Default = "".
 
-- citation, :
+- citation:
 
   a string containing the citation information for the resource
   reference. For example: "citation_key = "doi:10.1128/AEM.00062-07",
@@ -85,7 +85,7 @@ a list
 
 ``` r
 
-silva_resource <- new_reference(
+silva_resource <- strollur::new_reference(
   vendor = "SILVA", name =
     "silva.bacteria.fasta", version = "1.38.1",
   usage = "alignment of sequences",
@@ -94,7 +94,7 @@ silva_resource <- new_reference(
     "https://mothur.org/blog/2024/SILVA-v138_2-reference-files/"
 )
 
-phylotypr_resource <- new_reference(
+phylotypr_resource <- strollur::new_reference(
   vendor = "Schloss Lab - University of
 Michigan", name = "R phylotypr package", version = "0.1.1", usage =
     "classification of sequences",

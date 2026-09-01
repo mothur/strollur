@@ -1,4 +1,4 @@
-# xdev_set_dataset_name
+# Set the name of a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Designed with package integration in mind, set the name of a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object.
@@ -11,12 +11,12 @@ xdev_set_dataset_name(data, dataset_name)
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- dataset_name, :
+- dataset_name:
 
   a string containing the desired name
 
@@ -28,6 +28,7 @@ No return value, called for side effects.
 
 ``` r
 
-data <- new_dataset(dataset_name = "my_dataset")
-xdev_set_dataset_name(data = data, dataset_name = "new_dataset_name")
+data <- strollur::new_dataset(dataset_name = "my_dataset")
+strollur::xdev_set_dataset_name(data,
+                                dataset_name = "new_dataset_name")
 ```

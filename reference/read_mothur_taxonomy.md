@@ -1,4 +1,4 @@
-# read_mothur_taxonomy
+# Read a mothur formatted [taxonomy file](https://mothur.org/wiki/taxonomy_file/)
 
 Read a mothur formatted [taxonomy
 file](https://mothur.org/wiki/taxonomy_file/)
@@ -29,14 +29,15 @@ A data.frame containing the sequences names and sequences taxonomies.
 # using the following:
 
 # read mothur's taxonomy file into a data.frame
-classification_data <- read_mothur_taxonomy(strollur_example(
+classification_data <- strollur::read_mothur_taxonomy(strollur_example(
   "final.taxonomy.gz"
 ))
 
-# create a new empty `strollur` object
-data <- new_dataset()
+# create a new empty `strollur::strollur` object
+data <- strollur::new_dataset()
 
 # assign sequence classifications
-assign(data = data, table = classification_data, type = "sequence_taxonomy")
+strollur::assign(data = data, table = classification_data,
+                 type = "sequence_taxonomy")
 #> Assigned 2425 sequence taxonomies.
 ```

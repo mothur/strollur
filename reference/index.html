@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,14 +63,14 @@
           <code><a href="add.html">add()</a></code>
 
         </dt>
-        <dd>Add sequences, reports or resource references to a strollur object</dd>
+        <dd>Add sequences, reports, trees or resource references to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</dd>
 
         <dt>
 
           <code><a href="assign.html">assign()</a></code>
 
         </dt>
-        <dd>Assign sequence abundances, sequence classifications, bins, bin representative sequences, bin classifications or treatments to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</dd>
+        <dd>Assign sequence abundances, sequence classifications, bins, bin representative sequences, bin classifications, sample distances or treatments to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
@@ -112,7 +112,7 @@
           <code><a href="strollur.html">strollur</a></code>
 
         </dt>
-        <dd>The `strollur` object stores the data associated with your amplicon sequence analysis.</dd>
+        <dd>The <code><a href="../reference/strollur.html">strollur::strollur</a></code> object</dd>
 
         <dt>
 
@@ -132,6 +132,13 @@
 
       <dl><dt>
 
+          <code><a href="read_biom.html">read_biom()</a></code>
+
+        </dt>
+        <dd>Create a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object from a biom formatted file.</dd>
+
+        <dt>
+
           <code><a href="read_dada2.html">read_dada2()</a></code>
 
         </dt>
@@ -142,7 +149,14 @@
           <code><a href="read_fasta.html">read_fasta()</a></code>
 
         </dt>
-        <dd>read_fasta</dd>
+        <dd>Read a <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> formatted sequence file</dd>
+
+        <dt>
+
+          <code><a href="read_fastq.html">read_fastq()</a></code>
+
+        </dt>
+        <dd>Read a <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/" class="external-link">FASTQ</a> formatted file</dd>
 
         <dt>
 
@@ -156,49 +170,49 @@
           <code><a href="read_mothur_cons_taxonomy.html">read_mothur_cons_taxonomy()</a></code>
 
         </dt>
-        <dd>read_mothur_cons_taxonomy</dd>
+        <dd>Read a mothur formatted <a href="https://mothur.org/wiki/constaxonomy_file/" class="external-link">cons_taxonomy file</a></dd>
 
         <dt>
 
           <code><a href="read_mothur_count.html">read_mothur_count()</a></code>
 
         </dt>
-        <dd>read_mothur_count</dd>
+        <dd>Read a mothur formatted <a href="https://mothur.org/wiki/count_file/" class="external-link">count file</a></dd>
 
         <dt>
 
           <code><a href="read_mothur_list.html">read_mothur_list()</a></code>
 
         </dt>
-        <dd>read_mothur_list</dd>
+        <dd>Read a mothur formatted <a href="https://mothur.org/wiki/list_file/" class="external-link">list file</a></dd>
 
         <dt>
 
           <code><a href="read_mothur_oligos.html">read_mothur_oligos()</a></code>
 
         </dt>
-        <dd>read_mothur_oligos</dd>
+        <dd>Read a mothur formatted <a href="https://mothur.org/wiki/oligos_file/" class="external-link">oligos file</a></dd>
 
         <dt>
 
           <code><a href="read_mothur_rabund.html">read_mothur_rabund()</a></code>
 
         </dt>
-        <dd>read_mothur_rabund</dd>
+        <dd>Read a mothur formatted <a href="https://mothur.org/wiki/rabund_file/" class="external-link">rabund file</a></dd>
 
         <dt>
 
           <code><a href="read_mothur_shared.html">read_mothur_shared()</a></code>
 
         </dt>
-        <dd>read_mothur_shared</dd>
+        <dd>Read a mothur formatted <a href="https://mothur.org/wiki/shared_file/" class="external-link">shared file</a></dd>
 
         <dt>
 
           <code><a href="read_mothur_taxonomy.html">read_mothur_taxonomy()</a></code>
 
         </dt>
-        <dd>read_mothur_taxonomy</dd>
+        <dd>Read a mothur formatted <a href="https://mothur.org/wiki/taxonomy_file/" class="external-link">taxonomy file</a></dd>
 
         <dt>
 
@@ -219,28 +233,35 @@
           <code><a href="read_qiime2_feature_table.html">read_qiime2_feature_table()</a></code>
 
         </dt>
-        <dd>read_qiime2_feature_table</dd>
+        <dd>Read a <a href="https://qiime2.org" class="external-link">qiime2</a> qza containing bin data</dd>
 
         <dt>
 
           <code><a href="read_qiime2_metadata.html">read_qiime2_metadata()</a></code>
 
         </dt>
-        <dd>read_qiime2_metadata</dd>
+        <dd>Read a <a href="https://qiime2.org" class="external-link">qiime2</a> .tsv table containing metadata.</dd>
 
         <dt>
 
           <code><a href="read_qiime2_taxonomy.html">read_qiime2_taxonomy()</a></code>
 
         </dt>
-        <dd>read_qiime2_taxonomy</dd>
+        <dd>Read a <a href="https://qiime2.org" class="external-link">qiime2</a> qza containing taxonomy data</dd>
+
+        <dt>
+
+          <code><a href="read_quality.html">read_quality()</a></code>
+
+        </dt>
+        <dd>Read a file containing sequence quality scores</dd>
 
         <dt>
 
           <code><a href="unpack_qiime2_artifact.html">unpack_qiime2_artifact()</a></code>
 
         </dt>
-        <dd>unpack_qiime2_artifact</dd>
+        <dd>The unpack_qiime2_artifact function reads .qza files created by <a href="https://qiime2.org" class="external-link">qiime2</a>, and returns the artifact.</dd>
       </dl></div><div class="section level2">
       <h2 id="general">General<a class="anchor" aria-label="anchor" href="#general"></a></h2>
 
@@ -256,35 +277,35 @@
           <code><a href="miseq_sop_example.html">miseq_sop_example()</a></code>
 
         </dt>
-        <dd>Example strollur object</dd>
+        <dd>Create a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> using the analysis files from the <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">MiSeq_SOP</a> example.</dd>
 
         <dt>
 
           <code><a href="new_dataset.html">new_dataset()</a></code>
 
         </dt>
-        <dd>new_dataset</dd>
+        <dd>Create a new <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</dd>
 
         <dt>
 
           <code><a href="new_reference.html">new_reference()</a></code>
 
         </dt>
-        <dd>new_reference</dd>
+        <dd>Create a resource reference for your <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object to aid in reproducibility.</dd>
 
         <dt>
 
           <code><a href="clear.html">clear()</a></code>
 
         </dt>
-        <dd>clear</dd>
+        <dd>Clear data from a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="is_aligned.html">is_aligned()</a></code>
 
         </dt>
-        <dd>is_aligned</dd>
+        <dd>Determine if a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> contains aligned sequences.</dd>
 
         <dt>
 
@@ -298,14 +319,14 @@
           <code><a href="has_sample.html">has_sample()</a></code>
 
         </dt>
-        <dd>has_sample</dd>
+        <dd>Determine if a given sample is in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="get_bin_types.html">get_bin_types()</a></code>
 
         </dt>
-        <dd>get_bin_types</dd>
+        <dd>Get bin table types of a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
       </dl></div><div class="section level2">
       <h2 id="data-transfers">Data Transfers<a class="anchor" aria-label="anchor" href="#data-transfers"></a></h2>
 
@@ -321,105 +342,126 @@
           <code><a href="save_dataset.html">save_dataset()</a></code>
 
         </dt>
-        <dd>save_dataset</dd>
+        <dd>Save the <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object to file.</dd>
 
         <dt>
 
           <code><a href="load_dataset.html">load_dataset()</a></code>
 
         </dt>
-        <dd>Load strollur object from .rds file</dd>
+        <dd>Load a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object from a file.</dd>
 
         <dt>
 
           <code><a href="export_dataset.html">export_dataset()</a></code>
 
         </dt>
-        <dd>export_dataset</dd>
+        <dd>Create a human readable table containing all data from a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object.</dd>
 
         <dt>
 
           <code><a href="import_dataset.html">import_dataset()</a></code>
 
         </dt>
-        <dd>Import strollur object from exported data.frame.</dd>
+        <dd>Create a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object from the exported table of a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object.</dd>
 
         <dt>
 
           <code><a href="copy_dataset.html">copy_dataset()</a></code>
 
         </dt>
-        <dd>copy_dataset</dd>
+        <dd>Create a new <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object from an existing dataset.</dd>
+
+        <dt>
+
+          <code><a href="write_biom.html">write_biom()</a></code>
+
+        </dt>
+        <dd>Write a <a href="https://biom-format.org" class="external-link">BIOM</a> formatted file containing your <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> objects data.</dd>
 
         <dt>
 
           <code><a href="write_fasta.html">write_fasta()</a></code>
 
         </dt>
-        <dd>write_fasta</dd>
+        <dd>Write a <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> formatted sequence file</dd>
+
+        <dt>
+
+          <code><a href="write_fastq.html">write_fastq()</a></code>
+
+        </dt>
+        <dd>Write a <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2847217/" class="external-link">FASTQ</a> formatted file</dd>
 
         <dt>
 
           <code><a href="write_mothur.html">write_mothur()</a></code>
 
         </dt>
-        <dd>write_mothur</dd>
+        <dd>Write the various <a href="https://mothur.org/wiki/tags/#file_types" class="external-link">file types</a> from your <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object for use with mothur.</dd>
 
         <dt>
 
           <code><a href="write_mothur_cons_taxonomy.html">write_mothur_cons_taxonomy()</a></code>
 
         </dt>
-        <dd>write_mothur_cons_taxonomy</dd>
+        <dd>Write a mothur formatted <a href="https://mothur.org/wiki/constaxonomy_file/" class="external-link">cons_taxonomy file</a></dd>
 
         <dt>
 
           <code><a href="write_mothur_count.html">write_mothur_count()</a></code>
 
         </dt>
-        <dd>write_mothur_count</dd>
+        <dd>Write a mothur formatted <a href="https://mothur.org/wiki/count_file/" class="external-link">count file</a></dd>
 
         <dt>
 
           <code><a href="write_mothur_design.html">write_mothur_design()</a></code>
 
         </dt>
-        <dd>write_mothur_design</dd>
+        <dd>Write a mothur formatted <a href="https://mothur.org/wiki/design_file/" class="external-link">design file</a></dd>
 
         <dt>
 
           <code><a href="write_mothur_list.html">write_mothur_list()</a></code>
 
         </dt>
-        <dd>write_mothur_list</dd>
+        <dd>Write mothur formatted <a href="https://mothur.org/wiki/list_file/" class="external-link">list files</a></dd>
 
         <dt>
 
           <code><a href="write_mothur_rabund.html">write_mothur_rabund()</a></code>
 
         </dt>
-        <dd>write_mothur_rabund</dd>
+        <dd>Write mothur formatted <a href="https://mothur.org/wiki/rabund_file/" class="external-link">rabund files</a></dd>
 
         <dt>
 
           <code><a href="write_mothur_shared.html">write_mothur_shared()</a></code>
 
         </dt>
-        <dd>write_mothur_shared</dd>
+        <dd>Write mothur formatted <a href="https://mothur.org/wiki/shared_file/" class="external-link">shared files</a></dd>
 
         <dt>
 
           <code><a href="write_phyloseq.html">write_phyloseq()</a></code>
 
         </dt>
-        <dd>write_phyloseq</dd>
+        <dd>Create a phyloseq object from your <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
+
+        <dt>
+
+          <code><a href="write_quality.html">write_quality()</a></code>
+
+        </dt>
+        <dd>Write a file containing sequence quality scores</dd>
 
         <dt>
 
           <code><a href="write_taxonomy.html">write_taxonomy()</a></code>
 
         </dt>
-        <dd>write_taxonomy</dd>
+        <dd>Write a 2 column <a href="https://mothur.org/wiki/taxonomy_file/" class="external-link">taxonomy file</a></dd>
       </dl></div><div class="section level2">
       <h2 id="functions-for-package-developers">Functions for Package Developers<a class="anchor" aria-label="anchor" href="#functions-for-package-developers"></a></h2>
 
@@ -442,7 +484,7 @@
           <code><a href="has_sequence_strings.html">has_sequence_strings()</a></code>
 
         </dt>
-        <dd>has_sequence_strings</dd>
+        <dd>Determine if a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> contains sequence nucleotide strings.</dd>
 
         <dt>
 
@@ -470,196 +512,259 @@
           <code><a href="xdev_add_references.html">xdev_add_references()</a></code>
 
         </dt>
-        <dd>Add resource references</dd>
+        <dd>Add resource references to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> to aid in reproducibility</dd>
 
         <dt>
 
           <code><a href="xdev_add_report.html">xdev_add_report()</a></code>
 
         </dt>
-        <dd>Add a report to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur</a> object</dd>
+        <dd>Add a report to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
+
+        <dt>
+
+          <code><a href="xdev_add_sequence_fastq_scores.html">xdev_add_sequence_fastq_scores()</a></code>
+
+        </dt>
+        <dd>Add FASTQ data to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_add_sequences.html">xdev_add_sequences()</a></code>
 
         </dt>
-        <dd>xdev_add_sequences</dd>
+        <dd>Add sequence data to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_assign_bin_representative_sequences.html">xdev_assign_bin_representative_sequences()</a></code>
 
         </dt>
-        <dd>xdev_assign_bin_representative_sequences</dd>
+        <dd>Assign representative sequences to bins</dd>
 
         <dt>
 
           <code><a href="xdev_assign_bin_taxonomy.html">xdev_assign_bin_taxonomy()</a></code>
 
         </dt>
-        <dd>xdev_assign_bin_taxonomy</dd>
+        <dd>Assign bin classifications to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
+
+        <dt>
+
+          <code><a href="xdev_assign_bin_taxonomy_tidy.html">xdev_assign_bin_taxonomy_tidy()</a></code>
+
+        </dt>
+        <dd>Assign bin classifications to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_assign_bins.html">xdev_assign_bins()</a></code>
 
         </dt>
-        <dd>xdev_assign_bins</dd>
+        <dd>Add bin assignments to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
+
+        <dt>
+
+          <code><a href="xdev_assign_sample_distances.html">xdev_assign_sample_distances()</a></code>
+
+        </dt>
+        <dd>Assign samples distances in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_assign_sequence_abundance.html">xdev_assign_sequence_abundance()</a></code>
 
         </dt>
-        <dd>xdev_assign_sequence_abundance</dd>
+        <dd>Assign sequence abundance and optionally assign sample and treatment data to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
+
+        <dt>
+
+          <code><a href="xdev_assign_sequence_quality_scores.html">xdev_assign_sequence_quality_scores()</a></code>
+
+        </dt>
+        <dd>Add quality data to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_assign_sequence_taxonomy.html">xdev_assign_sequence_taxonomy()</a></code>
 
         </dt>
-        <dd>xdev_assign_sequence_taxonomy</dd>
+        <dd>Assign sequence classifications to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_assign_sequence_taxonomy_tidy.html">xdev_assign_sequence_taxonomy_tidy()</a></code>
 
         </dt>
-        <dd>xdev_assign_sequence_taxonomy_tidy</dd>
+        <dd>Assign sequence classifications to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_assign_treatments.html">xdev_assign_treatments()</a></code>
 
         </dt>
-        <dd>xdev_assign_treatments</dd>
+        <dd>Assign samples to treatments in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_count.html">xdev_count()</a></code>
 
         </dt>
-        <dd>xdev_count</dd>
+        <dd>Find the number of sequences, samples, treatments or bins of a given type in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
-          <code><a href="xdev_get_abundances_by_sample.html">xdev_get_abundances_by_sample()</a></code>
+          <code><a href="xdev_get_alignment_length.html">xdev_get_alignment_length()</a></code>
 
         </dt>
-        <dd>xdev_get_abundances_by_sample</dd>
+        <dd>Get the alignment length of sequences in your <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
+
+        <dt>
+
+          <code><a href="xdev_get_bin_abundances_by_sample.html">xdev_get_bin_abundances_by_sample()</a></code>
+
+        </dt>
+        <dd>Get the sequence abundance data in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> parsed by sample</dd>
 
         <dt>
 
           <code><a href="xdev_get_by_sample.html">xdev_get_by_sample()</a></code>
 
         </dt>
-        <dd>xdev_get_by_sample</dd>
+        <dd>Get the requested data in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> parsed by sample</dd>
 
         <dt>
 
           <code><a href="xdev_get_list_vector.html">xdev_get_list_vector()</a></code>
 
         </dt>
-        <dd>xdev_get_list_vector</dd>
+        <dd>Get vector of strings containing the sequences bin data</dd>
+
+        <dt>
+
+          <code><a href="xdev_get_sample_distances.html">xdev_get_sample_distances()</a></code>
+
+        </dt>
+        <dd>Get distances between samples in your `<a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
+
+        <dt>
+
+          <code><a href="xdev_get_sequence_abundances_by_sample.html">xdev_get_sequence_abundances_by_sample()</a></code>
+
+        </dt>
+        <dd>Get the sequence abundance data in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> parsed by sample</dd>
+
+        <dt>
+
+          <code><a href="xdev_get_sequence_indexes_by_sample.html">xdev_get_sequence_indexes_by_sample()</a></code>
+
+        </dt>
+        <dd>Get indexes of sequences parsed by sample</dd>
 
         <dt>
 
           <code><a href="xdev_get_sequences.html">xdev_get_sequences()</a></code>
 
         </dt>
-        <dd>xdev_get_sequences</dd>
+        <dd>Get the nucleotide strings for each sequence in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
+
+        <dt>
+
+          <code><a href="xdev_has_bin_taxonomy.html">xdev_has_bin_taxonomy()</a></code>
+
+        </dt>
+        <dd>Determine if a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> has bin taxonomy assignments</dd>
 
         <dt>
 
           <code><a href="xdev_has_sequence_taxonomy.html">xdev_has_sequence_taxonomy()</a></code>
 
         </dt>
-        <dd>xdev_has_sequence_taxonomy</dd>
+        <dd>Determine if a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> has sequence taxonomy assignments</dd>
 
         <dt>
 
           <code><a href="xdev_merge_bins.html">xdev_merge_bins()</a></code>
 
         </dt>
-        <dd>xdev_merge_bins</dd>
+        <dd>Merge bins in your <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_merge_sequences.html">xdev_merge_sequences()</a></code>
 
         </dt>
-        <dd>xdev_merge_sequences</dd>
+        <dd>Merge sequences combines the abundances of sequences</dd>
 
         <dt>
 
           <code><a href="xdev_names.html">xdev_names()</a></code>
 
         </dt>
-        <dd>xdev_names</dd>
+        <dd>Get the names of a given type of data in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_remove_bins.html">xdev_remove_bins()</a></code>
 
         </dt>
-        <dd>xdev_remove_bins</dd>
+        <dd>Remove bins from a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_remove_lineages.html">xdev_remove_lineages()</a></code>
 
         </dt>
-        <dd>xdev_remove_lineages</dd>
+        <dd>Remove contaminants from a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_remove_samples.html">xdev_remove_samples()</a></code>
 
         </dt>
-        <dd>xdev_remove_samples</dd>
+        <dd>Remove samples from a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_remove_sequences.html">xdev_remove_sequences()</a></code>
 
         </dt>
-        <dd>xdev_remove_sequences</dd>
+        <dd>Remove sequences from a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_report.html">xdev_report()</a></code>
 
         </dt>
-        <dd>xdev_report</dd>
+        <dd>Get a data.frame containing the given report in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_set_abundance.html">xdev_set_abundance()</a></code>
 
         </dt>
-        <dd>xdev_set_abundance</dd>
+        <dd>Set abundances of sequences in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> without sample data</dd>
 
         <dt>
 
           <code><a href="xdev_set_abundances.html">xdev_set_abundances()</a></code>
 
         </dt>
-        <dd>xdev_set_abundances</dd>
+        <dd>Set abundances of sequences in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a> with sample data</dd>
 
         <dt>
 
           <code><a href="xdev_set_dataset_name.html">xdev_set_dataset_name()</a></code>
 
         </dt>
-        <dd>xdev_set_dataset_name</dd>
+        <dd>Set the name of a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
 
         <dt>
 
           <code><a href="xdev_set_sequences.html">xdev_set_sequences()</a></code>
 
         </dt>
-        <dd>xdev_set_sequences</dd>
+        <dd>Set neucleotide sequence string in a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a></dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

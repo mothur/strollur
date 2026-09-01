@@ -10,13 +10,13 @@ the “Getting Started” tuturial, we recommend you start there.
 ## Loading the example dataset
 
 We can use the
-[`miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
+[`strollur::miseq_sop_example()`](https://mothur.org/strollur/reference/miseq_sop_example.md)
 function to create a dataset object from the [Miseq SOP
 Example](https://mothur.org/wiki/miseq_sop/).
 
 ``` r
 
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -24,6 +24,7 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -69,47 +70,48 @@ miseq
 The *strollur* package includes several functions to access your
 sequence data.
 
-[`names()`](https://mothur.org/strollur/reference/names.md) - The names
-function is an extension of base R’s names function. It allows you to
-get the name of your dataset or the names of the sequences, bins,
+[`strollur::names()`](https://mothur.org/strollur/reference/names.md) -
+The names function is an extension of base R’s names function. It allows
+you to get the name of your dataset or the names of the sequences, bins,
 samples, treatments and reports in your dataset.
 
-[`count()`](https://mothur.org/strollur/reference/count.md) - The count
-function allows you to get the number of sequences, bins, samples and
-treatments in your dataset.
+[`strollur::count()`](https://mothur.org/strollur/reference/count.md) -
+The count function allows you to get the number of sequences, bins,
+samples and treatments in your dataset.
 
-[`abundance()`](https://mothur.org/strollur/reference/abundance.md) -
+[`strollur::abundance()`](https://mothur.org/strollur/reference/abundance.md) -
 The abundance function can be used to access the abundance data for
 sequences, bins, samples, and treatments.
 
-[`report()`](https://mothur.org/strollur/reference/report.md) - The
-report function can be used to access the various data associated with
-your dataset.
+[`strollur::report()`](https://mothur.org/strollur/reference/report.md) -
+The report function can be used to access the various data associated
+with your dataset.
 
-[`summary()`](https://mothur.org/strollur/reference/summary.md) - The
-summary function allows you to summarize sequences, your custom reports,
-and scrapped data.
+[`strollur::summary()`](https://mothur.org/strollur/reference/summary.md) -
+The summary function allows you to summarize sequences, your custom
+reports, and scrapped data.
 
-### names
+### strollur::names
 
-The [`names()`](https://mothur.org/strollur/reference/names.md) function
-allows you to get the names of sequences, bins, samples, treatments and
-reports. Let’s take a closer look at how use it.
+The
+[`strollur::names()`](https://mothur.org/strollur/reference/names.md)
+function allows you to get the names of sequences, bins, samples,
+treatments and reports. Let’s take a closer look at how use it.
 
-To get the name of the dataset, set the type parameter to ‘dataset’:
+To get the name of the dataset, set the type parameter to `dataset`:
 
 ``` r
 
-names(miseq, type = "dataset")
+strollur::names(miseq, type = "dataset")
 #> [1] "miseq_sop"
 ```
 
 To get the names of the sequences in your dataset, set the type
-parameter to ‘sequence’:
+parameter to `sequence`:
 
 ``` r
 
-all_sequences <- names(
+all_sequences <- strollur::names(
   miseq,
   type = "sequence",
   distinct = FALSE
@@ -128,7 +130,7 @@ To get the names of the sequences *present* in sample ‘F3D0’:
 
 ``` r
 
-include_f3d0 <- names(
+include_f3d0 <- strollur::names(
   miseq,
   type = "sequence",
   samples = c("F3D0"),
@@ -148,7 +150,7 @@ To get the names of the sequences *exclusive* to sample ‘F3D0’:
 
 ``` r
 
-exclusive_f3d0 <- names(
+exclusive_f3d0 <- strollur::names(
   miseq,
   type = "sequence",
   samples = c("F3D0"),
@@ -170,7 +172,7 @@ bin_type. The miseq example contains 3 bin types: *otu*, *asv* and
 
 ``` r
 
-otu_bins <- names(
+otu_bins <- strollur::names(
   miseq,
   type = "bin",
   bin_type = "otu"
@@ -186,7 +188,7 @@ sample ‘F3D0’:
 
 ``` r
 
-include_f3d0 <- names(
+include_f3d0 <- strollur::names(
   miseq,
   type = "bin",
   samples = c("F3D0"),
@@ -203,7 +205,7 @@ To get the names of the “otu” bins that are *exclusive* to sample
 
 ``` r
 
-exclusive_f3d0 <- names(
+exclusive_f3d0 <- strollur::names(
   miseq,
   type = "bin",
   samples = c("F3D0"),
@@ -215,44 +217,47 @@ head(exclusive_f3d0, n = 5)
 #> [1] "Otu330" "Otu339" "Otu341" "Otu345" "Otu347"
 ```
 
-To get the names of the samples
+To get the names of the samples, set the type parameter to `sample`.
 
 ``` r
 
-names(miseq, type = "sample")
+strollur::names(miseq, type = "sample")
 #>  [1] "F3D0"   "F3D1"   "F3D141" "F3D142" "F3D143" "F3D144" "F3D145" "F3D146"
 #>  [9] "F3D147" "F3D148" "F3D149" "F3D150" "F3D2"   "F3D3"   "F3D5"   "F3D6"  
 #> [17] "F3D7"   "F3D8"   "F3D9"
 ```
 
-To get the names of the treatments
+To get the names of the treatments, set the type parameter to
+`treatment`.
 
 ``` r
 
-names(miseq, type = "treatment")
+strollur::names(miseq, type = "treatment")
 #> [1] "Early" "Late"
 ```
 
-To get the names of the custom reports
+To get the names of the custom reports, set the type parameter to
+`report`.
 
 ``` r
 
-names(miseq, type = "report")
+strollur::names(miseq, type = "report")
 #> [1] "contigs_report" "metadata"
 ```
 
-### count
+### strollur::count
 
-The [`count()`](https://mothur.org/strollur/reference/count.md) function
-allows you to get the number of sequences, bins, samples and treatments
-in your dataset.
+The
+[`strollur::count()`](https://mothur.org/strollur/reference/count.md)
+function allows you to get the number of sequences, bins, samples and
+treatments in your dataset.
 
 To find the *total* number of sequences in the dataset, run the
 following:
 
 ``` r
 
-count(
+strollur::count(
   miseq,
   type = "sequence",
   distinct = FALSE
@@ -260,12 +265,12 @@ count(
 #> [1] 113963
 ```
 
-To find the number of *unique* sequences in the dataset, set ‘distinct’
-to TRUE:
+To find the number of *unique* sequences in the dataset, set
+`distinct = TRUE`:
 
 ``` r
 
-count(
+strollur::count(
   miseq,
   type = "sequence",
   distinct = TRUE
@@ -279,7 +284,7 @@ sample but may be be present in other samples as well.
 
 ``` r
 
-count(
+strollur::count(
   miseq,
   type = "sequence",
   samples = c("F3D0"),
@@ -292,7 +297,7 @@ To get number of *unique* sequences *exclusive* to sample ‘F3D0’:
 
 ``` r
 
-count(
+strollur::count(
   miseq,
   type = "sequence",
   samples = c("F3D0"),
@@ -307,7 +312,7 @@ bin_type. The miseq example contains 3 bin types: *otu*, *asv* and
 
 ``` r
 
-count(
+strollur::count(
   miseq,
   type = "bin",
   bin_type = "otu"
@@ -321,7 +326,7 @@ To get number of *otu* bins with sequences *present* in sample ‘F3D0’:
 
 ``` r
 
-count(
+strollur::count(
   miseq,
   type = "bin",
   bin_type = "otu",
@@ -337,7 +342,7 @@ be present in the bins.*
 
 ``` r
 
-count(
+strollur::count(
   miseq,
   type = "bin",
   bin_type = "otu",
@@ -347,40 +352,41 @@ count(
 #> [1] 14
 ```
 
-To get the number of samples in the dataset:
+To get the number of samples in the dataset, set `type = sample`:
 
 ``` r
 
-count(miseq, type = "sample")
+strollur::count(miseq, type = "sample")
 #> [1] 19
 ```
 
-To get the number of treatments in the dataset:
+To get the number of treatments in the dataset, set `type = treatment`:
 
 ``` r
 
-count(miseq, type = "treatment")
+strollur::count(miseq, type = "treatment")
 #> [1] 2
 ```
 
-### abundance
+### strollur::abundance
 
 Now that we are familiar with the
-[`names()`](https://mothur.org/strollur/reference/names.md) and
-[`count()`](https://mothur.org/strollur/reference/count.md) functions.
-Let’s learn how we can use the
-[`abundance()`](https://mothur.org/strollur/reference/abundance.md)
+[`strollur::names()`](https://mothur.org/strollur/reference/names.md)
+and
+[`strollur::count()`](https://mothur.org/strollur/reference/count.md)
+functions. Let’s learn how we can use the
+[`strollur::abundance()`](https://mothur.org/strollur/reference/abundance.md)
 function. The abundance function can be used to access the abundance
 data for sequences, bins, samples, and treatments. It returns a
 data.frame containing the requested abundance data.
 
-To the total abundance for each sequence, set the type = ‘sequence’.
+To the total abundance for each sequence, set the `type = sequence`.
 This will return a 2 column data.frame containing sequence_names and
 abundances.
 
 ``` r
 
-sequence_abundance <- abundance(
+sequence_abundance <- strollur::abundance(
   miseq,
   type = "sequence",
   by_sample = FALSE
@@ -399,13 +405,14 @@ head(sequence_abundance, n = 10)
 #> 10  M00967_43_000000000-A3JHG_1_2103_25452_6018         1
 ```
 
-To the abundance for each sequence parsed by sample, set by_sample =
-TRUE. This will return a 3 or 4 column data.frame containing
-sequence_names, abundances, samples and treatments (if assigned).
+To the abundance for each sequence parsed by sample, set
+`by_sample = TRUE`. This will return a 3 or 4 column data.frame
+containing sequence_names, abundances, samples and treatments (if
+assigned).
 
 ``` r
 
-sequence_abundance_by_sample <- abundance(
+sequence_abundance_by_sample <- strollur::abundance(
   miseq,
   type = "sequence",
   by_sample = TRUE
@@ -432,7 +439,7 @@ bin_names and abundances.
 
 ``` r
 
-bin_abundance <- abundance(
+bin_abundance <- strollur::abundance(
   miseq,
   type = "bin",
   bin_type = "otu",
@@ -452,13 +459,13 @@ head(bin_abundance, n = 10)
 #> 10 Otu010      3061
 ```
 
-To the abundance for each bin parsed by sample, set by_sample = TRUE.
+To the abundance for each bin parsed by sample, set `by_sample = TRUE`.
 This will return a 3 or 4 column data.frame containing bin_names,
 abundances, samples and treatments (if assigned).
 
 ``` r
 
-bin_abundance_by_sample <- abundance(
+bin_abundance_by_sample <- strollur::abundance(
   miseq,
   type = "bin",
   bin_type = "otu",
@@ -479,12 +486,12 @@ head(bin_abundance_by_sample, n = 10)
 ```
 
 To access the distribution of sequences across the samples in your
-dataset, set the type = ‘sample’. This will return a 2 column data.frame
+dataset, set the `type = sample`. This will return a 2 column data.frame
 containing sample names and abundances.
 
 ``` r
 
-abundance(
+strollur::abundance(
   miseq,
   type = "sample"
 )
@@ -511,34 +518,35 @@ abundance(
 ```
 
 To access the distribution of sequences across the treatments in your
-dataset, set the type = ‘treatment’. This will return a 2 column
+dataset, set the `type = treatment`. This will return a 2 column
 data.frame containing treatment names and abundances.
 
 ``` r
 
-abundance(miseq, type = "treatment")
+strollur::abundance(miseq, type = "treatment")
 #>   treatment abundance
 #> 1     Early     55634
 #> 2      Late     58329
 ```
 
-### report
+### strollur::report
 
-The [`report()`](https://mothur.org/strollur/reference/report.md)
+The
+[`strollur::report()`](https://mothur.org/strollur/reference/report.md)
 function allows you access you to access FASTA sequences, sequence and
 classification reports, bin assignments, sample assignments, metadata,
-sequence data reports, custom reports, resource references and scrapped
-data reports. It returns a data.frame containing the requested report
-data. Let’s look at some examples together.
+phylo trees, sequence data reports, custom reports, resource references
+and scrapped data reports. It returns a data.frame or tree containing
+the requested report data. Let’s look at some examples together.
 
 To get a report containing the sequences
 [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) data, set the
-type = “fasta”. This will be a 2 or 3 column data.frame containing
+`type = fasta`. This will be a 2 or 3 column data.frame containing
 sequence names, sequence nucleotide strings, and comments (if provided).
 
 ``` r
 
-fasta_report <- report(
+fasta_report <- strollur::report(
   miseq,
   type = "fasta"
 )
@@ -560,11 +568,11 @@ head(fasta_report, n = 5)
 If you want to take a closer look at the sequences, you can request a
 report containing the sequence names, starts, ends, lengths, ambiguous
 bases, longest homopolymers, and number of N’s. To get a sequence
-report, set type = “sequence”.
+report, set `type = sequence`.
 
 ``` r
 
-sequence_report <- report(
+sequence_report <- strollur::report(
   miseq,
   type = "sequence"
 )
@@ -586,13 +594,13 @@ head(sequence_report, n = 5)
 The report function also allows you to access classification reports
 about your dataset. There are 2 types of classification reports:
 *sequence_taxonomy* and *bin_taxonomy*. To get a report about the
-sequence classifications, set type = “sequence_taxonomy”. This will
+sequence classifications, set `type = sequence_taxonomy`. This will
 create a 3 or 4 column report containing sequence names, taxonomic
 levels, taxons and confidence scores(if provided).
 
 ``` r
 
-sequence_classification <- report(
+sequence_classification <- strollur::report(
   miseq,
   type = "sequence_taxonomy"
 )
@@ -628,7 +636,7 @@ of bins for the *otu* bin type.
 
 ``` r
 
-bin_classification <- report(
+bin_classification <- strollur::report(
   miseq,
   type = "bin_taxonomy",
   bin_type = "otu"
@@ -652,7 +660,7 @@ following:
 
 ``` r
 
-sequence_bin_assignments <- report(
+sequence_bin_assignments <- strollur::report(
   miseq,
   type = "sequence_bin_assignment",
   bin_type = "otu"
@@ -671,11 +679,11 @@ head(sequence_bin_assignments, n = 10)
 #> 10 Otu001 M00967_43_000000000-A3JHG_1_1102_18640_14309
 ```
 
-To get the sample treatment assignments, set type = “sample_assignment”.
+To get the sample treatment assignments, set `type = sample_assignment`.
 
 ``` r
 
-sample_treatment_assignments <- report(
+sample_treatment_assignments <- strollur::report(
   miseq,
   type = "sample_assignment"
 )
@@ -689,12 +697,12 @@ head(sample_treatment_assignments, n = 5)
 ```
 
 If you assigned bin representative sequences, you can access the report
-by setting type = “bin_representative”. The miseq example includes bin
+by setting `type = bin_representative`. The miseq example includes bin
 representatives for the *otu* bins. Let’s take a look:
 
 ``` r
 
-otu_bin_representatives <- report(
+otu_bin_representatives <- strollur::report(
   miseq,
   type = "bin_representative",
   bin_type = "otu"
@@ -719,16 +727,16 @@ reports, first let’s find the names.
 
 ``` r
 
-names(miseq, type = "report")
+strollur::names(miseq, type = "report")
 #> [1] "contigs_report" "metadata"
 ```
 
-To access the custom contigs assembly report, set type =
-“contigs_report”.
+To access the custom contigs assembly report, set
+`type = contigs_report`.
 
 ``` r
 
-contigs_assembly_report <- report(
+contigs_assembly_report <- strollur::report(
   miseq,
   type = "contigs_report"
 )
@@ -747,11 +755,11 @@ head(contigs_assembly_report, n = 5)
 #> 5             2         251          0      0      0.00259554
 ```
 
-To get the metadata associated with your dataset, set type = “metadata”.
+To get the metadata associated with your dataset, set `type = metadata`.
 
 ``` r
 
-metadata <- report(
+metadata <- strollur::report(
   miseq,
   type = "metadata"
 )
@@ -764,12 +772,12 @@ head(metadata, n = 5)
 #> 5 F3D143            143
 ```
 
-To get the resource references associated with your dataset, set type =
-“resource_reference”.
+To get the resource references associated with your dataset, set
+`type = resource_reference`.
 
 ``` r
 
-report(
+strollur::report(
   miseq,
   type = "resource_reference"
 )
@@ -789,32 +797,74 @@ report(
 #> 1 @article{doi:10.1128/AEM.00062-07, author = {Qiong Wang and George M. Garrity and James M. Tiedje and James R. Cole}, title = {Naïve Bayesian Classifier for Rapid Assignment of rRNA Sequences into the New Bacterial Taxonomy}, journal = {Applied and Environmental Microbiology}, volume = {73}, number = {16}, pages = {5261-5267}, year = {2007}, doi = {10.1128/AEM.00062-07}, URL = {https://journals.asm.org/doi/abs/10.1128/aem.00062-07}, eprint = {https://journals.asm.org/doi/pdf/10.1128/aem.00062-07}}
 #> 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NA
 #>   creation_date
-#> 1    2026-07-13
-#> 2    2026-07-13
+#> 1    2026-09-01
+#> 2    2026-09-01
 ```
 
-Lastly, if sequences or bins have been removed over the course of your
-analysis you can see a report about the scrapped data by setting type =
-“sequence_scrap” or “bin_scrap”. The miseq example does not include
-scrapped data, but let’s take a look at how to access it.
+strollur allows you to include trees relating the sequences and samples
+within your dataset. You can access and plot them using the following
+functions.
+
+To access the tree that relates the sequences in your dataset, set
+`type = sequence_tree`.
 
 ``` r
 
-report(
+sequence_tree <- strollur::report(
+  miseq,
+  type = "sequence_tree"
+)
+```
+
+To access the tree that relates the samples in your dataset, set
+`type = sample_tree`.
+
+``` r
+
+sample_tree <- strollur::report(
+  miseq,
+  type = "sample_tree"
+)
+
+#| fig.alt: >
+#|   Plot of Miseq_SOP's sample relationship tree
+old_par <- par(bg = "white")
+ape::plot.phylo(sample_tree,
+  no.margin = TRUE,
+  cex = 0.5, edge.color = "maroon", tip.color = "navy"
+)
+```
+
+![](Accessing_Dataset_files/figure-html/unnamed-chunk-41-1.png)
+
+``` r
+
+par(old_par)
+```
+
+Lastly, if sequences or bins have been removed over the course of your
+analysis you can see a report about the scrapped data by setting
+`type = sequence_scrap` or `type = bin_scrap`. The miseq example does
+not include scrapped data, but let’s take a look at how to access it.
+
+``` r
+
+strollur::report(
   miseq,
   type = "sequence_scrap"
 )
 #> data frame with 0 columns and 0 rows
-report(
+strollur::report(
   miseq,
   type = "bin_scrap"
 )
 #> data frame with 0 columns and 0 rows
 ```
 
-### summary
+### strollur::summary
 
-The [`summary()`](https://mothur.org/strollur/reference/summary.md)
+The
+[`strollur::summary()`](https://mothur.org/strollur/reference/summary.md)
 function allows you to summarize sequences, custom reports, and scrapped
 data.
 
@@ -823,16 +873,16 @@ names.
 
 ``` r
 
-names(miseq, type = "report")
+strollur::names(miseq, type = "report")
 #> [1] "contigs_report" "metadata"
 ```
 
 You can see we have a custom report so let get the summary by setting
-report_type = “contigs_report”.
+`report_type = contigs_report`.
 
 ``` r
 
-summary(
+strollur::summary(
   miseq,
   type = "report",
   report_type = "contigs_report"
@@ -876,42 +926,15 @@ summary(
 ```
 
 Lastly, if sequences or bins have been removed over the course of your
-analysis you can see a summary about the scrapped data by setting type =
-“scrap”. The miseq example does not include scrapped data, but let’s
-take a look at how to access it.
+analysis you can see a summary about the scrapped data by setting
+`type = scrap`. The miseq example does not include scrapped data, but
+let’s take a look at how to access it.
 
 ``` r
 
-summary(miseq, type = "scrap")
+strollur::summary(miseq, type = "scrap")
 #> data frame with 0 columns and 0 rows
 #> data frame with 0 columns and 0 rows
-```
-
-## Sample Trees and Sequence Trees
-
-strollur allows you to include trees relating the sequences and samples
-within your dataset. You can access and plot them using the following
-functions.
-
-``` r
-
-miseq_sequence_tree <- miseq$get_sequence_tree()
-miseq_sample_tree <- miseq$get_sample_tree()
-
-#| fig.alt: >
-#|   Plot of Miseq_SOP's sample relationship tree
-old_par <- par(bg = "white")
-ape::plot.phylo(miseq_sample_tree,
-  no.margin = TRUE,
-  cex = 0.5, edge.color = "maroon", tip.color = "navy"
-)
-```
-
-![](Accessing_Dataset_files/figure-html/unnamed-chunk-44-1.png)
-
-``` r
-
-par(old_par)
 ```
 
 Thanks for following along. Next, find out how to import your own data

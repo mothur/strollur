@@ -1,4 +1,4 @@
-# read_fasta
+# Read a [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) formatted sequence file
 
 Read a [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/)
 formatted sequence file
@@ -23,7 +23,7 @@ A data.frame containing the FASTA sequence data
 
 ``` r
 
-fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
 
 # fasta_data is a data.frame.
 # To access the names of the sequences in the file, run the following:

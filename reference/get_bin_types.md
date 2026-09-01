@@ -1,4 +1,4 @@
-# get_bin_types
+# Get bin table types of a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Get bin table types of a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
@@ -32,6 +32,7 @@ data <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.

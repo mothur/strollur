@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">strollur</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,7 +128,7 @@ create visuals.</p>
 <p>Let’s create a strollur object from <a href="https://mothur.org" class="external-link">mothur’s</a> <a href="https://mothur.org/wiki/miseq_sop/" class="external-link">Miseq SOP Example</a> output
 files.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">strollur_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_mothur.html">read_mothur</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">strollur_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mothur.html">read_mothur</a></span><span class="op">(</span></span>
 <span>  fasta <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span>,</span>
 <span>  count <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.count_table.gz"</span><span class="op">)</span>,</span>
 <span>  design <span class="op">=</span> <span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"mouse.time.design"</span><span class="op">)</span>,</span>
@@ -147,20 +147,21 @@ files.</p>
 <span><span class="co">#&gt; Assigned 19 samples to treatments.</span></span>
 <span></span>
 <span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="../reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_metadata.rds"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">strollur_data</span>, table <span class="op">=</span> <span class="va">metadata</span>, type <span class="op">=</span> <span class="st">"report"</span>, report_type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/add.html">add</a></span><span class="op">(</span><span class="va">strollur_data</span>, table <span class="op">=</span> <span class="va">metadata</span>,</span>
+<span>              type <span class="op">=</span> <span class="st">"report"</span>, report_type <span class="op">=</span> <span class="st">"metadata"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added a metadata report.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="classify-using-phylotypr">Classify using phylotypr<a class="anchor" aria-label="anchor" href="#classify-using-phylotypr"></a>
 </h2>
 <p><a href="https://mothur.org/phylotypr/" class="external-link"><code>phylotypr</code></a>
-provides an R-based implementation of a <a href="https://pubmed.ncbi.nlm.nih.gov/17586664/" class="external-link">naive Bayesian
+provides an R-based implementation of a <a href="https://doi.org/10.1128/AEM.00062-07" class="external-link">naive Bayesian
 Classifier</a>. It is designed and maintained by the <a href="https://www.schlosslab.org" class="external-link">Schloss Lab</a> and accepts a strollur
 object as an input to the <code>classify_sequences</code> function. It
 also includes built in reference databases for your use.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">database_reference</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mothur.org/phylotypr/reference/build_kmer_database.html" class="external-link">build_kmer_database</a></span><span class="op">(</span><span class="va">trainset9_pds</span><span class="op">)</span></span>
-<span><span class="fu">classify_sequences</span><span class="op">(</span><span class="va">strollur_data</span>, <span class="va">database_reference</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">database_reference</span> <span class="op">&lt;-</span> <span class="fu">phylotypr</span><span class="fu">::</span><span class="fu"><a href="https://mothur.org/phylotypr/reference/build_kmer_database.html" class="external-link">build_kmer_database</a></span><span class="op">(</span><span class="va">trainset9_pds</span><span class="op">)</span></span>
+<span><span class="fu">phylotypr</span><span class="fu">::</span><span class="fu">classify_sequences</span><span class="op">(</span><span class="va">strollur_data</span>, <span class="va">database_reference</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="diversity-analysis-using-phyloseq">Diversity Analysis using phyloseq<a class="anchor" aria-label="anchor" href="#diversity-analysis-using-phyloseq"></a>
@@ -169,7 +170,7 @@ also includes built in reference databases for your use.</p>
 object</a> from the strollur object and calculate the Shannon Index and
 Principal Coordinates Analysis (PCoA) values using phyloseq.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">phyloseq_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_phyloseq.html">write_phyloseq</a></span><span class="op">(</span><span class="va">strollur_data</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">phyloseq_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="../reference/write_phyloseq.html">write_phyloseq</a></span><span class="op">(</span><span class="va">strollur_data</span><span class="op">)</span></span>
 <span><span class="va">phyloseq_data</span></span>
 <span><span class="co">#&gt; phyloseq-class experiment-level object</span></span>
 <span><span class="co">#&gt; otu_table()   OTU Table:         [ 2425 taxa and 19 samples ]</span></span>
@@ -183,11 +184,11 @@ Principal Coordinates Analysis (PCoA) values using phyloseq.</p>
 <span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_data-methods.html" class="external-link">sample_data</a></span><span class="op">(</span><span class="va">phyloseq_data</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">shannon_plot_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">metadata</span>, Shannon <span class="op">=</span> <span class="va">alpha_div</span><span class="op">$</span><span class="va">Shannon</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ps_rel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span></span>
+<span><span class="va">ps_rel</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span></span>
 <span>  <span class="va">phyloseq_data</span>,</span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">pcoa_ord</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ordinate.html" class="external-link">ordinate</a></span><span class="op">(</span><span class="va">ps_rel</span>, method <span class="op">=</span> <span class="st">"PCoA"</span>, distance <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pcoa_ord</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ordinate.html" class="external-link">ordinate</a></span><span class="op">(</span><span class="va">ps_rel</span>, method <span class="op">=</span> <span class="st">"PCoA"</span>, distance <span class="op">=</span> <span class="st">"bray"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="create-publication-ready-plots-grouped-by-treatment">Create publication-ready plots grouped by treatment<a class="anchor" aria-label="anchor" href="#create-publication-ready-plots-grouped-by-treatment"></a>
@@ -222,7 +223,7 @@ Principal Coordinates Analysis (PCoA) values using phyloseq.</p>
 <h3 id="plot-pcoa-beta-diversity">Plot PCoA Beta Diversity:<a class="anchor" aria-label="anchor" href="#plot-pcoa-beta-diversity"></a>
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pcoa_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_ordination.html" class="external-link">plot_ordination</a></span><span class="op">(</span><span class="va">ps_rel</span>, <span class="va">pcoa_ord</span>, justDF <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">pcoa_df</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_ordination.html" class="external-link">plot_ordination</a></span><span class="op">(</span><span class="va">ps_rel</span>, <span class="va">pcoa_ord</span>, justDF <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">pcoa_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Axis.1</span>, y <span class="op">=</span> <span class="va">Axis.2</span>, color <span class="op">=</span> <span class="va">treatment</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">4</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span></span>

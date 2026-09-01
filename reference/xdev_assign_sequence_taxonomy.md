@@ -1,9 +1,9 @@
-# xdev_assign_sequence_taxonomy
+# Assign sequence classifications to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Assign sequence classifications to a
 [strollur](https://mothur.org/strollur/reference/strollur.html) object
 
-Note, if you assign sequence taxonomies and assign bins, strollur will
+Note, if you assign sequence taxonomies and assign bins, `strollur` will
 find the consensus taxonomy for each bin for you.
 
 ## Usage
@@ -21,30 +21,32 @@ xdev_assign_sequence_taxonomy(
 
 ## Arguments
 
-- data, :
+- data:
 
   a [strollur](https://mothur.org/strollur/reference/strollur.html)
   object
 
-- table, :
+- table:
 
   a data.frame containing sequence taxonomy assignments
 
-- reference, :
+- reference:
 
-  a list created by the function \[new_reference\]. Optional.
+  a list created by the function
+  [new_reference](https://mothur.org/strollur/reference/new_reference.md).
+  Optional.
 
-- sequence_name, :
+- sequence_name:
 
   a string containing the name of the column in 'table' that contains
   the sequence names. Default column name is 'sequence_name'.
 
-- taxonomy, :
+- taxonomy:
 
   a string containing the name of the column in 'table' that contains
   the sequence taxonomies. Default column name is 'taxonomy'.
 
-- verbose, :
+- verbose:
 
   a boolean whether or not you want progress messages. Default = TRUE.
 
@@ -57,12 +59,13 @@ an updated
 
 ``` r
 
-sequence_classifications <- read_mothur_taxonomy(strollur_example(
+taxonomy <- strollur::read_mothur_taxonomy(strollur_example(
                         "final.taxonomy.gz"))
 
-data <- new_dataset("my_dataset")
+data <- strollur::new_dataset("my_dataset")
 
-xdev_assign_sequence_taxonomy(data, sequence_classifications)
+strollur::xdev_assign_sequence_taxonomy(data,
+                                          table = taxonomy)
 #> Assigned 2425 sequence taxonomies.
 #> my_dataset:
 #> 
@@ -75,13 +78,15 @@ xdev_assign_sequence_taxonomy(data, sequence_classifications)
 
 # With the reference parameter you can add information about the reference
 # you used to classify your sequences. You can also add references using the
-# 'add_references' function.
+# 'strollur::xdev_add_references' function.
 
-reference <- new_reference("trainset9_032012.pds.zip", "9_032012",
+reference <- strollur::new_reference("trainset9_032012.pds.zip", "9_032012",
               "classification by mothur2 v1.0 using default options", "",
 "https://mothur.s3.us-east-2.amazonaws.com/wiki/trainset9_032012.pds.zip")
 
-xdev_assign_sequence_taxonomy(data, sequence_classifications, reference)
+strollur::xdev_assign_sequence_taxonomy(data,
+                                        table = taxonomy,
+                                        reference = reference)
 #> Assigned 2425 sequence taxonomies.
 #> Added 1 resource references.
 #> my_dataset:

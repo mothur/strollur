@@ -1,7 +1,7 @@
-# write_phyloseq
+# Create a phyloseq object from your [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
-The \`write_phyloseq()\` function will take any strollur object and
-return it as a "phyloseq" object.
+The `strollur::write_phyloseq()` function will take any strollur object
+and return it as a `phyloseq` object.
 
 ## Usage
 
@@ -13,23 +13,23 @@ write_phyloseq(data)
 
 - data:
 
-  the strollur object you created using one of the many read functions
-  in this package.
+  a [strollur](https://mothur.org/strollur/reference/strollur.html)
+  object
 
 ## Value
 
-returns a "phyloseq" object.
+returns a `phyloseq` object.
 
 ## References
 
 McMurdie,P.J. and Holmes,S. (2013), phyloseq: An R Package for
 Reproducible Interactive Analysis and Graphics of Microbiome Census
-Data. PLoS ONE 8:e61217. \<doi:10.1371/journal.pone.0061217\>
+Data. PLoS ONE 8:e61217. <doi:10.1371/journal.pone.0061217>
 
 ## Examples
 
 ``` r
-miseq <- miseq_sop_example()
+miseq <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -37,13 +37,14 @@ miseq <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
 if (requireNamespace("phyloseq", quietly = TRUE)) {
-  phylo_obj <- write_phyloseq(miseq)
+  phylo_obj <- strollur::write_phyloseq(miseq)
 } else {
   message(paste(
     "To use this functionality you have to install the",
