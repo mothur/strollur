@@ -1677,7 +1677,7 @@ test_that("dataset - export,", {
 
   table_names <- c(
     "sequence_data", "sequence_report",
-    "sequence_abundance_table", "otu_bin_data",
+    "sequence_abundance_table", "sample_distance_table", "otu_bin_data",
     "otu_sequence_bin_assignment", "otu_bin_representative_sequence",
     "asv_bin_data",
     "asv_sequence_bin_assignment", "phylotype_bin_data",
@@ -1892,4 +1892,28 @@ test_that("test strollur$assign - quality", {
   expect_equal(quality_report$quality_score[[1]][1:15], score_1_15)
   expect_equal(quality_report$quality_score[[2]][1:15], score_2_15)
   expect_equal(quality_report$quality_score[[3]][1:15], score_3_15)
+})
+
+test_that("test strollur$assign - sample distances", {
+  shared_file <- strollur_example("final.opti_mcc.shared")
+  dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+  reference <- strollur::new_reference(
+    name = "jclass estimator distances",
+    vendor = "mothur_v1.48.6"
+  )
+  data <- strollur::new_dataset("my_dataset")
+  df <- read_mothur_shared(shared_file)
+  xdev_assign_bins(data, table = df, bin_type = "otu")
+  sample_dists <- readr::read_table(dist_file,
+    col_names = FALSE,
+    show_col_types = FALSE
+  )
+  xdev_assign_sample_distances(data,
+    table = sample_dists,
+    reference = reference
+  )
+  dists <- xdev_get_sample_distances(data)
+  expect_equal(nrow(dists), 171)
+  expect_equal(ncol(dists), 3)
+  expect_equal(round(dists[1:3, 3], 2), c(0.47, 0.53, 0.55))
 })

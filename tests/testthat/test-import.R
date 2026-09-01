@@ -41,6 +41,7 @@ test_that("import - miseq_sop_example", {
 
   expect_equal(count(miseq, "bin", "phylotype"), 63)
   expect_equal(count(miseq, distinct = TRUE), 2425)
+  expect_equal(nrow(xdev_get_sample_distances(miseq)), 171)
 
   exported_miseq <- export_dataset(miseq)
 
@@ -68,6 +69,7 @@ test_that("import - miseq_sop_example", {
     abundance(dataset_t, "treatment"),
     abundance(miseq, "treatment")
   )
+  expect_equal(nrow(xdev_get_sample_distances(miseq)), 171)
 
   dfd <- report(dataset_t, "bin_representative")
   dfm <- report(miseq, "bin_representative")

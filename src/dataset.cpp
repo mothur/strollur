@@ -157,6 +157,7 @@ Rcpp::List Dataset::exportDataset(){
             sequenceData.push_back(taxonomies);
             sequenceDataLabels.push_back("taxonomy");
         }
+
         if (!allBlank(trashCodes)) {
             sequenceData.push_back(trashCodes);
             sequenceDataLabels.push_back("trash_code");
@@ -194,7 +195,7 @@ Rcpp::List Dataset::exportDataset(){
         resultsLabels.push_back("sequence_abundance_table");
     }
 
-    Rcpp::DataFrame sdists = sampleDists.getSparseDistances(count);
+    Rcpp::DataFrame sdists = sampleDists.getSparseDistances(count, true);
     if (sdists.size() != 0) {
         results.push_back(sdists);
         resultsLabels.push_back("sample_distance_table");

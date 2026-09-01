@@ -1472,6 +1472,10 @@ Rcpp::DataFrame xdev_report(const Rcpp::Environment& data, const string& type,
     else if (type == "sample_assignment") {
         return d.get()->getSampleTreatmentAssignments();
     }
+    // sample distances report
+    else if (type == "sample_distance") {
+        return xdev_get_sample_distances(data);
+    }
     // representative sequences assignments report
     else if (type == "bin_representative") {
         return d.get()->getBinRepresentativeSequences(bin_type);

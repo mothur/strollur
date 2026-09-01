@@ -93,7 +93,8 @@
 #'   phylo_list = strollur_example("final.tx.list.gz"),
 #'   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
 #'   sample_distance = strollur_example(
-#'   "final.opti_mcc.jclass.0.03.column.dist"),
+#'     "final.opti_mcc.jclass.0.03.column.dist"
+#'   ),
 #'   dataset_name = "miseq_sop"
 #' )
 #'
@@ -205,11 +206,11 @@ read_mothur <- function(fasta = NULL, count = NULL,
   }
 
   if (!is.null(sample_distance)) {
-      df <- readr::read_table(
-          file = sample_distance, col_names = FALSE,
-          show_col_types = FALSE
-      )
-      xdev_assign_sample_distances(data, table = df)
+    df <- readr::read_table(
+      file = sample_distance, col_names = FALSE,
+      show_col_types = FALSE
+    )
+    xdev_assign_sample_distances(data, table = df)
   }
 
   if (!is.null(cons_taxonomy)) {

@@ -464,29 +464,51 @@ struct sparseDistance {
         sampleDistances = dists;
     }
 
-    Rcpp::DataFrame getSparseDistances(const AbundTable& abund) const {
+    Rcpp::DataFrame getSparseDistances(const AbundTable& abund, bool forExport = false) const {
+
+        if (rowSamples.empty()) {  return Rcpp::DataFrame::create(); }
+
         vector<float> PsampleDistances;
         vector<string> ProwSamples;
         vector<string> PcolSamples;
 
         vector<string> goodSamples = abund.getSamples();
 
-        // remove samples not in dataset
-        for (int i = 0; i < rowSamples.size(); i++) {
-            if ((std::find(goodSamples.begin(), goodSamples.end(), rowSamples[i]) != goodSamples.end()) &&
-                (std::find(goodSamples.begin(), goodSamples.end(), colSamples[i]) != goodSamples.end())) {
-                   ProwSamples.push_back(rowSamples[i]);
-                   PcolSamples.push_back(colSamples[i]);
-                   PsampleDistances.push_back(sampleDistances[i]);
+        if (!forExport) {
+            // remove samples not in dataset
+            for (int i = 0; i < rowSamples.size(); i++) {
+                if ((std::find(goodSamples.begin(), goodSamples.end(), rowSamples[i]) != goodSamples.end()) &&
+                    (std::find(goodSamples.begin(), goodSamples.end(), colSamples[i]) != goodSamples.end())) {
+                    ProwSamples.push_back(rowSamples[i]);
+                    PcolSamples.push_back(colSamples[i]);
+                    PsampleDistances.push_back(sampleDistances[i]);
+                }
             }
-        }
 
-        if (!ProwSamples.empty()) {
+            if (!ProwSamples.empty()) {
+                Rcpp::DataFrame df = Rcpp::DataFrame::create(
+                    Rcpp::Named("sample1") = ProwSamples,
+                    Rcpp::_["sample2"] = PcolSamples,
+                    Rcpp::_["distance"] = PsampleDistances);
+                return df;
+            }
+        }else {
+            vector<bool> include(rowSamples.size(), false);
+            // include all samples and add include flags
+            for (int i = 0; i < rowSamples.size(); i++) {
+                if ((std::find(goodSamples.begin(), goodSamples.end(), rowSamples[i]) != goodSamples.end()) &&
+                    (std::find(goodSamples.begin(), goodSamples.end(), colSamples[i]) != goodSamples.end())) {
+                    include[i] = true;
+                }
+            }
+
             Rcpp::DataFrame df = Rcpp::DataFrame::create(
-                Rcpp::Named("sample1") = ProwSamples,
-                Rcpp::_["sample2"] = PcolSamples,
-                Rcpp::_["distance"] = PsampleDistances);
+                Rcpp::Named("sample1") = rowSamples,
+                Rcpp::_["sample2"] = colSamples,
+                Rcpp::_["distance"] = sampleDistances,
+                Rcpp::_["include"] = include);
             return df;
+
         }
         return Rcpp::DataFrame::create();
     }

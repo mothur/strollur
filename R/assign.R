@@ -1,12 +1,14 @@
 #' @title Assign sequence abundances, sequence classifications, bins, bin
-#' representative sequences, bin classifications or treatments to a
-#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#'   representative sequences, bin classifications, sample distances or
+#'   treatments to a
+#'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 #' @name assign
 #' @rdname assign
 #'
 #' @description
 #' Assign sequence abundances, sequence classifications, bins, bin
-#' representative sequences, bin classifications or treatments to a
+#' representative sequences, bin classifications, sample distances or
+#' treatments to a
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param data a
@@ -16,7 +18,7 @@
 #'
 #' @param type a string containing the type of data. Options include:
 #' `sequence_abundance`, `sequence_taxonomy`, `bin`, `quality`,
-#'  `bin_representative`, `bin_taxonomy` and `treatment`.
+#'  `bin_representative`, `bin_taxonomy`, `sample_distance` and `treatment`.
 #'  Default = `bin`.
 #'
 #' @param bin_type string containing the bin type you would like the number of
@@ -155,6 +157,15 @@
 #'
 #' strollur::assign(data, table = sample_assignments, type = "treatment")
 #'
+#' # Assign sample distances
+#'
+#' dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+#' sample_dists <- readr::read_table(dist_file,
+#'   col_names = FALSE,
+#'   show_col_types = FALSE
+#' )
+#' strollur::assign(data, table = sample_dists, type = "sample_distance")
+#'
 #' @return an updated
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #' @export
@@ -269,7 +280,7 @@ assign <- function(data, table,
       verbose = verbose
     )
   } else if (type == "sequence_abundance") {
-    num <- xdev_assign_sequence_abundance(
+    xdev_assign_sequence_abundance(
       data = data, table = table,
       sequence_name = table_names[["sequence_name"]],
       abundance = table_names[["abundance"]],
@@ -278,10 +289,17 @@ assign <- function(data, table,
       verbose = verbose
     )
   } else if (type == "quality") {
-    num <- xdev_assign_sequence_quality_scores(
+    xdev_assign_sequence_quality_scores(
       data = data, table = table,
       sequence_name = table_names[["sequence_name"]],
       quality_score = table_names[["quality_score"]],
+      verbose = verbose
+    )
+  } else if (type == "sample_distance") {
+    xdev_assign_sample_distances(
+      data,
+      table = table,
+      reference = reference,
       verbose = verbose
     )
   } else {

@@ -127,7 +127,8 @@ data <- strollur::read_mothur(
   phylo_list = strollur_example("final.tx.list.gz"),
   sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
   sample_distance = strollur_example(
-  "final.opti_mcc.jclass.0.03.column.dist"),
+    "final.opti_mcc.jclass.0.03.column.dist"
+  ),
   dataset_name = "miseq_sop"
 )
 

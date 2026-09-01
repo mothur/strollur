@@ -9,6 +9,8 @@ xdev_assign_sample_distances(data, table, reference = NULL, verbose = TRUE)
 \arguments{
 \item{data}{a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
 
+\item{table}{a 3 column data.frame (sample1 sample2 distance) containing distances between your samples}
+
 \item{reference}{a list created by the function \link{new_reference}. Optional.}
 
 \item{verbose}{a boolean indicating whether or not you want progress

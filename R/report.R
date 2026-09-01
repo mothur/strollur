@@ -6,7 +6,8 @@
 #'   requested. Reports include FASTA format, FASTQ format, sequences reports,
 #'   sequence quality data, sequence_bin_assignments, sequence_taxonomy,
 #'   sequence_tree, bin_taxonomy, bin_representatives, sample_assignments,
-#'   sample_tree, references, custom reports, sequence_scrap, and bin_scrap in a
+#'   sample distances, sample_tree, references, custom reports, sequence_scrap,
+#'   and bin_scrap in a
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur}
 #'   object.
 #'
@@ -14,12 +15,13 @@
 #'   \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param type string containing the type of report you would like. Options
-#' include: `fasta`, `fastq`, `sequence`, `quality`, `sequence_bin_assignment`,
-#' `sequence_taxonomy`, `sequence_tree`, `bin_taxonomy`, `bin_representative`,
-#'  `sample_assignment`, `sample_tree`, `resource_reference`, `sequence_scrap`,
-#' `bin_scrap`. If you have added custom reports for alignment,
-#' contigs_assembly or chimeras, you can get those as well.
-#'  Default = `sequence`.
+#'   include: `fasta`, `fastq`, `sequence`, `quality`,
+#'   `sequence_bin_assignment`, `sequence_taxonomy`, `sequence_tree`,
+#'   `bin_taxonomy`, `bin_representative`, `sample_assignment`,
+#'   `sample_distance`, `sample_tree`, `resource_reference`, `sequence_scrap`,
+#'   `bin_scrap`. If you have added custom reports for alignment,
+#'   contigs_assembly or chimeras, you can get those as well. Default =
+#'   `sequence`.
 #'
 #' @param bin_type string containing the bin type you would like a bin_taxonomy
 #' report for. Default = `otu`.
@@ -89,6 +91,10 @@
 #' # To get the tree that relates your samples:
 #'
 #' sample_tree <- strollur::report(data = miseq, type = "sample_tree")
+#'
+#' # To get the distances between your samples:
+#'
+#' sample_dists <- strollur::report(data = miseq, type = "sample_distance")
 #'
 #' @return data.frame or tree
 #' @export

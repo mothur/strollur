@@ -3,8 +3,9 @@
 \name{assign}
 \alias{assign}
 \title{Assign sequence abundances, sequence classifications, bins, bin
-representative sequences, bin classifications or treatments to a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur} object}
+representative sequences, bin classifications, sample distances or
+treatments to a
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 assign(
   data,
@@ -26,7 +27,7 @@ assign(
 
 \item{type}{a string containing the type of data. Options include:
 \code{sequence_abundance}, \code{sequence_taxonomy}, \code{bin}, \code{quality},
-\code{bin_representative}, \code{bin_taxonomy} and \code{treatment}.
+\code{bin_representative}, \code{bin_taxonomy}, \code{sample_distance} and \code{treatment}.
 Default = \code{bin}.}
 
 \item{bin_type}{string containing the bin type you would like the number of
@@ -90,7 +91,8 @@ an updated
 }
 \description{
 Assign sequence abundances, sequence classifications, bins, bin
-representative sequences, bin classifications or treatments to a
+representative sequences, bin classifications, sample distances or
+treatments to a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 }
 \examples{
@@ -172,6 +174,15 @@ strollur::assign(
 sample_assignments <- readRDS(strollur_example("miseq_sample_design.rds"))
 
 strollur::assign(data, table = sample_assignments, type = "treatment")
+
+# Assign sample distances
+
+dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+sample_dists <- readr::read_table(dist_file,
+  col_names = FALSE,
+  show_col_types = FALSE
+)
+strollur::assign(data, table = sample_dists, type = "sample_distance")
 
 }
 \seealso{

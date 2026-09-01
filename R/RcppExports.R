@@ -558,6 +558,7 @@ xdev_add_sequence_fastq_scores <- function(data, table, reference = NULL, sequen
 #' Assign samples distances in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
 #'
 #' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur} object
+#' @param table a 3 column data.frame (sample1 sample2 distance) containing distances between your samples
 #' @param reference a list created by the function [new_reference]. Optional.
 #' @param verbose a boolean indicating whether or not you want progress
 #'  messages. Default = TRUE.

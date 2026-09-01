@@ -17,13 +17,13 @@ New Features:
 
 Enhancements:
 
-- Adds `fastq`, `quality`, `sequence_tree`, `sample_tree` types to:
+- Adds `fastq`, `quality`, `sequence_tree`, `sample_tree`, `sample_distance` types to:
      - `strollur::report()`
      - `strollur_object$report()`
 - Adds `fastq` type to:
      - `strollur::add()`
      - `strollur_object$add()`
-- Adds `quality` type to:
+- Adds `quality` and `sample_distance` type to:
      - `strollur::assign()`
      - `strollur_object$assign()`
 
@@ -34,6 +34,8 @@ Functions for Package developers
 - Adds `strollur::xdev_has_bin_taxonomy()` function.
 - Adds `strollur::xdev_get_sequence_indexes_by_sample()` function.
 - Adds `strollur::xdev_add_sequence_fastq_scores()` function.
+- Adds `strollur::xdev_get_sample_distances()` function.
+- Adds `strollur::xdev_assign_sample_distances()` function.
 
 Bug Fixes:
  - `strollur::summary()` will now display results that accurately represent the data.

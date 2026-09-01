@@ -36,4 +36,40 @@ test_that("read_biom", {
     "G-T-A-ACTGACG-TTGA-GGCT-CGAAA-GCG-TGGGG-AGC-AAACAGG"
   )
   expect_equal(xdev_get_sequences(data)[1], otu1_seq)
+
+  miseq <- miseq_sop_example()
+
+  bin_types <- miseq$get_bin_types()
+
+  file_root <- get_full_name("test-miseq")
+
+  outputs <- c(
+    get_full_name("test-miseq.otu.biom"),
+    get_full_name("test-miseq.asv.biom"),
+    get_full_name("test-miseq.phylotype.biom")
+  )
+
+  expect_equal(write_biom(miseq, file_root), outputs)
+
+  # read biom file - phylotype
+  hdata <- rbiom::read_biom(outputs[3])
+
+  expect_equal(hdata$n_otus, count(miseq,
+    type = "bin",
+    bin_type = "phylotype"
+  ))
+  expect_equal(hdata$otus, names(miseq, type = "bin", bin_type = "phylotype"))
+  expect_equal(hdata$n_samples, count(miseq, type = "sample"))
+  expect_equal(dim(hdata$counts), c(63, 19))
+  expect_equal(
+    hdata$samples,
+    strollur::names(miseq, type = "sample")
+  )
+
+  expect_equal(nrow(hdata$taxonomy), 63)
+  expect_equal(ncol(hdata$taxonomy), 7)
+  expect_equal(
+    as.character(hdata$taxonomy[[62, "Phylum"]]),
+    "\"Proteobacteria\""
+  )
 })

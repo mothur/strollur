@@ -217,6 +217,14 @@ sample_assignments <- readRDS(
 
 data$assign(table = sample_assignments, type = "treatment")
 
+# Assign sample distances
+
+dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+sample_dists <- readr::read_table(dist_file,
+                                  col_names = FALSE,
+                                  show_col_types = FALSE)
+data$assign(table = sample_dists, type = "sample_distance")
+
 
 ## ------------------------------------------------
 ## Method `strollur$clear()`
@@ -449,6 +457,10 @@ sequence_tree <- miseq$report(type = "sequence_tree")
 # To get the tree that relates your sequences:
 
 sample_tree <- miseq$report(type = "sample_tree")
+
+# To get the distances between your samples:
+
+sample_dists <- miseq$report(type = "sample_distance")
 
 
 ## ------------------------------------------------
@@ -820,8 +832,8 @@ data$alignment_length()
 \if{latex}{\out{\hypertarget{method-strollur-assign}{}}}
 \subsection{\code{strollur$assign()}}{
   Assign sequence abundances, sequence classifications, bins, bin
-representative sequences, sequence quality data, bin classifications or
-treatments.
+representative sequences, sequence quality data, bin classifications,
+sample distances or treatments.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{strollur$assign(
@@ -842,7 +854,7 @@ treatments.
       \item{\code{table}}{a data.frame containing the data you wish to assign}
       \item{\code{type}}{a string containing the type of data. Options include:
 \code{sequence_abundance}, \code{sequence_taxonomy}, \code{bin}, \code{quality}
-\code{bin_representative}, \code{bin_taxonomy} and \code{treatment}.
+\code{bin_representative}, \code{bin_taxonomy}, \code{sample_distance} and \code{treatment}.
 Default = \code{bin}.}
       \item{\code{bin_type}}{string containing the bin type you would like the number
 of bins for. Default = \code{otu}.}
@@ -982,6 +994,14 @@ sample_assignments <- readRDS(
    strollur_example("miseq_sample_design.rds"))
 
 data$assign(table = sample_assignments, type = "treatment")
+
+# Assign sample distances
+
+dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+sample_dists <- readr::read_table(dist_file,
+                                  col_names = FALSE,
+                                  show_col_types = FALSE)
+data$assign(table = sample_dists, type = "sample_distance")
 }
     \if{html}{\out{</div>}}
   }
@@ -1376,9 +1396,10 @@ requested.
 include: \code{fasta}, \code{fastq}, \code{sequence}, \code{quality},
 \code{sequence_bin_assignment}, \code{sequence_taxonomy}, \code{sequence_tree},
 \code{bin_taxonomy}, \code{bin_representative}, \code{sample_assignment},
-\code{sample_tree}, \code{resource_reference}, \code{sequence_scrap}, \code{bin_scrap}. If
-you have added custom reports for alignment, contigs_assembly or
-chimeras, you can get those as well. Default = \code{sequence}.}
+\code{sample_distance}, \code{sample_tree}, \code{resource_reference},
+\code{sequence_scrap}, \code{bin_scrap}. If you have added custom reports for
+alignment, contigs_assembly or chimeras, you can get those as well.
+Default = \code{sequence}.}
       \item{\code{bin_type}}{string containing the bin type you would like a
 bin_taxonomy report for. Default = \code{otu}.}
     }
@@ -1448,6 +1469,10 @@ sequence_tree <- miseq$report(type = "sequence_tree")
 # To get the tree that relates your sequences:
 
 sample_tree <- miseq$report(type = "sample_tree")
+
+# To get the distances between your samples:
+
+sample_dists <- miseq$report(type = "sample_distance")
 }
     \if{html}{\out{</div>}}
   }

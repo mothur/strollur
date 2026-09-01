@@ -132,6 +132,11 @@ import_dataset <- function(table) {
     }
   }
 
+  if ("sample_distance_table" %in% names) {
+    bt <- "sample_distance_table"
+    table[[bt]] <- table[[bt]][table[[bt]]$include, ]
+  }
+
   # look at sequence_data
   if (has_sequence_data) {
     sequence_data_names <- names(table$sequence_data)
@@ -247,6 +252,10 @@ import_dataset <- function(table) {
     }
   }
 
+  if ("sample_distance_table" %in% names) {
+    xdev_assign_sample_distances(data, table = table$sample_distance_table)
+  }
+
   # add references
   if ("resource_reference" %in% names) {
     xdev_add_references(data = data, table = table$resource_reference)
@@ -255,7 +264,7 @@ import_dataset <- function(table) {
   # list all report names
   table_names <- c(
     "sequence_data", "sequence_report",
-    "sequence_abundance_table", "otu_bin_data",
+    "sequence_abundance_table", "sample_distance_table", "otu_bin_data",
     "otu_sequence_bin_assignment", "otu_bin_representative_sequence",
     "asv_bin_data",
     "asv_sequence_bin_assignment", "phylotype_bin_data",

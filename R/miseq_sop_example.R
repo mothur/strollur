@@ -27,7 +27,8 @@ miseq_sop_example <- function() {
     sample_tree = strollur_example("final.opti_mcc.jclass.ave.tre"),
     sequence_tree = strollur_example("final.phylip.tre.gz"),
     sample_distance = strollur_example(
-                        "final.opti_mcc.jclass.0.03.column.dist"),
+      "final.opti_mcc.jclass.0.03.column.dist"
+    ),
     dataset_name = "miseq_sop"
   )
 

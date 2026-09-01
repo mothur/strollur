@@ -1567,23 +1567,29 @@ test_that("Tests xdev_add_sequence_fastq_scores ", {
 })
 
 test_that("Tests xdev_assign_sample_distances / get ", {
-    reference <- strollur::new_reference(
-        vendor = "mothur2",
-        name = "test()",
-        version = "0.1.0"
-    )
+  reference <- strollur::new_reference(
+    vendor = "mothur2",
+    name = "test()",
+    version = "0.1.0"
+  )
 
   shared_file <- strollur_example("final.opti_mcc.shared")
   dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
-  reference <- strollur::new_reference(name = "jclass estimator distances",
-                                       vendor = "mothur_v1.48.6")
+  reference <- strollur::new_reference(
+    name = "jclass estimator distances",
+    vendor = "mothur_v1.48.6"
+  )
   data <- strollur::new_dataset("my_dataset")
   df <- read_mothur_shared(shared_file)
   xdev_assign_bins(data, table = df, bin_type = "otu")
-  sample_dists <- readr::read_table(dist_file, col_names = FALSE,
-                                    show_col_types = FALSE)
-  xdev_assign_sample_distances(data, table = sample_dists,
-                               reference = reference)
+  sample_dists <- readr::read_table(dist_file,
+    col_names = FALSE,
+    show_col_types = FALSE
+  )
+  xdev_assign_sample_distances(data,
+    table = sample_dists,
+    reference = reference
+  )
   dists <- xdev_get_sample_distances(data)
   expect_equal(nrow(dists), 171)
   expect_equal(ncol(dists), 3)
@@ -1592,7 +1598,7 @@ test_that("Tests xdev_assign_sample_distances / get ", {
   # remove sample F3D1 and check the pruning
   xdev_remove_samples(data, samples = c("F3D1"))
 
-  dists <- xdev_get_sample_distances(data)
+  dists <- xdev_report(data, type = "sample_distance")
   expect_equal(nrow(dists), 153)
   expect_equal(ncol(dists), 3)
   expect_equal(round(dists[1:3, 3], 2), c(0.53, 0.57, 0.51))

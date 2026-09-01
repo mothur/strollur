@@ -617,14 +617,14 @@ strollur <- R6Class("strollur",
 
     #' @description
     #' Assign sequence abundances, sequence classifications, bins, bin
-    #' representative sequences, sequence quality data, bin classifications or
-    #' treatments.
+    #' representative sequences, sequence quality data, bin classifications,
+    #' sample distances or treatments.
     #'
     #' @param table a data.frame containing the data you wish to assign
     #'
     #' @param type a string containing the type of data. Options include:
     #' `sequence_abundance`, `sequence_taxonomy`, `bin`, `quality`
-    #'  `bin_representative`, `bin_taxonomy` and `treatment`.
+    #'  `bin_representative`, `bin_taxonomy`, `sample_distance` and `treatment`.
     #'  Default = `bin`.
     #'
     #' @param bin_type string containing the bin type you would like the number
@@ -765,6 +765,14 @@ strollur <- R6Class("strollur",
     #'
     #' data$assign(table = sample_assignments, type = "treatment")
     #'
+    #' # Assign sample distances
+    #'
+    #' dist_file <- strollur_example("final.opti_mcc.jclass.0.03.column.dist")
+    #' sample_dists <- readr::read_table(dist_file,
+    #'                                   col_names = FALSE,
+    #'                                   show_col_types = FALSE)
+    #' data$assign(table = sample_dists, type = "sample_distance")
+    #'
     #' @return Updated `strollur::strollur` object
     assign = function(table,
                       type = "bin",
@@ -886,6 +894,12 @@ strollur <- R6Class("strollur",
           data = self, table = table,
           sequence_name = table_names[["sequence_name"]],
           quality_score = table_names[["quality_score"]],
+          verbose = verbose
+        )
+      } else if (type == "sample_distance") {
+        xdev_assign_sample_distances(
+          data = self, table = table,
+          reference = reference,
           verbose = verbose
         )
       } else {
@@ -1256,9 +1270,10 @@ strollur <- R6Class("strollur",
     #'   include: `fasta`, `fastq`, `sequence`, `quality`,
     #'   `sequence_bin_assignment`, `sequence_taxonomy`, `sequence_tree`,
     #'   `bin_taxonomy`, `bin_representative`, `sample_assignment`,
-    #'   `sample_tree`, `resource_reference`, `sequence_scrap`, `bin_scrap`. If
-    #'   you have added custom reports for alignment, contigs_assembly or
-    #'   chimeras, you can get those as well. Default = `sequence`.
+    #'   `sample_distance`, `sample_tree`, `resource_reference`,
+    #'   `sequence_scrap`, `bin_scrap`. If you have added custom reports for
+    #'   alignment, contigs_assembly or chimeras, you can get those as well.
+    #'   Default = `sequence`.
     #'
     #' @param bin_type string containing the bin type you would like a
     #'   bin_taxonomy report for. Default = `otu`.
@@ -1324,6 +1339,10 @@ strollur <- R6Class("strollur",
     #' # To get the tree that relates your sequences:
     #'
     #' sample_tree <- miseq$report(type = "sample_tree")
+    #'
+    #' # To get the distances between your samples:
+    #'
+    #' sample_dists <- miseq$report(type = "sample_distance")
     #'
     #' @return data.frame or tree
     report = function(type = "sequence", bin_type = "otu") {
