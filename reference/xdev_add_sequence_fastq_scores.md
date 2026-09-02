@@ -1,8 +1,7 @@
 # Add FASTQ data to a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 Add FASTQ data to a [strollur
-object](https://mothur.org/strollur/reference/strollur.html). Scores are
-stored as vector for each sequence.
+object](https://mothur.org/strollur/reference/strollur.html).
 
 ## Usage
 
@@ -49,8 +48,7 @@ xdev_add_sequence_fastq_scores(
 - quality_score:
 
   a string containing the name of the column in 'table' that contains
-  the quality scores stored as vector. Default column name is
-  'quality_score'.
+  the quality scores. Default column name is 'quality_score'.
 
 - verbose:
 
