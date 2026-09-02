@@ -8,7 +8,7 @@
 #'   designed to facilitate data analysis across multiple R packages.
 #'
 # nolint start
-#' \if{html}{\figure{strollur_overview.png}{options: width="672 pixels" alt="Workflow
+#' \if{html}{\figure{strollur_overview.png}{options: width="672px" alt="Workflow
 #' Diagram"}}
 # nolint end
 #' \if{latex}{\figure{strollur_overview.png}{options: width=5in}}
@@ -22,7 +22,7 @@
 #' @export
 strollur <- R6Class("strollur",
   public = list(
-    #' @field data Rcpp::XPtr<Dataset> pointer to 'Dataset' c++ class. This
+    #' @field data Rcpp::XPtr pointer to 'Dataset' c++ class. This
     #' allows package developers an easy access point to the underlying C++ code
     #' with additional functionality.
     data = NULL,

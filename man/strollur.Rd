@@ -9,7 +9,7 @@ sequences, abundance, sample and treatment assignments, taxonomic
 classifications, trees, asv / otu clusters and various reports. It is
 designed to facilitate data analysis across multiple R packages.
 
-\if{html}{\figure{strollur_overview.png}{options: width="672 pixels" alt="Workflow
+\if{html}{\figure{strollur_overview.png}{options: width="672px" alt="Workflow
 Diagram"}}
 \if{latex}{\figure{strollur_overview.png}{options: width=5in}}
 }
@@ -493,7 +493,7 @@ Sarah Westcott, \email{swestcot@umich.edu}
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
-    \item{\code{data}}{Rcpp::XPtr\if{html}{\out{<Dataset>}} pointer to 'Dataset' c++ class. This
+    \item{\code{data}}{Rcpp::XPtr pointer to 'Dataset' c++ class. This
 allows package developers an easy access point to the underlying C++ code
 with additional functionality.}
 

@@ -508,7 +508,7 @@ Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data,
 //' @description
 //' Add FASTQ data to a
 //' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.
-//' Scores are stored as vector<int> for each sequence.
+//'
 //'
 //' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @param table a data.frame containing FASTQ data you are trying to add
@@ -519,7 +519,7 @@ Rcpp::Environment xdev_assign_bin_taxonomy_tidy(const Rcpp::Environment& data,
 //' contains the sequence nucleotide strings. Default column name is
 //' 'sequence'. (Optional)
 //' @param quality_score a string containing the name of the column in 'table'
-//'   that contains the quality scores stored as vector<int>. Default column
+//'   that contains the quality scores. Default column
 //'   name is 'quality_score'.
 //' @param verbose a logical whether or not you want progress messages.
 //' Default = TRUE.
@@ -581,7 +581,6 @@ Rcpp::Environment xdev_assign_sample_distances(const Rcpp::Environment& data,
 //' @description
 //' Add quality data to a
 //' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.
-//' Scores are stored as vector<int> for each sequence.
 //'
 //' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 //' @param table a data.frame containing quality data you are trying to add
@@ -589,7 +588,7 @@ Rcpp::Environment xdev_assign_sample_distances(const Rcpp::Environment& data,
 //' @param sequence_name a string containing the name of the column in 'table'
 //' that contains the sequence names. Default column name is 'sequence_name'.
 //' @param quality_score a string containing the name of the column in 'table'
-//'   that contains the quality scores stored as vector<int>. Default column
+//'   that contains the quality scores. Default column
 //'   name is 'quality_score'.
 //' @param verbose a logical whether or not you want progress messages.
 //' Default = TRUE.

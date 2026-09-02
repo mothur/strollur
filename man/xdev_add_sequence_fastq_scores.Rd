@@ -30,7 +30,7 @@ contains the sequence nucleotide strings. Default column name is
 'sequence'. (Optional)}
 
 \item{quality_score}{a string containing the name of the column in 'table'
-that contains the quality scores stored as vector\if{html}{\out{<int>}}. Default column
+that contains the quality scores. Default column
 name is 'quality_score'.}
 
 \item{verbose}{a logical whether or not you want progress messages.
@@ -42,7 +42,6 @@ an updated \href{https://mothur.org/strollur/reference/strollur.html}{strollur o
 \description{
 Add FASTQ data to a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}.
-Scores are stored as vector\if{html}{\out{<int>}} for each sequence.
 }
 \examples{
 
