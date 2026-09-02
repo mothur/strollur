@@ -16,22 +16,23 @@ functions to import from [mothur](https://mothur.org),
 and
 [phyloseq](https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html).
 
-- [`add()`](https://mothur.org/strollur/reference/add.md) adds
+- [`strollur::add()`](https://mothur.org/strollur/reference/add.md) adds
   sequences, reports, metadata, and resource references
-- [`assign()`](https://mothur.org/strollur/reference/assign.md) assigns
-  abundances, classifications, bins, samples and treatments and more
-- [`names()`](https://mothur.org/strollur/reference/names.md) gets the
-  names of sequences, bins, samples, treatments and reports
-- [`count()`](https://mothur.org/strollur/reference/count.md) gets the
-  number of sequences, bins, samples and treatments
-- [`abundance()`](https://mothur.org/strollur/reference/abundance.md)
+- [`strollur::assign()`](https://mothur.org/strollur/reference/assign.md)
+  assigns abundances, classifications, bins, samples and treatments and
+  more
+- [`strollur::names()`](https://mothur.org/strollur/reference/names.md)
+  gets the names of sequences, bins, samples, treatments and reports
+- [`strollur::count()`](https://mothur.org/strollur/reference/count.md)
+  gets the number of sequences, bins, samples and treatments
+- [`strollur::abundance()`](https://mothur.org/strollur/reference/abundance.md)
   gets the abundances for sequences, bins, samples, and treatments
-- [`report()`](https://mothur.org/strollur/reference/report.md) gets
-  [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/) sequences,
-  sequence and classification reports, bin assignments, sample
-  assignments, metadata, sequence data reports, custom reports, resource
-  references and scrapped data reports.
-- [`summary()`](https://mothur.org/strollur/reference/summary.md)
+- [`strollur::report()`](https://mothur.org/strollur/reference/report.md)
+  gets [FASTA](https://www.ncbi.nlm.nih.gov/genbank/fastaformat/)
+  sequences, sequence and classification reports, bin assignments,
+  sample assignments, metadata, sequence data reports, custom reports,
+  resource references and scrapped data reports.
+- [`strollur::summary()`](https://mothur.org/strollur/reference/summary.md)
   summarizes sequences, your custom reports, and scrapped data
 
 ## Installation
@@ -63,20 +64,20 @@ object](https://mothur.org/strollur/reference/strollur.html).
 
 ``` r
 
-fasta_data <- read_fasta(strollur_example("final.fasta.gz"))
+fasta_data <- strollur::read_fasta(strollur_example("final.fasta.gz"))
+classification_data <- strollur::read_mothur_taxonomy(taxonomy = strollur_example("final.taxonomy.gz"))
 abundance_table <- readRDS(strollur_example("miseq_abundance_by_sample.rds"))
 bin_table <- readRDS(strollur_example("miseq_list_otu.rds"))
-classification_data <- read_mothur_taxonomy(taxonomy = strollur_example("final.taxonomy.gz"))
 
-data <- new_dataset(dataset_name = "example")
+data <- strollur::new_dataset(dataset_name = "example")
 
-add(data, table = fasta_data, type = "sequence")
+strollur::add(data, table = fasta_data, type = "sequence")
 #> Added 2425 sequences.
-assign(data, table = abundance_table, type = "sequence_abundance")
+strollur::assign(data, table = abundance_table, type = "sequence_abundance")
 #> Assigned 2425 sequence abundances.
-assign(data, table = bin_table, type = "bin", bin_type = "otu")
+strollur::assign(data, table = bin_table, type = "bin", bin_type = "otu")
 #> Assigned 531 otu bins.
-assign(data, table = classification_data, type = "sequence_taxonomy")
+strollur::assign(data, table = classification_data, type = "sequence_taxonomy")
 #> Assigned 2425 sequence taxonomies.
 
 data
@@ -84,13 +85,13 @@ data
 #> 
 #>             starts ends nbases ambigs polymers numns   numseqs
 #> Minimum:         1  375    249      0        3     0      1.00
-#> 2.5%-tile:       1  375    252      0        4     0   2849.08
-#> 25%-tile:        1  375    252      0        4     0  28490.75
-#> Median:          1  375    253      0        4     0  56981.50
-#> 75%-tile:        1  375    253      0        5     0  85472.25
-#> 97.5%-tile:      1  375    254      0        6     0 111113.93
+#> 2.5%-tile:       1  375    252      0        4     0   2850.05
+#> 25%-tile:        1  375    252      0        4     0  28491.50
+#> Median:          1  375    253      0        4     0  56982.00
+#> 75%-tile:        1  375    253      0        5     0  85472.50
+#> 97.5%-tile:      1  375    254      0        6     0 111113.95
 #> Maximum:         1  375    256      0        6     0 113963.00
-#> Mean:            1  375    252      0        4     0  56981.64
+#> Mean:            1  375    252      0        4     0  56982.00
 #> 
 #> Number of unique seqs: 2425 
 #> Total number of seqs: 113963 

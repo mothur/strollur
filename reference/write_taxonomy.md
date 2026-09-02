@@ -43,5 +43,5 @@ miseq <- strollur::miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 strollur::write_taxonomy(miseq, tempfile())
-#> [1] "/tmp/RtmpHnwmw4/file1d7d6ff2c27a"
+#> [1] "/tmp/RtmpwFFDh8/file1e137692c6b2"
 ```

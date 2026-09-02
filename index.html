@@ -90,19 +90,19 @@
 <p>The <strong><code>strollur</code></strong> package stores the data associated with your Amplicon Sequence Analysis. This includes nucleotide sequences, abundance, sample and treatment assignments, taxonomic classifications, sequence bin assignments, metadata, trees and various reports. It is designed to facilitate data analysis across multiple R packages with utility functions to import from <a href="https://mothur.org" class="external-link">mothur</a>, <a href="https://qiime2.org" class="external-link">qiime2</a>, <a href="https://benjjneb.github.io/dada2/" class="external-link">dada2</a> and <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link">phyloseq</a>.</p>
 <ul>
 <li>
-<code><a href="reference/add.html">add()</a></code> adds sequences, reports, metadata, and resource references</li>
+<code><a href="reference/add.html">strollur::add()</a></code> adds sequences, reports, metadata, and resource references</li>
 <li>
-<code><a href="reference/assign.html">assign()</a></code> assigns abundances, classifications, bins, samples and treatments and more</li>
+<code><a href="reference/assign.html">strollur::assign()</a></code> assigns abundances, classifications, bins, samples and treatments and more</li>
 <li>
-<code><a href="reference/names.html">names()</a></code> gets the names of sequences, bins, samples, treatments and reports</li>
+<code><a href="reference/names.html">strollur::names()</a></code> gets the names of sequences, bins, samples, treatments and reports</li>
 <li>
-<code><a href="reference/count.html">count()</a></code> gets the number of sequences, bins, samples and treatments</li>
+<code><a href="reference/count.html">strollur::count()</a></code> gets the number of sequences, bins, samples and treatments</li>
 <li>
-<code><a href="reference/abundance.html">abundance()</a></code> gets the abundances for sequences, bins, samples, and treatments</li>
+<code><a href="reference/abundance.html">strollur::abundance()</a></code> gets the abundances for sequences, bins, samples, and treatments</li>
 <li>
-<code><a href="reference/report.html">report()</a></code> gets <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> sequences, sequence and classification reports, bin assignments, sample assignments, metadata, sequence data reports, custom reports, resource references and scrapped data reports.</li>
+<code><a href="reference/report.html">strollur::report()</a></code> gets <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> sequences, sequence and classification reports, bin assignments, sample assignments, metadata, sequence data reports, custom reports, resource references and scrapped data reports.</li>
 <li>
-<code><a href="reference/summary.html">summary()</a></code> summarizes sequences, your custom reports, and scrapped data</li>
+<code><a href="reference/summary.html">strollur::summary()</a></code> summarizes sequences, your custom reports, and scrapped data</li>
 </ul>
 </div>
 <div class="section level2">
@@ -124,20 +124,20 @@
 </h2>
 <p>The example below adds <a href="https://www.ncbi.nlm.nih.gov/genbank/fastaformat/" class="external-link">FASTA</a> sequence data, assigns sequence abundance, samples and treatments, as well as assigning bins and taxonomic data to a <a href="https://mothur.org/strollur/reference/strollur.html">strollur object</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fasta_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="reference/read_fasta.html">read_fasta</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.fasta.gz"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">classification_data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span>taxonomy <span class="op">=</span> <span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">abundance_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_abundance_by_sample.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">bin_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"miseq_list_otu.rds"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">classification_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_mothur_taxonomy.html">read_mothur_taxonomy</a></span><span class="op">(</span>taxonomy <span class="op">=</span> <span class="fu"><a href="reference/strollur_example.html">strollur_example</a></span><span class="op">(</span><span class="st">"final.taxonomy.gz"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="reference/new_dataset.html">new_dataset</a></span><span class="op">(</span>dataset_name <span class="op">=</span> <span class="st">"example"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/add.html">add</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="reference/add.html">add</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">fasta_data</span>, type <span class="op">=</span> <span class="st">"sequence"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Added 2425 sequences.</span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">abundance_table</span>, type <span class="op">=</span> <span class="st">"sequence_abundance"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence abundances.</span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">bin_table</span>, type <span class="op">=</span> <span class="st">"bin"</span>, bin_type <span class="op">=</span> <span class="st">"otu"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 531 otu bins.</span></span>
-<span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">classification_data</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span>
+<span><span class="fu">strollur</span><span class="fu">::</span><span class="fu"><a href="reference/assign.html">assign</a></span><span class="op">(</span><span class="va">data</span>, table <span class="op">=</span> <span class="va">classification_data</span>, type <span class="op">=</span> <span class="st">"sequence_taxonomy"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Assigned 2425 sequence taxonomies.</span></span>
 <span></span>
 <span><span class="va">data</span></span>
@@ -145,13 +145,13 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;             starts ends nbases ambigs polymers numns   numseqs</span></span>
 <span><span class="co">#&gt; Minimum:         1  375    249      0        3     0      1.00</span></span>
-<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   2849.08</span></span>
-<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28490.75</span></span>
-<span><span class="co">#&gt; Median:          1  375    253      0        4     0  56981.50</span></span>
-<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85472.25</span></span>
-<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 111113.93</span></span>
+<span><span class="co">#&gt; 2.5%-tile:       1  375    252      0        4     0   2850.05</span></span>
+<span><span class="co">#&gt; 25%-tile:        1  375    252      0        4     0  28491.50</span></span>
+<span><span class="co">#&gt; Median:          1  375    253      0        4     0  56982.00</span></span>
+<span><span class="co">#&gt; 75%-tile:        1  375    253      0        5     0  85472.50</span></span>
+<span><span class="co">#&gt; 97.5%-tile:      1  375    254      0        6     0 111113.95</span></span>
 <span><span class="co">#&gt; Maximum:         1  375    256      0        6     0 113963.00</span></span>
-<span><span class="co">#&gt; Mean:            1  375    252      0        4     0  56981.64</span></span>
+<span><span class="co">#&gt; Mean:            1  375    252      0        4     0  56982.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Number of unique seqs: 2425 </span></span>
 <span><span class="co">#&gt; Total number of seqs: 113963 </span></span>

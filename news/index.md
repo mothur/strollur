@@ -44,24 +44,27 @@ Enhancements:
 
 Functions for Package developers
 
+- Adds
+  [`strollur::xdev_add_sequence_fastq_scores()`](https://mothur.org/strollur/reference/xdev_add_sequence_fastq_scores.md)
+  function.
 - Adds `strollur::xdev_alignment_length()` function
 - Adds
   [`strollur::xdev_assign_bin_taxonomy_tidy()`](https://mothur.org/strollur/reference/xdev_assign_bin_taxonomy_tidy.md)
   function.
 - Adds
+  [`strollur::xdev_assign_sample_distances()`](https://mothur.org/strollur/reference/xdev_assign_sample_distances.md)
+  function.
+- Adds
+  [`strollur::xdev_assign_sequence_quality_scores`](https://mothur.org/strollur/reference/xdev_assign_sequence_quality_scores.md)
+  function.
+- Adds
   [`strollur::xdev_has_bin_taxonomy()`](https://mothur.org/strollur/reference/xdev_has_bin_taxonomy.md)
-  function.
-- Adds
-  [`strollur::xdev_get_sequence_indexes_by_sample()`](https://mothur.org/strollur/reference/xdev_get_sequence_indexes_by_sample.md)
-  function.
-- Adds
-  [`strollur::xdev_add_sequence_fastq_scores()`](https://mothur.org/strollur/reference/xdev_add_sequence_fastq_scores.md)
   function.
 - Adds
   [`strollur::xdev_get_sample_distances()`](https://mothur.org/strollur/reference/xdev_get_sample_distances.md)
   function.
 - Adds
-  [`strollur::xdev_assign_sample_distances()`](https://mothur.org/strollur/reference/xdev_assign_sample_distances.md)
+  [`strollur::xdev_get_sequence_indexes_by_sample()`](https://mothur.org/strollur/reference/xdev_get_sequence_indexes_by_sample.md)
   function.
 
 Bug Fixes: -
