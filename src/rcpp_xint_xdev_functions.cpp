@@ -1183,6 +1183,11 @@ vector<vector<float> > xdev_get_bin_abundances_by_sample(const Rcpp::Environment
     return d.get()->getBinAbundanceBySample(bin_type);
 }
 /******************************************************************************/
+vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& data,
+                                                              const Rcpp::CharacterVector& samples) {
+    return xdev_get_sequence_abundances_by_sample(data, samples);
+}
+/******************************************************************************/
 vector<vector<float> > xdev_get_sequence_abundances_by_sample(const Rcpp::Environment& data,
                                                      const Rcpp::CharacterVector& samples) {
     if (!data.inherits("strollur")) {

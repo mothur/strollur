@@ -16,6 +16,12 @@
 
 - All automated checks on GitHub Actions pass cleanly. 
 
+## Resubmission 0.1.4
+
+- Updates documentation to correct html errors
+- Updates strollur to include xdev_get_abundances_by_sample() which rchime v0.1.2 relies on.
+- Note: I also maintain the rchime package and will be submitting rchime v0.1.3 soon.
+
 ## Version - 0.1.4
 
 Initial release of v0.1.4

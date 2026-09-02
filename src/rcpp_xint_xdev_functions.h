@@ -877,6 +877,28 @@ Rcpp::List xdev_export_dataset(const Rcpp::Environment& data);
 //[[Rcpp::export]]
 vector<vector<float> > xdev_get_bin_abundances_by_sample(const Rcpp::Environment& data,
                                                          const string& bin_type = "otu");
+
+/******************************************************************************/
+//' @title Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} parsed by sample
+//' @description
+//' Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} parsed by sample
+//'
+//' @param data a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
+//' @param samples a vector of strings containing the names of the samples you
+//' would like sequence names for. By default all samples are included.
+//' @examples
+//'
+//' data <- strollur::miseq_sop_example()
+//'
+//' # To get the sequence names parsed by sample
+//' abunds <- strollur::xdev_get_abundances_by_sample(data)
+//'
+//' @return 2D vector of float containing data requested parsed by sample.
+//' @export
+//[[Rcpp::export]]
+vector<vector<float> > xdev_get_abundances_by_sample(const Rcpp::Environment& data,
+                                                     const Rcpp::CharacterVector& samples  = Rcpp::CharacterVector::create());
+
 /******************************************************************************/
 //' @title Get the sequence abundance data in a \href{https://mothur.org/strollur/reference/strollur.html}{strollur object} parsed by sample
 //' @description
