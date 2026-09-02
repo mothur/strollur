@@ -29,13 +29,14 @@ Enhancements:
 
 Functions for Package developers
 
+- Adds `strollur::xdev_add_sequence_fastq_scores()` function.
 - Adds `strollur::xdev_alignment_length()` function 
 - Adds `strollur::xdev_assign_bin_taxonomy_tidy()` function.
-- Adds `strollur::xdev_has_bin_taxonomy()` function.
-- Adds `strollur::xdev_get_sequence_indexes_by_sample()` function.
-- Adds `strollur::xdev_add_sequence_fastq_scores()` function.
-- Adds `strollur::xdev_get_sample_distances()` function.
 - Adds `strollur::xdev_assign_sample_distances()` function.
+- Adds `strollur::xdev_assign_sequence_quality_scores` function.
+- Adds `strollur::xdev_has_bin_taxonomy()` function.
+- Adds `strollur::xdev_get_sample_distances()` function.
+- Adds `strollur::xdev_get_sequence_indexes_by_sample()` function.
 
 Bug Fixes:
  - `strollur::summary()` will now display results that accurately represent the data.
