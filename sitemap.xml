@@ -91,6 +91,7 @@
 <url><loc>https://mothur.org/strollur/reference/xdev_assign_sequence_taxonomy_tidy.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_assign_treatments.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_count.html</loc></url>
+<url><loc>https://mothur.org/strollur/reference/xdev_get_abundances_by_sample.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_get_alignment_length.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_get_bin_abundances_by_sample.html</loc></url>
 <url><loc>https://mothur.org/strollur/reference/xdev_get_by_sample.html</loc></url>

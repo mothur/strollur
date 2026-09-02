@@ -69,7 +69,7 @@ Let’s use the miseq data object to learn how to do that.
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 strollur::save_dataset(miseq, file = file_name)
-#> [1] "/tmp/Rtmp7km31J/miseq_sop.rds"
+#> [1] "/tmp/RtmpLoWnHA/miseq_sop.rds"
 
 miseq_from_rds <- strollur::load_dataset(file = file_name)
 miseq_from_rds

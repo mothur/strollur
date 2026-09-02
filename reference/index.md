@@ -451,6 +451,13 @@ these functions
   type in a [strollur
   object](https://mothur.org/strollur/reference/strollur.html)
 
+- [`xdev_get_abundances_by_sample()`](https://mothur.org/strollur/reference/xdev_get_abundances_by_sample.md)
+  :
+
+  Get the sequence abundance data in a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html) parsed by
+  sample
+
 - [`xdev_get_alignment_length()`](https://mothur.org/strollur/reference/xdev_get_alignment_length.md)
   :
 

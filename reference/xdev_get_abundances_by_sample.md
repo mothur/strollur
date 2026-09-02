@@ -1,8 +1,8 @@
-# xdev_get_abundances_by_sample
+# Get the sequence abundance data in a [strollur object](https://mothur.org/strollur/reference/strollur.html) parsed by sample
 
-Get the sequence abundance data in a
-[strollur](https://mothur.org/strollur/reference/strollur.html) object
-parsed by sample
+Get the sequence abundance data in a [strollur
+object](https://mothur.org/strollur/reference/strollur.html) parsed by
+sample
 
 ## Usage
 
@@ -12,10 +12,10 @@ xdev_get_abundances_by_sample(data, samples = as.character(c()))
 
 ## Arguments
 
-- data, :
+- data:
 
-  a [strollur](https://mothur.org/strollur/reference/strollur.html)
-  object
+  a [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - samples:
 
@@ -30,7 +30,7 @@ xdev_get_abundances_by_sample(data, samples = as.character(c()))
 
 ``` r
 
-data <- miseq_sop_example()
+data <- strollur::miseq_sop_example()
 #> Added 2425 sequences.
 #> Assigned 2425 sequence abundances.
 #> Assigned 2425 sequence taxonomies.
@@ -38,6 +38,7 @@ data <- miseq_sop_example()
 #> Assigned 2425 asv bins.
 #> Assigned 63 phylotype bins.
 #> Assigned 19 samples to treatments.
+#> Assigned 171 samples distances.
 #> Assigned 531 otu bin taxonomies.
 #> Assigned 531 otu bin representative sequences.
 #> Added a metadata report.
@@ -45,5 +46,5 @@ data <- miseq_sop_example()
 #> Added a contigs_report report.
 
 # To get the sequence names parsed by sample
-abunds <- xdev_get_abundances_by_sample(data)
+abunds <- strollur::xdev_get_abundances_by_sample(data)
 ```
