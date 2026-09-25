@@ -305,13 +305,29 @@ vector<float> AbundTable::getAbundances(const int id) const {
 vector<vector<float>> AbundTable::getAbundanceBySample(const vector<int>& ids,
                                                  vector<string> samplesToSelect) const {
 
+    if (!hasSampleData) {
+        vector<vector<float>> results(samplesToSelect.size());
+        return results;
+    }
+
     if (samplesToSelect.empty()) {
         samplesToSelect = getSamples();
     }
 
-    vector<vector<float>> results(samplesToSelect.size());
+    map<int, int> sampleToIndexInResults;
+    int resultsCounter = 0;
+    for (int i = 0; i < samplesToSelect.size(); i++) {
+        auto indexIt = sampleIndex.find(samplesToSelect[i]);
+        if (indexIt != sampleIndex.end()) {
+            sampleToIndexInResults[indexIt->second] = resultsCounter;
+            resultsCounter++;
+        }else {
+            string message = samplesToSelect[i] + " is not valid, ignoring.";
+            Rcpp::Rcout << endl << message << endl;
+        }
+    }
 
-    if (!hasSampleData) { return results; }
+    vector<vector<float>> results(samplesToSelect.size());
 
     for (const int& id : ids) {
         const sampleAbunds data = counts[id];
@@ -319,11 +335,14 @@ vector<vector<float>> AbundTable::getAbundanceBySample(const vector<int>& ids,
         // data -> sampleIndex(2,5), abunds(100, 50)
         // becomes abunds(0,0,100,0,0,50)
         for (size_t i = 0; i < data.sampleIndex.size(); i++) {
-
             // this is a "good" sample
             if (tableSamples[data.sampleIndex[i]]) {
-                // samplesIndexInResults -> sampleNames[data.sampleIndex[i]]]
-                results[sampleIndex.at(sampleNames[data.sampleIndex[i]])].push_back(data.abunds[i]);
+                int indexInAbundTable = sampleIndex.at(sampleNames[data.sampleIndex[i]]);
+                auto it = sampleToIndexInResults.find(indexInAbundTable);
+                if (it != sampleToIndexInResults.end()) {
+                    results[it->second].push_back(data.abunds[i]);
+                }
+
             }
         }
     }
