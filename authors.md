@@ -27,5 +27,4 @@ Resource Announcements, 0(0), e00839-26. https://doi.org
       number = {0},
       pages = {e00839-26},
       doi = {10.1128/mra.00839-26},
-      url = {https://journals.asm.org/doi/abs/10.1128/mra.00839-26},
     }

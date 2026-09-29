@@ -45,7 +45,7 @@ miseq <- strollur::miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 strollur::write_mothur_rabund(miseq, tempfile())
-#> [1] "/tmp/Rtmps0GYcS/file1aea30ba8596.otu.rabund"      
-#> [2] "/tmp/Rtmps0GYcS/file1aea30ba8596.asv.rabund"      
-#> [3] "/tmp/Rtmps0GYcS/file1aea30ba8596.phylotype.rabund"
+#> [1] "/tmp/RtmpDqIWtk/file1b19c70b806.otu.rabund"      
+#> [2] "/tmp/RtmpDqIWtk/file1b19c70b806.asv.rabund"      
+#> [3] "/tmp/RtmpDqIWtk/file1b19c70b806.phylotype.rabund"
 ```
