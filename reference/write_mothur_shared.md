@@ -45,7 +45,7 @@ miseq <- strollur::miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 strollur::write_mothur_shared(miseq, tempfile())
-#> [1] "/tmp/RtmpG4DJgy/file19ee2a00c45d.otu.shared"      
-#> [2] "/tmp/RtmpG4DJgy/file19ee2a00c45d.asv.shared"      
-#> [3] "/tmp/RtmpG4DJgy/file19ee2a00c45d.phylotype.shared"
+#> [1] "/tmp/Rtmps0GYcS/file1aea10a91f3d.otu.shared"      
+#> [2] "/tmp/Rtmps0GYcS/file1aea10a91f3d.asv.shared"      
+#> [3] "/tmp/Rtmps0GYcS/file1aea10a91f3d.phylotype.shared"
 ```
