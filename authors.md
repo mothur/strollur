@@ -14,13 +14,18 @@
 Source:
 [`inst/CITATION`](https://github.com/mothur/strollur/blob/main/inst/CITATION)
 
-Sarah Westcott (2026). strollur: Store and Transfer Amplicon Sequence
-Data. R package version 0.1.0.
+Westcott, S. L., Johnson, G., & Schloss, P. D. (2026). Strollur: an R
+package for working with amplicon sequence data in R. Microbiology
+Resource Announcements, 0(0), e00839-26. https://doi.org
 
-    @Manual{,
-      title = {strollur: Store and Transfer Amplicon Sequence Data},
-      author = {Sarah Westcott and Gregory Johnson and Pat Schloss},
+    @Article{,
+      title = {Strollur: an R package for working with amplicon sequence data in R},
+      author = {Sarah Westcott and Gregory Johnson and Patrick Schloss},
+      journal = {Microbiology Resource Announcements},
       year = {2026},
-      note = {R package version 0.1.2},
-      url = {https://mothur.org/strollur/},
+      volume = {0},
+      number = {0},
+      pages = {e00839-26},
+      doi = {10.1128/mra.00839-26},
+      url = {https://journals.asm.org/doi/abs/10.1128/mra.00839-26},
     }

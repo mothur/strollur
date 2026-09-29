@@ -330,7 +330,10 @@ Create datasets and references, clear data
   aligned sequences.
 
 - [`is_equal()`](https://mothur.org/strollur/reference/is_equal.md) :
-  is_equal
+
+  Determine if two [strollur
+  object](https://mothur.org/strollur/reference/strollur.html)s are
+  equal.
 
 - [`has_sample()`](https://mothur.org/strollur/reference/has_sample.md)
   :
@@ -373,7 +376,7 @@ Save, copy, load, import, export and write to file
   Create a [strollur
   object](https://mothur.org/strollur/reference/strollur.html) from the
   exported table of a [strollur
-  object](https://mothur.org/strollur/reference/strollur.html) object.
+  object](https://mothur.org/strollur/reference/strollur.html)
 
 - [`copy_dataset()`](https://mothur.org/strollur/reference/copy_dataset.md)
   :

@@ -1,4 +1,4 @@
-# is_equal
+# Determine if two [strollur object](https://mothur.org/strollur/reference/strollur.html)s are equal.
 
 Determine if two [strollur
 object](https://mothur.org/strollur/reference/strollur.html)s are equal.

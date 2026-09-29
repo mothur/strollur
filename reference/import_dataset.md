@@ -1,4 +1,4 @@
-# Create a [strollur object](https://mothur.org/strollur/reference/strollur.html) from the exported table of a [strollur object](https://mothur.org/strollur/reference/strollur.html) object.
+# Create a [strollur object](https://mothur.org/strollur/reference/strollur.html) from the exported table of a [strollur object](https://mothur.org/strollur/reference/strollur.html)
 
 The import_dataset function will create a [strollur
 object](https://mothur.org/strollur/reference/strollur.html) from the
