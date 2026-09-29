@@ -50,5 +50,5 @@ data <- strollur::read_mothur(
 
 file_name <- file.path(tempdir(), "miseq_sop.rds")
 strollur::save_dataset(data, file = file_name)
-#> [1] "/tmp/Rtmp1Sbs4u/miseq_sop.rds"
+#> [1] "/tmp/RtmpG4DJgy/miseq_sop.rds"
 ```
