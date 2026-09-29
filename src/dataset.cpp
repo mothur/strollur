@@ -1413,7 +1413,10 @@ Rcpp::DataFrame Dataset::getSequenceAbundances(const bool bySample) const{
 /******************************************************************************/
 vector<vector<float> > Dataset::getSequenceAbundanceBySample(const vector<string>& samples)  const {
     const vector<int> ids = getIncludedNamesIndexes();
-    cout << "num ids in " << samples[0] << " " << ids.size() << endl;
+
+    if (samples.empty()) {
+        return count.getAbundanceBySample(ids, getSamples());
+    }
     return count.getAbundanceBySample(ids, samples);
 }
 /******************************************************************************/

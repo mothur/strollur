@@ -1,4 +1,6 @@
-#' @title is_equal
+#' @title Determine if two
+#' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}s
+#' are equal.
 #' @description
 #' Determine if two
 #' \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}s

@@ -5,8 +5,7 @@
 \title{Create a
 \href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
 from the exported table of a
-\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}
-object.}
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}}
 \usage{
 import_dataset(table)
 }

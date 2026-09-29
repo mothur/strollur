@@ -315,12 +315,10 @@ vector<vector<float>> AbundTable::getAbundanceBySample(const vector<int>& ids,
     }
 
     map<int, int> sampleToIndexInResults;
-    int resultsCounter = 0;
     for (int i = 0; i < samplesToSelect.size(); i++) {
         auto indexIt = sampleIndex.find(samplesToSelect[i]);
         if (indexIt != sampleIndex.end()) {
-            sampleToIndexInResults[indexIt->second] = resultsCounter;
-            resultsCounter++;
+            sampleToIndexInResults[indexIt->second] = i;
         }else {
             string message = samplesToSelect[i] + " is not valid, ignoring.";
             Rcpp::Rcout << endl << message << endl;

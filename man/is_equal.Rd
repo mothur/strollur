@@ -2,7 +2,9 @@
 % Please edit documentation in R/is_equal.R
 \name{is_equal}
 \alias{is_equal}
-\title{is_equal}
+\title{Determine if two
+\href{https://mothur.org/strollur/reference/strollur.html}{strollur object}s
+are equal.}
 \usage{
 is_equal(data, data2)
 }
