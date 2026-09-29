@@ -1,17 +1,28 @@
 # Package Citation
 bibentry(
-  bibtype = "Manual",
-  title = "strollur: Store and Transfer Amplicon Sequence Data",
+  bibtype = "Article",
+  title = "Strollur: an R package for working with amplicon sequence data in R",
   author = c(
     person("Sarah", "Westcott", role = c("aut", "cre"),
         email = "swestcot@umich.edu",
         comment = c(ORCID = "0009-0001-1529-8247")),
-    person("Gregory", "Johnson", , "grejoh@umich.edu", role = c("aut"),
+    person("Gregory", "Johnson", email = "grejoh@umich.edu", role = c("aut"),
         comment = c(ORCID = "0009-0008-3890-0297")),
-    person("Pat", "Schloss", , "pschloss@umich.edu",
-        role = c("cph"), comment = c(ORCID = "0000-0002-6935-4275"))),
+    person("Patrick", "Schloss", email = "pschloss@umich.edu", role = c("cph"),
+        comment = c(ORCID = "0000-0002-6935-4275"))
+  ),
+  journal = "Microbiology Resource Announcements",
   year = "2026",
-  note = "R package version 0.1.2",
-  url = "https://mothur.org/strollur/",
-  textVersion = "Sarah Westcott (2026). strollur: Store and Transfer Amplicon Sequence Data. R package version 0.1.0."
+  volume = "0",
+  number = "0",
+  pages = "e00839-26",
+  doi = "10.1128/mra.00839-26",
+  url = "https://journals.asm.org/doi/abs/10.1128/mra.00839-26",
+
+  textVersion = paste(
+    "Westcott, S. L., Johnson, G., & Schloss, P. D. (2026).",
+    "Strollur: an R package for working with amplicon sequence data in R.",
+    "Microbiology Resource Announcements, 0(0), e00839-26.",
+    "https://doi.org"
+  )
 )
