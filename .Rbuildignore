@@ -4,7 +4,6 @@
 ^README\.Rmd$
 ^\.github$
 .lintr
-.url_exceptions
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
