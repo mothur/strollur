@@ -42,7 +42,7 @@ read_quality <- function(quality, path = NULL) {
   scores_raw <- lines[!is_sequence_name]
   scores_list <- lapply(scores_raw, function(x) {
     # Remove trailing/leading spaces and split by comma
-    as.numeric(strsplit(trimws(x), ",\\s*")[[1]])
+    as.numeric(.split_white_space(x))
   })
 
   data.frame(

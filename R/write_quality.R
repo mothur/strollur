@@ -41,7 +41,7 @@ write_quality <- function(data, filename = NULL) {
   if (nrow(quality) != 0) {
     clean_scores <- sapply(
       quality$quality_score,
-      function(x) paste(x, collapse = ", ")
+      function(x) paste(x, collapse = " ")
     )
 
     # Format the data
