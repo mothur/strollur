@@ -95,6 +95,7 @@ strollur::xdev_assign_sequence_quality_scores(data, qual_table)
 #> Number of unique seqs: 3 
 #> Total number of seqs: 3 
 #> 
+#> Total number of custom reports: 2 
 #> 
 
 data
@@ -113,5 +114,6 @@ data
 #> Number of unique seqs: 3 
 #> Total number of seqs: 3 
 #> 
+#> Total number of custom reports: 2 
 #> 
 ```

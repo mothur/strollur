@@ -73,7 +73,7 @@ if (requireNamespace("h5lite", quietly = TRUE)) {
 #> Added a metadata report.
 #> Added 2 resource references.
 #> Added a contigs_report report.
-#> [1] "/tmp/RtmpDqIWtk/file1b197d1a0d7a.otu.biom"      
-#> [2] "/tmp/RtmpDqIWtk/file1b197d1a0d7a.asv.biom"      
-#> [3] "/tmp/RtmpDqIWtk/file1b197d1a0d7a.phylotype.biom"
+#> [1] "/tmp/Rtmp6vnKrW/file3d1d100da892.otu.biom"      
+#> [2] "/tmp/Rtmp6vnKrW/file3d1d100da892.asv.biom"      
+#> [3] "/tmp/Rtmp6vnKrW/file3d1d100da892.phylotype.biom"
 ```

@@ -83,6 +83,7 @@ strollur::xdev_add_sequence_fastq_scores(data, table)
 #> Number of unique seqs: 3 
 #> Total number of seqs: 3 
 #> 
+#> Total number of custom reports: 2 
 #> 
 data
 #> example:
@@ -100,5 +101,6 @@ data
 #> Number of unique seqs: 3 
 #> Total number of seqs: 3 
 #> 
+#> Total number of custom reports: 2 
 #> 
 ```
