@@ -1229,6 +1229,14 @@ vector<string> Dataset::getReportTypes() {
         if (!badAccnos.empty()) {
             reportTypes.push_back("sequence_scrap");
         }
+
+        if (!quality_scores.empty()) {
+            reportTypes.push_back("fastq");
+        }
+    }
+
+    if (!quality_scores.empty()) {
+        reportTypes.push_back("quality");
     }
 
     for (auto & binTable : binTables) {

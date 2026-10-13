@@ -98,9 +98,12 @@ void Report::addReport(const Rcpp::DataFrame& report) {
 Rcpp::DataFrame Report::getReport(const set<string>& datasetNames) {
 
     Rcpp::DataFrame data = Rcpp::DataFrame::create();
-    pruneReport(datasetNames);
 
     if (hasReport) {
+
+        if (!sequence_name.empty()) {
+            pruneReport(datasetNames);
+        }
         // assemble dataframe in order
         for (auto itCol = columnNames.begin(); itCol != columnNames.end(); itCol++) {
             bool foundNext = false;
