@@ -34,7 +34,7 @@ Imports:
     stats,
     utils
 LinkingTo: Rcpp, cli, Rcereal
-Depends: R (>= 4.0.0)
+Depends: R (>= 4.1.0)
 Suggests: 
     knitr,
     rmarkdown,
