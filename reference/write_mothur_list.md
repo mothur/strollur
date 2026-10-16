@@ -44,7 +44,7 @@ miseq <- strollur::miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 strollur::write_mothur_list(miseq, tempfile())
-#> [1] "/tmp/RtmpbHBa9H/file1a8e2f6346b2.otu.list"      
-#> [2] "/tmp/RtmpbHBa9H/file1a8e2f6346b2.asv.list"      
-#> [3] "/tmp/RtmpbHBa9H/file1a8e2f6346b2.phylotype.list"
+#> [1] "/tmp/RtmpRxCy3x/file1a7b501fa943.otu.list"      
+#> [2] "/tmp/RtmpRxCy3x/file1a7b501fa943.asv.list"      
+#> [3] "/tmp/RtmpRxCy3x/file1a7b501fa943.phylotype.list"
 ```
