@@ -1581,7 +1581,7 @@ Rcpp::Environment xdev_set_abundances(const Rcpp::Environment& data,
      if (numSamples != 0) {
          // check to abundances dimensions. [numseqs_to_set][num_samples_in dataset]
          for (int i = 0; i < static_cast<int>(abundances.size()); i++) {
-             if (abundances[i].size() != numSamples) {
+             if (static_cast<int>(abundances[i].size()) != numSamples) {
                  string message = "You must provide an abundance for each ";
                  message += "sample when your dataset includes samples.";
                  message += sequence_names[i] + " has " + toString(abundances[i].size());

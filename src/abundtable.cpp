@@ -315,7 +315,7 @@ vector<vector<float>> AbundTable::getAbundanceBySample(const vector<int>& ids,
     }
 
     map<int, int> sampleToIndexInResults;
-    for (int i = 0; i < samplesToSelect.size(); i++) {
+    for (int i = 0; i < static_cast<int>(samplesToSelect.size()); i++) {
         auto indexIt = sampleIndex.find(samplesToSelect[i]);
         if (indexIt != sampleIndex.end()) {
             sampleToIndexInResults[indexIt->second] = i;

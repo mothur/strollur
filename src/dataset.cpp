@@ -209,7 +209,7 @@ Rcpp::List Dataset::exportDataset(){
         Rcpp::List binList = binTable.exportBinTable(count);
         vector<string> binListNames = binList.attr("names");
 
-        for (int i = 0; i < binList.size(); i++) {
+        for (int i = 0; i < static_cast<int>(binList.size()); i++) {
             results.push_back(binList[i]);
             resultsLabels.push_back(binTable.label+"_"+binListNames[i]);
         }

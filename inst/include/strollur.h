@@ -476,7 +476,7 @@ struct sparseDistance {
 
         if (!forExport) {
             // remove samples not in dataset
-            for (int i = 0; i < rowSamples.size(); i++) {
+            for (int i = 0; i < static_cast<int>(rowSamples.size()); i++) {
                 if ((std::find(goodSamples.begin(), goodSamples.end(), rowSamples[i]) != goodSamples.end()) &&
                     (std::find(goodSamples.begin(), goodSamples.end(), colSamples[i]) != goodSamples.end())) {
                     ProwSamples.push_back(rowSamples[i]);
@@ -495,7 +495,7 @@ struct sparseDistance {
         }else {
             vector<bool> include(rowSamples.size(), false);
             // include all samples and add include flags
-            for (int i = 0; i < rowSamples.size(); i++) {
+            for (int i = 0; i < static_cast<int>(rowSamples.size()); i++) {
                 if ((std::find(goodSamples.begin(), goodSamples.end(), rowSamples[i]) != goodSamples.end()) &&
                     (std::find(goodSamples.begin(), goodSamples.end(), colSamples[i]) != goodSamples.end())) {
                     include[i] = true;

@@ -9,7 +9,7 @@ sequences, abundance, sample and treatment assignments, taxonomic
 classifications, trees, asv / otu clusters and various reports. It is
 designed to facilitate data analysis across multiple R packages.
 
-\if{html}{\figure{strollur_overview.png}{options: width="672px" alt="Workflow
+\if{html}{\figure{strollur_overview.png}{options: width="672" alt="Workflow
 Diagram"}}
 \if{latex}{\figure{strollur_overview.png}{options: width=5in}}
 }
