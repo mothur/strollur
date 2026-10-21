@@ -12,7 +12,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/mothur/strollur/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/mothur/strollur/blob/v0.1.4/inst/CITATION)
 
 Westcott, S. L., Johnson, G., & Schloss, P. D. (2026). Strollur: an R
 package for working with amplicon sequence data in R. Microbiology

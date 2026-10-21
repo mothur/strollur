@@ -2,6 +2,8 @@
 
 ## strollur 0.1.4
 
+CRAN release: 2026-10-19
+
 New Features:
 
 - Expands built in read / write functions.
