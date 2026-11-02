@@ -16,7 +16,7 @@
 
 - All automated checks on GitHub Actions pass cleanly. 
 
-## Resubmission 0.1.4
+## Version 0.1.5
 
 - Updates strollur::read_biom() examples and tests, copying example file to tempfile. This compensates for rbiom::read_biom / HDF5 on Debian defaulting to open the .biom file with read/write permissions.
 
