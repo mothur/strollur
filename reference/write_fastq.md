@@ -41,5 +41,5 @@ strollur::add(data, table, type = "fastq")
 
 # Write `strollur::strollur` objects FASTQ data to file
 strollur::write_fastq(data, tempfile())
-#> [1] "/tmp/Rtmp44Tvt8/file1ba6504950b"
+#> [1] "/tmp/Rtmp5Va69N/file1a9f251afa97"
 ```
