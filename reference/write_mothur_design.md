@@ -44,5 +44,5 @@ miseq <- strollur::miseq_sop_example()
 #> Added 2 resource references.
 #> Added a contigs_report report.
 strollur::write_mothur_design(miseq, tempfile())
-#> [1] "/tmp/Rtmp5Va69N/file1a9f6b4169e3"
+#> [1] "/tmp/RtmpliyNKL/file1a7e2384ef66"
 ```
