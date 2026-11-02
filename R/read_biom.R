@@ -12,7 +12,13 @@
 #' @examples
 #'
 #' if (requireNamespace("h5lite", quietly = TRUE)) {
-#'   data <- strollur::read_biom(biom = strollur_example("miseq_sop.otu.biom"))
+#'
+#'   original_file <- strollur::strollur_example("miseq_sop.otu.biom")
+#'   temp_file <- tempfile(fileext = ".biom")
+#'   file.copy(original_file, temp_file)
+#'   on.exit(unlink(temp_file), add = TRUE)
+#'
+#'   data <- strollur::read_biom(biom = temp_file)
 #'   data
 #' } else {
 #'   message(paste(

@@ -4,7 +4,15 @@ test_that("read_biom - errors", {
 
 test_that("read_biom", {
   skip_if_not_installed("h5lite")
-  data <- strollur::read_biom(biom = strollur_example("miseq_sop.otu.biom"))
+
+  # needed because H5Lite on Debian opens with read / write options so file must
+  # be in temp folder even if we are not writing to pass CRAN checks
+  original_file <- strollur::strollur_example("miseq_sop.otu.biom")
+  temp_file <- tempfile(fileext = ".biom")
+  file.copy(original_file, temp_file)
+  on.exit(unlink(temp_file), add = TRUE)
+
+  data <- strollur::read_biom(biom = temp_file)
 
   bin_types <- data$get_bin_types()
 
