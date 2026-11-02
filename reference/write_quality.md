@@ -40,5 +40,5 @@ strollur::add(data, table, type = "fastq")
 
 # Write `strollur::strollur` objects sequence quality data to file
 strollur::write_quality(data, tempfile())
-#> [1] "/tmp/RtmpTJ7Uhr/file1aca3728a313"
+#> [1] "/tmp/RtmpFU2Te0/file1a8d11001a2f"
 ```
