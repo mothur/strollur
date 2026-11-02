@@ -18,6 +18,10 @@
 
 ## Resubmission 0.1.4
 
+- Updates strollur::read_biom() examples and tests, copying example file to tempfile. This compensates for rbiom::read_biom / HDF5 on Debian defaulting to open the .biom file with read/write permissions.
+
+## Resubmission 0.1.4
+
 - Updates documentation to correct html errors
 - Updates strollur to include xdev_get_abundances_by_sample() which rchime v0.1.2 relies on.
 - Note: I also maintain the rchime package and will be submitting rchime v0.1.3 soon.
